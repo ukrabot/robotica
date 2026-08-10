@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Transforma tu Vehículo: Guía Completa sobre Kits de Conversión a Coche Eléctrico</title>
+<meta name="description" content="Aprende cómo convertir un auto de combustión en un coche eléctrico: tipos de kits de conversión, componentes, costos reales en CLP y USD, autonomía, homologación y seguridad de alto voltaje.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://ingenieriaroboticablog.cl/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transforma tu Vehículo: Guía Completa sobre Kits de Conversión a Coche Eléctrico">
+<meta property="og:description" content="Guía técnica paso a paso para convertir un vehículo de combustión a eléctrico: motores, baterías, BMS, costos, autonomía, normativa y seguridad.">
+<meta property="og:image" content="https://ingenieriaroboticablog.cl/blog/ev_conversion_hero.jpg">
+<meta property="og:url" content="https://ingenieriaroboticablog.cl/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico.html">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Completa: Kits de Conversión a Coche Eléctrico">
+<meta name="twitter:description" content="Tipos de kits, componentes, costos, autonomía, homologación y seguridad para convertir tu auto a eléctrico.">
+<meta name="twitter:image" content="https://ingenieriaroboticablog.cl/blog/ev_conversion_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Transforma tu Vehículo: Guía Completa sobre Kits de Conversión a Coche Eléctrico",
+  "description":"Guía técnica para convertir un vehículo de combustión en eléctrico: tipos de kits, motores, baterías, BMS, costos orientativos, cálculo de autonomía, homologación y seguridad de alto voltaje.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://ingenieriaroboticablog.cl/about.html",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://ingenieriaroboticablog.cl",
+    "logo":{"@type":"ImageObject","url":"https://ingenieriaroboticablog.cl/logo.png"}
+  },
+  "datePublished":"2026-08-10",
+  "dateModified":"2026-08-10",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://ingenieriaroboticablog.cl/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico.html"},
+  "image":"https://ingenieriaroboticablog.cl/blog/ev_conversion_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Vehículo donante en buen estado estructural, kit de conversión (motor, controlador/inversor, pack de baterías, BMS), cargador embarcado, convertidor DC-DC, cableado de alto voltaje y protecciones",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://ingenieriaroboticablog.cl/index.html"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://ingenieriaroboticablog.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Kits de Conversión a Coche Eléctrico","item":"https://ingenieriaroboticablog.cl/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico.html"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Es legal convertir un auto de combustión a eléctrico?","acceptedAnswer":{"@type":"Answer","text":"En la mayoría de los países sí es posible, pero la conversión debe regularizarse ante la autoridad de tránsito competente: suele exigirse homologación o certificación de la modificación y aprobar una revisión técnica. Los requisitos varían por país y por año, por lo que debes confirmarlos antes de comprar el kit."}},
+    {"@type":"Question","name":"¿Cuánto cuesta un kit de conversión a coche eléctrico?","acceptedAnswer":{"@type":"Answer","text":"Como referencia editorial, un kit básico (motor, controlador y accesorios) suele estar entre US$3.000 y US$8.000 sin baterías. Un proyecto completo con pack de baterías, cargador, BMS e instalación profesional suele moverse entre US$10.000 y US$35.000 o más, según autonomía y mano de obra. Son rangos orientativos: solicita cotizaciones actualizadas a proveedores."}},
+    {"@type":"Question","name":"¿Qué autonomía puedo esperar de una conversión?","acceptedAnswer":{"@type":"Answer","text":"Depende de la energía útil de la batería, el peso del vehículo, la aerodinámica y el estilo de conducción. Estima la autonomía dividiendo los kWh útiles por el consumo en kWh/km: por ejemplo, 22 kWh útiles ÷ 0,17 kWh/km ≈ 129 km en un city car convertido."}},
+    {"@type":"Question","name":"¿Puedo hacer la conversión yo mismo?","acceptedAnswer":{"@type":"Answer","text":"La parte mecánica es abordable con experiencia en taller, pero el sistema de alto voltaje (frecuentemente entre 96 V y 400 V o más) exige formación en seguridad eléctrica, EPP adecuado y herramientas aisladas. En muchas jurisdicciones la instalación debe ser ejecutada o firmada por un instalador autorizado."}},
+    {"@type":"Question","name":"¿Qué pasa con el seguro y la revisión técnica después de convertir?","acceptedAnswer":{"@type":"Answer","text":"Debes declarar la modificación a tu aseguradora y regularizar el vehículo. Si la conversión no está inscrita u homologada, la aseguradora puede objetar la cobertura y el auto puede no aprobar la revisión técnica. Conserva facturas, fichas técnicas y certificados de la instalación."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7}a{color:var(--blue);text-underline-offset:3px}.container{max-width:1050px;margin:auto;padding:0 24px}.site-nav{position:sticky;top:0;z-index:5;background:rgba(246,244,238,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto}.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:20px;font-size:.86rem}.nav-links a{color:var(--muted);text-decoration:none}.nav-links a:hover{color:var(--text)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font-family:Georgia,serif;font-size:clamp(2.2rem,5vw,4.3rem);line-height:1.08;font-weight:400;max-width:900px;margin:18px 0;color:#fff}.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}.byline a{color:var(--gold-bright);text-decoration:none}.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}.article-body p{color:var(--muted);margin:0 0 20px}.article-body li{color:var(--muted);margin:8px 0}.article-body strong{color:var(--text)}
+.toc,.note,.cta,.author-box{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}.toc ol{margin:0;padding-left:22px}.toc a{color:var(--muted);text-decoration:none}.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}.note strong{color:var(--text)}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.article-img img{width:100%;display:block}.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}td:first-child{color:var(--text);font-weight:600}
+pre{overflow:auto;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;color:var(--text);font-weight:600}details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer-nav a{color:var(--muted);text-decoration:none}.footer-nav a:hover{color:var(--gold)}
+.author-box{display:flex;gap:16px;align-items:flex-start}.author-box .avatar{width:64px;height:64px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid rgba(169,123,35,.35)}.author-box .avatar img{width:100%;height:100%;object-fit:cover;display:block}.author-box h3{margin:0 0 6px;font-size:1rem;color:var(--text)}.author-box p{margin:0 0 8px;font-size:.88rem}.author-box p:last-child{margin-bottom:0}.author-box a{color:var(--gold);font-size:.82rem}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}.cta p{margin:0}
+@media(max-width:700px){.nav-links{gap:10px}.hero-inner{padding-top:80px}.article-body h2{font-size:1.6rem}.author-box{flex-direction:column}}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="../index.html">Robótica <span>Ingeniería</span></a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="../index.html#categories">Tutoriales</a>
+      <a href="../index.html#proyecto-destacado">Proyecto del Mes</a>
+      <a href="../about.html">Sobre Nosotros</a>
+      <a href="../contact.html">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="ev_conversion_hero.jpg" alt="Auto clásico en un taller con el motor de combustión retirado y un motor eléctrico con cables naranjos de alto voltaje siendo instalado" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Movilidad eléctrica · Actualizado el <time datetime="2026-08-10">10 de agosto de 2026</time></div>
+    <h1>Transforma tu Vehículo: Guía Completa sobre Kits de Conversión a Coche Eléctrico</h1>
+    <p>Tipos de kits, componentes, costos orientativos, cálculo de autonomía, homologación y seguridad de alto voltaje — una guía técnica honesta para decidir si la conversión eléctrica de tu auto es viable, y cómo ejecutarla sin sorpresas.</p>
+    <p class="byline">Por <a href="../about.html">Alberto Gallardo</a>, Analista Programador Computacional · 18 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="ev_motor_battery.jpg" alt="Módulos de batería de litio, controlador y motor eléctrico montados en el chasis de un auto durante una conversión a coche eléctrico" loading="lazy">
+  <div class="caption">Una conversión eléctrica bien ejecutada es, ante todo, un ejercicio de planificación: peso, espacio para baterías, disipación térmica y homologación se definen antes de comprar el primer componente.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">¿Qué es un kit de conversión a coche eléctrico?</a></li>
+    <li><a href="#tipos">Tipos de kits de conversión disponibles</a></li>
+    <li><a href="#componentes">Componentes principales y qué verificar</a></li>
+    <li><a href="#costos">Cuánto cuesta convertir un auto a eléctrico</a></li>
+    <li><a href="#autonomia">Cómo estimar la autonomía real</a></li>
+    <li><a href="#proceso">Proceso de conversión paso a paso</a></li>
+    <li><a href="#normativa">Normativa, homologación y seguros</a></li>
+    <li><a href="#seguridad">Seguridad eléctrica de alto voltaje</a></li>
+    <li><a href="#errores">Errores comunes y cómo evitarlos</a></li>
+    <li><a href="#conviene">¿Conviene económicamente? Cálculo rápido</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>¿Qué es un kit de conversión a coche eléctrico?</h2>
+<p>Un kit de conversión a coche eléctrico (también llamado <em>EV conversion kit</em>) es un conjunto de componentes que permite reemplazar el motor de combustión interna de un vehículo por un tren motriz eléctrico: motor eléctrico, controlador/inversor, pack de baterías, sistema de gestión de batería (BMS), cargador embarcado y cableado de alto voltaje. En vez de diseñar cada pieza desde cero, el kit entrega componentes dimensionados para trabajar juntos.</p>
+<p>La idea no es nueva —los aficionados convierten vehículos desde los años 70 con motores de corriente continua y baterías de plomo—, pero tres cambios recientes la hicieron práctica para un público mucho más amplio: los motores de corriente alterna de imanes permanentes bajaron de precio, las celdas de litio (sobre todo LFP) ofrecen buena densidad energética a costo decreciente, y existe documentación abierta y comunidades activas que comparten planos de adaptadores, esquemas eléctricos y lecciones aprendidas.</p>
+<p><strong>Advertencia editorial honesta:</strong> una conversión rara vez es más barata que comprar un eléctrico usado equivalente. Su valor está en conservar un vehículo con valor sentimental (clásicos, vehículos de trabajo, utilitarios), en el aprendizaje técnico y, en algunos países, en incentivos o menores costos de operación. Esta guía está escrita para que evalúes tu caso con números realistas, no con promesas de marketing.</p>
+</section>
+
+<section id="tipos">
+<h2>Tipos de kits de conversión disponibles</h2>
+<p>No todos los kits resuelven el mismo problema. Antes de comparar precios, identifica qué tipo se ajusta a tu vehículo donante, a tu presupuesto y a tu nivel de experiencia.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación editorial de arquitecturas de conversión. Las potencias y precios son rangos orientativos 2026: verifica siempre las especificaciones vigentes del proveedor.</caption>
+<thead><tr><th>Tipo de kit</th><th>Qué incluye</th><th>Ideal para</th><th>Complejidad</th></tr></thead>
+<tbody>
+<tr><td>Kit universal</td><td>Motor, controlador, acelerador electrónico y cableado básico</td><td>City cars pequeños, buggies, réplicas ligeras</td><td>Media — requiere fabricar soportes y adaptador de caja</td></tr>
+<tr><td>Kit específico por modelo</td><td>Componentes dimensionados + soportes y adaptadores para un modelo exacto</td><td>Clásicos populares (p. ej., escarabajos, 4L, Mini)</td><td>Baja-media — menos fabricación, más costo</td></tr>
+<tr><td>Unidad "crate" / drop-in</td><td>Módulo completo motor + inversor + caja, listo para atornillar</td><td>Pickups y SUVs con espacio en vano motor</td><td>Media — instalación ordenada, integración eléctrica exigente</td></tr>
+<tr><td>Eje eléctrico (e-axle)</td><td>Motor, reducción y diferencial integrados en un eje</td><td>Vehículos de tracción trasera, furgonetas</td><td>Media-alta — modifica suspensión y geometría</td></tr>
+<tr><td>Conversión con tren motriz de donante EV</td><td>Motor, batería y electrónica recuperados de un eléctrico accidentado</td><td>Proyectos con presupuesto ajustado y alto conocimiento</td><td>Alta — integración de CAN, BMS y seguridad propietarios</td></tr>
+</tbody>
+</table>
+</div>
+<p>Un patrón que se repite en los proyectos bien documentados: el kit específico por modelo parece caro al inicio, pero suele terminar siendo más barato en horas de taller y piezas improvisadas. El ahorro aparente del kit universal se evapora si tienes que pagar la fabricación de un adaptador de campana, soportes de motor calados por CNC y múltiples iteraciones de prueba.</p>
+</section>
+
+<section id="componentes">
+<h2>Componentes principales y qué verificar en cada uno</h2>
+<ul>
+<li><strong>Motor eléctrico.</strong> Los más usados en conversiones son los trifásicos de corriente alterna (inducción o imanes permanentes), típicamente entre 30 kW y 120 kW para vehículos livianos. Verifica: potencia continua (no solo la de pico), curva de torque, masa, tipo de refrigeración y voltaje nominal — el voltaje debe coincidir con tu pack de baterías.</li>
+<li><strong>Controlador / inversor.</strong> Convierte la corriente continua de la batería en alterna trifásica y gestiona torque, regeneración y límites térmicos. Debe estar emparejado de fábrica con el motor o ser configurable con documentación abierta; un controlador genérico mal parametrizado es la causa número uno de motores sobrecalentados.</li>
+<li><strong>Pack de baterías.</strong> El componente más caro y el que define la autonomía. Compara química <strong>LFP</strong> (más ciclos de vida, más segura térmicamente, menos densidad) contra <strong>NMC</strong> (más densidad energética, más sensible al calor). Verifica: energía total en kWh, energía útil real (normalmente 80–90 % de la total), voltaje de trabajo, corriente máxima de descarga y ciclos garantizados.</li>
+<li><strong>BMS (sistema de gestión de batería).</strong> Protege cada celda contra sobrecarga, sobredescarga, temperatura y corriente excesiva. Sin BMS bien configurado el pack se degrada rápido o se vuelve un riesgo. Verifica compatibilidad con la química, número de celdas en serie y protocolo de comunicación con el cargador.</li>
+<li><strong>Cargador embarcado.</strong> Define cuánto demora cargar en casa: un cargador de 3,3 kW carga ~20 kWh en 6–7 horas; uno de 6,6 kW, la mitad. Comprueba que sea compatible con la red monofásica doméstica de tu país y con el conector que usarás.</li>
+<li><strong>Convertidor DC-DC (12 V).</strong> Reemplaza la función del alternador: mantiene la batería de 12 V que alimenta luces, limpiaparabrisas, radio y centralitas. Dimensiona al menos el consumo simultáneo de todo lo eléctrico del auto más un margen del 30 %.</li>
+<li><strong>Accesorios mecánicos.</strong> Adaptador de caja de cambios o placa de acoplamiento directo, soportes de motor, bomba de vacío para el servofreno (los EV no tienen vacío de admisión), dirección asistida eléctrica o electrohidráulica si el donante la requiere, y calefacción del habitáculo (el motor eléctrico casi no produce calor residual).</li>
+<li><strong>Seguridad eléctrica.</strong> Contactores principales, fusibles de alta ruptura por cada rama del pack, interruptor de desconexión de servicio accesible, cableado naranja identificado como alto voltaje y relé de enclavamiento (interlock) que corte el sistema si se abre una cubierta.</li>
+</ul>
+<div class="note"><strong>Regla de oro del dimensionamiento:</strong> selecciona cada componente por su especificación de trabajo <em>continuo</em> con un margen de al menos 1,5× sobre tu cálculo, no por el valor máximo del titular del catálogo. Lo mismo que en robótica: una cifra de "pico" no sostiene un trayecto de 40 minutos en carretera.</div>
+</section>
+
+<section id="costos">
+<h2>Cuánto cuesta convertir un auto a eléctrico</h2>
+<p>Estas cifras son <strong>rangos orientativos editoriales de 2026</strong>, reunidos a partir de listas de precios públicas de proveedores y proyectos documentados. Tipo de cambio referencial: ~$950 CLP por dólar. Los costos varían mucho por país, aranceles de importación y mano de obra: úsalos para estructurar tu presupuesto, no como cotización.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos estimados para un vehículo liviano (city car/compacto). Pickups y proyectos de alta autonomía pueden superar con creces estos valores.</caption>
+<thead><tr><th>Partida</th><th>Rango típico (USD)</th><th>Rango aprox. (CLP)</th><th>Nota técnica</th></tr></thead>
+<tbody>
+<tr><td>Kit motor + controlador</td><td>US$3.000 – 8.000</td><td>$2.850.000 – 7.600.000</td><td>Sube con potencia continua y refrigeración líquida</td></tr>
+<tr><td>Pack de baterías (15–30 kWh)</td><td>US$5.000 – 15.000</td><td>$4.750.000 – 14.250.000</td><td>Celdas nuevas LFP al inicio del rango difícilmente; módulos recuperados bajan el costo pero exigen más verificación</td></tr>
+<tr><td>Cargador, BMS y DC-DC</td><td>US$1.500 – 4.000</td><td>$1.425.000 – 3.800.000</td><td>No ahorres aquí: es el sistema nervioso del pack</td></tr>
+<tr><td>Cableado HV, contactores, fusibles</td><td>US$500 – 1.500</td><td>$475.000 – 1.425.000</td><td>Cable naranja certificado y conectores con interlock</td></tr>
+<tr><td>Adaptadores y fabricación mecánica</td><td>US$800 – 3.000</td><td>$760.000 – 2.850.000</td><td>Menor si el kit es específico para tu modelo</td></tr>
+<tr><td>Mano de obra especializada</td><td>US$3.000 – 10.000</td><td>$2.850.000 – 9.500.000</td><td>Depende de horas: 80–200 h son típicas en taller</td></tr>
+<tr><td>Homologación y trámites</td><td>Variable por país</td><td>Variable por país</td><td>Consulta antes de comprar nada (ver sección de normativa)</td></tr>
+<tr><td><strong>Total típico del proyecto</strong></td><td><strong>US$13.000 – 40.000+</strong></td><td><strong>$12.350.000 – 38.000.000+</strong></td><td>El rango alto incluye baterías grandes y mano de obra completa</td></tr>
+</tbody>
+</table>
+</div>
+<p>Tres aprendizajes repetidos en la comunidad: primero, el pack de baterías y la mano de obra suman habitualmente más del 60 % del presupuesto —optimizar el motor rara vez mueve la aguja. Segundo, deja un colchón del 15–20 % para imprevistos: herrajes rotos, repintado del vano motor o correcciones eléctricas siempre aparecen. Tercero, si tu única motivación es económica, compara primero contra un eléctrico usado equivalente; la conversión gana cuando el donante tiene valor propio o uso intensivo (flotas, vehículos de reparto urbano).</p>
+</section>
+
+<section id="autonomia">
+<h2>Cómo estimar la autonomía real de tu conversión</h2>
+<p>La autonomía de una conversión se estima con una división simple — la que falla es la honestidad con los datos de entrada. Usa la energía <strong>útil</strong> de la batería (no la nominal) y un consumo medido en vehículos similares, no el consumo de un eléctrico nuevo y aerodinámico.</p>
+<pre><code>Autonomía estimada (km) = Energía útil (kWh) ÷ Consumo (kWh/km)
+
+Ejemplo 1 · City car convertido (uso urbano):
+  22 kWh útiles ÷ 0,17 kWh/km ≈ 129 km
+
+Ejemplo 2 · Sedán mediano con AC y carretera:
+  32 kWh útiles ÷ 0,21 kWh/km ≈ 152 km
+
+Regla práctica de peso:
+  cada 100 kg adicionales ≈ +3 % a +5 % de consumo urbano
+
+Descuentos realistas a tu estimación:
+  uso de calefacción en invierno:  −10 % a −25 %
+  conducción sostenida a 100+ km/h: −15 % a −30 %
+  batería ya degradada (año 5+):    −10 % a −20 %</code></pre>
+<p>El consumo base se puede estimar desde el peso del vehículo: autos convertidos livianos (900–1.100 kg) rondan 0,14–0,18 kWh/km; medianos (1.200–1.500 kg), 0,18–0,24 kWh/km. Si tu cálculo te da una autonomía "demasiado buena", probablemente usaste la energía nominal del pack o un consumo ajeno a tu carrocería. La regeneración ayuda en ciudad (recupera típicamente 5–15 % de la energía), pero no compensa una batería subdimensionada en carretera, donde la resistencia aerodinámica domina.</p>
+</section>
+
+<section id="proceso">
+<h2>Proceso de conversión paso a paso</h2>
+<p>Una conversión ordenada sigue una secuencia que evita desarmar dos veces. Este es el flujo que recomiendan los talleres especializados y las guías de proyectos documentados:</p>
+<ol>
+<li><strong>Evaluación del vehículo donante.</strong> Chasis sano sin corrosión estructural, suspensión y frenos en buen estado (soportarán más peso), y espacio medido para baterías: vano motor, túnel de transmisión, cajuela o bajo el piso trasero. Un donante liviano con buena aerodinámica vale más que uno potente.</li>
+<li><strong>Trámites previos.</strong> Antes de desarmar, confirma con la autoridad competente que la conversión será inscribible/homologable y qué documentación te exigirán (facturas, certificados de instalación, informes técnicos). Descubrir esto al final es el error más caro de todos.</li>
+<li><strong>Retiro del tren motriz térmico.</strong> Motor, caja (según arquitectura), tanque de combustible, escape, radiador y líneas de combustible. Descontamina y etiqueta todo lo que revenderás — el motor original de un clásico puede financiar parte del proyecto.</li>
+<li><strong>Diseño y montaje mecánico.</strong> Fabrica o instala soportes de motor y el adaptador de transmisión; define el reparto de baterías buscando una distribución de peso cercana a la original (idealmente 50/50 y baja). Refuerza suspensión si el sobrepeso supera ~10 % y verifica que los frenos sigan siendo adecuados.</li>
+<li><strong>Instalación eléctrica de alto voltaje.</strong> Monta el pack con su BMS, contactores y fusibles; tiende el cableado naranja protegido mecánicamente y lejos de aristas; conecta cargador y puerto de carga. Cada conexión HV debe quedar con torque verificado y accesible para inspección.</li>
+<li><strong>Instalación de baja tensión (12 V).</strong> DC-DC, bomba de vacío de frenos, calefacción, dirección asistida si aplica, instrumentación (indicador de carga, estado del BMS) y el enclavamiento de seguridad.</li>
+<li><strong>Puesta en marcha y pruebas.</strong> Primera energización sobre elevadores o caballetes: verifica sentido de giro, regeneración, límites térmicos y ausencia de errores del BMS. Luego pruebas cortas en recinto cerrado, cargando al 50 % y 100 %, antes de salir a la vía pública.</li>
+<li><strong>Homologación y cierre documental.</strong> Inspección técnica, inscripción de la modificación, actualización de la póliza de seguro y archivo de toda la documentación del proyecto junto al manual del vehículo.</li>
+</ol>
+<p>El paso donde más proyectos se estancan es el 5: no por falta de habilidad, sino por conectores y contactores que llegan tarde o especificaciones mal cruzadas. Pide toda la parte eléctrica con planos revisados <em>antes</em> de desarmar el auto.</p>
+</section>
+
+<section id="normativa">
+<h2>Normativa, homologación y seguros</h2>
+<p>Los requisitos para circular legalmente con un vehículo convertido <strong>cambian de un país a otro y se actualizan con frecuencia</strong>, por lo que esta guía no reemplaza la consulta a la autoridad competente (servicio de tránsito o transporte de tu país y municipalidad en el caso de la revisión técnica). Dicho esto, los patrones comunes en Latinoamérica y Europa son:</p>
+<ul>
+<li><strong>Regularización de la modificación.</strong> Muchos países exigen inscribir el cambio de sistema de propulsión en la documentación del vehículo mediante un informe técnico firmado por un profesional habilitado o un taller certificado.</li>
+<li><strong>Inspección técnica.</strong> El vehículo convertido suele pasar una inspección especial o ampliada: masas por eje, frenado, fijación de baterías, aislación eléctrica y sistemas de corte de emergencia son los puntos más revisados.</li>
+<li><strong>Componentes certificados.</strong> Mantener facturas y fichas técnicas de baterías, cargador y cableado facilita enormemente el trámite; los componentes sin trazabilidad son un motivo frecuente de rechazo.</li>
+<li><strong>Seguro.</strong> Declara la conversión a tu aseguradora. Una modificación no declarada puede ser causal de rechazo de cobertura exactamente cuando más la necesitas.</li>
+</ul>
+<div class="note"><strong>Consejo práctico:</strong> antes de comprar el kit, solicita por escrito a la autoridad y a tu aseguradora los requisitos vigentes para tu caso (modelo, año, potencia del motor convertido). Un correo con respuesta oficial vale más que cualquier hilo de foro, incluido este artículo.</div>
+</section>
+
+<section id="seguridad">
+<h2>Seguridad eléctrica de alto voltaje</h2>
+<p>Un pack de conversión trabaja habitualmente entre 96 V y 400 V de corriente continua — niveles que pueden ser letales y que, a diferencia de la red doméstica, no cruzan por cero. El respeto al procedimiento no es opcional:</p>
+<ul>
+<li><strong>Formación primero.</strong> Si nunca trabajaste con electricidad industrial, toma un curso de seguridad eléctrica de baja y media tensión antes de tocar el pack. En varios países es, además, un requisito legal para firmar la instalación.</li>
+<li><strong>EPP siempre:</strong> guantes dieléctricos clase 0 (verificados antes de cada uso), herramientas aisladas a 1.000 V, protección ocular y nada de elementos metálicos sueltos (reloj, anillos, cadenas).</li>
+<li><strong>Bloqueo y verificación (LOTO).</strong> Antes de intervenir: desconecta el interruptor de servicio, espera el tiempo de descarga del inversor indicado por el fabricante (los condensadores internos retienen carga minutos después de apagar) y verifica ausencia de tensión con un multímetro categoría III/IV.</li>
+<li><strong>Una sola mano regla.</strong> Cuando sea posible, trabaja con una mano y la otra alejada del cuerpo, nunca creando un camino de corriente a través del pecho.</li>
+<li><strong>Protección mecánica del pack.</strong> Las baterías van dentro de un contenedor rígido, anclado al chasis (no a la carrocería), con grado de protección acorde a su ubicación y sin aristas que fatiguen el cableado.</li>
+<li><strong>Primeros respondedores.</strong> Deja una etiqueta visible de "vehículo eléctrico convertido" con el punto de corte de emergencia; es estándar en vehículos eléctricos de fábrica y tu conversión no debería ser la excepción.</li>
+</ul>
+<div class="note"><strong>Límite de esta guía:</strong> un artículo no es una certificación. Si cualquier punto del procedimiento de alto voltaje te resulta ambiguo, detente y contrata a un instalador con experiencia demostrable en conversiones. El ahorro de hacerlo uno mismo nunca compensa un arco eléctrico de 400 V.</div>
+</section>
+
+<section id="errores">
+<h2>Errores comunes y cómo evitarlos</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Síntomas recopilados de proyectos de conversión documentados públicamente y de guías técnicas de proveedores de kits.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Qué hacer</th></tr></thead>
+<tbody>
+<tr><td>Autonomía muy inferior a la calculada</td><td>Consumo subestimado, batería nominal vs útil, alineación y frenos que "muerden"</td><td>Mide consumo real por tramo, revisa frenos y presión de neumáticos, recalcula con energía útil</td></tr>
+<tr><td>Motor o controlador se sobrecalienta</td><td>Refrigeración insuficiente o parámetros del controlador incorrectos</td><td>Verifica flujo de refrigerante/aire y la curva de corriente configurada; revisa la hoja de datos del motor</td></tr>
+<tr><td>Alarmas de BMS al acelerar fuerte</td><td>Caída de tensión en celdas débiles o límite de corriente conservador</td><td>Revisa salud de módulos (voltaje bajo carga), balanceo y ajustes de corriente del BMS</td></tr>
+<tr><td>Vibraciones al acelerar</td><td>Desalineación motor-transmisión o soportes con holgura</td><td>Inspecciona adaptador, torques de soportes y estado de crucetas/semiejes</td></tr>
+<tr><td>La carga se interrumpe</td><td>Incompatibilidad entre cargador y BMS o sobretemperatura</td><td>Verifica protocolo de comunicación cargador-BMS y las temperaturas reportadas durante la carga</td></tr>
+<tr><td>Batería de 12 V descargada</td><td>DC-DC subdimensionado o standby con consumo alto</td><td>Suma el consumo de accesorios en simultáneo y verifica la corriente de reposo</td></tr>
+<tr><td>Observado en revisión técnica</td><td>Documentación incompleta o componentes sin trazabilidad</td><td>Presenta facturas, fichas técnicas y certificado de instalación antes de agendar hora</td></tr>
+</tbody>
+</table>
+</div>
+<p>El patrón transversal es el mismo que enseñamos en robótica educativa: <strong>calibra con datos medidos, no con expectativas</strong>. Lleva una planilla de consumo por ruta desde el primer día; es tu mejor herramienta de diagnóstico y la evidencia que un taller (o la autoridad) te pedirá.</p>
+</section>
+
+<section id="conviene">
+<h2>¿Conviene económicamente? Un cálculo rápido</h2>
+<p>Con cifras de referencia para Chile (verifícalas en tu comuna): un auto de combustión que rinde 12 km/L con bencina a ~$1.300/L gasta ~$108 por km; un convertido que consume 0,18 kWh/km cargando a ~$180/kWh gasta ~$32 por km. El ahorro de ~$76 por km, conduciendo 15.000 km al año, suma ~$1.140.000 CLP anuales. Sobre un proyecto de $20.000.000, la recuperación puramente por combustible supera 15 años — más que la vida útil probable del pack.</p>
+<p>La ecuación mejora sustancialmente con kilometrajes altos (furgones de reparto urbano que superan 40.000 km/año recuperan en 4–6 años), con precios de bencina altos y con mantenciones menores (sin aceite, bujías, embrague ni escape). Empeora si pagas toda la mano de obra en un proyecto de baja autonomía. La conclusión honesta: <strong>haz la conversión si el vehículo lo merece por sí mismo o si su uso es intensivo; no como estrategia de ahorro puro.</strong></p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Convertir un vehículo a eléctrico es un proyecto absolutamente realizable en 2026: los kits maduran, las baterías LFP bajan de precio y la documentación comunitaria es mejor que nunca. Pero es un proyecto de ingeniería serio —motor, baterías, alto voltaje y trámites— que premia a quien planifica y castiga al impaciente. Elige un donante liviano y sano, presupuesta con margen, resuelve la homologación antes de comprar y respeta el alto voltaje como si tu vida dependiera de ello, porque literalmente así es. Si esta guía te ayudó a tomar la decisión (sea iniciar el proyecto o descartarlo a tiempo), ya cumplió su objetivo.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Es legal convertir un auto de combustión a eléctrico?</summary><p>En la mayoría de los países sí es posible, pero la conversión debe regularizarse ante la autoridad de tránsito competente: suele exigirse homologación o certificación de la modificación y aprobar una revisión técnica. Los requisitos varían por país y por año, por lo que debes confirmarlos antes de comprar el kit.</p></details>
+<details><summary>¿Cuánto cuesta un kit de conversión a coche eléctrico?</summary><p>Como referencia editorial, un kit básico (motor, controlador y accesorios) suele estar entre US$3.000 y US$8.000 sin baterías. Un proyecto completo con pack de baterías, cargador, BMS e instalación profesional suele moverse entre US$10.000 y US$35.000 o más según autonomía y mano de obra. Son rangos orientativos: solicita cotizaciones actualizadas a proveedores.</p></details>
+<details><summary>¿Qué autonomía puedo esperar de una conversión?</summary><p>Depende de la energía útil de la batería, el peso, la aerodinámica y tu conducción. Estímala dividiendo los kWh útiles por el consumo en kWh/km: por ejemplo, 22 kWh útiles ÷ 0,17 kWh/km ≈ 129 km en un city car convertido. Usa consumos medidos en vehículos similares, no los ciclos oficiales de autos nuevos.</p></details>
+<details><summary>¿Puedo hacer la conversión yo mismo?</summary><p>La parte mecánica es abordable con experiencia de taller, pero el sistema de alto voltaje (frecuentemente 96–400 V) exige formación en seguridad eléctrica, EPP y herramientas aisladas. En muchas jurisdicciones la instalación debe ser ejecutada o firmada por un instalador autorizado para poder homologar.</p></details>
+<details><summary>¿Qué pasa con el seguro y la revisión técnica después de convertir?</summary><p>Debes declarar la modificación a tu aseguradora y regularizar el vehículo. Si la conversión no está inscrita u homologada, la aseguradora puede objetar la cobertura y el auto puede no aprobar la revisión técnica. Conserva facturas, fichas técnicas y certificados de la instalación.</p></details>
+</div>
+</section>
+
+<div class="author-box">
+  <div class="avatar" aria-hidden="true"><img src="../author_alberto.jpg" alt="Fotografía de Alberto Gallardo, analista programador computacional"></div>
+  <div>
+    <h3>Sobre el autor</h3>
+    <p><strong>Alberto Gallardo</strong> es Analista Programador Computacional con 18 años de experiencia en desarrollo y educación. Escribe y mantiene este sitio, combinando su trayectoria técnica con la docencia en robótica, electrónica y tecnología aplicada. Las cifras de esta guía son rangos editoriales reunidos de fuentes públicas; no constituyen una cotización ni asesoría legal. <a href="../about.html">Más sobre Alberto →</a></p>
+  </div>
+</div>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de kits, serán identificados explícitamente. Las cifras de costos, autonomía y ahorro son estimaciones con supuestos declarados; verifica precios y normativa vigentes antes de invertir.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>¿Te interesa la electrónica aplicada? Revisa la <a href="../index.html#categories">biblioteca completa de tutoriales</a>: Arduino desde cero, guías de sensores, IoT con ESP32 y robótica educativa, además de los próximos artículos de movilidad eléctrica de esta serie.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="../index.html">← Anterior: Portada</a>
+  <a href="../index.html#categories">Siguiente: Todos los tutoriales →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los requisitos legales, precios y especificaciones deben verificarse contra la documentación vigente de cada proveedor y autoridad.</p>
+<ul>
+<li><a href="https://afdc.energy.gov/vehicles/electric.html" target="_blank" rel="noopener noreferrer">U.S. Department of Energy — Alternative Fuels Data Center: Electric Vehicles</a></li>
+<li><a href="https://www.fueleconomy.gov/feg/evtech.shtml" target="_blank" rel="noopener noreferrer">FuelEconomy.gov — Electric Vehicle Technology Basics</a></li>
+<li><a href="https://energia.gob.cl" target="_blank" rel="noopener noreferrer">Ministerio de Energía de Chile — Electromovilidad</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 10 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y movilidad eléctrica, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="../about.html" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="../contact.html" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="../privacy.html" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="../about.html" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="../contact.html" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="../privacy.html" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="../terms.html" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="../privacy.html" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>

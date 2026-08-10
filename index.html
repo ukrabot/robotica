@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f6f4ee" />
+
+  <title>Blog de Ingeniería Robótica — Tutoriales de Arduino, ROS 2 y Brazos Robóticos</title>
+  <meta name="description" content="Tutoriales prácticos sobre brazos robóticos de 6 ejes: cableado con Arduino, control con ROS 2, integración con PLC industriales, sensores, IoT, pinzas, materiales y guías de compra para Chile y Latinoamérica." />
+  <meta name="author" content="Alberto Gallardo" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://ingenieriaroboticablog.cl/index.html" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Blog de Ingeniería Robótica — Tutoriales de Arduino, ROS 2 y Brazos Robóticos" />
+  <meta property="og:description" content="Tutoriales prácticos para construir e implementar brazos robóticos de 6 ejes — Arduino, sensores, ROS 2, automatización industrial y guías de compra." />
+  <meta property="og:image" content="https://ingenieriaroboticablog.cl/robotic_arm_hero.jpg" />
+  <meta property="og:url" content="https://ingenieriaroboticablog.cl/index.html" />
+  <meta property="og:locale" content="es_CL" />
+  <meta property="og:site_name" content="Blog de Ingeniería Robótica" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Blog de Ingeniería Robótica — Tutoriales de Arduino, ROS 2 y Brazos Robóticos" />
+  <meta name="twitter:description" content="Tutoriales prácticos sobre brazos robóticos, Arduino, sensores, ROS 2 y automatización industrial." />
+  <meta name="twitter:image" content="https://ingenieriaroboticablog.cl/robotic_arm_hero.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://ingenieriaroboticablog.cl/",
+    "description": "Tutoriales prácticos sobre brazos robóticos de 6 ejes, Arduino, sensores, ROS 2 y automatización industrial.",
+    "publisher": { "@id": "https://ingenieriaroboticablog.cl/#organization" },
+    "inLanguage": "es-CL"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://ingenieriaroboticablog.cl/#organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://ingenieriaroboticablog.cl/",
+    "logo": "https://ingenieriaroboticablog.cl/logo.png",
+    "foundingDate": "2023",
+    "founder": {
+      "@type": "Person",
+      "name": "Alberto Gallardo",
+      "jobTitle": "Analista Programador Computacional",
+      "url": "https://ingenieriaroboticablog.cl/about.html"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "CL"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #f6f4ee;
+      --surface: #ffffff;
+      --surface-card: #ffffff;
+      --surface-hover: #f1ede3;
+      --text-primary: #1e1b15;
+      --text-secondary: #57534a;
+      --text-muted: #8b8577;
+      --accent: #a97b23;
+      --accent-2: #2f6fb0;
+      --border: rgba(30,25,15,0.09);
+      --radius: 22px;
+      --shadow-card: 0 16px 40px rgba(30,25,15,0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
+      background: var(--ink);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection { background: rgba(169,123,35,0.25); color: #1e1b15; }
+
+    .skip-link {
+      position: absolute; left: -9999px; top: 0; z-index: 999;
+      background: var(--accent); color: #fff; padding: 12px 20px; border-radius: 0 0 8px 0; font-weight: 700; text-decoration: none;
+    }
+    .skip-link:focus { left: 0; }
+
+    /* Barra de progreso de lectura (extra) */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      z-index: 300;
+      transition: width .08s linear;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(246,244,238,0.82);
+      backdrop-filter: blur(14px) saturate(130%);
+      -webkit-backdrop-filter: blur(14px) saturate(130%);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .logo { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.35rem; color: var(--text-primary); text-decoration: none; letter-spacing: -0.01em; line-height: 1; }
+    .logo span { color: var(--accent); font-style: italic; }
+    .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.03em; transition: color .2s; }
+    .nav-links a:hover { color: var(--text-primary); }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 78vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      background: #151310;
+    }
+    .hero img.hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.55) contrast(1.1);
+      z-index: 1;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(18,15,11,0.35) 0%, rgba(18,15,11,0.62) 55%, rgba(18,15,11,0.86) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 3; max-width: 1200px; margin: 0 auto; padding: 110px 24px 90px; width: 100%; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #e4c07a;
+      margin-bottom: 20px;
+    }
+    .hero-badge .line { width: 28px; height: 2px; background: #e4c07a; display: block; }
+    .hero h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.2rem, 5.5vw, 4.6rem);
+      line-height: 1.06;
+      letter-spacing: -0.035em;
+      color: #fff;
+      max-width: 900px;
+      text-wrap: balance;
+    }
+    .hero h1 em { font-style: italic; color: #e4c07a; }
+    .hero p.sub {
+      margin-top: 22px;
+      max-width: 640px;
+      color: rgba(245,243,238,0.78);
+      font-size: 1.05rem;
+      font-weight: 300;
+    }
+    .hero .cta-row { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+    .btn-primary { background: #e4c07a; color: #241a06; box-shadow: 0 6px 24px rgba(228,192,122,0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(228,192,122,0.45); }
+    .btn-ghost { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.16); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.25); }
+
+    /* Stats */
+    .stats { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 4; margin-top: -46px; }
+    .stats-inner { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px; box-shadow: var(--shadow-card); }
+    .stat h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 2rem; color: var(--text-primary); line-height: 1; margin-bottom: 6px; }
+    .stat p { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* Sections */
+    section { max-width: 1200px; margin: 0 auto; padding: 90px 24px; }
+    .section-label {
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 10px;
+    }
+    .section-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 2.1rem; color: var(--text-primary); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 14px; }
+    .section-sub { color: var(--text-secondary); font-weight: 300; max-width: 680px; }
+
+    /* Editorial intro block */
+    .editorial-note { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 36px; margin-top: 40px; box-shadow: var(--shadow-card); }
+    .editorial-note p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 14px; }
+    .editorial-note p:last-child { margin-bottom: 0; }
+    .editorial-note a { color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Author box on homepage */
+    .home-author { display: flex; gap: 18px; align-items: flex-start; background: var(--surface-card); border: 1px solid var(--border); border-radius: 18px; padding: 26px; margin-top: 40px; box-shadow: var(--shadow-card); }
+    .home-author img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid rgba(169,123,35,0.35); }
+    .home-author h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.1rem; color: var(--text-primary); margin-bottom: 6px; }
+    .home-author p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.55; }
+    .home-author .author-links { margin-top: 10px; display: flex; gap: 14px; }
+    .home-author .author-links a { color: var(--accent-2); text-decoration: none; font-size: 0.82rem; font-weight: 600; }
+    .home-author .author-links a:hover { text-decoration: underline; }
+
+    /* Cards */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; margin-top: 48px; }
+    .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; text-decoration: none; color: inherit; display: block; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; box-shadow: var(--shadow-card); }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 24px 48px rgba(30,25,15,0.16); border-color: rgba(169,123,35,0.35); }
+    .card img { width: 100%; height: 210px; object-fit: cover; filter: brightness(0.97) contrast(1.03); transition: filter .3s ease; }
+    .card:hover img { filter: brightness(1) contrast(1.05); }
+    .card-body { padding: 24px; }
+    .card-tag { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: var(--accent-2); margin-bottom: 10px; }
+    .card h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.2rem; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.01em; line-height: 1.2; }
+    .card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.55; }
+    .card-footer { margin-top: 18px; display: flex; align-items: center; gap: 10px; font-size: 0.76rem; color: var(--text-muted); }
+
+    /* Text-only featured cards */
+    .lite-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
+    .lite-card { text-decoration: none; color: inherit; background: var(--surface-card); border: 1px solid var(--border); border-radius: 16px; padding: 26px; display: block; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; box-shadow: var(--shadow-card); }
+    .lite-card:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(30,25,15,0.14); border-color: rgba(169,123,35,0.35); }
+    .lite-card .card-tag { margin-bottom: 8px; }
+    .lite-card h4 { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-size: 1.1rem; color: var(--text-primary); margin-bottom: 8px; line-height: 1.25; }
+    .lite-card p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.55; }
+
+    /* Proyecto destacado del mes (extra) */
+    .featured-project { display: grid; grid-template-columns: 1.05fr 1fr; background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-top: 48px; box-shadow: var(--shadow-card); }
+    .featured-project .fp-img { position: relative; min-height: 340px; }
+    .featured-project .fp-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .featured-project .fp-badge { position: absolute; top: 18px; left: 18px; background: var(--accent); color: #fff; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; z-index: 2; box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+    .featured-project .fp-body { padding: 44px 46px; display: flex; flex-direction: column; justify-content: center; }
+    .featured-project .card-tag { margin-bottom: 10px; }
+    .featured-project h3 { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-size: 1.7rem; margin-bottom: 12px; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.15; }
+    .featured-project p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 18px; }
+    .fp-list { list-style: none; margin-bottom: 26px; }
+    .fp-list li { color: var(--text-secondary); font-size: 0.88rem; padding-left: 26px; position: relative; margin-bottom: 9px; }
+    .fp-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .fp-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
+    .fp-chips span { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text-secondary); background: var(--surface-hover); border: 1px solid var(--border); border-radius: 999px; padding: 6px 13px; }
+    .fp-cta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .fp-cta .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 6px 20px rgba(169,123,35,0.3); }
+    .fp-cta .btn-primary:hover { box-shadow: 0 10px 26px rgba(169,123,35,0.42); }
+    .fp-cta .fp-note { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Category browse */
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 44px; }
+    .cat-block { background: var(--surface-card); border: 1px solid var(--border); border-radius: 18px; padding: 26px; box-shadow: var(--shadow-card); transition: transform .2s ease, border-color .2s ease; }
+    .cat-block:hover { transform: translateY(-2px); border-color: rgba(169,123,35,0.3); }
+    .cat-block h3 { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-size: 1.15rem; color: var(--text-primary); margin-bottom: 4px; }
+    .cat-count { font-size: 0.72rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 14px; display: block; }
+    .cat-block ul { list-style: none; }
+    .cat-block li { margin-bottom: 9px; }
+    .cat-block a { color: var(--text-secondary); text-decoration: none; font-size: 0.87rem; line-height: 1.4; transition: color .2s; }
+    .cat-block a:hover { color: var(--accent); }
+
+    /* Newsletter */
+    .newsletter { max-width: 1200px; margin: 0 auto; padding: 90px 24px; border-top: 1px solid var(--border); }
+    .newsletter-inner { background: linear-gradient(135deg, rgba(169,123,35,0.10), rgba(47,111,176,0.10)); border: 1px solid var(--border); border-radius: var(--radius); padding: 56px 40px; text-align: center; position: relative; overflow: hidden; }
+    .newsletter-inner::before { content: ''; position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; background: radial-gradient(circle at center, rgba(169,123,35,0.14), transparent 70%); border-radius: 50%; pointer-events: none; }
+    .newsletter-inner h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.9rem; margin-bottom: 10px; position: relative; z-index: 1; }
+    .newsletter-inner p { color: var(--text-secondary); margin-bottom: 26px; max-width: 460px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+    .form-row { display: flex; gap: 10px; justify-content: center; max-width: 480px; margin: 0 auto; position: relative; z-index: 1; flex-wrap: wrap; }
+    .form-row input[type="email"] { flex: 1; padding: 14px 20px; border-radius: 999px; border: 1px solid var(--border); background: #fff; color: var(--text-primary); font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color .2s, box-shadow .2s; min-width: 240px; }
+    .form-row input[type="email"]:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(169,123,35,0.12); }
+    .form-row button { padding: 14px 28px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: transform .15s ease, box-shadow .2s ease; }
+    .form-row button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(169,123,35,0.35); }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 48px 24px 0; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; flex-wrap: wrap; padding-bottom: 40px; }
+    .footer-brand .logo { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.3rem; color: var(--text-primary); text-decoration: none; line-height: 1; }
+    .footer-brand .logo span { color: var(--accent); font-style: italic; }
+    .footer-brand p { color: var(--text-muted); font-size: 0.85rem; margin-top: 8px; max-width: 300px; }
+    .footer-links { display: flex; gap: 48px; flex-wrap: wrap; }
+    .footer-links h4 { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 16px; }
+    .footer-links ul { list-style: none; }
+    .footer-links li + li { margin-top: 8px; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; transition: color .2s; }
+    .footer-links a:hover { color: var(--text-primary); }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid var(--border); padding: 24px; text-align: center; }
+    .footer-bottom p { color: var(--text-muted); font-size: 0.8rem; }
+
+    @media (max-width: 900px) {
+      .featured-project { grid-template-columns: 1fr; }
+      .featured-project .fp-img { min-height: 240px; }
+      .featured-project .fp-body { padding: 32px 26px; }
+    }
+    @media (max-width: 700px) { .nav-links { gap: 12px; } .cards { grid-template-columns: 1fr; } .stats-inner { grid-template-columns: repeat(2, 1fr); } .footer-inner { flex-direction: column; } .hero h1 { font-size: 2.1rem; } .home-author { flex-direction: column; } }
+  </style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+  <header class="site-header" aria-label="Encabezado del sitio">
+    <div class="nav-inner">
+      <a href="index.html" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="#latest">Tutoriales</a>
+        <a href="#proyecto-destacado">Proyecto del Mes</a>
+        <a href="#categories">Categorías</a>
+        <a href="about.html">Sobre Nosotros</a>
+        <a href="contact.html">Contacto</a>
+        <a href="#newsletter">Suscribirse</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" aria-label="Portada principal">
+    <img class="hero-bg" src="robotic_arm_hero.jpg" alt="Brazo robótico industrial moderno de 6 ejes en un entorno de manufactura" loading="eager" fetchpriority="high" />
+    <div class="hero-inner" id="main">
+      <div class="hero-badge" aria-label="Categoría y fecha">
+        <span class="line" aria-hidden="true"></span>
+        Editorial de Robótica y Automatización · Actualizado el <time datetime="2026-08-10">10 de agosto de 2026</time>
+      </div>
+      <h1>Aprende <em>Ingeniería Robótica</em> con Tutoriales Prácticos</h1>
+      <p class="sub">Desde prototipos con Arduino y sensores hasta control con ROS 2 e integración con PLC industriales. Tutoriales prácticos, comparativas de hardware basadas en documentación de fabricantes, y guías de compra para ingenieros, makers, docentes y estudiantes en Chile y Latinoamérica.</p>
+      <div class="cta-row">
+        <a href="#latest" class="btn btn-primary">Explorar Tutoriales</a>
+        <a href="#categories" class="btn btn-ghost">Ver por Categoría</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="Estadísticas del sitio">
+    <div class="stats-inner">
+      <div class="stat"><h3>72</h3><p>Guías Publicadas</p></div>
+      <div class="stat"><h3>13</h3><p>Categorías Principales</p></div>
+      <div class="stat"><h3>2023</h3><p>Publicando Desde</p></div>
+      <div class="stat"><h3>Chile · Latam</h3><p>Enfoque de Mercado</p></div>
+    </div>
+  </section>
+
+  <main>
+
+  <section id="latest" aria-label="Últimos tutoriales">
+    <span class="section-label">Empieza Aquí</span>
+    <h2 class="section-title">Construye y Controla un Brazo Robótico de 6 Ejes</h2>
+    <p class="section-sub">Los tres tutoriales principales que sustentan este sitio — diseña y cablea un brazo robótico con Arduino, contrólalo con ROS 2, e intégralo en un flujo de trabajo con PLC industrial.</p>
+
+    <div class="editorial-note" aria-label="Enfoque editorial">
+      <p><strong>Sobre este sitio:</strong> Blog de Ingeniería Robótica es un proyecto editorial pequeño e independiente enfocado en brazos robóticos de 6 ejes — control con Arduino y ROS 2, diseño mecánico y automatización industrial — además de proyectos educativos con Arduino, sensores e Internet de las Cosas. Los tutoriales que involucran construcciones físicas (cableado con Arduino, piezas impresas en 3D, diseño de pinzas) están basados en prototipado práctico realizado por nuestro equipo. Las reseñas de hardware de fabricantes (FANUC, ABB, KUKA, etc.) están claramente etiquetadas como comparaciones editoriales basadas en especificaciones técnicas, ya que no contamos con acceso físico a brazos robóticos industriales de más de $25.000.000 CLP para realizar pruebas de laboratorio independientes — lo indicamos explícitamente en cada uno de esos artículos en lugar de sugerir pruebas prácticas que no se realizaron.</p>
+      <p>Enlazamos directamente a fuentes primarias — hojas de datos de fabricantes, repositorios de código abierto y organismos de normas de seguridad (ISO, INN, SEC) — siempre que se menciona una cifra o afirmación específica. Si detectas un error o un dato desactualizado, por favor <a href="contact.html">avísanos</a>.</p>
+    </div>
+
+    <div class="cards" aria-label="Tarjetas de tutoriales">
+      <a href="articles/arduino-robot-arm-tutorial.html" class="card" aria-label="Tutorial de Brazo Robótico con Arduino">
+        <img src="arduino_arm_tutorial.jpg" alt="Un brazo robótico DIY de 6 ejes con servos y piezas impresas en 3D sobre una mesa de trabajo" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Arduino</div>
+          <h3>Construye un Brazo Robótico de 6 Ejes con Arduino</h3>
+          <p>Diseña, cablea y programa un brazo robótico de seis grados de libertad usando un Arduino Mega, un driver de servos PCA9685 y cinemática inversa.</p>
+          <div class="card-footer"><time datetime="2024-11-04">4 nov 2024</time><span>·</span><span>14 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="articles/ros2-robot-arm-control.html" class="card" aria-label="Tutorial de Control de Brazo Robótico con ROS 2">
+        <img src="ros2_robot_control.jpg" alt="Un brazo robótico colaborativo interactuando con una pantalla táctil HMI mostrando datos de ROS 2" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">ROS 2</div>
+          <h3>Framework ROS 2 Control para Brazos Robóticos</h3>
+          <p>Configura interfaces de hardware ros2_control y gestores de controladores para operar un brazo robótico real o simulado desde ROS 2.</p>
+          <div class="card-footer"><time datetime="2024-10-21">21 oct 2024</time><span>·</span><span>18 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="articles/industrial-plc-robotics.html" class="card" aria-label="Tutorial de PLC Industrial y Robótica">
+        <img src="industrial_robot_arm.jpg" alt="Un brazo robótico industrial moderno de 6 ejes en un entorno de manufactura limpio" loading="lazy" width="1024" height="322" />
+        <div class="card-body">
+          <div class="card-tag">Industrial</div>
+          <h3>Programación de PLC para Robótica</h3>
+          <p>Conecta PLC y brazos robóticos con programación en Structured Text, fundamentos de comunicación PROFINET y circuitos de seguridad industrial.</p>
+          <div class="card-footer"><time datetime="2024-10-05">5 oct 2024</time><span>·</span><span>16 min de lectura</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="home-author" aria-label="Información del autor">
+      <img src="author_alberto.jpg" alt="Fotografía de Alberto Gallardo, analista programador computacional" width="68" height="68" loading="lazy" />
+      <div>
+        <h3>Escrito y mantenido por Alberto Gallardo</h3>
+        <p>Alberto Gallardo es Analista Programador Computacional, con 18 años de experiencia en desarrollo y educación. Escribe y mantiene los tutoriales de este sitio, combinando su trayectoria en programación con su pasión por enseñar robótica, Arduino, sensores y automatización a estudiantes, docentes y profesionales en Chile y Latinoamérica. Las reseñas de hardware de fabricantes se investigan a partir de hojas de datos oficiales y casos de estudio públicos, no de pruebas de laboratorio independientes — esto se indica en cada página de reseña.</p>
+        <div class="author-links">
+          <a href="about.html">Biografía completa →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Artículos destacados" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <span class="section-label">Artículos Destacados</span>
+    <h2 class="section-title">Una Muestra Transversal del Sitio</h2>
+    <p class="section-sub">Una selección de guías de distintos temas — desde teoría de cinemática inversa hasta cumplimiento de normas de seguridad industrial y comparativas de hardware.</p>
+    <div class="lite-cards">
+      <a href="articles/robot-arm-inverse-kinematics.html" class="lite-card">
+        <div class="card-tag">Cinemática</div>
+        <h4>Cinemática Inversa para Brazos Robóticos de 6 Ejes</h4>
+        <p>Soluciones analíticas, ángulos de Euler y ejemplos de código en Arduino y ROS 2 para resolver cinemática inversa de 6 grados de libertad.</p>
+      </a>
+      <a href="articles/fanuc-robot-arm-review.html" class="lite-card">
+        <div class="card-tag">Comparativa de Hardware</div>
+        <h4>Reseña de Brazos Robóticos FANUC</h4>
+        <p>Especificaciones, referencias de precio y una comparación basada en datos técnicos frente a competidores directos para los brazos robóticos industriales de 6 ejes de FANUC.</p>
+      </a>
+      <a href="articles/robot-arm-safety-chile.html" class="lite-card">
+        <div class="card-tag">Seguridad</div>
+        <h4>Normas de Seguridad para Brazos Robóticos en Chile</h4>
+        <p>ISO 10218, ISO/TS 15066, Ley 16.744, cortinas de luz y evaluaciones de riesgo explicadas para implementaciones en plantas chilenas y latinoamericanas.</p>
+      </a>
+      <a href="articles/universal-robots-ur20.html" class="lite-card">
+        <div class="card-tag">Comparativa de Hardware</div>
+        <h4>Reseña Universal Robots UR20</h4>
+        <p>Capacidad de carga, alcance y notas de integración para uno de los brazos robóticos colaborativos más utilizados, según documentación del fabricante.</p>
+      </a>
+      <a href="articles/robot-arm-roi-calculator.html" class="lite-card">
+        <div class="card-tag">Negocios</div>
+        <h4>Calculadora de ROI para Brazos Robóticos</h4>
+        <p>Un marco práctico para estimar el período de recuperación de la inversión y el costo total de propiedad antes de comprar un brazo robótico.</p>
+      </a>
+      <a href="articles/robot-arm-gripper-design.html" class="lite-card">
+        <div class="card-tag">Diseño Mecánico</div>
+        <h4>Fundamentos de Diseño de Pinzas para Brazos Robóticos</h4>
+        <p>Geometría de mordazas, métodos de accionamiento y selección de materiales para diseñar una pinza robótica confiable.</p>
+      </a>
+    </div>
+  </section>
+
+  <section id="proyecto-destacado" aria-label="Proyecto destacado del mes">
+    <span class="section-label">Extra · Proyecto del Mes</span>
+    <h2 class="section-title">Proyecto Destacado: Estación Meteorológica con Arduino</h2>
+    <p class="section-sub">Cada mes elegimos un proyecto completo, ideal para aprender en casa o trabajar en el aula. Este mes: una estación meteorológica con sensores, pantalla OLED y registro de datos — perfecta para docentes y estudiantes.</p>
+
+    <div class="featured-project">
+      <div class="fp-img">
+        <img src="proyecto_destacado.jpg" alt="Estación meteorológica escolar construida con Arduino, sensor DHT22 y pantalla OLED sobre un escritorio de sala de clases" loading="lazy" />
+        <span class="fp-badge">Nuevo · Agosto 2026</span>
+      </div>
+      <div class="fp-body">
+        <div class="card-tag">Arduino · Sensores · Educación</div>
+        <h3>Estación Meteorológica Escolar paso a paso</h3>
+        <p>Mide temperatura y humedad con un sensor DHT22, muestra los datos en una pantalla OLED y aprende a registrar lecturas para graficarlas después. Un proyecto de 2 horas que reúne electrónica básica, programación y análisis de datos.</p>
+        <ul class="fp-list">
+          <li>Código completo comentado en español, listo para copiar</li>
+          <li>Lista de materiales con precios de referencia para Chile</li>
+          <li>Versión para el aula con actividades guiadas para estudiantes</li>
+        </ul>
+        <div class="fp-chips" aria-label="Detalles del proyecto">
+          <span>Nivel: Principiante</span>
+          <span>Costo aprox: $25.000 CLP</span>
+          <span>Duración: 2 horas</span>
+        </div>
+        <div class="fp-cta">
+          <a href="articles/arduino-estacion-meteorologica.html" class="btn btn-primary">Ver el tutorial completo</a>
+          <span class="fp-note">Incluye planificación docente descargable</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="categories" aria-label="Explora todos los tutoriales por categoría" style="border-top:1px solid var(--border);">
+    <span class="section-label">Explora la Biblioteca Completa</span>
+    <h2 class="section-title">Todos los Tutoriales, Organizados por Tema</h2>
+    <p class="section-sub">Cada guía publicada hasta ahora, agrupada en trece categorías prácticas para que llegues directo a lo que necesitas — ahora con Arduino desde cero, sensores, IoT, robótica educativa y movilidad eléctrica.</p>
+
+    <div class="cat-grid">
+
+      <div class="cat-block">
+        <h3>Movilidad Eléctrica y Conversión EV</h3>
+        <span class="cat-count">5 tutoriales · Nuevo</span>
+        <ul>
+          <li><a href="blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico.html">Transforma tu Vehículo: Guía Completa sobre Kits de Conversión a Coche Eléctrico</a></li>
+          <li><a href="articles/ev-conversion-costos-chile.html">Cuánto Cuesta Convertir un Auto a Eléctrico en Chile</a></li>
+          <li><a href="articles/ev-baterias-lfp-vs-nmc.html">Baterías LFP vs NMC para Conversiones Eléctricas</a></li>
+          <li><a href="articles/ev-homologacion-chile.html">Homologación y Trámites para Vehículos Convertidos</a></li>
+          <li><a href="articles/ev-motor-selection.html">Cómo Elegir el Motor Eléctrico para tu Conversión</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Arduino Básico y Proyectos</h3>
+        <span class="cat-count">6 tutoriales · Nuevo</span>
+        <ul>
+          <li><a href="articles/arduino-primeros-pasos.html">Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch</a></li>
+          <li><a href="articles/arduino-semaforo-leds.html">Semáforo con LEDs y Arduino para Principiantes</a></li>
+          <li><a href="articles/arduino-estacion-meteorologica.html">Estación Meteorológica con Arduino y Pantalla OLED</a></li>
+          <li><a href="articles/arduino-radar-ultrasonico.html">Radar con Sensor Ultrasónico y Processing</a></li>
+          <li><a href="articles/arduino-bluetooth-hc05.html">Controla tu Arduino por Bluetooth con el Módulo HC-05</a></li>
+          <li><a href="articles/arduino-piano-buzzer.html">Piano Electrónico con Botones y Buzzer</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Sensores y Electrónica</h3>
+        <span class="cat-count">6 tutoriales · Nuevo</span>
+        <ul>
+          <li><a href="articles/guia-sensores-arduino.html">Guía Esencial de Sensores para Arduino</a></li>
+          <li><a href="articles/sensor-ultrasonico-hcsr04.html">Sensor Ultrasónico HC-SR04: Medición de Distancias Paso a Paso</a></li>
+          <li><a href="articles/sensor-dht22-temperatura.html">Sensor DHT22: Temperatura y Humedad con Arduino</a></li>
+          <li><a href="articles/sensor-infrarrojo-siguelineas.html">Sensores Infrarrojos para Robots Siguelíneas</a></li>
+          <li><a href="articles/sensor-mq2-gas.html">Detector de Gas con Sensor MQ-2 y Alarma Sonora</a></li>
+          <li><a href="articles/sensor-pir-movimiento.html">Sensor PIR de Movimiento para Proyectos de Seguridad</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Internet de las Cosas (IoT)</h3>
+        <span class="cat-count">5 tutoriales · Nuevo</span>
+        <ul>
+          <li><a href="articles/domotica-esp32-mqtt.html">Domótica con ESP32 y MQTT: Controla tu Casa desde el Celular</a></li>
+          <li><a href="articles/monitoreo-blynk.html">Monitoreo Remoto de Sensores con Blynk</a></li>
+          <li><a href="articles/esp32-cam-vigilancia.html">Cámara de Vigilancia con ESP32-CAM</a></li>
+          <li><a href="articles/riego-automatico-iot.html">Sistema de Riego Automático con Sensor de Humedad de Suelo</a></li>
+          <li><a href="articles/thingspeak-datos.html">Registra y Grafica Datos en la Nube con ThingSpeak</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Robótica Educativa y Docencia</h3>
+        <span class="cat-count">5 tutoriales · Nuevo</span>
+        <ul>
+          <li><a href="articles/robotica-en-el-aula.html">Cómo Llevar la Robótica al Aula: Guía para Docentes</a></li>
+          <li><a href="articles/kits-robotica-educativa.html">Los Mejores Kits de Robótica Educativa para Colegios</a></li>
+          <li><a href="articles/programacion-por-bloques.html">Programación por Bloques con mBlock y Scratch para Arduino</a></li>
+          <li><a href="articles/proyectos-feria-cientifica.html">12 Proyectos de Robótica para la Feria Científica</a></li>
+          <li><a href="articles/competencias-robotica-escolar.html">Cómo Preparar a tu Equipo para Competencias de Robótica Escolar</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Arduino y Control Embebido</h3>
+        <span class="cat-count">6 tutoriales</span>
+        <ul>
+          <li><a href="articles/arduino-robot-arm-tutorial.html">Construye un Brazo Robótico de 6 Ejes con Arduino</a></li>
+          <li><a href="articles/arduino-mega-robot-wiring.html">Guía de Cableado con Arduino Mega para Brazos Robóticos</a></li>
+          <li><a href="articles/esp32-robot-controller.html">ESP32 como Controlador de Brazo Robótico</a></li>
+          <li><a href="articles/smart-servo-robot-arm.html">Servos Inteligentes para Brazos Robóticos</a></li>
+          <li><a href="articles/joint-encoders-robot-arm.html">Encoders de Articulación para Retroalimentación en Brazos Robóticos</a></li>
+          <li><a href="articles/force-torque-sensors-robot.html">Sensores de Fuerza-Torque para Brazos Robóticos</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>ROS 2, Cinemática y Software</h3>
+        <span class="cat-count">5 tutoriales</span>
+        <ul>
+          <li><a href="articles/ros2-robot-arm-control.html">Framework ROS 2 Control para Brazos Robóticos</a></li>
+          <li><a href="articles/robot-arm-inverse-kinematics.html">Cinemática Inversa para Brazos Robóticos de 6 Ejes</a></li>
+          <li><a href="articles/kinematic-solver-code.html">Código de un Solver de Cinemática Inversa</a></li>
+          <li><a href="articles/robot-arm-simulation-software.html">Comparativa de Software de Simulación de Brazos Robóticos</a></li>
+          <li><a href="articles/robot-arm-programming-languages.html">Lenguajes de Programación para Brazos Robóticos</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Automatización Industrial y Seguridad</h3>
+        <span class="cat-count">8 tutoriales</span>
+        <ul>
+          <li><a href="articles/industrial-plc-robotics.html">Programación de PLC para Robótica</a></li>
+          <li><a href="articles/robot-arm-plc-integration.html">Integrando Brazos Robóticos con PLC</a></li>
+          <li><a href="articles/robot-risk-assessment.html">Guía de Evaluación de Riesgo para Brazos Robóticos</a></li>
+          <li><a href="articles/robot-light-curtain-integration.html">Integración de Cortinas de Luz en Celdas Robóticas</a></li>
+          <li><a href="articles/robot-arm-emergency-stop.html">Sistemas de Parada de Emergencia para Brazos Robóticos</a></li>
+          <li><a href="articles/robot-arm-safety-chile.html">Normas de Seguridad para Brazos Robóticos en Chile</a></li>
+          <li><a href="articles/robot-arm-welding.html">Brazos Robóticos para Aplicaciones de Soldadura</a></li>
+          <li><a href="articles/collaborative-assembly-arm.html">Robots Colaborativos para Líneas de Ensamblaje</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Diseño Mecánico y Materiales</h3>
+        <span class="cat-count">10 tutoriales</span>
+        <ul>
+          <li><a href="articles/3d-printed-robot-arm-parts.html">Piezas Impresas en 3D para Brazos Robóticos</a></li>
+          <li><a href="articles/best-3d-printer-robot-parts.html">Mejores Impresoras 3D para Piezas de Brazos Robóticos</a></li>
+          <li><a href="articles/aluminum-robot-frame.html">Diseño de Chasis de Aluminio para Robots</a></li>
+          <li><a href="articles/carbon-fiber-robot-parts.html">Piezas de Fibra de Carbono para Brazos Robóticos</a></li>
+          <li><a href="articles/belt-drive-vs-gear-drive.html">Transmisión por Correa vs. por Engranajes en Articulaciones Robóticas</a></li>
+          <li><a href="articles/harmonic-drive-review.html">Reductores Harmonic Drive para Articulaciones Robóticas</a></li>
+          <li><a href="articles/cable-management-robot.html">Gestión de Cables para Brazos Robóticos</a></li>
+          <li><a href="articles/robot-arm-cooling.html">Sistemas de Refrigeración para Motores de Brazos Robóticos</a></li>
+          <li><a href="articles/robot-arm-dust-protection.html">Protección contra Polvo y Grado IP en Brazos Robóticos</a></li>
+          <li><a href="articles/robot-arm-noise-reduction.html">Reducción de Ruido en la Operación de Brazos Robóticos</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Efectores Finales y Pinzas</h3>
+        <span class="cat-count">4 tutoriales</span>
+        <ul>
+          <li><a href="articles/robot-arm-gripper-design.html">Fundamentos de Diseño de Pinzas para Brazos Robóticos</a></li>
+          <li><a href="articles/vacuum-gripper-robot.html">Pinzas de Vacío para Brazos Robóticos</a></li>
+          <li><a href="articles/magnetic-gripper-robot.html">Pinzas Magnéticas para Brazos Robóticos</a></li>
+          <li><a href="articles/robot-end-effector-selection.html">Cómo Seleccionar un Efector Final para Robots</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Mantenimiento, Calibración y Visión</h3>
+        <span class="cat-count">4 tutoriales</span>
+        <ul>
+          <li><a href="articles/robot-arm-calibration.html">Guía de Calibración de Brazos Robóticos</a></li>
+          <li><a href="articles/robot-arm-maintenance.html">Programa de Mantenimiento para Brazos Robóticos</a></li>
+          <li><a href="articles/robot-arm-vision-system.html">Sistemas de Visión Computacional para Brazos Robóticos</a></li>
+          <li><a href="articles/robot-area-scanner.html">Escáneres de Área para Seguridad en Celdas Robóticas</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Reseñas y Guías de Compra</h3>
+        <span class="cat-count">7 tutoriales</span>
+        <ul>
+          <li><a href="articles/fanuc-robot-arm-review.html">Reseña de Brazos Robóticos FANUC</a></li>
+          <li><a href="articles/abb-robot-arm-review.html">Reseña de Brazos Robóticos ABB</a></li>
+          <li><a href="articles/kuka-robot-arm-review.html">Reseña de Brazos Robóticos KUKA</a></li>
+          <li><a href="articles/universal-robots-ur20.html">Reseña Universal Robots UR20</a></li>
+          <li><a href="articles/standard-bots-ro1.html">Reseña Standard Bots RO1</a></li>
+          <li><a href="articles/collaborative-robot-arm-2026.html">Comparativa de los Mejores Robots Colaborativos</a></li>
+          <li><a href="articles/future-6-dof-robot-arms.html">El Futuro de los Brazos Robóticos de 6 Ejes</a></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Negocios, ROI y Mercado</h3>
+        <span class="cat-count">5 tutoriales</span>
+        <ul>
+          <li><a href="articles/robot-arm-leasing-buying.html">Arrendar vs. Comprar un Brazo Robótico</a></li>
+          <li><a href="articles/robot-arm-roi-calculator.html">Calculadora de ROI para Brazos Robóticos</a></li>
+          <li><a href="articles/robot-arm-payload-calculator.html">Calculadora de Capacidad de Carga para Brazos Robóticos</a></li>
+          <li><a href="articles/6-axis-robot-market-2026.html">Perspectivas del Mercado de Robots de 6 Ejes</a></li>
+          <li><a href="articles/robot-arm-training-program.html">Cómo Diseñar un Programa de Capacitación en Robótica</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!--
+    Espacio para unidad de anuncio AdSense — inserta tu bloque <ins class="adsbygoogle"> aquí
+    una vez que tu sitio haya sido aprobado. Ejemplo:
+
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-7032484018692343"
+         data-ad-slot="TU_ID_DE_SLOT"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+
+  </main>
+
+  <section aria-label="Suscripción al boletín" id="newsletter" class="newsletter">
+    <div class="newsletter-inner">
+      <h2>¿Tienes preguntas sobre un proyecto de robótica o Arduino?</h2>
+      <p>Envíanos una pregunta o corrección y la revisaremos para una futura actualización.</p>
+      <div class="form-row" aria-label="Contacto por boletín">
+        <a class="btn btn-primary" href="contact.html">Contáctanos para novedades</a>
+      </div>
+    </div>
+  </section>
+
+  <footer aria-label="Pie de página del sitio">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
+        <p>Editorial independiente sobre automatización industrial, brazos robóticos, Arduino, sensores y ROS 2 para makers, docentes e ingenieros en Chile y Latinoamérica. Escrita y mantenida por Alberto Gallardo.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4>Tutoriales Populares</h4>
+          <ul>
+            <li><a href="articles/arduino-robot-arm-tutorial.html">Brazo Robótico con Arduino</a></li>
+            <li><a href="articles/arduino-primeros-pasos.html">Primeros Pasos con Arduino</a></li>
+            <li><a href="articles/guia-sensores-arduino.html">Guía de Sensores</a></li>
+            <li><a href="articles/ros2-robot-arm-control.html">Control con ROS 2</a></li>
+            <li><a href="articles/industrial-plc-robotics.html">PLC Industrial</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Empresa</h4>
+          <ul>
+            <li><a href="about.html">Sobre Nosotros</a></li>
+            <li><a href="contact.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="privacy.html">Política de Privacidad</a></li>
+            <li><a href="terms.html">Términos y Condiciones</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="privacy.html" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
