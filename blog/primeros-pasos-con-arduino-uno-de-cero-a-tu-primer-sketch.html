@@ -1,19 +1,727 @@
-<!doctype html><html lang="es-CL"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch — Guía Completa</title><meta name="description" content="Instala Arduino IDE, conoce los pines del Arduino Uno y carga tu primer sketch Blink. Guía paso a paso con selección de placa, puerto, errores frecuentes y buenas prácticas."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch"><meta property="og:type" content="article"><meta property="og:title" content="Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch"><meta property="og:description" content="Instala Arduino IDE, conoce los pines del Arduino Uno y carga tu primer sketch Blink. Guía paso a paso con selección de placa, puerto, errores frecuentes y buenas prácticas."><meta property="og:url" content="https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch","description":"Instala Arduino IDE, conoce los pines del Arduino Uno y carga tu primer sketch Blink. Guía paso a paso con selección de placa, puerto, errores frecuentes y buenas prácticas.","datePublished":"2026-08-11","dateModified":"2026-08-11","author":{"@type":"Person","name":"Alberto Gallardo","url":"https://www.ukrabot.cl/about"},"publisher":{"@type":"Organization","name":"Blog de Ingeniería Robótica","url":"https://www.ukrabot.cl"},"mainEntityOfPage":"https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch","proficiencyLevel":"Principiante","inLanguage":"es-CL"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Por qué no aparece mi Arduino Uno en el IDE?","acceptedAnswer":{"@type":"Answer","text":"Comprueba primero que el cable sea de datos, prueba otro puerto USB y selecciona la placa y el puerto correctos. Los clones CH340 pueden necesitar su controlador."}},{"@type":"Question","name":"¿Qué hace setup y qué hace loop?","acceptedAnswer":{"@type":"Answer","text":"setup se ejecuta una sola vez al encender o reiniciar. loop se ejecuta repetidamente mientras la placa tenga alimentación."}}]}</script><style>
-:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font:16px/1.7 Inter,system-ui,-apple-system,Segoe UI,sans-serif}.container{max-width:1050px;margin:auto;padding:0 24px}a{color:var(--blue);text-underline-offset:3px}.site-nav{position:sticky;top:0;z-index:2;background:rgba(246,244,238,.96);border-bottom:1px solid var(--line)}.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:20px}.logo{font:1.35rem Georgia,serif;color:var(--text);text-decoration:none}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:18px;font-size:.88rem}.nav-links a{text-decoration:none;color:var(--muted)}.hero{background:linear-gradient(135deg,#151310,#30465a);color:white;padding:92px 0 70px}.eyebrow{color:#e4c07a;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font:400 clamp(2rem,6vw,4.1rem)/1.1 Georgia,serif;max-width:920px;margin:18px 0}.hero p{max-width:780px;color:#e8e6e0}.byline{font-size:.88rem}.byline a{color:#e4c07a}.article-body{padding:58px 24px 84px}.article-body h2{font:400 2rem/1.2 Georgia,serif;margin:56px 0 16px}.article-body h3{margin:30px 0 8px}.article-body p,.article-body li{color:var(--muted)}.toc,.note,.warning,.cta,.author-box{padding:24px;margin:28px 0;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06))}.toc h2{font:600 1.05rem/1.3 inherit;margin:0 0 10px}.toc ol{margin:0;padding-left:22px}.toc a{text-decoration:none;color:var(--muted)}.note{border-left:4px solid var(--gold)}.warning{border-left:4px solid #b2281e;background:#fff7f5}.warning strong{color:#7a1c14}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:620px;background:#fff}th,td{text-align:left;padding:13px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow:auto;padding:20px;background:#14121a;border-radius:12px;color:#e8d9b6;font-size:.86rem;line-height:1.5}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.author-box{display:flex;gap:16px}.author-box img{width:62px;height:62px;border-radius:50%;object-fit:cover}.disclosure{font-size:.8rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px}.footer-nav{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;border-top:1px solid var(--line);padding-top:30px;margin-top:48px}.site-footer{border-top:1px solid var(--line);padding:30px 0 45px;color:var(--quiet);font-size:.86rem}@media(max-width:650px){.container,.article-body{padding-left:16px;padding-right:16px}.nav-inner{padding:14px 16px}.nav-links{gap:10px;font-size:.76rem}.hero{padding:70px 0 48px}.article-body h2{font-size:1.55rem;margin-top:42px}.toc,.note,.warning,.cta,.author-box{padding:16px}table{min-width:540px}}
-</style></head><body><nav class="site-nav"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><div class="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><div class="container"><div class="eyebrow">Arduino básico · Actualizado el <time datetime="2026-08-11">11 de agosto de 2026</time></div><h1>Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch</h1><p>Instala Arduino IDE, conoce los pines del Arduino Uno y carga tu primer sketch Blink. Guía paso a paso con selección de placa, puerto, errores frecuentes y buenas prácticas.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 10 min de lectura</p></div></header><main class="container article-body"><article><div class="toc"><h2>Qué aprenderás en esta guía</h2><ol><li><a href="#placa y seguridad">Placa y seguridad</a></li><li><a href="#instalar IDE">Instalar ide</a></li><li><a href="#primer sketch">Primer sketch</a></li><li><a href="#pines y alimentación">Pines y alimentación</a></li><li><a href="#errores frecuentes">Errores frecuentes</a></li><li><a href="#faq">Preguntas frecuentes</a></li></ol></div>
-<section id="placa-y-seguridad"><h2>Qué necesitas y cómo reconocer la placa</h2><p>Arduino Uno es una placa basada en el microcontrolador ATmega328P. Para empezar necesitas la placa, un cable USB de datos (muchos cables de carga no transmiten datos) y un computador. La versión R3 usa lógica de <strong>5 V</strong>: sus pines de entrada y salida no son tolerantes a 12 V. Alimenta la placa por USB mientras aprendes; no unas fuentes externas al pin 5V sin conocer su tensión y polaridad.</p><div class="note"><strong>Regla de banco:</strong> desconecta USB antes de cambiar cables. Nunca conectes un LED directamente entre 5 V y GND: usa una resistencia en serie para limitar corriente.</div></section>
-<section id="instalar-ide"><h2>Instala Arduino IDE y selecciona placa y puerto</h2><p>Descarga Arduino IDE desde el sitio oficial. Conecta el Uno, abre <strong>Herramientas → Placa → Arduino AVR Boards → Arduino Uno</strong> y luego <strong>Herramientas → Puerto</strong>; elige el puerto que apareció al conectar la placa. Si no aparece, prueba otro cable y revisa el administrador de dispositivos. En clones con conversor CH340 puede ser necesario instalar su controlador desde el proveedor.</p><p>Un sketch tiene dos funciones obligatorias: <code>setup()</code>, que se ejecuta una vez, y <code>loop()</code>, que se repite. Compilar verifica el programa; cargar además lo transfiere por USB.</p></section>
-<section id="primer-sketch"><h2>Tu primer sketch: Blink, explicado línea por línea</h2><p>El LED integrado de la mayoría de los Uno está conectado al pin digital 13. Carga este programa sin montar ningún circuito:</p><pre><code>const byte LED = LED_BUILTIN;
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-void setup() {
-  pinMode(LED, OUTPUT);     // D13 será una salida
+<title>Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch — Guía Completa</title>
+<meta name="description" content="Guía completa para principiantes absolutos en Arduino Uno: qué es, cómo instalar el IDE, drivers CH340, anatomía de la placa, tu primer sketch Blink explicado línea por línea, Monitor Serie, errores comunes y hoja de referencia de pines.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch — Guía Completa">
+<meta property="og:description" content="Instalación del IDE, drivers CH340, anatomía de la placa, tu primer sketch Blink explicado, Monitor Serie, errores comunes y hoja de referencia de pines para empezar con Arduino desde cero.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/primeros_pasos_arduino_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Completa: Primeros Pasos con Arduino Uno">
+<meta name="twitter:description" content="Instalación del IDE, tu primer sketch Blink explicado línea por línea, Monitor Serie y errores comunes para empezar con Arduino desde cero.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/primeros_pasos_arduino_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch — Guía Completa",
+  "description":"Guía completa para principiantes absolutos en electrónica y programación con Arduino Uno: qué es una placa Arduino y por qué el Uno es la mejor opción para empezar, instalación del IDE oficial, instalación de drivers CH340 para clones, anatomía física de la placa, estructura de un sketch con setup() y loop(), primer programa Blink explicado línea por línea, proceso de subida de código, uso del Monitor Serie, glosario de conceptos esenciales, errores comunes de principiante y hoja de referencia de pines.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-10-05",
+  "dateModified":"2026-10-05",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch"},
+  "image":"https://www.ukrabot.cl/blog/primeros_pasos_arduino_hero.jpg",
+  "proficiencyLevel":"Principiante absoluto",
+  "dependencies":"Arduino Uno (original o clon con chip CH340), cable USB tipo A a B, computador con Windows, macOS o Linux, conexión a internet para descargar el IDE",
+  "wordCount":"2900",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Primeros Pasos con Arduino Uno","item":"https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Necesito saber programar para empezar con Arduino?","acceptedAnswer":{"@type":"Answer","text":"No es necesario tener experiencia previa. Arduino usa un lenguaje simplificado basado en C/C++ con una sintaxis reducida a un puñado de funciones esenciales, y la comunidad ha generado miles de ejemplos y códigos listos para copiar y adaptar. Esta misma guía te lleva desde cero hasta tu primer programa funcional sin asumir ningún conocimiento previo de programación. Lo que sí ayuda mucho es la curiosidad para experimentar modificando pequeños valores del código y observar qué cambia en el comportamiento físico del circuito."}},
+    {"@type":"Question","name":"¿Cuál es la diferencia entre un Arduino Uno original y un clon?","acceptedAnswer":{"@type":"Answer","text":"El Arduino Uno original es fabricado por Arduino LLC/Arduino SRL y generalmente usa un chip FTDI para la comunicación USB-serie, que suele funcionar sin instalar drivers adicionales en la mayoría de los sistemas operativos modernos. Los clones, mucho más económicos y ampliamente disponibles en tiendas chilenas, casi siempre usan un chip CH340 o CH341 en su lugar, funcionalmente equivalente pero que requiere instalar un driver específico la primera vez que se conecta a un computador Windows. En términos de funcionalidad para aprender y hacer proyectos, un clon con CH340 funciona exactamente igual que un Arduino original una vez instalado el driver correspondiente."}},
+    {"@type":"Question","name":"¿Por qué mi computador no reconoce la placa Arduino al conectarla?","acceptedAnswer":{"@type":"Answer","text":"Las causas más comunes son: el cable USB usado es de solo carga y no transmite datos (muy común confundirlo con un cable de datos real), falta instalar el driver CH340 si tu placa es un clon, el puerto COM correcto no está seleccionado en el menú Herramientas del IDE, o el cable o puerto USB del computador está defectuoso. Probar con otro cable USB conocido y funcional es el primer paso de diagnóstico más efectivo, ya que resuelve la mayoría de estos casos."}},
+    {"@type":"Question","name":"¿Qué diferencia hay entre pinMode, digitalWrite y digitalRead?","acceptedAnswer":{"@type":"Answer","text":"pinMode() configura el rol de un pin antes de usarlo, indicando si funcionará como entrada (INPUT, para leer señales de sensores o botones) o como salida (OUTPUT, para controlar LEDs, motores u otros actuadores) — se llama normalmente una sola vez dentro de setup(). digitalWrite() se usa sobre un pin configurado como OUTPUT para fijar su voltaje en HIGH (5V) o LOW (0V). digitalRead() se usa sobre un pin configurado como INPUT para leer si en ese momento hay un voltaje alto o bajo presente, típicamente usado para detectar si un botón está presionado o un sensor digital está activo."}},
+    {"@type":"Question","name":"¿Puedo dañar mi Arduino si programo mal el código?","acceptedAnswer":{"@type":"Answer","text":"Un error puramente de software —una sintaxis incorrecta, una lógica equivocada, un valor mal calculado— nunca daña la placa físicamente: en el peor caso, el programa no compila o no se comporta como esperabas, y simplemente corriges el código y vuelves a subirlo. El riesgo real de dañar el Arduino proviene de errores de hardware, como cortocircuitar los pines de alimentación, conectar una carga que consume más corriente de la que un pin puede entregar de forma segura (el límite típico es 20mA por pin en Arduino Uno), o invertir la polaridad de un componente externo conectado directamente a los pines."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="primeros_pasos_arduino_hero.jpg" alt="Placa Arduino Uno recién sacada de su caja conectada por cable USB a un computador portátil, con el IDE de Arduino abierto en pantalla mostrando el sketch Blink" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino desde cero · Actualizado el <time datetime="2026-10-05">5 de octubre de 2026</time></div>
+    <h1>Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch</h1>
+    <p>Instalación del IDE, drivers para clones CH340, anatomía de la placa, tu primer programa Blink explicado línea por línea, el Monitor Serie, errores comunes de principiante y una hoja de referencia de pines para tener siempre a mano.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 18 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="primeros_pasos_arduino_board.jpg" alt="Vista superior de una placa Arduino Uno con sus componentes principales etiquetados: puerto USB, conector de alimentación, pines digitales, pines analógicos y LED integrado" loading="lazy">
+  <div class="caption">Antes de escribir una sola línea de código, vale la pena reconocer visualmente cada parte de la placa que vas a usar en cientos de proyectos futuros.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es-arduino">Qué es Arduino y por qué el Uno es ideal para empezar</a></li>
+    <li><a href="#original-vs-clon">Arduino original vs clones: qué comprar</a></li>
+    <li><a href="#materiales">Qué necesitas para empezar (lo mínimo indispensable)</a></li>
+    <li><a href="#anatomia-placa">Anatomía de la placa Arduino Uno</a></li>
+    <li><a href="#instalar-ide">Instalar el IDE de Arduino</a></li>
+    <li><a href="#drivers-ch340">Instalar el driver CH340 para placas clon</a></li>
+    <li><a href="#primer-sketch">Tu primer sketch: Blink paso a paso</a></li>
+    <li><a href="#anatomia-sketch">Anatomía de un sketch: setup() y loop()</a></li>
+    <li><a href="#subir-codigo">Cómo subir el código: placa y puerto correctos</a></li>
+    <li><a href="#segundo-sketch">Segundo sketch: LED externo y variables</a></li>
+    <li><a href="#monitor-serie">El Monitor Serie: tu ventana al Arduino</a></li>
+    <li><a href="#glosario">Glosario de conceptos esenciales</a></li>
+    <li><a href="#errores-comunes">Errores comunes de principiante</a></li>
+    <li><a href="#hoja-referencia">Hoja de referencia: pines de Arduino Uno</a></li>
+    <li><a href="#siguientes-pasos">Hacia dónde seguir aprendiendo</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es-arduino">
+<h2>Qué es Arduino y por qué el Uno es ideal para empezar</h2>
+<p><strong>Arduino</strong> es una plataforma de hardware y software libre pensada para hacer accesible la electrónica programable a cualquier persona, sin necesidad de formación previa en ingeniería. En términos prácticos, una placa Arduino es un pequeño computador especializado —un <strong>microcontrolador</strong>— capaz de leer señales del mundo físico a través de sensores (temperatura, luz, movimiento, botones) y de actuar sobre ese mismo mundo físico a través de actuadores (LEDs, motores, buzzers, relés), todo mediante un programa que tú mismo escribes y cargas en la placa.</p>
+<p>Dentro del ecosistema Arduino existen decenas de modelos distintos, pero el <strong>Arduino Uno</strong> sigue siendo, más de una década después de su lanzamiento, la referencia estándar para empezar, por razones muy concretas:</p>
+<ul>
+<li><strong>Es la placa mejor documentada del mundo.</strong> Prácticamente cualquier duda que tengas ya fue resuelta públicamente por alguien más en foros, videos y tutoriales — el volumen de contenido disponible específicamente para el Uno supera al de cualquier otro modelo.</li>
+<li><strong>Es robusta y perdona errores de principiante.</strong> Su diseño simple y su bajo costo hacen que experimentar sin miedo a "romper algo caro" sea parte natural del aprendizaje.</li>
+<li><strong>Es compatible con prácticamente todo.</strong> La inmensa mayoría de sensores, módulos y shields (placas de expansión) del mercado están diseñados pensando primero en la compatibilidad con Arduino Uno.</li>
+<li><strong>No requiere ningún conocimiento previo.</strong> A diferencia de programar un computador de propósito general, Arduino reduce la complejidad a un puñado de conceptos esenciales, que esta misma guía cubre de principio a fin.</li>
+</ul>
+<div class="note"><strong>Sobre esta guía:</strong> estás leyendo el punto de partida recomendado para toda la serie de proyectos de este blog. Si nunca has usado Arduino, empieza aquí antes de intentar proyectos como el <a href="/blog/piano-electronico-con-botones-y-buzzer">piano electrónico</a> o la <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">estación meteorológica</a> — los conceptos que aprenderás en esta guía son la base de todos los demás.</div>
+</section>
+
+<section id="original-vs-clon">
+<h2>Arduino original vs clones: qué comprar</h2>
+<p>Una pregunta casi universal entre quienes recién empiezan es si conviene comprar un Arduino Uno original o uno de los muchos clones económicos disponibles en tiendas de electrónica chilenas. La respuesta corta: para aprender, <strong>un clon funciona perfectamente bien</strong>, y de hecho es lo que compra la inmensa mayoría de la comunidad hispanohablante de hobbyistas.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación práctica entre Arduino Uno original y clones económicos, para decisión de compra en Chile.</caption>
+<thead><tr><th>Característica</th><th>Arduino Uno original</th><th>Clon económico</th></tr></thead>
+<tbody>
+<tr><td>Precio aproximado (CLP)</td><td>$18.000 – $30.000</td><td>$6.000 – $12.000</td></tr>
+<tr><td>Chip USB-serie</td><td>Generalmente FTDI o ATmega16U2</td><td>Generalmente CH340 o CH341</td></tr>
+<tr><td>Necesita instalar driver</td><td>Rara vez, en Windows modernos</td><td>Casi siempre, la primera vez</td></tr>
+<tr><td>Calidad de componentes</td><td>Certificada, muy consistente</td><td>Variable según fabricante, generalmente aceptable</td></tr>
+<tr><td>Soporte a la comunidad Arduino</td><td>Directo, apoya el proyecto original</td><td>Ninguno</td></tr>
+<tr><td>Funcionalidad para aprender</td><td>Idéntica</td><td>Idéntica, una vez instalado el driver</td></tr>
+</tbody>
+</table>
+</div>
+<p>Esta guía asume, de hecho, que probablemente tienes un clon — por eso se incluye una sección completa dedicada a instalar el driver CH340, el paso que más frustra a quienes recién empiezan y que casi ningún tutorial en inglés menciona porque asume una placa original.</p>
+</section>
+
+<section id="materiales">
+<h2>Qué necesitas para empezar (lo mínimo indispensable)</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Lo estrictamente necesario para completar esta guía. No se requiere nada más para el primer sketch.</caption>
+<thead><tr><th>Elemento</th><th>Detalle</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Arduino Uno</td><td>Original o clon con chip CH340</td><td>$6.000 – $18.000</td></tr>
+<tr><td>Cable USB tipo A a B</td><td>Debe ser de datos, no solo de carga</td><td>$1.500 – $3.500</td></tr>
+<tr><td>Computador</td><td>Windows, macOS o Linux, con puerto USB</td><td>Ya disponible</td></tr>
+<tr><td>LED (opcional, para el segundo sketch)</td><td>5mm, cualquier color</td><td>$100 – $300</td></tr>
+<tr><td>Resistencia 220-330 Ω (opcional)</td><td>Limitadora de corriente para el LED externo</td><td>$50 – $150</td></tr>
+<tr><td>Protoboard y jumpers (opcional)</td><td>Para el segundo sketch con LED externo</td><td>$2.000 – $5.000</td></tr>
+<tr><td><strong>Total para el primer sketch</strong></td><td>&nbsp;</td><td><strong>$7.500 – $21.500</strong></td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>El error más común al comprar el cable:</strong> muchos cables USB vendidos como accesorios de carga para parlantes o powerbanks solo transmiten energía, no datos. Con un cable así, el Arduino recibirá alimentación (el LED de encendido se prenderá) pero el computador nunca lo reconocerá como dispositivo, y no podrás subir ningún programa. Si tu placa "enciende" pero no aparece en el IDE, sospecha primero del cable antes de cualquier otra causa.</div>
+</section>
+
+<section id="anatomia-placa">
+<h2>Anatomía de la placa Arduino Uno</h2>
+<p>Antes de escribir código, vale la pena reconocer las partes físicas principales de la placa que usarás en prácticamente todos los proyectos de esta serie:</p>
+<ul>
+<li><strong>Puerto USB tipo B:</strong> ubicado en un extremo de la placa, se usa tanto para alimentar el Arduino desde el computador como para subir programas y comunicarse por el Monitor Serie.</li>
+<li><strong>Conector de alimentación (jack DC):</strong> permite alimentar la placa de forma independiente del USB, típicamente con una fuente de 7-12V, útil cuando el proyecto ya no está conectado a un computador.</li>
+<li><strong>Botón de reset:</strong> reinicia el programa actualmente cargado en la placa desde el principio, sin borrar ni modificar el código.</li>
+<li><strong>Pines digitales (0 al 13):</strong> se usan tanto para leer señales digitales (HIGH o LOW) de sensores y botones, como para controlar salidas digitales como LEDs y relés. Algunos, marcados con el símbolo <code>~</code> (3, 5, 6, 9, 10, 11 en el Uno), soportan además salida analógica simulada mediante PWM.</li>
+<li><strong>Pines analógicos (A0 al A5):</strong> diseñados principalmente para leer señales analógicas continuas, como la salida de un sensor de temperatura o un potenciómetro, con una resolución de 10 bits (valores de 0 a 1023).</li>
+<li><strong>Pines de alimentación (5V, 3.3V, GND, VIN):</strong> entregan o reciben voltaje para alimentar componentes externos conectados al circuito.</li>
+<li><strong>LED integrado (pin 13):</strong> un pequeño LED soldado directamente en la placa, conectado internamente al pin digital 13, que usarás en tu primer sketch sin necesidad de ningún componente externo.</li>
+<li><strong>Chip microcontrolador (ATmega328P):</strong> el "cerebro" de la placa, el chip negro rectangular más grande visible sobre la placa, donde efectivamente se ejecuta el programa que subes.</li>
+</ul>
+</section>
+
+<section id="instalar-ide">
+<h2>Instalar el IDE de Arduino</h2>
+<p>El <strong>IDE (Integrated Development Environment)</strong> de Arduino es el programa que usarás en tu computador para escribir código y enviarlo a la placa. Es gratuito y está disponible para Windows, macOS y Linux desde el sitio oficial <code>arduino.cc/en/software</code>.</p>
+<ol>
+<li>Visita el sitio oficial de Arduino y descarga el <strong>IDE 2.x</strong>, la versión actual con interfaz modernizada, autocompletado de código y mejor manejo de errores que la versión legacy 1.8.x.</li>
+<li>En Windows, ejecuta el instalador descargado y acepta la instalación de los componentes de drivers USB cuando el instalador lo solicite — este paso es importante y se explica en detalle en la siguiente sección.</li>
+<li>En macOS, abre el archivo <code>.dmg</code> descargado y arrastra la aplicación a la carpeta de Aplicaciones, como cualquier otro programa de Mac.</li>
+<li>En Linux, la forma más simple es descargar el AppImage oficial, darle permisos de ejecución con <code>chmod +x</code>, y ejecutarlo directamente sin necesidad de instalación tradicional.</li>
+<li>Abre el IDE por primera vez. Deberías ver una ventana con un área de código en blanco, ya con las funciones <code>setup()</code> y <code>loop()</code> escritas — el "sketch en blanco" del que hablaremos más adelante.</li>
+</ol>
+<div class="note"><strong>¿IDE 2.x o la versión web?</strong> Arduino también ofrece un editor web (Arduino Cloud Editor) que no requiere instalación local, pero para aprender desde cero es preferible el IDE de escritorio: funciona sin depender de conexión a internet una vez instalado, y es el entorno que verás replicado en la inmensa mayoría de tutoriales y documentación disponible.</div>
+</section>
+
+<section id="drivers-ch340">
+<h2>Instalar el driver CH340 para placas clon</h2>
+<p>Si tu Arduino Uno es un clon económico (la situación más común entre principiantes en Chile), es muy probable que tu computador no lo reconozca automáticamente la primera vez que lo conectas, porque usa un chip <strong>CH340</strong> o <strong>CH341</strong> para la comunicación USB-serie, en vez del chip FTDI que suelen usar las placas originales. Windows, especialmente, no incluye este driver de forma nativa.</p>
+<ol>
+<li>Conecta tu Arduino al computador con el cable USB.</li>
+<li>Abre el <strong>Administrador de Dispositivos</strong> de Windows (clic derecho en el menú Inicio → Administrador de dispositivos).</li>
+<li>Busca en la lista un dispositivo con un ícono de advertencia amarillo, generalmente bajo la categoría "Otros dispositivos" o "Puertos (COM y LPT)", con un nombre como <code>USB2.0-Serial</code> o similar.</li>
+<li>Descarga el driver CH340 desde el sitio del fabricante del chip (Winchiphead/WCH) o desde la sección de recursos del sitio oficial de Arduino, que enlaza versiones verificadas.</li>
+<li>Ejecuta el instalador del driver descargado y reinicia el computador si se solicita.</li>
+<li>Vuelve a conectar el Arduino y verifica en el Administrador de Dispositivos que ahora aparece correctamente bajo "Puertos (COM y LPT)" con un nombre como <code>USB-SERIAL CH340 (COM3)</code> — el número de puerto COM puede variar.</li>
+</ol>
+<div class="note"><strong>macOS y Linux:</strong> las versiones recientes de macOS y la mayoría de distribuciones Linux modernas incluyen soporte nativo para el chip CH340 sin necesidad de instalar nada adicional. Si usas Linux y el puerto no aparece, verifica que tu usuario pertenezca al grupo <code>dialout</code> (o <code>uucp</code> en algunas distribuciones), necesario para tener permisos de acceso a puertos serie.</div>
+</section>
+
+<section id="primer-sketch">
+<h2>Tu primer sketch: Blink paso a paso</h2>
+<p>Un programa de Arduino se llama <strong>sketch</strong>. El primer sketch con el que casi todo el mundo empieza —el equivalente de Arduino al clásico "Hola Mundo" de la programación— se llama <strong>Blink</strong>, y hace parpadear el LED integrado de la placa (el del pin 13) de forma continua.</p>
+<p>Puedes escribir este código desde cero, pero el IDE ya lo incluye como ejemplo listo para usar, lo cual es una excelente forma de empezar sin errores de tipeo:</p>
+<ol>
+<li>Abre el menú <strong>Archivo → Ejemplos → 01.Basics → Blink</strong>.</li>
+<li>Se abrirá una nueva ventana con el código ya escrito, idéntico al que se muestra a continuación.</li>
+</ol>
+<pre><code>void setup() {
+  // inicializa el pin digital LED_BUILTIN como salida
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
-  digitalWrite(LED, HIGH);  // entrega nivel alto
-  delay(1000);              // espera 1 000 ms
-  digitalWrite(LED, LOW);   // entrega nivel bajo
-  delay(1000);
-}</code></pre><p>Haz clic en Verificar y luego en Subir. El LED marcado como L debe parpadear cada segundo. Cambia ambos valores de <code>delay()</code> a 200 para comprobar que entiendes la relación entre milisegundos y velocidad.</p></section>
-<section id="pines-y-alimentacion"><h2>Pines, corriente y lectura del código</h2><div class="table-wrap"><table><thead><tr><th>Zona</th><th>Uso correcto</th><th>Precaución</th></tr></thead><tbody><tr><td>D0 y D1</td><td>Serie USB</td><td>No los uses al cargar sketches.</td></tr><tr><td>D2–D13</td><td>Entradas/salidas digitales</td><td>Máximo recomendado 20 mA por pin.</td></tr><tr><td>A0–A5</td><td>Lectura analógica; también digitales</td><td>La lectura por defecto es 0–5 V.</td></tr><tr><td>5V, 3.3V, GND</td><td>Alimentación y referencia común</td><td>Comprueba tensión antes de conectar módulos.</td></tr></tbody></table></div><p>Abre <strong>Herramientas → Monitor serie</strong> a la misma velocidad que declares en <code>Serial.begin()</code>. Es la herramienta más útil para ver valores de sensores y diagnosticar tu programa.</p></section>
-<section id="errores-frecuentes"><h2>Errores frecuentes y cómo resolverlos</h2><ul><li><strong>“avrdude: ser_open”:</strong> puerto equivocado, cable solo de carga o monitor serie abierto.</li><li><strong>“not in sync”:</strong> confirma Arduino Uno y puerto; cierra programas que usen el puerto.</li><li><strong>LED no parpadea:</strong> vuelve a cargar el sketch y revisa que uses <code>LED_BUILTIN</code>, no un número supuesto.</li><li><strong>La placa se reinicia:</strong> desconecta el circuito externo: suele haber cortocircuito o consumo excesivo.</li></ul><div class="warning"><strong>Seguridad:</strong> Arduino no es una fuente de potencia. Motores, relés y tiras LED requieren fuente y etapa de control adecuadas; comparte GND cuando corresponda, pero no los alimentes desde un pin.</div></section><section id="conclusion"><h2>Conclusión</h2><p>El valor de este proyecto está en medir, comprobar y mejorar cada parte: cableado seguro, código legible y pruebas graduales. Empieza con el montaje mínimo, observa el resultado y añade una mejora por vez. Así podrás detectar errores sin convertir un proyecto sencillo en una caja negra.</p></section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Por qué no aparece mi Arduino Uno en el IDE?</summary><p>Comprueba primero que el cable sea de datos, prueba otro puerto USB y selecciona la placa y el puerto correctos. Los clones CH340 pueden necesitar su controlador.</p></details><details><summary>¿Qué hace setup y qué hace loop?</summary><p>setup se ejecuta una sola vez al encender o reiniciar. loop se ejecuta repetidamente mientras la placa tenga alimentación.</p></details></div></section><div class="author-box"><img src="../author_alberto.jpg" alt="Alberto Gallardo"><div><h3>Sobre el autor</h3><p><strong>Alberto Gallardo</strong> es Analista Programador Computacional y escribe tutoriales prácticos de electrónica, programación y robótica. <a href="/about">Conoce más sobre el autor →</a></p></div></div><p class="disclosure">Contenido editorial independiente y educativo. Verifica siempre el voltaje, la hoja de datos de tus módulos y las condiciones reales de tu montaje antes de conectar alimentación.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Revisa el <a href="/#categories">temario de Arduino y proyectos</a> para continuar con sensores, programación y electrónica aplicada.</p></div><div class="footer-nav"><a href="/">← Volver a la portada</a><a href="/contact">¿Encontraste una mejora? Contáctanos →</a></div></article><section class="editorial-sources"><h2>Fuentes y documentación recomendada</h2><ul><li><a href="https://docs.arduino.cc/">Arduino Docs — documentación oficial</a></li><li><a href="https://www.arduino.cc/reference/en/">Arduino Language Reference</a></li></ul><p>Enlaces revisados: 11 de agosto de 2026.</p></section></main><footer class="site-footer"><div class="container">Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica y electrónica aplicada.</div></footer></body></html>
+  digitalWrite(LED_BUILTIN, HIGH); // enciende el LED (HIGH = nivel de voltaje alto)
+  delay(1000);                     // espera un segundo
+  digitalWrite(LED_BUILTIN, LOW);  // apaga el LED (LOW = nivel de voltaje bajo)
+  delay(1000);                     // espera un segundo
+}</code></pre>
+<p><code>LED_BUILTIN</code> es una constante ya definida por el propio Arduino que siempre apunta al pin del LED integrado de la placa (el pin 13 en el caso del Uno), por lo que este mismo código funciona sin modificaciones en prácticamente cualquier modelo de Arduino, aunque el número de pin físico del LED varíe entre placas.</p>
+</section>
+
+<section id="anatomia-sketch">
+<h2>Anatomía de un sketch: setup() y loop()</h2>
+<p>Todo sketch de Arduino, sin excepción, se organiza alrededor de dos funciones obligatorias que ya viste en el código de Blink:</p>
+<ul>
+<li><strong><code>void setup()</code>:</strong> el código dentro de esta función se ejecuta <strong>una sola vez</strong>, exactamente al encender la placa o justo después de subir un nuevo programa. Es el lugar correcto para configurar el modo de los pines con <code>pinMode()</code>, iniciar la comunicación serie con <code>Serial.begin()</code>, o hacer cualquier preparación inicial que el resto del programa necesite.</li>
+<li><strong><code>void loop()</code>:</strong> el código dentro de esta función se ejecuta <strong>de forma repetida e indefinida</strong>, una y otra vez, mientras la placa permanezca encendida. Es aquí donde vive la lógica principal de cualquier proyecto: leer sensores, tomar decisiones, controlar salidas.</li>
+</ul>
+<p>Esta estructura de dos partes —una que corre una vez, otra que corre para siempre— es la base conceptual de absolutamente todo lo que construirás con Arduino, desde el LED más simple hasta los proyectos más elaborados de esta serie de guías.</p>
+<div class="note"><strong>Sobre los comentarios:</strong> las líneas que empiezan con <code>//</code> en el código de ejemplo son <strong>comentarios</strong>: texto que el compilador ignora por completo, pensado exclusivamente para que un humano entienda qué hace cada línea. Acostumbrarse a comentar el propio código desde el principio, aunque parezca innecesario en programas cortos como Blink, es un hábito que se agradece enormemente cuando el proyecto crece en complejidad.</div>
+</section>
+
+<section id="subir-codigo">
+<h2>Cómo subir el código: placa y puerto correctos</h2>
+<p>Con el sketch Blink abierto, antes de subirlo a la placa física es necesario indicarle al IDE exactamente qué modelo de Arduino estás usando y en qué puerto está conectado:</p>
+<ol>
+<li>Ve al menú <strong>Herramientas → Placa</strong> y selecciona <strong>Arduino Uno</strong> de la lista (si usas el IDE 2.x, puede aparecer bajo la categoría "Arduino AVR Boards").</li>
+<li>Ve al menú <strong>Herramientas → Puerto</strong> y selecciona el puerto correspondiente a tu Arduino — en Windows aparecerá como <code>COM3</code>, <code>COM4</code> u otro número similar; en macOS y Linux aparecerá con un nombre como <code>/dev/cu.usbserial-XXXX</code> o <code>/dev/ttyUSB0</code>.</li>
+<li>Haz clic en el botón con el ícono de flecha hacia la derecha (⟶), llamado <strong>Subir (Upload)</strong>, ubicado en la barra de herramientas superior del IDE.</li>
+<li>Observa los LEDs pequeños marcados como <code>TX</code> y <code>RX</code> en la placa: deberían parpadear brevemente durante el proceso de subida, indicando que los datos del programa se están transfiriendo.</li>
+<li>Al finalizar, verás un mensaje "Subida completada" o "Done uploading" en la parte inferior del IDE, y el LED integrado (pin 13) debería comenzar a parpadear cada un segundo — tu primer programa está oficialmente funcionando.</li>
+</ol>
+<div class="warning"><strong>Si no identificas cuál es tu puerto:</strong> una técnica infalible es abrir el menú Herramientas → Puerto <strong>antes</strong> de conectar el Arduino, anotar la lista de puertos existentes, luego conectar la placa y volver a abrir el mismo menú — el puerto nuevo que aparece es, sin ambigüedad, el de tu Arduino.</div>
+</section>
+
+<section id="segundo-sketch">
+<h2>Segundo sketch: LED externo y variables</h2>
+<p>Una vez que Blink funciona con el LED integrado, el siguiente paso natural es controlar un <strong>LED externo</strong> conectado a un pin distinto, introduciendo además el concepto de <strong>variables</strong> para hacer el código más flexible y fácil de modificar.</p>
+<pre><code>Esquema conceptual de conexión del LED externo:
+
+Arduino pin 8 ----> Resistencia 220-330 Ω ----> LED (+, pata larga)
+                                                     |
+Arduino GND -----------------------------------------+ (LED -, pata corta)</code></pre>
+<pre><code>const int PIN_LED = 8;          // variable constante: el pin donde esta el LED
+const int TIEMPO_ESPERA = 500;  // variable constante: milisegundos entre cambios
+
+void setup() {
+  pinMode(PIN_LED, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(PIN_LED, HIGH);
+  delay(TIEMPO_ESPERA);
+  digitalWrite(PIN_LED, LOW);
+  delay(TIEMPO_ESPERA);
+}</code></pre>
+<p>Nótese que en vez de escribir el número <code>8</code> y el valor <code>500</code> directamente en cada línea donde se usan, se declararon como <strong>constantes con nombre</strong> al inicio del programa (<code>PIN_LED</code> y <code>TIEMPO_ESPERA</code>). Esto no cambia el comportamiento del programa en absoluto, pero hace el código mucho más legible y fácil de modificar: si mañana conectas el LED a otro pin, o quieres que parpadee más rápido, solo necesitas cambiar un número en un solo lugar, en vez de buscar y reemplazar el mismo valor repetido varias veces por todo el código. Este es exactamente el mismo patrón que verás reutilizado en todos los proyectos más avanzados de esta serie de guías.</p>
+</section>
+
+<section id="monitor-serie">
+<h2>El Monitor Serie: tu ventana al Arduino</h2>
+<p>Hasta ahora, la única forma de saber si tu programa funciona ha sido observando físicamente si el LED enciende o no. El <strong>Monitor Serie</strong> del IDE ofrece algo mucho más poderoso: permite que el Arduino "hable" con tu computador enviando texto, ideal para depurar código, mostrar valores de sensores, o simplemente entender qué está pasando dentro del programa en cada momento.</p>
+<pre><code>const int PIN_LED = 8;
+int contador = 0; // variable que SI cambia de valor durante la ejecucion
+
+void setup() {
+  pinMode(PIN_LED, OUTPUT);
+  Serial.begin(9600); // inicia la comunicacion serie a 9600 baudios
+  Serial.println("Programa iniciado. Contando parpadeos...");
+}
+
+void loop() {
+  digitalWrite(PIN_LED, HIGH);
+  delay(500);
+  digitalWrite(PIN_LED, LOW);
+  delay(500);
+
+  contador = contador + 1;
+  Serial.print("Parpadeo numero: ");
+  Serial.println(contador);
+}</code></pre>
+<p>Tras subir este código, abre el Monitor Serie desde el ícono de lupa en la esquina superior derecha del IDE (o el menú Herramientas → Monitor Serie), y asegúrate de que la velocidad seleccionada en el desplegable inferior coincida exactamente con el valor usado en <code>Serial.begin()</code> — en este caso, <strong>9600 baudios</strong>. Verás aparecer en tiempo real el mensaje inicial seguido de un conteo creciente de parpadeos, confirmando que el programa está corriendo exactamente como esperas.</p>
+<div class="note"><strong>Diferencia entre variable y constante:</strong> este ejemplo introduce también la diferencia entre <code>const int</code> (una constante, cuyo valor nunca cambia durante la ejecución) y una variable normal como <code>int contador</code>, cuyo valor sí se modifica activamente dentro del <code>loop()</code> con cada vuelta del programa. Entender esta distinción es clave para el resto de tu camino con Arduino.</div>
+</section>
+
+<section id="glosario">
+<h2>Glosario de conceptos esenciales</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Términos que aparecerán constantemente en cualquier proyecto de Arduino, explicados en lenguaje simple.</caption>
+<thead><tr><th>Término</th><th>Significado</th></tr></thead>
+<tbody>
+<tr><td>Sketch</td><td>Nombre que recibe un programa de Arduino, equivalente a lo que en otros lenguajes se llamaría simplemente "código" o "script"</td></tr>
+<tr><td>HIGH / LOW</td><td>Los dos únicos estados posibles de una señal digital: HIGH equivale a 5V (encendido), LOW equivale a 0V (apagado)</td></tr>
+<tr><td>Digital vs Analógico</td><td>Una señal digital solo tiene dos estados posibles (HIGH/LOW); una señal analógica puede tomar cualquier valor dentro de un rango continuo, como la intensidad de luz ambiental</td></tr>
+<tr><td>pinMode()</td><td>Función que configura si un pin funcionará como entrada (INPUT) o salida (OUTPUT), llamada normalmente dentro de setup()</td></tr>
+<tr><td>digitalWrite() / digitalRead()</td><td>Funciones para escribir (fijar HIGH o LOW) o leer el estado actual de un pin digital, respectivamente</td></tr>
+<tr><td>analogWrite() / analogRead()</td><td>Funciones para generar una señal PWM (simulando un valor analógico de salida) o leer un valor analógico real de entrada (0-1023), respectivamente</td></tr>
+<tr><td>Baudios (baud rate)</td><td>Velocidad de comunicación del puerto serie, medida en bits por segundo; debe coincidir entre el código y el Monitor Serie</td></tr>
+<tr><td>Compilar</td><td>Proceso de traducir el código escrito en el IDE a instrucciones que el microcontrolador puede ejecutar directamente</td></tr>
+<tr><td>Librería (library)</td><td>Un paquete de código reutilizable escrito por terceros que agrega funcionalidad extra a Arduino, como el control de sensores o pantallas específicas</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="errores-comunes">
+<h2>Errores comunes de principiante</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Los errores más frecuentes al empezar con Arduino, y cómo resolverlos rápidamente.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El IDE no encuentra ningún puerto</td><td>Cable USB de solo carga, o driver CH340 no instalado</td><td>Probar con otro cable de datos, instalar el driver CH340</td></tr>
+<tr><td>Error "expected ';' before..."</td><td>Falta un punto y coma al final de una línea de código</td><td>Revisar la línea indicada por el error, agregar el punto y coma faltante</td></tr>
+<tr><td>Error "was not declared in this scope"</td><td>Se usó una variable o función antes de declararla, o hay un error de tipeo en el nombre</td><td>Verificar que el nombre esté escrito exactamente igual en todas partes (Arduino distingue mayúsculas de minúsculas)</td></tr>
+<tr><td>El Monitor Serie muestra caracteres extraños o nada</td><td>La velocidad en baudios del Monitor no coincide con la de Serial.begin()</td><td>Ajustar el desplegable de velocidad en el Monitor Serie para que coincida exactamente</td></tr>
+<tr><td>"avrdude: stk500_recv(): programmer is not responding"</td><td>Puerto o placa incorrectos seleccionados, o el cable se desconectó momentáneamente</td><td>Verificar Herramientas → Placa y Puerto, reconectar el cable firmemente</td></tr>
+<tr><td>El LED nunca enciende, pero tampoco hay errores al subir</td><td>Conexión física incorrecta del LED externo (polaridad invertida o pin equivocado)</td><td>Verificar que la pata larga (ánodo) del LED vaya hacia el pin, y la corta hacia GND</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="hoja-referencia">
+<h2>Hoja de referencia: pines de Arduino Uno</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Resumen de referencia rápida de los pines del Arduino Uno para consultar durante tus futuros proyectos.</caption>
+<thead><tr><th>Pin(es)</th><th>Función</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td>0 (RX), 1 (TX)</td><td>Comunicación serie por hardware</td><td>Compartidos con el USB; evitar usarlos con otros componentes si usas el Monitor Serie o subes código</td></tr>
+<tr><td>2, 3</td><td>Digitales de propósito general</td><td>Los únicos que soportan interrupciones externas por hardware en el Uno</td></tr>
+<tr><td>3, 5, 6, 9, 10, 11</td><td>Digitales con PWM (marcados con ~)</td><td>Permiten simular salida analógica con analogWrite()</td></tr>
+<tr><td>13</td><td>Digital, LED integrado</td><td>Conectado al LED_BUILTIN soldado en la placa</td></tr>
+<tr><td>A0 – A5</td><td>Entradas analógicas</td><td>También utilizables como pines digitales adicionales si es necesario</td></tr>
+<tr><td>5V, 3.3V</td><td>Salidas de alimentación regulada</td><td>Para alimentar sensores y módulos externos de bajo consumo</td></tr>
+<tr><td>GND (varios)</td><td>Tierra / referencia de voltaje 0V</td><td>Debe compartirse siempre entre Arduino y cualquier componente externo</td></tr>
+<tr><td>VIN</td><td>Entrada de alimentación externa</td><td>Para alimentar la placa desde una fuente de 7-12V distinta del USB</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="siguientes-pasos">
+<h2>Hacia dónde seguir aprendiendo</h2>
+<p>Con los conceptos de esta guía —<code>setup()</code>, <code>loop()</code>, <code>pinMode()</code>, <code>digitalWrite()</code>, variables y el Monitor Serie— ya tienes la base necesaria para abordar proyectos completos con confianza. El orden recomendado para continuar, de menor a mayor complejidad, es el siguiente:</p>
+<ol>
+<li><strong><a href="/blog/piano-electronico-con-botones-y-buzzer">Piano Electrónico con Botones y Buzzer</a>:</strong> el siguiente paso lógico, introduce la lectura de botones (entradas digitales) y la generación de sonido, reutilizando directamente los conceptos de esta guía con arreglos y estructuras de decisión simples.</li>
+<li><strong><a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">Estación Meteorológica con Arduino y Pantalla OLED</a>:</strong> introduce el protocolo I2C, sensores digitales más sofisticados, y programación no bloqueante con <code>millis()</code> en vez de <code>delay()</code>.</li>
+<li><strong><a href="/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05">Controla tu Arduino por Bluetooth con el Módulo HC-05</a>:</strong> añade comunicación inalámbrica y control remoto, expandiendo el concepto del Monitor Serie hacia un enlace de datos sin cables.</li>
+<li><strong><a href="/blog/construye-tu-propio-detector-de-metales-casero-con-arduino">Detector de Metales Casero con Arduino</a>:</strong> el proyecto más avanzado de la serie, que combina electrónica analógica, medición precisa de frecuencia y calibración de sensores.</li>
+</ol>
+<p>No es necesario dominar cada guía al 100% antes de pasar a la siguiente — de hecho, la forma más efectiva de aprender Arduino es construyendo proyectos reales y volviendo a consultar los conceptos base cuando surja una duda concreta, en vez de intentar memorizarlo todo de antemano.</p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>El camino de cero a tu primer sketch funcionando es, casi siempre, la parte más intimidante de empezar con electrónica y programación — y también la más rápida de superar una vez que tienes la guía correcta. Entre instalar el driver CH340, entender la diferencia entre <code>setup()</code> y <code>loop()</code>, y ver por primera vez un LED parpadear exactamente como lo programaste, ya cruzaste la barrera más difícil de toda esta disciplina: la del primer contacto. Todo lo que viene después —sensores, pantallas, comunicación inalámbrica, proyectos cada vez más ambiciosos— se construye exactamente sobre los mismos bloques fundamentales que acabas de aprender en esta guía.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Necesito saber programar para empezar con Arduino?</summary><p>No es necesario tener experiencia previa. Arduino usa un lenguaje simplificado basado en C/C++ con una sintaxis reducida a un puñado de funciones esenciales, y la comunidad ha generado miles de ejemplos y códigos listos para copiar y adaptar. Esta misma guía te lleva desde cero hasta tu primer programa funcional sin asumir ningún conocimiento previo de programación. Lo que sí ayuda mucho es la curiosidad para experimentar modificando pequeños valores del código y observar qué cambia en el comportamiento físico del circuito.</p></details>
+<details><summary>¿Cuál es la diferencia entre un Arduino Uno original y un clon?</summary><p>El Arduino Uno original es fabricado por Arduino LLC/Arduino SRL y generalmente usa un chip FTDI para la comunicación USB-serie, que suele funcionar sin instalar drivers adicionales en la mayoría de los sistemas operativos modernos. Los clones, mucho más económicos y ampliamente disponibles en tiendas chilenas, casi siempre usan un chip CH340 o CH341 en su lugar, funcionalmente equivalente pero que requiere instalar un driver específico la primera vez que se conecta a un computador Windows. En términos de funcionalidad para aprender y hacer proyectos, un clon con CH340 funciona exactamente igual que un Arduino original una vez instalado el driver correspondiente.</p></details>
+<details><summary>¿Por qué mi computador no reconoce la placa Arduino al conectarla?</summary><p>Las causas más comunes son: el cable USB usado es de solo carga y no transmite datos (muy común confundirlo con un cable de datos real), falta instalar el driver CH340 si tu placa es un clon, el puerto COM correcto no está seleccionado en el menú Herramientas del IDE, o el cable o puerto USB del computador está defectuoso. Probar con otro cable USB conocido y funcional es el primer paso de diagnóstico más efectivo, ya que resuelve la mayoría de estos casos.</p></details>
+<details><summary>¿Qué diferencia hay entre pinMode, digitalWrite y digitalRead?</summary><p>pinMode() configura el rol de un pin antes de usarlo, indicando si funcionará como entrada (INPUT, para leer señales de sensores o botones) o como salida (OUTPUT, para controlar LEDs, motores u otros actuadores) — se llama normalmente una sola vez dentro de setup(). digitalWrite() se usa sobre un pin configurado como OUTPUT para fijar su voltaje en HIGH (5V) o LOW (0V). digitalRead() se usa sobre un pin configurado como INPUT para leer si en ese momento hay un voltaje alto o bajo presente, típicamente usado para detectar si un botón está presionado o un sensor digital está activo.</p></details>
+<details><summary>¿Puedo dañar mi Arduino si programo mal el código?</summary><p>Un error puramente de software —una sintaxis incorrecta, una lógica equivocada, un valor mal calculado— nunca daña la placa físicamente: en el peor caso, el programa no compila o no se comporta como esperabas, y simplemente corriges el código y vuelves a subirlo. El riesgo real de dañar el Arduino proviene de errores de hardware, como cortocircuitar los pines de alimentación, conectar una carga que consume más corriente de la que un pin puede entregar de forma segura (el límite típico es 20mA por pin en Arduino Uno), o invertir la polaridad de un componente externo conectado directamente a los pines.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y los pasos de instalación son referenciales y pueden variar levemente según la versión del IDE y el sistema operativo usado. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Ahora que ya subiste tu primer sketch, el paso natural es construir tu primer proyecto completo. Te recomendamos empezar con el <a href="/blog/piano-electronico-con-botones-y-buzzer">Piano Electrónico con Botones y Buzzer</a>, el proyecto más económico y directo de esta serie, ideal para reforzar lo aprendido aquí antes de avanzar hacia sensores y comunicación inalámbrica.</p>
+  <p>También puedes revisar el <a href="/#categories">temario completo del blog</a> para ver todos los proyectos disponibles.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/piano-electronico-con-botones-y-buzzer">← Anterior: Piano Electrónico con Botones y Buzzer</a>
+  <a href="/blog/">Siguiente: Ver más tutoriales →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los pasos de instalación exactos pueden variar según la versión del sistema operativo y del IDE utilizados.</p>
+<ul>
+<li><a href="https://www.arduino.cc/en/software" target="_blank" rel="noopener noreferrer">Arduino Official — Descarga del IDE de Arduino</a></li>
+<li><a href="https://www.arduino.cc/en/Tutorial/BuiltInExamples/Blink" target="_blank" rel="noopener noreferrer">Arduino Built-in Examples — Sketch Blink de referencia</a></li>
+<li><a href="https://www.arduino.cc/reference/en/" target="_blank" rel="noopener noreferrer">Arduino Language Reference — Referencia oficial del lenguaje</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 5 de octubre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
