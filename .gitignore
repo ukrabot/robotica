@@ -1,0 +1,4 @@
+# Scripts de apoyo local (no forman parte del sitio publicado)
+_serve.py
+__pycache__/
+.DS_Store
