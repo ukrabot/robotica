@@ -9,30 +9,30 @@
   <meta name="description" content="Tutoriales prácticos sobre brazos robóticos de 6 ejes: cableado con Arduino, control con ROS 2, integración con PLC industriales, sensores, IoT, pinzas, materiales y guías de compra para Chile y Latinoamérica." />
   <meta name="author" content="Alberto Gallardo" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
-  <link rel="canonical" href="https://ingenieriaroboticablog.cl/index.html" />
+  <link rel="canonical" href="https://www.ukrabot.cl/" />
   <link rel="icon" href="/favicon.ico" sizes="any" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Blog de Ingeniería Robótica — Tutoriales de Arduino, ROS 2 y Brazos Robóticos" />
   <meta property="og:description" content="Tutoriales prácticos para construir e implementar brazos robóticos de 6 ejes — Arduino, sensores, ROS 2, automatización industrial y guías de compra." />
-  <meta property="og:image" content="https://ingenieriaroboticablog.cl/robotic_arm_hero.jpg" />
-  <meta property="og:url" content="https://ingenieriaroboticablog.cl/index.html" />
+  <meta property="og:image" content="https://www.ukrabot.cl/robotic_arm_hero.jpg" />
+  <meta property="og:url" content="https://www.ukrabot.cl/" />
   <meta property="og:locale" content="es_CL" />
   <meta property="og:site_name" content="Blog de Ingeniería Robótica" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Blog de Ingeniería Robótica — Tutoriales de Arduino, ROS 2 y Brazos Robóticos" />
   <meta name="twitter:description" content="Tutoriales prácticos sobre brazos robóticos, Arduino, sensores, ROS 2 y automatización industrial." />
-  <meta name="twitter:image" content="https://ingenieriaroboticablog.cl/robotic_arm_hero.jpg" />
+  <meta name="twitter:image" content="https://www.ukrabot.cl/robotic_arm_hero.jpg" />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Blog de Ingeniería Robótica",
-    "url": "https://ingenieriaroboticablog.cl/",
+    "url": "https://www.ukrabot.cl/",
     "description": "Tutoriales prácticos sobre brazos robóticos de 6 ejes, Arduino, sensores, ROS 2 y automatización industrial.",
-    "publisher": { "@id": "https://ingenieriaroboticablog.cl/#organization" },
+    "publisher": { "@id": "https://www.ukrabot.cl/#organization" },
     "inLanguage": "es-CL"
   }
   </script>
@@ -41,16 +41,16 @@
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": "https://ingenieriaroboticablog.cl/#organization",
+    "@id": "https://www.ukrabot.cl/#organization",
     "name": "Blog de Ingeniería Robótica",
-    "url": "https://ingenieriaroboticablog.cl/",
-    "logo": "https://ingenieriaroboticablog.cl/logo.png",
+    "url": "https://www.ukrabot.cl/",
+    "logo": "https://www.ukrabot.cl/logo.png",
     "foundingDate": "2023",
     "founder": {
       "@type": "Person",
       "name": "Alberto Gallardo",
       "jobTitle": "Analista Programador Computacional",
-      "url": "https://ingenieriaroboticablog.cl/about.html"
+      "url": "https://www.ukrabot.cl/about"
     },
     "address": {
       "@type": "PostalAddress",
@@ -281,6 +281,12 @@
     .cat-block li { margin-bottom: 9px; }
     .cat-block a { color: var(--text-secondary); text-decoration: none; font-size: 0.87rem; line-height: 1.4; transition: color .2s; }
     .cat-block a:hover { color: var(--accent); }
+    .cat-block a { font-weight: 600; color: var(--accent-2); }
+    .cat-block a:hover { color: var(--accent); text-decoration: underline; }
+    .soon { color: var(--text-muted); font-size: 0.87rem; line-height: 1.4; display: inline; }
+    .soon::after { content: " · Próximamente"; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); opacity: 0.75; white-space: nowrap; }
+    .lite-card.is-soon { opacity: 0.92; border-style: dashed; box-shadow: none; }
+    .lite-card.is-soon:hover { transform: none; box-shadow: none; border-color: var(--border); }
 
     /* Newsletter */
     .newsletter { max-width: 1200px; margin: 0 auto; padding: 90px 24px; border-top: 1px solid var(--border); }
@@ -357,13 +363,13 @@
 
   <header class="site-header" aria-label="Encabezado del sitio">
     <div class="nav-inner">
-      <a href="index.html" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
+      <a href="/" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
       <nav class="nav-links" aria-label="Navegación principal">
         <a href="#latest">Tutoriales</a>
         <a href="#proyecto-destacado">Proyecto del Mes</a>
         <a href="#categories">Categorías</a>
-        <a href="about.html">Sobre Nosotros</a>
-        <a href="contact.html">Contacto</a>
+        <a href="/about">Sobre Nosotros</a>
+        <a href="/contact">Contacto</a>
         <a href="#newsletter">Suscribirse</a>
       </nav>
     </div>
@@ -387,9 +393,9 @@
 
   <section class="stats" aria-label="Estadísticas del sitio">
     <div class="stats-inner">
-      <div class="stat"><h3>72</h3><p>Guías Publicadas</p></div>
-      <div class="stat"><h3>13</h3><p>Categorías Principales</p></div>
-      <div class="stat"><h3>2023</h3><p>Publicando Desde</p></div>
+      <div class="stat"><h3>2</h3><p>Guías Publicadas</p></div>
+      <div class="stat"><h3>13</h3><p>Categorías Planificadas</p></div>
+      <div class="stat"><h3>2026</h3><p>Publicando Desde</p></div>
       <div class="stat"><h3>Chile · Latam</h3><p>Enfoque de Mercado</p></div>
     </div>
   </section>
@@ -398,42 +404,32 @@
 
   <section id="latest" aria-label="Últimos tutoriales">
     <span class="section-label">Empieza Aquí</span>
-    <h2 class="section-title">Construye y Controla un Brazo Robótico de 6 Ejes</h2>
-    <p class="section-sub">Los tres tutoriales principales que sustentan este sitio — diseña y cablea un brazo robótico con Arduino, contrólalo con ROS 2, e intégralo en un flujo de trabajo con PLC industrial.</p>
+    <h2 class="section-title">Guías Publicadas</h2>
+    <p class="section-sub">Nuestras guías completas disponibles hoy: conversión de vehículos a eléctricos y reparación de baterías de herramientas inalámbricas. Cada una es un artículo extenso, con tablas de datos, costos de referencia para Chile y fuentes primarias citadas.</p>
 
     <div class="editorial-note" aria-label="Enfoque editorial">
-      <p><strong>Sobre este sitio:</strong> Blog de Ingeniería Robótica es un proyecto editorial pequeño e independiente enfocado en brazos robóticos de 6 ejes — control con Arduino y ROS 2, diseño mecánico y automatización industrial — además de proyectos educativos con Arduino, sensores e Internet de las Cosas. Los tutoriales que involucran construcciones físicas (cableado con Arduino, piezas impresas en 3D, diseño de pinzas) están basados en prototipado práctico realizado por nuestro equipo. Las reseñas de hardware de fabricantes (FANUC, ABB, KUKA, etc.) están claramente etiquetadas como comparaciones editoriales basadas en especificaciones técnicas, ya que no contamos con acceso físico a brazos robóticos industriales de más de $25.000.000 CLP para realizar pruebas de laboratorio independientes — lo indicamos explícitamente en cada uno de esos artículos en lugar de sugerir pruebas prácticas que no se realizaron.</p>
-      <p>Enlazamos directamente a fuentes primarias — hojas de datos de fabricantes, repositorios de código abierto y organismos de normas de seguridad (ISO, INN, SEC) — siempre que se menciona una cifra o afirmación específica. Si detectas un error o un dato desactualizado, por favor <a href="contact.html">avísanos</a>.</p>
+      <p><strong>Sobre este sitio:</strong> Blog de Ingeniería Robótica es un proyecto editorial pequeño e independiente, escrito y mantenido por una sola persona. Publicamos guías técnicas extensas sobre electrónica aplicada — movilidad eléctrica, baterías y sistemas BMS, Arduino, sensores y automatización — orientadas a makers, técnicos, docentes y estudiantes en Chile y Latinoamérica. Estamos comenzando: preferimos publicar pocas guías bien documentadas antes que llenar el sitio de contenido superficial, por lo que las secciones marcadas como <em>Próximamente</em> corresponden a temas en preparación y todavía no tienen artículo publicado.</p>
+      <p>Enlazamos directamente a fuentes primarias — hojas de datos de fabricantes, repositorios de código abierto y organismos de normas de seguridad (ISO, INN, SEC) — siempre que se menciona una cifra o afirmación específica. Si detectas un error o un dato desactualizado, por favor <a href="/contact">avísanos</a>.</p>
     </div>
 
     <div class="cards" aria-label="Tarjetas de tutoriales">
-      <a href="articles/arduino-robot-arm-tutorial.html" class="card" aria-label="Tutorial de Brazo Robótico con Arduino">
-        <img src="arduino_arm_tutorial.jpg" alt="Un brazo robótico DIY de 6 ejes con servos y piezas impresas en 3D sobre una mesa de trabajo" loading="lazy" width="640" height="210" />
+      <a href="/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico" class="card" aria-label="Guía completa sobre kits de conversión a coche eléctrico">
+        <img src="blog/ev_conversion_hero.jpg" alt="Conversión de un vehículo a eléctrico con motor, controlador y pack de baterías montados en el vano motor" loading="lazy" width="640" height="210" />
         <div class="card-body">
-          <div class="card-tag">Arduino</div>
-          <h3>Construye un Brazo Robótico de 6 Ejes con Arduino</h3>
-          <p>Diseña, cablea y programa un brazo robótico de seis grados de libertad usando un Arduino Mega, un driver de servos PCA9685 y cinemática inversa.</p>
-          <div class="card-footer"><time datetime="2024-11-04">4 nov 2024</time><span>·</span><span>14 min de lectura</span></div>
+          <div class="card-tag">Movilidad Eléctrica</div>
+          <h3>Transforma tu Vehículo: Guía Completa sobre Kits de Conversión a Coche Eléctrico</h3>
+          <p>Tipos de kits, componentes críticos, costos reales, cálculo de autonomía, homologación en Chile y seguridad de alto voltaje — con números realistas, no promesas de marketing.</p>
+          <div class="card-footer"><time datetime="2026-08-10">10 ago 2026</time><span>·</span><span>16 min de lectura</span></div>
         </div>
       </a>
 
-      <a href="articles/ros2-robot-arm-control.html" class="card" aria-label="Tutorial de Control de Brazo Robótico con ROS 2">
-        <img src="ros2_robot_control.jpg" alt="Un brazo robótico colaborativo interactuando con una pantalla táctil HMI mostrando datos de ROS 2" loading="lazy" width="640" height="210" />
+      <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa" class="card" aria-label="Guía completa para reparar baterías de taladros inalámbricos">
+        <img src="blog/battery_repair_hero.jpg" alt="Batería de taladro inalámbrico desarmada mostrando celdas 18650, cinta de níquel y la placa BMS junto a un multímetro" loading="lazy" width="640" height="210" />
         <div class="card-body">
-          <div class="card-tag">ROS 2</div>
-          <h3>Framework ROS 2 Control para Brazos Robóticos</h3>
-          <p>Configura interfaces de hardware ros2_control y gestores de controladores para operar un brazo robótico real o simulado desde ROS 2.</p>
-          <div class="card-footer"><time datetime="2024-10-21">21 oct 2024</time><span>·</span><span>18 min de lectura</span></div>
-        </div>
-      </a>
-
-      <a href="articles/industrial-plc-robotics.html" class="card" aria-label="Tutorial de PLC Industrial y Robótica">
-        <img src="industrial_robot_arm.jpg" alt="Un brazo robótico industrial moderno de 6 ejes en un entorno de manufactura limpio" loading="lazy" width="1024" height="322" />
-        <div class="card-body">
-          <div class="card-tag">Industrial</div>
-          <h3>Programación de PLC para Robótica</h3>
-          <p>Conecta PLC y brazos robóticos con programación en Structured Text, fundamentos de comunicación PROFINET y circuitos de seguridad industrial.</p>
-          <div class="card-footer"><time datetime="2024-10-05">5 oct 2024</time><span>·</span><span>16 min de lectura</span></div>
+          <div class="card-tag">Reparación Electrónica</div>
+          <h3>Cómo Reparar Baterías de Taladros Inalámbricos: BMS y Celdas</h3>
+          <p>Diagnóstico con multímetro, reemplazo de celdas 18650/21700, reparación del BMS, soldadura por puntos, balanceo y seguridad con litio — y cuándo conviene no repararla.</p>
+          <div class="card-footer"><time datetime="2026-08-17">17 ago 2026</time><span>·</span><span>17 min de lectura</span></div>
         </div>
       </a>
     </div>
@@ -442,79 +438,69 @@
       <img src="author_alberto.jpg" alt="Fotografía de Alberto Gallardo, analista programador computacional" width="68" height="68" loading="lazy" />
       <div>
         <h3>Escrito y mantenido por Alberto Gallardo</h3>
-        <p>Alberto Gallardo es Analista Programador Computacional, con 18 años de experiencia en desarrollo y educación. Escribe y mantiene los tutoriales de este sitio, combinando su trayectoria en programación con su pasión por enseñar robótica, Arduino, sensores y automatización a estudiantes, docentes y profesionales en Chile y Latinoamérica. Las reseñas de hardware de fabricantes se investigan a partir de hojas de datos oficiales y casos de estudio públicos, no de pruebas de laboratorio independientes — esto se indica en cada página de reseña.</p>
+        <p>Alberto Gallardo es Analista Programador Computacional, con 18 años de experiencia en desarrollo y educación. Escribe y mantiene los tutoriales de este sitio, combinando su trayectoria en programación con su pasión por enseñar robótica, Arduino, sensores y automatización a estudiantes, docentes y profesionales en Chile y Latinoamérica. Cada guía se apoya en documentación técnica de fabricantes, normativa vigente y trabajo práctico de banco; cuando una cifra proviene de una fuente externa, se enlaza directamente a ella.</p>
         <div class="author-links">
-          <a href="about.html">Biografía completa →</a>
+          <a href="/about">Biografía completa →</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section aria-label="Artículos destacados" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
-    <span class="section-label">Artículos Destacados</span>
-    <h2 class="section-title">Una Muestra Transversal del Sitio</h2>
-    <p class="section-sub">Una selección de guías de distintos temas — desde teoría de cinemática inversa hasta cumplimiento de normas de seguridad industrial y comparativas de hardware.</p>
+  <section aria-label="Temas en preparación" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <span class="section-label">Hoja de Ruta Editorial</span>
+    <h2 class="section-title">En Qué Estamos Trabajando</h2>
+    <p class="section-sub">Somos un blog joven y publicamos de forma pausada para mantener la calidad. Estas son las guías que están en preparación; se irán habilitando como enlaces a medida que se publiquen.</p>
     <div class="lite-cards">
-      <a href="articles/robot-arm-inverse-kinematics.html" class="lite-card">
-        <div class="card-tag">Cinemática</div>
-        <h4>Cinemática Inversa para Brazos Robóticos de 6 Ejes</h4>
-        <p>Soluciones analíticas, ángulos de Euler y ejemplos de código en Arduino y ROS 2 para resolver cinemática inversa de 6 grados de libertad.</p>
-      </a>
-      <a href="articles/fanuc-robot-arm-review.html" class="lite-card">
-        <div class="card-tag">Comparativa de Hardware</div>
-        <h4>Reseña de Brazos Robóticos FANUC</h4>
-        <p>Especificaciones, referencias de precio y una comparación basada en datos técnicos frente a competidores directos para los brazos robóticos industriales de 6 ejes de FANUC.</p>
-      </a>
-      <a href="articles/robot-arm-safety-chile.html" class="lite-card">
-        <div class="card-tag">Seguridad</div>
-        <h4>Normas de Seguridad para Brazos Robóticos en Chile</h4>
-        <p>ISO 10218, ISO/TS 15066, Ley 16.744, cortinas de luz y evaluaciones de riesgo explicadas para implementaciones en plantas chilenas y latinoamericanas.</p>
-      </a>
-      <a href="articles/universal-robots-ur20.html" class="lite-card">
-        <div class="card-tag">Comparativa de Hardware</div>
-        <h4>Reseña Universal Robots UR20</h4>
-        <p>Capacidad de carga, alcance y notas de integración para uno de los brazos robóticos colaborativos más utilizados, según documentación del fabricante.</p>
-      </a>
-      <a href="articles/robot-arm-roi-calculator.html" class="lite-card">
-        <div class="card-tag">Negocios</div>
-        <h4>Calculadora de ROI para Brazos Robóticos</h4>
-        <p>Un marco práctico para estimar el período de recuperación de la inversión y el costo total de propiedad antes de comprar un brazo robótico.</p>
-      </a>
-      <a href="articles/robot-arm-gripper-design.html" class="lite-card">
-        <div class="card-tag">Diseño Mecánico</div>
-        <h4>Fundamentos de Diseño de Pinzas para Brazos Robóticos</h4>
-        <p>Geometría de mordazas, métodos de accionamiento y selección de materiales para diseñar una pinza robótica confiable.</p>
-      </a>
+      <div class="lite-card is-soon">
+        <div class="card-tag">Movilidad Eléctrica · Próximamente</div>
+        <h4>Cuánto Cuesta Convertir un Auto a Eléctrico en Chile</h4>
+        <p>Desglose de costos reales en pesos chilenos: kit, pack de baterías, mano de obra de taller, homologación y trámites en la Planta de Revisión Técnica.</p>
+      </div>
+      <div class="lite-card is-soon">
+        <div class="card-tag">Baterías · Próximamente</div>
+        <h4>Baterías LFP vs NMC: Cuál Elegir</h4>
+        <p>Densidad energética, ciclos de vida, comportamiento térmico y costo por kWh para decidir la química correcta según tu proyecto.</p>
+      </div>
+      <div class="lite-card is-soon">
+        <div class="card-tag">Arduino · Próximamente</div>
+        <h4>Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch</h4>
+        <p>Instalación del IDE, anatomía de la placa, tu primer programa y los errores más comunes de quien recién parte.</p>
+      </div>
+      <div class="lite-card is-soon">
+        <div class="card-tag">Sensores · Próximamente</div>
+        <h4>Guía Esencial de Sensores para Arduino</h4>
+        <p>Cómo elegir, conectar y leer los sensores más usados — temperatura, distancia, movimiento y gas — con código comentado en español.</p>
+      </div>
     </div>
   </section>
 
   <section id="proyecto-destacado" aria-label="Proyecto destacado del mes">
-    <span class="section-label">Extra · Proyecto del Mes</span>
-    <h2 class="section-title">Proyecto Destacado: Estación Meteorológica con Arduino</h2>
-    <p class="section-sub">Cada mes elegimos un proyecto completo, ideal para aprender en casa o trabajar en el aula. Este mes: una estación meteorológica con sensores, pantalla OLED y registro de datos — perfecta para docentes y estudiantes.</p>
+    <span class="section-label">Extra · Destacado del Mes</span>
+    <h2 class="section-title">Destacado: Reparar la Batería de tu Taladro</h2>
+    <p class="section-sub">Cada mes destacamos una guía completa. Este mes: cómo diagnosticar y revivir la batería de un taladro inalámbrico en lugar de gastar en una nueva — un trabajo de banco que combina electrónica, seguridad con litio y criterio de costos.</p>
 
     <div class="featured-project">
       <div class="fp-img">
-        <img src="proyecto_destacado.jpg" alt="Estación meteorológica escolar construida con Arduino, sensor DHT22 y pantalla OLED sobre un escritorio de sala de clases" loading="lazy" />
+        <img src="blog/drill_battery_cells.jpg" alt="Celdas de litio 18650 nuevas junto a celdas usadas y corroídas retiradas de una batería de taladro, con una punta de multímetro midiendo voltaje" loading="lazy" />
         <span class="fp-badge">Nuevo · Agosto 2026</span>
       </div>
       <div class="fp-body">
-        <div class="card-tag">Arduino · Sensores · Educación</div>
-        <h3>Estación Meteorológica Escolar paso a paso</h3>
-        <p>Mide temperatura y humedad con un sensor DHT22, muestra los datos en una pantalla OLED y aprende a registrar lecturas para graficarlas después. Un proyecto de 2 horas que reúne electrónica básica, programación y análisis de datos.</p>
+        <div class="card-tag">Baterías · BMS · Reparación</div>
+        <h3>Diagnóstico y reemplazo de celdas paso a paso</h3>
+        <p>La mayoría de las baterías "muertas" tienen solo una o dos celdas caídas dentro de un pack sano. La guía cubre cómo medir celda por celda, distinguir una falla del BMS de una falla de celdas, y ejecutar el reemplazo sin arriesgar una fuga térmica.</p>
         <ul class="fp-list">
-          <li>Código completo comentado en español, listo para copiar</li>
-          <li>Lista de materiales con precios de referencia para Chile</li>
-          <li>Versión para el aula con actividades guiadas para estudiantes</li>
+          <li>Tabla de síntomas y su causa más probable</li>
+          <li>Comparación de químicas NiCd, NiMH y Li-ion</li>
+          <li>Costos reales de reparar frente a comprar una batería nueva</li>
         </ul>
         <div class="fp-chips" aria-label="Detalles del proyecto">
-          <span>Nivel: Principiante</span>
-          <span>Costo aprox: $25.000 CLP</span>
-          <span>Duración: 2 horas</span>
+          <span>Nivel: Intermedio</span>
+          <span>Ahorro típico: 50–70%</span>
+          <span>Lectura: 17 minutos</span>
         </div>
         <div class="fp-cta">
-          <a href="articles/arduino-estacion-meteorologica.html" class="btn btn-primary">Ver el tutorial completo</a>
-          <span class="fp-note">Incluye planificación docente descargable</span>
+          <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa" class="btn btn-primary">Leer la guía completa</a>
+          <span class="fp-note">Incluye protocolo de seguridad con litio</span>
         </div>
       </div>
     </div>
@@ -522,175 +508,187 @@
 
   <section id="categories" aria-label="Explora todos los tutoriales por categoría" style="border-top:1px solid var(--border);">
     <span class="section-label">Explora la Biblioteca Completa</span>
-    <h2 class="section-title">Todos los Tutoriales, Organizados por Tema</h2>
-    <p class="section-sub">Cada guía publicada hasta ahora, agrupada en trece categorías prácticas para que llegues directo a lo que necesitas — ahora con Arduino desde cero, sensores, IoT, robótica educativa y movilidad eléctrica.</p>
+    <h2 class="section-title">Temario del Blog, Organizado por Tema</h2>
+    <p class="section-sub">Este es el plan editorial completo del blog, agrupado en trece categorías. Los títulos en <strong>azul</strong> ya están publicados y puedes leerlos ahora; los demás aparecen en gris porque están en preparación y se irán habilitando a medida que se publiquen.</p>
 
     <div class="cat-grid">
 
       <div class="cat-block">
         <h3>Movilidad Eléctrica y Conversión EV</h3>
-        <span class="cat-count">5 tutoriales · Nuevo</span>
+        <span class="cat-count">1 publicado · 4 en preparación</span>
         <ul>
-          <li><a href="blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico.html">Transforma tu Vehículo: Guía Completa sobre Kits de Conversión a Coche Eléctrico</a></li>
-          <li><a href="articles/ev-conversion-costos-chile.html">Cuánto Cuesta Convertir un Auto a Eléctrico en Chile</a></li>
-          <li><a href="articles/ev-baterias-lfp-vs-nmc.html">Baterías LFP vs NMC para Conversiones Eléctricas</a></li>
-          <li><a href="articles/ev-homologacion-chile.html">Homologación y Trámites para Vehículos Convertidos</a></li>
-          <li><a href="articles/ev-motor-selection.html">Cómo Elegir el Motor Eléctrico para tu Conversión</a></li>
+          <li><a href="/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico">Transforma tu Vehículo: Guía Completa sobre Kits de Conversión a Coche Eléctrico</a></li>
+          <li><span class="soon">Cuánto Cuesta Convertir un Auto a Eléctrico en Chile</span></li>
+          <li><span class="soon">Baterías LFP vs NMC para Conversiones Eléctricas</span></li>
+          <li><span class="soon">Homologación y Trámites para Vehículos Convertidos</span></li>
+          <li><span class="soon">Cómo Elegir el Motor Eléctrico para tu Conversión</span></li>
+        </ul>
+      </div>
+
+      <div class="cat-block">
+        <h3>Baterías y Reparación Electrónica</h3>
+        <span class="cat-count">1 publicado · 4 en preparación</span>
+        <ul>
+          <li><a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">Cómo Reparar Baterías de Taladros Inalámbricos: BMS y Celdas</a></li>
+          <li><span class="soon">Cómo Elegir Celdas 18650 y 21700 sin Caer en Falsificaciones</span></li>
+          <li><span class="soon">Soldadura por Puntos: Guía de Compra y Uso del Spot Welder</span></li>
+          <li><span class="soon">Diagnóstico de BMS: Reparar o Reemplazar la Placa de Protección</span></li>
+          <li><span class="soon">Reacondicionar Baterías de Scooter y Bicicleta Eléctrica</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Arduino Básico y Proyectos</h3>
-        <span class="cat-count">6 tutoriales · Nuevo</span>
+        <span class="cat-count">6 temas planificados</span>
         <ul>
-          <li><a href="articles/arduino-primeros-pasos.html">Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch</a></li>
-          <li><a href="articles/arduino-semaforo-leds.html">Semáforo con LEDs y Arduino para Principiantes</a></li>
-          <li><a href="articles/arduino-estacion-meteorologica.html">Estación Meteorológica con Arduino y Pantalla OLED</a></li>
-          <li><a href="articles/arduino-radar-ultrasonico.html">Radar con Sensor Ultrasónico y Processing</a></li>
-          <li><a href="articles/arduino-bluetooth-hc05.html">Controla tu Arduino por Bluetooth con el Módulo HC-05</a></li>
-          <li><a href="articles/arduino-piano-buzzer.html">Piano Electrónico con Botones y Buzzer</a></li>
+          <li><span class="soon">Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch</span></li>
+          <li><span class="soon">Semáforo con LEDs y Arduino para Principiantes</span></li>
+          <li><span class="soon">Estación Meteorológica con Arduino y Pantalla OLED</span></li>
+          <li><span class="soon">Radar con Sensor Ultrasónico y Processing</span></li>
+          <li><span class="soon">Controla tu Arduino por Bluetooth con el Módulo HC-05</span></li>
+          <li><span class="soon">Piano Electrónico con Botones y Buzzer</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Sensores y Electrónica</h3>
-        <span class="cat-count">6 tutoriales · Nuevo</span>
+        <span class="cat-count">6 temas planificados</span>
         <ul>
-          <li><a href="articles/guia-sensores-arduino.html">Guía Esencial de Sensores para Arduino</a></li>
-          <li><a href="articles/sensor-ultrasonico-hcsr04.html">Sensor Ultrasónico HC-SR04: Medición de Distancias Paso a Paso</a></li>
-          <li><a href="articles/sensor-dht22-temperatura.html">Sensor DHT22: Temperatura y Humedad con Arduino</a></li>
-          <li><a href="articles/sensor-infrarrojo-siguelineas.html">Sensores Infrarrojos para Robots Siguelíneas</a></li>
-          <li><a href="articles/sensor-mq2-gas.html">Detector de Gas con Sensor MQ-2 y Alarma Sonora</a></li>
-          <li><a href="articles/sensor-pir-movimiento.html">Sensor PIR de Movimiento para Proyectos de Seguridad</a></li>
+          <li><span class="soon">Guía Esencial de Sensores para Arduino</span></li>
+          <li><span class="soon">Sensor Ultrasónico HC-SR04: Medición de Distancias Paso a Paso</span></li>
+          <li><span class="soon">Sensor DHT22: Temperatura y Humedad con Arduino</span></li>
+          <li><span class="soon">Sensores Infrarrojos para Robots Siguelíneas</span></li>
+          <li><span class="soon">Detector de Gas con Sensor MQ-2 y Alarma Sonora</span></li>
+          <li><span class="soon">Sensor PIR de Movimiento para Proyectos de Seguridad</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Internet de las Cosas (IoT)</h3>
-        <span class="cat-count">5 tutoriales · Nuevo</span>
+        <span class="cat-count">5 temas planificados</span>
         <ul>
-          <li><a href="articles/domotica-esp32-mqtt.html">Domótica con ESP32 y MQTT: Controla tu Casa desde el Celular</a></li>
-          <li><a href="articles/monitoreo-blynk.html">Monitoreo Remoto de Sensores con Blynk</a></li>
-          <li><a href="articles/esp32-cam-vigilancia.html">Cámara de Vigilancia con ESP32-CAM</a></li>
-          <li><a href="articles/riego-automatico-iot.html">Sistema de Riego Automático con Sensor de Humedad de Suelo</a></li>
-          <li><a href="articles/thingspeak-datos.html">Registra y Grafica Datos en la Nube con ThingSpeak</a></li>
+          <li><span class="soon">Domótica con ESP32 y MQTT: Controla tu Casa desde el Celular</span></li>
+          <li><span class="soon">Monitoreo Remoto de Sensores con Blynk</span></li>
+          <li><span class="soon">Cámara de Vigilancia con ESP32-CAM</span></li>
+          <li><span class="soon">Sistema de Riego Automático con Sensor de Humedad de Suelo</span></li>
+          <li><span class="soon">Registra y Grafica Datos en la Nube con ThingSpeak</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Robótica Educativa y Docencia</h3>
-        <span class="cat-count">5 tutoriales · Nuevo</span>
+        <span class="cat-count">5 temas planificados</span>
         <ul>
-          <li><a href="articles/robotica-en-el-aula.html">Cómo Llevar la Robótica al Aula: Guía para Docentes</a></li>
-          <li><a href="articles/kits-robotica-educativa.html">Los Mejores Kits de Robótica Educativa para Colegios</a></li>
-          <li><a href="articles/programacion-por-bloques.html">Programación por Bloques con mBlock y Scratch para Arduino</a></li>
-          <li><a href="articles/proyectos-feria-cientifica.html">12 Proyectos de Robótica para la Feria Científica</a></li>
-          <li><a href="articles/competencias-robotica-escolar.html">Cómo Preparar a tu Equipo para Competencias de Robótica Escolar</a></li>
+          <li><span class="soon">Cómo Llevar la Robótica al Aula: Guía para Docentes</span></li>
+          <li><span class="soon">Los Mejores Kits de Robótica Educativa para Colegios</span></li>
+          <li><span class="soon">Programación por Bloques con mBlock y Scratch para Arduino</span></li>
+          <li><span class="soon">12 Proyectos de Robótica para la Feria Científica</span></li>
+          <li><span class="soon">Cómo Preparar a tu Equipo para Competencias de Robótica Escolar</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Arduino y Control Embebido</h3>
-        <span class="cat-count">6 tutoriales</span>
+        <span class="cat-count">6 temas planificados</span>
         <ul>
-          <li><a href="articles/arduino-robot-arm-tutorial.html">Construye un Brazo Robótico de 6 Ejes con Arduino</a></li>
-          <li><a href="articles/arduino-mega-robot-wiring.html">Guía de Cableado con Arduino Mega para Brazos Robóticos</a></li>
-          <li><a href="articles/esp32-robot-controller.html">ESP32 como Controlador de Brazo Robótico</a></li>
-          <li><a href="articles/smart-servo-robot-arm.html">Servos Inteligentes para Brazos Robóticos</a></li>
-          <li><a href="articles/joint-encoders-robot-arm.html">Encoders de Articulación para Retroalimentación en Brazos Robóticos</a></li>
-          <li><a href="articles/force-torque-sensors-robot.html">Sensores de Fuerza-Torque para Brazos Robóticos</a></li>
+          <li><span class="soon">Construye un Brazo Robótico de 6 Ejes con Arduino</span></li>
+          <li><span class="soon">Guía de Cableado con Arduino Mega para Brazos Robóticos</span></li>
+          <li><span class="soon">ESP32 como Controlador de Brazo Robótico</span></li>
+          <li><span class="soon">Servos Inteligentes para Brazos Robóticos</span></li>
+          <li><span class="soon">Encoders de Articulación para Retroalimentación en Brazos Robóticos</span></li>
+          <li><span class="soon">Sensores de Fuerza-Torque para Brazos Robóticos</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>ROS 2, Cinemática y Software</h3>
-        <span class="cat-count">5 tutoriales</span>
+        <span class="cat-count">5 temas planificados</span>
         <ul>
-          <li><a href="articles/ros2-robot-arm-control.html">Framework ROS 2 Control para Brazos Robóticos</a></li>
-          <li><a href="articles/robot-arm-inverse-kinematics.html">Cinemática Inversa para Brazos Robóticos de 6 Ejes</a></li>
-          <li><a href="articles/kinematic-solver-code.html">Código de un Solver de Cinemática Inversa</a></li>
-          <li><a href="articles/robot-arm-simulation-software.html">Comparativa de Software de Simulación de Brazos Robóticos</a></li>
-          <li><a href="articles/robot-arm-programming-languages.html">Lenguajes de Programación para Brazos Robóticos</a></li>
+          <li><span class="soon">Framework ROS 2 Control para Brazos Robóticos</span></li>
+          <li><span class="soon">Cinemática Inversa para Brazos Robóticos de 6 Ejes</span></li>
+          <li><span class="soon">Código de un Solver de Cinemática Inversa</span></li>
+          <li><span class="soon">Comparativa de Software de Simulación de Brazos Robóticos</span></li>
+          <li><span class="soon">Lenguajes de Programación para Brazos Robóticos</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Automatización Industrial y Seguridad</h3>
-        <span class="cat-count">8 tutoriales</span>
+        <span class="cat-count">8 temas planificados</span>
         <ul>
-          <li><a href="articles/industrial-plc-robotics.html">Programación de PLC para Robótica</a></li>
-          <li><a href="articles/robot-arm-plc-integration.html">Integrando Brazos Robóticos con PLC</a></li>
-          <li><a href="articles/robot-risk-assessment.html">Guía de Evaluación de Riesgo para Brazos Robóticos</a></li>
-          <li><a href="articles/robot-light-curtain-integration.html">Integración de Cortinas de Luz en Celdas Robóticas</a></li>
-          <li><a href="articles/robot-arm-emergency-stop.html">Sistemas de Parada de Emergencia para Brazos Robóticos</a></li>
-          <li><a href="articles/robot-arm-safety-chile.html">Normas de Seguridad para Brazos Robóticos en Chile</a></li>
-          <li><a href="articles/robot-arm-welding.html">Brazos Robóticos para Aplicaciones de Soldadura</a></li>
-          <li><a href="articles/collaborative-assembly-arm.html">Robots Colaborativos para Líneas de Ensamblaje</a></li>
+          <li><span class="soon">Programación de PLC para Robótica</span></li>
+          <li><span class="soon">Integrando Brazos Robóticos con PLC</span></li>
+          <li><span class="soon">Guía de Evaluación de Riesgo para Brazos Robóticos</span></li>
+          <li><span class="soon">Integración de Cortinas de Luz en Celdas Robóticas</span></li>
+          <li><span class="soon">Sistemas de Parada de Emergencia para Brazos Robóticos</span></li>
+          <li><span class="soon">Normas de Seguridad para Brazos Robóticos en Chile</span></li>
+          <li><span class="soon">Brazos Robóticos para Aplicaciones de Soldadura</span></li>
+          <li><span class="soon">Robots Colaborativos para Líneas de Ensamblaje</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Diseño Mecánico y Materiales</h3>
-        <span class="cat-count">10 tutoriales</span>
+        <span class="cat-count">10 temas planificados</span>
         <ul>
-          <li><a href="articles/3d-printed-robot-arm-parts.html">Piezas Impresas en 3D para Brazos Robóticos</a></li>
-          <li><a href="articles/best-3d-printer-robot-parts.html">Mejores Impresoras 3D para Piezas de Brazos Robóticos</a></li>
-          <li><a href="articles/aluminum-robot-frame.html">Diseño de Chasis de Aluminio para Robots</a></li>
-          <li><a href="articles/carbon-fiber-robot-parts.html">Piezas de Fibra de Carbono para Brazos Robóticos</a></li>
-          <li><a href="articles/belt-drive-vs-gear-drive.html">Transmisión por Correa vs. por Engranajes en Articulaciones Robóticas</a></li>
-          <li><a href="articles/harmonic-drive-review.html">Reductores Harmonic Drive para Articulaciones Robóticas</a></li>
-          <li><a href="articles/cable-management-robot.html">Gestión de Cables para Brazos Robóticos</a></li>
-          <li><a href="articles/robot-arm-cooling.html">Sistemas de Refrigeración para Motores de Brazos Robóticos</a></li>
-          <li><a href="articles/robot-arm-dust-protection.html">Protección contra Polvo y Grado IP en Brazos Robóticos</a></li>
-          <li><a href="articles/robot-arm-noise-reduction.html">Reducción de Ruido en la Operación de Brazos Robóticos</a></li>
+          <li><span class="soon">Piezas Impresas en 3D para Brazos Robóticos</span></li>
+          <li><span class="soon">Mejores Impresoras 3D para Piezas de Brazos Robóticos</span></li>
+          <li><span class="soon">Diseño de Chasis de Aluminio para Robots</span></li>
+          <li><span class="soon">Piezas de Fibra de Carbono para Brazos Robóticos</span></li>
+          <li><span class="soon">Transmisión por Correa vs. por Engranajes en Articulaciones Robóticas</span></li>
+          <li><span class="soon">Reductores Harmonic Drive para Articulaciones Robóticas</span></li>
+          <li><span class="soon">Gestión de Cables para Brazos Robóticos</span></li>
+          <li><span class="soon">Sistemas de Refrigeración para Motores de Brazos Robóticos</span></li>
+          <li><span class="soon">Protección contra Polvo y Grado IP en Brazos Robóticos</span></li>
+          <li><span class="soon">Reducción de Ruido en la Operación de Brazos Robóticos</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Efectores Finales y Pinzas</h3>
-        <span class="cat-count">4 tutoriales</span>
+        <span class="cat-count">4 temas planificados</span>
         <ul>
-          <li><a href="articles/robot-arm-gripper-design.html">Fundamentos de Diseño de Pinzas para Brazos Robóticos</a></li>
-          <li><a href="articles/vacuum-gripper-robot.html">Pinzas de Vacío para Brazos Robóticos</a></li>
-          <li><a href="articles/magnetic-gripper-robot.html">Pinzas Magnéticas para Brazos Robóticos</a></li>
-          <li><a href="articles/robot-end-effector-selection.html">Cómo Seleccionar un Efector Final para Robots</a></li>
+          <li><span class="soon">Fundamentos de Diseño de Pinzas para Brazos Robóticos</span></li>
+          <li><span class="soon">Pinzas de Vacío para Brazos Robóticos</span></li>
+          <li><span class="soon">Pinzas Magnéticas para Brazos Robóticos</span></li>
+          <li><span class="soon">Cómo Seleccionar un Efector Final para Robots</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Mantenimiento, Calibración y Visión</h3>
-        <span class="cat-count">4 tutoriales</span>
+        <span class="cat-count">4 temas planificados</span>
         <ul>
-          <li><a href="articles/robot-arm-calibration.html">Guía de Calibración de Brazos Robóticos</a></li>
-          <li><a href="articles/robot-arm-maintenance.html">Programa de Mantenimiento para Brazos Robóticos</a></li>
-          <li><a href="articles/robot-arm-vision-system.html">Sistemas de Visión Computacional para Brazos Robóticos</a></li>
-          <li><a href="articles/robot-area-scanner.html">Escáneres de Área para Seguridad en Celdas Robóticas</a></li>
+          <li><span class="soon">Guía de Calibración de Brazos Robóticos</span></li>
+          <li><span class="soon">Programa de Mantenimiento para Brazos Robóticos</span></li>
+          <li><span class="soon">Sistemas de Visión Computacional para Brazos Robóticos</span></li>
+          <li><span class="soon">Escáneres de Área para Seguridad en Celdas Robóticas</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Reseñas y Guías de Compra</h3>
-        <span class="cat-count">7 tutoriales</span>
+        <span class="cat-count">7 temas planificados</span>
         <ul>
-          <li><a href="articles/fanuc-robot-arm-review.html">Reseña de Brazos Robóticos FANUC</a></li>
-          <li><a href="articles/abb-robot-arm-review.html">Reseña de Brazos Robóticos ABB</a></li>
-          <li><a href="articles/kuka-robot-arm-review.html">Reseña de Brazos Robóticos KUKA</a></li>
-          <li><a href="articles/universal-robots-ur20.html">Reseña Universal Robots UR20</a></li>
-          <li><a href="articles/standard-bots-ro1.html">Reseña Standard Bots RO1</a></li>
-          <li><a href="articles/collaborative-robot-arm-2026.html">Comparativa de los Mejores Robots Colaborativos</a></li>
-          <li><a href="articles/future-6-dof-robot-arms.html">El Futuro de los Brazos Robóticos de 6 Ejes</a></li>
+          <li><span class="soon">Reseña de Brazos Robóticos FANUC</span></li>
+          <li><span class="soon">Reseña de Brazos Robóticos ABB</span></li>
+          <li><span class="soon">Reseña de Brazos Robóticos KUKA</span></li>
+          <li><span class="soon">Reseña Universal Robots UR20</span></li>
+          <li><span class="soon">Reseña Standard Bots RO1</span></li>
+          <li><span class="soon">Comparativa de los Mejores Robots Colaborativos</span></li>
+          <li><span class="soon">El Futuro de los Brazos Robóticos de 6 Ejes</span></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Negocios, ROI y Mercado</h3>
-        <span class="cat-count">5 tutoriales</span>
+        <span class="cat-count">5 temas planificados</span>
         <ul>
-          <li><a href="articles/robot-arm-leasing-buying.html">Arrendar vs. Comprar un Brazo Robótico</a></li>
-          <li><a href="articles/robot-arm-roi-calculator.html">Calculadora de ROI para Brazos Robóticos</a></li>
-          <li><a href="articles/robot-arm-payload-calculator.html">Calculadora de Capacidad de Carga para Brazos Robóticos</a></li>
-          <li><a href="articles/6-axis-robot-market-2026.html">Perspectivas del Mercado de Robots de 6 Ejes</a></li>
-          <li><a href="articles/robot-arm-training-program.html">Cómo Diseñar un Programa de Capacitación en Robótica</a></li>
+          <li><span class="soon">Arrendar vs. Comprar un Brazo Robótico</span></li>
+          <li><span class="soon">Calculadora de ROI para Brazos Robóticos</span></li>
+          <li><span class="soon">Calculadora de Capacidad de Carga para Brazos Robóticos</span></li>
+          <li><span class="soon">Perspectivas del Mercado de Robots de 6 Ejes</span></li>
+          <li><span class="soon">Cómo Diseñar un Programa de Capacitación en Robótica</span></li>
         </ul>
       </div>
 
@@ -717,7 +715,7 @@
       <h2>¿Tienes preguntas sobre un proyecto de robótica o Arduino?</h2>
       <p>Envíanos una pregunta o corrección y la revisaremos para una futura actualización.</p>
       <div class="form-row" aria-label="Contacto por boletín">
-        <a class="btn btn-primary" href="contact.html">Contáctanos para novedades</a>
+        <a class="btn btn-primary" href="/contact">Contáctanos para novedades</a>
       </div>
     </div>
   </section>
@@ -725,32 +723,32 @@
   <footer aria-label="Pie de página del sitio">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="index.html" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
+        <a href="/" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
         <p>Editorial independiente sobre automatización industrial, brazos robóticos, Arduino, sensores y ROS 2 para makers, docentes e ingenieros en Chile y Latinoamérica. Escrita y mantenida por Alberto Gallardo.</p>
       </div>
       <div class="footer-links">
         <div>
           <h4>Tutoriales Populares</h4>
           <ul>
-            <li><a href="articles/arduino-robot-arm-tutorial.html">Brazo Robótico con Arduino</a></li>
-            <li><a href="articles/arduino-primeros-pasos.html">Primeros Pasos con Arduino</a></li>
-            <li><a href="articles/guia-sensores-arduino.html">Guía de Sensores</a></li>
-            <li><a href="articles/ros2-robot-arm-control.html">Control con ROS 2</a></li>
-            <li><a href="articles/industrial-plc-robotics.html">PLC Industrial</a></li>
+            <li><span class="soon">Brazo Robótico con Arduino</span></li>
+            <li><span class="soon">Primeros Pasos con Arduino</span></li>
+            <li><span class="soon">Guía de Sensores</span></li>
+            <li><span class="soon">Control con ROS 2</span></li>
+            <li><span class="soon">PLC Industrial</span></li>
           </ul>
         </div>
         <div>
           <h4>Empresa</h4>
           <ul>
-            <li><a href="about.html">Sobre Nosotros</a></li>
-            <li><a href="contact.html">Contacto</a></li>
+            <li><a href="/about">Sobre Nosotros</a></li>
+            <li><a href="/contact">Contacto</a></li>
           </ul>
         </div>
         <div>
           <h4>Legal</h4>
           <ul>
-            <li><a href="privacy.html">Política de Privacidad</a></li>
-            <li><a href="terms.html">Términos y Condiciones</a></li>
+            <li><a href="/privacy">Política de Privacidad</a></li>
+            <li><a href="/terms">Términos y Condiciones</a></li>
           </ul>
         </div>
       </div>
@@ -768,7 +766,7 @@
       <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
         Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
         Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
-        <a id="rel-consent-privacy" href="privacy.html" style="color:#2f6fb0;">Política de Privacidad</a>.
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
       </p>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
