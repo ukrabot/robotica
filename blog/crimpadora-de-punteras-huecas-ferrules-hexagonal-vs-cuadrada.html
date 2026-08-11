@@ -1,1 +1,642 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>Crimpadora de Punteras Huecas (Ferrules): Hexagonal vs Cuadrada — Guía Técnica Completa</title>
+<meta name="description" content="Guía técnica sobre crimpado de punteras huecas (ferrules): perfil hexagonal vs cuadrado, qué exige la norma DIN 46228, cómo elegir la crimpadora correcta, errores comunes y costos de referencia en Chile.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Crimpadora de Punteras Huecas (Ferrules): Hexagonal vs Cuadrada — Guía Técnica Completa">
+<meta property="og:description" content="Perfil hexagonal vs cuadrado, norma DIN 46228, selección de matrices, proceso de crimpado paso a paso, errores comunes y costos de referencia en Chile.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/ferrule_crimp_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Técnica: Crimpadora de Punteras Huecas — Hexagonal vs Cuadrada">
+<meta name="twitter:description" content="Perfil hexagonal vs cuadrado, norma DIN 46228, selección de matrices y errores comunes de crimpado.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/ferrule_crimp_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Crimpadora de Punteras Huecas (Ferrules): Hexagonal vs Cuadrada — Guía Técnica Completa",
+  "description":"Guía técnica sobre crimpado de punteras huecas (ferrules): comparación de perfiles hexagonal y cuadrado, requisitos de la norma DIN 46228 e IEC 60947-7-1, selección de crimpadora y matriz, proceso de crimpado correcto, errores comunes y costos de referencia en Chile.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-24",
+  "dateModified":"2026-08-24",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada"},
+  "image":"https://www.ukrabot.cl/blog/ferrule_crimp_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Crimpadora de trinquete (autoajustable o de matrices intercambiables), punteras huecas (ferrules) de distintas secciones, pelacables, calibre o multímetro para verificar sección real del conductor, referencia de la norma DIN 46228",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Crimpadora de Punteras Huecas: Hexagonal vs Cuadrada","item":"https://www.ukrabot.cl/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Es realmente necesario usar puntera hueca en cables trenzados o flexibles?","acceptedAnswer":{"@type":"Answer","text":"En bornes de tornillo o de resorte no diseñados para cable trenzado desnudo, sí es muy recomendable. Sin puntera, los hilos individuales pueden escaparse de la mordaza, romperse por fatiga tras varios apriete-desapriete, u oxidarse de forma desigual entre hilos, generando puntos calientes. La puntera unifica la sección, protege los hilos y entrega una superficie de contacto uniforme y repetible."}},
+    {"@type":"Question","name":"¿Cuál es la diferencia real entre crimpado hexagonal y cuadrado?","acceptedAnswer":{"@type":"Answer","text":"El crimpado hexagonal comprime el tubo metálico desde seis lados, logrando una deformación casi circular y uniforme alrededor de los hilos, con menor espacio de aire remanente, mayor fuerza de retención y resistencia de contacto más estable en el tiempo. El crimpado cuadrado comprime desde cuatro lados; es adecuado para secciones pequeñas y trabajos menos exigentes, pero suele dejar más espacio de aire en las esquinas y una compresión menos homogénea que la hexagonal."}},
+    {"@type":"Question","name":"¿Puedo usar una crimpadora barata de perfil cuadrado para trabajo profesional?","acceptedAnswer":{"@type":"Answer","text":"Para secciones pequeñas (hasta aproximadamente 6 mm²) en aplicaciones de baja criticidad, una crimpadora cuadrada de trinquete de buena calidad puede dar resultados aceptables. Para tableros de control industrial, maquinaria certificada, y en general para secciones mayores a 6 mm², la práctica de la industria y los fabricantes de bornes recomiendan crimpado hexagonal para asegurar la fuerza de retención y la resistencia de contacto exigidas por la norma DIN 46228 parte 4."}},
+    {"@type":"Question","name":"¿Cómo sé qué tamaño de puntera y de matriz debo usar?","acceptedAnswer":{"@type":"Answer","text":"Mide o confirma la sección real del conductor (no confíes solo en la impresión del cable) y elige la puntera cuya sección nominal en mm² coincida exactamente. Luego selecciona en la crimpadora la matriz o el rango de autoajuste correspondiente a esa misma sección; usar una matriz de un tamaño distinto al de la puntera es la causa más común de un crimpado defectuoso, aunque el resultado se vea aceptable a simple vista."}},
+    {"@type":"Question","name":"¿Qué pasa si crimpo con una herramienta genérica y una puntera de otra marca?","acceptedAnswer":{"@type":"Answer","text":"En la mayoría de los casos funciona sin problema si ambas cumplen las dimensiones estándar de la sección declarada. Sin embargo, los fabricantes que certifican combinaciones específicas de herramienta y puntera (por ejemplo, para paneles con certificación CE bajo IEC 60204-1) solo garantizan el resultado ensayado con su propia combinación; mezclar marcas puede seguir siendo seguro en la práctica, pero técnicamente ya no está cubierto por esa certificación conjunta."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta,.author-box{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.author-box{display:flex;gap:16px;align-items:flex-start}
+.author-box .avatar{width:64px;height:64px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid rgba(169,123,35,.35)}
+.author-box .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.author-box h3{margin:0 0 6px;font-size:1rem;color:var(--text)}
+.author-box p{margin:0 0 8px;font-size:.88rem}
+.author-box p:last-child{margin-bottom:0}
+.author-box a{color:var(--gold);font-size:.82rem}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .author-box{flex-direction:column}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.author-box,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="ferrule_crimp_hero.jpg" alt="Crimpadora de trinquete prensando una puntera hueca hexagonal sobre un cable flexible multifilar, junto a punteras de distintos colores y secciones" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Electricidad y automatización · Actualizado el <time datetime="2026-08-24">24 de agosto de 2026</time></div>
+    <h1>Crimpadora de Punteras Huecas (Ferrules): Hexagonal vs Cuadrada — Guía Técnica Completa</h1>
+    <p>Qué perfil de crimpado exige la norma DIN 46228, cuándo el crimpado cuadrado es suficiente, cómo elegir la matriz correcta y los errores que arruinan un tablero eléctrico — con tablas de referencia y costos para Chile.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="ferrule_crimp_comparison.jpg" alt="Comparación lado a lado de una puntera hueca crimpada con perfil hexagonal y otra con perfil cuadrado, mostrando la diferencia de deformación del tubo metálico" loading="lazy">
+  <div class="caption">A simple vista ambos crimpados pueden parecer "suficientemente firmes". La diferencia real está en la resistencia de contacto y la fuerza de retención a largo plazo, algo que solo se detecta con instrumentos o con el tiempo — cuando ya es un tablero fallando en producción.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">¿Qué es una puntera hueca y por qué usarla?</a></li>
+    <li><a href="#anatomia">Cómo funciona una crimpadora: anatomía básica</a></li>
+    <li><a href="#perfiles">Perfiles de crimpado: hexagonal, cuadrado y redondo</a></li>
+    <li><a href="#comparacion">Hexagonal vs cuadrada: comparación técnica</a></li>
+    <li><a href="#normativa">Qué exige la norma: DIN 46228 e IEC 60947-7-1</a></li>
+    <li><a href="#eleccion">Cómo elegir la crimpadora y el tamaño correcto</a></li>
+    <li><a href="#proceso">Proceso de crimpado paso a paso</a></li>
+    <li><a href="#errores">Errores comunes y sus consecuencias</a></li>
+    <li><a href="#obligatorio">¿Cuándo es obligatorio el crimpado hexagonal?</a></li>
+    <li><a href="#costos">Marcas y costos de referencia en Chile</a></li>
+    <li><a href="#mantenimiento">Mantenimiento y calibración de la herramienta</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>¿Qué es una puntera hueca y por qué usarla?</h2>
+<p>Una puntera hueca —también llamada <em>ferrule</em>, terminal tubular o "aderezo" en algunos países de Latinoamérica— es un pequeño tubo metálico, generalmente de cobre electrolítico estañado, que se inserta sobre el extremo pelado de un cable flexible o trenzado antes de conectarlo a un borne de tornillo, un borne de resorte, un contactor o una entrada de PLC. La mayoría incluye un collar aislante de poliamida o PVC que además cumple una función mecánica: actúa como tope de profundidad y evita que la mordaza de crimpado dañe el aislante del cable.</p>
+<p>El problema que resuelve es simple pero crítico: un cable trenzado desnudo, apretado directamente bajo un tornillo, tiende a "esparcirse" fuera de la mordaza, a que hilos individuales se rompan por fatiga tras varios ciclos de apriete y desapriete, y a que la presión de contacto se concentre en solo algunos hilos en vez de distribuirse en toda la sección. Con el tiempo esto genera puntos de alta resistencia, calentamiento localizado y, en casos extremos, arco eléctrico.</p>
+<p>Una alternativa que muchos instaladores consideran erróneamente equivalente es estañar la punta del cable con soldadura antes de conectarlo. La norma técnica y la práctica de fabricantes de bornes desaconsejan esto: el estaño puede sufrir <strong>fluencia en frío</strong> (cold flow) bajo la presión constante del tornillo, lo que con el tiempo relaja la conexión y produce exactamente el mismo problema que se quería evitar. La puntera hueca, en cambio, mantiene la sección de cobre trenzado sin fundir, comprimida mecánicamente de forma permanente.</p>
+</section>
+
+<section id="anatomia">
+<h2>Cómo funciona una crimpadora: anatomía básica</h2>
+<p>Todas las crimpadoras de calidad para punteras huecas comparten un mecanismo de <strong>trinquete</strong> (ratchet): una vez que empiezas a cerrar la pinza, el mecanismo no permite abrirla hasta completar el ciclo de compresión completo. Esto no es un capricho de diseño — es lo que garantiza que cada crimpado reciba exactamente la misma fuerza, sin depender de cuánta fuerza aplicó la mano del operario. Una pinza sin trinquete (crimpadora "simple", sin bloqueo) depende enteramente del criterio del usuario, y es la razón por la que la mayoría de las normas y fabricantes de paneles industriales exigen herramientas con trinquete.</p>
+<p>Existen tres grandes familias de crimpadoras según el rango de sección que manejan:</p>
+<ul>
+<li><strong>Autoajustables (self-adjusting).</strong> Un solo par de matrices detecta o se adapta automáticamente al diámetro de la puntera insertada, típicamente en el rango de 0,25 a 6 o 10 mm². Son las más usadas en tableros de control y automatización por su rapidez y consistencia.</li>
+<li><strong>De matrices intercambiables.</strong> La crimpadora acepta distintos insertos (dies) que deben coincidir exactamente con la sección de la puntera, típicamente cubriendo un rango de 0,5 a 35 mm². Son la opción profesional cuando se trabaja con múltiples secciones en el mismo proyecto.</li>
+<li><strong>Hidráulicas.</strong> Para secciones grandes, desde 16 hasta 300 mm², usadas en acometidas, tableros de potencia y conexiones de barra. Requieren mucha más fuerza de compresión de la que una pinza manual puede entregar de forma consistente.</li>
+</ul>
+</section>
+
+<section id="perfiles">
+<h2>Perfiles de crimpado: hexagonal, cuadrado y redondo</h2>
+<p>El "perfil" es la forma geométrica que adoptan las matrices al cerrarse, y por lo tanto la forma final que queda impresa en el tubo metálico de la puntera. Es la variable técnica más importante de esta guía, porque determina directamente la calidad eléctrica y mecánica del crimpado.</p>
+<ul>
+<li><strong>Perfil redondo (con muesca).</strong> Comprime con un indentador puntual o una muesca simple. Es el perfil de menor calidad para punteras: concentra la fuerza en un punto, deja mucho espacio de aire dentro del tubo y es poco predecible entre una crimpadora y otra. Se encuentra en herramientas muy económicas o multiuso no especializadas.</li>
+<li><strong>Perfil cuadrado (o trapezoidal).</strong> Comprime desde cuatro lados. Es el perfil típico de las crimpadoras de trinquete económicas y de gama media. Deforma el tubo en una sección aproximadamente cuadrada, dejando algo de espacio de aire concentrado en las cuatro esquinas. Funciona razonablemente bien en secciones pequeñas y aplicaciones de baja exigencia.</li>
+<li><strong>Perfil hexagonal.</strong> Comprime desde seis lados dispuestos simétricamente alrededor del tubo, logrando una deformación mucho más cercana a un círculo uniforme. Esto reduce drásticamente el espacio de aire remanente entre los hilos de cobre, produce una compresión más homogénea en toda la circunferencia y es el perfil que recomiendan de forma consistente los fabricantes de bornes industriales para trabajo profesional.</li>
+</ul>
+<div class="note"><strong>Por qué importa el espacio de aire remanente:</strong> el cobre se oxida con el tiempo, y el oxígeno atrapado dentro de una crimpadura mal compactada acelera ese proceso desde adentro hacia afuera, elevando lentamente la resistencia de contacto sin que se note a simple vista. Una compresión hexagonal, al minimizar ese espacio de aire, retarda significativamente ese deterioro — es la base técnica de por qué se le llama a veces una crimpadura "gas-tight" (estanca al gas).</div>
+</section>
+
+<section id="comparacion">
+<h2>Hexagonal vs cuadrada: comparación técnica</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación editorial basada en documentación técnica de fabricantes de sistemas de crimpado y bornes industriales (Phoenix Contact, Weidmüller) y en los criterios de ensayo de la norma DIN 46228-4.</caption>
+<thead><tr><th>Criterio</th><th>Perfil hexagonal</th><th>Perfil cuadrado/trapezoidal</th></tr></thead>
+<tbody>
+<tr><td>Distribución de la fuerza</td><td>Uniforme, en 6 puntos simétricos</td><td>Concentrada en 4 puntos, con "huecos" en las esquinas</td></tr>
+<tr><td>Espacio de aire remanente</td><td>Bajo — compresión casi circular</td><td>Moderado — geometría cuadrada deja más aire</td></tr>
+<tr><td>Fuerza de retención (pull-out)</td><td>Alta y más consistente entre operarios</td><td>Adecuada en secciones pequeñas, más variable en grandes</td></tr>
+<tr><td>Resistencia de contacto en el tiempo</td><td>Más estable, menor oxidación interna</td><td>Puede degradarse algo más rápido en ambientes húmedos</td></tr>
+<tr><td>Costo típico de la herramienta</td><td>Medio a alto</td><td>Bajo a medio</td></tr>
+<tr><td>Uso recomendado</td><td>Tableros industriales, secciones &gt;6 mm², certificación CE</td><td>Prototipos, hobby, secciones pequeñas de baja criticidad</td></tr>
+</tbody>
+</table>
+</div>
+<p>El patrón que confirman los ensayos publicados por fabricantes de bornes es consistente: en secciones pequeñas (0,25 a 1,5 mm²) la diferencia práctica entre ambos perfiles es pequeña, porque hay poco material que compactar. A medida que la sección aumenta, la diferencia se vuelve significativa — y es exactamente el punto donde la norma empieza a exigir el perfil hexagonal.</p>
+</section>
+
+<section id="normativa">
+<h2>Qué exige la norma: DIN 46228 e IEC 60947-7-1</h2>
+<p>La norma alemana <strong>DIN 46228</strong> es la referencia técnica más citada en la industria para punteras huecas, dividida en cuatro partes:</p>
+<ul>
+<li><strong>DIN 46228-1:</strong> punteras sin collar aislante.</li>
+<li><strong>DIN 46228-2:</strong> punteras con collar aislante de plástico.</li>
+<li><strong>DIN 46228-3:</strong> punteras gemelas (dos conductores) sin collar aislante.</li>
+<li><strong>DIN 46228-4:</strong> punteras gemelas con collar aislante, y la parte que define los ensayos de fuerza de tracción (pull-out) y resistencia eléctrica que debe superar un crimpado para considerarse conforme.</li>
+</ul>
+<p>En la práctica de fabricantes como Phoenix Contact y Weidmüller, cumplir de forma consistente los valores de tracción exigidos por la parte 4 de la norma —especialmente en secciones superiores a 6 mm²— requiere un perfil de crimpado hexagonal. Por debajo de ese umbral, un crimpado cuadrado bien ejecutado con una herramienta de calidad puede seguir cumpliendo los valores mínimos, pero con menor margen de seguridad.</p>
+<p>La norma internacional <strong>IEC 60947-7-1</strong> (bornes para conductores de cobre en aparamenta de baja tensión) complementa esto especificando los requisitos que debe cumplir el borne mismo para aceptar conductores tratados con puntera. Y en el ámbito de maquinaria industrial, <strong>IEC 60204-1</strong> (seguridad eléctrica de máquinas) es la norma que en la práctica empuja a los integradores de tableros a tratar todo conductor flexible con puntera antes de conectarlo, como parte de una buena práctica de cableado documentable ante auditoría.</p>
+<div class="note"><strong>Sobre Chile:</strong> el Reglamento de Instalaciones Eléctricas de Consumo (RIC) que fiscaliza la SEC no especifica el perfil geométrico del crimpado. Sin embargo, la gran mayoría del equipamiento industrial de control importado a Chile (PLC, contactores, bornes de tablero) proviene de fabricantes europeos que certifican sus sistemas de conexión bajo IEC/DIN, por lo que seguir esos criterios es la práctica profesional recomendada, aunque no exista una exigencia local explícita sobre la forma del crimpado.</div>
+</section>
+
+<section id="eleccion">
+<h2>Cómo elegir la crimpadora y el tamaño correcto</h2>
+<p>El primer paso, casi siempre saltado, es <strong>verificar la sección real del conductor</strong> con un calibre o comparándolo contra una tabla, en vez de confiar ciegamente en lo impreso en la chaqueta del cable. Cables de origen incierto a veces declaran una sección mayor a la real.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Convención de colores de uso extendido en la industria para punteras huecas. No es un color oficialmente normado en todos los mercados: verifica siempre la tabla específica de tu proveedor antes de comprar por color.</caption>
+<thead><tr><th>Sección (mm²)</th><th>AWG aproximado</th><th>Color habitual del collar</th><th>Tipo de crimpadora recomendada</th></tr></thead>
+<tbody>
+<tr><td>0,25 – 0,5</td><td>24 – 20</td><td>Amarillo / naranjo</td><td>Autoajustable, perfil hexagonal o cuadrado</td></tr>
+<tr><td>0,75 – 1,5</td><td>18 – 16</td><td>Blanco / rojo / negro</td><td>Autoajustable, perfil hexagonal recomendado</td></tr>
+<tr><td>2,5 – 4</td><td>14 – 12</td><td>Azul / gris</td><td>Autoajustable o matrices intercambiables, hexagonal</td></tr>
+<tr><td>6 – 10</td><td>10 – 8</td><td>Amarillo / rojo (repite ciclo)</td><td>Matrices intercambiables, hexagonal obligatorio en la práctica</td></tr>
+<tr><td>16 – 35</td><td>6 – 2</td><td>Azul / amarillo (repite ciclo)</td><td>Matrices intercambiables grandes o hidráulica</td></tr>
+<tr><td>&gt;35</td><td>&lt;2</td><td>Variable según fabricante</td><td>Hidráulica exclusivamente</td></tr>
+</tbody>
+</table>
+</div>
+<p>Una vez identificada la sección, la regla de oro es que <strong>la puntera, la matriz de la crimpadora y el conductor real deben coincidir en sección</strong>. No existe tal cosa como "una matriz que sirve para todo": una matriz para 1,5 mm² usada sobre una puntera de 2,5 mm² producirá un crimpado insuficiente aunque el trinquete llegue a liberar con normalidad.</p>
+</section>
+
+<section id="proceso">
+<h2>Proceso de crimpado paso a paso</h2>
+<ol>
+<li><strong>Verifica la sección real del conductor</strong> con un calibre o comparándola visualmente contra una muestra conocida.</li>
+<li><strong>Pela el cable a la longitud exacta</strong> que especifica el fabricante de la puntera — normalmente el largo del tubo metálico. Ni corto (deja cobre expuesto fuera del tubo) ni largo (el aislante queda atrapado dentro de la zona de crimpado).</li>
+<li><strong>Selecciona la puntera de la sección correcta.</strong> Nunca fuerces una puntera de sección menor sobre un conductor más grueso, ni dejes una puntera holgada sobre un conductor más delgado.</li>
+<li><strong>Inserta el conductor hasta el fondo del tubo metálico</strong>, verificando que ningún hilo quede fuera ni doblado hacia atrás.</li>
+<li><strong>Selecciona la matriz o confirma el rango de autoajuste</strong> correspondiente exactamente a esa sección.</li>
+<li><strong>Centra la puntera en la matriz</strong> según las marcas de referencia de la herramienta — un centrado deficiente genera compresión asimétrica incluso con perfil hexagonal.</li>
+<li><strong>Cierra la crimpadora por completo</strong> hasta que el trinquete libere por sí solo. No fuerces la apertura antes de ese punto.</li>
+<li><strong>Inspecciona visualmente el resultado:</strong> sin grietas en el collar aislante, sin cobre expuesto, sin hilos sueltos ni "orejas" de metal sobresaliendo.</li>
+<li><strong>Realiza una prueba de tracción manual suave</strong> — la puntera no debe moverse ni salir con un tirón moderado.</li>
+<li><strong>Organiza e identifica el cableado</strong> antes de instalarlo en el borne definitivo.</li>
+</ol>
+<pre><code>Checklist rápido antes de dar por bueno un crimpado:
+
+[ ] Sección de puntera = sección real del conductor = matriz seleccionada
+[ ] Largo de pelado = largo del tubo metálico de la puntera
+[ ] Ningún hilo de cobre visible fuera del tubo
+[ ] Collar aislante sin grietas ni deformación excesiva
+[ ] El trinquete liberó por sí solo (ciclo completo)
+[ ] Prueba de tracción manual: sin desplazamiento perceptible</code></pre>
+</section>
+
+<section id="errores">
+<h2>Errores comunes y sus consecuencias</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Fallas típicas observadas en revisión de tableros y su causa raíz más probable.</caption>
+<thead><tr><th>Error</th><th>Causa típica</th><th>Consecuencia</th></tr></thead>
+<tbody>
+<tr><td>Sub-crimpado</td><td>Matriz de una sección mayor a la puntera real</td><td>Hilos sueltos dentro del tubo, alta resistencia de contacto, calentamiento</td></tr>
+<tr><td>Sobre-crimpado</td><td>Matriz de una sección menor a la puntera real</td><td>Fractura de hilos internos, collar aislante agrietado, sección debilitada</td></tr>
+<tr><td>Puntera de sección incorrecta</td><td>Elegir por color sin verificar mm² real del cable</td><td>Ajuste flojo u holgado, crimpado no repetible</td></tr>
+<tr><td>Pelado muy corto o muy largo</td><td>No respetar el largo del tubo de la puntera</td><td>Cobre expuesto fuera de la puntera, o aislante atrapado en la zona crimpada</td></tr>
+<tr><td>Herramienta sin trinquete</td><td>Uso de pinza multiuso no especializada</td><td>Fuerza de compresión inconsistente entre crimpados, dependiente del operario</td></tr>
+<tr><td>Falta de inspección visual</td><td>Presión por tiempo en instalaciones de alto volumen</td><td>Fallas detectadas semanas o meses después, ya con el tablero en producción</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="obligatorio">
+<h2>¿Cuándo es obligatorio (o fuertemente recomendado) el crimpado hexagonal?</h2>
+<ul>
+<li><strong>Tableros de control industrial</strong> diseñados conforme a IEC 60204-1, donde la trazabilidad y la consistencia del cableado son parte de la documentación técnica del proyecto.</li>
+<li><strong>Secciones superiores a 6 mm²</strong>, donde la norma DIN 46228-4 y la práctica de fabricantes de bornes prácticamente exigen el perfil hexagonal para cumplir los valores de tracción y resistencia de contacto.</li>
+<li><strong>Sistemas certificados CE</strong> donde el fabricante del borne (Phoenix Contact, Wago, Weidmüller, Siemens, entre otros) valida su sistema de conexión usando específicamente crimpado hexagonal en sus ensayos de tipo.</li>
+<li><strong>Instalaciones navales, ferroviarias o de maquinaria certificada</strong>, donde las auditorías de calidad suelen exigir evidencia de un proceso de crimpado repetible y documentado.</li>
+<li><strong>Cajas combinadoras (combiner boxes) fotovoltaicas</strong>, donde la exposición a vibración y ciclos térmicos hace más relevante la estabilidad a largo plazo del crimpado.</li>
+</ul>
+<p>Para trabajo de prototipado, proyectos educativos con Arduino o automatización doméstica de baja criticidad, un crimpado cuadrado bien ejecutado con una herramienta de trinquete de calidad razonable sigue siendo una solución perfectamente válida y mucho mejor que no usar puntera. La exigencia del perfil hexagonal escala con la criticidad, la sección del conductor y el marco normativo del proyecto — no es un requisito universal para cualquier cable de cualquier tamaño.</p>
+</section>
+
+<section id="costos">
+<h2>Marcas y costos de referencia en Chile</h2>
+<p>Cifras de referencia editorial para el mercado chileno en 2026 (verifica precios vigentes antes de comprar):</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos orientativos según tipo de herramienta y gama.</caption>
+<thead><tr><th>Tipo de crimpadora</th><th>Perfil habitual</th><th>Rango de precio (CLP)</th><th>Uso recomendado</th></tr></thead>
+<tbody>
+<tr><td>Pinza de trinquete genérica, importación básica</td><td>Cuadrado</td><td>$8.000 – $18.000</td><td>Hobby, prototipado, secciones pequeñas</td></tr>
+<tr><td>Autoajustable de marca (línea intermedia)</td><td>Hexagonal</td><td>$35.000 – $90.000</td><td>Tableros pequeños, automatización, mantenimiento</td></tr>
+<tr><td>Profesional de matrices intercambiables (línea industrial)</td><td>Hexagonal</td><td>$150.000 – $450.000+</td><td>Integración de tableros industriales, múltiples secciones</td></tr>
+<tr><td>Hidráulica para secciones grandes</td><td>Hexagonal</td><td>$180.000 – $600.000+</td><td>Acometidas, tableros de potencia, secciones &gt;16 mm²</td></tr>
+<tr><td>Cajas de punteras (100 unidades, secciones pequeñas)</td><td>—</td><td>$3.000 – $8.000</td><td>Consumible — verificar sección exacta antes de comprar</td></tr>
+</tbody>
+</table>
+</div>
+<p>El patrón repetido en talleres de automatización: invertir en una crimpadora hexagonal autoajustable de gama media rinde frutos rápidamente si el volumen de trabajo es constante, porque reduce el retrabajo por fallas de contacto detectadas en puesta en marcha — un retrabajo que casi siempre cuesta más en horas de diagnóstico que la diferencia de precio entre una herramienta económica y una profesional.</p>
+</section>
+
+<section id="mantenimiento">
+<h2>Mantenimiento y calibración de la herramienta</h2>
+<ul>
+<li><strong>Limpia las matrices regularmente</strong> — restos de estaño, cobre o aislante acumulados alteran sutilmente la geometría de compresión.</li>
+<li><strong>No lubriques las matrices con aceite</strong>; puede migrar hacia la superficie de contacto eléctrico y aumentar la resistencia de la conexión.</li>
+<li><strong>Verifica el mecanismo de trinquete periódicamente</strong>: si empieza a liberar antes de completar el ciclo, la herramienta ya no garantiza un crimpado consistente y debe revisarse o reemplazarse.</li>
+<li><strong>Realiza pruebas de tracción de muestra</strong> de forma periódica sobre crimpados de prueba, especialmente si la herramienta ha sufrido una caída o un golpe.</li>
+<li><strong>Guarda la crimpadora en su estuche</strong>, evitando golpes que puedan desalinear las matrices — una desalineación de fracciones de milímetro es suficiente para afectar la calidad del crimpado sin ser visible a simple vista.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La discusión entre crimpado hexagonal y cuadrado no es una preferencia estética ni una exigencia burocrática: es una diferencia medible en resistencia de contacto, fuerza de retención y comportamiento a largo plazo frente a la oxidación. Para secciones pequeñas y trabajo de baja criticidad, una herramienta cuadrada de trinquete bien usada sigue siendo una solución razonable. Para tableros industriales, secciones mayores a 6 mm² y cualquier proyecto donde la falla de un solo punto de contacto tenga consecuencias reales, el perfil hexagonal —acompañado de un proceso disciplinado de selección de sección, pelado correcto e inspección visual— es la práctica que la industria y la norma DIN 46228 respaldan de forma consistente. La herramienta importa, pero el proceso importa más: la crimpadora más cara del mundo no compensa una matriz mal seleccionada.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Es realmente necesario usar puntera hueca en cables trenzados o flexibles?</summary><p>En bornes de tornillo o de resorte no diseñados para cable trenzado desnudo, sí es muy recomendable. Sin puntera, los hilos individuales pueden escaparse de la mordaza, romperse por fatiga tras varios apriete-desapriete, u oxidarse de forma desigual entre hilos, generando puntos calientes. La puntera unifica la sección, protege los hilos y entrega una superficie de contacto uniforme y repetible.</p></details>
+<details><summary>¿Cuál es la diferencia real entre crimpado hexagonal y cuadrado?</summary><p>El crimpado hexagonal comprime el tubo metálico desde seis lados, logrando una deformación casi circular y uniforme alrededor de los hilos, con menor espacio de aire remanente, mayor fuerza de retención y resistencia de contacto más estable en el tiempo. El crimpado cuadrado comprime desde cuatro lados; es adecuado para secciones pequeñas y trabajos menos exigentes, pero suele dejar más espacio de aire en las esquinas y una compresión menos homogénea que la hexagonal.</p></details>
+<details><summary>¿Puedo usar una crimpadora barata de perfil cuadrado para trabajo profesional?</summary><p>Para secciones pequeñas (hasta aproximadamente 6 mm²) en aplicaciones de baja criticidad, una crimpadora cuadrada de trinquete de buena calidad puede dar resultados aceptables. Para tableros de control industrial, maquinaria certificada, y en general para secciones mayores a 6 mm², la práctica de la industria y los fabricantes de bornes recomiendan crimpado hexagonal para asegurar la fuerza de retención y la resistencia de contacto exigidas por la norma DIN 46228 parte 4.</p></details>
+<details><summary>¿Cómo sé qué tamaño de puntera y de matriz debo usar?</summary><p>Mide o confirma la sección real del conductor (no confíes solo en la impresión del cable) y elige la puntera cuya sección nominal en mm² coincida exactamente. Luego selecciona en la crimpadora la matriz o el rango de autoajuste correspondiente a esa misma sección; usar una matriz de un tamaño distinto al de la puntera es la causa más común de un crimpado defectuoso, aunque el resultado se vea aceptable a simple vista.</p></details>
+<details><summary>¿Qué pasa si crimpo con una herramienta genérica y una puntera de otra marca?</summary><p>En la mayoría de los casos funciona sin problema si ambas cumplen las dimensiones estándar de la sección declarada. Sin embargo, los fabricantes que certifican combinaciones específicas de herramienta y puntera (por ejemplo, para paneles con certificación CE bajo IEC 60204-1) solo garantizan el resultado ensayado con su propia combinación; mezclar marcas puede seguir siendo seguro en la práctica, pero técnicamente ya no está cubierto por esa certificación conjunta.</p></details>
+</div>
+</section>
+
+<div class="author-box">
+  <div class="avatar" aria-hidden="true"><img src="../author_alberto.jpg" alt="Fotografía de Alberto Gallardo, analista programador computacional"></div>
+  <div>
+    <h3>Sobre el autor</h3>
+    <p><strong>Alberto Gallardo</strong> es Analista Programador Computacional con 18 años de experiencia en desarrollo y educación. Escribe y mantiene este sitio, combinando su trayectoria técnica con la docencia en robótica, electrónica y automatización industrial. Las cifras de esta guía son rangos editoriales reunidos de documentación técnica de fabricantes y de fuentes públicas; no reemplazan la evaluación de un profesional certificado para instalaciones eléctricas reguladas. <a href="/about">Más sobre Alberto →</a></p>
+  </div>
+</div>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de herramientas o punteras, serán identificados explícitamente. Las cifras de costos son estimaciones con supuestos declarados; verifica precios vigentes antes de comprar herramientas o consumibles.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te interesa la electrónica aplicada a otra escala, revisa nuestra guía <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">Cómo reparar baterías de taladros inalámbricos: BMS y celdas</a>, donde cubrimos soldadura por puntos, diagnóstico con multímetro y seguridad con litio — los mismos principios de conexión eléctrica confiable aplicados a packs de baterías.</p>
+  <p>También puedes revisar el <a href="/#categories">temario completo del blog</a> para ver qué guías vienen en camino.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/">← Anterior: Portada</a>
+  <a href="/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico">Siguiente: Kits de conversión a eléctrico →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Las especificaciones exactas de herramientas y punteras deben verificarse siempre contra la hoja de datos vigente del fabricante correspondiente.</p>
+<ul>
+<li><a href="https://www.phoenixcontact.com" target="_blank" rel="noopener noreferrer">Phoenix Contact — Documentación técnica sobre punteras y sistemas de crimpado CRIMPFOX</a></li>
+<li><a href="https://www.weidmueller.com" target="_blank" rel="noopener noreferrer">Weidmüller — Guía técnica de terminación de conductores y punteras</a></li>
+<li><a href="https://www.sec.cl" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles (SEC) Chile — Reglamento de Instalaciones Eléctricas de Consumo (RIC)</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 24 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
