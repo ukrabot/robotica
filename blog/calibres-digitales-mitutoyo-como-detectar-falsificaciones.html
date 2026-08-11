@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Calibres Digitales Mitutoyo: Cómo Detectar Falsificaciones — Guía Técnica Completa</title>
+<meta name="description" content="Guía técnica para distinguir un calibre digital Mitutoyo original de una falsificación: encoder absoluto vs incremental, precisión real, acabado de mordazas, serie 500, canales de compra seguros y pruebas de verificación paso a paso.">
+<meta name="author" content="Blog de Ingeniería Robótica">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Calibres Digitales Mitutoyo: Cómo Detectar Falsificaciones — Guía Técnica Completa">
+<meta property="og:description" content="Encoder absoluto vs incremental, precisión real, acabado de mordazas, verificación de serie 500 y cómo comprar un calibre Mitutoyo genuino sin arriesgar tu dinero.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/mitutoyo_caliper_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Técnica: Cómo Detectar Calibres Digitales Mitutoyo Falsificados">
+<meta name="twitter:description" content="Encoder absoluto vs incremental, precisión real y pruebas de verificación para detectar un Mitutoyo falso.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/mitutoyo_caliper_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Calibres Digitales Mitutoyo: Cómo Detectar Falsificaciones — Guía Técnica Completa",
+  "description":"Guía técnica para distinguir un calibre digital Mitutoyo original de una falsificación: funcionamiento del encoder ABSOLUTE, precisión y resolución reales de la serie 500, calidad de mecanizado de mordazas, pruebas de verificación con bloques patrón y canales de compra seguros.",
+  "author":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl/about"
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-31",
+  "dateModified":"2026-08-31",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones"},
+  "image":"https://www.ukrabot.cl/blog/mitutoyo_caliper_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Calibre digital a verificar, bloques patrón o pieza de referencia de dimensión conocida, pilas SR44 de repuesto, lupa o microscopio USB para inspección de grabados, acceso al listado de distribuidores autorizados de Mitutoyo",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Calibres Digitales Mitutoyo: Cómo Detectar Falsificaciones","item":"https://www.ukrabot.cl/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Cómo saber si mi calibre Mitutoyo es original?","acceptedAnswer":{"@type":"Answer","text":"Verifica varias señales en conjunto, no una sola: el encoder debe ser de tipo ABSOLUTE (no requiere poner en cero después de apagar o cambiar la pila), el deslizamiento del cursor debe ser suave y sin juego lateral, el grabado del logo y modelo debe verse láser-nítido y no impreso, la pantalla debe responder de inmediato sin parpadeo, y el vendedor debe figurar como distribuidor autorizado en el sitio de Mitutoyo. Ninguna señal por sí sola es concluyente; la combinación de varias sí lo es."}},
+    {"@type":"Question","name":"¿Cuál es la diferencia entre un calibre de encoder absoluto (ABS) y uno incremental?","acceptedAnswer":{"@type":"Answer","text":"Un encoder absoluto conoce su posición física en todo momento gracias a un patrón óptico o capacitivo codificado a lo largo de la regla, por lo que al encender el instrumento después de apagarlo o cambiar la pila, sigue mostrando la medida correcta sin necesidad de recalibrar en cero. Un encoder incremental solo cuenta pulsos de movimiento desde el último punto de referencia, por lo que pierde la posición al apagarse y exige poner el calibre en cero cada vez que se enciende. La tecnología ABSOLUTE es una marca registrada de Mitutoyo y su ausencia de necesidad de reset es una de las señales más confiables para distinguir un original de una copia económica."}},
+    {"@type":"Question","name":"¿Dónde se fabrican los calibres Mitutoyo originales?","acceptedAnswer":{"@type":"Answer","text":"Mitutoyo es una empresa japonesa con plantas de manufactura propias en distintos países, incluyendo Japón, y otras instalaciones certificadas bajo su mismo control de calidad. Que un calibre genuino indique un país de manufactura distinto a Japón no lo convierte en falsificación: lo que define la autenticidad es que haya sido fabricado y certificado por Mitutoyo, no el país específico de ensamblaje. La falsificación es un producto de un tercero no autorizado que copia la marca y apariencia, generalmente sin el mismo control metrológico."}},
+    {"@type":"Question","name":"¿Vale la pena comprar un calibre digital genérico en vez de Mitutoyo?","acceptedAnswer":{"@type":"Answer","text":"Depende del uso. Para trabajo de hobby, taller doméstico o mediciones no críticas, un calibre digital genérico de marca reconocida (no falsificado) puede ser suficiente y mucho más económico. Para control de calidad, metrología dimensional, trazabilidad certificada o mediciones que definan la aceptación o rechazo de una pieza, la repetibilidad, la resistencia del encoder a polvo y refrigerante, y la posibilidad de calibración trazable de un instrumento Mitutoyo genuino justifican la diferencia de precio."}},
+    {"@type":"Question","name":"¿Qué exactitud debo esperar de un calibre digital de calidad?","acceptedAnswer":{"@type":"Answer","text":"Los calibres digitales Mitutoyo de la serie 500 Absolute Digimatic típicamente entregan una exactitud de ±0,02 mm y una resolución de 0,01 mm en rangos de medición de hasta 150 o 200 mm, degradándose ligeramente en rangos mayores. Una falsificación puede mostrar una resolución de 0,01 mm en pantalla sin que el mecanismo interno sea capaz de sostener esa exactitud real, lo que solo se detecta comparando la lectura contra un bloque patrón o pieza de dimensión certificada."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="mitutoyo_caliper_hero.jpg" alt="Calibre digital Mitutoyo de la serie 500 midiendo una pieza metálica sobre una mesa de trabajo, junto a bloques patrón" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Metrología e instrumentación · Actualizado el <time datetime="2026-08-31">31 de agosto de 2026</time></div>
+    <h1>Calibres Digitales Mitutoyo: Cómo Detectar Falsificaciones</h1>
+    <p>Encoder absoluto vs incremental, precisión real de la serie 500, calidad de mecanizado de las mordazas y pruebas concretas con bloques patrón — todo lo que necesitas revisar antes de confiar tus mediciones a un calibre "Mitutoyo".</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="mitutoyo_caliper_comparison.jpg" alt="Comparación lado a lado de un calibre digital Mitutoyo original y una falsificación, mostrando diferencias en el grabado del logo y el acabado de las mordazas" loading="lazy">
+  <div class="caption">Una falsificación bien hecha puede engañar al ojo en fotos de venta online. La diferencia real aparece en el encoder, en la repetibilidad de la medición y en el comportamiento del instrumento tras semanas de uso — justo lo que un vendedor no te deja probar antes de comprar.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que">Por qué existe tanta falsificación de calibres Mitutoyo</a></li>
+    <li><a href="#anatomia">Anatomía de un calibre digital: qué hay dentro</a></li>
+    <li><a href="#absoluto">Encoder absoluto vs incremental: la diferencia clave</a></li>
+    <li><a href="#serie500">La serie 500 Absolute Digimatic: qué esperar realmente</a></li>
+    <li><a href="#senales">Señales físicas de una falsificación</a></li>
+    <li><a href="#pruebas">Pruebas de verificación paso a paso</a></li>
+    <li><a href="#donde-comprar">Dónde comprar para minimizar el riesgo</a></li>
+    <li><a href="#genuino-vs-generico">Genuino, genérico y falsificado: no es lo mismo</a></li>
+    <li><a href="#calibracion">Calibración y trazabilidad: por qué importa</a></li>
+    <li><a href="#costos">Precios de referencia en Chile</a></li>
+    <li><a href="#tabla-resumen">Tabla resumen de verificación rápida</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que">
+<h2>Por qué existe tanta falsificación de calibres Mitutoyo</h2>
+<p>Mitutoyo es, junto con Starrett y Mahr, uno de los fabricantes de instrumentos de metrología dimensional más reconocidos del mundo. Ese prestigio —construido sobre décadas de precisión demostrable en talleres mecánicos, control de calidad automotriz y laboratorios metrológicos— es exactamente lo que atrae a los falsificadores: un calibre digital con el logo de Mitutoyo se vende a un precio muy superior al de una marca genérica sin historia, aunque el mecanismo interno sea idéntico o incluso inferior.</p>
+<p>El problema se agrava por tres factores propios de este instrumento en particular. Primero, un calibre digital es relativamente sencillo de clonar externamente: una carcasa de aluminio o acero inoxidable, un display LCD y una regla capacitiva no requieren maquinaria imposible de conseguir para un fabricante no autorizado. Segundo, la diferencia de calidad real —la que importa para el trabajo de precisión— está en el interior del encoder y en el tratamiento térmico de las mordazas, algo invisible en una foto de venta online. Tercero, el canal de venta informal (marketplaces, redes sociales, ferias) permite that vendedores sin trazabilidad muevan producto falsificado sin que el comprador tenga forma sencilla de reclamar.</p>
+<p>Esta guía no pretende reemplazar la verificación oficial de Mitutoyo, sino darte un criterio técnico sólido para decidir si vale la pena esa compra "demasiado barata para ser real", y qué pruebas concretas puedes hacer con el instrumento en la mano.</p>
+</section>
+
+<section id="anatomia">
+<h2>Anatomía de un calibre digital: qué hay dentro</h2>
+<p>Un calibre digital moderno se compone de cinco elementos que determinan su calidad real:</p>
+<ul>
+<li><strong>Regla graduada (scale) y encoder.</strong> El corazón del instrumento. Puede ser de tecnología capacitiva (la más común en calibres digitales de gama media y alta) o inductiva. Traduce el movimiento físico del cursor en una señal digital que el display interpreta como una distancia.</li>
+<li><strong>Mordazas (jaws).</strong> Las superficies que hacen contacto con la pieza a medir: exteriores, interiores, de profundidad y de escalón. Su calidad depende del acero usado, el tratamiento térmico y la precisión del rectificado plano y paralelo entre ambas caras de medición.</li>
+<li><strong>Cursor y riel deslizante.</strong> Deben deslizar con una resistencia suave y constante, sin puntos duros ni holgura lateral. Un riel mal maquinado introduce error de método (el llamado error de Abbe) incluso si el encoder es preciso.</li>
+<li><strong>Pantalla LCD y electrónica de control.</strong> Interpreta la señal del encoder, aplica el redondeo a la resolución declarada (típicamente 0,01 mm) y gestiona funciones como cambio de unidades mm/pulgada, puesta en cero y salida de datos SPC en modelos que lo incluyen.</li>
+<li><strong>Sello contra polvo y refrigerante (IP).</strong> Los modelos con clasificación IP54 o IP67 de Mitutoyo incorporan sellos que protegen el encoder capacitivo de virutas, polvo de rectificado y líquido refrigerante — un punto donde las falsificaciones económicas casi siempre fallan primero.</li>
+</ul>
+</section>
+
+<section id="absoluto">
+<h2>Encoder absoluto vs incremental: la diferencia clave</h2>
+<p>Esta es, técnicamente, la señal más confiable —aunque no la única— para distinguir un calibre digital de calidad de una imitación económica.</p>
+<p>Un <strong>encoder incremental</strong> funciona contando pulsos de movimiento relativo: cada vez que el cursor se desplaza, el sistema suma o resta una unidad de resolución respecto a la última posición conocida. El problema es que, al apagar el instrumento o retirar la pila, esa referencia se pierde. Al volver a encenderlo, el calibre no sabe en qué posición física está el cursor, por lo que exige ponerlo en cero manualmente antes de confiar en la lectura.</p>
+<p>Un <strong>encoder absoluto</strong> —la tecnología que Mitutoyo comercializa bajo la marca <em>ABSOLUTE</em> (identificada con las siglas "ABS" en el instrumento)— usa un patrón codificado a lo largo de toda la regla, de forma que la posición física del cursor puede leerse directamente sin depender de un historial de movimiento. Esto significa que, tras apagar el calibre, cambiar la pila o incluso dejarlo guardado meses, al encenderlo vuelve a mostrar exactamente la medida correspondiente a la posición física del cursor, sin necesidad de recalibrar en cero.</p>
+<div class="note"><strong>Prueba práctica inmediata:</strong> cierra completamente las mordazas del calibre (posición cero física), enciende el instrumento y anota la lectura. Ábrelo unos milímetros, apágalo, y vuelve a encenderlo sin tocar el cursor. Si la lectura coincide exactamente con la posición real sin haber presionado "cero", tienes un encoder absoluto genuino funcionando correctamente. Si el instrumento marca 0,00 mm al encender sin importar dónde esté el cursor, o pide ponerlo en cero, no está funcionando como un encoder ABSOLUTE real — sea por ser una falsificación con encoder incremental disfrazado, o por una falla del instrumento.</div>
+<p>Es importante matizar: no todo calibre digital de otra marca con encoder incremental es una "estafa" — muchas marcas económicas legítimas venden calibres incrementales más baratos de forma honesta, sin usar el logo Mitutoyo. El problema es específicamente cuando un producto se vende <em>como si fuera</em> un Mitutoyo Absolute Digimatic, pero internamente monta un encoder incremental genérico.</p>
+</section>
+
+<section id="serie500">
+<h2>La serie 500 Absolute Digimatic: qué esperar realmente</h2>
+<p>La familia 500 es la línea de calibres digitales de propósito general más vendida de Mitutoyo, y por lo tanto la más falsificada. Estas son las especificaciones típicas que declara el fabricante para sus modelos de rango 0–150 mm y 0–200 mm, útiles como referencia de comparación:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Valores de referencia editorial basados en documentación pública de la serie 500 Absolute Digimatic. Verifica siempre la hoja de datos del modelo exacto antes de comprar, ya que varían entre variantes.</caption>
+<thead><tr><th>Especificación</th><th>Valor típico declarado</th><th>Qué revisar en la práctica</th></tr></thead>
+<tbody>
+<tr><td>Resolución</td><td>0,01 mm / 0,0005"</td><td>Que el display efectivamente muestre ese último dígito sin saltos erráticos</td></tr>
+<tr><td>Exactitud (accuracy)</td><td>±0,02 mm (rango 0–200 mm)</td><td>Comparar contra un bloque patrón o pieza certificada, no solo confiar en pantalla</td></tr>
+<tr><td>Repetibilidad</td><td>0,01 mm</td><td>Medir la misma pieza 5 veces y comparar dispersión de resultados</td></tr>
+<tr><td>Grado de protección</td><td>IP54 (resistente a polvo y salpicaduras)</td><td>Presencia de sello visible alrededor del riel del cursor</td></tr>
+<tr><td>Tipo de pila</td><td>SR44 (SR44W), duración prolongada (años de uso normal)</td><td>Autonomía real; una falsificación puede consumir la pila mucho más rápido</td></tr>
+<tr><td>Material de mordazas</td><td>Acero inoxidable endurecido</td><td>Resistencia al rayado, ausencia de rebabas visibles en el borde de medición</td></tr>
+</tbody>
+</table>
+</div>
+<p>Un detalle poco conocido pero verificable: los calibres genuinos de esta serie incluyen una función de apagado automático tras un período breve de inactividad para preservar la pila, y retienen la última lectura al encender gracias al encoder ABSOLUTE. Si tu instrumento no hace ninguna de las dos cosas, es una señal de alerta adicional.</p>
+</section>
+
+<section id="senales">
+<h2>Señales físicas de una falsificación</h2>
+<ul>
+<li><strong>Grabado del logo y modelo.</strong> Los calibres genuinos usan grabado láser, que se siente como una leve textura al pasar la uña y no se borra con el uso. Un logo simplemente impreso o pintado, que se puede rayar con la uña, es una señal fuerte de falsificación.</li>
+<li><strong>Peso y sensación general.</strong> Los calibres genuinos usan aleaciones de acero inoxidable con una densidad y rigidez específicas. Un instrumento notablemente más liviano o que se siente "hueco" al golpearlo suavemente contra una superficie suele indicar materiales más económicos.</li>
+<li><strong>Suavidad del deslizamiento.</strong> El cursor debe moverse con resistencia uniforme en todo su recorrido, sin puntos duros, sin holgura lateral perceptible y sin "tambalearse" al aplicar una leve presión lateral con el instrumento cerrado.</li>
+<li><strong>Acabado de las mordazas.</strong> Bajo una lupa, las superficies de medición deben verse rectificadas y sin rebabas. Mordazas con marcas de maquinado bastas o bordes irregulares comprometen directamente la exactitud del contacto con la pieza.</li>
+<li><strong>Calidad del display y los botones.</strong> Pantallas con contraste desigual, dígitos que parpadean sin razón, o botones con recorrido esponjoso e impreciso son comunes en electrónica de control de baja calidad.</li>
+<li><strong>Empaque y documentación.</strong> Mitutoyo incluye estuche rígido de calidad consistente, certificado de inspección (según el modelo) y numeración de serie coherente con sus registros. Un empaque genérico, sin número de serie o con una caja de calidad visiblemente inferior al instrumento que promete contener, es motivo de sospecha.</li>
+<li><strong>Precio desproporcionadamente bajo.</strong> Es la señal más simple y más ignorada. Si el precio está muy por debajo del rango habitual de mercado para ese modelo específico, la probabilidad de falsificación sube significativamente, sin importar cuántas otras señales parezcan correctas en fotos.</li>
+</ul>
+</section>
+
+<section id="pruebas">
+<h2>Pruebas de verificación paso a paso</h2>
+<ol>
+<li><strong>Prueba del encoder absoluto.</strong> Como se describió antes: cierra el calibre, enciende, anota la lectura, abre unos milímetros, apaga, vuelve a encender sin mover el cursor y compara.</li>
+<li><strong>Prueba de cero físico.</strong> Cierra completamente las mordazas exteriores y verifica que el display marque 0,00 mm exacto, sin decimales residuales, con las mordazas realmente en contacto (revisa a contraluz que no quede espacio).</li>
+<li><strong>Prueba contra un patrón conocido.</strong> Mide un objeto de dimensión certificada o muy conocida —idealmente un bloque patrón, o en su defecto una moneda o pieza mecanizada de medida documentada— y compara la lectura contra el valor real.</li>
+<li><strong>Prueba de repetibilidad.</strong> Mide la misma pieza cinco veces, cerrando y abriendo el calibre entre cada medición, y verifica que todas las lecturas coincidan dentro de la resolución declarada (0,01 mm).</li>
+<li><strong>Prueba de las cuatro funciones de medición.</strong> Si el modelo incluye mordazas de interior, de profundidad y de escalón, verifica que las cuatro den lecturas coherentes entre sí sobre la misma pieza de referencia.</li>
+<li><strong>Inspección bajo lupa.</strong> Revisa el grabado del logo, el acabado de las mordazas y la calidad de los bordes de la carcasa con una lupa o un microscopio USB económico.</li>
+<li><strong>Verificación del vendedor.</strong> Confirma si el vendedor aparece listado como distribuidor autorizado en los canales oficiales de Mitutoyo para tu país o región.</li>
+</ol>
+<pre><code>Checklist rápido de verificación:
+
+[ ] El encoder retiene la posición real tras apagar/encender (prueba ABSOLUTE)
+[ ] Cierre completo de mordazas = 0,00 mm exacto
+[ ] Lectura contra bloque patrón dentro de ±0,02 mm
+[ ] 5 mediciones repetidas de la misma pieza: dispersión ≤ 0,01 mm
+[ ] Grabado láser en logo y modelo, no impreso
+[ ] Deslizamiento suave, sin holgura lateral perceptible
+[ ] Mordazas sin rebabas bajo lupa
+[ ] Vendedor verificable como distribuidor autorizado
+[ ] Precio dentro del rango de mercado esperado</code></pre>
+</section>
+
+<section id="donde-comprar">
+<h2>Dónde comprar para minimizar el riesgo</h2>
+<ul>
+<li><strong>Distribuidores autorizados listados por Mitutoyo</strong> para tu país: son la opción con menor riesgo, ya que operan bajo contrato directo con el fabricante y suelen ofrecer servicio de calibración posventa.</li>
+<li><strong>Casas de instrumentos de metrología establecidas</strong>, con local físico, boleta o factura formal y política de garantía clara — no solo presencia en un marketplace.</li>
+<li><strong>Evita marketplaces sin verificación de vendedor</strong> para este tipo de instrumento específicamente, incluso si el mismo canal es confiable para otros productos: el margen de falsificación en instrumentos de marca reconocida es demasiado alto.</li>
+<li><strong>Desconfía de "liquidaciones" o "stock de importación directa"</strong> sin factura ni respaldo, especialmente cuando el precio es notablemente inferior al de un distribuidor formal.</li>
+<li><strong>Pide siempre boleta o factura</strong> que especifique marca y modelo — es tu respaldo legal mínimo si luego necesitas reclamar.</li>
+</ul>
+<div class="warning"><strong>Sobre las compras internacionales de bajo costo:</strong> muchos calibres vendidos como "Mitutoyo" a precios notablemente bajos en plataformas de comercio internacional son falsificaciones fabricadas específicamente para imitar la apariencia de la serie 500. El ahorro inicial rara vez compensa la falta de exactitud real cuando el instrumento se usa para trabajo que exige tolerancias estrechas.</div>
+</section>
+
+<section id="genuino-vs-generico">
+<h2>Genuino, genérico y falsificado: no es lo mismo</h2>
+<p>Es importante no confundir tres categorías distintas:</p>
+<ul>
+<li><strong>Genuino Mitutoyo.</strong> Fabricado y certificado por Mitutoyo, en cualquiera de sus plantas alrededor del mundo, bajo su mismo control de calidad y trazabilidad metrológica.</li>
+<li><strong>Genérico de otra marca.</strong> Un calibre digital de una marca distinta (Insize, Shahe, Baker, entre muchas otras), vendido honestamente bajo su propio nombre, sin pretender ser Mitutoyo. Puede ser una herramienta perfectamente válida para trabajo de menor exigencia, a un precio proporcional a su calidad real.</li>
+<li><strong>Falsificación.</strong> Un producto —muchas veces con la misma base de fabricación que un genérico económico— vendido deliberadamente con el logo, la apariencia y a veces hasta el número de modelo de Mitutoyo, para aprovechar su reputación y cobrar un precio que no corresponde a la calidad real entregada.</li>
+</ul>
+<p>El problema ético y práctico no es que existan calibres económicos —tienen su lugar legítimo en el mercado—, sino que se vendan mintiendo sobre su origen. Un genérico honesto a buen precio es una compra razonable; un falso Mitutoyo al precio de un genérico, vendido como si fuera el original, es directamente un fraude.</p>
+</section>
+
+<section id="calibracion">
+<h2>Calibración y trazabilidad: por qué importa</h2>
+<p>Para trabajo de control de calidad formal, un instrumento de medición no solo debe ser preciso: debe ser <strong>trazable</strong>, es decir, poder demostrar mediante un certificado de calibración que su exactitud fue verificada contra un patrón de referencia reconocido (en Chile, en última instancia contra los patrones nacionales que gestiona el Instituto Nacional de Normalización, INN, dentro del sistema metrológico nacional).</p>
+<p>Un calibre genuino de Mitutoyo puede enviarse a calibrar y recibir un certificado válido para auditorías de calidad (ISO 9001 y similares). Una falsificación, incluso si por casualidad mide con razonable exactitud al comprarla, generalmente no cuenta con el mismo control de estabilidad dimensional en el tiempo, y ningún laboratorio de calibración serio certificará su origen como Mitutoyo si detecta inconsistencias con las especificaciones oficiales del fabricante.</p>
+<div class="note"><strong>Regla práctica:</strong> si tu trabajo requiere entregar evidencia de calibración a un cliente o auditor, la autenticidad del instrumento deja de ser una preferencia y se convierte en un requisito documental. En ese escenario, comprar exclusivamente a través de un distribuidor autorizado no es una precaución exagerada — es parte del proceso de calidad mismo.</div>
+</section>
+
+<section id="costos">
+<h2>Precios de referencia en Chile</h2>
+<p>Cifras de referencia editorial para 2026 (verifica precios vigentes con distribuidores autorizados antes de comprar):</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos orientativos según canal de compra y autenticidad declarada.</caption>
+<thead><tr><th>Producto</th><th>Rango de precio (CLP)</th><th>Nivel de riesgo</th></tr></thead>
+<tbody>
+<tr><td>Mitutoyo 500 Absolute Digimatic (150 mm), distribuidor autorizado</td><td>$85.000 – $160.000</td><td>Bajo — respaldo oficial y garantía</td></tr>
+<tr><td>Mitutoyo mismo modelo, marketplace sin verificación</td><td>$25.000 – $60.000</td><td>Alto — precio muy por debajo del rango oficial</td></tr>
+<tr><td>Calibre digital genérico de marca reconocida (Insize, Shahe u otra)</td><td>$15.000 – $40.000</td><td>Bajo si se compra como lo que es, sin pretender ser Mitutoyo</td></tr>
+<tr><td>Calibración externa de un calibre existente (servicio)</td><td>$15.000 – $35.000 por instrumento</td><td>Recomendado anualmente en uso profesional</td></tr>
+</tbody>
+</table>
+</div>
+<p>El patrón es consistente en instrumentos de marca reconocida: cuando el precio ofrecido está muy por debajo del rango de un distribuidor autorizado para el mismo modelo exacto, la probabilidad de falsificación sube de forma pronunciada, independiente de qué tan "oficiales" se vean las fotos publicadas.</p>
+</section>
+
+<section id="tabla-resumen">
+<h2>Tabla resumen de verificación rápida</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Resumen de las señales cubiertas en esta guía, ordenadas de mayor a menor peso como evidencia individual.</caption>
+<thead><tr><th>Señal</th><th>Peso como evidencia</th><th>Cómo verificarla</th></tr></thead>
+<tbody>
+<tr><td>Comportamiento del encoder ABSOLUTE</td><td>Muy alto</td><td>Prueba de apagado/encendido sin perder posición</td></tr>
+<tr><td>Exactitud contra bloque patrón</td><td>Muy alto</td><td>Comparar lectura contra dimensión certificada</td></tr>
+<tr><td>Origen del vendedor</td><td>Alto</td><td>Verificar listado de distribuidores autorizados</td></tr>
+<tr><td>Precio respecto al mercado</td><td>Alto</td><td>Comparar contra al menos tres fuentes formales</td></tr>
+<tr><td>Repetibilidad de mediciones</td><td>Medio-alto</td><td>5 mediciones repetidas de la misma pieza</td></tr>
+<tr><td>Grabado láser vs impreso</td><td>Medio</td><td>Inspección táctil y visual con lupa</td></tr>
+<tr><td>Suavidad del deslizamiento</td><td>Medio</td><td>Prueba manual de recorrido completo</td></tr>
+<tr><td>Calidad del empaque</td><td>Bajo-medio</td><td>Comparación con fotos oficiales del fabricante</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Detectar una falsificación de calibre digital Mitutoyo no depende de una sola señal infalible, sino de cruzar evidencia: el comportamiento del encoder absoluto, la exactitud verificada contra un patrón conocido, la calidad de fabricación observable bajo lupa, y el canal de compra. Ninguna de estas pruebas requiere equipamiento costoso ni conocimiento avanzado de metrología — solo un poco de método y la disposición a desconfiar de un precio demasiado bueno. Para trabajo de hobby, un calibre genérico honesto puede ser toda la precisión que necesitas; para trabajo que exige trazabilidad certificada, la autenticidad del instrumento deja de ser opcional y se convierte en parte del proceso de calidad mismo.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cómo saber si mi calibre Mitutoyo es original?</summary><p>Verifica varias señales en conjunto, no una sola: el encoder debe ser de tipo ABSOLUTE (no requiere poner en cero después de apagar o cambiar la pila), el deslizamiento del cursor debe ser suave y sin juego lateral, el grabado del logo y modelo debe verse láser-nítido y no impreso, la pantalla debe responder de inmediato sin parpadeo, y el vendedor debe figurar como distribuidor autorizado en el sitio de Mitutoyo. Ninguna señal por sí sola es concluyente; la combinación de varias sí lo es.</p></details>
+<details><summary>¿Cuál es la diferencia entre un calibre de encoder absoluto (ABS) y uno incremental?</summary><p>Un encoder absoluto conoce su posición física en todo momento gracias a un patrón óptico o capacitivo codificado a lo largo de la regla, por lo que al encender el instrumento después de apagarlo o cambiar la pila, sigue mostrando la medida correcta sin necesidad de recalibrar en cero. Un encoder incremental solo cuenta pulsos de movimiento desde el último punto de referencia, por lo que pierde la posición al apagarse y exige poner el calibre en cero cada vez que se enciende. La tecnología ABSOLUTE es una marca registrada de Mitutoyo y su ausencia de necesidad de reset es una de las señales más confiables para distinguir un original de una copia económica.</p></details>
+<details><summary>¿Dónde se fabrican los calibres Mitutoyo originales?</summary><p>Mitutoyo es una empresa japonesa con plantas de manufactura propias en distintos países, incluyendo Japón, y otras instalaciones certificadas bajo su mismo control de calidad. Que un calibre genuino indique un país de manufactura distinto a Japón no lo convierte en falsificación: lo que define la autenticidad es que haya sido fabricado y certificado por Mitutoyo, no el país específico de ensamblaje. La falsificación es un producto de un tercero no autorizado que copia la marca y apariencia, generalmente sin el mismo control metrológico.</p></details>
+<details><summary>¿Vale la pena comprar un calibre digital genérico en vez de Mitutoyo?</summary><p>Depende del uso. Para trabajo de hobby, taller doméstico o mediciones no críticas, un calibre digital genérico de marca reconocida (no falsificado) puede ser suficiente y mucho más económico. Para control de calidad, metrología dimensional, trazabilidad certificada o mediciones que definan la aceptación o rechazo de una pieza, la repetibilidad, la resistencia del encoder a polvo y refrigerante, y la posibilidad de calibración trazable de un instrumento Mitutoyo genuino justifican la diferencia de precio.</p></details>
+<details><summary>¿Qué exactitud debo esperar de un calibre digital de calidad?</summary><p>Los calibres digitales Mitutoyo de la serie 500 Absolute Digimatic típicamente entregan una exactitud de ±0,02 mm y una resolución de 0,01 mm en rangos de medición de hasta 150 o 200 mm, degradándose ligeramente en rangos mayores. Una falsificación puede mostrar una resolución de 0,01 mm en pantalla sin que el mecanismo interno sea capaz de sostener esa exactitud real, lo que solo se detecta comparando la lectura contra un bloque patrón o pieza de dimensión certificada.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado, y no está afiliado ni respaldado por Mitutoyo Corporation. Las marcas registradas mencionadas pertenecen a sus respectivos propietarios. Las cifras de precios son estimaciones editoriales con supuestos declarados; verifica precios y distribuidores autorizados vigentes antes de comprar. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te interesa la verificación de calidad en herramientas y componentes, revisa también nuestra guía <a href="/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada">Crimpadora de Punteras Huecas: Hexagonal vs Cuadrada</a>, donde aplicamos el mismo criterio de verificación técnica —esta vez a herramientas de crimpado y conexión eléctrica.</p>
+  <p>También puedes revisar el <a href="/#categories">temario completo del blog</a> para ver qué guías vienen en camino.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/">← Anterior: Portada</a>
+  <a href="/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada">Siguiente: Crimpadora de Punteras Huecas →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Las especificaciones exactas de cada modelo deben verificarse siempre contra la hoja de datos vigente publicada por el fabricante.</p>
+<ul>
+<li><a href="https://www.mitutoyo.com" target="_blank" rel="noopener noreferrer">Mitutoyo Corporation — Documentación técnica y catálogo de la serie 500 Absolute Digimatic</a></li>
+<li><a href="https://www.inn.cl" target="_blank" rel="noopener noreferrer">Instituto Nacional de Normalización (INN) Chile — Sistema Nacional de Metrología</a></li>
+<li><a href="https://www.nist.gov/pml/weights-and-measures" target="_blank" rel="noopener noreferrer">National Institute of Standards and Technology (NIST) — Fundamentos de metrología dimensional</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 31 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización, metrología y electrónica aplicada.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
