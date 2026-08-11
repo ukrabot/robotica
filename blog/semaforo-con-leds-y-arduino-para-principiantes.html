@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Semáforo con LEDs y Arduino para Principiantes — Guía Técnica Completa</title>
+<meta name="description" content="Guía paso a paso para construir un semáforo con Arduino y LEDs: cálculo de resistencia limitadora con la Ley de Ohm, conexión de tres LEDs, código con temporización realista, máquina de estados, botón peatonal y upgrade a millis() no bloqueante.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/semaforo-con-leds-y-arduino-para-principiantes">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Semáforo con LEDs y Arduino para Principiantes — Guía Técnica Completa">
+<meta property="og:description" content="Cálculo de resistencia con la Ley de Ohm, conexión de LEDs, código con temporización realista, máquina de estados, botón peatonal y programación no bloqueante con millis().">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/semaforo_arduino_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/semaforo-con-leds-y-arduino-para-principiantes">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Técnica: Semáforo con LEDs y Arduino">
+<meta name="twitter:description" content="Ley de Ohm, conexión de LEDs, código con temporización, máquina de estados, botón peatonal y millis() no bloqueante con Arduino.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/semaforo_arduino_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Semáforo con LEDs y Arduino para Principiantes — Guía Técnica Completa",
+  "description":"Guía paso a paso para construir un semáforo con Arduino y tres LEDs: cálculo de la resistencia limitadora de corriente usando la Ley de Ohm, conexión física correcta con polaridad de LED, código con temporización realista basado en tiempos reales de semáforos urbanos, estructura de máquina de estados, agregado de botón peatonal con antirrebote, y upgrade hacia programación no bloqueante con millis() para controlar múltiples semáforos simultáneamente.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-10-19",
+  "dateModified":"2026-10-19",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/semaforo-con-leds-y-arduino-para-principiantes"},
+  "image":"https://www.ukrabot.cl/blog/semaforo_arduino_hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Arduino Uno o Nano, 3 LEDs (rojo, amarillo, verde), 3 resistencias de 220-330 ohms, pulsador momentáneo opcional, resistencia 10kΩ opcional para el botón, protoboard y jumpers",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Semáforo con LEDs y Arduino para Principiantes","item":"https://www.ukrabot.cl/blog/semaforo-con-leds-y-arduino-para-principiantes"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Por qué es obligatorio usar una resistencia con un LED en Arduino?","acceptedAnswer":{"@type":"Answer","text":"Un LED es un componente de baja resistencia interna que, conectado directamente a una fuente de voltaje sin ninguna limitación, permitiría pasar una corriente muy superior a la que puede soportar, generando calor excesivo en microsegundos y destruyendo la unión semiconductora interna de forma permanente e inmediata. La resistencia limitadora, calculada con la Ley de Ohm a partir del voltaje de alimentación y las especificaciones del LED, reduce la corriente a un valor seguro, típicamente entre 10 y 20 miliamperios, permitiendo que el LED funcione de forma segura durante miles de horas sin degradarse."}},
+    {"@type":"Question","name":"¿Cómo sé qué valor de resistencia usar con mi LED?","acceptedAnswer":{"@type":"Answer","text":"El valor se calcula con la fórmula de la Ley de Ohm adaptada: R = (Voltaje de alimentación - Voltaje directo del LED) / Corriente deseada. Para un Arduino de 5V, un LED rojo estándar (voltaje directo aproximado de 2V) y una corriente objetivo de 15mA, el cálculo da (5-2)/0.015 = 200 ohms. En la práctica, valores entre 220 y 330 ohms funcionan bien para la mayoría de LEDs estándar de 5mm conectados a Arduino, siendo una zona segura que prioriza la protección del componente sobre el brillo máximo posible."}},
+    {"@type":"Question","name":"¿Cómo sé cuál pata del LED es el ánodo y cuál el cátodo?","acceptedAnswer":{"@type":"Answer","text":"En un LED nuevo sin modificar, la pata más larga es el ánodo (positivo, se conecta hacia el pin de Arduino o hacia la resistencia) y la pata más corta es el cátodo (negativo, se conecta hacia GND). Adicionalmente, la mayoría de los LEDs tienen un lado aplanado en el borde de la carcasa plástica que corresponde también al cátodo, una señal útil cuando las patas han sido cortadas o dobladas y ya no es posible comparar longitudes. Conectar un LED con la polaridad invertida simplemente no lo enciende; no suele dañarlo, ya que actúa como un diodo bloqueando el paso de corriente en sentido inverso."}},
+    {"@type":"Question","name":"¿Qué es una máquina de estados y por qué se usa en el código de un semáforo?","acceptedAnswer":{"@type":"Answer","text":"Una máquina de estados es un patrón de programación donde un sistema solo puede estar en uno de un conjunto finito y predefinido de estados a la vez (por ejemplo, ROJO, AMARILLO o VERDE), con reglas claras sobre cómo y cuándo se pasa de un estado a otro. Se usa en el semáforo porque refleja exactamente el comportamiento físico real que se quiere modelar: en cualquier instante, el semáforo está en una sola fase bien definida, y las transiciones ocurren en un orden fijo y predecible. Este mismo patrón de máquina de estados es ampliamente usado en proyectos mucho más complejos, desde controladores de electrodomésticos hasta la lógica de videojuegos."}},
+    {"@type":"Question","name":"¿Por qué debería usar millis() en vez de delay() para controlar el semáforo?","acceptedAnswer":{"@type":"Answer","text":"La función delay() detiene por completo la ejecución de cualquier otro código de Arduino durante el tiempo especificado, lo que significa que mientras un semáforo está en su fase roja de varios segundos, el programa no puede reaccionar a ningún botón, sensor u otro evento durante ese tiempo. La función millis(), en cambio, permite verificar cuánto tiempo ha transcurrido sin bloquear el resto del programa, haciendo posible controlar varios semáforos de forma independiente, leer un botón peatonal en cualquier momento, o combinar el semáforo con otras funciones simultáneas — un requisito casi obligatorio en cualquier proyecto de Arduino que crece más allá de lo más elemental."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="semaforo_arduino_hero.jpg" alt="Semáforo casero hecho con tres LEDs rojo, amarillo y verde conectados a una placa Arduino Uno sobre una protoboard" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino para principiantes · Actualizado el <time datetime="2026-10-19">19 de octubre de 2026</time></div>
+    <h1>Semáforo con LEDs y Arduino para Principiantes</h1>
+    <p>Cómo calcular la resistencia correcta con la Ley de Ohm, conexión física con la polaridad adecuada, código con temporización realista, máquina de estados, botón peatonal y el camino hacia la programación no bloqueante con millis().</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="semaforo_arduino_wiring.jpg" alt="Diagrama de conexión de tres LEDs rojo, amarillo y verde con sus respectivas resistencias limitadoras conectados a los pines digitales de un Arduino Uno" loading="lazy">
+  <div class="caption">Tres LEDs, tres resistencias, tres pines digitales: el proyecto ideal para entender simultáneamente electrónica básica y estructuras de control en programación.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que-este-proyecto">Por qué el semáforo es un proyecto ideal para empezar</a></li>
+    <li><a href="#ley-de-ohm">La Ley de Ohm: calculando la resistencia correcta</a></li>
+    <li><a href="#materiales">Lista de materiales y costos de referencia</a></li>
+    <li><a href="#polaridad-led">Identificar la polaridad del LED: ánodo y cátodo</a></li>
+    <li><a href="#conexion-hardware">Conexión de hardware: los tres LEDs</a></li>
+    <li><a href="#codigo-basico">Código Arduino: semáforo básico con delay()</a></li>
+    <li><a href="#tiempos-reales">Tiempos realistas de un semáforo urbano</a></li>
+    <li><a href="#maquina-estados">Máquina de estados: una forma más robusta de programarlo</a></li>
+    <li><a href="#boton-peatonal">Agregar un botón peatonal con antirrebote</a></li>
+    <li><a href="#millis">Upgrade: programación no bloqueante con millis()</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y solución de errores</a></li>
+    <li><a href="#mejoras">Mejoras posibles y siguientes pasos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que-este-proyecto">
+<h2>Por qué el semáforo es un proyecto ideal para empezar</h2>
+<p>Después de completar tu primer sketch Blink (si aún no lo has hecho, te recomendamos empezar por <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">Primeros Pasos con Arduino Uno</a>), el semáforo con LEDs es uno de los siguientes pasos más lógicos y recomendados en cualquier ruta de aprendizaje de Arduino. Combina, en un proyecto pequeño y de bajo costo, varios conceptos fundamentales que reaparecerán en prácticamente todos tus proyectos futuros:</p>
+<ul>
+<li><strong>Electrónica básica real:</strong> aprenderás por qué un LED necesita una resistencia y cómo calcular su valor correcto, en vez de simplemente copiar un valor de internet sin entender el porqué.</li>
+<li><strong>Control de múltiples salidas:</strong> tres LEDs controlados de forma coordinada es el primer paso hacia proyectos con muchas más salidas simultáneas.</li>
+<li><strong>Lógica de secuencia y temporización:</strong> el semáforo tiene un comportamiento predecible y cíclico, ideal para introducir el concepto de máquina de estados de forma intuitiva.</li>
+<li><strong>Un camino de upgrade claro:</strong> desde la versión más simple con <code>delay()</code> hasta una versión no bloqueante con <code>millis()</code> y control de botón peatonal, este proyecto crece contigo a medida que aprendes más.</li>
+</ul>
+</section>
+
+<section id="ley-de-ohm">
+<h2>La Ley de Ohm: calculando la resistencia correcta</h2>
+<p>Antes de conectar el primer LED, es fundamental entender por qué <strong>nunca se debe conectar un LED directamente a una fuente de voltaje sin una resistencia limitadora</strong>. Un LED tiene una resistencia interna muy baja; sin nada que limite la corriente, la cantidad de electricidad que pasaría a través de él superaría ampliamente lo que puede soportar, generando calor excesivo casi instantáneamente y destruyendo el componente de forma permanente e irreversible.</p>
+<p>La <strong>Ley de Ohm</strong> (V = I × R) es la herramienta que permite calcular exactamente qué valor de resistencia limita la corriente a un nivel seguro. Adaptada para este cálculo específico, la fórmula queda así:</p>
+<pre><code>R = (Vfuente - Vled) / Ideseada
+
+Donde:
+Vfuente  = voltaje de alimentacion (5V en un pin digital de Arduino)
+Vled     = voltaje directo del LED (varia segun el color, ver tabla)
+Ideseada = corriente objetivo, tipicamente 0.015A (15mA) para uso seguro y duradero</code></pre>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Voltaje directo típico según el color del LED, y resistencia resultante para una corriente objetivo de 15mA con Arduino a 5V.</caption>
+<thead><tr><th>Color del LED</th><th>Voltaje directo (V) aprox.</th><th>Resistencia calculada</th><th>Valor comercial recomendado</th></tr></thead>
+<tbody>
+<tr><td>Rojo</td><td>1.8 – 2.0 V</td><td>~200 Ω</td><td>220 Ω</td></tr>
+<tr><td>Amarillo</td><td>2.0 – 2.2 V</td><td>~193 Ω</td><td>220 Ω</td></tr>
+<tr><td>Verde</td><td>2.0 – 3.2 V</td><td>~180 Ω</td><td>220 Ω o 330 Ω</td></tr>
+<tr><td>Azul / Blanco</td><td>3.0 – 3.4 V</td><td>~113 Ω</td><td>150 Ω o 220 Ω</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>En la práctica, no necesitas ser exacto:</strong> valores comerciales estándar entre 220 Ω y 330 Ω funcionan de forma segura para casi cualquier LED de 5mm conectado a un pin de Arduino de 5V, sacrificando un poco de brillo máximo posible a cambio de un margen de seguridad más amplio. Es exactamente la razón por la que casi todos los tutoriales de Arduino, sin importar el color del LED, recomiendan resistencias en ese rango.</div>
+</section>
+
+<section id="materiales">
+<h2>Lista de materiales y costos de referencia</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos de precio orientativos para el mercado chileno en 2026, componentes básicos disponibles en tiendas de electrónica.</caption>
+<thead><tr><th>Componente</th><th>Especificación sugerida</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Arduino Uno o Nano</td><td>Original o compatible con ATmega328P</td><td>$6.000 – $15.000</td></tr>
+<tr><td>LED rojo, amarillo y verde</td><td>5mm, difuso o transparente</td><td>$300 – $800 (los tres)</td></tr>
+<tr><td>Resistencias 220-330 Ω</td><td>1/4 W, tres unidades</td><td>$100 – $300</td></tr>
+<tr><td>Pulsador momentáneo (opcional)</td><td>Tact switch 4 pines, para el botón peatonal</td><td>$200 – $500</td></tr>
+<tr><td>Resistencia 10 kΩ (opcional)</td><td>Para configuración pull-down del botón</td><td>$50 – $150</td></tr>
+<tr><td>Protoboard y jumpers</td><td>Set básico macho-macho</td><td>$2.000 – $5.000</td></tr>
+<tr><td><strong>Total aproximado del proyecto</strong></td><td>&nbsp;</td><td><strong>$8.650 – $21.750</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>Uno de los proyectos más económicos posibles para empezar: si ya tienes un Arduino de la guía anterior, el resto de los componentes cuesta menos de 2.000 pesos.</p>
+</section>
+
+<section id="polaridad-led">
+<h2>Identificar la polaridad del LED: ánodo y cátodo</h2>
+<p>A diferencia de una resistencia, que puede conectarse en cualquier orientación, un LED es un componente <strong>polarizado</strong>: solo funciona si la corriente fluye en un sentido específico. Conectarlo al revés no lo enciende (ni tampoco suele dañarlo, ya que actúa como un diodo bloqueando el paso en sentido inverso), pero es una fuente muy común de frustración para quienes recién empiezan y no entienden por qué "el LED no prende".</p>
+<ul>
+<li><strong>Ánodo (+):</strong> la pata más larga de las dos. Se conecta hacia el pin de Arduino, generalmente a través de la resistencia limitadora.</li>
+<li><strong>Cátodo (-):</strong> la pata más corta. Se conecta hacia GND (tierra).</li>
+<li><strong>Lado plano de la carcasa:</strong> además de la longitud de las patas, la mayoría de los LEDs de 5mm tienen un borde aplanado visible en el plástico de la carcasa, que corresponde siempre al lado del cátodo — una referencia útil si las patas ya fueron recortadas o dobladas.</li>
+</ul>
+<div class="warning"><strong>La resistencia puede ir en cualquiera de los dos lados:</strong> a diferencia del LED, la posición exacta de la resistencia dentro del circuito (antes o después del LED) no afecta su funcionamiento, ya que solo limita la corriente total del circuito en serie. Lo único que importa es que exista una resistencia en algún punto entre la fuente de voltaje y GND, en serie con el LED.</div>
+</section>
+
+<section id="conexion-hardware">
+<h2>Conexión de hardware: los tres LEDs</h2>
+<pre><code>Esquema conceptual de conexión (se repite para cada LED):
+
+Arduino pin digital (ej. D8) ----> Resistencia 220-330 Ω ----> LED (+, pata larga, anodo)
+                                                                    |
+Arduino GND -------------------------------------------------------+ (LED -, pata corta, catodo)
+
+Asignacion de pines usada en el codigo de esta guia:
+LED Rojo    ----> Arduino pin 8
+LED Amarillo ---> Arduino pin 9
+LED Verde   ----> Arduino pin 10</code></pre>
+<p>Cada uno de los tres LEDs sigue exactamente el mismo patrón de conexión: pin digital → resistencia → ánodo del LED → cátodo del LED → GND. No es necesario compartir la misma resistencia entre los tres LEDs; cada uno debe tener su propia resistencia individual conectada en serie.</p>
+</section>
+
+<section id="codigo-basico">
+<h2>Código Arduino: semáforo básico con delay()</h2>
+<p>La primera versión de este proyecto usa la función <code>delay()</code>, la forma más simple e intuitiva de controlar temporización en Arduino, ideal para entender la lógica básica antes de avanzar hacia enfoques más sofisticados.</p>
+<pre><code>const int PIN_ROJO    = 8;
+const int PIN_AMARILLO = 9;
+const int PIN_VERDE   = 10;
+
+void setup() {
+  pinMode(PIN_ROJO, OUTPUT);
+  pinMode(PIN_AMARILLO, OUTPUT);
+  pinMode(PIN_VERDE, OUTPUT);
+}
+
+void loop() {
+  // Fase ROJA
+  digitalWrite(PIN_ROJO, HIGH);
+  digitalWrite(PIN_AMARILLO, LOW);
+  digitalWrite(PIN_VERDE, LOW);
+  delay(4000);
+
+  // Fase VERDE
+  digitalWrite(PIN_ROJO, LOW);
+  digitalWrite(PIN_AMARILLO, LOW);
+  digitalWrite(PIN_VERDE, HIGH);
+  delay(4000);
+
+  // Fase AMARILLA
+  digitalWrite(PIN_ROJO, LOW);
+  digitalWrite(PIN_AMARILLO, HIGH);
+  digitalWrite(PIN_VERDE, LOW);
+  delay(1500);
+}</code></pre>
+<p>Este código, aunque perfectamente funcional, tiene una limitación importante que se hace evidente en cuanto el proyecto crece: mientras el Arduino está "esperando" dentro de cualquiera de los <code>delay()</code>, no puede hacer absolutamente nada más — ni leer un botón, ni controlar otro semáforo, ni reaccionar a ningún evento externo. Esta limitación se aborda más adelante en la sección de <code>millis()</code>.</p>
+</section>
+
+<section id="tiempos-reales">
+<h2>Tiempos realistas de un semáforo urbano</h2>
+<p>Para dar un toque de realismo adicional al proyecto, vale la pena conocer los rangos de tiempo típicos que usan los semáforos urbanos reales, aunque estos varían según el país, el tipo de intersección y el volumen de tráfico esperado:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos orientativos de duración de cada fase en semáforos urbanos típicos, para dar contexto realista al proyecto.</caption>
+<thead><tr><th>Fase</th><th>Duración típica</th><th>Propósito</th></tr></thead>
+<tbody>
+<tr><td>Verde</td><td>20 – 60 segundos</td><td>Permitir el flujo de vehículos, variable según el volumen de tráfico de la intersección</td></tr>
+<tr><td>Amarillo</td><td>3 – 5 segundos</td><td>Advertir el cambio inminente a rojo, tiempo suficiente para detenerse con seguridad</td></tr>
+<tr><td>Rojo</td><td>20 – 60 segundos</td><td>Detener el flujo, coincide generalmente con el verde de la vía perpendicular</td></tr>
+<tr><td>Rojo + Amarillo (algunos países europeos)</td><td>1 – 2 segundos</td><td>Advertencia de que el verde está por activarse, no usado en Chile ni la mayoría de Latinoamérica</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para el proyecto de esta guía, los valores de 4 segundos (rojo/verde) y 1.5 segundos (amarillo) usados en el código son una versión reducida y proporcional de estos tiempos reales, pensada para que la demostración en la protoboard sea ágil de observar sin esperas largas — pero puedes ajustarlos libremente a los valores que prefieras.</p>
+</section>
+
+<section id="maquina-estados">
+<h2>Máquina de estados: una forma más robusta de programarlo</h2>
+<p>El código anterior funciona, pero mezcla la lógica de "qué LED debe estar encendido" con la lógica de "cuánto tiempo esperar", lo que se vuelve difícil de mantener a medida que el proyecto crece. Una forma más profesional y escalable de estructurar este mismo comportamiento es mediante una <strong>máquina de estados</strong>, un patrón de programación donde el sistema siempre se encuentra en uno de un conjunto fijo de estados posibles, con reglas claras de transición entre ellos.</p>
+<pre><code>const int PIN_ROJO    = 8;
+const int PIN_AMARILLO = 9;
+const int PIN_VERDE   = 10;
+
+enum EstadoSemaforo { ROJO, VERDE, AMARILLO };
+EstadoSemaforo estadoActual = ROJO;
+
+void setup() {
+  pinMode(PIN_ROJO, OUTPUT);
+  pinMode(PIN_AMARILLO, OUTPUT);
+  pinMode(PIN_VERDE, OUTPUT);
+}
+
+void aplicarEstado(EstadoSemaforo estado) {
+  digitalWrite(PIN_ROJO, estado == ROJO ? HIGH : LOW);
+  digitalWrite(PIN_AMARILLO, estado == AMARILLO ? HIGH : LOW);
+  digitalWrite(PIN_VERDE, estado == VERDE ? HIGH : LOW);
+}
+
+void loop() {
+  switch (estadoActual) {
+    case ROJO:
+      aplicarEstado(ROJO);
+      delay(4000);
+      estadoActual = VERDE;
+      break;
+
+    case VERDE:
+      aplicarEstado(VERDE);
+      delay(4000);
+      estadoActual = AMARILLO;
+      break;
+
+    case AMARILLO:
+      aplicarEstado(AMARILLO);
+      delay(1500);
+      estadoActual = ROJO;
+      break;
+  }
+}</code></pre>
+<p>El uso de <code>enum</code> (una enumeración) para definir los tres estados posibles (<code>ROJO</code>, <code>VERDE</code>, <code>AMARILLO</code>) hace el código considerablemente más legible que usar números sueltos (0, 1, 2) sin significado explícito, y la función <code>aplicarEstado()</code> centraliza en un solo lugar la lógica de qué LED encender para cada estado, en vez de repetir tres líneas de <code>digitalWrite()</code> en cada bloque del <code>switch</code>. Este patrón —estados definidos con <code>enum</code>, una función que aplica el estado, y una estructura <code>switch</code> que gestiona las transiciones— es exactamente el mismo que se usa en proyectos mucho más complejos de la industria real.</p>
+</section>
+
+<section id="boton-peatonal">
+<h2>Agregar un botón peatonal con antirrebote</h2>
+<p>Un semáforo peatonal real no cambia de fase únicamente por tiempo: incluye un botón que un peatón puede presionar para solicitar el cambio a la fase que le permite cruzar. El siguiente código agrega esa funcionalidad, incorporando también <strong>antirrebote por software</strong> para evitar que una sola pulsación del botón se interprete como varias solicitudes consecutivas.</p>
+<pre><code>const int PIN_ROJO     = 8;
+const int PIN_AMARILLO = 9;
+const int PIN_VERDE    = 10;
+const int PIN_BOTON    = 2;
+
+enum EstadoSemaforo { ROJO, VERDE, AMARILLO };
+EstadoSemaforo estadoActual = VERDE;
+
+bool solicitudPeatonal = false;
+int estadoBotonAnterior = LOW;
+unsigned long ultimoCambioBoton = 0;
+const unsigned long RETARDO_ANTIRREBOTE = 30;
+
+void setup() {
+  pinMode(PIN_ROJO, OUTPUT);
+  pinMode(PIN_AMARILLO, OUTPUT);
+  pinMode(PIN_VERDE, OUTPUT);
+  pinMode(PIN_BOTON, INPUT);
+}
+
+void aplicarEstado(EstadoSemaforo estado) {
+  digitalWrite(PIN_ROJO, estado == ROJO ? HIGH : LOW);
+  digitalWrite(PIN_AMARILLO, estado == AMARILLO ? HIGH : LOW);
+  digitalWrite(PIN_VERDE, estado == VERDE ? HIGH : LOW);
+}
+
+void revisarBotonPeatonal() {
+  int lecturaActual = digitalRead(PIN_BOTON);
+  if (lecturaActual != estadoBotonAnterior) {
+    ultimoCambioBoton = millis();
+  }
+  if ((millis() - ultimoCambioBoton) > RETARDO_ANTIRREBOTE) {
+    if (lecturaActual == HIGH && estadoActual == VERDE) {
+      solicitudPeatonal = true;
+    }
+  }
+  estadoBotonAnterior = lecturaActual;
+}
+
+void loop() {
+  switch (estadoActual) {
+    case VERDE:
+      aplicarEstado(VERDE);
+      // Revisa el boton repetidamente durante la fase verde
+      for (int i = 0; i < 400; i++) {
+        revisarBotonPeatonal();
+        if (solicitudPeatonal) break;
+        delay(10);
+      }
+      estadoActual = AMARILLO;
+      solicitudPeatonal = false;
+      break;
+
+    case AMARILLO:
+      aplicarEstado(AMARILLO);
+      delay(1500);
+      estadoActual = ROJO;
+      break;
+
+    case ROJO:
+      aplicarEstado(ROJO);
+      delay(4000); // tiempo seguro para que el peaton cruce
+      estadoActual = VERDE;
+      break;
+  }
+}</code></pre>
+<p>Nótese que, incluso con el botón agregado, el código todavía depende fuertemente de <code>delay()</code> dentro de un bucle <code>for</code> para poder revisar el botón repetidamente durante la fase verde — una solución funcional, pero que empieza a mostrar las costuras del enfoque bloqueante. Esta es exactamente la motivación para el siguiente y último paso de esta guía.</p>
+</section>
+
+<section id="millis">
+<h2>Upgrade: programación no bloqueante con millis()</h2>
+<p>La función <code>millis()</code> devuelve la cantidad de milisegundos transcurridos desde que el Arduino se encendió, y permite implementar temporización sin bloquear el resto del programa: en vez de "esperar" con <code>delay()</code>, el código simplemente verifica en cada vuelta del <code>loop()</code> si ya pasó suficiente tiempo desde el último cambio de estado, y de ser así, actúa — pero sin dejar de ejecutar el resto del programa en cada iteración.</p>
+<pre><code>const int PIN_ROJO     = 8;
+const int PIN_AMARILLO = 9;
+const int PIN_VERDE    = 10;
+const int PIN_BOTON    = 2;
+
+enum EstadoSemaforo { ROJO, VERDE, AMARILLO };
+EstadoSemaforo estadoActual = VERDE;
+
+unsigned long tiempoInicioEstado = 0;
+const unsigned long DURACION_VERDE    = 4000;
+const unsigned long DURACION_AMARILLO = 1500;
+const unsigned long DURACION_ROJO     = 4000;
+
+bool solicitudPeatonal = false;
+int estadoBotonAnterior = LOW;
+unsigned long ultimoCambioBoton = 0;
+const unsigned long RETARDO_ANTIRREBOTE = 30;
+
+void setup() {
+  pinMode(PIN_ROJO, OUTPUT);
+  pinMode(PIN_AMARILLO, OUTPUT);
+  pinMode(PIN_VERDE, OUTPUT);
+  pinMode(PIN_BOTON, INPUT);
+  tiempoInicioEstado = millis();
+}
+
+void aplicarEstado(EstadoSemaforo estado) {
+  digitalWrite(PIN_ROJO, estado == ROJO ? HIGH : LOW);
+  digitalWrite(PIN_AMARILLO, estado == AMARILLO ? HIGH : LOW);
+  digitalWrite(PIN_VERDE, estado == VERDE ? HIGH : LOW);
+}
+
+void cambiarEstado(EstadoSemaforo nuevoEstado) {
+  estadoActual = nuevoEstado;
+  tiempoInicioEstado = millis();
+  aplicarEstado(nuevoEstado);
+}
+
+void revisarBotonPeatonal() {
+  int lecturaActual = digitalRead(PIN_BOTON);
+  if (lecturaActual != estadoBotonAnterior) {
+    ultimoCambioBoton = millis();
+  }
+  if ((millis() - ultimoCambioBoton) > RETARDO_ANTIRREBOTE) {
+    if (lecturaActual == HIGH && estadoActual == VERDE) {
+      solicitudPeatonal = true;
+    }
+  }
+  estadoBotonAnterior = lecturaActual;
+}
+
+void loop() {
+  revisarBotonPeatonal(); // se revisa SIEMPRE, sin bloquear nada
+  unsigned long tiempoTranscurrido = millis() - tiempoInicioEstado;
+
+  switch (estadoActual) {
+    case VERDE:
+      if (solicitudPeatonal || tiempoTranscurrido >= DURACION_VERDE) {
+        solicitudPeatonal = false;
+        cambiarEstado(AMARILLO);
+      }
+      break;
+
+    case AMARILLO:
+      if (tiempoTranscurrido >= DURACION_AMARILLO) {
+        cambiarEstado(ROJO);
+      }
+      break;
+
+    case ROJO:
+      if (tiempoTranscurrido >= DURACION_ROJO) {
+        cambiarEstado(VERDE);
+      }
+      break;
+  }
+
+  // Aqui podrias agregar codigo para un SEGUNDO semaforo,
+  // leer otro sensor, o cualquier otra tarea, sin que el
+  // primer semaforo se vea afectado en su temporizacion.
+}</code></pre>
+<p>La diferencia clave frente a las versiones anteriores es que el <code>loop()</code> ahora se ejecuta miles de veces por segundo sin detenerse nunca, revisando en cada pasada tanto el botón como el tiempo transcurrido. Esto es lo que hace posible, por ejemplo, controlar un segundo semáforo de forma completamente independiente dentro del mismo <code>loop()</code>, algo que sería extremadamente difícil de lograr limpiamente con las versiones basadas en <code>delay()</code>.</p>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y solución de errores</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos en proyectos de semáforo con LEDs y Arduino, y su causa más probable.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Un LED específico nunca enciende</td><td>Polaridad invertida (ánodo/cátodo confundidos)</td><td>Girar el LED 180 grados en la protoboard</td></tr>
+<tr><td>El LED enciende muy débil o no enciende ninguno</td><td>Resistencia de valor demasiado alto, o conexión GND faltante</td><td>Verificar el valor de la resistencia y la continuidad hacia GND</td></tr>
+<tr><td>Los tres LEDs encienden simultáneamente</td><td>Error de lógica en el código, o cortocircuito entre pines en la protoboard</td><td>Revisar que cada digitalWrite() corresponda al pin correcto, verificar cableado físico</td></tr>
+<tr><td>El botón peatonal no responde nunca</td><td>Falta la resistencia pull-down, dejando el pin flotante</td><td>Agregar la resistencia de 10kΩ entre el pin y GND</td></tr>
+<tr><td>El botón activa el cambio de fase varias veces por una sola pulsación</td><td>Falta o es insuficiente el antirrebote por software</td><td>Verificar el bloque de antirrebote y aumentar levemente RETARDO_ANTIRREBOTE si persiste</td></tr>
+<tr><td>El semáforo se congela en una fase y no avanza</td><td>Uso incorrecto de millis(), comparación con el tiempo absoluto en vez de con el tiempo transcurrido</td><td>Verificar que se reste tiempoInicioEstado, no comparar directamente contra millis()</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="mejoras">
+<h2>Mejoras posibles y siguientes pasos</h2>
+<ul>
+<li><strong>Segundo semáforo perpendicular:</strong> agregar tres LEDs adicionales que representen la vía perpendicular, sincronizados de forma inversa (cuando uno está en verde, el otro está en rojo), aprovechando directamente la ventaja de millis() explicada en esta guía.</li>
+<li><strong>Contador regresivo con display de 7 segmentos:</strong> mostrar visualmente cuántos segundos faltan para el cambio de fase, un agregado muy común en semáforos peatonales reales.</li>
+<li><strong>Buzzer para personas con discapacidad visual:</strong> agregar un sonido distintivo durante la fase de cruce peatonal, replicando una función de accesibilidad presente en muchos semáforos urbanos reales.</li>
+<li><strong>Modo intermitente amarillo nocturno:</strong> simular el comportamiento de baja demanda de tráfico donde el semáforo solo parpadea en amarillo, activable con otro botón o después de cierta hora usando un módulo RTC.</li>
+<li><strong>Panel de control con múltiples intersecciones:</strong> escalar el proyecto a varios semáforos coordinados entre sí, sentando las bases conceptuales para sistemas de control de tráfico más elaborados.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>El semáforo con LEDs es, en apariencia, uno de los proyectos más simples de esta serie de guías — pero bajo esa simplicidad se esconden algunos de los conceptos más reutilizables de todo el aprendizaje de Arduino: el cálculo correcto de una resistencia limitadora con la Ley de Ohm, el patrón de máquina de estados para modelar comportamientos cíclicos, el antirrebote de botones, y la transición desde <code>delay()</code> hacia <code>millis()</code> para lograr programación no bloqueante. Dominar estos cuatro conceptos en el contexto manejable de un semáforo de tres LEDs es una preparación excelente para cualquier proyecto más ambicioso de esta serie, desde el <a href="/blog/piano-electronico-con-botones-y-buzzer">piano electrónico</a> hasta la <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">estación meteorológica</a>.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Por qué es obligatorio usar una resistencia con un LED en Arduino?</summary><p>Un LED es un componente de baja resistencia interna que, conectado directamente a una fuente de voltaje sin ninguna limitación, permitiría pasar una corriente muy superior a la que puede soportar, generando calor excesivo en microsegundos y destruyendo la unión semiconductora interna de forma permanente e inmediata. La resistencia limitadora, calculada con la Ley de Ohm a partir del voltaje de alimentación y las especificaciones del LED, reduce la corriente a un valor seguro, típicamente entre 10 y 20 miliamperios, permitiendo que el LED funcione de forma segura durante miles de horas sin degradarse.</p></details>
+<details><summary>¿Cómo sé qué valor de resistencia usar con mi LED?</summary><p>El valor se calcula con la fórmula de la Ley de Ohm adaptada: R = (Voltaje de alimentación - Voltaje directo del LED) / Corriente deseada. Para un Arduino de 5V, un LED rojo estándar (voltaje directo aproximado de 2V) y una corriente objetivo de 15mA, el cálculo da (5-2)/0.015 = 200 ohms. En la práctica, valores entre 220 y 330 ohms funcionan bien para la mayoría de LEDs estándar de 5mm conectados a Arduino, siendo una zona segura que prioriza la protección del componente sobre el brillo máximo posible.</p></details>
+<details><summary>¿Cómo sé cuál pata del LED es el ánodo y cuál el cátodo?</summary><p>En un LED nuevo sin modificar, la pata más larga es el ánodo (positivo, se conecta hacia el pin de Arduino o hacia la resistencia) y la pata más corta es el cátodo (negativo, se conecta hacia GND). Adicionalmente, la mayoría de los LEDs tienen un lado aplanado en el borde de la carcasa plástica que corresponde también al cátodo, una señal útil cuando las patas han sido cortadas o dobladas y ya no es posible comparar longitudes. Conectar un LED con la polaridad invertida simplemente no lo enciende; no suele dañarlo, ya que actúa como un diodo bloqueando el paso de corriente en sentido inverso.</p></details>
+<details><summary>¿Qué es una máquina de estados y por qué se usa en el código de un semáforo?</summary><p>Una máquina de estados es un patrón de programación donde un sistema solo puede estar en uno de un conjunto finito y predefinido de estados a la vez (por ejemplo, ROJO, AMARILLO o VERDE), con reglas claras sobre cómo y cuándo se pasa de un estado a otro. Se usa en el semáforo porque refleja exactamente el comportamiento físico real que se quiere modelar: en cualquier instante, el semáforo está en una sola fase bien definida, y las transiciones ocurren en un orden fijo y predecible. Este mismo patrón de máquina de estados es ampliamente usado en proyectos mucho más complejos, desde controladores de electrodomésticos hasta la lógica de videojuegos.</p></details>
+<details><summary>¿Por qué debería usar millis() en vez de delay() para controlar el semáforo?</summary><p>La función delay() detiene por completo la ejecución de cualquier otro código de Arduino durante el tiempo especificado, lo que significa que mientras un semáforo está en su fase roja de varios segundos, el programa no puede reaccionar a ningún botón, sensor u otro evento durante ese tiempo. La función millis(), en cambio, permite verificar cuánto tiempo ha transcurrido sin bloquear el resto del programa, haciendo posible controlar varios semáforos de forma independiente, leer un botón peatonal en cualquier momento, o combinar el semáforo con otras funciones simultáneas — un requisito casi obligatorio en cualquier proyecto de Arduino que crece más allá de lo más elemental.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y los valores de componentes son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te gustó trabajar con múltiples salidas digitales y temporización, el siguiente paso natural es el <a href="/blog/piano-electronico-con-botones-y-buzzer">Piano Electrónico con Botones y Buzzer</a>, que aplica los mismos conceptos de entradas digitales y antirrebote a un proyecto con generación de sonido en vez de luces.</p>
+  <p>Si aún no diste tus primeros pasos con Arduino, empieza por <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">Primeros Pasos con Arduino Uno</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">← Anterior: Primeros Pasos con Arduino Uno</a>
+  <a href="/blog/piano-electronico-con-botones-y-buzzer">Siguiente: Piano Electrónico con Botones y Buzzer →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los valores exactos de voltaje directo pueden variar según el fabricante específico del LED.</p>
+<ul>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/time/millis/" target="_blank" rel="noopener noreferrer">Arduino Reference — Función millis()</a></li>
+<li><a href="https://www.arduino.cc/en/Tutorial/BuiltInExamples/Debounce" target="_blank" rel="noopener noreferrer">Arduino Built-in Examples — Debounce (antirrebote de botones)</a></li>
+<li><a href="https://www.allaboutcircuits.com/textbook/direct-current/chpt-2/ohms-law/" target="_blank" rel="noopener noreferrer">All About Circuits — Referencia técnica de la Ley de Ohm</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 19 de octubre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
