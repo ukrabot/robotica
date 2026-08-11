@@ -50,4 +50,46 @@
     <priority>0.3</priority>
   </url>
 
+  <url>
+    <loc>https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/semaforo-con-leds-y-arduino-para-principiantes</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
