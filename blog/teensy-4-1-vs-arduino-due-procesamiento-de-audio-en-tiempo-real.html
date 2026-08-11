@@ -1,1 +1,755 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>Teensy 4.1 vs Arduino Due: Procesamiento de Audio en Tiempo Real — Comparativa Técnica</title>
+<meta name="description" content="Comparativa técnica a fondo entre Teensy 4.1 y Arduino Due para procesamiento de audio en tiempo real: CPU, FPU, RAM, I2S, DAC, latencia, Teensy Audio Library, benchmarks de polifonía y código de ejemplo para sintetizadores y pedales DIY.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Teensy 4.1 vs Arduino Due: Procesamiento de Audio en Tiempo Real — Comparativa Técnica">
+<meta property="og:description" content="CPU, FPU, RAM, I2S, DAC, latencia y ecosistema de software: comparativa completa entre Teensy 4.1 y Arduino Due para audio DSP en tiempo real, con código de ejemplo y benchmarks.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/teensy41_vs_due_audio_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Teensy 4.1 vs Arduino Due para Audio en Tiempo Real">
+<meta name="twitter:description" content="Comparativa técnica: CPU, FPU, RAM, I2S, DAC, latencia, Teensy Audio Library y benchmarks de polifonía para proyectos de sintetizadores y efectos DIY.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/teensy41_vs_due_audio_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Teensy 4.1 vs Arduino Due: Procesamiento de Audio en Tiempo Real — Comparativa Técnica",
+  "description":"Comparativa técnica exhaustiva entre Teensy 4.1 (NXP i.MX RT1062, ARM Cortex-M7) y Arduino Due (Atmel SAM3X8E, ARM Cortex-M3) para procesamiento de audio digital en tiempo real: potencia de cómputo, unidad de punto flotante, memoria RAM, interfaz I2S, conversores DAC/ADC, latencia de audio, ecosistema de la Teensy Audio Library, benchmarks de polifonía y ejemplos de código para sintetizadores y pedales de efectos DIY.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-11-02",
+  "dateModified":"2026-11-02",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real"},
+  "image":"https://www.ukrabot.cl/blog/teensy41_vs_due_audio_hero.jpg",
+  "proficiencyLevel":"Intermedio-Avanzado",
+  "dependencies":"Teensy 4.1 y/o Arduino Due (u original SAM3X8E), Teensy Audio Shield (SGTL5000) o codec I2S externo para el Teensy, cables jumper, IDE Arduino con Teensyduino instalado, herramienta de diseño de audio de PJRC (opcional)",
+  "wordCount":"3300",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Teensy 4.1 vs Arduino Due: Procesamiento de Audio en Tiempo Real","item":"https://www.ukrabot.cl/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Puede el Arduino Due hacer procesamiento de audio en tiempo real?","acceptedAnswer":{"@type":"Answer","text":"Sí, pero con limitaciones importantes. Su núcleo ARM Cortex-M3 a 84MHz carece de unidad de punto flotante (FPU) por hardware, por lo que cualquier operación con decimales —muy comunes en filtros digitales, reverbs y síntesis aditiva— debe emularse por software, consumiendo muchos más ciclos de CPU que en un núcleo con FPU nativa. Es perfectamente viable para osciladores de tabla de onda simples, mezclas básicas y efectos poco exigentes con aritmética de enteros, pero se queda corto rápidamente frente a efectos con múltiples voces de polifonía, convolución o análisis espectral con FFT en tiempo real."}},
+    {"@type":"Question","name":"¿Por qué el Teensy 4.1 no tiene un DAC integrado si es superior para audio?","acceptedAnswer":{"@type":"Answer","text":"El microcontrolador NXP i.MX RT1062 que usa el Teensy 4.1 fue diseñado principalmente para control industrial y procesamiento de señales de alto rendimiento, no específicamente como chip de audio de consumo, por lo que Freescale/NXP no incluyó un DAC de audio análogo en su silicio, a diferencia del SAM3X8E del Due que sí trae dos canales DAC de 12 bits integrados. La solución que adoptó PJRC (fabricante del Teensy) fue apostar por la interfaz I2S digital, estándar de la industria del audio profesional, conectando el Teensy a un códec de audio externo dedicado (como el SGTL5000 de la Teensy Audio Shield), lo que en la práctica entrega una calidad de conversión, un rango dinámico y un control de ganancia muy superiores a los que ofrecería un DAC genérico integrado en el microcontrolador."}},
+    {"@type":"Question","name":"¿Qué es la Teensy Audio Library y por qué es tan importante?","acceptedAnswer":{"@type":"Answer","text":"Es una biblioteca de código abierto desarrollada por PJRC específicamente para el Teensy, que implementa más de 150 'objetos' de audio predefinidos —osciladores, filtros biquad, mezcladores, efectos de reverb y delay, análisis FFT, grabación y reproducción desde SD, entre otros— todos optimizados para ejecutarse eficientemente en el hardware del Teensy y conectados entre sí mediante una API gráfica de bloques inspirada en los entornos de audio modular profesional. Su importancia radica en que reduce drásticamente la barrera de entrada al DSP de audio: un usuario puede construir una cadena de procesamiento compleja arrastrando bloques en una herramienta de diseño web, sin necesidad de escribir manualmente los algoritmos de filtrado o mezcla desde cero, algo para lo que no existe un equivalente comparable en el ecosistema del Arduino Due."}},
+    {"@type":"Question","name":"¿Cuál es la latencia típica de audio en un Teensy 4.1?","acceptedAnswer":{"@type":"Answer","text":"Con la configuración por defecto de la Teensy Audio Library, que usa bloques de 128 muestras a una frecuencia de muestreo de 44.1kHz, cada bloque de audio dura aproximadamente 2.9 milisegundos. Considerando el buffer de entrada y salida típico, la latencia total de ida (input a output) suele ubicarse entre 3 y 12 milisegundos dependiendo de la complejidad de la cadena de procesamiento, un valor considerado excelente e imperceptible para la mayoría de las aplicaciones musicales en tiempo real, incluyendo pedales de efectos para guitarra donde la latencia percibida como molesta generalmente empieza por encima de los 10-15 milisegundos."}},
+    {"@type":"Question","name":"¿Vale la pena comprar un Arduino Due discontinuado para un proyecto nuevo de audio en 2026?","acceptedAnswer":{"@type":"Answer","text":"En general, no, salvo casos muy específicos. Arduino LLC discontinuó oficialmente el Due, y aunque existen clones de terceros basados en el mismo chip SAM3X8E, el ecosistema de software de audio para esta placa nunca alcanzó la madurez ni el mantenimiento activo que tiene la Teensy Audio Library. Para un proyecto nuevo de procesamiento de audio en tiempo real, el Teensy 4.1 ofrece muchísima más potencia de cómputo, mejor calidad de conversión mediante I2S, y un ecosistema de software activamente mantenido, todo por un costo total similar o incluso menor una vez que se considera el códec de audio necesario. El Due solo tiene sentido si el proyecto ya existe y depende de su hardware específico, o como ejercicio educativo para entender las limitaciones de un núcleo sin FPU."}},
+    {"@type":"Question","name":"¿Se puede usar Teensy 4.1 como interfaz de audio USB para grabar en una computadora?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es una de sus características más valoradas por la comunidad de audio DIY. El Teensy 4.1 puede configurarse mediante la Teensy Audio Library para presentarse ante el sistema operativo como una interfaz de audio USB estándar (USB Audio Class), permitiendo enviar y recibir audio multicanal directamente desde y hacia un programa de edición de audio (DAW) en la computadora, sin necesidad de drivers adicionales en la mayoría de los sistemas operativos modernos. El Arduino Due, aunque cuenta con un puerto USB nativo capaz de actuar como dispositivo USB genérico, no cuenta con soporte de biblioteca maduro para implementar esta función de forma confiable."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="teensy41_vs_due_audio_hero.jpg" alt="Placa Teensy 4.1 junto a un Arduino Due sobre una protoboard con un códec de audio SGTL5000 conectado, comparando ambas plataformas para procesamiento de audio en tiempo real" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Comparativa de hardware · Actualizado el <time datetime="2026-11-02">2 de noviembre de 2026</time></div>
+    <h1>Teensy 4.1 vs Arduino Due: Procesamiento de Audio en Tiempo Real</h1>
+    <p>CPU, unidad de punto flotante, RAM, interfaz I2S, conversores DAC, latencia y ecosistema de software: comparativa técnica completa entre ambas plataformas para construir sintetizadores, pedales de efectos y procesadores de audio DIY.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="teensy_audio_shield_i2s_diagrama.jpg" alt="Diagrama de bloques mostrando la interfaz I2S entre un microcontrolador Teensy 4.1 y un códec de audio SGTL5000 en la Teensy Audio Shield" loading="lazy">
+  <div class="caption">La diferencia arquitectónica más determinante entre ambas placas no es solo la velocidad del CPU, sino cómo se comunican con el mundo analógico: I2S digital dedicado versus un DAC de propósito general integrado en el microcontrolador.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#introduccion">Por qué esta comparación importa para proyectos de audio DIY</a></li>
+    <li><a href="#fundamentos">Fundamentos del audio en tiempo real: sample rate, bloques y latencia</a></li>
+    <li><a href="#especificaciones">Comparativa de especificaciones técnicas</a></li>
+    <li><a href="#cpu-fpu">CPU y FPU: por qué el punto flotante lo cambia todo</a></li>
+    <li><a href="#memoria">Memoria RAM: el límite silencioso de la polifonía</a></li>
+    <li><a href="#conversion-analogica">Conversión analógica: I2S dedicado vs DAC integrado</a></li>
+    <li><a href="#audio-library">El ecosistema de software: Teensy Audio Library vs el vacío del Due</a></li>
+    <li><a href="#benchmarks">Benchmarks prácticos de carga de CPU y polifonía</a></li>
+    <li><a href="#codigo-teensy">Código de ejemplo: sintetizador simple en Teensy 4.1</a></li>
+    <li><a href="#codigo-due">Código de ejemplo: oscilador de tabla de onda en Arduino Due</a></li>
+    <li><a href="#casos-de-uso">Casos de uso reales según cada plataforma</a></li>
+    <li><a href="#costos">Costos y disponibilidad en 2026</a></li>
+    <li><a href="#troubleshooting">Problemas comunes en proyectos de audio embebido</a></li>
+    <li><a href="#cual-elegir">Cuál elegir según tu proyecto</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="introduccion">
+<h2>Por qué esta comparación importa para proyectos de audio DIY</h2>
+<p>Dentro del universo de microcontroladores compatibles con el IDE de Arduino, existen dos placas que durante años han sido la referencia obligada para quienes quieren construir sintetizadores, pedales de efectos, samplers o procesadores de señal de audio por su cuenta: el <strong>Arduino Due</strong>, lanzado en 2012 como la primera placa oficial de Arduino con núcleo ARM de 32 bits, y el <strong>Teensy 4.1</strong>, la placa de terceros fabricada por PJRC que hoy es, sin demasiada discusión, el estándar de facto de la comunidad de audio embebido de código abierto.</p>
+<p>La razón por la que ambas siguen apareciendo juntas en foros, videos y proyectos de Eurorack DIY no es casualidad: ambas son compatibles (con matices) con el IDE de Arduino, ambas usan núcleos ARM de 32 bits muy superiores en capacidad al AVR de un Arduino Uno o Mega, y ambas han sido, en distintos momentos, la placa "recomendada" para quien quiere dar el salto de simples tonos con <code>tone()</code> a procesamiento de audio digital serio. Pero la brecha técnica entre ellas —especialmente relevante para audio en tiempo real, donde cada microsegundo de retraso o cada ciclo de CPU perdido se traduce directamente en glitches audibles— es hoy mucho más amplia de lo que muchos tutoriales antiguos sugieren.</p>
+<p>Esta guía compara ambas plataformas específicamente bajo la óptica del <strong>procesamiento de audio en tiempo real</strong>: no solo qué tan rápido es cada CPU en el papel, sino cómo esa diferencia se traduce en polifonía real, calidad de conversión analógica, latencia percibida y, sobre todo, en cuánto trabajo de ingeniería te ahorra (o te exige) el ecosistema de software disponible para cada una.</p>
+</section>
+
+<section id="fundamentos">
+<h2>Fundamentos del audio en tiempo real: sample rate, bloques y latencia</h2>
+<p>Antes de comparar hardware, conviene fijar tres conceptos que determinan si un microcontrolador es o no viable para audio en tiempo real:</p>
+<ul>
+<li><strong>Frecuencia de muestreo (sample rate):</strong> la cantidad de muestras de audio que se capturan o generan por segundo, típicamente 44.100 Hz (calidad CD) para proyectos de audio musical. A mayor frecuencia de muestreo, mayor fidelidad, pero también mayor exigencia computacional por unidad de tiempo.</li>
+<li><strong>Tamaño de bloque (block size):</strong> el audio casi nunca se procesa muestra por muestra; se agrupa en bloques (por ejemplo, 128 o 256 muestras) que se procesan juntos por eficiencia. Un bloque de 128 muestras a 44.1kHz dura aproximadamente 2.9 milisegundos.</li>
+<li><strong>Latencia:</strong> el tiempo que transcurre entre que una señal entra al sistema (por ejemplo, una nota tocada en un teclado MIDI, o el audio capturado por un micrófono) y el momento en que la señal procesada sale por el altavoz. Depende del tamaño de bloque, la cantidad de bloques en buffer, y la carga de procesamiento aplicada.</li>
+</ul>
+<p>El requisito no negociable del audio en tiempo real es que <strong>cada bloque debe terminar de procesarse antes de que se necesite el siguiente</strong>. Si el bloque de 2.9 milisegundos tarda 3.5 milisegundos en procesarse porque el CPU es insuficiente para la carga de trabajo, el resultado no es "un poco de retraso": es un clic, un chasquido o un silencio audible, porque el sistema de audio no tiene el dato listo cuando lo necesita. Esta es la métrica invisible que separa a un microcontrolador "suficiente" de uno que se queda corto, y es exactamente el terreno donde la diferencia entre el Due y el Teensy 4.1 se vuelve más evidente.</p>
+</section>
+
+<section id="especificaciones">
+<h2>Comparativa de especificaciones técnicas</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Especificaciones oficiales de fábrica. El Teensy 4.1 permite overclock extraoficial hasta 800-1000MHz mediante el IDE, usado con frecuencia en proyectos de audio exigentes.</caption>
+<thead><tr><th>Característica</th><th>Teensy 4.1</th><th>Arduino Due</th></tr></thead>
+<tbody>
+<tr><td>Microcontrolador</td><td>NXP i.MX RT1062</td><td>Atmel/Microchip SAM3X8E</td></tr>
+<tr><td>Núcleo</td><td>ARM Cortex-M7</td><td>ARM Cortex-M3</td></tr>
+<tr><td>Frecuencia de reloj</td><td>600 MHz (overclock no oficial hasta ~1GHz)</td><td>84 MHz</td></tr>
+<tr><td>Unidad de punto flotante (FPU)</td><td>Sí, simple y doble precisión por hardware</td><td>No tiene FPU por hardware</td></tr>
+<tr><td>RAM</td><td>1024 KB integrada (ampliable con PSRAM externa hasta 16MB)</td><td>96 KB</td></tr>
+<tr><td>Memoria Flash</td><td>8 MB (ampliable con Flash externa)</td><td>512 KB</td></tr>
+<tr><td>Interfaz I2S nativa</td><td>Sí, hasta 2 buses I2S</td><td>No de forma nativa/oficial</td></tr>
+<tr><td>DAC de audio integrado</td><td>No (requiere códec externo vía I2S)</td><td>Sí, 2 canales DAC de 12 bits</td></tr>
+<tr><td>ADC</td><td>2x ADC de 12 bits, alta velocidad</td><td>12 canales ADC de 12 bits</td></tr>
+<tr><td>Slot microSD integrado</td><td>Sí</td><td>No</td></tr>
+<tr><td>USB Audio Class nativo</td><td>Sí, soportado por la Teensy Audio Library</td><td>No de forma madura</td></tr>
+<tr><td>Ecosistema de audio</td><td>Teensy Audio Library (150+ objetos, herramienta de diseño gráfico)</td><td>Proyectos comunitarios dispersos, sin biblioteca oficial de audio</td></tr>
+<tr><td>Estado del producto (2026)</td><td>Activo, en producción y desarrollo continuo</td><td>Descontinuado oficialmente por Arduino; existen clones</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="cpu-fpu">
+<h2>CPU y FPU: por qué el punto flotante lo cambia todo</h2>
+<p>La diferencia de reloj entre 600MHz y 84MHz (más de 7 veces) ya es considerable, pero no es, ni de lejos, la diferencia más determinante para audio. El factor decisivo es que el <strong>Cortex-M3 del Arduino Due no incluye una unidad de punto flotante (FPU) por hardware</strong>, mientras que el <strong>Cortex-M7 del Teensy 4.1 sí la incluye</strong>, tanto en precisión simple como doble.</p>
+<p>Buena parte de los algoritmos clásicos de procesamiento de audio digital —filtros biquad, reverbs por convolución, osciladores con interpolación, análisis espectral mediante FFT— se expresan de forma natural usando aritmética de coma flotante, porque describen relaciones matemáticas continuas (frecuencias de corte, coeficientes de filtro, envolventes) que no se representan bien con números enteros sin perder precisión o rango dinámico. En un microcontrolador sin FPU, cada operación con <code>float</code> debe emularse mediante una secuencia de instrucciones enteras que puede tomar entre 10 y 30 veces más ciclos de reloj que la misma operación ejecutada de forma nativa en un núcleo con FPU.</p>
+<div class="note"><strong>En números concretos:</strong> una multiplicación de punto flotante que en el Teensy 4.1 toma un puñado de ciclos de reloj a 600MHz, en el Arduino Due puede terminar consumiendo, en la práctica, un tiempo equivalente muchas veces mayor una vez que se combinan la emulación por software y el reloj siete veces más lento. Es la razón principal por la que efectos relativamente livianos en un Teensy —como un reverb de varias líneas de retardo o un filtro resonante de alta calidad— resultan directamente inviables en tiempo real en un Due sin reescribirlos cuidadosamente usando aritmética de punto fijo (enteros con escala), una técnica que exige mucho más trabajo de ingeniería y es más propensa a errores de precisión.</div>
+<p>Esto no significa que el Due sea inútil para audio: la síntesis basada en tablas de onda precalculadas (wavetable), mezclas simples y efectos de baja complejidad pueden implementarse eficientemente con aritmética de enteros, y de hecho es exactamente el enfoque que usan la mayoría de los proyectos de audio DIY documentados para esta placa. Pero el techo de complejidad se alcanza mucho antes que en un Teensy 4.1.</p>
+</section>
+
+<section id="memoria">
+<h2>Memoria RAM: el límite silencioso de la polifonía</h2>
+<p>Con 96 KB de RAM totales, el Arduino Due debe repartir esa memoria entre las variables del programa, las pilas de ejecución, y —crucialmente para audio— los buffers de muestras que se van generando o capturando. Cada voz adicional de polifonía, cada línea de retardo de un efecto de eco o reverb, y cada buffer de grabación consume una porción de ese espacio ya de por sí reducido, lo que en la práctica limita severamente cuántas fuentes de audio simultáneas o cuán largos pueden ser los efectos de retardo temporal antes de agotar la memoria disponible.</p>
+<p>El Teensy 4.1, con 1024 KB de RAM integrada —ampliable aún más mediante módulos de PSRAM externa soldados en sus pads dedicados— permite buffers de audio considerablemente más grandes, más voces de polifonía simultánea, líneas de retardo de varios segundos de duración, y el uso simultáneo de múltiples efectos en cadena sin acercarse a los límites de memoria en la mayoría de los proyectos de aficionado e incluso en muchos semiprofesionales.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Ejemplo ilustrativo de cuánto tiempo de audio en mono a 44.1kHz/16 bits cabe en la RAM disponible de cada placa, relevante para efectos de delay/eco y buffers de grabación.</caption>
+<thead><tr><th>Placa</th><th>RAM disponible aprox. para audio</th><th>Segundos de audio mono almacenables (aprox.)</th></tr></thead>
+<tbody>
+<tr><td>Arduino Due</td><td>~60-70 KB (descontando programa y pilas)</td><td>~0.7 – 0.8 segundos</td></tr>
+<tr><td>Teensy 4.1 (RAM interna)</td><td>~700-900 KB disponibles para audio</td><td>~8 – 10 segundos</td></tr>
+<tr><td>Teensy 4.1 + PSRAM externa (8-16MB)</td><td>Varios megabytes adicionales</td><td>Varios minutos, útil para looper/sampler</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conversion-analogica">
+<h2>Conversión analógica: I2S dedicado vs DAC integrado</h2>
+<p>Aquí aparece una de las decisiones de diseño más interesantes de comparar. El Arduino Due incluye <strong>dos canales DAC de 12 bits integrados directamente en el chip SAM3X8E</strong>, lo que en teoría permite generar audio analógico sin ningún componente adicional, simplemente escribiendo valores en un registro. Es cómodo para empezar, pero un DAC de 12 bits de propósito general —diseñado para tareas variadas de control analógico, no específicamente para audio— ofrece un rango dinámico limitado (aproximadamente 72 dB en el mejor de los casos teóricos) y suele presentar más ruido e imprecisión que un códec de audio dedicado.</p>
+<p>El Teensy 4.1 tomó la decisión opuesta: no incluye ningún DAC de audio en el propio microcontrolador, y en su lugar apuesta completamente por la interfaz <strong>I2S</strong>, un estándar digital de la industria del audio profesional diseñado específicamente para transmitir muestras de audio de alta fidelidad entre un procesador y un códec externo dedicado. La combinación más común es el Teensy 4.1 junto a la <strong>Teensy Audio Shield</strong>, que integra el códec <strong>SGTL5000</strong>: un chip de audio real, con conversión de 16 bits estéreo, entradas de micrófono y línea, salida de auriculares con amplificador propio, y un rango dinámico considerablemente superior al DAC genérico del Due.</p>
+<div class="warning"><strong>Importante para principiantes:</strong> a diferencia del Due, donde basta con conectar un cable a un pin DAC para tener salida de audio, el Teensy 4.1 requiere sí o sí un códec I2S externo (la Audio Shield oficial es la ruta más simple y probada) para producir o capturar audio de calidad. Sin este códec, el Teensy puede procesar audio internamente (por ejemplo, vía USB Audio) pero no tiene una salida analógica directa integrada como el Due.</div>
+</section>
+
+<section id="audio-library">
+<h2>El ecosistema de software: Teensy Audio Library vs el vacío del Due</h2>
+<p>Si la diferencia de hardware ya es significativa, la diferencia de ecosistema de software es, para la mayoría de los proyectos reales, aún más decisiva. La <strong>Teensy Audio Library</strong>, desarrollada y mantenida activamente por PJRC, ofrece más de 150 "objetos" de audio predefinidos y optimizados: osciladores de múltiples formas de onda, filtros biquad de distintos tipos, mezcladores multicanal, efectos de reverb, delay, chorus y flanger, análisis y síntesis mediante FFT, grabación y reproducción de archivos WAV desde tarjeta SD, entrada/salida MIDI, y soporte de USB Audio Class, todo ello conectable mediante una <strong>herramienta gráfica de diseño de audio</strong> disponible en el sitio de PJRC que genera automáticamente el código de conexión entre bloques.</p>
+<p>El Arduino Due, en contraste, nunca contó con una biblioteca de audio oficial ni con un ecosistema comparable. Los proyectos de audio para esta placa suelen depender de bibliotecas comunitarias con mantenimiento discontinuo, implementaciones a medida escritas directamente contra los registros de DMA y temporizadores del chip, o adaptaciones parciales de código pensado originalmente para otras plataformas. Esto no significa que sea imposible —existen proyectos notables de síntesis granular y wavetable construidos sobre el Due— pero exige un nivel de conocimiento de bajo nivel (manejo directo de DMA, temporizadores y registros del SAM3X8E) considerablemente mayor que simplemente conectar bloques en la herramienta de diseño del Teensy.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación de la curva de aprendizaje aproximada para tareas comunes de audio DSP en cada plataforma.</caption>
+<thead><tr><th>Tarea</th><th>Teensy 4.1 (Audio Library)</th><th>Arduino Due</th></tr></thead>
+<tbody>
+<tr><td>Oscilador de onda senoidal simple</td><td>Un objeto predefinido, conexión gráfica</td><td>Tabla de onda manual + timer/DMA a mano</td></tr>
+<tr><td>Filtro pasa-bajos resonante</td><td>Objeto biquad predefinido, parámetros directos</td><td>Implementación manual con aritmética de punto fijo</td></tr>
+<tr><td>Reverb</td><td>Objeto de reverb predefinido, listo para usar</td><td>Requiere desarrollo propio considerable</td></tr>
+<tr><td>Grabación a SD en WAV</td><td>Soporte nativo integrado en la librería</td><td>Requiere biblioteca SD + manejo manual del formato</td></tr>
+<tr><td>Salida como interfaz de audio USB</td><td>Soportado directamente por la librería</td><td>No hay soporte maduro disponible</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="benchmarks">
+<h2>Benchmarks prácticos de carga de CPU y polifonía</h2>
+<p>Los valores siguientes son representativos —basados en el comportamiento documentado de ambas plataformas en proyectos de la comunidad y en las mediciones de uso de CPU que reporta la propia Teensy Audio Library— y deben tomarse como referencia orientativa más que como una medición de laboratorio estrictamente controlada, ya que el resultado exacto depende de la implementación específica de cada efecto.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Uso aproximado de CPU por instancia de efecto a 44.1kHz. Valores del Teensy 4.1 basados en las cifras de referencia reportadas por la Teensy Audio Library; valores del Due son estimaciones extrapoladas de proyectos comunitarios documentados, dado que no existe una librería de referencia estandarizada para esta placa.</caption>
+<thead><tr><th>Operación de audio</th><th>% CPU aprox. en Teensy 4.1</th><th>% CPU aprox. en Arduino Due (implementación manual)</th></tr></thead>
+<tbody>
+<tr><td>Oscilador senoidal (una voz)</td><td>&lt;1%</td><td>3% – 6%</td></tr>
+<tr><td>Filtro biquad (pasa-bajos)</td><td>~1% – 2%</td><td>15% – 25% (con floats emulados)</td></tr>
+<tr><td>Mezclador de 4 canales</td><td>&lt;1%</td><td>5% – 10%</td></tr>
+<tr><td>Reverb de calidad media</td><td>~5% – 10%</td><td>Generalmente inviable en tiempo real</td></tr>
+<tr><td>FFT de 1024 puntos</td><td>~3% – 6%</td><td>Muy costoso, rara vez usado en tiempo real</td></tr>
+<tr><td>Polifonía práctica estimada (sintetizador simple)</td><td>16 – 32+ voces simultáneas con efectos</td><td>4 – 8 voces simples, sin efectos complejos</td></tr>
+</tbody>
+</table>
+</div>
+<p>La conclusión práctica es consistente en todos los escenarios: el Teensy 4.1 tiene, típicamente, uno o dos órdenes de magnitud más de margen de procesamiento disponible que el Arduino Due para las mismas tareas de audio, margen que se traduce directamente en más voces de polifonía, efectos más sofisticados, y mayor libertad para combinar varias etapas de procesamiento en una sola cadena sin sacrificar la estabilidad del audio en tiempo real.</p>
+</section>
+
+<section id="codigo-teensy">
+<h2>Código de ejemplo: sintetizador simple en Teensy 4.1</h2>
+<p>El siguiente ejemplo, típico del estilo generado por la herramienta de diseño gráfico de PJRC, implementa un oscilador senoidal con envolvente ADSR y un filtro pasa-bajos, enrutado hacia la salida I2S de la Audio Shield.</p>
+<pre><code>#include &lt;Audio.h&gt;
+#include &lt;Wire.h&gt;
+#include &lt;SPI.h&gt;
+
+// Objetos de audio: oscilador -> envolvente -> filtro -> salida I2S
+AudioSynthWaveform     osc1;
+AudioEffectEnvelope    envelope1;
+AudioFilterStateVariable filtro1;
+AudioOutputI2S         salida;
+AudioControlSGTL5000   codecSGTL5000;
+
+// Conexiones entre objetos (patch cords)
+AudioConnection patchCord1(osc1, envelope1);
+AudioConnection patchCord2(envelope1, 0, filtro1, 0);
+AudioConnection patchCord3(filtro1, 0, salida, 0);
+AudioConnection patchCord4(filtro1, 0, salida, 1);
+
+void setup() {
+  AudioMemory(20); // reserva bloques de audio en RAM
+
+  codecSGTL5000.enable();
+  codecSGTL5000.volume(0.6);
+
+  osc1.begin(WAVEFORM_SAWTOOTH);
+  osc1.frequency(220);
+  osc1.amplitude(0.8);
+
+  envelope1.attack(5);
+  envelope1.decay(80);
+  envelope1.sustain(0.6);
+  envelope1.release(300);
+
+  filtro1.frequency(1200);
+  filtro1.resonance(1.5);
+}
+
+void tocarNota(float frecuenciaHz) {
+  osc1.frequency(frecuenciaHz);
+  envelope1.noteOn();
+  delay(400);
+  envelope1.noteOff();
+}
+
+void loop() {
+  tocarNota(220.0); // A3
+  delay(600);
+  tocarNota(329.6); // E4
+  delay(600);
+}</code></pre>
+<p>Nótese la simplicidad estructural: cada bloque funcional (oscilador, envolvente, filtro, salida) es un objeto independiente conectado mediante <code>AudioConnection</code>, y toda la complejidad de temporización DMA, doble buffering y sincronización con el reloj I2S del códec queda completamente oculta dentro de la librería.</p>
+</section>
+
+<section id="codigo-due">
+<h2>Código de ejemplo: oscilador de tabla de onda en Arduino Due</h2>
+<p>Para lograr un resultado sonoro comparable en el Due, es necesario trabajar a un nivel bastante más bajo: generar manualmente una tabla de onda, y usar un temporizador junto con el DAC integrado para reproducirla a la frecuencia deseada.</p>
+<pre><code>#include &lt;DAC.h&gt; // o acceso directo a registros DACC, segun la version del core
+
+#define TABLA_TAM 256
+uint16_t tablaOnda[TABLA_TAM];
+
+volatile uint32_t incrementoFase = 0;
+volatile uint32_t faseActual = 0;
+const uint32_t SAMPLE_RATE = 44100;
+
+void generarTablaSenoidal() {
+  for (int i = 0; i &lt; TABLA_TAM; i++) {
+    float valor = sin(2.0 * PI * i / TABLA_TAM);
+    tablaOnda[i] = (uint16_t)((valor * 0.5 + 0.5) * 4095); // escala a 12 bits
+  }
+}
+
+void establecerFrecuencia(float hz) {
+  // Formula de incremento de fase para tabla de 256 muestras (notacion Q24 simplificada)
+  incrementoFase = (uint32_t)((hz * TABLA_TAM / (float)SAMPLE_RATE) * (1UL &lt;&lt; 24));
+}
+
+void TC3_Handler() {
+  TC_GetStatus(TC1, 0); // limpia bandera de interrupcion del timer
+  faseActual += incrementoFase;
+  uint16_t indice = (faseActual &gt;&gt; 24) % TABLA_TAM;
+  analogWrite(DAC0, tablaOnda[indice]);
+}
+
+void configurarTimer(uint32_t frecuenciaMuestreo) {
+  pmc_set_writeprotect(false);
+  pmc_enable_periph_clk(ID_TC3);
+  TC_Configure(TC1, 0, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK2);
+  uint32_t rc = VARIANT_MCK / 8 / frecuenciaMuestreo;
+  TC_SetRC(TC1, 0, rc);
+  TC_Start(TC1, 0);
+  TC1-&gt;TC_CHANNEL[0].TC_IER = TC_IER_CPCS;
+  TC1-&gt;TC_CHANNEL[0].TC_IDR = ~TC_IER_CPCS;
+  NVIC_EnableIRQ(TC3_IRQn);
+}
+
+void setup() {
+  analogWriteResolution(12); // DAC de 12 bits del Due
+  generarTablaSenoidal();
+  establecerFrecuencia(220.0);
+  configurarTimer(SAMPLE_RATE);
+}
+
+void loop() {
+  // El audio se genera enteramente dentro de la interrupcion TC3_Handler
+  // El loop() queda libre para logica de control (botones, MIDI, etc.)
+}</code></pre>
+<p>El contraste es evidente: mientras que en el Teensy la generación de audio queda abstraída en objetos reutilizables, en el Due el desarrollador debe gestionar manualmente el temporizador, el cálculo de fase, el escalado a 12 bits y la interrupción que alimenta el DAC muestra por muestra, todo antes de siquiera empezar a pensar en agregar un segundo oscilador o un filtro.</p>
+</section>
+
+<section id="casos-de-uso">
+<h2>Casos de uso reales según cada plataforma</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Ejemplos de proyectos donde cada plataforma resulta más adecuada según sus fortalezas técnicas.</caption>
+<thead><tr><th>Proyecto</th><th>Plataforma recomendada</th><th>Razón principal</th></tr></thead>
+<tbody>
+<tr><td>Sintetizador polifónico con múltiples efectos</td><td>Teensy 4.1</td><td>Polifonía alta, FPU nativa, biblioteca de efectos lista para usar</td></tr>
+<tr><td>Pedal de efectos para guitarra (overdrive, reverb, delay)</td><td>Teensy 4.1</td><td>Baja latencia, I2S de alta calidad, entrada/salida de audio real</td></tr>
+<tr><td>Módulo Eurorack con oscilador y filtro básico</td><td>Cualquiera, según complejidad</td><td>El Due es suficiente para osciladores simples de bajo costo</td></tr>
+<tr><td>Looper/sampler con grabación prolongada</td><td>Teensy 4.1 (+PSRAM opcional)</td><td>RAM masivamente superior, slot microSD integrado</td></tr>
+<tr><td>Interfaz de audio USB casera</td><td>Teensy 4.1</td><td>Soporte nativo de USB Audio Class en la librería</td></tr>
+<tr><td>Generador de tonos de control simple (no musical)</td><td>Arduino Due</td><td>DAC integrado suficiente, no requiere códec adicional</td></tr>
+<tr><td>Proyecto educativo sobre DSP de bajo nivel sin FPU</td><td>Arduino Due</td><td>Obliga a entender aritmética de punto fijo y manejo de DMA a mano</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="costos">
+<h2>Costos y disponibilidad en 2026</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Precios de referencia orientativos en dólares y su equivalente aproximado en pesos chilenos, sujetos a tipo de cambio y disponibilidad local.</caption>
+<thead><tr><th>Componente</th><th>Precio USD aprox.</th><th>Precio CLP aprox.</th><th>Nota</th></tr></thead>
+<tbody>
+<tr><td>Teensy 4.1 (placa base)</td><td>$31 – $36</td><td>$29.000 – $35.000</td><td>Producto activo, stock regular vía distribuidores</td></tr>
+<tr><td>Teensy Audio Shield (SGTL5000)</td><td>$14 – $18</td><td>$13.000 – $17.000</td><td>Complemento casi obligatorio para audio de calidad</td></tr>
+<tr><td>Arduino Due (original, si se encuentra)</td><td>$38 – $45</td><td>$36.000 – $43.000</td><td>Producto descontinuado, stock cada vez más escaso</td></tr>
+<tr><td>Clon de Arduino Due (SAM3X8E)</td><td>$15 – $25</td><td>$14.000 – $24.000</td><td>Calidad variable según fabricante del clon</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Costo total del proyecto:</strong> considerando que el Teensy 4.1 casi siempre requiere su Audio Shield para audio de calidad, el costo total ronda entre $42.000 y $52.000 CLP, apenas por encima de un clon de Due (sin códec adicional, ya que este usa su DAC integrado), pero con una diferencia de capacidad de procesamiento que, para cualquier proyecto de audio serio, justifica ampliamente la diferencia de precio.</div>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes en proyectos de audio embebido</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Síntomas frecuentes al desarrollar proyectos de audio en tiempo real con estas plataformas.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Clics y chasquidos periódicos en el audio (Due)</td><td>El procesamiento del bloque tarda más que su duración real</td><td>Reducir la complejidad del efecto, usar aritmética de enteros en vez de floats</td></tr>
+<tr><td>Sin sonido en la salida del Teensy pese a código correcto</td><td>Códec SGTL5000 no habilitado o AudioMemory() insuficiente</td><td>Verificar codecSGTL5000.enable() y aumentar el valor de AudioMemory()</td></tr>
+<tr><td>Ruido de fondo o zumbido en el audio del Due</td><td>Limitación propia del DAC de 12 bits de propósito general</td><td>Agregar filtrado analógico de salida, o migrar a un códec I2S externo</td></tr>
+<tr><td>El Teensy se reinicia al agregar más objetos de audio</td><td>AudioMemory() insuficiente para la cantidad de bloques en uso</td><td>Aumentar el valor pasado a AudioMemory() según la complejidad de la cadena</td></tr>
+<tr><td>Distorsión al aumentar la polifonía en el Due</td><td>Saturación por suma de múltiples osciladores sin normalización</td><td>Escalar y limitar la suma de voces antes de escribir al DAC</td></tr>
+<tr><td>Latencia perceptible al usar USB Audio en Teensy</td><td>Tamaño de bloque de audio configurado demasiado grande</td><td>Reducir el tamaño de bloque en la configuración de AudioMemory/USB</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="cual-elegir">
+<h2>Cuál elegir según tu proyecto</h2>
+<ul>
+<li><strong>Elige Teensy 4.1</strong> si tu proyecto involucra polifonía real (más de 4-6 voces simultáneas), efectos de reverb o delay de calidad, análisis espectral con FFT, grabación/reproducción prolongada, o si planeas usarlo como interfaz de audio USB. Es la opción recomendada para prácticamente cualquier proyecto de audio serio iniciado desde cero en 2026.</li>
+<li><strong>Elige Arduino Due (o su clon)</strong> únicamente si ya tienes uno disponible, si tu proyecto es deliberadamente simple (un oscilador o dos con mezcla básica), o si tu objetivo es explícitamente educativo: entender de primera mano las limitaciones de un núcleo sin FPU y aprender a programar contra DMA y temporizadores a bajo nivel.</li>
+<li><strong>Considera otras alternativas</strong> como el Daisy Seed de Electrosmith si buscas un enfoque orientado a C++ moderno y JUCE/framework de audio profesional fuera del ecosistema clásico de Arduino, aunque eso queda fuera del alcance de esta comparación específica.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La comparación entre Teensy 4.1 y Arduino Due para audio en tiempo real no es realmente una competencia entre iguales en 2026: es la comparación entre una plataforma diseñada y mantenida activamente en torno a las necesidades específicas del audio digital, y una placa pionera pero ya descontinuada cuyo silicio, sencillamente, no fue concebido pensando en las exigencias del DSP moderno. La ausencia de FPU por hardware en el Due impone un techo de complejidad que ningún truco de optimización de software logra superar del todo, mientras que el Teensy 4.1, con su núcleo Cortex-M7, su interfaz I2S dedicada y —sobre todo— el ecosistema maduro de la Teensy Audio Library, ha consolidado su posición como la plataforma de referencia para quien quiere construir sintetizadores, pedales de efectos y procesadores de audio serios sin necesidad de escribir un DSP desde cero. El Due conserva un valor educativo genuino para entender qué hay "debajo" de esas abstracciones, pero para cualquier proyecto de audio que aspire a sonar bien en producción, el Teensy 4.1 es hoy la elección técnicamente correcta.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puede el Arduino Due hacer procesamiento de audio en tiempo real?</summary><p>Sí, pero con limitaciones importantes. Su núcleo ARM Cortex-M3 a 84MHz carece de unidad de punto flotante (FPU) por hardware, por lo que cualquier operación con decimales —muy comunes en filtros digitales, reverbs y síntesis aditiva— debe emularse por software, consumiendo muchos más ciclos de CPU que en un núcleo con FPU nativa. Es perfectamente viable para osciladores de tabla de onda simples, mezclas básicas y efectos poco exigentes con aritmética de enteros, pero se queda corto rápidamente frente a efectos con múltiples voces de polifonía, convolución o análisis espectral con FFT en tiempo real.</p></details>
+<details><summary>¿Por qué el Teensy 4.1 no tiene un DAC integrado si es superior para audio?</summary><p>El microcontrolador NXP i.MX RT1062 que usa el Teensy 4.1 fue diseñado principalmente para control industrial y procesamiento de señales de alto rendimiento, no específicamente como chip de audio de consumo, por lo que Freescale/NXP no incluyó un DAC de audio análogo en su silicio, a diferencia del SAM3X8E del Due que sí trae dos canales DAC de 12 bits integrados. La solución que adoptó PJRC (fabricante del Teensy) fue apostar por la interfaz I2S digital, estándar de la industria del audio profesional, conectando el Teensy a un códec de audio externo dedicado (como el SGTL5000 de la Teensy Audio Shield), lo que en la práctica entrega una calidad de conversión, un rango dinámico y un control de ganancia muy superiores a los que ofrecería un DAC genérico integrado en el microcontrolador.</p></details>
+<details><summary>¿Qué es la Teensy Audio Library y por qué es tan importante?</summary><p>Es una biblioteca de código abierto desarrollada por PJRC específicamente para el Teensy, que implementa más de 150 "objetos" de audio predefinidos —osciladores, filtros biquad, mezcladores, efectos de reverb y delay, análisis FFT, grabación y reproducción desde SD, entre otros— todos optimizados para ejecutarse eficientemente en el hardware del Teensy y conectados entre sí mediante una API gráfica de bloques inspirada en los entornos de audio modular profesional. Su importancia radica en que reduce drásticamente la barrera de entrada al DSP de audio: un usuario puede construir una cadena de procesamiento compleja arrastrando bloques en una herramienta de diseño web, sin necesidad de escribir manualmente los algoritmos de filtrado o mezcla desde cero, algo para lo que no existe un equivalente comparable en el ecosistema del Arduino Due.</p></details>
+<details><summary>¿Cuál es la latencia típica de audio en un Teensy 4.1?</summary><p>Con la configuración por defecto de la Teensy Audio Library, que usa bloques de 128 muestras a una frecuencia de muestreo de 44.1kHz, cada bloque de audio dura aproximadamente 2.9 milisegundos. Considerando el buffer de entrada y salida típico, la latencia total de ida (input a output) suele ubicarse entre 3 y 12 milisegundos dependiendo de la complejidad de la cadena de procesamiento, un valor considerado excelente e imperceptible para la mayoría de las aplicaciones musicales en tiempo real, incluyendo pedales de efectos para guitarra donde la latencia percibida como molesta generalmente empieza por encima de los 10-15 milisegundos.</p></details>
+<details><summary>¿Vale la pena comprar un Arduino Due discontinuado para un proyecto nuevo de audio en 2026?</summary><p>En general, no, salvo casos muy específicos. Arduino LLC discontinuó oficialmente el Due, y aunque existen clones de terceros basados en el mismo chip SAM3X8E, el ecosistema de software de audio para esta placa nunca alcanzó la madurez ni el mantenimiento activo que tiene la Teensy Audio Library. Para un proyecto nuevo de procesamiento de audio en tiempo real, el Teensy 4.1 ofrece muchísima más potencia de cómputo, mejor calidad de conversión mediante I2S, y un ecosistema de software activamente mantenido, todo por un costo total similar o incluso menor una vez que se considera el códec de audio necesario. El Due solo tiene sentido si el proyecto ya existe y depende de su hardware específico, o como ejercicio educativo para entender las limitaciones de un núcleo sin FPU.</p></details>
+<details><summary>¿Se puede usar Teensy 4.1 como interfaz de audio USB para grabar en una computadora?</summary><p>Sí, y es una de sus características más valoradas por la comunidad de audio DIY. El Teensy 4.1 puede configurarse mediante la Teensy Audio Library para presentarse ante el sistema operativo como una interfaz de audio USB estándar (USB Audio Class), permitiendo enviar y recibir audio multicanal directamente desde y hacia un programa de edición de audio (DAW) en la computadora, sin necesidad de drivers adicionales en la mayoría de los sistemas operativos modernos. El Arduino Due, aunque cuenta con un puerto USB nativo capaz de actuar como dispositivo USB genérico, no cuenta con soporte de biblioteca maduro para implementar esta función de forma confiable.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los precios en dólares y pesos chilenos son referenciales, varían según vendedor, tipo de cambio y disponibilidad, y deben confirmarse al momento de la compra. Las cifras de uso de CPU y polifonía son orientativas y dependen de la implementación específica de cada proyecto; se recomienda realizar mediciones propias con AudioProcessorUsage() en el caso del Teensy antes de dimensionar un proyecto de producción. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te interesa profundizar en el ecosistema de audio embebido, revisa nuestra guía de <a href="/blog/piano-electronico-con-botones-y-buzzer">Piano Electrónico con Botones y Buzzer</a>, un excelente punto de partida antes de dar el salto a procesamiento de audio digital serio.</p>
+  <p>Si ya tienes tu Teensy 4.1 y quieres un proyecto guiado completo, no te pierdas <a href="/blog/como-construir-un-sintetizador-modular-con-teensy-4-1">Cómo Construir un Sintetizador Modular con Teensy 4.1</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/piano-electronico-con-botones-y-buzzer">← Anterior: Piano Electrónico con Botones y Buzzer</a>
+  <a href="/blog/como-construir-un-sintetizador-modular-con-teensy-4-1">Siguiente: Cómo Construir un Sintetizador Modular con Teensy 4.1 →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan las especificaciones técnicas y conceptos generales de la guía. Se recomienda consultar siempre la documentación oficial más reciente antes de dimensionar un proyecto de producción.</p>
+<ul>
+<li><a href="https://www.pjrc.com/store/teensy41.html" target="_blank" rel="noopener noreferrer">PJRC — Especificaciones oficiales del Teensy 4.1</a></li>
+<li><a href="https://www.pjrc.com/teensy/td_libs_Audio.html" target="_blank" rel="noopener noreferrer">PJRC — Documentación oficial de la Teensy Audio Library</a></li>
+<li><a href="https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m7" target="_blank" rel="noopener noreferrer">ARM — Especificaciones del núcleo Cortex-M7</a></li>
+<li><a href="https://www.microchip.com/en-us/product/ATSAM3X8E" target="_blank" rel="noopener noreferrer">Microchip — Hoja de datos del SAM3X8E (Arduino Due)</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 2 de noviembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
