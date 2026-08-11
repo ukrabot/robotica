@@ -1,18 +1,730 @@
-<!doctype html><html lang="es-CL"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Controla tu Arduino por Bluetooth con el Módulo HC-05 — Guía Completa</title><meta name="description" content="Configura el módulo Bluetooth HC-05 con Arduino de forma segura: cableado, divisor de tensión para RX, comandos AT, protocolo serie y ejemplo para controlar un LED."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05"><meta property="og:type" content="article"><meta property="og:title" content="Controla tu Arduino por Bluetooth con el Módulo HC-05"><meta property="og:description" content="Configura el módulo Bluetooth HC-05 con Arduino de forma segura: cableado, divisor de tensión para RX, comandos AT, protocolo serie y ejemplo para controlar un LED."><meta property="og:url" content="https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Controla tu Arduino por Bluetooth con el Módulo HC-05","description":"Configura el módulo Bluetooth HC-05 con Arduino de forma segura: cableado, divisor de tensión para RX, comandos AT, protocolo serie y ejemplo para controlar un LED.","datePublished":"2026-08-11","dateModified":"2026-08-11","author":{"@type":"Person","name":"Alberto Gallardo","url":"https://www.ukrabot.cl/about"},"publisher":{"@type":"Organization","name":"Blog de Ingeniería Robótica","url":"https://www.ukrabot.cl"},"mainEntityOfPage":"https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05","proficiencyLevel":"Principiante","inLanguage":"es-CL"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Puedo usar HC-05 con iPhone?","acceptedAnswer":{"@type":"Answer","text":"No es la opción más universal porque HC-05 usa Bluetooth Classic serie. Para iOS suele ser más conveniente BLE con un ESP32."}},{"@type":"Question","name":"¿Por qué el módulo recibe pero no responde?","acceptedAnswer":{"@type":"Answer","text":"Comprueba que TX y RX estén cruzados, que haya GND común y que la velocidad configurada sea la misma en ambos extremos."}}]}</script><style>
-:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font:16px/1.7 Inter,system-ui,-apple-system,Segoe UI,sans-serif}.container{max-width:1050px;margin:auto;padding:0 24px}a{color:var(--blue);text-underline-offset:3px}.site-nav{position:sticky;top:0;z-index:2;background:rgba(246,244,238,.96);border-bottom:1px solid var(--line)}.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:20px}.logo{font:1.35rem Georgia,serif;color:var(--text);text-decoration:none}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:18px;font-size:.88rem}.nav-links a{text-decoration:none;color:var(--muted)}.hero{background:linear-gradient(135deg,#151310,#30465a);color:white;padding:92px 0 70px}.eyebrow{color:#e4c07a;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font:400 clamp(2rem,6vw,4.1rem)/1.1 Georgia,serif;max-width:920px;margin:18px 0}.hero p{max-width:780px;color:#e8e6e0}.byline{font-size:.88rem}.byline a{color:#e4c07a}.article-body{padding:58px 24px 84px}.article-body h2{font:400 2rem/1.2 Georgia,serif;margin:56px 0 16px}.article-body h3{margin:30px 0 8px}.article-body p,.article-body li{color:var(--muted)}.toc,.note,.warning,.cta,.author-box{padding:24px;margin:28px 0;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06))}.toc h2{font:600 1.05rem/1.3 inherit;margin:0 0 10px}.toc ol{margin:0;padding-left:22px}.toc a{text-decoration:none;color:var(--muted)}.note{border-left:4px solid var(--gold)}.warning{border-left:4px solid #b2281e;background:#fff7f5}.warning strong{color:#7a1c14}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:620px;background:#fff}th,td{text-align:left;padding:13px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow:auto;padding:20px;background:#14121a;border-radius:12px;color:#e8d9b6;font-size:.86rem;line-height:1.5}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.author-box{display:flex;gap:16px}.author-box img{width:62px;height:62px;border-radius:50%;object-fit:cover}.disclosure{font-size:.8rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px}.footer-nav{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;border-top:1px solid var(--line);padding-top:30px;margin-top:48px}.site-footer{border-top:1px solid var(--line);padding:30px 0 45px;color:var(--quiet);font-size:.86rem}@media(max-width:650px){.container,.article-body{padding-left:16px;padding-right:16px}.nav-inner{padding:14px 16px}.nav-links{gap:10px;font-size:.76rem}.hero{padding:70px 0 48px}.article-body h2{font-size:1.55rem;margin-top:42px}.toc,.note,.warning,.cta,.author-box{padding:16px}table{min-width:540px}}
-</style></head><body><nav class="site-nav"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><div class="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><div class="container"><div class="eyebrow">Comunicación inalámbrica · Actualizado el <time datetime="2026-08-11">11 de agosto de 2026</time></div><h1>Controla tu Arduino por Bluetooth con el Módulo HC-05</h1><p>Configura el módulo Bluetooth HC-05 con Arduino de forma segura: cableado, divisor de tensión para RX, comandos AT, protocolo serie y ejemplo para controlar un LED.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p></div></header><main class="container article-body"><article><div class="toc"><h2>Qué aprenderás en esta guía</h2><ol><li><a href="#hc05">Hc05</a></li><li><a href="#cableado">Cableado</a></li><li><a href="#at">At</a></li><li><a href="#codigo">Codigo</a></li><li><a href="#seguridad">Seguridad</a></li><li><a href="#faq">Preguntas frecuentes</a></li></ol></div>
-<section id="hc05"><h2>HC-05: qué hace y qué no hace</h2><p>HC-05 es un módulo Bluetooth Classic con puerto serie UART. Es adecuado para teléfonos Android, computadores y proyectos didácticos; no es Bluetooth Low Energy y la compatibilidad con iPhone puede ser limitada. El módulo suele aceptar 5 V en VCC porque su placa trae regulador, pero su entrada RX trabaja a <strong>3,3 V lógico</strong>.</p></section>
-<section id="cableado"><h2>Cableado seguro: el divisor de tensión no es opcional</h2><p>Conecta VCC a 5 V y GND a GND. TXD del HC-05 puede ir a la entrada RX de Arduino. Para Arduino TX hacia RXD del módulo, usa un divisor: por ejemplo 1 kΩ desde Arduino TX al nodo y 2 kΩ desde el nodo a GND, que reduce 5 V a cerca de 3,3 V. Para no interferir con USB, usa SoftwareSerial en D2 (RX) y D3 (TX).</p><div class="warning"><strong>Protección:</strong> conectar el TX de Arduino a RXD del HC-05 directamente aplica 5 V a una entrada de 3,3 V. Puede funcionar temporalmente, pero no es una práctica segura ni reproducible.</div></section>
-<section id="at"><h2>Modo AT y parámetros que debes documentar</h2><p>Con el botón KEY presionado al energizar algunos breakout entran en modo AT. La velocidad suele ser 38400 en ese modo, pero depende del firmware. Envía <code>AT</code> y espera <code>OK</code>; consulta nombre, rol y velocidad antes de cambiar nada. Anota valores originales. La sintaxis exacta varía entre firmwares, por eso el manual del módulo prevalece sobre ejemplos de internet.</p></section>
-<section id="codigo"><h2>Ejemplo: controlar un LED con comandos simples</h2><pre><code>#include &lt;SoftwareSerial.h&gt;
-SoftwareSerial bt(2,3); // RX Arduino, TX Arduino
-const byte LED=8;
-void setup(){ pinMode(LED,OUTPUT); bt.begin(9600); }
-void loop(){
- if(bt.available()){
-   char c=bt.read();
-   if(c=='1') digitalWrite(LED,HIGH);
-   if(c=='0') digitalWrite(LED,LOW);
- }
-}</code></pre><p>Desde una terminal Bluetooth envía 1 para encender y 0 para apagar. En un proyecto mayor, recibe líneas terminadas en salto de línea, valida comandos y responde con estados; un carácter suelto es útil para aprender, pero no es un protocolo robusto.</p></section>
-<section id="seguridad"><h2>Alcance, seguridad y siguiente paso</h2><p>Bluetooth no reemplaza un enlace seguro para abrir puertas, controlar potencia o mover maquinaria. Cambia el PIN por defecto, limita los comandos aceptados y diseña siempre un estado seguro si se pierde conexión. Para proyectos nuevos con móvil moderno y bajo consumo, considera ESP32 con BLE; para aprender UART inalámbrica, HC-05 sigue siendo una opción clara.</p></section><section id="conclusion"><h2>Conclusión</h2><p>El valor de este proyecto está en medir, comprobar y mejorar cada parte: cableado seguro, código legible y pruebas graduales. Empieza con el montaje mínimo, observa el resultado y añade una mejora por vez. Así podrás detectar errores sin convertir un proyecto sencillo en una caja negra.</p></section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Puedo usar HC-05 con iPhone?</summary><p>No es la opción más universal porque HC-05 usa Bluetooth Classic serie. Para iOS suele ser más conveniente BLE con un ESP32.</p></details><details><summary>¿Por qué el módulo recibe pero no responde?</summary><p>Comprueba que TX y RX estén cruzados, que haya GND común y que la velocidad configurada sea la misma en ambos extremos.</p></details></div></section><div class="author-box"><img src="../author_alberto.jpg" alt="Alberto Gallardo"><div><h3>Sobre el autor</h3><p><strong>Alberto Gallardo</strong> es Analista Programador Computacional y escribe tutoriales prácticos de electrónica, programación y robótica. <a href="/about">Conoce más sobre el autor →</a></p></div></div><p class="disclosure">Contenido editorial independiente y educativo. Verifica siempre el voltaje, la hoja de datos de tus módulos y las condiciones reales de tu montaje antes de conectar alimentación.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Revisa el <a href="/#categories">temario de Arduino y proyectos</a> para continuar con sensores, programación y electrónica aplicada.</p></div><div class="footer-nav"><a href="/">← Volver a la portada</a><a href="/contact">¿Encontraste una mejora? Contáctanos →</a></div></article><section class="editorial-sources"><h2>Fuentes y documentación recomendada</h2><ul><li><a href="https://docs.arduino.cc/">Arduino Docs — documentación oficial</a></li><li><a href="https://www.arduino.cc/reference/en/">Arduino Language Reference</a></li></ul><p>Enlaces revisados: 11 de agosto de 2026.</p></section></main><footer class="site-footer"><div class="container">Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica y electrónica aplicada.</div></footer></body></html>
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Controla tu Arduino por Bluetooth con el Módulo HC-05 — Guía Técnica Completa</title>
+<meta name="description" content="Guía técnica para controlar Arduino por Bluetooth con el módulo HC-05: conexión de hardware con divisor de voltaje, configuración por comandos AT, código para controlar LEDs, relés y motores, apps de control, comunicación entre dos Arduino, seguridad y normativa en Chile.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Controla tu Arduino por Bluetooth con el Módulo HC-05 — Guía Técnica Completa">
+<meta property="og:description" content="Conexión de hardware, comandos AT, código Arduino para control por Bluetooth, apps recomendadas, comunicación maestro-esclavo entre dos módulos, seguridad y upgrade a BLE.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/hc05_bluetooth_arduino_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Técnica: Arduino por Bluetooth con el Módulo HC-05">
+<meta name="twitter:description" content="Hardware, comandos AT, código de control y seguridad para dominar el HC-05 en tus proyectos con Arduino.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/hc05_bluetooth_arduino_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Controla tu Arduino por Bluetooth con el Módulo HC-05 — Guía Técnica Completa",
+  "description":"Guía técnica para controlar Arduino por Bluetooth usando el módulo HC-05: principio de funcionamiento SPP, conexión de hardware con divisor de voltaje, configuración mediante comandos AT, código para controlar LEDs, relés y motores, apps de control para Android, comunicación maestro-esclavo entre dos módulos, consideraciones de seguridad y upgrade a BLE.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-14",
+  "dateModified":"2026-09-14",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05"},
+  "image":"https://www.ukrabot.cl/blog/hc05_bluetooth_arduino_hero.jpg",
+  "proficiencyLevel":"Principiante-Intermedio",
+  "dependencies":"Arduino Uno o Nano, módulo Bluetooth HC-05, resistencias de 1kΩ y 2kΩ para divisor de voltaje, LED con resistencia limitadora, módulo relé de 5V opcional, protoboard y jumpers, smartphone Android con app de terminal Bluetooth",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Controla tu Arduino por Bluetooth con el Módulo HC-05","item":"https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Cuál es la diferencia entre el módulo HC-05 y el HC-06?","acceptedAnswer":{"@type":"Answer","text":"El HC-06 solo puede operar como esclavo Bluetooth: se conecta a un celular o computador, pero no puede iniciar conexión hacia otro módulo. El HC-05 soporta ambos roles, maestro y esclavo, lo que permite además del control desde celular, enlazar dos módulos HC-05 entre sí para crear un puente serial inalámbrico entre dos Arduino. El HC-05 también expone un set de comandos AT más completo para configurar nombre, PIN, velocidad y rol del módulo."}},
+    {"@type":"Question","name":"¿Puedo controlar mi Arduino con HC-05 desde un iPhone?","acceptedAnswer":{"@type":"Answer","text":"No de forma directa con apps genéricas de terminal Bluetooth. iOS no expone el perfil Bluetooth clásico SPP (Serial Port Profile) a aplicaciones de terceros por restricciones de la propia plataforma; CoreBluetooth, la API disponible para desarrolladores en iOS, solo trabaja con Bluetooth Low Energy (BLE). Para controlar un proyecto desde iPhone es necesario usar un módulo BLE como el HM-10, o un ESP32 con Bluetooth Low Energy, junto a una app compatible con ese protocolo."}},
+    {"@type":"Question","name":"¿Qué alcance real tiene el módulo HC-05?","acceptedAnswer":{"@type":"Answer","text":"El HC-05 estándar es un dispositivo Bluetooth Clase 2, con una potencia de transmisión aproximada de 4 dBm (2.5 mW), lo que da un alcance teórico de hasta 10 metros en línea de vista directa y sin obstáculos. En condiciones reales de interior, con paredes, muebles o interferencia de otros dispositivos en la banda de 2.4 GHz como routers WiFi, el alcance útil suele reducirse a entre 3 y 6 metros."}},
+    {"@type":"Question","name":"¿Es obligatorio usar un divisor de voltaje para conectar el HC-05 a Arduino?","acceptedAnswer":{"@type":"Answer","text":"Es muy recomendable y debe considerarse una buena práctica obligatoria. El pin RXD del HC-05 trabaja a nivel lógico de 3.3V y no está diseñado para tolerar de forma sostenida los 5V que entrega un pin TX de Arduino Uno o Nano. Muchos proyectos funcionan durante un tiempo sin el divisor, pero exponen el módulo a una degradación progresiva o a un daño directo. Un divisor resistivo simple de 1kΩ y 2kΩ en la línea Arduino TX hacia HC-05 RX resuelve el problema con un costo prácticamente nulo."}},
+    {"@type":"Question","name":"¿Cómo sé si mi módulo HC-05 está en modo de comandos AT o en modo de datos?","acceptedAnswer":{"@type":"Answer","text":"El LED integrado del módulo es el indicador más confiable. Un parpadeo rápido y constante generalmente indica que el módulo está en modo de datos, buscando o esperando una conexión Bluetooth. Un parpadeo lento, aproximadamente una vez cada dos segundos, indica que el módulo está en modo de comandos AT, listo para recibir configuración por el puerto serie. El patrón exacto puede variar levemente entre el firmware original y los clones más económicos disponibles en el mercado."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="hc05_bluetooth_arduino_hero.jpg" alt="Módulo Bluetooth HC-05 conectado a una placa Arduino Uno mediante protoboard, con un smartphone Android mostrando una app de control cerca de la mesa de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y comunicación inalámbrica · Actualizado el <time datetime="2026-09-14">14 de septiembre de 2026</time></div>
+    <h1>Controla tu Arduino por Bluetooth con el Módulo HC-05</h1>
+    <p>Conexión de hardware con divisor de voltaje, configuración completa por comandos AT, código real para controlar LEDs, relés y motores desde el celular, comunicación inalámbrica entre dos Arduino y el camino de upgrade hacia BLE.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="hc05_bluetooth_arduino_wiring.jpg" alt="Diagrama de conexión del módulo HC-05 a un Arduino Uno mostrando el divisor de voltaje resistivo entre el pin TX del Arduino y el pin RXD del módulo Bluetooth" loading="lazy">
+  <div class="caption">El detalle que más se pasa por alto en este proyecto: el pin RXD del HC-05 trabaja a 3.3V y necesita un divisor resistivo antes de recibir la señal de 5V del TX de Arduino.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es-hc05">Qué es el HC-05 y cómo funciona</a></li>
+    <li><a href="#hc05-vs-alternativas">HC-05 vs HC-06 vs módulos BLE: cuál elegir</a></li>
+    <li><a href="#materiales">Lista de materiales y costos de referencia</a></li>
+    <li><a href="#conexion-hardware">Conexión de hardware: divisor de voltaje y SoftwareSerial</a></li>
+    <li><a href="#modo-at">Modo de comandos AT: nombre, PIN y velocidad</a></li>
+    <li><a href="#codigo-basico">Código Arduino: control básico de un LED por Bluetooth</a></li>
+    <li><a href="#codigo-avanzado">Código Arduino: múltiples salidas y control PWM</a></li>
+    <li><a href="#apps-control">Apps para controlar tu Arduino desde el celular</a></li>
+    <li><a href="#vinculacion-dos-modulos">Comunicación entre dos Arduino sin cables</a></li>
+    <li><a href="#alcance-normativa">Alcance real, potencia de transmisión y normativa en Chile</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y solución de errores</a></li>
+    <li><a href="#seguridad">Seguridad del Bluetooth clásico y upgrade a BLE</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es-hc05">
+<h2>Qué es el HC-05 y cómo funciona</h2>
+<p>El <strong>HC-05</strong> es un módulo Bluetooth basado en el chip CSR BC417143, que implementa Bluetooth v2.0+EDR con el perfil <strong>SPP (Serial Port Profile)</strong>. En términos prácticos, esto significa que el módulo actúa como un puente transparente entre una conexión serie UART tradicional (los pines TX/RX que ya conoces de Arduino) y un enlace Bluetooth inalámbrico: todo lo que envíes por el puerto serie hacia el HC-05 sale por Bluetooth hacia el dispositivo emparejado, y todo lo que ese dispositivo envíe llega de vuelta como datos serie normales.</p>
+<p>Esta simplicidad es la razón por la que el HC-05 es uno de los módulos de comunicación inalámbrica más usados en proyectos con Arduino: no requiere aprender un protocolo Bluetooth complejo desde el microcontrolador, porque desde el punto de vista del código de Arduino, controlar algo por Bluetooth es exactamente igual que controlarlo por el puerto serie del cable USB.</p>
+<p>El módulo opera en dos modos claramente diferenciados:</p>
+<ul>
+<li><strong>Modo de datos (Data Mode):</strong> el modo por defecto tras el emparejamiento, donde el módulo transmite de forma transparente cualquier byte que reciba por UART hacia el dispositivo Bluetooth conectado, y viceversa.</li>
+<li><strong>Modo de comandos AT (AT Command Mode):</strong> un modo de configuración donde el módulo, en vez de transmitir datos, interpreta comandos de texto que permiten cambiar su nombre visible, PIN de emparejamiento, velocidad de comunicación (baud rate) y rol (maestro o esclavo).</li>
+</ul>
+<p>El módulo puede operar como <strong>esclavo</strong> (recibe conexiones entrantes, el caso típico para controlar Arduino desde un celular) o como <strong>maestro</strong> (inicia una conexión hacia otro dispositivo Bluetooth), lo que lo distingue de módulos más simples y habilita escenarios como la comunicación inalámbrica entre dos placas Arduino sin intervención de un teléfono, como se detalla más adelante en esta guía.</p>
+</section>
+
+<section id="hc05-vs-alternativas">
+<h2>HC-05 vs HC-06 vs módulos BLE: cuál elegir</h2>
+<p>Antes de comprar, vale la pena entender dónde encaja el HC-05 frente a sus alternativas más comunes en el mercado de módulos económicos para hobby:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación orientada a decisión de compra para proyectos de hobby con Arduino.</caption>
+<thead><tr><th>Característica</th><th>HC-05</th><th>HC-06</th><th>BLE (HM-10 / ESP32)</th></tr></thead>
+<tbody>
+<tr><td>Roles soportados</td><td>Maestro y esclavo</td><td>Solo esclavo</td><td>Periférico y central, según módulo</td></tr>
+<tr><td>Perfil Bluetooth</td><td>SPP (Bluetooth clásico)</td><td>SPP (Bluetooth clásico)</td><td>GATT (Bluetooth Low Energy)</td></tr>
+<tr><td>Compatibilidad con iPhone/iOS</td><td>No, para apps de terceros</td><td>No, para apps de terceros</td><td>Sí</td></tr>
+<tr><td>Consumo de energía</td><td>Medio (Clase 2, ~2.5mW)</td><td>Medio (Clase 2, similar)</td><td>Bajo, ideal para batería</td></tr>
+<tr><td>Complejidad de configuración</td><td>Media — comandos AT completos</td><td>Baja — comandos AT limitados</td><td>Media-alta — conceptos de servicios/características</td></tr>
+<tr><td>Ideal para</td><td>Control desde Android, enlaces entre dos Arduino</td><td>Proyecto simple de un solo sentido esclavo</td><td>Apps móviles multiplataforma, proyectos a batería</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para la mayoría de los proyectos de hobby orientados a control remoto simple desde un celular Android, el <strong>HC-05</strong> es la mejor relación entre costo, simplicidad y flexibilidad, y es el módulo sobre el que se construye el resto de esta guía.</p>
+</section>
+
+<section id="materiales">
+<h2>Lista de materiales y costos de referencia</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos de precio orientativos para el mercado chileno en 2026, componentes básicos disponibles en tiendas de electrónica.</caption>
+<thead><tr><th>Componente</th><th>Especificación sugerida</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Arduino Uno o Nano</td><td>Original o compatible con ATmega328P</td><td>$6.000 – $15.000</td></tr>
+<tr><td>Módulo HC-05</td><td>Breakout con regulador integrado a 3.3V</td><td>$3.000 – $6.000</td></tr>
+<tr><td>Resistencias para divisor</td><td>1 kΩ y 2 kΩ, 1/4 W</td><td>$100 – $300 (par)</td></tr>
+<tr><td>LED + resistencia limitadora</td><td>LED 5mm y resistencia 220-330 Ω</td><td>$200 – $500</td></tr>
+<tr><td>Módulo relé de 5V</td><td>1 canal, optoacoplado</td><td>$1.500 – $3.500</td></tr>
+<tr><td>Protoboard y jumpers</td><td>Set básico macho-macho y macho-hembra</td><td>$2.000 – $5.000</td></tr>
+<tr><td>Smartphone Android</td><td>Con Bluetooth 2.0 o superior, cualquier gama</td><td>Ya disponible</td></tr>
+<tr><td><strong>Total aproximado del proyecto</strong></td><td>&nbsp;</td><td><strong>$13.000 – $30.000</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>Es uno de los proyectos de comunicación inalámbrica más económicos que puedes armar con Arduino: si ya tienes la placa de otro proyecto, el resto de los componentes cuesta menos que una salida a comer.</p>
+</section>
+
+<section id="conexion-hardware">
+<h2>Conexión de hardware: divisor de voltaje y SoftwareSerial</h2>
+<p>La mayoría de los breakouts de HC-05 disponibles comercialmente incluyen un regulador de voltaje integrado (típicamente un AMS1117 a 3.3V), lo que permite alimentar el pin VCC directamente con los 5V de Arduino sin problema. El detalle crítico está en los pines de datos: <strong>TXD y RXD del módulo trabajan a nivel lógico de 3.3V</strong>, no de 5V.</p>
+<ul>
+<li><strong>HC-05 TXD → Arduino RX:</strong> conexión directa. Una señal de 3.3V suele ser interpretada correctamente como nivel alto por un pin digital de Arduino (cuyo umbral típico ronda los 3V a 5V de alimentación), por lo que en la práctica funciona sin divisor adicional en este sentido.</li>
+<li><strong>Arduino TX → HC-05 RXD:</strong> aquí sí se necesita un <strong>divisor de voltaje resistivo</strong>. El pin TX de Arduino entrega una señal completa de 5V, por encima del límite que el pin RXD del HC-05 está diseñado para tolerar de forma sostenida. Un divisor simple con R1 = 1kΩ (entre TX y el nodo intermedio) y R2 = 2kΩ (entre el nodo intermedio y GND) entrega aproximadamente 3.33V al RXD del módulo, dentro de un rango seguro.</li>
+</ul>
+<div class="warning"><strong>Por qué importa este detalle:</strong> muchos tutoriales en video conectan el HC-05 directamente a los pines TX/RX de Arduino sin divisor, y el proyecto "funciona" en la demostración. El problema es que la exposición sostenida a 5V en un pin de 3.3V degrada el módulo con el tiempo, no siempre de forma inmediata. El divisor de voltaje cuesta menos de $300 CLP en resistencias — no hay razón real para omitirlo.</div>
+<p>Otra decisión importante de hardware es <strong>no usar los pines 0 y 1</strong> (RX/TX por hardware) de Arduino Uno o Nano para el HC-05, ya que esos mismos pines se comparten con el chip USB-serial usado para cargar programas desde el computador. Conectar el HC-05 permanentemente ahí genera conflictos al subir código y hace más difícil depurar por el monitor serie mientras el módulo está conectado. La solución estándar es usar la librería <code>SoftwareSerial</code>, que emula un puerto serie adicional en cualquier par de pines digitales, típicamente los pines 2 y 3.</p>
+<pre><code>Esquema conceptual de conexión:
+
+Arduino 5V  -----------------------------> HC-05 VCC
+Arduino GND -----------------------------> HC-05 GND
+Arduino pin 2 (RX SoftwareSerial) <------- HC-05 TXD (conexión directa)
+Arduino pin 3 (TX SoftwareSerial) --[R1 1kΩ]--+--[R2 2kΩ]--> GND
+                                               |
+                                               +----------> HC-05 RXD
+                                          (divisor entrega ~3.3V)</code></pre>
+</section>
+
+<section id="modo-at">
+<h2>Modo de comandos AT: nombre, PIN y velocidad</h2>
+<p>Antes de programar el control por Bluetooth, es muy recomendable configurar el módulo mediante comandos AT — especialmente cambiar el PIN por defecto y darle un nombre identificable, en vez de dejarlo con la configuración de fábrica que comparten miles de módulos idénticos.</p>
+<p>Para entrar en modo AT en la mayoría de los clones con firmware "Linvor" (los más comunes en tiendas), el procedimiento estándar es:</p>
+<ol>
+<li>Desconecta la alimentación del módulo.</li>
+<li>Mantén presionado el botón pequeño sobre el módulo (si tu breakout lo incluye).</li>
+<li>Mientras lo mantienes presionado, conecta la alimentación (VCC y GND).</li>
+<li>Suelta el botón después de 1-2 segundos. El LED debería comenzar a parpadear lentamente, aproximadamente una vez cada dos segundos — esa es la señal de que el módulo está en modo AT.</li>
+<li>Conecta el HC-05 a Arduino y sube un sketch "puente" simple que reenvíe caracteres entre el Monitor Serie y el SoftwareSerial conectado al módulo.</li>
+</ol>
+<div class="note"><strong>Nota sobre velocidades:</strong> en modo AT, la mayoría de los módulos con firmware original responden a <strong>38400 baudios</strong> independientemente de la velocidad configurada para el modo de datos, mientras que algunos clones más nuevos usan la velocidad configurada actualmente. Si no obtienes respuesta al enviar <code>AT</code>, prueba primero a 38400 y luego a 9600 antes de asumir que el módulo está dañado.</div>
+<pre><code>// Sketch "puente" para enviar comandos AT desde el Monitor Serie
+#include <SoftwareSerial.h>
+SoftwareSerial BT(2, 3); // RX, TX
+
+void setup() {
+  Serial.begin(9600);
+  BT.begin(38400); // probar 38400 primero; si no responde, usar 9600
+  Serial.println("Puente AT listo. Escribe comandos y presiona Enter.");
+}
+
+void loop() {
+  if (BT.available())     Serial.write(BT.read());
+  if (Serial.available()) BT.write(Serial.read());
+}</code></pre>
+<p>Con este sketch cargado, abre el Monitor Serie, configura la terminación de línea en <strong>"Ambos NL y CR"</strong> y escribe los comandos de la siguiente tabla:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comandos AT esenciales del HC-05. La sintaxis exacta puede variar levemente entre firmwares de distintos fabricantes.</caption>
+<thead><tr><th>Comando</th><th>Función</th><th>Ejemplo de respuesta</th></tr></thead>
+<tbody>
+<tr><td>AT</td><td>Verifica que el módulo responde</td><td>OK</td></tr>
+<tr><td>AT+VERSION?</td><td>Consulta la versión de firmware</td><td>+VERSION:2.0-20100601</td></tr>
+<tr><td>AT+NAME=MiArduino</td><td>Cambia el nombre visible al emparejar</td><td>OK</td></tr>
+<tr><td>AT+PSWD=1234</td><td>Cambia el PIN de emparejamiento</td><td>OK</td></tr>
+<tr><td>AT+UART=9600,0,0</td><td>Configura baud rate, bit de parada y paridad para modo dato</td><td>OK</td></tr>
+<tr><td>AT+ROLE=0</td><td>Configura el módulo como esclavo</td><td>OK</td></tr>
+<tr><td>AT+ROLE=1</td><td>Configura el módulo como maestro</td><td>OK</td></tr>
+<tr><td>AT+ADDR?</td><td>Consulta la dirección MAC del módulo</td><td>+ADDR:xxxx,xx,xxxxxx</td></tr>
+<tr><td>AT+RMAAD</td><td>Elimina todos los dispositivos emparejados</td><td>OK</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="codigo-basico">
+<h2>Código Arduino: control básico de un LED por Bluetooth</h2>
+<p>Una vez configurado el módulo y verificado el hardware, el siguiente paso es un ejemplo mínimo: encender y apagar un LED enviando los caracteres <code>1</code> y <code>0</code> desde una app de terminal Bluetooth en el celular.</p>
+<pre><code>#include <SoftwareSerial.h>
+
+SoftwareSerial BT(2, 3); // RX, TX (Arduino) conectados a TXD, RXD del HC-05
+
+const int PIN_LED = 13;
+
+void setup() {
+  pinMode(PIN_LED, OUTPUT);
+  Serial.begin(9600);
+  BT.begin(9600); // debe coincidir con AT+UART configurado en el modulo
+  Serial.println("Bluetooth listo. Esperando comandos...");
+}
+
+void loop() {
+  if (BT.available()) {
+    char comando = BT.read();
+    Serial.print("Comando recibido: ");
+    Serial.println(comando);
+
+    switch (comando) {
+      case '1':
+        digitalWrite(PIN_LED, HIGH);
+        BT.println("LED encendido");
+        break;
+      case '0':
+        digitalWrite(PIN_LED, LOW);
+        BT.println("LED apagado");
+        break;
+      default:
+        BT.println("Comando no reconocido");
+        break;
+    }
+  }
+}</code></pre>
+<p>Este ejemplo, aunque simple, contiene el patrón que reutilizarás en prácticamente cualquier proyecto de control por Bluetooth: leer un byte disponible en el <code>SoftwareSerial</code>, interpretarlo, y responder con una confirmación de texto — algo muy útil para depurar durante el desarrollo, aunque puedas quitarlo después para reducir tráfico innecesario.</p>
+</section>
+
+<section id="codigo-avanzado">
+<h2>Código Arduino: múltiples salidas y control PWM</h2>
+<p>El siguiente ejemplo escala el concepto anterior a un protocolo de comandos de texto más flexible, capaz de controlar el brillo de un LED por PWM y activar/desactivar un relé, todo desde comandos legibles enviados como línea de texto terminada en salto de línea.</p>
+<pre><code>#include <SoftwareSerial.h>
+SoftwareSerial BT(2, 3);
+
+const int PIN_LED_PWM = 9;  // salida PWM, controla brillo
+const int PIN_RELE    = 7;  // salida digital, controla rele
+
+String buffer = "";
+
+void setup() {
+  pinMode(PIN_LED_PWM, OUTPUT);
+  pinMode(PIN_RELE, OUTPUT);
+  Serial.begin(9600);
+  BT.begin(9600);
+  Serial.println("Sistema listo. Comandos: Lxx (brillo 0-100), RELE_ON, RELE_OFF");
+}
+
+void loop() {
+  while (BT.available()) {
+    char c = BT.read();
+    if (c == '\n') {
+      procesarComando(buffer);
+      buffer = "";
+    } else if (c != '\r') {
+      buffer += c;
+    }
+  }
+}
+
+void procesarComando(String cmd) {
+  cmd.trim();
+
+  if (cmd.startsWith("L")) {
+    int valor = cmd.substring(1).toInt();       // ej: "L75" -> 75
+    valor = constrain(valor, 0, 100);
+    analogWrite(PIN_LED_PWM, map(valor, 0, 100, 0, 255));
+    BT.print("LED al "); BT.print(valor); BT.println("%");
+
+  } else if (cmd == "RELE_ON") {
+    digitalWrite(PIN_RELE, HIGH);
+    BT.println("Rele activado");
+
+  } else if (cmd == "RELE_OFF") {
+    digitalWrite(PIN_RELE, LOW);
+    BT.println("Rele desactivado");
+
+  } else {
+    BT.print("Comando desconocido: ");
+    BT.println(cmd);
+  }
+}</code></pre>
+<p>Para que este código funcione correctamente, la app que uses en el celular debe enviar cada comando terminado en salto de línea (<code>\n</code>) — la mayoría de las apps de terminal Bluetooth para Android incluyen una opción de configuración para el "line ending" del texto enviado, que debe activarse antes de probar.</p>
+</section>
+
+<section id="apps-control">
+<h2>Apps para controlar tu Arduino desde el celular</h2>
+<p>Para las primeras pruebas, no necesitas programar tu propia app. La opción más práctica y usada en la comunidad es <strong>Serial Bluetooth Terminal</strong> (de Kai Morich), disponible gratis en Google Play: permite emparejar con el HC-05, enviar comandos de texto libre, y guardar botones predefinidos con macros para comandos que uses con frecuencia — suficiente para probar ambos códigos de esta guía sin escribir una sola línea de app.</p>
+<div class="warning"><strong>Sobre iOS:</strong> como se explica también en las preguntas frecuentes, este tipo de apps genéricas de terminal Bluetooth <strong>no funcionan en iPhone</strong> con el HC-05, porque iOS no permite a apps de terceros acceder al perfil Bluetooth clásico SPP. Si tu público objetivo usa iPhone, el HC-05 no es la elección correcta — necesitarás un módulo BLE.</div>
+<p>Cuando quieras ir más allá del terminal genérico y construir una interfaz con botones propios, sliders para controlar el PWM o indicadores visuales, <strong>MIT App Inventor</strong> es el camino más accesible sin experiencia previa en desarrollo Android: ofrece un componente "Bluetooth Client" que se conecta al HC-05 por su nombre o dirección MAC, y bloques visuales simples para enviar texto cada vez que se presiona un botón — exactamente el tipo de comando de texto que procesan los ejemplos de código de esta guía.</p>
+</section>
+
+<section id="vinculacion-dos-modulos">
+<h2>Comunicación entre dos Arduino sin cables</h2>
+<p>Una de las capacidades distintivas del HC-05 frente al HC-06 es que puede operar en <strong>modo maestro</strong>, lo que permite enlazar dos módulos HC-05 entre sí y crear, en la práctica, un cable serial invisible entre dos Arduino separados por unos metros — útil para robots con una unidad de control remoto, estaciones de sensores remotas, o cualquier proyecto donde quieras evitar un cable físico entre dos placas.</p>
+<p>El proceso general, resumido a alto nivel, es el siguiente:</p>
+<ol>
+<li>Configura un módulo como <strong>esclavo</strong> con <code>AT+ROLE=0</code> (el que quedará conectado al Arduino "remoto").</li>
+<li>Anota su dirección MAC con <code>AT+ADDR?</code> en el módulo esclavo.</li>
+<li>Configura el segundo módulo como <strong>maestro</strong> con <code>AT+ROLE=1</code>.</li>
+<li>En el módulo maestro, fija el modo de conexión fija con <code>AT+CMODE=0</code> y enlázalo a la dirección del esclavo con <code>AT+BIND=&lt;direccion_mac_del_esclavo&gt;</code> (reemplazando los separadores según la sintaxis del firmware, típicamente cambiando los dos puntos por comas).</li>
+<li>Al reiniciar ambos módulos fuera de modo AT, el maestro intentará conectarse automáticamente al esclavo vinculado, estableciendo el puente serial sin ninguna intervención manual de emparejamiento cada vez que se enciendan.</li>
+</ol>
+<p>Una vez establecido este enlace, ambos Arduino pueden comunicarse exactamente igual que si estuvieran conectados por un cable serial físico: todo lo que uno envíe por su <code>SoftwareSerial</code> llega al otro, sin necesidad de ningún celular de por medio.</p>
+</section>
+
+<section id="alcance-normativa">
+<h2>Alcance real, potencia de transmisión y normativa en Chile</h2>
+<p>El HC-05 estándar es un dispositivo Bluetooth <strong>Clase 2</strong>, con una potencia de transmisión de aproximadamente 4 dBm (2.5 mW). Esto se traduce en un alcance teórico de hasta 10 metros en condiciones ideales de línea de vista directa. En un entorno doméstico real, con paredes, muebles y la interferencia habitual de routers WiFi operando en la misma banda de 2.4 GHz, es razonable esperar un alcance útil de entre 3 y 6 metros antes de que la conexión se vuelva inestable.</p>
+<p>Respecto a la normativa chilena: los dispositivos que transmiten en la banda ISM de 2.4 GHz sin licencia (WiFi, Bluetooth, Zigbee) operan bajo el marco regulatorio de la <strong>Subsecretaría de Telecomunicaciones (SUBTEL)</strong>, que en general permite el uso de equipos de baja potencia en esta banda sin necesidad de licencia individual para uso personal. Los módulos HC-05 comercializados normalmente ya cuentan con certificaciones internacionales (FCC, CE) incorporadas en su diseño de fábrica. Para un proyecto de hobby, uso personal o educativo, esto no representa una barrera práctica.</p>
+<div class="note"><strong>Nota para quienes piensan comercializar un producto:</strong> si tu proyecto con HC-05 evoluciona hacia un producto que planeas vender o distribuir comercialmente en Chile, la homologación de equipos ante SUBTEL puede aplicar de forma distinta que para un proyecto personal o educativo. Revisa la normativa vigente directamente en el sitio de SUBTEL antes de avanzar hacia una etapa comercial.</div>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y solución de errores</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos al trabajar con el HC-05 y su causa más probable.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>No aparece en la lista de Bluetooth del celular</td><td>Alimentación incorrecta o GND no compartido con Arduino</td><td>Verificar que el LED parpadee, revisar continuidad de GND común</td></tr>
+<tr><td>Se empareja pero no llegan datos correctos</td><td>Baud rate de <code>BT.begin()</code> no coincide con el configurado en el módulo</td><td>Confirmar velocidad real con <code>AT+UART?</code> en modo AT</td></tr>
+<tr><td>Módulo deja de responder o se calienta</td><td>Exposición sostenida a 5V en el pin RXD sin divisor de voltaje</td><td>Agregar divisor resistivo, reemplazar módulo si el daño ya ocurrió</td></tr>
+<tr><td>No logro entrar en modo AT</td><td>Secuencia de botón/energizado incorrecta para tu variante de firmware</td><td>Probar mantener el botón antes y después de energizar; probar 38400 y 9600 baudios</td></tr>
+<tr><td>El sketch no se sube al Arduino con el módulo conectado</td><td>HC-05 conectado a los pines 0/1 (hardware serial), en conflicto con el USB</td><td>Usar <code>SoftwareSerial</code> en otros pines, o desconectar el módulo al subir código</td></tr>
+<tr><td>Comandos AT devuelven caracteres ilegibles</td><td>Configuración de terminación de línea incorrecta en el Monitor Serie</td><td>Cambiar a "Ambos NL y CR" en el desplegable del Monitor Serie</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="seguridad">
+<h2>Seguridad del Bluetooth clásico y upgrade a BLE</h2>
+<p>Vale la pena ser honesto sobre las limitaciones de seguridad del enfoque descrito en esta guía. El emparejamiento por PIN del Bluetooth clásico SPP es un mecanismo básico, pensado originalmente para evitar conexiones accidentales, no para proteger contra un atacante con intención real. El PIN por defecto de fábrica (<code>1234</code> o <code>0000</code>) es de conocimiento público, y aunque lo cambies, el nivel de seguridad de este esquema es limitado comparado con protocolos modernos.</p>
+<p>Para la mayoría de los proyectos de hobby — encender un LED, mover un servo, leer un sensor — este nivel de seguridad es perfectamente aceptable. Pero si tu proyecto controla algo con implicancias de seguridad física real, como abrir una puerta, activar un motor de potencia considerable o cortar energía a un circuito, es buena práctica agregar una capa adicional de validación <strong>en el propio código de Arduino</strong>: por ejemplo, exigir que cada comando crítico venga acompañado de una clave simple definida en el sketch, y rechazar cualquier comando que no la incluya, en vez de confiar únicamente en el PIN de emparejamiento del módulo.</p>
+<p>Cuando las limitaciones del Bluetooth clásico —consumo de energía más alto, incompatibilidad con iOS, seguridad básica— se vuelven relevantes para tu proyecto, el camino de upgrade natural es <strong>Bluetooth Low Energy (BLE)</strong>, ya sea con un módulo dedicado como el HM-10 o aprovechando el BLE integrado de un <strong>ESP32</strong>. BLE consume una fracción de la energía del Bluetooth clásico (ideal para proyectos a batería), es compatible con iOS y Android desde una misma app, y permite estructurar la comunicación en servicios y características (el modelo GATT) en vez de un simple flujo de texto — a cambio de una curva de aprendizaje algo más pronunciada que el modelo transparente del HC-05.</p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>El HC-05 sigue siendo, años después de su lanzamiento, una de las puertas de entrada más accesibles a la comunicación inalámbrica con Arduino: un puñado de componentes económicos, un divisor de voltaje de menos de $300 pesos, y un puñado de comandos AT bien entendidos son suficientes para pasar de un proyecto controlado por cable USB a uno controlado a distancia desde el bolsillo. Su principal limitación —ser Bluetooth clásico y no BLE— se vuelve evidente sobre todo cuando el público objetivo usa iPhone o cuando la energía disponible es limitada, y en esos casos el camino de upgrade hacia BLE con HM-10 o ESP32 está claramente trazado. Para aprender el patrón fundamental de control remoto por comandos de texto sobre un enlace serie inalámbrico, sin embargo, es difícil encontrar un punto de partida más directo.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuál es la diferencia entre el módulo HC-05 y el HC-06?</summary><p>El HC-06 solo puede operar como esclavo Bluetooth: se conecta a un celular o computador, pero no puede iniciar conexión hacia otro módulo. El HC-05 soporta ambos roles, maestro y esclavo, lo que permite además del control desde celular, enlazar dos módulos HC-05 entre sí para crear un puente serial inalámbrico entre dos Arduino. El HC-05 también expone un set de comandos AT más completo para configurar nombre, PIN, velocidad y rol del módulo.</p></details>
+<details><summary>¿Puedo controlar mi Arduino con HC-05 desde un iPhone?</summary><p>No de forma directa con apps genéricas de terminal Bluetooth. iOS no expone el perfil Bluetooth clásico SPP (Serial Port Profile) a aplicaciones de terceros por restricciones de la propia plataforma; CoreBluetooth, la API disponible para desarrolladores en iOS, solo trabaja con Bluetooth Low Energy (BLE). Para controlar un proyecto desde iPhone es necesario usar un módulo BLE como el HM-10, o un ESP32 con Bluetooth Low Energy, junto a una app compatible con ese protocolo.</p></details>
+<details><summary>¿Qué alcance real tiene el módulo HC-05?</summary><p>El HC-05 estándar es un dispositivo Bluetooth Clase 2, con una potencia de transmisión aproximada de 4 dBm (2.5 mW), lo que da un alcance teórico de hasta 10 metros en línea de vista directa y sin obstáculos. En condiciones reales de interior, con paredes, muebles o interferencia de otros dispositivos en la banda de 2.4 GHz como routers WiFi, el alcance útil suele reducirse a entre 3 y 6 metros.</p></details>
+<details><summary>¿Es obligatorio usar un divisor de voltaje para conectar el HC-05 a Arduino?</summary><p>Es muy recomendable y debe considerarse una buena práctica obligatoria. El pin RXD del HC-05 trabaja a nivel lógico de 3.3V y no está diseñado para tolerar de forma sostenida los 5V que entrega un pin TX de Arduino Uno o Nano. Muchos proyectos funcionan durante un tiempo sin el divisor, pero exponen el módulo a una degradación progresiva o a un daño directo. Un divisor resistivo simple de 1kΩ y 2kΩ en la línea Arduino TX hacia HC-05 RX resuelve el problema con un costo prácticamente nulo.</p></details>
+<details><summary>¿Cómo sé si mi módulo HC-05 está en modo de comandos AT o en modo de datos?</summary><p>El LED integrado del módulo es el indicador más confiable. Un parpadeo rápido y constante generalmente indica que el módulo está en modo de datos, buscando o esperando una conexión Bluetooth. Un parpadeo lento, aproximadamente una vez cada dos segundos, indica que el módulo está en modo de comandos AT, listo para recibir configuración por el puerto serie. El patrón exacto puede variar levemente entre el firmware original y los clones más económicos disponibles en el mercado.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y los comandos AT son referenciales y pueden variar levemente entre distintos fabricantes y versiones de firmware del módulo; verifica siempre el comportamiento con tu propio hardware. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te interesó trabajar con temporización y comunicación serie en Arduino, nuestra guía <a href="/blog/construye-tu-propio-detector-de-metales-casero-con-arduino">Construye tu Propio Detector de Metales Casero con Arduino</a> aplica un nivel similar de rigor técnico a otro proyecto de electrónica práctica — osciladores, medición de frecuencia y código de detección en tiempo real.</p>
+  <p>También puedes revisar el <a href="/#categories">temario completo del blog</a> para ver qué guías vienen en camino.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/construye-tu-propio-detector-de-metales-casero-con-arduino">← Anterior: Detector de Metales con Arduino</a>
+  <a href="/blog/">Siguiente: Ver más tutoriales →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los comandos AT exactos y el comportamiento eléctrico deben verificarse de forma experimental con tu propio módulo, ya que existen variaciones entre fabricantes y versiones de firmware.</p>
+<ul>
+<li><a href="https://www.arduino.cc/en/Reference/SoftwareSerial" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería SoftwareSerial</a></li>
+<li><a href="https://components101.com/wireless/hc-05-bluetooth-module" target="_blank" rel="noopener noreferrer">Components101 — Ficha técnica y comandos AT del módulo HC-05</a></li>
+<li><a href="https://www.subtel.gob.cl" target="_blank" rel="noopener noreferrer">Subsecretaría de Telecomunicaciones (SUBTEL) de Chile — Normativa de equipos de radiocomunicación</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
