@@ -1,21 +1,727 @@
-<!doctype html><html lang="es-CL"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Piano Electrónico con Botones y Buzzer — Guía Completa</title><meta name="description" content="Construye un piano electrónico con Arduino, botones y buzzer piezoeléctrico. Aprende pull-ups internos, antirrebote, frecuencias musicales y un código escalable."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer"><meta property="og:type" content="article"><meta property="og:title" content="Piano Electrónico con Botones y Buzzer"><meta property="og:description" content="Construye un piano electrónico con Arduino, botones y buzzer piezoeléctrico. Aprende pull-ups internos, antirrebote, frecuencias musicales y un código escalable."><meta property="og:url" content="https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Piano Electrónico con Botones y Buzzer","description":"Construye un piano electrónico con Arduino, botones y buzzer piezoeléctrico. Aprende pull-ups internos, antirrebote, frecuencias musicales y un código escalable.","datePublished":"2026-08-11","dateModified":"2026-08-11","author":{"@type":"Person","name":"Alberto Gallardo","url":"https://www.ukrabot.cl/about"},"publisher":{"@type":"Organization","name":"Blog de Ingeniería Robótica","url":"https://www.ukrabot.cl"},"mainEntityOfPage":"https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer","proficiencyLevel":"Principiante","inLanguage":"es-CL"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Puedo usar un buzzer activo?","acceptedAnswer":{"@type":"Answer","text":"Sí emitirá sonido al encenderlo, pero no reproducirá correctamente las distintas notas con tone. Para un piano usa uno pasivo."}},{"@type":"Question","name":"¿Por qué suena aunque no presiono nada?","acceptedAnswer":{"@type":"Answer","text":"El pin está flotante o el botón está cableado distinto a INPUT_PULLUP. Cada botón debe unir el pin a GND al presionarlo."}}]}</script><style>
-:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font:16px/1.7 Inter,system-ui,-apple-system,Segoe UI,sans-serif}.container{max-width:1050px;margin:auto;padding:0 24px}a{color:var(--blue);text-underline-offset:3px}.site-nav{position:sticky;top:0;z-index:2;background:rgba(246,244,238,.96);border-bottom:1px solid var(--line)}.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:20px}.logo{font:1.35rem Georgia,serif;color:var(--text);text-decoration:none}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:18px;font-size:.88rem}.nav-links a{text-decoration:none;color:var(--muted)}.hero{background:linear-gradient(135deg,#151310,#30465a);color:white;padding:92px 0 70px}.eyebrow{color:#e4c07a;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font:400 clamp(2rem,6vw,4.1rem)/1.1 Georgia,serif;max-width:920px;margin:18px 0}.hero p{max-width:780px;color:#e8e6e0}.byline{font-size:.88rem}.byline a{color:#e4c07a}.article-body{padding:58px 24px 84px}.article-body h2{font:400 2rem/1.2 Georgia,serif;margin:56px 0 16px}.article-body h3{margin:30px 0 8px}.article-body p,.article-body li{color:var(--muted)}.toc,.note,.warning,.cta,.author-box{padding:24px;margin:28px 0;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06))}.toc h2{font:600 1.05rem/1.3 inherit;margin:0 0 10px}.toc ol{margin:0;padding-left:22px}.toc a{text-decoration:none;color:var(--muted)}.note{border-left:4px solid var(--gold)}.warning{border-left:4px solid #b2281e;background:#fff7f5}.warning strong{color:#7a1c14}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:620px;background:#fff}th,td{text-align:left;padding:13px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow:auto;padding:20px;background:#14121a;border-radius:12px;color:#e8d9b6;font-size:.86rem;line-height:1.5}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.author-box{display:flex;gap:16px}.author-box img{width:62px;height:62px;border-radius:50%;object-fit:cover}.disclosure{font-size:.8rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px}.footer-nav{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;border-top:1px solid var(--line);padding-top:30px;margin-top:48px}.site-footer{border-top:1px solid var(--line);padding:30px 0 45px;color:var(--quiet);font-size:.86rem}@media(max-width:650px){.container,.article-body{padding-left:16px;padding-right:16px}.nav-inner{padding:14px 16px}.nav-links{gap:10px;font-size:.76rem}.hero{padding:70px 0 48px}.article-body h2{font-size:1.55rem;margin-top:42px}.toc,.note,.warning,.cta,.author-box{padding:16px}table{min-width:540px}}
-</style></head><body><nav class="site-nav"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><div class="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><div class="container"><div class="eyebrow">Arduino, sonido y entradas · Actualizado el <time datetime="2026-08-11">11 de agosto de 2026</time></div><h1>Piano Electrónico con Botones y Buzzer</h1><p>Construye un piano electrónico con Arduino, botones y buzzer piezoeléctrico. Aprende pull-ups internos, antirrebote, frecuencias musicales y un código escalable.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p></div></header><main class="container article-body"><article><div class="toc"><h2>Qué aprenderás en esta guía</h2><ol><li><a href="#materiales">Materiales</a></li><li><a href="#botones">Botones</a></li><li><a href="#frecuencias">Frecuencias</a></li><li><a href="#codigo">Codigo</a></li><li><a href="#mejoras">Mejoras</a></li><li><a href="#faq">Preguntas frecuentes</a></li></ol></div>
-<section id="materiales"><h2>Componentes y elección del buzzer</h2><p>Necesitas Arduino Uno, entre 4 y 8 pulsadores, un buzzer <strong>piezoeléctrico pasivo</strong>, protoboard y cables. El buzzer pasivo reproduce tonos generados por <code>tone()</code>; uno activo tiene oscilador interno y normalmente solo emite un pitido fijo. Para escuchar con comodidad, conecta el piezo entre D9 y GND.</p></section>
-<section id="botones"><h2>Botones fiables con INPUT_PULLUP</h2><p>Conecta un terminal de cada pulsador a GND y el otro a D2–D5, por ejemplo. En el programa usa <code>INPUT_PULLUP</code>: el pin queda en HIGH sin pulsar y pasa a LOW al presionar. Así no necesitas resistencias externas y evitas entradas flotantes. Los pulsadores tienen rebote mecánico; para un piano básico basta una lectura breve, pero para registrar eventos precisos agrega antirrebote con <code>millis()</code>.</p></section>
-<section id="frecuencias"><h2>Notas musicales: frecuencia no es volumen</h2><p>La altura depende de la frecuencia. Una escala de Do mayor puede usar C4=262 Hz, D4=294, E4=330, F4=349, G4=392, A4=440, B4=494 y C5=523. <code>tone(pin, frecuencia)</code> genera una onda cuadrada: sirve para aprender, pero su timbre no imita un piano acústico.</p></section>
-<section id="codigo"><h2>Sketch escalable para cuatro teclas</h2><pre><code>const byte buzzer=9;
-const byte botones[]={2,3,4,5};
-const int notas[]={262,294,330,349}; // Do, Re, Mi, Fa
-const byte N=4;
-void setup(){
- for(byte i=0;i&lt;N;i++) pinMode(botones[i],INPUT_PULLUP);
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Piano Electrónico con Botones y Buzzer para Arduino — Guía Técnica Completa</title>
+<meta name="description" content="Guía técnica para construir un piano electrónico con Arduino: función tone(), buzzer activo vs pasivo, tabla de frecuencias de notas musicales, código con antirrebote, reproducción de melodías automáticas, control de volumen por PWM y upgrade a parlante pasivo.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Piano Electrónico con Botones y Buzzer para Arduino — Guía Técnica Completa">
+<meta property="og:description" content="Función tone(), tabla de frecuencias musicales, código con antirrebote, reproducción de melodías, control de volumen y upgrade a parlante pasivo con Arduino.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/piano_arduino_buzzer_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Técnica: Piano Electrónico con Botones y Buzzer">
+<meta name="twitter:description" content="Función tone(), frecuencias musicales, antirrebote, melodías automáticas y upgrade a parlante pasivo con Arduino.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/piano_arduino_buzzer_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Piano Electrónico con Botones y Buzzer para Arduino — Guía Técnica Completa",
+  "description":"Guía técnica para construir un piano electrónico con Arduino: principio de funcionamiento de la función tone(), diferencia entre buzzer activo y pasivo, conexión de botones con resistencias pull-down, tabla completa de frecuencias de notas musicales, código con antirrebote por software, reproducción de melodías predefinidas, control de volumen mediante PWM y transistor, y upgrade hacia un parlante pasivo o una matriz de botones multioctava.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-28",
+  "dateModified":"2026-09-28",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer"},
+  "image":"https://www.ukrabot.cl/blog/piano_arduino_buzzer_hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Arduino Uno o Nano, buzzer pasivo de 5V, 8 pulsadores momentáneos, resistencias de 10kΩ para pull-down, protoboard y jumpers, transistor 2N2222 opcional para control de volumen, LED opcional",
+  "wordCount":"2500",
+  "inLanguage":"es-CL"
 }
-void loop(){
- bool sonando=false;
- for(byte i=0;i&lt;N;i++){
-   if(digitalRead(botones[i])==LOW){ tone(buzzer,notas[i]); sonando=true; break; }
- }
- if(!sonando) noTone(buzzer);
-}</code></pre><p>Los arreglos mantienen relacionado cada botón con su nota y facilitan ampliar el teclado. El <code>break</code> define una política simple: si se presionan varias teclas, se oye la primera. Un piezo con <code>tone()</code> no reproduce acordes simultáneos.</p></section>
-<section id="mejoras"><h2>Mejoras con criterio técnico</h2><ul><li>Agrega LEDs por tecla con su resistencia limitadora.</li><li>Usa una matriz de botones si necesitas muchas teclas y pocos pines.</li><li>Implementa antirrebote y una duración mínima para notas más estables.</li><li>Para audio polifónico, usa DAC/PCM, un módulo de audio o síntesis en un microcontrolador más capaz.</li></ul><div class="note"><strong>Diagnóstico rápido:</strong> si no hay sonido, confirma que el buzzer sea pasivo, revisa polaridad si está marcada y prueba un sketch mínimo con <code>tone(9,440)</code>.</div></section><section id="conclusion"><h2>Conclusión</h2><p>El valor de este proyecto está en medir, comprobar y mejorar cada parte: cableado seguro, código legible y pruebas graduales. Empieza con el montaje mínimo, observa el resultado y añade una mejora por vez. Así podrás detectar errores sin convertir un proyecto sencillo en una caja negra.</p></section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Puedo usar un buzzer activo?</summary><p>Sí emitirá sonido al encenderlo, pero no reproducirá correctamente las distintas notas con tone. Para un piano usa uno pasivo.</p></details><details><summary>¿Por qué suena aunque no presiono nada?</summary><p>El pin está flotante o el botón está cableado distinto a INPUT_PULLUP. Cada botón debe unir el pin a GND al presionarlo.</p></details></div></section><div class="author-box"><img src="../author_alberto.jpg" alt="Alberto Gallardo"><div><h3>Sobre el autor</h3><p><strong>Alberto Gallardo</strong> es Analista Programador Computacional y escribe tutoriales prácticos de electrónica, programación y robótica. <a href="/about">Conoce más sobre el autor →</a></p></div></div><p class="disclosure">Contenido editorial independiente y educativo. Verifica siempre el voltaje, la hoja de datos de tus módulos y las condiciones reales de tu montaje antes de conectar alimentación.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Revisa el <a href="/#categories">temario de Arduino y proyectos</a> para continuar con sensores, programación y electrónica aplicada.</p></div><div class="footer-nav"><a href="/">← Volver a la portada</a><a href="/contact">¿Encontraste una mejora? Contáctanos →</a></div></article><section class="editorial-sources"><h2>Fuentes y documentación recomendada</h2><ul><li><a href="https://docs.arduino.cc/">Arduino Docs — documentación oficial</a></li><li><a href="https://www.arduino.cc/reference/en/">Arduino Language Reference</a></li></ul><p>Enlaces revisados: 11 de agosto de 2026.</p></section></main><footer class="site-footer"><div class="container">Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica y electrónica aplicada.</div></footer></body></html>
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Piano Electrónico con Botones y Buzzer","item":"https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Cuál es la diferencia entre un buzzer activo y uno pasivo para este proyecto?","acceptedAnswer":{"@type":"Answer","text":"Un buzzer activo tiene un oscilador interno y solo necesita un voltaje continuo para emitir un único tono fijo, por lo que no sirve para tocar notas musicales distintas. Un buzzer pasivo no tiene oscilador propio: reproduce exactamente la frecuencia de la señal cuadrada que Arduino le envía a través de la función tone(), lo que permite generar cualquier nota musical dentro de su rango de frecuencias. Para un piano electrónico es indispensable usar un buzzer pasivo; conectar un buzzer activo a este circuito no producirá distintas notas, solo un pitido de frecuencia fija."}},
+    {"@type":"Question","name":"¿Por qué mis botones a veces registran dos notas con una sola pulsación?","acceptedAnswer":{"@type":"Answer","text":"Este fenómeno se llama rebote de contacto (bouncing) y ocurre porque los contactos metálicos internos de un pulsador mecánico no cierran el circuito de forma limpia e instantánea, sino que vibran microscópicamente durante algunos milisegundos, generando múltiples transiciones de HIGH a LOW que Arduino puede interpretar como pulsaciones independientes. La solución estándar es implementar antirrebote por software, ignorando nuevas lecturas del mismo botón durante un breve periodo (típicamente 20-50 milisegundos) después de detectar una pulsación válida."}},
+    {"@type":"Question","name":"¿Puedo usar los pines analógicos de Arduino para conectar los botones del piano?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es una técnica común cuando se necesitan más botones de los que quedan pines digitales disponibles. Los pines analógicos de Arduino Uno (A0-A5) también pueden funcionar como entradas digitales usando pinMode() con el modo INPUT o INPUT_PULLUP, exactamente igual que los pines digitales. Una técnica aún más eficiente para muchos botones es leer varios pulsadores conectados a un mismo pin analógico mediante una red de resistencias que genera un voltaje distinto según qué botón esté presionado, reduciendo el número de pines necesarios."}},
+    {"@type":"Question","name":"¿Cómo agrego más notas u octavas a mi piano de Arduino?","acceptedAnswer":{"@type":"Answer","text":"La forma más simple es agregar más pulsadores, cada uno en su propio pin digital, siguiendo el mismo patrón de conexión con resistencia pull-down. Un Arduino Uno tiene 14 pines digitales y 6 analógicos utilizables como digitales, lo que permite hasta 20 botones sin hardware adicional. Para más de 20 notas sin agotar los pines, la solución estándar es implementar una matriz de botones (row-scanning), la misma técnica usada en teclados de membrana, que permite controlar muchos más botones con muchos menos pines usando una combinación de filas y columnas."}},
+    {"@type":"Question","name":"¿Es posible controlar el volumen del sonido con la función tone() de Arduino?","acceptedAnswer":{"@type":"Answer","text":"La función tone() por sí sola no ofrece control de volumen: genera una onda cuadrada de amplitud fija a la frecuencia solicitada. Para controlar el volumen es necesario un enfoque distinto, típicamente usando analogWrite() con PWM sobre un transistor que controla la corriente que llega al buzzer o parlante, ajustando el ciclo de trabajo (duty cycle) para variar la potencia efectiva de la señal. Otra alternativa más avanzada es generar la forma de onda por software usando interrupciones de temporizador en vez de la función tone(), lo que permite además controlar la amplitud de cada muestra."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="piano_arduino_buzzer_hero.jpg" alt="Piano electrónico casero hecho con Arduino Uno, ocho pulsadores de colores y un buzzer pasivo montados sobre una protoboard" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino para principiantes · Actualizado el <time datetime="2026-09-28">28 de septiembre de 2026</time></div>
+    <h1>Piano Electrónico con Botones y Buzzer</h1>
+    <p>Cómo funciona la función tone(), buzzer activo vs pasivo, tabla completa de frecuencias musicales, código con antirrebote, reproducción de melodías automáticas y el camino de upgrade hacia control de volumen y parlante pasivo.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="piano_arduino_buzzer_wiring.jpg" alt="Diagrama de conexión de ocho pulsadores con resistencias pull-down y un buzzer pasivo conectados a los pines digitales de un Arduino Uno" loading="lazy">
+  <div class="caption">Ocho botones, ocho resistencias, un buzzer pasivo: la base de este proyecto cabe entera en una protoboard pequeña y menos de 10.000 pesos en componentes.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#como-funciona-tone">Cómo genera sonido Arduino: la función tone()</a></li>
+    <li><a href="#activo-vs-pasivo">Buzzer activo vs pasivo: por qué la diferencia importa</a></li>
+    <li><a href="#materiales">Lista de materiales y costos de referencia</a></li>
+    <li><a href="#conexion-hardware">Conexión de hardware: botones con resistencia pull-down</a></li>
+    <li><a href="#frecuencias">Tabla de frecuencias de notas musicales</a></li>
+    <li><a href="#codigo-basico">Código Arduino: piano básico de 8 notas</a></li>
+    <li><a href="#antirrebote">El problema del rebote de contacto (debounce)</a></li>
+    <li><a href="#codigo-melodias">Código Arduino: reproducir melodías automáticas</a></li>
+    <li><a href="#volumen">Control de volumen con PWM y transistor</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y solución de errores</a></li>
+    <li><a href="#upgrade">Upgrade: parlante pasivo, pantalla y matriz de botones</a></li>
+    <li><a href="#mejoras">Mejoras posibles y siguientes pasos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="como-funciona-tone">
+<h2>Cómo genera sonido Arduino: la función tone()</h2>
+<p>Todo sonido audible es, físicamente, una onda de presión que vibra a una determinada frecuencia — medida en <strong>Hertz (Hz)</strong>, ciclos por segundo. El oído humano percibe como sonido las vibraciones aproximadamente entre 20 Hz y 20.000 Hz, y las notas musicales corresponden a frecuencias específicas y estandarizadas dentro de ese rango: el La central del piano, por ejemplo, vibra exactamente a 440 Hz.</p>
+<p>Arduino incluye una función nativa pensada exactamente para esto: <code>tone(pin, frecuencia, duracion)</code>. Internamente, esta función usa uno de los temporizadores de hardware del microcontrolador para generar una <strong>onda cuadrada</strong> a la frecuencia solicitada en el pin indicado — es decir, alterna ese pin entre HIGH y LOW a una velocidad tan precisa como para producir vibraciones dentro del rango audible. Cuando esa señal llega a un buzzer pasivo, su diafragma vibra siguiendo exactamente esa frecuencia, produciendo el tono correspondiente.</p>
+<p>Los tres parámetros de la función son:</p>
+<ul>
+<li><strong>pin:</strong> el pin digital donde está conectado el buzzer.</li>
+<li><strong>frecuencia:</strong> la frecuencia deseada en Hertz — este es el número que determina qué nota suena.</li>
+<li><strong>duración</strong> (opcional): tiempo en milisegundos que sonará el tono antes de detenerse automáticamente. Si se omite este parámetro, el tono suena indefinidamente hasta que se llama explícitamente a <code>noTone(pin)</code>.</li>
+</ul>
+<div class="note"><strong>Limitación importante:</strong> la función tone() de Arduino solo puede generar <strong>un tono a la vez</strong> por placa (con algunas excepciones en placas específicas y usando técnicas avanzadas). Esto significa que este piano, en su versión estándar, es monofónico: no puede reproducir acordes de varias notas simultáneas, solo una nota después de otra. Reproducir acordes reales requeriría generar múltiples ondas por software mediante interrupciones de temporizador, un desafío considerablemente más avanzado.</div>
+</section>
+
+<section id="activo-vs-pasivo">
+<h2>Buzzer activo vs pasivo: por qué la diferencia importa</h2>
+<p>Este es, con diferencia, el error de compra más común entre quienes intentan este proyecto por primera vez. Existen dos tipos de buzzer piezoeléctrico completamente distintos en su funcionamiento interno, y son visualmente casi idénticos:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Diferencias funcionales entre buzzer activo y pasivo, la decisión de compra más importante de este proyecto.</caption>
+<thead><tr><th>Característica</th><th>Buzzer activo</th><th>Buzzer pasivo</th></tr></thead>
+<tbody>
+<tr><td>Oscilador interno</td><td>Sí, integrado en el propio buzzer</td><td>No, requiere señal externa</td></tr>
+<tr><td>Cómo se activa</td><td>Voltaje continuo (HIGH/LOW simple)</td><td>Señal de onda cuadrada de frecuencia variable</td></tr>
+<tr><td>Notas distintas</td><td>No, un único tono fijo</td><td>Sí, cualquier frecuencia dentro de su rango</td></tr>
+<tr><td>Compatibilidad con tone()</td><td>No tiene sentido usarlo así</td><td>Diseñado exactamente para esto</td></tr>
+<tr><td>Uso típico</td><td>Alarmas, notificaciones simples</td><td>Melodías, pianos, generación de tonos variables</td></tr>
+<tr><td>Identificación visual</td><td>A veces incluye una pequeña placa de circuito visible dentro de la carcasa</td><td>Interior más simple, solo el elemento piezoeléctrico</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>Cómo verificarlo antes de armar el circuito:</strong> si no estás seguro de qué tipo de buzzer tienes, conéctalo brevemente entre 5V y GND de forma directa (sin Arduino de por medio). Un buzzer activo emitirá inmediatamente un pitido de tono fijo. Un buzzer pasivo, en el mejor de los casos, hará un clic apagado o no emitirá nada perceptible, porque necesita una señal oscilante, no un voltaje constante, para producir sonido audible.</div>
+</section>
+
+<section id="materiales">
+<h2>Lista de materiales y costos de referencia</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos de precio orientativos para el mercado chileno en 2026, componentes básicos disponibles en tiendas de electrónica.</caption>
+<thead><tr><th>Componente</th><th>Especificación sugerida</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Arduino Uno o Nano</td><td>Original o compatible con ATmega328P</td><td>$6.000 – $15.000</td></tr>
+<tr><td>Buzzer pasivo de 5V</td><td>Piezoeléctrico, sin oscilador interno</td><td>$500 – $1.200</td></tr>
+<tr><td>Pulsadores momentáneos</td><td>Tipo tact switch 4 pines, pack de 8-10</td><td>$1.500 – $3.000</td></tr>
+<tr><td>Resistencias 10 kΩ</td><td>Para configuración pull-down, pack de 10</td><td>$500 – $1.000</td></tr>
+<tr><td>Transistor NPN (opcional)</td><td>2N2222 o 2N3904, para control de volumen</td><td>$200 – $500</td></tr>
+<tr><td>LED + resistencia (opcional)</td><td>Indicador visual de nota activa</td><td>$200 – $500</td></tr>
+<tr><td>Protoboard y jumpers</td><td>Set básico macho-macho</td><td>$2.000 – $5.000</td></tr>
+<tr><td>Cinta o etiquetas para teclas</td><td>Identificar visualmente cada nota</td><td>$0 – $1.000</td></tr>
+<tr><td><strong>Total aproximado del proyecto</strong></td><td>&nbsp;</td><td><strong>$11.000 – $27.000</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>Es probablemente el proyecto más económico de esta serie de guías, y uno de los más recomendados para empezar con Arduino desde cero: los conceptos de entrada digital, salida de sonido y estructuras de datos en arreglos se aprenden de forma inmediata y con retroalimentación auditiva instantánea.</p>
+</section>
+
+<section id="conexion-hardware">
+<h2>Conexión de hardware: botones con resistencia pull-down</h2>
+<p>Cada pulsador de este piano se conecta siguiendo una configuración de <strong>resistencia pull-down</strong>: un extremo del botón va a 5V, el otro extremo se conecta tanto al pin digital de Arduino como, a través de una resistencia de 10kΩ, a GND. Esta resistencia garantiza que el pin lea un estado LOW estable y predecible cuando el botón no está presionado, evitando lecturas erráticas por "pines flotantes" que pueden captar ruido eléctrico ambiental.</p>
+<pre><code>Esquema conceptual de conexión (un botón, se repite para cada nota):
+
+Arduino 5V -----+---- Pulsador ----+---- Arduino pin digital (ej. D2)
+                                   |
+                                  [R 10kΩ]
+                                   |
+                                  GND
+
+Buzzer pasivo:
+Arduino pin digital (ej. D8) ----> Buzzer (+)
+Arduino GND ----------------------> Buzzer (-)</code></pre>
+<p>Una alternativa igualmente válida es usar la resistencia interna de pull-up que trae cada pin digital de Arduino, activable en el código con <code>pinMode(pin, INPUT_PULLUP)</code>, que elimina la necesidad de la resistencia física externa a cambio de invertir la lógica: el pin lee HIGH cuando el botón no está presionado, y LOW cuando sí lo está. Ambos enfoques son correctos; esta guía usa pull-down explícito con resistencia física porque hace más intuitiva la lectura del código para quienes recién empiezan.</p>
+</section>
+
+<section id="frecuencias">
+<h2>Tabla de frecuencias de notas musicales</h2>
+<p>Las notas musicales occidentales siguen un estándar de afinación bien definido, donde cada nota tiene una frecuencia específica en Hertz. La siguiente tabla cubre una octava completa (4ª octava, la más común como referencia central) más el Do de la octava siguiente, suficiente para un piano de ocho teclas:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Frecuencias estándar de la escala musical de Do mayor, cuarta octava, según afinación A440.</caption>
+<thead><tr><th>Nota</th><th>Nombre solfeo</th><th>Frecuencia (Hz)</th></tr></thead>
+<tbody>
+<tr><td>C4</td><td>Do</td><td>262</td></tr>
+<tr><td>D4</td><td>Re</td><td>294</td></tr>
+<tr><td>E4</td><td>Mi</td><td>330</td></tr>
+<tr><td>F4</td><td>Fa</td><td>349</td></tr>
+<tr><td>G4</td><td>Sol</td><td>392</td></tr>
+<tr><td>A4</td><td>La</td><td>440</td></tr>
+<tr><td>B4</td><td>Si</td><td>494</td></tr>
+<tr><td>C5</td><td>Do (octava alta)</td><td>523</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Dato útil para expandir el piano:</strong> cada octava duplica exactamente la frecuencia de la anterior — el Do de la quinta octava (523 Hz) es el doble del Do de la cuarta octava (262 Hz). Esta relación matemática simple permite calcular fácilmente frecuencias de octavas adicionales sin necesidad de memorizar tablas extensas: basta con multiplicar o dividir por dos la frecuencia de referencia.</div>
+</section>
+
+<section id="codigo-basico">
+<h2>Código Arduino: piano básico de 8 notas</h2>
+<p>Este primer ejemplo usa arreglos (arrays) para asociar cada pin de botón con su frecuencia correspondiente, evitando repetir la misma lógica ocho veces con un bloque de código independiente por cada tecla — una práctica de programación mucho más mantenible a medida que el proyecto crece.</p>
+<pre><code>const int PIN_BUZZER = 8;
+const int NUM_TECLAS = 8;
+
+const int pinesBotones[NUM_TECLAS] = {2, 3, 4, 5, 6, 7, 9, 10};
+const int frecuencias[NUM_TECLAS]  = {262, 294, 330, 349, 392, 440, 494, 523};
+// Do    Re    Mi    Fa    Sol   La    Si    Do(alto)
+
+void setup() {
+  for (int i = 0; i < NUM_TECLAS; i++) {
+    pinMode(pinesBotones[i], INPUT);
+  }
+  pinMode(PIN_BUZZER, OUTPUT);
+}
+
+void loop() {
+  bool algunaTeclaPresionada = false;
+
+  for (int i = 0; i < NUM_TECLAS; i++) {
+    if (digitalRead(pinesBotones[i]) == HIGH) {
+      tone(PIN_BUZZER, frecuencias[i]);
+      algunaTeclaPresionada = true;
+      break; // toca la primera tecla presionada encontrada (monofonico)
+    }
+  }
+
+  if (!algunaTeclaPresionada) {
+    noTone(PIN_BUZZER);
+  }
+}</code></pre>
+<p>La lógica es directa: en cada vuelta del <code>loop()</code>, Arduino revisa los ocho pines de botón en orden. Si encuentra alguno presionado, reproduce la frecuencia correspondiente con <code>tone()</code> sin duración fija (lo que hace que suene continuamente mientras el botón siga presionado) y se detiene ahí gracias al <code>break</code>. Si ningún botón está presionado, se llama a <code>noTone()</code> para silenciar el buzzer. Este comportamiento monofónico simple es exactamente la limitación mencionada antes: si presionas dos teclas a la vez, solo suena la de menor índice en el arreglo.</p>
+</section>
+
+<section id="antirrebote">
+<h2>El problema del rebote de contacto (debounce)</h2>
+<p>El código anterior funciona bien para sostener una nota mientras el botón está presionado, pero cuando se necesita <strong>detectar pulsaciones discretas</strong> — por ejemplo, para contar cuántas veces se presionó una tecla, o para evitar que un solo toque dispare múltiples eventos — aparece un problema físico real llamado <strong>rebote de contacto</strong>.</p>
+<p>Los contactos metálicos internos de un pulsador mecánico económico no cierran el circuito de forma limpia e instantánea: vibran microscópicamente durante algunos milisegundos antes de estabilizarse, generando una ráfaga rapidísima de transiciones HIGH-LOW-HIGH que Arduino, al operar en microsegundos, puede llegar a interpretar como varias pulsaciones independientes en vez de una sola.</p>
+<pre><code>// Ejemplo de antirrebote por software para un boton individual
+
+const int PIN_BOTON = 2;
+const unsigned long RETARDO_ANTIRREBOTE = 30; // milisegundos
+
+int estadoAnterior = LOW;
+unsigned long ultimoCambio = 0;
+
+void setup() {
+  pinMode(PIN_BOTON, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int lecturaActual = digitalRead(PIN_BOTON);
+
+  if (lecturaActual != estadoAnterior) {
+    ultimoCambio = millis();
+  }
+
+  if ((millis() - ultimoCambio) > RETARDO_ANTIRREBOTE) {
+    // El estado se mantuvo estable mas alla del tiempo de rebote esperado
+    if (lecturaActual == HIGH) {
+      Serial.println("Pulsacion valida detectada");
+    }
+  }
+
+  estadoAnterior = lecturaActual;
+}</code></pre>
+<p>El principio es simple: en vez de confiar en la primera transición detectada, el código espera a que el estado del pin se mantenga estable durante un breve periodo (30 milisegundos en este ejemplo, un valor típico y seguro para pulsadores mecánicos comunes) antes de considerar la pulsación como válida. Este mismo patrón se integra en el código de melodías de la siguiente sección para registrar pulsaciones limpias sin dispararse varias veces por accidente.</p>
+</section>
+
+<section id="codigo-melodias">
+<h2>Código Arduino: reproducir melodías automáticas</h2>
+<p>Una extensión natural y muy popular de este proyecto es programar el Arduino para reproducir melodías completas de forma automática, sin necesidad de presionar botones, usando exactamente el mismo conocimiento de frecuencias y la función <code>tone()</code>. El siguiente ejemplo estructura una melodía simple como dos arreglos paralelos: uno de notas y otro de duraciones relativas.</p>
+<pre><code>const int PIN_BUZZER = 8;
+
+// Notas de una melodia simple (fragmento de "Cumpleaños Feliz")
+int notas[] = {
+  262, 262, 294, 262, 349, 330,
+  262, 262, 294, 262, 392, 349
+};
+
+// Duraciones: 4 = negra, 8 = corchea (a mayor numero, mas corta la nota)
+int duraciones[] = {
+  8, 8, 4, 4, 4, 2,
+  8, 8, 4, 4, 4, 2
+};
+
+const int TOTAL_NOTAS = sizeof(notas) / sizeof(notas[0]);
+
+void setup() {
+  pinMode(PIN_BUZZER, OUTPUT);
+}
+
+void loop() {
+  for (int i = 0; i < TOTAL_NOTAS; i++) {
+    int duracionNota = 1000 / duraciones[i];
+    tone(PIN_BUZZER, notas[i], duracionNota);
+
+    // Pausa breve entre notas para que se distingan (legato vs staccato)
+    int pausaEntreNotas = duracionNota * 1.30;
+    delay(pausaEntreNotas);
+
+    noTone(PIN_BUZZER);
+  }
+
+  delay(2000); // pausa antes de repetir la melodia
+}</code></pre>
+<p>La técnica de expresar la duración como un divisor de 1000 milisegundos (donde 4 representa una negra y 8 una corchea, siguiendo la notación musical tradicional de figuras rítmicas) es un patrón muy usado en ejemplos de la comunidad Arduino porque permite transcribir partituras simples de forma casi directa, ajustando solo el tempo general si se modifica ese valor base de 1000.</p>
+<p>Un detalle de programación importante: la pausa breve añadida después de cada <code>tone()</code> (calculada como un 30% adicional de la duración de la nota) es lo que evita que notas consecutivas de la misma frecuencia se escuchen como una sola nota larga en vez de dos notas separadas — sin ese pequeño silencio, el oído no percibe el corte entre ambas.</p>
+</section>
+
+<section id="volumen">
+<h2>Control de volumen con PWM y transistor</h2>
+<p>Como se menciona en las preguntas frecuentes, la función <code>tone()</code> no ofrece un parámetro de volumen: genera siempre una onda cuadrada de amplitud fija. Para lograr control de volumen real, es necesario intercalar un transistor entre el pin de Arduino y el buzzer, controlado por PWM con <code>analogWrite()</code>, de modo que se ajuste la potencia efectiva entregada al buzzer sin depender de <code>tone()</code>.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación entre el enfoque estándar con tone() y un enfoque con control de volumen.</caption>
+<thead><tr><th>Aspecto</th><th>Solo tone()</th><th>tone() + transistor PWM</th></tr></thead>
+<tbody>
+<tr><td>Complejidad de hardware</td><td>Mínima — conexión directa</td><td>Media — requiere transistor y resistencia de base</td></tr>
+<tr><td>Control de volumen</td><td>No disponible</td><td>Sí, mediante duty cycle del PWM adicional</td></tr>
+<tr><td>Pines necesarios</td><td>1 pin digital</td><td>1 pin para tone(), 1 pin PWM adicional para volumen</td></tr>
+<tr><td>Complejidad de código</td><td>Baja</td><td>Media — requiere combinar dos técnicas de generación de señal</td></tr>
+</tbody>
+</table>
+</div>
+<p>Un enfoque simplificado y muy usado en proyectos de hobby es prescindir de la función <code>tone()</code> por completo y generar la nota directamente con <code>analogWrite()</code> a una frecuencia base fija del PWM, modulando el valor de <code>analogWrite()</code> (0-255) para simular distintos niveles de volumen — a costa de perder algo de precisión en la afinación de las notas, ya que el PWM estándar de Arduino no está diseñado originalmente para generar frecuencias musicales arbitrarias con la misma limpieza que <code>tone()</code>.</p>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y solución de errores</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos en proyectos de piano con Arduino y buzzer, y su causa más probable.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El buzzer no emite ningún sonido</td><td>Es un buzzer activo, no pasivo, o está conectado con polaridad invertida</td><td>Verificar tipo de buzzer con la prueba directa a 5V/GND, revisar polaridad (+/-)</td></tr>
+<tr><td>Solo suena un tono fijo sin importar el botón</td><td>Buzzer activo conectado en vez de pasivo</td><td>Reemplazar por un buzzer pasivo genuino</td></tr>
+<tr><td>Un botón activa varias notas o se "traba" sonando</td><td>Pin flotante por falta de resistencia pull-down, o cableado suelto</td><td>Verificar la resistencia de 10kΩ en cada botón y la firmeza de las conexiones</td></tr>
+<tr><td>El sonido es muy débil o apenas audible</td><td>Buzzer piezoeléctrico de baja calidad, o alimentación insuficiente</td><td>Probar con otro buzzer, o agregar la etapa de transistor para mayor potencia</td></tr>
+<tr><td>La melodía suena "corrida", sin distinguir notas repetidas</td><td>Falta la pausa entre llamadas consecutivas a tone()</td><td>Agregar un pequeño delay adicional entre nota y nota, como en el ejemplo de melodías</td></tr>
+<tr><td>Al presionar dos teclas juntas, el sonido es errático</td><td>Comportamiento esperado por la naturaleza monofónica de tone()</td><td>Aceptar la limitación, o migrar a un enfoque de síntesis por interrupciones para polifonía real</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="upgrade">
+<h2>Upgrade: parlante pasivo, pantalla y matriz de botones</h2>
+<p>Una vez dominada la versión básica, existen varios caminos de expansión igualmente accesibles para quien quiera seguir desarrollando el proyecto:</p>
+<ul>
+<li><strong>Reemplazar el buzzer por un parlante pasivo pequeño</strong> (0.5W - 1W, 8 ohms) a través de una etapa de amplificación simple con transistor, lo que mejora notablemente la calidad y volumen del sonido comparado con el timbre metálico característico de un buzzer piezoeléctrico.</li>
+<li><strong>Agregar una pantalla LCD o OLED</strong> que muestre el nombre de la nota que se está tocando en tiempo real (Do, Re, Mi...), convirtiendo el proyecto también en una pequeña herramienta didáctica de solfeo básico.</li>
+<li><strong>Matriz de botones (row-scanning)</strong> para expandir a dos o tres octavas completas sin agotar los pines digitales disponibles — la misma técnica que usan los teclados de membrana comerciales, que permite controlar, por ejemplo, 16 botones usando solo 8 pines organizados en una matriz de 4x4.</li>
+<li><strong>Modo de grabación y reproducción</strong>, guardando en un arreglo las notas presionadas por el usuario (con sus tiempos) y permitiendo reproducir esa secuencia después, agregando una capa de interactividad tipo "secuenciador" simple.</li>
+<li><strong>LED indicador por nota</strong>, encendiendo un LED distinto según la tecla presionada — útil tanto como retroalimentación visual como para depuración durante el desarrollo.</li>
+</ul>
+</section>
+
+<section id="mejoras">
+<h2>Mejoras posibles y siguientes pasos</h2>
+<ul>
+<li><strong>Migrar a un DAC o síntesis por interrupciones</strong> para lograr polifonía real (varias notas simultáneas), superando la limitación monofónica de la función tone() nativa.</li>
+<li><strong>Carcasa impresa en 3D con forma de teclado</strong>, dando al proyecto una terminación visual mucho más cercana a un instrumento real que una protoboard expuesta.</li>
+<li><strong>Salida MIDI por software</strong>, permitiendo que Arduino se comporte como un controlador MIDI básico reconocible por software de música en un computador, expandiendo enormemente las posibilidades sonoras más allá del buzzer.</li>
+<li><strong>Sensores de presión o potenciómetros por tecla</strong>, para simular una respuesta de "velocity" similar a un teclado MIDI real, donde presionar más fuerte modifique el volumen de la nota.</li>
+<li><strong>Modo de juego tipo "Simon Dice" musical</strong>, aprovechando la misma tabla de frecuencias para crear un juego de memoria de secuencias sonoras.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>El piano electrónico con botones y buzzer es, probablemente, el proyecto con mejor relación entre simplicidad de construcción y satisfacción inmediata de toda esta serie de guías: en menos de una hora de trabajo y con un presupuesto mínimo, se obtiene un instrumento funcional con retroalimentación auditiva instantánea, ideal tanto para quienes recién empiezan con Arduino como introducción a entradas digitales y arreglos, como para quienes ya tienen experiencia y quieren experimentar con generación de audio, antirrebote y estructuras de datos musicales. La diferencia entre buzzer activo y pasivo es, con diferencia, el detalle técnico que más frustración causa a quienes intentan este proyecto sin conocerla de antemano — verificarla antes de comprar ahorra tiempo y una posible segunda compra.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuál es la diferencia entre un buzzer activo y uno pasivo para este proyecto?</summary><p>Un buzzer activo tiene un oscilador interno y solo necesita un voltaje continuo para emitir un único tono fijo, por lo que no sirve para tocar notas musicales distintas. Un buzzer pasivo no tiene oscilador propio: reproduce exactamente la frecuencia de la señal cuadrada que Arduino le envía a través de la función tone(), lo que permite generar cualquier nota musical dentro de su rango de frecuencias. Para un piano electrónico es indispensable usar un buzzer pasivo; conectar un buzzer activo a este circuito no producirá distintas notas, solo un pitido de frecuencia fija.</p></details>
+<details><summary>¿Por qué mis botones a veces registran dos notas con una sola pulsación?</summary><p>Este fenómeno se llama rebote de contacto (bouncing) y ocurre porque los contactos metálicos internos de un pulsador mecánico no cierran el circuito de forma limpia e instantánea, sino que vibran microscópicamente durante algunos milisegundos, generando múltiples transiciones de HIGH a LOW que Arduino puede interpretar como pulsaciones independientes. La solución estándar es implementar antirrebote por software, ignorando nuevas lecturas del mismo botón durante un breve periodo (típicamente 20-50 milisegundos) después de detectar una pulsación válida.</p></details>
+<details><summary>¿Puedo usar los pines analógicos de Arduino para conectar los botones del piano?</summary><p>Sí, y es una técnica común cuando se necesitan más botones de los que quedan pines digitales disponibles. Los pines analógicos de Arduino Uno (A0-A5) también pueden funcionar como entradas digitales usando pinMode() con el modo INPUT o INPUT_PULLUP, exactamente igual que los pines digitales. Una técnica aún más eficiente para muchos botones es leer varios pulsadores conectados a un mismo pin analógico mediante una red de resistencias que genera un voltaje distinto según qué botón esté presionado, reduciendo el número de pines necesarios.</p></details>
+<details><summary>¿Cómo agrego más notas u octavas a mi piano de Arduino?</summary><p>La forma más simple es agregar más pulsadores, cada uno en su propio pin digital, siguiendo el mismo patrón de conexión con resistencia pull-down. Un Arduino Uno tiene 14 pines digitales y 6 analógicos utilizables como digitales, lo que permite hasta 20 botones sin hardware adicional. Para más de 20 notas sin agotar los pines, la solución estándar es implementar una matriz de botones (row-scanning), la misma técnica usada en teclados de membrana, que permite controlar muchos más botones con muchos menos pines usando una combinación de filas y columnas.</p></details>
+<details><summary>¿Es posible controlar el volumen del sonido con la función tone() de Arduino?</summary><p>La función tone() por sí sola no ofrece control de volumen: genera una onda cuadrada de amplitud fija a la frecuencia solicitada. Para controlar el volumen es necesario un enfoque distinto, típicamente usando analogWrite() con PWM sobre un transistor que controla la corriente que llega al buzzer o parlante, ajustando el ciclo de trabajo (duty cycle) para variar la potencia efectiva de la señal. Otra alternativa más avanzada es generar la forma de onda por software usando interrupciones de temporizador en vez de la función tone(), lo que permite además controlar la amplitud de cada muestra.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código, las frecuencias y los valores de componentes son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te gustó experimentar con entradas digitales y estructuras de datos en Arduino, nuestra guía <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">Estación Meteorológica con Arduino y Pantalla OLED</a> aplica un enfoque similar de organización de código a un proyecto de sensores, incluyendo el mismo patrón de programación no bloqueante que resulta útil al expandir este piano con melodías más complejas.</p>
+  <p>También puedes revisar el <a href="/#categories">temario completo del blog</a> para ver qué guías vienen en camino.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">← Anterior: Estación Meteorológica con OLED</a>
+  <a href="/blog/">Siguiente: Ver más tutoriales →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los valores exactos de frecuencia y el comportamiento de cada componente deben verificarse de forma experimental con tu propio hardware.</p>
+<ul>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/advanced-io/tone/" target="_blank" rel="noopener noreferrer">Arduino Reference — Función tone()</a></li>
+<li><a href="https://www.arduino.cc/en/Tutorial/BuiltInExamples/Debounce" target="_blank" rel="noopener noreferrer">Arduino Built-in Examples — Debounce (antirrebote de botones)</a></li>
+<li><a href="https://pages.mtu.edu/~suits/notefreqs.html" target="_blank" rel="noopener noreferrer">Michigan Tech — Tabla de referencia de frecuencias de notas musicales</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 28 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
