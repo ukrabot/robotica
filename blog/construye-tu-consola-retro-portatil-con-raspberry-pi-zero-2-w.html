@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Construye tu Consola Retro Portátil con Raspberry Pi Zero 2 W — Guía Técnica Completa</title>
+<meta name="description" content="Guía paso a paso para construir una consola retro portátil con Raspberry Pi Zero 2 W: lista de materiales, gestión de batería LiPo con UPS HAT, pantalla SPI/DPI, controles GPIO, software RetroPie vs Batocera, overclock seguro y manejo térmico.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/construye-tu-consola-retro-portatil-con-raspberry-pi-zero-2-w">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Construye tu Consola Retro Portátil con Raspberry Pi Zero 2 W — Guía Técnica Completa">
+<meta property="og:description" content="Materiales, gestión de batería LiPo, pantallas SPI/DPI, controles GPIO, RetroPie vs Batocera, overclock seguro y manejo térmico para tu consola retro portátil DIY.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/consola_retro_pi_zero2w_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/construye-tu-consola-retro-portatil-con-raspberry-pi-zero-2-w">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Consola Retro Portátil con Raspberry Pi Zero 2 W">
+<meta name="twitter:description" content="Guía técnica completa: materiales, batería LiPo, pantalla, controles GPIO, software de emulación, overclock y gestión térmica.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/consola_retro_pi_zero2w_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Construye tu Consola Retro Portátil con Raspberry Pi Zero 2 W — Guía Técnica Completa",
+  "description":"Guía técnica completa para construir una consola retro portátil basada en Raspberry Pi Zero 2 W: lista de materiales y presupuesto, compatibilidad real de emulación por generación de consola, comparativa de software RetroPie vs Batocera vs Recalbox, circuito de gestión de batería LiPo con UPS HAT, opciones de pantalla SPI/DPI/HDMI, cableado de controles físicos mediante GPIO, configuración de audio con amplificador I2S, overclock seguro del SoC y manejo térmico, además de ensamblaje de carcasa impresa en 3D.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-11-09",
+  "dateModified":"2026-11-09",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/construye-tu-consola-retro-portatil-con-raspberry-pi-zero-2-w"},
+  "image":"https://www.ukrabot.cl/blog/consola_retro_pi_zero2w_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Raspberry Pi Zero 2 W, tarjeta microSD clase 10 A1/A2 de 32-64GB, pantalla IPS SPI o DPI de 3.5-5 pulgadas, UPS HAT o módulo cargador TP4056 con protección, batería LiPo 1S de 1000-2000mAh, botones tipo arcade o membrana, joystick analógico opcional (PSP/GameCube), amplificador de audio PAM8403 o similar, parlante de 8 ohms, carcasa impresa en 3D o comercial, cables jumper y protoboard/PCB perforada",
+  "wordCount":"3500",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Construye tu Consola Retro Portátil con Raspberry Pi Zero 2 W","item":"https://www.ukrabot.cl/blog/construye-tu-consola-retro-portatil-con-raspberry-pi-zero-2-w"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Qué consolas puede emular realmente la Raspberry Pi Zero 2 W?","acceptedAnswer":{"@type":"Answer","text":"La Raspberry Pi Zero 2 W, gracias a su SoC de cuatro núcleos Cortex-A53 a 1GHz, emula de forma estable y a pantalla completa la práctica totalidad de consolas de 8 y 16 bits (NES, SNES, Sega Genesis/Mega Drive, Game Boy, Game Boy Advance) y con buen desempeño la mayoría de los sistemas de la primera etapa de los 32 bits como PlayStation 1 y Nintendo 64 en juegos poco exigentes, aunque este último sistema presenta ralentizaciones notorias en títulos con mucha geometría 3D. Sistemas posteriores como PlayStation 2, GameCube o Dreamcast están completamente fuera de su alcance, ya que requieren una potencia de cómputo y una GPU muchísimo más capaces que las que ofrece este SoC de gama de entrada."}},
+    {"@type":"Question","name":"¿Es seguro usar una batería LiPo sin circuito de protección en este proyecto?","acceptedAnswer":{"@type":"Answer","text":"No, nunca se debe conectar una celda LiPo directamente a un circuito sin un módulo de protección contra sobrecarga, sobredescarga y cortocircuito, ya sea integrado en el propio módulo de la batería o en el UPS HAT/cargador utilizado. Las celdas de litio-polímero sin protección pueden inflarse, generar fugas de electrolito o incluso incendiarse si se descargan por debajo de su voltaje mínimo seguro (aproximadamente 3.0V por celda) o se sobrecargan por encima de 4.2V. Es indispensable usar módulos con circuitos de protección certificados (como el TP4056 con protección integrada, o un UPS HAT de fabricantes reconocidos) y nunca dejar la batería cargando sin supervisión durante las primeras pruebas del proyecto."}},
+    {"@type":"Question","name":"¿RetroPie o Batocera para este proyecto?","acceptedAnswer":{"@type":"Answer","text":"Ambas distribuciones están construidas sobre la misma base de emuladores (RetroArch/libretro) y ofrecen resultados de emulación prácticamente idénticos, por lo que la elección suele reducirse a preferencias de configuración. RetroPie, con más años de desarrollo comunitario, ofrece mayor cantidad de tutoriales y scripts de terceros específicos para proyectos portátiles con GPIO, lo que lo hace ligeramente más recomendable para principiantes en hardware casero. Batocera, en cambio, prioriza una experiencia lista para usar desde el primer arranque con menos necesidad de configuración manual, y su interfaz de administración vía navegador web resulta más cómoda para quienes prefieren evitar la línea de comandos."}},
+    {"@type":"Question","name":"¿Cuánto dura la batería de una consola retro portátil casera?","acceptedAnswer":{"@type":"Answer","text":"Depende fuertemente de la capacidad de la batería, el brillo de la pantalla y el sistema emulado, pero como referencia orientativa, una celda LiPo de 2000mAh combinada con una pantalla IPS de 3.5-5 pulgadas a brillo medio suele entregar entre 3 y 5 horas de uso continuo emulando consolas de 8-16 bits, y algo menos —entre 2 y 3.5 horas— al emular sistemas más exigentes como PlayStation 1 o Nintendo 64, debido a la mayor carga sostenida sobre el procesador. El uso de un buen UPS HAT con gestión eficiente de energía y la reducción del brillo de pantalla son las dos variables que más impactan en la autonomía real del dispositivo."}},
+    {"@type":"Question","name":"¿Necesito saber soldar para construir esta consola?","acceptedAnswer":{"@type":"Answer","text":"Sí, en la gran mayoría de las variantes de este proyecto se requiere al menos soldadura básica: los botones físicos deben conectarse mediante cables soldados a los pines GPIO o a una placa perforada intermedia, y la batería LiPo generalmente necesita soldarse a los terminales del UPS HAT o módulo cargador si no viene con el conector JST ya instalado. Existen alternativas de menor dificultad, como usar un HAT de controles ya ensamblado con conectores tipo Dupont en vez de soldar cada botón individualmente, pero eliminar por completo la necesidad de soldadura suele implicar sacrificar personalización en la disposición física de los controles."}},
+    {"@type":"Question","name":"¿Por qué usar Raspberry Pi Zero 2 W y no una Raspberry Pi 4 o 5 para este proyecto?</span>","acceptedAnswer":{"@type":"Answer","text":"La Raspberry Pi Zero 2 W ofrece la mejor relación entre tamaño físico, consumo energético y potencia suficiente para emulación retro clásica, tres factores críticos en un dispositivo portátil alimentado por batería donde cada gramo y cada miliamperio importan. Una Raspberry Pi 4 o 5 ofrece muchísima más potencia —necesaria para emular sistemas más avanzados como PlayStation 2 o GameCube— pero a costa de un consumo energético considerablemente mayor, mayor generación de calor que exige disipación más agresiva, y un tamaño físico que complica el diseño de una carcasa verdaderamente portátil y cómoda de sostener con ambas manos."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="consola_retro_pi_zero2w_hero.jpg" alt="Consola retro portátil casera con Raspberry Pi Zero 2 W, pantalla IPS, botones tipo arcade y carcasa impresa en 3D, mostrando un juego de 16 bits en pantalla" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Raspberry Pi y emulación · Actualizado el <time datetime="2026-11-09">9 de noviembre de 2026</time></div>
+    <h1>Construye tu Consola Retro Portátil con Raspberry Pi Zero 2 W</h1>
+    <p>Materiales, gestión segura de batería LiPo, elección de pantalla, cableado de controles por GPIO, comparativa de software de emulación, overclock responsable y manejo térmico: la guía técnica completa para tu propia consola portátil casera.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 18 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="pi_zero2w_ups_hat_bateria_lipo.jpg" alt="Raspberry Pi Zero 2 W apilada sobre un UPS HAT con batería LiPo conectada mediante conector JST, mostrando el circuito de gestión de energía del proyecto" loading="lazy">
+  <div class="caption">El componente que determina si tu consola es realmente "portátil" no es la Raspberry Pi: es el circuito de gestión de batería que la mantiene funcionando de forma segura lejos de un enchufe.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que-pi-zero2w">Por qué la Raspberry Pi Zero 2 W para este proyecto</a></li>
+    <li><a href="#especificaciones">Especificaciones técnicas relevantes para emulación</a></li>
+    <li><a href="#compatibilidad">Qué consolas puedes emular realmente, por generación</a></li>
+    <li><a href="#materiales">Lista de materiales y presupuesto completo</a></li>
+    <li><a href="#software">Software de emulación: RetroPie vs Batocera vs Recalbox</a></li>
+    <li><a href="#preparar-sd">Preparar la tarjeta microSD y la imagen del sistema</a></li>
+    <li><a href="#bateria">Gestión de batería LiPo: UPS HAT y circuitos de protección</a></li>
+    <li><a href="#pantalla">Elegir la pantalla: SPI, DPI o HDMI mini</a></li>
+    <li><a href="#controles">Cableado de controles físicos por GPIO</a></li>
+    <li><a href="#audio">Audio: amplificador I2S y parlante</a></li>
+    <li><a href="#ensamblaje">Ensamblaje de la carcasa</a></li>
+    <li><a href="#overclock-termico">Overclock seguro y manejo térmico</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y solución de errores</a></li>
+    <li><a href="#mejoras">Mejoras posibles y siguientes pasos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que-pi-zero2w">
+<h2>Por qué la Raspberry Pi Zero 2 W para este proyecto</h2>
+<p>Desde su lanzamiento, la Raspberry Pi Zero 2 W ocupa un lugar muy particular dentro del ecosistema de placas de cómputo de placa única: mantiene el factor de forma diminuto de la Zero original (65 x 30 mm) pero reemplaza su modesto SoC de un núcleo por un <strong>Broadcom BCM2710A1 de cuatro núcleos ARM Cortex-A53 a 1GHz</strong>, esencialmente el mismo procesador que equipaba a la Raspberry Pi 3. Este salto de rendimiento, sin sacrificar el tamaño ni disparar el consumo energético, la convirtió casi de inmediato en la placa de referencia de la comunidad de emulación retro portátil, un nicho que durante años había tenido que conformarse con las limitaciones de la Zero original o pagar el sobrecosto de tamaño de una Raspberry Pi 3 completa.</p>
+<p>Para un proyecto de consola portátil alimentada por batería, tres factores hacen que la Zero 2 W sea la elección más razonable frente a otras placas de la familia Raspberry Pi:</p>
+<ul>
+<li><strong>Tamaño físico:</strong> permite diseñar carcasas realmente compactas y ergonómicas, del tamaño de una consola portátil comercial, algo imposible con una Raspberry Pi 4 o 5 de tamaño estándar.</li>
+<li><strong>Consumo energético moderado:</strong> su consumo típico bajo carga (aproximadamente 700mA-1.2A a 5V dependiendo de la carga y accesorios conectados) es considerablemente menor al de una Raspberry Pi 4, lo que se traduce directamente en más horas de autonomía con la misma capacidad de batería.</li>
+<li><strong>Potencia suficiente para el objetivo real del proyecto:</strong> emular consolas de 8, 16 y la primera etapa de los 32 bits no exige más que lo que este SoC entrega, por lo que pagar por más potencia (y cargar con más consumo y calor) no aporta beneficio real para este caso de uso específico.</li>
+</ul>
+</section>
+
+<section id="especificaciones">
+<h2>Especificaciones técnicas relevantes para emulación</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Especificaciones oficiales de la Raspberry Pi Zero 2 W relevantes para dimensionar un proyecto de emulación portátil.</caption>
+<thead><tr><th>Característica</th><th>Especificación</th></tr></thead>
+<tbody>
+<tr><td>SoC</td><td>Broadcom BCM2710A1</td></tr>
+<tr><td>CPU</td><td>4x ARM Cortex-A53 a 1GHz (64 bits)</td></tr>
+<tr><td>RAM</td><td>512 MB LPDDR2</td></tr>
+<tr><td>Conectividad</td><td>Wi-Fi 2.4GHz 802.11 b/g/n, Bluetooth 4.2/BLE</td></tr>
+<tr><td>Video</td><td>Mini HDMI, interfaz DSI/DPI vía pines expuestos</td></tr>
+<tr><td>USB</td><td>1x micro USB OTG (datos), 1x micro USB (solo alimentación)</td></tr>
+<tr><td>GPIO</td><td>40 pines (sin soldar de fábrica en la mayoría de las versiones)</td></tr>
+<tr><td>Consumo típico</td><td>~350-500mA en reposo, ~700mA-1.2A bajo carga de emulación</td></tr>
+<tr><td>Almacenamiento</td><td>MicroSD (no incluida)</td></tr>
+<tr><td>Precio de referencia</td><td>$18.000 – $28.000 CLP según distribuidor y disponibilidad</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>Sobre el Wi-Fi 2.4GHz:</strong> la Zero 2 W antecede a la generación de placas con Wi-Fi de doble banda, por lo que en entornos con mucha congestión de redes 2.4GHz la transferencia de ROMs vía red puede ser más lenta de lo esperado. Para este proyecto no es una limitación crítica, ya que la transferencia inicial de juegos suele hacerse retirando la tarjeta microSD directamente.</div>
+</section>
+
+<section id="compatibilidad">
+<h2>Qué consolas puedes emular realmente, por generación</h2>
+<p>Uno de los errores más comunes de quienes inician este proyecto es asumir, por analogía con placas más potentes, que la Zero 2 W puede con cualquier sistema que aparezca en un video de YouTube. La realidad, sustentada en el rendimiento documentado de su CPU y la ausencia de una GPU potente, es más acotada pero perfectamente sólida dentro de su rango.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Compatibilidad orientativa por generación de consola. El rendimiento real varía según el juego específico, su exigencia de CPU/GPU emulada, y el nivel de optimización del núcleo (core) de emulación utilizado.</caption>
+<thead><tr><th>Generación / Sistema</th><th>Rendimiento esperado</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td>NES, Master System, Game Boy / Color</td><td>Excelente, 100% de velocidad</td><td>Sin ningún problema de rendimiento</td></tr>
+<tr><td>SNES, Sega Genesis/Mega Drive, Game Boy Advance</td><td>Excelente, 100% de velocidad</td><td>Referencia histórica de "sweet spot" de esta placa</td></tr>
+<tr><td>PlayStation 1</td><td>Muy bueno en la mayoría de los juegos</td><td>Algunos títulos exigentes pueden mostrar ralentización puntual</td></tr>
+<tr><td>Nintendo 64</td><td>Variable, de aceptable a deficiente</td><td>Juegos con mucha geometría 3D sufren caídas de cuadros notorias</td></tr>
+<tr><td>Sega Saturn, Dreamcast</td><td>Deficiente a inviable</td><td>No recomendado como objetivo principal del proyecto</td></tr>
+<tr><td>PlayStation 2, GameCube, Wii</td><td>Inviable</td><td>Requiere hardware muchísimo más potente (mínimo Raspberry Pi 4/5)</td></tr>
+<tr><td>Arcade (MAME, distintos drivers)</td><td>Variable según el juego</td><td>Títulos de arcade clásicos (años 80-mediados 90) funcionan bien</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Recomendación de enfoque:</strong> diseñar el proyecto pensando explícitamente en consolas de 8-16 bits como objetivo principal, con PlayStation 1 como "bono" en juegos livianos, produce la experiencia más satisfactoria y evita la frustración de perseguir un rendimiento de Nintendo 64 que esta placa, sencillamente, no está pensada para entregar de forma consistente.</div>
+</section>
+
+<section id="materiales">
+<h2>Lista de materiales y presupuesto completo</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Presupuesto de referencia para el mercado chileno en 2026. Los precios varían según proveedor, calidad del componente e importación directa vs distribuidor local.</caption>
+<thead><tr><th>Componente</th><th>Especificación sugerida</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Raspberry Pi Zero 2 W</td><td>Versión con o sin header GPIO presoldado</td><td>$18.000 – $28.000</td></tr>
+<tr><td>Tarjeta microSD</td><td>Clase 10, A1/A2, 32-64GB, marca reconocida</td><td>$6.000 – $12.000</td></tr>
+<tr><td>Pantalla IPS</td><td>3.5" – 5", interfaz SPI o DPI, 480x320 o superior</td><td>$15.000 – $35.000</td></tr>
+<tr><td>UPS HAT o módulo cargador con protección</td><td>Compatible con formato Zero, salida 5V regulada</td><td>$12.000 – $25.000</td></tr>
+<tr><td>Batería LiPo 1S con conector JST</td><td>1000-2000mAh, con PCB de protección integrado</td><td>$6.000 – $14.000</td></tr>
+<tr><td>Botones tipo arcade o membrana + D-pad</td><td>Set de 8-12 botones más cruceta direccional</td><td>$4.000 – $10.000</td></tr>
+<tr><td>Joystick analógico (opcional)</td><td>Módulo tipo PSP o GameCube con salida analógica</td><td>$5.000 – $12.000</td></tr>
+<tr><td>Amplificador de audio</td><td>PAM8403 u equivalente, 2x3W</td><td>$1.500 – $3.500</td></tr>
+<tr><td>Parlante</td><td>8 ohms, 1-2W, tamaño compacto</td><td>$1.500 – $3.000</td></tr>
+<tr><td>Carcasa</td><td>Impresa en 3D (diseño de la comunidad) o kit comercial</td><td>$3.000 – $20.000</td></tr>
+<tr><td>Cables, protoboard/PCB perforada, interruptores</td><td>Consumibles varios</td><td>$3.000 – $8.000</td></tr>
+<tr><td><strong>Total aproximado del proyecto</strong></td><td>&nbsp;</td><td><strong>$75.000 – $170.000</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>El rango amplio de precio refleja principalmente la decisión entre componentes genéricos importados directamente (extremo inferior) versus kits curados de vendedores especializados en proyectos de emulación portátil, que suelen incluir pantalla, controles y carcasa ya combinados de forma compatible entre sí (extremo superior, pero con menos riesgo de incompatibilidades).</p>
+</section>
+
+<section id="software">
+<h2>Software de emulación: RetroPie vs Batocera vs Recalbox</h2>
+<p>Las tres distribuciones más usadas para este tipo de proyecto comparten el mismo motor de emulación subyacente (<strong>RetroArch</strong>, basado en la arquitectura de núcleos <em>libretro</em>), por lo que la calidad de emulación en sí misma es equivalente entre ellas. Las diferencias reales están en la experiencia de configuración, el mantenimiento comunitario y las herramientas de administración.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparativa de las principales distribuciones de emulación para Raspberry Pi.</caption>
+<thead><tr><th>Distribución</th><th>Curva de aprendizaje</th><th>Administración</th><th>Ideal para</th></tr></thead>
+<tbody>
+<tr><td>RetroPie</td><td>Media, requiere algo de línea de comandos</td><td>Menús en pantalla + acceso SSH/scripts</td><td>Proyectos con hardware GPIO personalizado, mayor cantidad de tutoriales disponibles</td></tr>
+<tr><td>Batocera</td><td>Baja, funciona "de fábrica" con mínima configuración</td><td>Interfaz web completa desde el navegador</td><td>Usuarios que priorizan simplicidad y actualizaciones frecuentes</td></tr>
+<tr><td>Recalbox</td><td>Baja-media</td><td>Interfaz web + configuración por archivos</td><td>Alternativa con enfoque similar a Batocera, comunidad más reducida</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para este proyecto específico, con controles físicos personalizados conectados por GPIO, <strong>RetroPie</strong> suele ser la opción más documentada por la comunidad de "handhelds" caseros, con scripts ya probados como <code>Adafruit-Retrogame</code> o <code>mk_arcade_joystick_rpi</code> para mapear botones GPIO a eventos de teclado o joystick reconocibles por EmulationStation.</p>
+</section>
+
+<section id="preparar-sd">
+<h2>Preparar la tarjeta microSD y la imagen del sistema</h2>
+<ol>
+<li>Descarga <strong>Raspberry Pi Imager</strong> desde el sitio oficial de Raspberry Pi, o la imagen específica de RetroPie/Batocera para arquitectura ARM (Raspberry Pi Zero 2 W usa la misma imagen que la Raspberry Pi 3, por compartir familia de SoC).</li>
+<li>Selecciona la imagen correspondiente y flashea la tarjeta microSD (recomendado mínimo 32GB si planeas instalar muchos juegos).</li>
+<li>Antes de expulsar la tarjeta, crea un archivo vacío llamado <code>ssh</code> en la partición <code>boot</code> para habilitar el acceso remoto por SSH desde el primer arranque.</li>
+<li>Configura la red Wi-Fi editando el archivo <code>wpa_supplicant.conf</code> (en RetroPie) o el archivo de configuración equivalente de tu distribución, para poder transferir ROMs por red sin necesidad de retirar la tarjeta repetidamente.</li>
+</ol>
+<pre><code># Ejemplo de contenido para wpa_supplicant.conf (RetroPie / Raspberry Pi OS Lite)
+
+country=CL
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="NombreDeTuRed"
+    psk="TuContrasenaWifi"
+    key_mgmt=WPA-PSK
+}</code></pre>
+<div class="note"><strong>Recuerda la legalidad de las ROMs:</strong> este proyecto es una guía de hardware y software de emulación; la obtención de archivos de juego (ROMs) debe realizarse respetando la legislación de propiedad intelectual vigente en tu país, típicamente mediante volcados propios de cartuchos o discos que ya posees legalmente.</div>
+</section>
+
+<section id="bateria">
+<h2>Gestión de batería LiPo: UPS HAT y circuitos de protección</h2>
+<p>Este es, sin exagerar, el apartado más importante de todo el proyecto desde el punto de vista de la seguridad. Una Raspberry Pi Zero 2 W espera alimentación estable de <strong>5V regulados</strong> por su entrada micro USB; una celda LiPo de una sola celda (1S) entrega un voltaje nominal de <strong>3.7V</strong> que varía entre aproximadamente 4.2V a plena carga y 3.0V casi descargada, un rango completamente incompatible con lo que la placa necesita sin un circuito intermedio.</p>
+<p>Un <strong>UPS HAT</strong> (Uninterruptible Power Supply Hat) resuelve tres funciones simultáneamente:</p>
+<ul>
+<li><strong>Elevación de voltaje (boost converter):</strong> convierte el voltaje variable de la LiPo (3.0V-4.2V) a 5V estables mediante un regulador conmutado, entregando la alimentación que la Raspberry Pi necesita sin interrupciones.</li>
+<li><strong>Gestión de carga:</strong> permite cargar la batería mediante USB mientras el sistema permanece encendido (función "UPS" propiamente dicha), útil para practicar mientras la consola está conectada a un cargador.</li>
+<li><strong>Protección de la celda:</strong> corta la alimentación automáticamente si el voltaje de la batería cae por debajo del umbral seguro, evitando la sobredescarga que degrada permanentemente una celda de litio.</li>
+</ul>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación de enfoques para alimentar el proyecto con batería.</caption>
+<thead><tr><th>Enfoque</th><th>Complejidad</th><th>Seguridad</th><th>Recomendación</th></tr></thead>
+<tbody>
+<tr><td>UPS HAT dedicado (formato Zero)</td><td>Baja, plug-and-play</td><td>Alta, con protecciones integradas certificadas</td><td>Recomendado para la mayoría de los usuarios</td></tr>
+<tr><td>Módulo TP4056 + boost converter separados</td><td>Media, requiere cableado propio</td><td>Alta si se usa TP4056 con protección (versión con IC adicional)</td><td>Opción económica para quien ya sabe soldar</td></tr>
+<tr><td>Batería LiPo sin ningún circuito de protección</td><td>—</td><td>Inaceptable</td><td>Nunca usar bajo ninguna circunstancia</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>Riesgo real de incendio:</strong> las celdas de litio-polímero dañadas, perforadas, sobrecargadas o cortocircuitadas pueden entrar en un proceso llamado fuga térmica (thermal runaway), que genera calor de forma autosostenida hasta provocar fuego. Nunca perfores, dobles ni expongas una celda LiPo a temperaturas elevadas, siempre usa cargadores con corriente limitada apropiada a la capacidad de la celda, y supervisa personalmente las primeras cargas completas de cualquier batería nueva antes de confiarle una carga desatendida.</div>
+</section>
+
+<section id="pantalla">
+<h2>Elegir la pantalla: SPI, DPI o HDMI mini</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación de interfaces de pantalla disponibles para este proyecto.</caption>
+<thead><tr><th>Interfaz</th><th>Velocidad de refresco</th><th>Uso de GPIO</th><th>Ventaja principal</th><th>Desventaja principal</th></tr></thead>
+<tbody>
+<tr><td>SPI</td><td>Limitada (usualmente 30-60fps según panel/driver)</td><td>Alta (comparte bus con otros periféricos)</td><td>Gran variedad de tamaños y precios económicos</td><td>Puede introducir latencia visual perceptible en algunos paneles</td></tr>
+<tr><td>DPI (paralelo)</td><td>Alta, comparable a HDMI</td><td>Muy alta (usa la mayoría de los GPIO disponibles)</td><td>Mejor fluidez visual sin latencia de conversión</td><td>Deja pocos GPIO libres para botones, requiere expansor I2C</td></tr>
+<tr><td>HDMI mini</td><td>Alta, nativa</td><td>Ninguno (libera todos los GPIO)</td><td>Máxima compatibilidad y calidad, GPIO 100% libres para controles</td><td>Requiere pantalla con conversor HDMI a panel, más consumo energético</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Recomendación práctica:</strong> si tu prioridad es maximizar los pines GPIO disponibles para botones y joystick analógico, una pantalla con interfaz HDMI mini (usando un driver board dedicado) combinada con un expansor de GPIO por I2C (como el PCF8574 o el propio microcontrolador secundario) es la ruta más limpia. Si prefieres simplicidad de cableado directo sin expansores adicionales, una pantalla SPI de calidad probada por la comunidad (como los paneles Waveshare de 3.5") sigue siendo la opción más documentada para principiantes.</div>
+</section>
+
+<section id="controles">
+<h2>Cableado de controles físicos por GPIO</h2>
+<p>La forma más simple y confiable de conectar botones físicos es aprovechar las resistencias pull-up internas del GPIO de la Raspberry Pi, conectando cada botón entre un pin GPIO y GND: al presionar, el pin lee <code>LOW</code>; en reposo, la resistencia interna mantiene el pin en <code>HIGH</code>.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Ejemplo de asignación de pines GPIO para un layout típico de consola portátil (numeración BCM). Ajustable según tu diseño y los pines ya ocupados por la pantalla elegida.</caption>
+<thead><tr><th>Función</th><th>Pin GPIO (BCM)</th></tr></thead>
+<tbody>
+<tr><td>D-pad Arriba</td><td>GPIO 4</td></tr>
+<tr><td>D-pad Abajo</td><td>GPIO 17</td></tr>
+<tr><td>D-pad Izquierda</td><td>GPIO 27</td></tr>
+<tr><td>D-pad Derecha</td><td>GPIO 22</td></tr>
+<tr><td>Botón A</td><td>GPIO 5</td></tr>
+<tr><td>Botón B</td><td>GPIO 6</td></tr>
+<tr><td>Botón X</td><td>GPIO 13</td></tr>
+<tr><td>Botón Y</td><td>GPIO 19</td></tr>
+<tr><td>Start</td><td>GPIO 26</td></tr>
+<tr><td>Select</td><td>GPIO 21</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code># Ejemplo de configuracion para mk_arcade_joystick_rpi (RetroPie)
+# Se agrega como parametro del modulo en /etc/modprobe.d/gpio.conf
+
+options gpio_decoder map=1
+options mk_arcade_joystick_rpi map=1 \
+  gpio_up=4 gpio_down=17 gpio_left=27 gpio_right=22 \
+  gpio_b1=5 gpio_b2=6 gpio_b3=13 gpio_b4=19 \
+  gpio_b5=26 gpio_b6=21</code></pre>
+<p>Para un <strong>joystick analógico</strong> (reutilizando módulos de PSP o GameCube), se requiere un ADC externo como el <strong>MCP3008</strong>, ya que los pines GPIO de la Raspberry Pi son puramente digitales y no pueden leer directamente un voltaje analógico variable. El MCP3008 se comunica por SPI y convierte hasta 8 canales analógicos en valores digitales que el software de emulación puede interpretar como movimiento de stick analógico.</p>
+</section>
+
+<section id="audio">
+<h2>Audio: amplificador I2S y parlante</h2>
+<p>La salida de audio integrada de la Raspberry Pi Zero 2 W mediante PWM (mezclada con la señal de video en el mini HDMI) tiene calidad limitada y no ofrece salida de audio análoga dedicada como las Raspberry Pi de tamaño completo. La solución más usada en proyectos portátiles es un pequeño <strong>amplificador clase D I2S</strong> como el <strong>MAX98357A</strong>, o alternativamente un módulo <strong>PAM8403</strong> alimentado desde una salida PWM configurada por software, conectado a un parlante compacto de 8 ohms.</p>
+<pre><code># Habilitar salida de audio I2S en /boot/config.txt (para MAX98357A)
+
+dtparam=i2s=on
+dtoverlay=max98357a
+
+# Alternativa con salida PWM estandar (menor calidad, mas simple de cablear)
+dtparam=audio=on</code></pre>
+<p>Para un uso portátil realista, se recomienda además incluir un pequeño interruptor o potenciómetro físico de volumen, y considerar el uso de auriculares como alternativa al parlante integrado para prolongar la autonomía de la batería, ya que el amplificador y el parlante consumen energía adicional no despreciable en sesiones largas.</p>
+</section>
+
+<section id="ensamblaje">
+<h2>Ensamblaje de la carcasa</h2>
+<p>La comunidad de proyectos "handheld" con Raspberry Pi ha producido a lo largo de los años una enorme cantidad de diseños de carcasa de código abierto, publicados en repositorios de modelos 3D como Thingiverse y Printables, muchos de ellos ya adaptados específicamente para la Zero 2 W y para combinaciones populares de pantalla y batería. Antes de diseñar una carcasa desde cero, vale la pena revisar si ya existe un diseño probado para tu combinación específica de componentes, ya que el ajuste preciso de tolerancias para botones y pantalla es, con frecuencia, la parte más tediosa de iterar.</p>
+<ul>
+<li><strong>Impresión 3D en PLA:</strong> suficiente para la mayoría de los casos, económico y fácil de imprimir en impresoras domésticas de gama de entrada.</li>
+<li><strong>Impresión en PETG:</strong> recomendable si el dispositivo se transportará frecuentemente en mochilas o bolsillos, por su mayor resistencia al impacto y a la temperatura.</li>
+<li><strong>Carcasas comerciales genéricas:</strong> existen kits de carcasa vacía diseñados específicamente para proyectos de emulación portátil, una alternativa válida para quien no tiene acceso a una impresora 3D.</li>
+</ul>
+<div class="note"><strong>Consejo de ensamblaje:</strong> arma y prueba completamente el circuito sobre una protoboard o con conexiones provisionales antes de montarlo definitivamente dentro de la carcasa. Diagnosticar un cable mal soldado o un botón invertido es considerablemente más sencillo antes de cerrar el dispositivo que después.</div>
+</section>
+
+<section id="overclock-termico">
+<h2>Overclock seguro y manejo térmico</h2>
+<p>La Raspberry Pi Zero 2 W admite un margen moderado de overclock por software mediante el archivo <code>config.txt</code>, lo que puede mejorar la estabilidad de cuadros en sistemas más exigentes como PlayStation 1, aunque a costa de mayor consumo energético y generación de calor, dos factores especialmente sensibles en un dispositivo portátil compacto y alimentado por batería.</p>
+<pre><code># Ejemplo de overclock moderado en /boot/config.txt
+# Valores conservadores, recomendados como punto de partida seguro
+
+over_voltage=2
+arm_freq=1200
+gpu_freq=500
+
+# Nota: valores mas agresivos requieren disipacion adicional
+# y pueden reducir la vida util del componente a largo plazo</code></pre>
+<div class="warning"><strong>Overclock y espacio reducido:</strong> a diferencia de un proyecto de escritorio con buena ventilación, la carcasa compacta de una consola portátil retiene el calor con mucha más facilidad. Se recomienda encarecidamente agregar un disipador pasivo de perfil bajo pegado directamente al SoC, verificar la temperatura con el comando <code>vcgencmd measure_temp</code> tras sesiones prolongadas de uso, y evitar overclocks agresivos si la temperatura supera de forma sostenida los 75-80°C, umbral a partir del cual el propio sistema puede activar throttling automático o, en casos extremos, comprometer la vida útil del chip.</div>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y solución de errores</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores frecuentes en proyectos de consola retro portátil y su causa más probable.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El sistema se reinicia solo al presionar varios botones simultáneamente</td><td>Caída de voltaje por consumo pico insuficientemente regulado</td><td>Verificar la capacidad de corriente del UPS HAT/regulador, agregar capacitor de desacople</td></tr>
+<tr><td>La pantalla SPI muestra imagen distorsionada o con líneas</td><td>Driver/overlay incorrecto para el panel específico, cable flex mal asentado</td><td>Confirmar el overlay exacto recomendado por el fabricante del panel</td></tr>
+<tr><td>Los botones no responden o responden de forma errática</td><td>Falta configurar pull-up interno, mala soldadura, GPIO ya usado por otra función</td><td>Revisar la configuración de pull-up en el software y continuidad del cableado</td></tr>
+<tr><td>La batería se agota mucho más rápido de lo esperado</td><td>Brillo de pantalla excesivo, Wi-Fi/Bluetooth activos sin uso, overclock agresivo</td><td>Reducir brillo, deshabilitar radios innecesarias, revertir a valores de reloj estándar</td></tr>
+<tr><td>El sistema no arranca tras conectar el UPS HAT</td><td>Polaridad invertida en la batería, HAT mal asentado en el header GPIO</td><td>Verificar polaridad del conector JST y el asentamiento físico del HAT</td></tr>
+<tr><td>Audio con ruido de fondo o zumbido</td><td>Interferencia entre líneas de audio y señales digitales cercanas (SPI/PWM)</td><td>Separar físicamente el cableado de audio de las líneas digitales de alta frecuencia</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="mejoras">
+<h2>Mejoras posibles y siguientes pasos</h2>
+<ul>
+<li><strong>Indicador de batería en pantalla:</strong> leer el voltaje reportado por el UPS HAT (muchos exponen esta información vía I2C) y mostrarlo como icono en EmulationStation.</li>
+<li><strong>Botón de apagado seguro por software:</strong> configurar un script que detecte una pulsación larga en un GPIO dedicado y ejecute un apagado ordenado del sistema operativo antes de cortar la alimentación física, evitando corrupción de la tarjeta SD.</li>
+<li><strong>Vibración háptica:</strong> agregar un pequeño motor de vibración controlado por un transistor y un pin GPIO adicional, replicando el feedback táctil de consolas comerciales.</li>
+<li><strong>Carga inalámbrica:</strong> integrar un receptor Qi compatible con el voltaje de entrada del UPS HAT para eliminar el puerto de carga físico expuesto.</li>
+<li><strong>Migración a Compute Module:</strong> para quienes buscan aún más rendimiento en el mismo factor de forma reducido, explorar un diseño basado en Compute Module 4 Lite con una placa portadora personalizada, un proyecto considerablemente más avanzado en diseño de PCB.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Construir una consola retro portátil con Raspberry Pi Zero 2 W es, al mismo tiempo, un proyecto accesible para quien ya dio sus primeros pasos con electrónica y GPIO, y un ejercicio de ingeniería genuino que obliga a resolver problemas reales de gestión de energía, integridad de señal y manejo térmico en un espacio físico reducido. La clave de un resultado exitoso no está tanto en la Raspberry Pi en sí —cuya configuración de software está ampliamente documentada por la comunidad— sino en tratar con el respeto adecuado el circuito de batería LiPo, dimensionar correctamente las expectativas de emulación según la generación de consolas objetivo, y planificar con cuidado el cableado de pantalla y controles antes de comprometer el diseño a una carcasa definitiva. El resultado, cuando todas estas piezas encajan, es un dispositivo completamente personalizado que ninguna consola comercial puede replicar exactamente de la misma forma.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué consolas puede emular realmente la Raspberry Pi Zero 2 W?</summary><p>La Raspberry Pi Zero 2 W, gracias a su SoC de cuatro núcleos Cortex-A53 a 1GHz, emula de forma estable y a pantalla completa la práctica totalidad de consolas de 8 y 16 bits (NES, SNES, Sega Genesis/Mega Drive, Game Boy, Game Boy Advance) y con buen desempeño la mayoría de los sistemas de la primera etapa de los 32 bits como PlayStation 1 y Nintendo 64 en juegos poco exigentes, aunque este último sistema presenta ralentizaciones notorias en títulos con mucha geometría 3D. Sistemas posteriores como PlayStation 2, GameCube o Dreamcast están completamente fuera de su alcance, ya que requieren una potencia de cómputo y una GPU muchísimo más capaces que las que ofrece este SoC de gama de entrada.</p></details>
+<details><summary>¿Es seguro usar una batería LiPo sin circuito de protección en este proyecto?</summary><p>No, nunca se debe conectar una celda LiPo directamente a un circuito sin un módulo de protección contra sobrecarga, sobredescarga y cortocircuito, ya sea integrado en el propio módulo de la batería o en el UPS HAT/cargador utilizado. Las celdas de litio-polímero sin protección pueden inflarse, generar fugas de electrolito o incluso incendiarse si se descargan por debajo de su voltaje mínimo seguro (aproximadamente 3.0V por celda) o se sobrecargan por encima de 4.2V. Es indispensable usar módulos con circuitos de protección certificados (como el TP4056 con protección integrada, o un UPS HAT de fabricantes reconocidos) y nunca dejar la batería cargando sin supervisión durante las primeras pruebas del proyecto.</p></details>
+<details><summary>¿RetroPie o Batocera para este proyecto?</summary><p>Ambas distribuciones están construidas sobre la misma base de emuladores (RetroArch/libretro) y ofrecen resultados de emulación prácticamente idénticos, por lo que la elección suele reducirse a preferencias de configuración. RetroPie, con más años de desarrollo comunitario, ofrece mayor cantidad de tutoriales y scripts de terceros específicos para proyectos portátiles con GPIO, lo que lo hace ligeramente más recomendable para principiantes en hardware casero. Batocera, en cambio, prioriza una experiencia lista para usar desde el primer arranque con menos necesidad de configuración manual, y su interfaz de administración vía navegador web resulta más cómoda para quienes prefieren evitar la línea de comandos.</p></details>
+<details><summary>¿Cuánto dura la batería de una consola retro portátil casera?</summary><p>Depende fuertemente de la capacidad de la batería, el brillo de la pantalla y el sistema emulado, pero como referencia orientativa, una celda LiPo de 2000mAh combinada con una pantalla IPS de 3.5-5 pulgadas a brillo medio suele entregar entre 3 y 5 horas de uso continuo emulando consolas de 8-16 bits, y algo menos —entre 2 y 3.5 horas— al emular sistemas más exigentes como PlayStation 1 o Nintendo 64, debido a la mayor carga sostenida sobre el procesador. El uso de un buen UPS HAT con gestión eficiente de energía y la reducción del brillo de pantalla son las dos variables que más impactan en la autonomía real del dispositivo.</p></details>
+<details><summary>¿Necesito saber soldar para construir esta consola?</summary><p>Sí, en la gran mayoría de las variantes de este proyecto se requiere al menos soldadura básica: los botones físicos deben conectarse mediante cables soldados a los pines GPIO o a una placa perforada intermedia, y la batería LiPo generalmente necesita soldarse a los terminales del UPS HAT o módulo cargador si no viene con el conector JST ya instalado. Existen alternativas de menor dificultad, como usar un HAT de controles ya ensamblado con conectores tipo Dupont en vez de soldar cada botón individualmente, pero eliminar por completo la necesidad de soldadura suele implicar sacrificar personalización en la disposición física de los controles.</p></details>
+<details><summary>¿Por qué usar Raspberry Pi Zero 2 W y no una Raspberry Pi 4 o 5 para este proyecto?</summary><p>La Raspberry Pi Zero 2 W ofrece la mejor relación entre tamaño físico, consumo energético y potencia suficiente para emulación retro clásica, tres factores críticos en un dispositivo portátil alimentado por batería donde cada gramo y cada miliamperio importan. Una Raspberry Pi 4 o 5 ofrece muchísima más potencia —necesaria para emular sistemas más avanzados como PlayStation 2 o GameCube— pero a costa de un consumo energético considerablemente mayor, mayor generación de calor que exige disipación más agresiva, y un tamaño físico que complica el diseño de una carcasa verdaderamente portátil y cómoda de sostener con ambas manos.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los precios en pesos chilenos son referenciales, varían según vendedor, tipo de cambio y disponibilidad, y deben confirmarse al momento de la compra. La manipulación de baterías de litio-polímero conlleva riesgos reales de incendio si no se manejan con las protecciones y precauciones adecuadas; procede siempre bajo tu propia responsabilidad y supervisión. La obtención de archivos de juego (ROMs) debe realizarse respetando la legislación de propiedad intelectual de tu país. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si este proyecto es tu primer contacto con baterías de litio-polímero, te recomendamos revisar antes nuestra <a href="/blog/guia-completa-de-gestion-de-baterias-lipo-para-robotica">Guía Completa de Gestión de Baterías LiPo para Robótica</a>, con más detalle sobre carga segura, protección y almacenamiento.</p>
+  <p>Si aún dudas entre Raspberry Pi y microcontroladores tipo Arduino para tu próximo proyecto, no te pierdas <a href="/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto">Raspberry Pi vs Arduino: Cuál Elegir para tu Proyecto</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto">← Anterior: Raspberry Pi vs Arduino: Cuál Elegir para tu Proyecto</a>
+  <a href="/blog/guia-completa-de-gestion-de-baterias-lipo-para-robotica">Siguiente: Guía Completa de Gestión de Baterías LiPo para Robótica →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan las especificaciones técnicas y conceptos generales de la guía. Se recomienda consultar siempre la documentación más reciente antes de dimensionar componentes eléctricos o de batería.</p>
+<ul>
+<li><a href="https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/specifications/" target="_blank" rel="noopener noreferrer">Raspberry Pi — Especificaciones oficiales de la Raspberry Pi Zero 2 W</a></li>
+<li><a href="https://retropie.org.uk/docs/" target="_blank" rel="noopener noreferrer">RetroPie — Documentación oficial del proyecto</a></li>
+<li><a href="https://www.batocera.org/" target="_blank" rel="noopener noreferrer">Batocera — Sitio oficial del proyecto</a></li>
+<li><a href="https://www.mouser.com/pdfdocs/microchip_tp4056.pdf" target="_blank" rel="noopener noreferrer">Documentación técnica de referencia del controlador de carga TP4056</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 9 de noviembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
