@@ -1,23 +1,823 @@
-<!doctype html><html lang="es-CL"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Estación Meteorológica con Arduino y Pantalla OLED — Guía Completa</title><meta name="description" content="Mide temperatura, humedad y presión con Arduino, BME280 y pantalla OLED I2C. Cableado seguro, librerías, código comentado, calibración y límites de una estación casera."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled"><meta property="og:type" content="article"><meta property="og:title" content="Estación Meteorológica con Arduino y Pantalla OLED"><meta property="og:description" content="Mide temperatura, humedad y presión con Arduino, BME280 y pantalla OLED I2C. Cableado seguro, librerías, código comentado, calibración y límites de una estación casera."><meta property="og:url" content="https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Estación Meteorológica con Arduino y Pantalla OLED","description":"Mide temperatura, humedad y presión con Arduino, BME280 y pantalla OLED I2C. Cableado seguro, librerías, código comentado, calibración y límites de una estación casera.","datePublished":"2026-08-11","dateModified":"2026-08-11","author":{"@type":"Person","name":"Alberto Gallardo","url":"https://www.ukrabot.cl/about"},"publisher":{"@type":"Organization","name":"Blog de Ingeniería Robótica","url":"https://www.ukrabot.cl"},"mainEntityOfPage":"https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled","proficiencyLevel":"Principiante","inLanguage":"es-CL"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿El BME280 mide lluvia?","acceptedAnswer":{"@type":"Answer","text":"No. Mide temperatura, humedad y presión. Para lluvia se necesita un pluviómetro; para viento, anemómetro y veleta."}},{"@type":"Question","name":"¿Por qué el OLED queda en negro?","acceptedAnswer":{"@type":"Answer","text":"Revisa alimentación, GND común y la dirección I2C. OLED suele usar 0x3C, pero hay variantes."}}]}</script><style>
-:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font:16px/1.7 Inter,system-ui,-apple-system,Segoe UI,sans-serif}.container{max-width:1050px;margin:auto;padding:0 24px}a{color:var(--blue);text-underline-offset:3px}.site-nav{position:sticky;top:0;z-index:2;background:rgba(246,244,238,.96);border-bottom:1px solid var(--line)}.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:20px}.logo{font:1.35rem Georgia,serif;color:var(--text);text-decoration:none}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:18px;font-size:.88rem}.nav-links a{text-decoration:none;color:var(--muted)}.hero{background:linear-gradient(135deg,#151310,#30465a);color:white;padding:92px 0 70px}.eyebrow{color:#e4c07a;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font:400 clamp(2rem,6vw,4.1rem)/1.1 Georgia,serif;max-width:920px;margin:18px 0}.hero p{max-width:780px;color:#e8e6e0}.byline{font-size:.88rem}.byline a{color:#e4c07a}.article-body{padding:58px 24px 84px}.article-body h2{font:400 2rem/1.2 Georgia,serif;margin:56px 0 16px}.article-body h3{margin:30px 0 8px}.article-body p,.article-body li{color:var(--muted)}.toc,.note,.warning,.cta,.author-box{padding:24px;margin:28px 0;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06))}.toc h2{font:600 1.05rem/1.3 inherit;margin:0 0 10px}.toc ol{margin:0;padding-left:22px}.toc a{text-decoration:none;color:var(--muted)}.note{border-left:4px solid var(--gold)}.warning{border-left:4px solid #b2281e;background:#fff7f5}.warning strong{color:#7a1c14}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:620px;background:#fff}th,td{text-align:left;padding:13px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow:auto;padding:20px;background:#14121a;border-radius:12px;color:#e8d9b6;font-size:.86rem;line-height:1.5}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.author-box{display:flex;gap:16px}.author-box img{width:62px;height:62px;border-radius:50%;object-fit:cover}.disclosure{font-size:.8rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px}.footer-nav{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;border-top:1px solid var(--line);padding-top:30px;margin-top:48px}.site-footer{border-top:1px solid var(--line);padding:30px 0 45px;color:var(--quiet);font-size:.86rem}@media(max-width:650px){.container,.article-body{padding-left:16px;padding-right:16px}.nav-inner{padding:14px 16px}.nav-links{gap:10px;font-size:.76rem}.hero{padding:70px 0 48px}.article-body h2{font-size:1.55rem;margin-top:42px}.toc,.note,.warning,.cta,.author-box{padding:16px}table{min-width:540px}}
-</style></head><body><nav class="site-nav"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><div class="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><div class="container"><div class="eyebrow">Sensores y visualización · Actualizado el <time datetime="2026-08-11">11 de agosto de 2026</time></div><h1>Estación Meteorológica con Arduino y Pantalla OLED</h1><p>Mide temperatura, humedad y presión con Arduino, BME280 y pantalla OLED I2C. Cableado seguro, librerías, código comentado, calibración y límites de una estación casera.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p></div></header><main class="container article-body"><article><div class="toc"><h2>Qué aprenderás en esta guía</h2><ol><li><a href="#componentes">Componentes</a></li><li><a href="#i2c">I2c</a></li><li><a href="#codigo">Codigo</a></li><li><a href="#calibracion">Calibracion</a></li><li><a href="#montaje">Montaje</a></li><li><a href="#faq">Preguntas frecuentes</a></li></ol></div>
-<section id="componentes"><h2>Arquitectura recomendada: BME280 + OLED I2C</h2><p>El BME280 mide temperatura, humedad relativa y presión barométrica. Una pantalla OLED SSD1306 de 128×64 muestra los datos sin ocupar muchos pines. Ambos módulos suelen comunicarse por I2C, por lo que comparten dos líneas de datos. Confirma si tu módulo BME280 acepta 5 V: muchos breakout incluyen regulador, pero el chip desnudo trabaja a 3,3 V.</p><ul><li>Arduino Uno, BME280, OLED I2C 128×64 y cables.</li><li>Librerías: <code>Adafruit BME280</code>, <code>Adafruit Unified Sensor</code> y <code>Adafruit SSD1306</code>.</li></ul></section>
-<section id="i2c"><h2>Cableado I2C y diagnóstico de direcciones</h2><p>En Arduino Uno, SDA es A4 y SCL es A5. Une GND de todos los módulos. Conecta VCC según la serigrafía y la hoja de datos del breakout. Las direcciones comunes son <code>0x76</code> o <code>0x77</code> para BME280 y <code>0x3C</code> para OLED. Si una librería no detecta el módulo, ejecuta primero un escáner I2C: no adivines ni cambies cables con la placa energizada.</p><div class="note"><strong>Evita una causa habitual de lecturas erróneas:</strong> no encierres el BME280 junto al regulador, pantalla o Arduino. El calor propio de la electrónica sesga la temperatura.</div></section>
-<section id="codigo"><h2>Sketch base para lectura y pantalla</h2><pre><code>#include &lt;Wire.h&gt;
-#include &lt;Adafruit_BME280.h&gt;
-#include &lt;Adafruit_SSD1306.h&gt;
-Adafruit_BME280 bme;
-Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
-void setup() {
-  if (!bme.begin(0x76)) while (true); // prueba 0x77 si corresponde
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Estación Meteorológica con Arduino y Pantalla OLED — Guía Técnica Completa</title>
+<meta name="description" content="Guía técnica para construir una estación meteorológica con Arduino: sensor BME280 vs DHT22, conexión I2C con pantalla OLED SSD1306, código completo con múltiples pantallas, registro de mínimos y máximos, cálculo de altitud, upgrade a ESP32 con envío de datos a la nube.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Estación Meteorológica con Arduino y Pantalla OLED — Guía Técnica Completa">
+<meta property="og:description" content="Sensor BME280 vs DHT22, bus I2C con OLED SSD1306, código completo con pantallas rotativas, registro de extremos en EEPROM, cálculo de altitud y upgrade a ESP32 con datos en la nube.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/estacion_meteorologica_arduino_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Técnica: Estación Meteorológica con Arduino y OLED">
+<meta name="twitter:description" content="BME280, bus I2C, pantalla OLED, código de múltiples pantallas y upgrade a ESP32 con envío de datos a la nube.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/estacion_meteorologica_arduino_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Estación Meteorológica con Arduino y Pantalla OLED — Guía Técnica Completa",
+  "description":"Guía técnica para construir una estación meteorológica con Arduino: comparación entre sensores BME280 y DHT22, conexión del bus I2C con pantalla OLED SSD1306, resolución de conflictos de dirección I2C, código para mostrar temperatura, humedad y presión en pantallas rotativas, cálculo de altitud barométrica, registro de valores mínimos y máximos en EEPROM, y upgrade a ESP32 para envío de datos a la nube.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-21",
+  "dateModified":"2026-09-21",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled"},
+  "image":"https://www.ukrabot.cl/blog/estacion_meteorologica_arduino_hero.jpg",
+  "proficiencyLevel":"Principiante-Intermedio",
+  "dependencies":"Arduino Uno o Nano, sensor BME280 o DHT22, pantalla OLED SSD1306 128x64 I2C, resistencias pull-up 4.7kΩ (opcional), protoboard y jumpers, librerías Adafruit_BME280, Adafruit_SSD1306 y Adafruit_GFX",
+  "wordCount":"2600",
+  "inLanguage":"es-CL"
 }
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Estación Meteorológica con Arduino y Pantalla OLED","item":"https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Qué es más preciso, el BME280 o el DHT22, para una estación meteorológica?","acceptedAnswer":{"@type":"Answer","text":"El BME280 es superior en casi todos los aspectos relevantes: mide temperatura, humedad y presión barométrica en un solo chip, con una precisión de humedad de ±3% frente al ±2-5% del DHT22, y una velocidad de respuesta mucho mayor gracias a su interfaz I2C/SPI digital de alta velocidad. El DHT22 solo mide temperatura y humedad, tiene un tiempo de respuesta más lento (aproximadamente una lectura cada 2 segundos) y con los años tiende a perder precisión más rápido que un sensor BME280 de buena calidad. Para un proyecto serio de estación meteorológica, el BME280 justifica su costo ligeramente mayor."}},
+    {"@type":"Question","name":"¿Por qué mi pantalla OLED no muestra nada aunque el código no marca errores?","acceptedAnswer":{"@type":"Answer","text":"Las causas más comunes son: dirección I2C incorrecta en el código (0x3C es la más común para módulos de 128x64, pero algunos usan 0x3D), conflicto de dirección I2C con otro dispositivo en el mismo bus (verificar con un sketch escáner I2C), conexiones SDA/SCL invertidas, o falta de las resistencias pull-up de 4.7kΩ en buses I2C largos o con múltiples dispositivos. Ejecutar un sketch escáner I2C antes de programar la lógica completa ahorra mucho tiempo de depuración."}},
+    {"@type":"Question","name":"¿Puedo conectar el BME280 y la pantalla OLED al mismo bus I2C sin problemas?","acceptedAnswer":{"@type":"Answer","text":"Sí, esa es precisamente una de las ventajas del protocolo I2C: permite conectar múltiples dispositivos a los mismos dos pines (SDA y SCL) siempre que cada uno tenga una dirección de bus distinta. El BME280 típicamente usa la dirección 0x76 o 0x77, mientras que la mayoría de las pantallas OLED SSD1306 usan 0x3C, por lo que ambos pueden compartir el mismo bus sin conflicto. Solo es necesario declarar cada dirección correctamente en el código de inicialización de cada librería."}},
+    {"@type":"Question","name":"¿Cómo calculo la altitud con un sensor de presión barométrica como el BME280?","acceptedAnswer":{"@type":"Answer","text":"El BME280 mide presión atmosférica absoluta, y la altitud se calcula comparando esa lectura contra la presión al nivel del mar mediante la fórmula barométrica estándar. La librería Adafruit_BME280 incluye una función readAltitude() que recibe como parámetro la presión de referencia al nivel del mar (normalmente 1013.25 hPa como estándar internacional, aunque varía según las condiciones meteorológicas reales del día). Es importante notar que esta altitud calculada es sensible a los cambios normales de presión atmosférica, por lo que puede variar varios metros de un día a otro incluso sin mover el sensor de lugar."}},
+    {"@type":"Question","name":"¿Vale la pena migrar el proyecto de Arduino Uno a ESP32?","acceptedAnswer":{"@type":"Answer","text":"Depende del objetivo del proyecto. Si solo necesitas mostrar lecturas locales en la pantalla OLED, un Arduino Uno o Nano es suficiente y más económico. La migración a ESP32 se justifica cuando quieres agregar conectividad WiFi para subir los datos a un servicio en la nube como ThingSpeak, crear un servidor web local para consultar el historial desde el celular, o registrar datos en una tarjeta SD durante periodos largos sin intervención manual — capacidades que el Arduino Uno no tiene de forma nativa."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="estacion_meteorologica_arduino_hero.jpg" alt="Estación meteorológica casera con Arduino Uno, sensor BME280 y pantalla OLED mostrando temperatura, humedad y presión atmosférica sobre una mesa de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y sensores ambientales · Actualizado el <time datetime="2026-09-21">21 de septiembre de 2026</time></div>
+    <h1>Estación Meteorológica con Arduino y Pantalla OLED</h1>
+    <p>BME280 vs DHT22, conexión por bus I2C compartido, código completo con pantallas rotativas, cálculo de altitud barométrica, registro de mínimos y máximos, y el camino de upgrade hacia ESP32 con datos en la nube.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="estacion_meteorologica_arduino_wiring.jpg" alt="Diagrama de conexión de un sensor BME280 y una pantalla OLED SSD1306 al mismo bus I2C de un Arduino Uno, mostrando pines SDA y SCL compartidos" loading="lazy">
+  <div class="caption">La ventaja silenciosa del protocolo I2C: sensor y pantalla comparten los mismos dos cables de datos, cada uno con su propia dirección de bus.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que-i2c">Por qué I2C es la base de este proyecto</a></li>
+    <li><a href="#bme280-vs-dht22">BME280 vs DHT22: qué sensor elegir</a></li>
+    <li><a href="#materiales">Lista de materiales y costos de referencia</a></li>
+    <li><a href="#conexion-hardware">Conexión de hardware: bus I2C compartido</a></li>
+    <li><a href="#escaner-i2c">Sketch escáner I2C: verificar direcciones antes de programar</a></li>
+    <li><a href="#codigo-basico">Código Arduino: lectura básica y despliegue en OLED</a></li>
+    <li><a href="#codigo-avanzado">Código Arduino: pantallas rotativas y registro de extremos</a></li>
+    <li><a href="#altitud">Cálculo de altitud barométrica</a></li>
+    <li><a href="#calibracion">Calibración y precisión de las lecturas</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y solución de errores</a></li>
+    <li><a href="#upgrade-esp32">Upgrade: ESP32, WiFi y datos en la nube</a></li>
+    <li><a href="#mejoras">Mejoras posibles y siguientes pasos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que-i2c">
+<h2>Por qué I2C es la base de este proyecto</h2>
+<p>Casi todos los proyectos de estaciones meteorológicas caseras con Arduino terminan girando alrededor del mismo protocolo de comunicación: <strong>I2C (Inter-Integrated Circuit)</strong>. La razón es simple y muy práctica: tanto los sensores ambientales digitales modernos (como el BME280) como las pantallas OLED económicas (como el módulo SSD1306) se comunican por I2C, lo que significa que ambos dispositivos pueden compartir exactamente los mismos dos pines de Arduino — <strong>SDA</strong> (datos) y <strong>SCL</strong> (reloj) — sin necesidad de cableado adicional por cada componente que agregues.</p>
+<p>Esto es posible porque I2C es un protocolo de bus con direccionamiento: cada dispositivo conectado al bus tiene una dirección numérica única (normalmente expresada en hexadecimal, como <code>0x76</code> o <code>0x3C</code>), y Arduino se comunica con cada uno llamando específicamente a su dirección, sin que los mensajes destinados a un dispositivo interfieran con los del otro. En la práctica, esto significa que puedes seguir agregando sensores I2C adicionales (un sensor de luz, un RTC para llevar la hora, otro display) usando los mismos dos cables, siempre que ningún dispositivo repita la dirección de otro ya conectado.</p>
+<div class="note"><strong>Ventaja práctica sobre otros protocolos:</strong> comparado con sensores analógicos o de un solo cable (como el DHT11/DHT22), el I2C entrega datos ya digitalizados y calibrados de fábrica, reduce el ruido de lectura, y escala mejor cuando el proyecto crece — es la razón por la que domina el ecosistema de sensores ambientales modernos para Arduino.</div>
+</section>
+
+<section id="bme280-vs-dht22">
+<h2>BME280 vs DHT22: qué sensor elegir</h2>
+<p>Antes de comprar componentes, vale la pena comparar las dos opciones más comunes para el sensor principal de esta estación meteorológica:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación técnica orientada a decisión de compra para un proyecto de estación meteorológica casera.</caption>
+<thead><tr><th>Característica</th><th>BME280</th><th>DHT22 (AM2302)</th></tr></thead>
+<tbody>
+<tr><td>Mediciones</td><td>Temperatura, humedad y presión</td><td>Temperatura y humedad</td></tr>
+<tr><td>Interfaz</td><td>I2C o SPI</td><td>Un solo cable (protocolo propietario)</td></tr>
+<tr><td>Precisión de temperatura</td><td>±1.0 °C</td><td>±0.5 °C</td></tr>
+<tr><td>Precisión de humedad</td><td>±3% HR</td><td>±2-5% HR</td></tr>
+<tr><td>Tiempo entre lecturas</td><td>Menos de 1 segundo</td><td>Aproximadamente 2 segundos</td></tr>
+<tr><td>Cálculo de altitud</td><td>Sí, mediante presión barométrica</td><td>No disponible</td></tr>
+<tr><td>Precio aproximado</td><td>$3.500 – $6.000 CLP</td><td>$3.000 – $5.000 CLP</td></tr>
+<tr><td>Ideal para</td><td>Estación meteorológica completa, presión y altitud</td><td>Proyecto simple de temperatura y humedad</td></tr>
+</tbody>
+</table>
+</div>
+<p>El BME280 es el que se usa como referencia en el resto de esta guía por ofrecer la funcionalidad más completa, incluyendo la medición de presión barométrica que habilita el cálculo de altitud y la detección de tendencias meteorológicas (una caída sostenida de presión suele anticipar mal tiempo). Si ya tienes un DHT22 de otro proyecto, el código de esta guía puede adaptarse fácilmente reemplazando las llamadas a la librería BME280 por las de la librería DHT, aunque perderás las funciones de presión y altitud.</p>
+</section>
+
+<section id="materiales">
+<h2>Lista de materiales y costos de referencia</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos de precio orientativos para el mercado chileno en 2026, componentes disponibles en tiendas de electrónica.</caption>
+<thead><tr><th>Componente</th><th>Especificación sugerida</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Arduino Uno o Nano</td><td>Original o compatible con ATmega328P</td><td>$6.000 – $15.000</td></tr>
+<tr><td>Sensor BME280</td><td>Breakout I2C, direcciones 0x76/0x77</td><td>$3.500 – $6.000</td></tr>
+<tr><td>Pantalla OLED SSD1306</td><td>128x64 px, I2C, 0.96 pulgadas</td><td>$3.000 – $6.000</td></tr>
+<tr><td>Resistencias pull-up</td><td>4.7 kΩ, 1/4 W (par, opcional)</td><td>$100 – $300</td></tr>
+<tr><td>Protoboard y jumpers</td><td>Set básico macho-macho y macho-hembra</td><td>$2.000 – $5.000</td></tr>
+<tr><td>Módulo RTC (opcional)</td><td>DS3231, para registro con hora real</td><td>$2.500 – $4.500</td></tr>
+<tr><td>Carcasa o caja protectora</td><td>Impresa en 3D o caja plástica genérica</td><td>$0 – $5.000</td></tr>
+<tr><td><strong>Total aproximado del proyecto</strong></td><td>&nbsp;</td><td><strong>$14.500 – $32.000</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>Es uno de los proyectos con mejor relación de utilidad práctica por costo: además de ser educativo, terminas con un instrumento que puedes usar de verdad todos los días sobre tu escritorio.</p>
+</section>
+
+<section id="conexion-hardware">
+<h2>Conexión de hardware: bus I2C compartido</h2>
+<p>La conexión de hardware es notablemente simple gracias al bus I2C compartido. En un Arduino Uno o Nano, los pines I2C por hardware son fijos: <strong>A4 (SDA)</strong> y <strong>A5 (SCL)</strong>. Tanto el BME280 como la pantalla OLED se conectan a estos mismos dos pines, en paralelo.</p>
+<pre><code>Esquema conceptual de conexión (bus I2C compartido):
+
+Arduino 5V (o 3.3V, según módulo) ---+---> BME280 VCC
+                                      +---> OLED VCC
+
+Arduino GND ---------------------+---> BME280 GND
+                                  +---> OLED GND
+
+Arduino A4 (SDA) -----------------+---> BME280 SDA
+                                  +---> OLED SDA
+
+Arduino A5 (SCL) -----------------+---> BME280 SCL
+                                  +---> OLED SCL</code></pre>
+<div class="warning"><strong>Atención al voltaje del BME280:</strong> existen breakouts de BME280 diseñados para 3.3V y otros con regulador integrado que aceptan 5V directamente. Conectar un módulo de 3.3V puro directamente a 5V puede dañarlo permanentemente. Revisa la serigrafía de tu módulo específico o su hoja de datos antes de energizarlo — en caso de duda, alimentar con 3.3V siempre es la opción segura, ya que la mayoría de los pines I2C de Arduino toleran bien niveles de 3.3V en la práctica.</div>
+<p>La mayoría de los módulos OLED SSD1306 económicos vienen preparados para operar tanto a 3.3V como a 5V sin problema, pero siempre vale la pena confirmarlo revisando la documentación del vendedor específico antes de conectar por primera vez.</p>
+</section>
+
+<section id="escaner-i2c">
+<h2>Sketch escáner I2C: verificar direcciones antes de programar</h2>
+<p>Antes de escribir la lógica completa de la estación meteorológica, es una práctica muy recomendable ejecutar un pequeño sketch "escáner" que recorra todas las direcciones I2C posibles y reporte cuáles dispositivos responden. Esto confirma que el cableado es correcto y evita perder tiempo depurando código cuando el problema real es una dirección incorrecta o un dispositivo mal conectado.</p>
+<pre><code>#include <Wire.h>
+
+void setup() {
+  Wire.begin();
+  Serial.begin(9600);
+  while (!Serial);
+  Serial.println("Escaneando bus I2C...");
+}
+
 void loop() {
-  display.clearDisplay(); display.setTextSize(1); display.setTextColor(WHITE);
-  display.setCursor(0,0);  display.print("Temp: "); display.print(bme.readTemperature(),1); display.println(" C");
-  display.print("HR:   "); display.print(bme.readHumidity(),0); display.println(" %");
-  display.print("Pres: "); display.print(bme.readPressure()/100.0F,1); display.println(" hPa");
-  display.display(); delay(2000);
-}</code></pre><p>El chequeo de <code>bme.begin()</code> detiene el programa si el sensor no responde, mejor que publicar datos inexistentes. Para una aplicación final, muestra un mensaje de error y vuelve a intentar.</p></section>
-<section id="calibracion"><h2>Interpretar presión, humedad y altitud</h2><p>La presión que entrega el sensor es presión absoluta local. Para comparar con un parte meteorológico necesitas presión reducida al nivel del mar, que depende de la altitud y condiciones locales. La humedad es más confiable con circulación de aire y sin condensación. No esperes que una estación interior mida igual que una estación oficial: ubicación, abrigo y altura del sensor importan tanto como el componente.</p><div class="table-wrap"><table><thead><tr><th>Dato</th><th>Buena práctica</th></tr></thead><tbody><tr><td>Temperatura</td><td>Proteger de sol directo y fuentes de calor.</td></tr><tr><td>Humedad</td><td>Usar caja ventilada; evitar agua directa.</td></tr><tr><td>Presión</td><td>Registrar tendencia, no solo un valor aislado.</td></tr></tbody></table></div></section>
-<section id="montaje"><h2>Montaje exterior y siguientes mejoras</h2><p>Para exterior, usa una garita ventilada y sombreada, no una caja sellada al sol. Agrega RTC para marcas de tiempo y microSD o WiFi para historial. El sensor BME280 no mide lluvia ni viento: esos instrumentos requieren sensores separados y mantenimiento mecánico.</p></section><section id="conclusion"><h2>Conclusión</h2><p>El valor de este proyecto está en medir, comprobar y mejorar cada parte: cableado seguro, código legible y pruebas graduales. Empieza con el montaje mínimo, observa el resultado y añade una mejora por vez. Así podrás detectar errores sin convertir un proyecto sencillo en una caja negra.</p></section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿El BME280 mide lluvia?</summary><p>No. Mide temperatura, humedad y presión. Para lluvia se necesita un pluviómetro; para viento, anemómetro y veleta.</p></details><details><summary>¿Por qué el OLED queda en negro?</summary><p>Revisa alimentación, GND común y la dirección I2C. OLED suele usar 0x3C, pero hay variantes.</p></details></div></section><div class="author-box"><img src="../author_alberto.jpg" alt="Alberto Gallardo"><div><h3>Sobre el autor</h3><p><strong>Alberto Gallardo</strong> es Analista Programador Computacional y escribe tutoriales prácticos de electrónica, programación y robótica. <a href="/about">Conoce más sobre el autor →</a></p></div></div><p class="disclosure">Contenido editorial independiente y educativo. Verifica siempre el voltaje, la hoja de datos de tus módulos y las condiciones reales de tu montaje antes de conectar alimentación.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Revisa el <a href="/#categories">temario de Arduino y proyectos</a> para continuar con sensores, programación y electrónica aplicada.</p></div><div class="footer-nav"><a href="/">← Volver a la portada</a><a href="/contact">¿Encontraste una mejora? Contáctanos →</a></div></article><section class="editorial-sources"><h2>Fuentes y documentación recomendada</h2><ul><li><a href="https://docs.arduino.cc/">Arduino Docs — documentación oficial</a></li><li><a href="https://www.arduino.cc/reference/en/">Arduino Language Reference</a></li></ul><p>Enlaces revisados: 11 de agosto de 2026.</p></section></main><footer class="site-footer"><div class="container">Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica y electrónica aplicada.</div></footer></body></html>
+  int dispositivosEncontrados = 0;
+
+  for (byte direccion = 1; direccion < 127; direccion++) {
+    Wire.beginTransmission(direccion);
+    byte error = Wire.endTransmission();
+
+    if (error == 0) {
+      Serial.print("Dispositivo I2C encontrado en 0x");
+      if (direccion < 16) Serial.print("0");
+      Serial.println(direccion, HEX);
+      dispositivosEncontrados++;
+    }
+  }
+
+  if (dispositivosEncontrados == 0) {
+    Serial.println("No se encontraron dispositivos I2C. Revisa el cableado.");
+  }
+
+  delay(5000);
+}</code></pre>
+<p>Al ejecutarlo con el BME280 y la pantalla OLED conectados correctamente, deberías ver algo similar a <code>Dispositivo I2C encontrado en 0x76</code> (o <code>0x77</code>) para el sensor, y <code>Dispositivo I2C encontrado en 0x3C</code> para la pantalla. Si no aparece ninguno, el problema está en el cableado físico o la alimentación, no en el código posterior.</p>
+</section>
+
+<section id="codigo-basico">
+<h2>Código Arduino: lectura básica y despliegue en OLED</h2>
+<p>Este primer ejemplo lee temperatura, humedad y presión del BME280, y los muestra en la pantalla OLED usando las librerías <code>Adafruit_BME280</code>, <code>Adafruit_SSD1306</code> y <code>Adafruit_GFX</code>, todas instalables desde el Gestor de Librerías del IDE de Arduino.</p>
+<pre><code>#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define ANCHO_PANTALLA 128
+#define ALTO_PANTALLA  64
+#define DIRECCION_OLED 0x3C
+
+Adafruit_SSD1306 display(ANCHO_PANTALLA, ALTO_PANTALLA, &Wire, -1);
+Adafruit_BME280 bme;
+
+void setup() {
+  Serial.begin(9600);
+
+  if (!bme.begin(0x76)) {
+    Serial.println("No se encontro el sensor BME280. Revisa el cableado.");
+    while (1);
+  }
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, DIRECCION_OLED)) {
+    Serial.println("No se encontro la pantalla OLED.");
+    while (1);
+  }
+
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+  float temperatura = bme.readTemperature();
+  float humedad = bme.readHumidity();
+  float presion = bme.readPressure() / 100.0F; // Pa a hPa
+
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.println("Estacion Meteo v1");
+
+  display.setTextSize(2);
+  display.setCursor(0, 16);
+  display.print(temperatura, 1);
+  display.println(" C");
+
+  display.setTextSize(1);
+  display.setCursor(0, 40);
+  display.print("Humedad: ");
+  display.print(humedad, 0);
+  display.println(" %");
+
+  display.setCursor(0, 52);
+  display.print("Presion: ");
+  display.print(presion, 0);
+  display.println(" hPa");
+
+  display.display();
+
+  delay(2000);
+}</code></pre>
+<p>Nótese que la dirección I2C del BME280 se pasa explícitamente en <code>bme.begin(0x76)</code> — si tu sketch escáner detectó <code>0x77</code> en vez de <code>0x76</code>, ese es el valor que debes usar aquí. Es un error de configuración muy común cuando se copia código de internet sin verificar la dirección real del módulo propio.</p>
+</section>
+
+<section id="codigo-avanzado">
+<h2>Código Arduino: pantallas rotativas y registro de extremos</h2>
+<p>El siguiente ejemplo amplía el proyecto con dos capacidades adicionales que transforman la estación de un simple visor a un instrumento más completo: <strong>pantallas rotativas</strong> que alternan cada pocos segundos entre distintas vistas de información, y <strong>registro de valores mínimos y máximos</strong> guardados en la EEPROM interna de Arduino, de modo que persisten incluso si el dispositivo se apaga y se vuelve a encender.</p>
+<pre><code>#include <Wire.h>
+#include <EEPROM.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define ANCHO_PANTALLA 128
+#define ALTO_PANTALLA  64
+
+Adafruit_SSD1306 display(ANCHO_PANTALLA, ALTO_PANTALLA, &Wire, -1);
+Adafruit_BME280 bme;
+
+const int DIR_EEPROM_TEMP_MIN = 0;
+const int DIR_EEPROM_TEMP_MAX = 4;
+
+float tempMin, tempMax;
+unsigned long ultimoCambioPantalla = 0;
+const long INTERVALO_PANTALLA = 4000; // 4 segundos por vista
+int pantallaActual = 0;
+const int TOTAL_PANTALLAS = 3;
+
+void setup() {
+  Serial.begin(9600);
+
+  if (!bme.begin(0x76)) {
+    Serial.println("Error: BME280 no encontrado.");
+    while (1);
+  }
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println("Error: OLED no encontrada.");
+    while (1);
+  }
+
+  EEPROM.get(DIR_EEPROM_TEMP_MIN, tempMin);
+  EEPROM.get(DIR_EEPROM_TEMP_MAX, tempMax);
+
+  // Si la EEPROM esta "vacia" (primera vez), inicializar con la lectura actual
+  float tempActual = bme.readTemperature();
+  if (isnan(tempMin) || tempMin < -40 || tempMin > 85) tempMin = tempActual;
+  if (isnan(tempMax) || tempMax < -40 || tempMax > 85) tempMax = tempActual;
+
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void actualizarExtremos(float tempActual) {
+  bool cambio = false;
+  if (tempActual < tempMin) { tempMin = tempActual; cambio = true; }
+  if (tempActual > tempMax) { tempMax = tempActual; cambio = true; }
+
+  if (cambio) {
+    EEPROM.put(DIR_EEPROM_TEMP_MIN, tempMin);
+    EEPROM.put(DIR_EEPROM_TEMP_MAX, tempMax);
+  }
+}
+
+void mostrarPantallaPrincipal(float t, float h, float p) {
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.println("Condiciones actuales");
+  display.setTextSize(2);
+  display.setCursor(0, 16);
+  display.print(t, 1); display.println(" C");
+  display.setTextSize(1);
+  display.setCursor(0, 40);
+  display.print("Humedad: "); display.print(h, 0); display.println(" %");
+  display.setCursor(0, 52);
+  display.print("Presion: "); display.print(p, 0); display.println(" hPa");
+}
+
+void mostrarPantallaExtremos() {
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.println("Minimos y maximos");
+  display.setTextSize(2);
+  display.setCursor(0, 20);
+  display.print("Min "); display.print(tempMin, 1);
+  display.setCursor(0, 42);
+  display.print("Max "); display.print(tempMax, 1);
+}
+
+void mostrarPantallaAltitud(float p) {
+  float altitud = bme.readAltitude(1013.25); // presion de referencia nivel del mar
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.println("Altitud estimada");
+  display.setTextSize(2);
+  display.setCursor(0, 24);
+  display.print(altitud, 0);
+  display.println(" m");
+}
+
+void loop() {
+  float t = bme.readTemperature();
+  float h = bme.readHumidity();
+  float p = bme.readPressure() / 100.0F;
+
+  actualizarExtremos(t);
+
+  if (millis() - ultimoCambioPantalla > INTERVALO_PANTALLA) {
+    pantallaActual = (pantallaActual + 1) % TOTAL_PANTALLAS;
+    ultimoCambioPantalla = millis();
+  }
+
+  display.clearDisplay();
+  switch (pantallaActual) {
+    case 0: mostrarPantallaPrincipal(t, h, p); break;
+    case 1: mostrarPantallaExtremos(); break;
+    case 2: mostrarPantallaAltitud(p); break;
+  }
+  display.display();
+
+  delay(200);
+}</code></pre>
+<p>El uso de <code>millis()</code> en vez de <code>delay()</code> para controlar la rotación de pantallas es intencional: permite que las lecturas de sensores y la actualización de extremos sigan ocurriendo con frecuencia normal, sin bloquear el programa durante los 4 segundos de cada vista — un patrón de programación no bloqueante fundamental en cualquier proyecto de Arduino que crece en complejidad.</p>
+</section>
+
+<section id="altitud">
+<h2>Cálculo de altitud barométrica</h2>
+<p>Una de las capacidades más interesantes del BME280 frente a sensores más simples es el cálculo de altitud a partir de la presión atmosférica. El principio físico es que la presión del aire disminuye de forma predecible con la altura, siguiendo la fórmula barométrica internacional. La librería Adafruit implementa esto en la función <code>readAltitude(presionReferenciaHPa)</code>, que necesita como parámetro la presión atmosférica al nivel del mar en el momento y lugar de la medición.</p>
+<p>El valor estándar internacional de 1013.25 hPa es una aproximación razonable para uso general, pero introduce un margen de error real: la presión atmosférica al nivel del mar varía día a día según las condiciones meteorológicas, típicamente entre 990 y 1030 hPa. Para mayor precisión en un lugar fijo, puedes calibrar tu propia constante de referencia comparando la altitud calculada contra la altitud real conocida de tu ubicación (consultable en servicios de mapas), y ajustando la presión de referencia hasta que el cálculo coincida.</p>
+<div class="note"><strong>Aplicación práctica más allá de la altitud:</strong> incluso sin buscar precisión de altímetro, registrar la tendencia de la presión atmosférica en el tiempo (¿está subiendo o bajando en las últimas horas?) es uno de los indicadores más clásicos y confiables para anticipar cambios de tiempo a corto plazo — una caída sostenida de presión suele preceder la llegada de un frente de mal tiempo.</p>
+</div>
+</section>
+
+<section id="calibracion">
+<h2>Calibración y precisión de las lecturas</h2>
+<ul>
+<li><strong>Ubicación del sensor:</strong> evita colocar el BME280 cerca de fuentes de calor como el propio Arduino, un cargador USB, o luz solar directa — el calor generado por componentes cercanos puede inflar la lectura de temperatura en 1-3°C fácilmente.</li>
+<li><strong>Tiempo de estabilización:</strong> tras encender el circuito, espera 1-2 minutos antes de confiar en las primeras lecturas, especialmente de humedad, mientras el sensor se equilibra con el ambiente.</li>
+<li><strong>Comparación cruzada:</strong> si tienes acceso a un termómetro/higrómetro comercial de referencia, compara las lecturas durante algunos días y aplica un offset de corrección por software si detectas una desviación sistemática constante.</li>
+<li><strong>Ventilación de la carcasa:</strong> si montas el sensor dentro de una caja o carcasa impresa en 3D, asegúrate de dejar aberturas suficientes para que el aire circule libremente — una carcasa completamente sellada distorsiona tanto la temperatura como la humedad medida.</li>
+<li><strong>Presión de referencia local:</strong> para el cálculo de altitud, considera actualizar periódicamente la presión de referencia al nivel del mar consultando un servicio meteorológico local, en vez de usar siempre el valor estándar fijo de 1013.25 hPa.</li>
+</ul>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y solución de errores</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos en proyectos de estación meteorológica con BME280 y OLED, y su causa más probable.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>"No se encontro el sensor BME280"</td><td>Dirección I2C incorrecta en el código, o cableado defectuoso</td><td>Ejecutar sketch escáner I2C, probar con 0x76 y 0x77</td></tr>
+<tr><td>Pantalla OLED completamente en blanco</td><td>Dirección I2C incorrecta (0x3C vs 0x3D), o falla de alimentación</td><td>Verificar dirección con escáner I2C, revisar continuidad de VCC/GND</td></tr>
+<tr><td>Lecturas de temperatura anormalmente altas</td><td>Sensor demasiado cerca del Arduino u otra fuente de calor</td><td>Separar el sensor físicamente, usar un cable más largo para el bus I2C</td></tr>
+<tr><td>Valores mínimo/máximo se resetean al reiniciar</td><td>EEPROM no inicializada correctamente o dirección de memoria mal calculada</td><td>Verificar que EEPROM.put/get usen direcciones distintas y no se sobrepongan</td></tr>
+<tr><td>El bus I2C deja de responder con múltiples dispositivos</td><td>Falta de resistencias pull-up en un bus largo o con muchos dispositivos</td><td>Agregar resistencias pull-up de 4.7kΩ entre SDA/SCL y VCC</td></tr>
+<tr><td>Altitud calculada muy alejada de la altitud real conocida</td><td>Presión de referencia al nivel del mar desactualizada</td><td>Ajustar el parámetro de readAltitude() con la presión real del día</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="upgrade-esp32">
+<h2>Upgrade: ESP32, WiFi y datos en la nube</h2>
+<p>El Arduino Uno o Nano es perfectamente suficiente para una estación meteorológica local que muestra datos en tiempo real sobre su propia pantalla. Sus limitaciones aparecen cuando quieres que esos datos salgan del dispositivo: registrar un histórico prolongado, consultarlo desde el celular, o compartirlo en un panel público. Para esos casos, migrar a <strong>ESP32</strong> es el paso natural, ya que mantiene compatibilidad casi total con el mismo código de sensores y pantalla, pero agrega WiFi integrado.</p>
+<p>Con ESP32, el mismo BME280 y la misma pantalla OLED conectados por I2C pueden coexistir con un pequeño servidor web embebido que muestre las lecturas actuales en una página accesible desde cualquier dispositivo en la misma red, o con código que envíe periódicamente las lecturas a servicios de dashboards en la nube como <strong>ThingSpeak</strong>, que ofrece gráficos históricos de temperatura, humedad y presión sin necesidad de programar tu propio backend.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación editorial entre mantenerse en Arduino Uno o migrar a ESP32 para este proyecto.</caption>
+<thead><tr><th>Criterio</th><th>Arduino Uno/Nano</th><th>ESP32</th></tr></thead>
+<tbody>
+<tr><td>Costo aproximado</td><td>$6.000 – $15.000</td><td>$8.000 – $18.000</td></tr>
+<tr><td>Conectividad WiFi</td><td>No nativa, requiere módulo adicional</td><td>Integrada</td></tr>
+<tr><td>Registro histórico en la nube</td><td>No, sin hardware adicional</td><td>Sí, directo con librerías HTTP</td></tr>
+<tr><td>Servidor web local</td><td>No práctico</td><td>Sí, con la librería WebServer</td></tr>
+<tr><td>Consumo de energía</td><td>Menor</td><td>Mayor, especialmente con WiFi activo</td></tr>
+<tr><td>Ideal para</td><td>Estación de escritorio local y educativa</td><td>Estación con monitoreo remoto o histórico prolongado</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="mejoras">
+<h2>Mejoras posibles y siguientes pasos</h2>
+<ul>
+<li><strong>Módulo RTC (DS3231):</strong> agrega una referencia de hora real y fecha, indispensable si vas a registrar históricos con marca temporal precisa.</li>
+<li><strong>Tarjeta microSD:</strong> registra lecturas cada cierto intervalo en un archivo CSV, permitiendo análisis posterior en una planilla de cálculo sin depender de conexión a internet.</li>
+<li><strong>Sensor de lluvia o anemómetro:</strong> amplía la estación más allá de temperatura/humedad/presión hacia una estación meteorológica de exterior más completa, con las consideraciones de impermeabilización que eso implica.</li>
+<li><strong>Gráficos en la propia pantalla OLED:</strong> usando las funciones de dibujo de la librería Adafruit_GFX, es posible mostrar un gráfico simple de tendencia de temperatura de las últimas horas directamente en la pantalla, sin depender de la nube.</li>
+<li><strong>Alertas configurables:</strong> hacer sonar un buzzer o encender un LED cuando la temperatura o humedad salgan de un rango definido, útil para invernaderos caseros o cuidado de mascotas.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Una estación meteorológica con Arduino, BME280 y pantalla OLED es uno de esos proyectos que combina aprendizaje técnico real —protocolo I2C, manejo de EEPROM, programación no bloqueante con millis(), física básica de presión atmosférica— con un resultado final genuinamente útil que puedes dejar funcionando sobre tu escritorio de forma indefinida. El bus I2C compartido simplifica enormemente el cableado frente a lo que uno esperaría de un proyecto con dos periféricos distintos, y el camino de upgrade hacia ESP32 está disponible sin necesidad de reescribir la lógica central del proyecto. Si es tu primer proyecto con sensores I2C, el sketch escáner de esta guía te ahorrará más de una sesión de depuración innecesaria.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué es más preciso, el BME280 o el DHT22, para una estación meteorológica?</summary><p>El BME280 es superior en casi todos los aspectos relevantes: mide temperatura, humedad y presión barométrica en un solo chip, con una precisión de humedad de ±3% frente al ±2-5% del DHT22, y una velocidad de respuesta mucho mayor gracias a su interfaz I2C/SPI digital de alta velocidad. El DHT22 solo mide temperatura y humedad, tiene un tiempo de respuesta más lento (aproximadamente una lectura cada 2 segundos) y con los años tiende a perder precisión más rápido que un sensor BME280 de buena calidad. Para un proyecto serio de estación meteorológica, el BME280 justifica su costo ligeramente mayor.</p></details>
+<details><summary>¿Por qué mi pantalla OLED no muestra nada aunque el código no marca errores?</summary><p>Las causas más comunes son: dirección I2C incorrecta en el código (0x3C es la más común para módulos de 128x64, pero algunos usan 0x3D), conflicto de dirección I2C con otro dispositivo en el mismo bus (verificar con un sketch escáner I2C), conexiones SDA/SCL invertidas, o falta de las resistencias pull-up de 4.7kΩ en buses I2C largos o con múltiples dispositivos. Ejecutar un sketch escáner I2C antes de programar la lógica completa ahorra mucho tiempo de depuración.</p></details>
+<details><summary>¿Puedo conectar el BME280 y la pantalla OLED al mismo bus I2C sin problemas?</summary><p>Sí, esa es precisamente una de las ventajas del protocolo I2C: permite conectar múltiples dispositivos a los mismos dos pines (SDA y SCL) siempre que cada uno tenga una dirección de bus distinta. El BME280 típicamente usa la dirección 0x76 o 0x77, mientras que la mayoría de las pantallas OLED SSD1306 usan 0x3C, por lo que ambos pueden compartir el mismo bus sin conflicto. Solo es necesario declarar cada dirección correctamente en el código de inicialización de cada librería.</p></details>
+<details><summary>¿Cómo calculo la altitud con un sensor de presión barométrica como el BME280?</summary><p>El BME280 mide presión atmosférica absoluta, y la altitud se calcula comparando esa lectura contra la presión al nivel del mar mediante la fórmula barométrica estándar. La librería Adafruit_BME280 incluye una función readAltitude() que recibe como parámetro la presión de referencia al nivel del mar (normalmente 1013.25 hPa como estándar internacional, aunque varía según las condiciones meteorológicas reales del día). Es importante notar que esta altitud calculada es sensible a los cambios normales de presión atmosférica, por lo que puede variar varios metros de un día a otro incluso sin mover el sensor de lugar.</p></details>
+<details><summary>¿Vale la pena migrar el proyecto de Arduino Uno a ESP32?</summary><p>Depende del objetivo del proyecto. Si solo necesitas mostrar lecturas locales en la pantalla OLED, un Arduino Uno o Nano es suficiente y más económico. La migración a ESP32 se justifica cuando quieres agregar conectividad WiFi para subir los datos a un servicio en la nube como ThingSpeak, crear un servidor web local para consultar el historial desde el celular, o registrar datos en una tarjeta SD durante periodos largos sin intervención manual — capacidades que el Arduino Uno no tiene de forma nativa.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código, las direcciones I2C y los valores de calibración son referenciales y pueden variar según el fabricante específico de tu módulo; verifica siempre el comportamiento con tu propio hardware. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te interesó trabajar con comunicación de datos y protocolos en Arduino, nuestra guía <a href="/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05">Controla tu Arduino por Bluetooth con el Módulo HC-05</a> aplica un enfoque similar a otro protocolo de comunicación — en ese caso, control remoto inalámbrico en vez de lectura de sensores por bus I2C.</p>
+  <p>También puedes revisar el <a href="/#categories">temario completo del blog</a> para ver qué guías vienen en camino.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05">← Anterior: Arduino por Bluetooth con HC-05</a>
+  <a href="/blog/">Siguiente: Ver más tutoriales →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los valores exactos de precisión y comportamiento eléctrico deben verificarse con la hoja de datos de tu módulo específico, ya que existen variaciones entre fabricantes.</p>
+<ul>
+<li><a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/" target="_blank" rel="noopener noreferrer">Bosch Sensortec — Hoja de datos oficial del sensor BME280</a></li>
+<li><a href="https://learn.adafruit.com/adafruit-oled-featherwing/overview" target="_blank" rel="noopener noreferrer">Adafruit Learning System — Guía de uso de pantallas OLED SSD1306</a></li>
+<li><a href="https://www.arduino.cc/en/Reference/Wire" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería Wire (comunicación I2C)</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 21 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
