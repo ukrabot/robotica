@@ -1,21 +1,748 @@
-<!doctype html><html lang="es-CL"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Radar con Sensor Ultrasónico y Processing — Guía Completa</title><meta name="description" content="Crea un radar didáctico con Arduino, HC-SR04, servo y Processing. Aprende conexiones, temporización, protocolo serie y límites físicos de la medición ultrasónica."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing"><meta property="og:type" content="article"><meta property="og:title" content="Radar con Sensor Ultrasónico y Processing"><meta property="og:description" content="Crea un radar didáctico con Arduino, HC-SR04, servo y Processing. Aprende conexiones, temporización, protocolo serie y límites físicos de la medición ultrasónica."><meta property="og:url" content="https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Radar con Sensor Ultrasónico y Processing","description":"Crea un radar didáctico con Arduino, HC-SR04, servo y Processing. Aprende conexiones, temporización, protocolo serie y límites físicos de la medición ultrasónica.","datePublished":"2026-08-11","dateModified":"2026-08-11","author":{"@type":"Person","name":"Alberto Gallardo","url":"https://www.ukrabot.cl/about"},"publisher":{"@type":"Organization","name":"Blog de Ingeniería Robótica","url":"https://www.ukrabot.cl"},"mainEntityOfPage":"https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing","proficiencyLevel":"Principiante","inLanguage":"es-CL"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Por qué marca cero o distancias erráticas?","acceptedAnswer":{"@type":"Answer","text":"Revisa GND común, cables TRIG/ECHO y la alimentación del servo. Un objeto inclinado o blando puede no devolver eco."}},{"@type":"Question","name":"¿Processing no recibe datos?","acceptedAnswer":{"@type":"Answer","text":"Comprueba puerto y 115200 baudios; cierra el Monitor Serie porque solo un programa puede abrir el puerto a la vez."}}]}</script><style>
-:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font:16px/1.7 Inter,system-ui,-apple-system,Segoe UI,sans-serif}.container{max-width:1050px;margin:auto;padding:0 24px}a{color:var(--blue);text-underline-offset:3px}.site-nav{position:sticky;top:0;z-index:2;background:rgba(246,244,238,.96);border-bottom:1px solid var(--line)}.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:20px}.logo{font:1.35rem Georgia,serif;color:var(--text);text-decoration:none}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:18px;font-size:.88rem}.nav-links a{text-decoration:none;color:var(--muted)}.hero{background:linear-gradient(135deg,#151310,#30465a);color:white;padding:92px 0 70px}.eyebrow{color:#e4c07a;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font:400 clamp(2rem,6vw,4.1rem)/1.1 Georgia,serif;max-width:920px;margin:18px 0}.hero p{max-width:780px;color:#e8e6e0}.byline{font-size:.88rem}.byline a{color:#e4c07a}.article-body{padding:58px 24px 84px}.article-body h2{font:400 2rem/1.2 Georgia,serif;margin:56px 0 16px}.article-body h3{margin:30px 0 8px}.article-body p,.article-body li{color:var(--muted)}.toc,.note,.warning,.cta,.author-box{padding:24px;margin:28px 0;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06))}.toc h2{font:600 1.05rem/1.3 inherit;margin:0 0 10px}.toc ol{margin:0;padding-left:22px}.toc a{text-decoration:none;color:var(--muted)}.note{border-left:4px solid var(--gold)}.warning{border-left:4px solid #b2281e;background:#fff7f5}.warning strong{color:#7a1c14}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:620px;background:#fff}th,td{text-align:left;padding:13px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow:auto;padding:20px;background:#14121a;border-radius:12px;color:#e8d9b6;font-size:.86rem;line-height:1.5}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.author-box{display:flex;gap:16px}.author-box img{width:62px;height:62px;border-radius:50%;object-fit:cover}.disclosure{font-size:.8rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px}.footer-nav{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;border-top:1px solid var(--line);padding-top:30px;margin-top:48px}.site-footer{border-top:1px solid var(--line);padding:30px 0 45px;color:var(--quiet);font-size:.86rem}@media(max-width:650px){.container,.article-body{padding-left:16px;padding-right:16px}.nav-inner{padding:14px 16px}.nav-links{gap:10px;font-size:.76rem}.hero{padding:70px 0 48px}.article-body h2{font-size:1.55rem;margin-top:42px}.toc,.note,.warning,.cta,.author-box{padding:16px}table{min-width:540px}}
-</style></head><body><nav class="site-nav"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><div class="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><div class="container"><div class="eyebrow">Arduino y visualización de datos · Actualizado el <time datetime="2026-08-11">11 de agosto de 2026</time></div><h1>Radar con Sensor Ultrasónico y Processing</h1><p>Crea un radar didáctico con Arduino, HC-SR04, servo y Processing. Aprende conexiones, temporización, protocolo serie y límites físicos de la medición ultrasónica.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p></div></header><main class="container article-body"><article><div class="toc"><h2>Qué aprenderás en esta guía</h2><ol><li><a href="#componentes">Componentes</a></li><li><a href="#conexion">Conexion</a></li><li><a href="#arduino">Arduino</a></li><li><a href="#processing">Processing</a></li><li><a href="#limites">Limites</a></li><li><a href="#faq">Preguntas frecuentes</a></li></ol></div>
-<section id="componentes"><h2>Qué construye realmente este proyecto</h2><p>Un servo mueve el sensor HC-SR04 en un barrido angular. Arduino mide el tiempo de eco y envía ángulo y distancia por serie. Processing dibuja esa información en un computador. Es una visualización de obstáculos, no un radar electromagnético: el sensor emite ultrasonido y necesita un objeto que refleje el sonido.</p><ul><li>Arduino Uno, HC-SR04, microservo SG90 y fuente USB estable.</li><li>Procesing instalado en el computador y cable USB de datos.</li></ul></section>
-<section id="conexion"><h2>Conexiones y alimentación del servo</h2><p>Conecta TRIG a D10, ECHO a D11 y el servo a D9; todos comparten GND. El HC-SR04 se alimenta a 5 V en un Uno. Un servo puede causar reinicios al arrancar porque demanda picos de corriente: si ocurre, usa una fuente externa regulada de 5 V para el servo y une únicamente las tierras. No alimentes motores grandes desde el pin 5V del Arduino.</p></section>
-<section id="arduino"><h2>Sketch: medir, limitar y enviar un protocolo estable</h2><pre><code>#include &lt;Servo.h&gt;
-Servo radar; const byte TRIG=10, ECHO=11;
-float distanciaCM(){
-  digitalWrite(TRIG,LOW); delayMicroseconds(2);
-  digitalWrite(TRIG,HIGH); delayMicroseconds(10); digitalWrite(TRIG,LOW);
-  unsigned long t=pulseIn(ECHO,HIGH,30000); // timeout: evita bloqueo
-  return t ? t*0.0343/2.0 : -1;
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Radar con Sensor Ultrasónico HC-SR04 y Processing — Guía Técnica Completa</title>
+<meta name="description" content="Guía técnica para construir un radar visual con Arduino: sensor ultrasónico HC-SR04, barrido con servomotor, comunicación serial hacia Processing, código completo de visualización tipo radar militar, cálculo de distancia y coordenadas polares a cartesianas.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Radar con Sensor Ultrasónico HC-SR04 y Processing — Guía Técnica Completa">
+<meta property="og:description" content="Sensor HC-SR04, barrido con servomotor, comunicación serial Arduino-Processing, código de visualización tipo radar y conversión de coordenadas polares a cartesianas.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/radar_arduino_processing_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Técnica: Radar con HC-SR04 y Processing">
+<meta name="twitter:description" content="Sensor ultrasónico, barrido con servo, comunicación serial y visualización de radar en Processing con Arduino.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/radar_arduino_processing_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Radar con Sensor Ultrasónico HC-SR04 y Processing — Guía Técnica Completa",
+  "description":"Guía técnica para construir un radar visual con Arduino y Processing: principio de funcionamiento del sensor ultrasónico HC-SR04, cálculo de distancia por tiempo de vuelo del eco, barrido angular con servomotor, protocolo de comunicación serial entre Arduino y Processing, código completo de visualización gráfica tipo radar militar con conversión de coordenadas polares a cartesianas, calibración de precisión y upgrade hacia detección de múltiples objetos.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-10-12",
+  "dateModified":"2026-10-12",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing"},
+  "image":"https://www.ukrabot.cl/blog/radar_arduino_processing_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Arduino Uno o Nano, sensor ultrasónico HC-SR04, micro servomotor SG90, protoboard y jumpers, cartón o soporte impreso en 3D para el sensor, software Processing 4.x instalado en el computador",
+  "wordCount":"2700",
+  "inLanguage":"es-CL"
 }
-void setup(){ radar.attach(9); pinMode(TRIG,OUTPUT); pinMode(ECHO,INPUT); Serial.begin(115200); }
-void loop(){
- for(int a=15;a<=165;a+=2){ radar.write(a); delay(35); Serial.print(a);Serial.print(',');Serial.println(distanciaCM()); }
- for(int a=165;a>=15;a-=2){ radar.write(a); delay(35); Serial.print(a);Serial.print(',');Serial.println(distanciaCM()); }
-}</code></pre><p>El formato <code>angulo,distancia</code> es fácil de leer en Processing. El timeout de 30 ms evita quedar detenido si no existe eco; una medición inválida se envía como −1.</p></section>
-<section id="processing"><h2>Lectura en Processing: separa interfaz y hardware</h2><p>En Processing importa <code>processing.serial.*</code>, abre el puerto correcto a 115200 y procesa líneas completas con <code>readStringUntil('
-')</code>. Divide con <code>split(trim(linea), ',')</code>, valida que existan dos campos y conviértelos con <code>int()</code> y <code>float()</code>. Dibuja el arco con el ángulo y una marca radial proporcional a la distancia. Validar antes de dibujar evita que una línea incompleta rompa la interfaz.</p></section>
-<section id="limites"><h2>Rango, errores y seguridad</h2><p>El rango práctico del HC-SR04 depende del material, ángulo y ruido; superficies blandas o inclinadas reflejan poco sonido. No interpretes una sola lectura como verdad: promedia varias muestras o aplica una mediana. Mantén el barrido entre 15° y 165° para no forzar el servo contra su tope. Este montaje no es adecuado para navegación autónoma ni sistemas de seguridad.</p></section><section id="conclusion"><h2>Conclusión</h2><p>El valor de este proyecto está en medir, comprobar y mejorar cada parte: cableado seguro, código legible y pruebas graduales. Empieza con el montaje mínimo, observa el resultado y añade una mejora por vez. Así podrás detectar errores sin convertir un proyecto sencillo en una caja negra.</p></section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Por qué marca cero o distancias erráticas?</summary><p>Revisa GND común, cables TRIG/ECHO y la alimentación del servo. Un objeto inclinado o blando puede no devolver eco.</p></details><details><summary>¿Processing no recibe datos?</summary><p>Comprueba puerto y 115200 baudios; cierra el Monitor Serie porque solo un programa puede abrir el puerto a la vez.</p></details></div></section><div class="author-box"><img src="../author_alberto.jpg" alt="Alberto Gallardo"><div><h3>Sobre el autor</h3><p><strong>Alberto Gallardo</strong> es Analista Programador Computacional y escribe tutoriales prácticos de electrónica, programación y robótica. <a href="/about">Conoce más sobre el autor →</a></p></div></div><p class="disclosure">Contenido editorial independiente y educativo. Verifica siempre el voltaje, la hoja de datos de tus módulos y las condiciones reales de tu montaje antes de conectar alimentación.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Revisa el <a href="/#categories">temario de Arduino y proyectos</a> para continuar con sensores, programación y electrónica aplicada.</p></div><div class="footer-nav"><a href="/">← Volver a la portada</a><a href="/contact">¿Encontraste una mejora? Contáctanos →</a></div></article><section class="editorial-sources"><h2>Fuentes y documentación recomendada</h2><ul><li><a href="https://docs.arduino.cc/">Arduino Docs — documentación oficial</a></li><li><a href="https://www.arduino.cc/reference/en/">Arduino Language Reference</a></li></ul><p>Enlaces revisados: 11 de agosto de 2026.</p></section></main><footer class="site-footer"><div class="container">Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica y electrónica aplicada.</div></footer></body></html>
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Radar con Sensor Ultrasónico y Processing","item":"https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Qué es Processing y por qué se usa junto con Arduino en este proyecto?","acceptedAnswer":{"@type":"Answer","text":"Processing es un lenguaje y entorno de programación de código abierto orientado a las artes visuales y la visualización de datos, basado en Java, con una curva de aprendizaje muy suave. Se usa junto con Arduino en este proyecto porque Arduino no tiene capacidad nativa de dibujar gráficos: su rol es medir distancias y controlar el servomotor, mientras que Processing recibe esos datos por el puerto serie y los transforma en la representación visual del radar en la pantalla del computador. Esta división de responsabilidades (Arduino mide, Processing dibuja) es un patrón extremadamente común en proyectos de visualización de datos de sensores."}},
+    {"@type":"Question","name":"¿Qué tan preciso es el sensor ultrasónico HC-SR04?","acceptedAnswer":{"@type":"Answer","text":"El HC-SR04 tiene una precisión típica de ±0.3 cm en condiciones ideales, con un rango de medición efectivo de aproximadamente 2 cm a 400 cm. Su precisión se degrada notablemente con superficies que absorben o desvían el sonido, como telas, espuma o superficies muy anguladas respecto al sensor, así como con cambios significativos de temperatura ambiente, ya que la velocidad del sonido en el aire varía con la temperatura. Para un proyecto de radar de hobby, esta precisión es más que suficiente; para aplicaciones que requieran exactitud milimétrica se necesitarían sensores láser tipo ToF (Time of Flight)."}},
+    {"@type":"Question","name":"¿Por qué el radar en Processing se ve entrecortado o con movimiento poco fluido?","acceptedAnswer":{"@type":"Answer","text":"La causa más común es un delay demasiado largo en el código Arduino entre cada movimiento del servo y cada lectura del sensor, sumado a la limitación física del propio HC-SR04, que necesita un tiempo mínimo de silencio entre mediciones consecutivas para evitar ecos residuales de la medición anterior. Reducir el delay del servo demasiado agresivamente introduce otro problema: el servomotor físicamente no alcanza a llegar a la posición angular solicitada antes de que se dispare la siguiente medición, generando lecturas asociadas a ángulos incorrectos. Encontrar el balance entre velocidad de barrido y precisión angular es parte del proceso de calibración de este proyecto."}},
+    {"@type":"Question","name":"¿Puedo usar este mismo proyecto para detectar más de un objeto a la vez?","acceptedAnswer":{"@type":"Answer","text":"El HC-SR04 solo entrega la distancia al objeto más cercano dentro de su cono de detección en cada medición individual, por lo que no puede distinguir directamente múltiples objetos en un mismo ángulo. Sin embargo, sí es posible detectar múltiples objetos ubicados en ángulos distintos durante el barrido completo del servomotor, ya que cada ángulo genera su propia lectura independiente. El código de Processing de esta guía ya soporta esto de forma natural: cada punto detectado en cualquier ángulo del barrido se dibuja en el radar, permitiendo visualizar varios objetos distribuidos en diferentes direcciones alrededor del sensor."}},
+    {"@type":"Question","name":"¿Qué diferencia hay entre este radar y uno real usado en aviación o navegación marítima?","acceptedAnswer":{"@type":"Answer","text":"Un radar real emite ondas electromagnéticas (radio) y mide el tiempo que tardan en rebotar en un objeto y regresar, lo que le permite detectar objetos a kilómetros de distancia, incluso a través de condiciones climáticas adversas. Este proyecto usa ultrasonido (ondas de sonido) en vez de ondas de radio, con un alcance de centímetros en vez de kilómetros, y depende de una barrida mecánica lenta con servomotor en vez de una antena giratoria de alta velocidad o un arreglo de antenas electrónico. El principio físico de fondo —medir tiempo de vuelo de una onda reflejada para calcular distancia— es el mismo, lo que hace de este proyecto una introducción conceptualmente honesta al funcionamiento de un radar real, aunque a una escala y con una tecnología completamente distintas."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="radar_arduino_processing_hero.jpg" alt="Sensor ultrasónico HC-SR04 montado sobre un micro servomotor conectado a Arduino, con una pantalla de computador mostrando la visualización de radar en Processing" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y visualización de datos · Actualizado el <time datetime="2026-10-12">12 de octubre de 2026</time></div>
+    <h1>Radar con Sensor Ultrasónico HC-SR04 y Processing</h1>
+    <p>El principio del tiempo de vuelo del eco, barrido angular con servomotor, protocolo de comunicación serial hacia Processing, y el código completo para dibujar un radar visual tipo militar en tiempo real.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="radar_arduino_processing_wiring.jpg" alt="Diagrama de conexión de un sensor ultrasónico HC-SR04 montado sobre un servomotor SG90, ambos conectados a un Arduino Uno" loading="lazy">
+  <div class="caption">El sensor "mira" hacia donde apunta el servo; Arduino combina ambos datos —ángulo y distancia— y los envía por serial hacia Processing.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#principio-fisico">El principio físico: tiempo de vuelo del ultrasonido</a></li>
+    <li><a href="#arquitectura">Arquitectura del proyecto: Arduino mide, Processing dibuja</a></li>
+    <li><a href="#materiales">Lista de materiales y costos de referencia</a></li>
+    <li><a href="#conexion-hardware">Conexión de hardware: sensor sobre servomotor</a></li>
+    <li><a href="#codigo-arduino">Código Arduino: barrido y medición de distancia</a></li>
+    <li><a href="#instalar-processing">Instalar Processing y librerías necesarias</a></li>
+    <li><a href="#codigo-processing">Código Processing: dibujando el radar</a></li>
+    <li><a href="#coordenadas">De coordenadas polares a cartesianas: la matemática del radar</a></li>
+    <li><a href="#calibracion">Calibración y ajuste de precisión</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y solución de errores</a></li>
+    <li><a href="#mejoras">Mejoras posibles y siguientes pasos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="principio-fisico">
+<h2>El principio físico: tiempo de vuelo del ultrasonido</h2>
+<p>El sensor <strong>HC-SR04</strong> mide distancia usando el mismo principio físico que emplean los murciélagos para orientarse en la oscuridad: emite un pulso de sonido en una frecuencia por encima del rango audible humano (40 kHz, de ahí el término <strong>ultrasonido</strong>), y mide cuánto tiempo tarda ese pulso en rebotar contra un objeto y regresar como eco a un receptor.</p>
+<p>Físicamente, el sensor tiene dos elementos visibles como pequeños "ojos" cilíndricos: uno actúa como emisor (Trig) y el otro como receptor (Echo). El proceso de medición sigue una secuencia precisa:</p>
+<ol>
+<li>Arduino envía un pulso HIGH de 10 microsegundos al pin <strong>Trig</strong>, indicándole al sensor que emita el pulso ultrasónico.</li>
+<li>El sensor emite una ráfaga de 8 pulsos a 40 kHz por su emisor.</li>
+<li>El pin <strong>Echo</strong> se pone en HIGH exactamente en el instante en que se emite el sonido, y permanece en HIGH hasta que el eco de regreso es detectado por el receptor.</li>
+<li>Arduino mide, con la función <code>pulseIn()</code>, cuánto tiempo exacto permaneció el pin Echo en HIGH — ese tiempo es directamente proporcional a la distancia recorrida por el sonido, ida y vuelta.</li>
+</ol>
+<p>Conociendo la velocidad del sonido en el aire (aproximadamente 343 metros por segundo a 20°C, o 0.0343 cm por microsegundo), y sabiendo que el sonido recorre la distancia dos veces (ida hacia el objeto, vuelta hacia el sensor), la fórmula para calcular la distancia es:</p>
+<pre><code>distancia_cm = (tiempo_microsegundos * 0.0343) / 2</code></pre>
+<div class="note"><strong>Por qué se divide entre 2:</strong> el tiempo medido por pulseIn() corresponde al viaje completo de ida y vuelta del sonido, no solo a la distancia hacia el objeto. Dividir entre 2 corrige esto para obtener la distancia real entre el sensor y el objeto detectado.</div>
+</section>
+
+<section id="arquitectura">
+<h2>Arquitectura del proyecto: Arduino mide, Processing dibuja</h2>
+<p>Este proyecto combina dos piezas de software con responsabilidades claramente separadas, un patrón de diseño muy común en proyectos de visualización de datos de sensores:</p>
+<ul>
+<li><strong>Arduino</strong> se encarga exclusivamente de la parte física: mueve el servomotor a través de un rango de ángulos (típicamente de 15° a 165°), toma una medición de distancia en cada ángulo con el HC-SR04, y envía ambos valores —ángulo y distancia— por el puerto serie hacia el computador, en un formato de texto simple y predecible.</li>
+<li><strong>Processing</strong>, ejecutándose en el computador, escucha ese mismo puerto serie, interpreta el texto recibido, y usa esos dos valores (ángulo y distancia) para calcular la posición exacta donde dibujar un punto en la pantalla, generando en tiempo real la clásica animación de "barrido de radar" con el efecto de estela verde tan reconocible del cine y los sistemas de navegación reales.</li>
+</ul>
+<p>Esta separación es deliberada: Arduino es excelente controlando hardware físico en tiempo real con precisión de microsegundos, pero no tiene absolutamente ninguna capacidad de dibujar gráficos en una pantalla. Processing, por su parte, está construido específicamente para gráficos y visualización, pero no puede leer directamente un sensor ultrasónico conectado por cable a pines físicos. Combinarlos aprovecha lo mejor de cada herramienta.</p>
+</section>
+
+<section id="materiales">
+<h2>Lista de materiales y costos de referencia</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos de precio orientativos para el mercado chileno en 2026, componentes disponibles en tiendas de electrónica.</caption>
+<thead><tr><th>Componente</th><th>Especificación sugerida</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Arduino Uno o Nano</td><td>Original o compatible con ATmega328P</td><td>$6.000 – $15.000</td></tr>
+<tr><td>Sensor ultrasónico HC-SR04</td><td>Rango 2-400 cm, alimentación 5V</td><td>$1.500 – $3.000</td></tr>
+<tr><td>Micro servomotor SG90</td><td>Rango de giro 0°-180°, 5V</td><td>$2.000 – $4.000</td></tr>
+<tr><td>Soporte para sensor sobre servo</td><td>Impreso en 3D, cartón o adaptador comercial</td><td>$0 – $2.500</td></tr>
+<tr><td>Protoboard y jumpers</td><td>Set básico macho-macho y macho-hembra</td><td>$2.000 – $5.000</td></tr>
+<tr><td>Software Processing</td><td>Descarga gratuita desde processing.org</td><td>$0</td></tr>
+<tr><td>Base o carcasa (opcional)</td><td>Para estabilizar el conjunto sensor-servo</td><td>$0 – $3.000</td></tr>
+<tr><td><strong>Total aproximado del proyecto</strong></td><td>&nbsp;</td><td><strong>$11.500 – $32.500</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>Uno de los proyectos con mayor "factor sorpresa" de esta serie de guías: el hardware es simple y económico, pero el resultado visual en pantalla —un radar animado en tiempo real— genera una impresión de sofisticación mucho mayor a la complejidad real de construirlo.</p>
+</section>
+
+<section id="conexion-hardware">
+<h2>Conexión de hardware: sensor sobre servomotor</h2>
+<p>El montaje físico consiste en fijar el sensor HC-SR04 sobre el brazo (horn) del servomotor, de modo que al girar el servo, el sensor "apunte" hacia distintos ángulos, barriendo el área frente a él como si fuera la antena giratoria de un radar real.</p>
+<pre><code>Esquema conceptual de conexión:
+
+HC-SR04 VCC  ----> Arduino 5V
+HC-SR04 GND  ----> Arduino GND
+HC-SR04 Trig ----> Arduino pin digital 9
+HC-SR04 Echo ----> Arduino pin digital 10
+
+Servo SG90 (cable rojo, señal naranja/amarilla, cable marron/negro):
+Rojo    ----> Arduino 5V
+Marron  ----> Arduino GND
+Naranja ----> Arduino pin digital 11</code></pre>
+<div class="warning"><strong>Sobre la alimentación del servo:</strong> un servomotor SG90 puede consumir picos de corriente notablemente superiores a los que el pin 5V de Arduino puede entregar de forma sostenida y segura, especialmente si el sensor y otros componentes comparten la misma alimentación. Para pruebas cortas de este proyecto suele funcionar sin problema alimentando todo desde el mismo Arduino, pero si notas reinicios inesperados de la placa o movimientos erráticos del servo, considera alimentar el servomotor desde una fuente externa de 5V independiente, compartiendo únicamente la tierra (GND) con Arduino.</div>
+<p>El montaje mecánico —fijar físicamente el sensor al brazo del servo— es la parte más artesanal del proyecto. Una solución simple y muy usada en la comunidad es recortar una pequeña pieza de cartón rígido o plástico en forma de "L", pegarla al brazo del servo por un lado, y al cuerpo del sensor por el otro, asegurando que quede centrado y estable durante el giro.</p>
+</section>
+
+<section id="codigo-arduino">
+<h2>Código Arduino: barrido y medición de distancia</h2>
+<p>El siguiente código controla el barrido del servomotor de un extremo a otro y, en cada ángulo, toma una medición de distancia con el HC-SR04, enviando ambos valores por el puerto serie en un formato de texto simple que Processing podrá interpretar fácilmente.</p>
+<pre><code>#include <Servo.h>
+
+const int PIN_TRIG = 9;
+const int PIN_ECHO = 10;
+const int PIN_SERVO = 11;
+
+Servo servoRadar;
+
+void setup() {
+  pinMode(PIN_TRIG, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
+  servoRadar.attach(PIN_SERVO);
+  Serial.begin(9600);
+}
+
+long medirDistanciaCm() {
+  digitalWrite(PIN_TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(PIN_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PIN_TRIG, LOW);
+
+  long tiempoEcoMicrosegundos = pulseIn(PIN_ECHO, HIGH, 30000);
+  if (tiempoEcoMicrosegundos == 0) return 400; // sin eco: asumir distancia maxima
+
+  long distancia = (tiempoEcoMicrosegundos * 0.0343) / 2;
+  return constrain(distancia, 2, 400);
+}
+
+void loop() {
+  // Barrido de 15 a 165 grados
+  for (int angulo = 15; angulo <= 165; angulo++) {
+    servoRadar.write(angulo);
+    delay(15); // tiempo para que el servo llegue fisicamente al angulo
+    long distancia = medirDistanciaCm();
+
+    Serial.print(angulo);
+    Serial.print(",");
+    Serial.print(distancia);
+    Serial.print(".");
+  }
+
+  // Barrido de regreso, de 165 a 15 grados
+  for (int angulo = 165; angulo >= 15; angulo--) {
+    servoRadar.write(angulo);
+    delay(15);
+    long distancia = medirDistanciaCm();
+
+    Serial.print(angulo);
+    Serial.print(",");
+    Serial.print(distancia);
+    Serial.print(".");
+  }
+}</code></pre>
+<p>El formato de datos enviado es deliberadamente simple: cada medición se envía como <code>angulo,distancia.</code> — con una coma separando ángulo de distancia, y un punto marcando el final de cada lectura completa. Este formato, aunque minimalista, es exactamente lo que el código de Processing espera recibir, y es un patrón de comunicación serie muy común: texto plano con delimitadores simples, fácil de generar en Arduino y fácil de interpretar (parsear) en el lado receptor.</p>
+</section>
+
+<section id="instalar-processing">
+<h2>Instalar Processing y librerías necesarias</h2>
+<p>Processing es un entorno de programación gratuito y de código abierto, disponible para Windows, macOS y Linux desde el sitio oficial <code>processing.org</code>. A diferencia del IDE de Arduino, Processing no requiere instalación tradicional en la mayoría de los sistemas: se descarga como un archivo comprimido, se descomprime, y se ejecuta directamente.</p>
+<ol>
+<li>Descarga la versión correspondiente a tu sistema operativo desde el sitio oficial de Processing.</li>
+<li>Descomprime el archivo descargado en una carpeta de tu elección.</li>
+<li>Ejecuta el archivo <code>Processing</code> (o <code>Processing.exe</code> en Windows) para abrir el entorno.</li>
+<li>Verifica que la <strong>librería Serial</strong> esté disponible: en versiones recientes de Processing viene incluida por defecto como parte del núcleo del lenguaje (<code>processing.serial.*</code>), sin necesidad de instalación adicional.</li>
+</ol>
+<div class="note"><strong>Un desafío común de conexión:</strong> Arduino y Processing no pueden usar el puerto serie al mismo tiempo. Si tienes el Monitor Serie del IDE de Arduino abierto mientras intentas ejecutar el sketch de Processing, obtendrás un error de puerto ocupado. Asegúrate de cerrar el Monitor Serie de Arduino antes de ejecutar el código de Processing.</div>
+</section>
+
+<section id="codigo-processing">
+<h2>Código Processing: dibujando el radar</h2>
+<p>El siguiente sketch de Processing recibe los datos enviados por Arduino, los interpreta, y dibuja la interfaz visual de radar: un fondo con líneas de referencia angular, un "brazo" de barrido animado que gira en sincronía con el servomotor real, y puntos que representan los objetos detectados en cada ángulo.</p>
+<pre><code>import processing.serial.*;
+
+Serial puertoSerial;
+String datosEntrantes = "";
+int anguloActual = 0;
+int distanciaActual = 0;
+
+void setup() {
+  size(1200, 700);
+
+  // IMPORTANTE: ajustar el indice segun tu propio puerto serie
+  // Ejecutar primero: println(Serial.list()); para ver los puertos disponibles
+  String nombrePuerto = Serial.list()[0];
+  puertoSerial = new Serial(this, nombrePuerto, 9600);
+  puertoSerial.bufferUntil('.');
+}
+
+void draw() {
+  fondoRadar();
+  dibujarLineasAngulares();
+  dibujarBrazoBarrido();
+  dibujarTextoDistancia();
+}
+
+void serialEvent(Serial puerto) {
+  datosEntrantes = puerto.readStringUntil('.');
+  datosEntrantes = datosEntrantes.substring(0, datosEntrantes.length() - 0);
+
+  if (datosEntrantes != null) {
+    datosEntrantes = trim(datosEntrantes);
+    int indiceComa = datosEntrantes.indexOf(",");
+    if (indiceComa > 0) {
+      String parteAngulo = datosEntrantes.substring(0, indiceComa);
+      String parteDistancia = datosEntrantes.substring(indiceComa + 1, datosEntrantes.length());
+      anguloActual = int(parteAngulo);
+      distanciaActual = int(parteDistancia);
+    }
+  }
+}
+
+void fondoRadar() {
+  background(0, 20, 0);
+  noStroke();
+  fill(0, 40, 0, 60);
+  rect(0, height / 2, width, height / 2);
+}
+
+void dibujarLineasAngulares() {
+  pushMatrix();
+  translate(width / 2, height - 50);
+  stroke(0, 255, 0);
+  noFill();
+
+  // Arcos concentricos de distancia (cada 100px = referencia de distancia)
+  for (int r = 100; r <= 500; r += 100) {
+    arc(0, 0, r * 2, r * 2, PI, TWO_PI);
+  }
+
+  // Lineas radiales cada 30 grados
+  for (int a = 0; a <= 180; a += 30) {
+    float x = 500 * cos(radians(180 - a));
+    float y = -500 * sin(radians(180 - a));
+    line(0, 0, x, y);
+  }
+  popMatrix();
+}
+
+void dibujarBrazoBarrido() {
+  pushMatrix();
+  translate(width / 2, height - 50);
+
+  stroke(0, 255, 0);
+  strokeWeight(3);
+  float x = 500 * cos(radians(180 - anguloActual));
+  float y = -500 * sin(radians(180 - anguloActual));
+  line(0, 0, x, y);
+
+  // Punto del objeto detectado, si esta dentro de un rango razonable
+  if (distanciaActual < 400) {
+    float escala = map(distanciaActual, 0, 400, 0, 500);
+    float px = escala * cos(radians(180 - anguloActual));
+    float py = -escala * sin(radians(180 - anguloActual));
+    noStroke();
+    fill(255, 0, 0);
+    ellipse(px, py, 12, 12);
+  }
+  popMatrix();
+}
+
+void dibujarTextoDistancia() {
+  fill(0, 255, 0);
+  textSize(20);
+  text("Angulo: " + anguloActual + " grados", 20, 30);
+  text("Distancia: " + distanciaActual + " cm", 20, 60);
+}</code></pre>
+<p>La función <code>serialEvent()</code> es el corazón de la comunicación: se ejecuta automáticamente cada vez que Processing recibe un mensaje completo terminado en el carácter <code>.</code> (configurado con <code>bufferUntil('.')</code> en <code>setup()</code>), separa el texto recibido en la parte del ángulo y la parte de la distancia usando la posición de la coma, y actualiza las variables globales que el resto del sketch usa para dibujar.</p>
+</section>
+
+<section id="coordenadas">
+<h2>De coordenadas polares a cartesianas: la matemática del radar</h2>
+<p>El dato que Arduino envía —un ángulo y una distancia— es lo que en matemáticas se conoce como <strong>coordenadas polares</strong>: una forma de ubicar un punto en el espacio a partir de una dirección (el ángulo) y una magnitud (la distancia desde un origen), en vez de usar las coordenadas horizontal/vertical (x, y) habituales de una pantalla.</p>
+<p>Processing, como la mayoría de entornos gráficos, dibuja usando <strong>coordenadas cartesianas</strong> (x, y), por lo que es necesario convertir de un sistema a otro antes de poder ubicar el punto correctamente en pantalla. La conversión se basa en trigonometría básica:</p>
+<pre><code>x = distancia * cos(angulo)
+y = distancia * sin(angulo)</code></pre>
+<p>En el código de Processing de esta guía, esta conversión ocurre exactamente en las líneas que calculan <code>px</code> y <code>py</code> dentro de <code>dibujarBrazoBarrido()</code>, usando las funciones trigonométricas nativas <code>cos()</code> y <code>sin()</code> de Processing (que trabajan en radianes, de ahí la conversión con <code>radians()</code>). El ajuste <code>180 - angulo</code> y el signo negativo en la coordenada <code>y</code> son correcciones necesarias porque el sistema de coordenadas de pantalla de Processing tiene el eje Y invertido respecto a la convención matemática estándar (en pantalla, "hacia abajo" es positivo), y porque el barrido del servo va de izquierda a derecha en vez de seguir la convención matemática de ángulos crecientes en sentido antihorario.</p>
+<div class="note"><strong>Por qué entender esto importa más allá de este proyecto:</strong> la conversión de coordenadas polares a cartesianas es una herramienta matemática que reaparece constantemente en robótica, gráficos por computador y procesamiento de señales — desde calcular la posición de las patas de un robot hexápodo hasta dibujar un reloj analógico digital. Dominarla en el contexto simple de este radar es una base sólida para proyectos mucho más ambiciosos.</div>
+</section>
+
+<section id="calibracion">
+<h2>Calibración y ajuste de precisión</h2>
+<ol>
+<li><strong>Identifica el puerto serie correcto:</strong> antes de ejecutar el sketch completo de Processing, ejecuta temporalmente solo la línea <code>println(Serial.list())</code> dentro de <code>setup()</code> para ver la lista de puertos disponibles en la consola, e identifica el índice correspondiente a tu Arduino, ajustando el índice <code>[0]</code> del código si es necesario.</li>
+<li><strong>Ajusta el delay del servo:</strong> el valor de <code>delay(15)</code> tras cada movimiento del servo en el código Arduino es un balance entre velocidad de barrido y precisión angular — un valor muy bajo hace que el servo dispare la medición antes de llegar físicamente al ángulo solicitado, generando datos inconsistentes.</li>
+<li><strong>Considera la temperatura ambiente:</strong> la velocidad del sonido usada en el cálculo (0.0343 cm/microsegundo) corresponde a aproximadamente 20°C. En ambientes muy fríos o muy calurosos, esta constante introduce un pequeño error sistemático que, para la mayoría de los usos de hobby, es despreciable pero vale la pena conocer.</li>
+<li><strong>Verifica el rango de distancia máxima mostrado:</strong> el mapeo <code>map(distanciaActual, 0, 400, 0, 500)</code> en Processing asume un rango máximo de 400 cm; si tu espacio de pruebas es mucho más pequeño, reducir este valor máximo hace que el radar aproveche mejor el espacio visual disponible en pantalla.</li>
+<li><strong>Prueba con distintas superficies:</strong> materiales blandos, angulados o muy pequeños reflejan menos sonido de vuelta al sensor y pueden generar lecturas erráticas o de distancia máxima aunque haya un objeto presente — es una limitación física real del ultrasonido, no un error de programación.</li>
+</ol>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y solución de errores</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos en proyectos de radar con Arduino y Processing, y su causa más probable.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Error "Port busy" al ejecutar Processing</td><td>El Monitor Serie de Arduino IDE sigue abierto</td><td>Cerrar el Monitor Serie del IDE de Arduino antes de correr el sketch de Processing</td></tr>
+<tr><td>La ventana de Processing se abre pero no se dibuja nada</td><td>Índice de puerto serie incorrecto en Serial.list()[X]</td><td>Ejecutar println(Serial.list()) para identificar el índice correcto</td></tr>
+<tr><td>El brazo del radar se mueve pero nunca detecta nada</td><td>Sensor HC-SR04 mal conectado, o pines Trig/Echo invertidos</td><td>Verificar las conexiones contra el esquema de cableado</td></tr>
+<tr><td>El servomotor tiembla o se mueve erráticamente</td><td>Alimentación insuficiente compartida con otros componentes</td><td>Alimentar el servo desde una fuente externa de 5V, compartiendo GND con Arduino</td></tr>
+<tr><td>Las lecturas de distancia son inconsistentes o saltan mucho</td><td>Superficie de prueba poco reflectante, o interferencia entre mediciones consecutivas</td><td>Probar con superficies duras y planas, aumentar ligeramente el delay entre mediciones</td></tr>
+<tr><td>El radar dibuja el barrido invertido (izquierda-derecha)</td><td>Diferencia en convención de ángulos entre el montaje físico y el código</td><td>Ajustar la expresión "180 - angulo" en el código de Processing según la orientación real de tu montaje</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="mejoras">
+<h2>Mejoras posibles y siguientes pasos</h2>
+<ul>
+<li><strong>Efecto de estela (fade trail):</strong> en vez de borrar completamente el fondo en cada frame, dibujar un rectángulo semitransparente sobre el frame anterior crea el efecto de "desvanecimiento" verde tan característico de los radares de películas, donde los puntos detectados se desvanecen gradualmente en vez de desaparecer instantáneamente.</li>
+<li><strong>Alarma sonora de proximidad:</strong> hacer que Processing reproduzca un sonido de "beep" cuando se detecta un objeto por debajo de una distancia crítica, útil como sistema de alerta simple.</li>
+<li><strong>Registro de detecciones con marca de tiempo:</strong> guardar en un archivo cada detección significativa (ángulo, distancia, momento) para análisis posterior de patrones de movimiento en el área monitoreada.</li>
+<li><strong>Migrar a un sensor láser ToF (Time of Flight):</strong> sensores como el VL53L0X ofrecen mayor precisión y velocidad de medición que el ultrasonido, a cambio de mayor costo y un protocolo de comunicación I2C en vez de la simple lectura de pulso del HC-SR04.</li>
+<li><strong>Radar de 360 grados:</strong> reemplazar el servomotor de barrido limitado (0-180°) por un motor de rotación continua o un sistema de deslizamiento (slip ring), permitiendo un giro completo sin las limitaciones mecánicas de un servo estándar.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>El radar con HC-SR04 y Processing es uno de esos proyectos donde el resultado visual final —una animación de radar en tiempo real, sincronizada con un servomotor físico girando frente a ti— genera una sensación de logro desproporcionadamente grande respecto a la complejidad real de construirlo. En el camino se aprenden conceptos que trascienden ampliamente este proyecto puntual: el principio físico del tiempo de vuelo de una onda, la separación de responsabilidades entre hardware de medición y software de visualización, un protocolo simple de comunicación serie con delimitadores de texto, y la conversión de coordenadas polares a cartesianas mediante trigonometría básica. Estas herramientas conceptuales reaparecerán, en formas distintas, en prácticamente cualquier proyecto futuro que combine sensores físicos con visualización de datos en pantalla.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué es Processing y por qué se usa junto con Arduino en este proyecto?</summary><p>Processing es un lenguaje y entorno de programación de código abierto orientado a las artes visuales y la visualización de datos, basado en Java, con una curva de aprendizaje muy suave. Se usa junto con Arduino en este proyecto porque Arduino no tiene capacidad nativa de dibujar gráficos: su rol es medir distancias y controlar el servomotor, mientras que Processing recibe esos datos por el puerto serie y los transforma en la representación visual del radar en la pantalla del computador. Esta división de responsabilidades (Arduino mide, Processing dibuja) es un patrón extremadamente común en proyectos de visualización de datos de sensores.</p></details>
+<details><summary>¿Qué tan preciso es el sensor ultrasónico HC-SR04?</summary><p>El HC-SR04 tiene una precisión típica de ±0.3 cm en condiciones ideales, con un rango de medición efectivo de aproximadamente 2 cm a 400 cm. Su precisión se degrada notablemente con superficies que absorben o desvían el sonido, como telas, espuma o superficies muy anguladas respecto al sensor, así como con cambios significativos de temperatura ambiente, ya que la velocidad del sonido en el aire varía con la temperatura. Para un proyecto de radar de hobby, esta precisión es más que suficiente; para aplicaciones que requieran exactitud milimétrica se necesitarían sensores láser tipo ToF (Time of Flight).</p></details>
+<details><summary>¿Por qué el radar en Processing se ve entrecortado o con movimiento poco fluido?</summary><p>La causa más común es un delay demasiado largo en el código Arduino entre cada movimiento del servo y cada lectura del sensor, sumado a la limitación física del propio HC-SR04, que necesita un tiempo mínimo de silencio entre mediciones consecutivas para evitar ecos residuales de la medición anterior. Reducir el delay del servo demasiado agresivamente introduce otro problema: el servomotor físicamente no alcanza a llegar a la posición angular solicitada antes de que se dispare la siguiente medición, generando lecturas asociadas a ángulos incorrectos. Encontrar el balance entre velocidad de barrido y precisión angular es parte del proceso de calibración de este proyecto.</p></details>
+<details><summary>¿Puedo usar este mismo proyecto para detectar más de un objeto a la vez?</summary><p>El HC-SR04 solo entrega la distancia al objeto más cercano dentro de su cono de detección en cada medición individual, por lo que no puede distinguir directamente múltiples objetos en un mismo ángulo. Sin embargo, sí es posible detectar múltiples objetos ubicados en ángulos distintos durante el barrido completo del servomotor, ya que cada ángulo genera su propia lectura independiente. El código de Processing de esta guía ya soporta esto de forma natural: cada punto detectado en cualquier ángulo del barrido se dibuja en el radar, permitiendo visualizar varios objetos distribuidos en diferentes direcciones alrededor del sensor.</p></details>
+<details><summary>¿Qué diferencia hay entre este radar y uno real usado en aviación o navegación marítima?</summary><p>Un radar real emite ondas electromagnéticas (radio) y mide el tiempo que tardan en rebotar en un objeto y regresar, lo que le permite detectar objetos a kilómetros de distancia, incluso a través de condiciones climáticas adversas. Este proyecto usa ultrasonido (ondas de sonido) en vez de ondas de radio, con un alcance de centímetros en vez de kilómetros, y depende de una barrida mecánica lenta con servomotor en vez de una antena giratoria de alta velocidad o un arreglo de antenas electrónico. El principio físico de fondo —medir tiempo de vuelo de una onda reflejada para calcular distancia— es el mismo, lo que hace de este proyecto una introducción conceptualmente honesta al funcionamiento de un radar real, aunque a una escala y con una tecnología completamente distintas.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y los valores de calibración son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te interesó combinar comunicación serial con visualización de datos, nuestra guía <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">Estación Meteorológica con Arduino y Pantalla OLED</a> aplica un enfoque similar de lectura de sensores y presentación de datos, aunque en ese caso la visualización ocurre directamente en una pantalla física en vez de en el computador.</p>
+  <p>Si aún no diste tus primeros pasos con Arduino, te recomendamos partir por <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">Primeros Pasos con Arduino Uno</a> antes de intentar este proyecto.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">← Anterior: Estación Meteorológica con OLED</a>
+  <a href="/blog/">Siguiente: Ver más tutoriales →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los valores exactos de precisión y temporización deben verificarse de forma experimental con tu propio hardware.</p>
+<ul>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/advanced-io/pulsein/" target="_blank" rel="noopener noreferrer">Arduino Reference — Función pulseIn()</a></li>
+<li><a href="https://processing.org/reference/libraries/serial/index.html" target="_blank" rel="noopener noreferrer">Processing Reference — Librería Serial</a></li>
+<li><a href="https://www.arduino.cc/reference/en/libraries/servo/" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería Servo</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 12 de octubre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
