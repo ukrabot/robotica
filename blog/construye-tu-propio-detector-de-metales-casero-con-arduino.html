@@ -1,1 +1,700 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>Construye tu Propio Detector de Metales Casero con Arduino — Guía Técnica Completa</title>
+<meta name="description" content="Guía técnica para construir un detector de metales con Arduino: circuito BFO con bobina de búsqueda, código para detectar cambios de frecuencia, upgrade a Pulso de Inducción (PI), lista de materiales, calibración y normativa en Chile.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Construye tu Propio Detector de Metales Casero con Arduino — Guía Técnica Completa">
+<meta property="og:description" content="Circuito BFO paso a paso, bobina de búsqueda, código Arduino para detección por cambio de frecuencia, upgrade a Pulso de Inducción, calibración y normativa chilena sobre hallazgos arqueológicos.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/arduino_metal_detector_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Técnica: Detector de Metales Casero con Arduino">
+<meta name="twitter:description" content="Circuito BFO, bobina de búsqueda, código de detección por frecuencia y upgrade a Pulso de Inducción con Arduino.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/arduino_metal_detector_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Construye tu Propio Detector de Metales Casero con Arduino — Guía Técnica Completa",
+  "description":"Guía técnica para construir un detector de metales con Arduino: principio de oscilador de batido (BFO), diseño y bobinado de la bobina de búsqueda, código para detectar variaciones de frecuencia con pulseIn(), calibración, interferencias comunes, upgrade a Pulso de Inducción (PI) y marco legal de la detección de metales en Chile.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-07",
+  "dateModified":"2026-09-07",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino"},
+  "image":"https://www.ukrabot.cl/blog/arduino_metal_detector_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Arduino Uno o Nano, transistor 2N3904 o similar, bobina de búsqueda bobinada a mano, condensadores cerámicos y de poliéster, resistencias, buzzer piezoeléctrico, protoboard o placa perforada, multímetro, alambre esmaltado calibre 22-24 AWG",
+  "wordCount":"2500",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Detector de Metales Casero con Arduino","item":"https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Qué tan sensible es un detector de metales casero hecho con Arduino?","acceptedAnswer":{"@type":"Answer","text":"Un circuito BFO básico bien construido puede detectar monedas u objetos metálicos pequeños a 5-10 cm de profundidad, y objetos grandes (como una tapa metálica) hasta 20-25 cm, dependiendo del diámetro de la bobina, la calidad del bobinado y el blindaje contra interferencias. Está lejos del rendimiento de un detector VLF comercial de gama media, pero es más que suficiente para aprender el principio físico y para búsquedas casuales en patio o playa."}},
+    {"@type":"Question","name":"¿Por qué mi detector suena todo el tiempo o detecta metal donde no hay nada?","acceptedAnswer":{"@type":"Answer","text":"Las causas más comunes son: deriva térmica del oscilador (el circuito necesita unos minutos para estabilizarse tras encenderlo), interferencia electromagnética de fuentes cercanas (routers WiFi, motores, cables de alta corriente), una bobina sin blindaje electrostático captando ruido ambiental, o un umbral de detección demasiado sensible en el código. Ajustar el umbral de disparo y dar tiempo de calentamiento al circuito resuelve la mayoría de los falsos positivos."}},
+    {"@type":"Question","name":"¿Es necesario usar Arduino, o podría hacer un detector de metales solo con un circuito analógico?","acceptedAnswer":{"@type":"Answer","text":"No es estrictamente necesario. El principio de oscilador de batido (BFO) funciona perfectamente con dos osciladores analógicos y un altavoz, sin ningún microcontrolador, tal como se construían los detectores caseros desde los años 60. Arduino aporta valor al reemplazar el segundo oscilador analógico por una medición digital de frecuencia, lo que reduce la deriva térmica de un segundo circuito, permite mostrar la frecuencia en una pantalla, registrar datos, y facilita experimentar con distintos umbrales de sensibilidad por software en vez de por hardware."}},
+    {"@type":"Question","name":"¿Necesito permiso para usar un detector de metales en Chile?","acceptedAnswer":{"@type":"Answer","text":"Usar un detector de metales por afición en tu propio terreno no requiere permiso. Sin embargo, la Ley 17.288 de Monumentos Nacionales prohíbe la prospección, remoción o extracción de objetos arqueológicos, paleontológicos o antropológicos sin autorización del Consejo de Monumentos Nacionales, y esto aplica sin importar si el hallazgo fue casual con un detector de metales. Además, muchas playas, parques nacionales y sitios patrimoniales tienen restricciones específicas de acceso y uso de detectores que debes verificar antes de salir a buscar."}},
+    {"@type":"Question","name":"¿Cuál es la diferencia entre un detector BFO y uno de Pulso de Inducción (PI)?","acceptedAnswer":{"@type":"Answer","text":"Un detector BFO detecta metal por el cambio de frecuencia que provoca un objeto metálico sobre un oscilador LC, es simple de construir pero sensible a la mineralización del suelo y a la deriva térmica. Un detector de Pulso de Inducción envía pulsos de corriente breves a la bobina y mide el tiempo de decaimiento del campo magnético inducido; es significativamente más inmune a suelos mineralizados y más profundo en su detección, pero exige un circuito y un código de temporización más exigentes, típicamente usando la función micros() de Arduino para medir intervalos de microsegundos."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta,.author-box{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.author-box{display:flex;gap:16px;align-items:flex-start}
+.author-box .avatar{width:64px;height:64px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid rgba(169,123,35,.35)}
+.author-box .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.author-box h3{margin:0 0 6px;font-size:1rem;color:var(--text)}
+.author-box p{margin:0 0 8px;font-size:.88rem}
+.author-box p:last-child{margin-bottom:0}
+.author-box a{color:var(--gold);font-size:.82rem}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .author-box{flex-direction:column}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.author-box,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="arduino_metal_detector_hero.jpg" alt="Detector de metales casero con bobina de búsqueda bobinada a mano conectada a una placa Arduino Uno sobre una mesa de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y electrónica aplicada · Actualizado el <time datetime="2026-09-07">7 de septiembre de 2026</time></div>
+    <h1>Construye tu Propio Detector de Metales Casero con Arduino</h1>
+    <p>El principio del oscilador de batido (BFO), cómo bobinar tu propia bobina de búsqueda, código real para detectar el cambio de frecuencia con Arduino, calibración, interferencias comunes y el camino de upgrade hacia Pulso de Inducción.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="arduino_metal_detector_coil.jpg" alt="Primer plano de una bobina de búsqueda casera hecha con alambre esmaltado enrollado sobre un aro de PVC, conectada a un circuito con transistor y Arduino" loading="lazy">
+  <div class="caption">Casi todo el "secreto" de un detector de metales casero está en la bobina: su diámetro, número de vueltas y blindaje determinan la sensibilidad mucho más que la sofisticación del código.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#principio">El principio físico: cómo detecta metal un BFO</a></li>
+    <li><a href="#por-que-arduino">Por qué usar Arduino en vez de un circuito 100% analógico</a></li>
+    <li><a href="#materiales">Lista de materiales y costos de referencia</a></li>
+    <li><a href="#bobina">Cómo construir la bobina de búsqueda</a></li>
+    <li><a href="#circuito">El circuito: oscilador, transistor y conexión a Arduino</a></li>
+    <li><a href="#codigo">Código Arduino para detectar el cambio de frecuencia</a></li>
+    <li><a href="#calibracion">Calibración y ajuste de sensibilidad</a></li>
+    <li><a href="#interferencias">Interferencias y falsos positivos</a></li>
+    <li><a href="#upgrade">Upgrade: Pulso de Inducción (PI) con Arduino</a></li>
+    <li><a href="#legal">Marco legal de la detección de metales en Chile</a></li>
+    <li><a href="#mejoras">Mejoras posibles y siguientes pasos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="principio">
+<h2>El principio físico: cómo detecta metal un BFO</h2>
+<p>El <strong>oscilador de batido</strong> o BFO (Beat Frequency Oscillator) es el diseño más antiguo y más simple de construir en casa, y es el punto de partida ideal para un proyecto con Arduino. Su funcionamiento se basa en un fenómeno que cualquiera que haya afinado dos guitarras reconoce de oído: cuando dos tonos de frecuencia muy cercana suenan juntos, se produce un tercer tono audible más lento —el "batido"— cuya frecuencia es exactamente la diferencia entre las dos originales.</p>
+<p>Un BFO clásico usa dos osciladores LC (inductancia-capacitancia) ajustados a una frecuencia casi idéntica, típicamente entre 100 kHz y 500 kHz. Uno de los dos incluye la <strong>bobina de búsqueda</strong> —la que se acerca al suelo—; el otro es un oscilador de referencia fijo, sellado y protegido de cualquier influencia externa. Cuando un objeto metálico se acerca a la bobina de búsqueda, altera su inductancia: los metales ferrosos generalmente la aumentan y los no ferrosos (aluminio, cobre) generalmente la reducen mediante corrientes inducidas (corrientes de Foucault) que se oponen al campo magnético original. Ese cambio de inductancia desplaza la frecuencia del oscilador de búsqueda, y la diferencia con el oscilador de referencia —el batido— cambia de tono. En un detector puramente analógico, ese batido se envía directamente a un altavoz.</p>
+<p>La ventaja del BFO es su simplicidad: requiere pocos componentes, es tolerante a errores de construcción, y el fenómeno físico es fácil de entender y depurar. Su desventaja es que es más sensible a la <strong>deriva térmica</strong> (el valor de los componentes cambia levemente con la temperatura, desajustando el balance entre ambos osciladores) y a la <strong>mineralización del suelo</strong>, que puede generar un desplazamiento de frecuencia similar al de un objeto metálico real.</p>
+</section>
+
+<section id="por-que-arduino">
+<h2>Por qué usar Arduino en vez de un circuito 100% analógico</h2>
+<p>Un detector BFO tradicional no necesita ningún microcontrolador — de hecho, se construían décadas antes de que existiera Arduino. Entonces, ¿qué aporta realmente?</p>
+<ul>
+<li><strong>Elimina el segundo oscilador analógico.</strong> En vez de construir y calibrar dos circuitos LC que deben mantenerse perfectamente sincronizados, Arduino puede medir la frecuencia del único oscilador de búsqueda con la función <code>pulseIn()</code> y comparar esa lectura contra un valor de referencia guardado en el propio código, eliminando una fuente completa de deriva térmica y de trabajo de calibración manual.</li>
+<li><strong>Umbral de sensibilidad ajustable por software.</strong> Cambiar cuán sensible es el detector ya no implica reemplazar una resistencia o un potenciómetro: es una constante en el código que puedes ajustar en segundos y volver a cargar.</li>
+<li><strong>Salida más informativa que un simple tono.</strong> Puedes encender distintos LEDs según la magnitud del cambio de frecuencia (una aproximación simple a "discriminación" de tamaño de objeto), mostrar el valor en una pantalla OLED, o registrar los cambios de frecuencia en el tiempo por el puerto serie para depurar el comportamiento del circuito.</li>
+<li><strong>Camino de evolución claro.</strong> El mismo Arduino que cuenta frecuencia en la versión BFO puede, con otro firmware y algunos cambios de hardware, controlar un circuito de Pulso de Inducción mucho más capaz — ver la sección de upgrade más adelante.</li>
+</ul>
+<div class="note"><strong>Expectativa realista:</strong> este proyecto es, ante todo, un ejercicio educativo de electrónica analógica aplicada y programación de temporización precisa. Es una introducción excelente a conceptos de osciladores LC, corrientes de Foucault y medición de frecuencia con microcontroladores — no reemplaza a un detector comercial VLF de gama media en sensibilidad ni en discriminación de metales.</div>
+</section>
+
+<section id="materiales">
+<h2>Lista de materiales y costos de referencia</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos de precio orientativos para el mercado chileno en 2026, componentes básicos disponibles en tiendas de electrónica y ferreterías.</caption>
+<thead><tr><th>Componente</th><th>Especificación sugerida</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Arduino Uno o Nano</td><td>Original o compatible con ATmega328P</td><td>$6.000 – $15.000</td></tr>
+<tr><td>Transistor NPN</td><td>2N3904 o 2N2222</td><td>$200 – $500 c/u</td></tr>
+<tr><td>Alambre esmaltado</td><td>Calibre 22-24 AWG, rollo de 50-100 m</td><td>$3.000 – $7.000</td></tr>
+<tr><td>Condensadores cerámicos</td><td>Rango 100 pF a 10 nF, varios valores</td><td>$100 – $300 c/u</td></tr>
+<tr><td>Condensador de poliéster</td><td>0,01 – 0,1 µF</td><td>$150 – $400 c/u</td></tr>
+<tr><td>Resistencias varias</td><td>1 kΩ a 100 kΩ, pack surtido</td><td>$2.000 – $4.000 (pack)</td></tr>
+<tr><td>Buzzer piezoeléctrico activo</td><td>5V, con oscilador interno</td><td>$800 – $1.500</td></tr>
+<tr><td>Aro de PVC o soporte para bobina</td><td>Diámetro 15-20 cm</td><td>$1.000 – $3.000</td></tr>
+<tr><td>Papel aluminio + cinta aislante</td><td>Para blindaje electrostático de la bobina</td><td>Ya disponible / $1.000</td></tr>
+<tr><td>Tubo de PVC y mango</td><td>Para el vástago del detector</td><td>$3.000 – $8.000</td></tr>
+<tr><td>Protoboard o placa perforada</td><td>Para montaje del circuito</td><td>$2.000 – $5.000</td></tr>
+<tr><td><strong>Total aproximado del proyecto</strong></td><td>&nbsp;</td><td><strong>$20.000 – $45.000</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>La mayor parte del presupuesto se va en el Arduino si no tienes uno reutilizable de otro proyecto — el resto de los componentes es sorprendentemente económico, lo que hace de este un proyecto accesible para experimentar sin gran riesgo financiero.</p>
+</section>
+
+<section id="bobina">
+<h2>Cómo construir la bobina de búsqueda</h2>
+<p>La bobina es, sin exagerar, el componente más determinante de todo el proyecto. Estas son las pautas de diseño más usadas en proyectos BFO caseros documentados:</p>
+<ul>
+<li><strong>Diámetro:</strong> entre 15 y 20 cm es un buen punto de partida — bobinas más grandes detectan más profundo pero pierden sensibilidad a objetos pequeños; bobinas más chicas hacen lo contrario.</li>
+<li><strong>Número de vueltas:</strong> típicamente entre 100 y 150 vueltas de alambre esmaltado calibre 22-24 AWG, ajustando el número exacto según el valor de inductancia objetivo (normalmente entre 1 y 3 mH para trabajar con osciladores en el rango de 100-300 kHz junto a condensadores de 100-500 pF).</li>
+<li><strong>Bobinado prolijo y compacto:</strong> las vueltas deben quedar apretadas y en el mismo sentido, sujetas con cinta o barniz para evitar que se muevan — una bobina "floja" cambia de inductancia con la vibración normal de caminar, generando falsos positivos.</li>
+<li><strong>Blindaje electrostático (shield):</strong> envolver la bobina terminada con una capa de papel aluminio sin que forme un lazo cerrado (dejar un corte sin soldar en el aluminio), conectada a tierra del circuito, reduce drásticamente el ruido captado del ambiente — es una mejora simple con impacto notable en la estabilidad.</li>
+<li><strong>Verificación con multímetro:</strong> si tu multímetro mide inductancia, confirma que el valor obtenido esté dentro del rango esperado para tu diseño de oscilador antes de montar todo el circuito definitivo.</li>
+</ul>
+<div class="note"><strong>Consejo práctico:</strong> bobina primero, circuito después. Muchos proyectos fallan no por errores de programación sino por una bobina mal construida cuyo valor de inductancia no coincide con lo que el oscilador espera. Verifica la bobina de forma aislada antes de integrarla al resto del circuito.</div>
+</section>
+
+<section id="circuito">
+<h2>El circuito: oscilador, transistor y conexión a Arduino</h2>
+<p>El circuito de búsqueda es un oscilador <strong>Colpitts</strong> o <strong>Hartley</strong> simple construido alrededor de un transistor NPN de propósito general (2N3904 o equivalente), la bobina de búsqueda actuando como el elemento inductivo, y un par de condensadores formando el divisor capacitivo característico de esta topología. La salida oscilante del circuito —una señal cuadrada o cuasi-cuadrada tras un pequeño acondicionamiento— se conecta a un pin digital de Arduino configurado como entrada.</p>
+<p>El acondicionamiento de señal es un punto donde muchos principiantes se atascan: la salida directa de un oscilador LC transistorizado no siempre tiene los niveles de voltaje limpios que Arduino espera en un pin digital (0V y 5V bien definidos). Un pequeño transistor adicional en configuración de amplificador-limitador, o un simple comparador como el LM393, "cuadra" la señal antes de entregarla a Arduino, evitando lecturas erráticas de frecuencia.</p>
+<pre><code>Esquema conceptual de bloques:
+
+[Bobina de búsqueda] --- [Oscilador Colpitts, transistor NPN]
+                                    |
+                                    v
+                      [Acondicionador / comparador LM393]
+                                    |
+                                    v
+                         [Pin digital Arduino, ej. D8]
+                                    |
+                                    v
+                [Arduino mide frecuencia con pulseIn() o similar]
+                                    |
+                                    v
+                    [Compara contra frecuencia base guardada]
+                                    |
+                    ¿Diferencia > umbral? --- Sí --> Buzzer + LED
+                                    |
+                                   No
+                                    |
+                              Actualiza línea base lentamente
+                              (compensación de deriva térmica)</code></pre>
+</section>
+
+<section id="codigo">
+<h2>Código Arduino para detectar el cambio de frecuencia</h2>
+<p>El siguiente código es una referencia ilustrativa del enfoque de programación, pensado para adaptarse a tu circuito específico — los valores exactos de tiempos y umbrales dependerán de la frecuencia real de tu oscilador, que debes medir primero con el monitor serie antes de fijar el umbral de disparo.</p>
+<pre><code>// Detector de metales BFO — lectura de frecuencia con pulseIn()
+// Pin de entrada: señal acondicionada del oscilador (onda cuadrada)
+
+const int PIN_OSCILADOR = 8;
+const int PIN_BUZZER    = 9;
+const int PIN_LED       = 13;
+
+unsigned long frecuenciaBase = 0;
+const int MUESTRAS_CALIBRACION = 50;
+const long UMBRAL_HZ = 40;       // Ajustar según pruebas reales
+const float FACTOR_SUAVIZADO = 0.02; // Compensación lenta de deriva térmica
+
+unsigned long medirFrecuencia() {
+  unsigned long tAlto = pulseIn(PIN_OSCILADOR, HIGH, 30000);
+  unsigned long tBajo = pulseIn(PIN_OSCILADOR, LOW, 30000);
+  unsigned long periodo = tAlto + tBajo; // en microsegundos
+  if (periodo == 0) return 0;
+  return 1000000UL / periodo; // frecuencia en Hz
+}
+
+void setup() {
+  pinMode(PIN_OSCILADOR, INPUT);
+  pinMode(PIN_BUZZER, OUTPUT);
+  pinMode(PIN_LED, OUTPUT);
+  Serial.begin(9600);
+
+  Serial.println("Calibrando linea base... aleja objetos metalicos.");
+  unsigned long suma = 0;
+  int muestrasValidas = 0;
+  for (int i = 0; i < MUESTRAS_CALIBRACION; i++) {
+    unsigned long f = medirFrecuencia();
+    if (f > 0) { suma += f; muestrasValidas++; }
+    delay(20);
+  }
+  frecuenciaBase = suma / max(muestrasValidas, 1);
+  Serial.print("Frecuencia base (Hz): ");
+  Serial.println(frecuenciaBase);
+}
+
+void loop() {
+  unsigned long f = medirFrecuencia();
+  if (f == 0) return; // lectura invalida, se descarta
+
+  long diferencia = (long)f - (long)frecuenciaBase;
+
+  if (abs(diferencia) > UMBRAL_HZ) {
+    digitalWrite(PIN_LED, HIGH);
+    tone(PIN_BUZZER, 1000, 100);
+    Serial.print("METAL DETECTADO | Diferencia Hz: ");
+    Serial.println(diferencia);
+  } else {
+    digitalWrite(PIN_LED, LOW);
+    // Actualiza lentamente la base para compensar deriva termica,
+    // solo cuando NO hay deteccion activa
+    frecuenciaBase = frecuenciaBase * (1 - FACTOR_SUAVIZADO)
+                     + f * FACTOR_SUAVIZADO;
+  }
+
+  delay(10);
+}</code></pre>
+<p>Dos decisiones de diseño de este código merecen explicación. Primero, la <strong>calibración inicial</strong> promedia varias muestras al encender para establecer una línea base confiable, en vez de confiar en una sola lectura que podría ser ruido. Segundo, la <strong>actualización lenta de la línea base</strong> durante el funcionamiento normal (cuando no hay detección) es lo que compensa la deriva térmica del oscilador a lo largo de una sesión de uso — sin esto, el detector se desajustaría gradualmente y terminaría sonando sin motivo tras algunos minutos.</p>
+</section>
+
+<section id="calibracion">
+<h2>Calibración y ajuste de sensibilidad</h2>
+<ol>
+<li><strong>Deja calentar el circuito 3-5 minutos</strong> antes de calibrar — los componentes analógicos cambian levemente sus valores hasta alcanzar una temperatura de operación estable.</li>
+<li><strong>Aleja todo objeto metálico</strong> (incluyendo anillos, reloj, hebilla) al menos un metro de la bobina antes de ejecutar la rutina de calibración inicial del código.</li>
+<li><strong>Observa la frecuencia base por el puerto serie</strong> durante unos minutos sin mover la bobina, para verificar cuánto varía de forma natural — ese rango de variación natural debe quedar claramente por debajo de tu <code>UMBRAL_HZ</code>.</li>
+<li><strong>Ajusta el umbral gradualmente:</strong> empieza con un valor conservador (alto) para evitar falsos positivos, y ve reduciéndolo mientras pruebas con objetos metálicos reales a distintas distancias, hasta encontrar el punto donde detectas sin disparos falsos en reposo.</li>
+<li><strong>Prueba con distintos metales</strong> (moneda de cobre, tornillo de acero, lámina de aluminio) para entender cómo cada uno desplaza la frecuencia en direcciones distintas — es un buen ejercicio para entender el comportamiento real de las corrientes de Foucault.</li>
+</ol>
+</section>
+
+<section id="interferencias">
+<h2>Interferencias y falsos positivos</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Causas típicas de mal funcionamiento en detectores BFO caseros y su solución práctica.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Detecta metal constantemente sin razón</td><td>Umbral demasiado sensible o deriva térmica sin compensar</td><td>Sube el umbral, agrega o ajusta la compensación lenta de línea base</td></tr>
+<tr><td>Deja de detectar tras varios minutos de uso</td><td>Deriva térmica excesiva del oscilador</td><td>Verifica calidad de condensadores (usar cerámicos NP0/C0G de baja deriva)</td></tr>
+<tr><td>Interferencia cerca de routers WiFi o motores</td><td>Bobina sin blindaje captando ruido electromagnético ambiental</td><td>Agregar blindaje electrostático de papel aluminio a la bobina</td></tr>
+<tr><td>Lecturas de frecuencia erráticas en el monitor serie</td><td>Señal del oscilador no está bien acondicionada para nivel digital</td><td>Agregar etapa comparadora (LM393) antes del pin de Arduino</td></tr>
+<tr><td>No detecta nada, ni con un objeto metálico grande encima</td><td>Bobina mal construida, valor de inductancia fuera de rango</td><td>Verificar inductancia con multímetro, rehacer bobinado si es necesario</td></tr>
+<tr><td>El vástago metálico del mango genera falsos positivos</td><td>Partes metálicas de la estructura demasiado cerca de la bobina</td><td>Usar PVC o madera para el vástago, mantener distancia de la bobina</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="upgrade">
+<h2>Upgrade: Pulso de Inducción (PI) con Arduino</h2>
+<p>Una vez dominado el BFO, el siguiente paso natural es un circuito de <strong>Pulso de Inducción</strong>, significativamente más inmune a la mineralización del suelo y más común en detectores profesionales orientados a playa o suelos con alto contenido de hierro. El principio es distinto: en vez de un oscilador continuo, Arduino genera pulsos breves de corriente (típicamente 100-300 microsegundos) hacia la bobina a través de un MOSFET de potencia, usando un pin digital.</p>
+<p>Al cortar abruptamente ese pulso, el colapso del campo magnético induce un voltaje transitorio en la misma bobina. Si hay un objeto metálico cercano, las corrientes de Foucault inducidas en él generan su propio campo magnético que se opone al colapso, <strong>prolongando ligeramente el tiempo de decaimiento</strong> de ese voltaje transitorio respecto al caso sin metal. Arduino mide ese intervalo usando la función <code>micros()</code> —que ofrece resolución de microsegundos, indispensable para este tipo de medición— comparando el tiempo de decaimiento contra una línea base establecida sin metal presente.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación editorial entre ambas arquitecturas para un proyecto de hobby con Arduino.</caption>
+<thead><tr><th>Criterio</th><th>BFO</th><th>Pulso de Inducción (PI)</th></tr></thead>
+<tbody>
+<tr><td>Complejidad de hardware</td><td>Baja — un transistor y pocos pasivos</td><td>Media-alta — MOSFET, diodo de descarga, comparador rápido</td></tr>
+<tr><td>Complejidad de código</td><td>Baja — pulseIn() y comparación simple</td><td>Alta — temporización de microsegundos crítica, uso de interrupciones</td></tr>
+<tr><td>Inmunidad a suelo mineralizado</td><td>Baja</td><td>Alta — ventaja clásica del PI para playa y suelos con hierro</td></tr>
+<tr><td>Profundidad de detección típica (hobby)</td><td>Menor</td><td>Mayor, a igualdad de tamaño de bobina</td></tr>
+<tr><td>Discriminación de tipo de metal</td><td>Limitada, aproximada por dirección del desplazamiento</td><td>Muy limitada sin circuitería adicional avanzada</td></tr>
+<tr><td>Ideal para</td><td>Aprender el principio físico, proyecto de fin de semana</td><td>Segundo proyecto, mejor rendimiento de campo</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>Advertencia técnica sobre el PI:</strong> el colapso abrupto del campo magnético en la bobina puede generar picos de voltaje muy superiores a los 5V que tolera un pin de Arduino. Un circuito de Pulso de Inducción real requiere un diodo de protección (snubber) y, casi siempre, una etapa de acondicionamiento con amplificador operacional o comparador antes de que la señal llegue a cualquier pin del microcontrolador. Construir esta etapa sin la protección adecuada puede dañar permanentemente el Arduino.</div>
+</section>
+
+<section id="legal">
+<h2>Marco legal de la detección de metales en Chile</h2>
+<p>Antes de salir a probar tu detector fuera de tu propio patio, conviene conocer el marco legal chileno, que suele sorprender a quienes recién se inician en este hobby:</p>
+<ul>
+<li><strong>Ley N° 17.288 de Monumentos Nacionales</strong> establece que los objetos arqueológicos, paleontológicos y antropológicos hallados en territorio chileno, incluyendo el subsuelo marino, son patrimonio del Estado. Esto significa que aunque el hallazgo con tu detector casero sea completamente casual, remover, extraer o apropiarse de un objeto de valor arqueológico sin autorización constituye una infracción a la ley.</li>
+<li><strong>Consejo de Monumentos Nacionales (CMN)</strong> es el organismo que autoriza actividades de prospección arqueológica formal; el uso recreativo de un detector de metales en un contexto no arqueológico (como buscar monedas perdidas en una plaza pública o en tu propio terreno) generalmente no requiere ese permiso, pero la línea se vuelve legalmente delicada en zonas de valor patrimonial declarado, sitios históricos o playas con hallazgos documentados.</li>
+<li><strong>Restricciones locales.</strong> Muchos parques nacionales, playas y áreas protegidas administradas por CONAF u otras entidades tienen reglamentos propios que pueden prohibir explícitamente el uso de detectores de metales dentro de sus límites.</li>
+<li><strong>Propiedad privada.</strong> Nunca uses un detector de metales en terreno ajeno sin autorización explícita del propietario, independiente de cualquier consideración arqueológica.</li>
+</ul>
+<div class="note"><strong>Recomendación práctica:</strong> para uso educativo y recreativo de bajo riesgo, limita las pruebas a tu propio patio o a espacios donde tengas autorización clara del propietario. Si en algún momento tu detector casero (o uno comercial, más adelante) encuentra algo que parezca de valor histórico o arqueológico, la conducta correcta y legalmente segura es no removerlo y reportarlo al Consejo de Monumentos Nacionales.</div>
+</section>
+
+<section id="mejoras">
+<h2>Mejoras posibles y siguientes pasos</h2>
+<ul>
+<li><strong>Pantalla OLED I2C</strong> para mostrar la frecuencia en tiempo real y la diferencia respecto a la línea base, útil tanto para calibrar como para estimar de forma aproximada el tamaño del objeto detectado.</li>
+<li><strong>Migrar a ESP32</strong> para aprovechar su ADC más rápido y sus timers de hardware más precisos, especialmente relevante si avanzas hacia un diseño de Pulso de Inducción donde la resolución temporal es crítica.</li>
+<li><strong>Registro de datos por WiFi o SD</strong> (con ESP32) para analizar el comportamiento del oscilador en sesiones largas y afinar la compensación de deriva térmica con datos reales en vez de prueba y error.</li>
+<li><strong>Vibración en vez de sonido</strong> mediante un motor de vibración controlado por Arduino, útil para búsquedas subacuáticas donde el sonido del buzzer no es práctico.</li>
+<li><strong>Impresión 3D del mango y soporte de bobina</strong> para una construcción más robusta y ajustable que el PVC improvisado, si cuentas con acceso a una impresora 3D.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Un detector de metales BFO con Arduino es uno de los proyectos de electrónica analógica más agradecidos para aprender haciendo: combina teoría de osciladores LC, corrientes de Foucault, medición precisa de frecuencia y programación de temporización, todo en un dispositivo que puedes probar de inmediato con una moneda en el patio. No compite en sensibilidad con un detector comercial, pero el aprendizaje que deja —y el camino de upgrade hacia Pulso de Inducción una vez dominado— lo convierte en una inversión de tiempo mucho más valiosa que su bajo costo de materiales. Antes de salir a probarlo fuera de casa, recuerda revisar el marco legal: la Ley de Monumentos Nacionales aplica sin importar cuán casero sea el instrumento con el que hiciste el hallazgo.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué tan sensible es un detector de metales casero hecho con Arduino?</summary><p>Un circuito BFO básico bien construido puede detectar monedas u objetos metálicos pequeños a 5-10 cm de profundidad, y objetos grandes (como una tapa metálica) hasta 20-25 cm, dependiendo del diámetro de la bobina, la calidad del bobinado y el blindaje contra interferencias. Está lejos del rendimiento de un detector VLF comercial de gama media, pero es más que suficiente para aprender el principio físico y para búsquedas casuales en patio o playa.</p></details>
+<details><summary>¿Por qué mi detector suena todo el tiempo o detecta metal donde no hay nada?</summary><p>Las causas más comunes son: deriva térmica del oscilador (el circuito necesita unos minutos para estabilizarse tras encenderlo), interferencia electromagnética de fuentes cercanas (routers WiFi, motores, cables de alta corriente), una bobina sin blindaje electrostático captando ruido ambiental, o un umbral de detección demasiado sensible en el código. Ajustar el umbral de disparo y dar tiempo de calentamiento al circuito resuelve la mayoría de los falsos positivos.</p></details>
+<details><summary>¿Es necesario usar Arduino, o podría hacer un detector de metales solo con un circuito analógico?</summary><p>No es estrictamente necesario. El principio de oscilador de batido (BFO) funciona perfectamente con dos osciladores analógicos y un altavoz, sin ningún microcontrolador, tal como se construían los detectores caseros desde los años 60. Arduino aporta valor al reemplazar el segundo oscilador analógico por una medición digital de frecuencia, lo que reduce la deriva térmica de un segundo circuito, permite mostrar la frecuencia en una pantalla, registrar datos, y facilita experimentar con distintos umbrales de sensibilidad por software en vez de por hardware.</p></details>
+<details><summary>¿Necesito permiso para usar un detector de metales en Chile?</summary><p>Usar un detector de metales por afición en tu propio terreno no requiere permiso. Sin embargo, la Ley 17.288 de Monumentos Nacionales prohíbe la prospección, remoción o extracción de objetos arqueológicos, paleontológicos o antropológicos sin autorización del Consejo de Monumentos Nacionales, y esto aplica sin importar si el hallazgo fue casual con un detector de metales. Además, muchas playas, parques nacionales y sitios patrimoniales tienen restricciones específicas de acceso y uso de detectores que debes verificar antes de salir a buscar.</p></details>
+<details><summary>¿Cuál es la diferencia entre un detector BFO y uno de Pulso de Inducción (PI)?</summary><p>Un detector BFO detecta metal por el cambio de frecuencia que provoca un objeto metálico sobre un oscilador LC, es simple de construir pero sensible a la mineralización del suelo y a la deriva térmica. Un detector de Pulso de Inducción envía pulsos de corriente breves a la bobina y mide el tiempo de decaimiento del campo magnético inducido; es significativamente más inmune a suelos mineralizados y más profundo en su detección, pero exige un circuito y un código de temporización más exigentes, típicamente usando la función micros() de Arduino para medir intervalos de microsegundos.</p></details>
+</div>
+</section>
+
+<div class="author-box">
+  <div class="avatar" aria-hidden="true"><img src="../author_alberto.jpg" alt="Fotografía de Alberto Gallardo, analista programador computacional"></div>
+  <div>
+    <h3>Sobre el autor</h3>
+    <p><strong>Alberto Gallardo</strong> es Analista Programador Computacional con 18 años de experiencia en desarrollo y educación. Escribe y mantiene este sitio, combinando su trayectoria técnica con la docencia en robótica, electrónica y Arduino para makers, docentes y estudiantes en Chile y Latinoamérica. Los circuitos y el código de esta guía son puntos de partida educativos: los valores exactos de componentes pueden requerir ajuste según los materiales disponibles. <a href="/about">Más sobre Alberto →</a></p>
+  </div>
+</div>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y los valores de componentes son referenciales y deben adaptarse y probarse con tu propio hardware; verifica siempre la normativa vigente antes de usar un detector de metales fuera de tu propiedad. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te gustó experimentar con temporización precisa en Arduino, nuestra guía <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">Cómo reparar baterías de taladros inalámbricos: BMS y celdas</a> aplica un nivel similar de rigor técnico a otro tipo de electrónica práctica — diagnóstico con multímetro, soldadura y seguridad eléctrica.</p>
+  <p>También puedes revisar el <a href="/#categories">temario completo del blog</a> para ver qué guías vienen en camino.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/">← Anterior: Portada</a>
+  <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">Siguiente: Reparar baterías de taladro →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los valores exactos de componentes y el comportamiento de cada circuito deben verificarse de forma experimental con tu propio montaje.</p>
+<ul>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/advanced-io/pulsein/" target="_blank" rel="noopener noreferrer">Arduino Reference — Función pulseIn()</a></li>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/time/micros/" target="_blank" rel="noopener noreferrer">Arduino Reference — Función micros()</a></li>
+<li><a href="https://www.monumentos.gob.cl" target="_blank" rel="noopener noreferrer">Consejo de Monumentos Nacionales de Chile — Normativa y Ley 17.288</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 7 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
