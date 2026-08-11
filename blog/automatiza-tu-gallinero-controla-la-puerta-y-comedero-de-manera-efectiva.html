@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Automatiza tu Gallinero: Controla la Puerta y el Comedero de Forma Efectiva — Guía Técnica con Arduino</title>
+<meta name="description" content="Guía completa para automatizar la puerta y el comedero de tu gallinero con Arduino o ESP32: sensor de luz vs RTC con hora solar, elección de actuador, máquina de estados, protección contra depredadores, alimentación solar y código completo no bloqueante.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/automatiza-tu-gallinero-controla-la-puerta-y-comedero-de-manera-efectiva">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automatiza tu Gallinero: Controla la Puerta y el Comedero de Forma Efectiva">
+<meta property="og:description" content="Sensor de luz vs RTC con hora solar, elección de actuador, máquina de estados, protección contra depredadores, alimentación solar y código completo con Arduino/ESP32 para automatizar tu gallinero.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/gallinero_automatico_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/automatiza-tu-gallinero-controla-la-puerta-y-comedero-de-manera-efectiva">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Automatiza tu Gallinero con Arduino: Puerta y Comedero">
+<meta name="twitter:description" content="Guía técnica completa: sensor de luz, RTC, actuadores, protección contra depredadores, energía solar y código no bloqueante para tu gallinero automático.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/gallinero_automatico_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Automatiza tu Gallinero: Controla la Puerta y el Comedero de Forma Efectiva — Guía Técnica con Arduino",
+  "description":"Guía técnica completa para automatizar un gallinero doméstico con Arduino o ESP32: comparación entre sensor de luz (LDR) y reloj de tiempo real (RTC) con cálculo de hora solar, elección de actuador para la puerta (motor DC con husillo, servo o actuador lineal), detección de obstrucción para proteger a las gallinas, dispensador automático de alimento con temporización, alimentación mediante batería y panel solar para gallineros sin acceso a electricidad, protección IP contra la intemperie, y código completo estructurado como máquina de estados no bloqueante con millis().",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-11-16",
+  "dateModified":"2026-11-16",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/automatiza-tu-gallinero-controla-la-puerta-y-comedero-de-manera-efectiva"},
+  "image":"https://www.ukrabot.cl/blog/gallinero_automatico_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Arduino Uno/Nano o ESP32, módulo RTC DS3231, motor DC con caja reductora o actuador lineal de 12V, driver de motor tipo L298N o similar, fotorresistor LDR, sensores fin de carrera (2 unidades), servo SG90 o motor DC pequeño para el comedero, batería de 12V con panel solar y controlador de carga (opcional para instalaciones sin electricidad), caja estanca IP65, cables y conectores resistentes a la intemperie",
+  "wordCount":"3400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Automatiza tu Gallinero: Puerta y Comedero","item":"https://www.ukrabot.cl/blog/automatiza-tu-gallinero-controla-la-puerta-y-comedero-de-manera-efectiva"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Es mejor usar un sensor de luz (LDR) o un reloj RTC para abrir la puerta del gallinero?","acceptedAnswer":{"@type":"Answer","text":"Cada enfoque tiene una debilidad distinta que conviene compensar combinándolos. Un sensor de luz (LDR) reacciona a la luminosidad real del ambiente, lo que es ideal en teoría porque las gallinas se guían naturalmente por la luz, pero es vulnerable a falsos positivos: una noche de luna llena muy intensa, la luz de un poste cercano, o una tormenta que oscurece el cielo a media tarde pueden activar la puerta en el momento incorrecto. Un reloj de tiempo real (RTC) con cálculo de hora de amanecer/atardecer es mucho más predecible y no se deja engañar por luces artificiales, pero no se adapta a cambios súbitos de clima, como un eclipse parcial o una tormenta severa a mediodía. La solución más robusta usada en proyectos serios es combinar ambos: el RTC define una ventana de tiempo razonable alrededor del amanecer y el atardecer, y dentro de esa ventana, el sensor LDR confirma la condición real de luz antes de accionar el motor."}},
+    {"@type":"Question","name":"¿Cómo evito que la puerta automática aplaste a una gallina que esté cruzando en el momento equivocado?","acceptedAnswer":{"@type":"Answer","text":"La protección más efectiva combina varias capas de seguridad en el software y el hardware. En el software, se debe monitorear el consumo de corriente del motor mediante un sensor de corriente (como el módulo ACS712): un aumento súbito de corriente durante el movimiento de la puerta indica que algo está bloqueando su recorrido, y el sistema debe detener inmediatamente el motor e idealmente revertir el movimiento. En el hardware, es recomendable diseñar la puerta con un mecanismo de cierre relativamente lento (varios segundos, no un cierre brusco e instantáneo) y, si es posible, con un borde de contacto blando en la parte inferior. Ninguna de estas medidas sustituye una supervisión periódica del sistema, especialmente durante las primeras semanas de uso."}},
+    {"@type":"Question","name":"¿Cuánto tiempo dura la batería de un gallinero automático alimentado por panel solar?","acceptedAnswer":{"@type":"Answer","text":"Depende del tamaño de la batería, la eficiencia del panel solar, y la frecuencia de uso de los actuadores, pero como referencia orientativa: un sistema con microcontrolador de bajo consumo en modo de reposo profundo (deep sleep) entre operaciones, alimentado por una batería de plomo-ácido sellada de 12V y 7Ah junto con un panel solar de 10-20W, típicamente mantiene el sistema funcionando de forma autónoma de manera indefinida en la mayoría de las ubicaciones con exposición solar razonable, ya que el consumo real de energía se concentra en dos breves períodos diarios de accionamiento del motor, mientras el resto del día el sistema permanece en un estado de consumo mínimo."}},
+    {"@type":"Question","name":"¿Qué pasa si se corta la energía o falla el sistema y la puerta queda abierta toda la noche?","acceptedAnswer":{"@type":"Answer","text":"Es el escenario de falla más peligroso del proyecto, ya que expone a las gallinas a depredadores nocturnos durante horas. Se recomienda implementar múltiples salvaguardas: una función de watchdog timer por software que reinicie el microcontrolador si detecta que el programa se congeló, una batería de respaldo dimensionada con margen suficiente para varios días sin sol directo, y, para quienes buscan la máxima tranquilidad, un mecanismo de cierre manual de emergencia accesible desde el exterior del gallinero que no dependa de ningún componente electrónico. Algunos proyectos avanzados añaden también notificaciones remotas (vía ESP32 y una app o Telegram) que alertan al dueño si la puerta no completó su ciclo de cierre esperado."}},
+    {"@type":"Question","name":"¿El comedero automático puede sobrealimentar a las gallinas o desperdiciar alimento?</span>","acceptedAnswer":{"@type":"Answer","text":"Sí, si no se dimensiona correctamente la cantidad dispensada por ciclo y la frecuencia de las dispensaciones. Un dispensador basado en un servo o motor que gira una compuerta calibrada por tiempo (por ejemplo, 2 segundos de apertura) debe probarse empíricamente pesando el alimento resultante, ya que la cantidad real depende de la granulometría del alimento, la humedad ambiental y el diseño específico de la tolva. Se recomienda comenzar con dispensaciones pequeñas y frecuentes (por ejemplo, tres veces al día) en vez de una sola dispensación grande, tanto para reducir el desperdicio por derrame como para minimizar el atractivo del comedero para roedores y aves silvestres que podrían acudir a una gran cantidad de alimento expuesto de una sola vez."}},
+    {"@type":"Question","name":"¿Necesito saber programar para automatizar mi gallinero, o existen kits comerciales listos para usar?</span>","acceptedAnswer":{"@type":"Answer","text":"Existen kits comerciales de puertas automáticas para gallinero (algunos con sensor de luz integrado y motor ya ensamblado) que no requieren ningún conocimiento de programación y son una opción perfectamente válida para quien solo busca resolver el problema sin construir nada. La ventaja de un proyecto DIY con Arduino o ESP32, como el que describe esta guía, es la posibilidad de personalizar completamente el comportamiento (ventanas horarias, integración con el comedero, notificaciones remotas, registro de datos), a un costo generalmente menor que los kits comerciales de gama media-alta, a cambio de requerir conocimientos básicos de programación y electrónica que esta misma guía ayuda a desarrollar."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="gallinero_automatico_hero.jpg" alt="Gallinero doméstico con puerta corrediza automática accionada por motor y panel solar, junto a un comedero automático dispensador conectado a Arduino" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización y agricultura urbana · Actualizado el <time datetime="2026-11-16">16 de noviembre de 2026</time></div>
+    <h1>Automatiza tu Gallinero: Controla la Puerta y el Comedero de Forma Efectiva</h1>
+    <p>Sensor de luz vs reloj de tiempo real, elección del actuador correcto, detección de obstrucciones para proteger a las gallinas, dispensador automático de alimento, energía solar para gallineros sin electricidad, y código completo con Arduino o ESP32.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="puerta_gallinero_motor_husillo.jpg" alt="Mecanismo de puerta corrediza para gallinero accionado por motor DC con husillo, con sensores fin de carrera en la parte superior e inferior del recorrido" loading="lazy">
+  <div class="caption">La confiabilidad de un gallinero automático se juega, más que en el código, en el diseño mecánico de su puerta: un buen sistema de fin de carrera vale tanto como un buen sensor.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que-automatizar">Por qué automatizar la puerta y el comedero del gallinero</a></li>
+    <li><a href="#luz-vs-rtc">Sensor de luz vs RTC con hora solar: cuál usar y por qué combinarlos</a></li>
+    <li><a href="#materiales">Lista de materiales y presupuesto</a></li>
+    <li><a href="#actuador">Elegir el actuador correcto para la puerta</a></li>
+    <li><a href="#circuito">Circuito y conexión de hardware</a></li>
+    <li><a href="#seguridad-obstruccion">Seguridad crítica: detección de obstrucción y protección de las gallinas</a></li>
+    <li><a href="#codigo-puerta">Código: control de la puerta con máquina de estados</a></li>
+    <li><a href="#comedero">Comedero automático: diseño y temporización</a></li>
+    <li><a href="#codigo-comedero">Código: dispensador de alimento programado</a></li>
+    <li><a href="#energia">Alimentación: batería y panel solar para instalaciones remotas</a></li>
+    <li><a href="#proteccion-clima">Protección contra la intemperie: gabinetes IP y cableado</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y solución de errores</a></li>
+    <li><a href="#mejoras">Mejoras posibles: notificaciones, cámara y registro de datos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que-automatizar">
+<h2>Por qué automatizar la puerta y el comedero del gallinero</h2>
+<p>Quien cría gallinas, ya sea en un pequeño patio urbano o en un terreno rural, conoce bien la rutina que impone: la puerta del gallinero debe abrirse cada mañana apenas amanece para que las aves puedan salir a alimentarse y moverse, y debe cerrarse sin falta cada noche, generalmente entre 15 y 30 minutos después del atardecer, cuando las gallinas ya regresaron por instinto a su percha. Olvidar cerrar la puerta una sola noche es, con demasiada frecuencia, la diferencia entre una mañana tranquila y una tragedia causada por zorros, comadrejas, perros vagabundos o aves rapaces nocturnas, dependiendo de la fauna local de cada región.</p>
+<p>Esta rigidez horaria diaria, que no da tregua ni en vacaciones ni en días de mal clima, es exactamente el tipo de problema que un microcontrolador resuelve de forma natural: una tarea repetitiva, con reglas claras, sensible al tiempo, y con una consecuencia real y medible si se ejecuta mal. Sumar a esto un <strong>comedero automático</strong> con dispensación programada no solo añade comodidad para el dueño, sino que ayuda a mantener una alimentación más regular y controlada, reduciendo el desperdicio de alimento expuesto que atrae roedores y aves silvestres competidoras.</p>
+<p>A diferencia de proyectos de interior como un semáforo de LEDs o un piano electrónico, un gallinero automático introduce desafíos propios de la <strong>automatización de exterior</strong>: exposición a la intemperie, necesidad de energía autónoma en ubicaciones sin acceso a electricidad, y —el más importante de todos— la seguridad física de un ser vivo que puede quedar atrapado en el mecanismo si el diseño no contempla las protecciones adecuadas.</p>
+</section>
+
+<section id="luz-vs-rtc">
+<h2>Sensor de luz vs RTC con hora solar: cuál usar y por qué combinarlos</h2>
+<p>La decisión de diseño más importante del proyecto es cómo el sistema decide <em>cuándo</em> abrir y cerrar la puerta. Existen dos enfoques principales, cada uno con una debilidad característica.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación de estrategias de temporización para la apertura y cierre automático.</caption>
+<thead><tr><th>Estrategia</th><th>Ventaja</th><th>Debilidad principal</th></tr></thead>
+<tbody>
+<tr><td>Sensor de luz (LDR/fotorresistor)</td><td>Reacciona a la luminosidad real del entorno, igual que la gallina</td><td>Falsos positivos por luna llena, luces artificiales cercanas o tormentas diurnas</td></tr>
+<tr><td>Reloj RTC con hora fija</td><td>Totalmente predecible, no se deja engañar por luz artificial</td><td>No se adapta a cambios de estación sin recalcular horarios manualmente</td></tr>
+<tr><td>RTC con cálculo de hora solar (amanecer/atardecer)</td><td>Se ajusta automáticamente a la época del año según latitud/longitud</td><td>Requiere cálculo astronómico adicional en el código</td></tr>
+<tr><td><strong>Combinación RTC + LDR (recomendado)</strong></td><td>El RTC acota una ventana horaria razonable; el LDR confirma la condición real de luz dentro de esa ventana</td><td>Mayor complejidad de código, pero mucho más robusto en la práctica</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Enfoque recomendado para esta guía:</strong> usar un módulo RTC (como el DS3231, por su alta precisión y bajísima deriva) para definir una ventana horaria amplia alrededor del amanecer y el atardecer esperados para la estación del año (por ejemplo, entre las 6:00 y las 9:00 para la apertura), y dentro de esa ventana, usar el sensor LDR para determinar el momento exacto de accionar el motor. Esto evita que una luz de patio vecina abra la puerta a las 2 de la madrugada, y evita también que un día nublado retrase la apertura más allá de un margen razonable.</div>
+</section>
+
+<section id="materiales">
+<h2>Lista de materiales y presupuesto</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Presupuesto de referencia para el mercado chileno en 2026. Los precios varían según proveedor y si se opta por componentes nuevos o reciclados de otros proyectos.</caption>
+<thead><tr><th>Componente</th><th>Especificación sugerida</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Arduino Uno/Nano o ESP32</td><td>ESP32 recomendado si se planea conectividad Wi-Fi para notificaciones</td><td>$6.000 – $15.000</td></tr>
+<tr><td>Módulo RTC DS3231</td><td>Con batería CR2032 de respaldo, alta precisión</td><td>$3.000 – $6.000</td></tr>
+<tr><td>Motor DC con caja reductora o actuador lineal 12V</td><td>Torque suficiente para el peso de la puerta elegida</td><td>$8.000 – $25.000</td></tr>
+<tr><td>Driver de motor (L298N o similar)</td><td>Puente H doble, soporta inversión de giro</td><td>$3.000 – $6.000</td></tr>
+<tr><td>Fotorresistor LDR + resistencia 10kΩ</td><td>Para el divisor de voltaje del sensor de luz</td><td>$500 – $1.500</td></tr>
+<tr><td>Sensores fin de carrera (2 unidades)</td><td>Microswitch tipo palanca, uso general</td><td>$1.500 – $4.000</td></tr>
+<tr><td>Módulo sensor de corriente ACS712</td><td>Rango 5A o 20A según el motor</td><td>$2.500 – $5.000</td></tr>
+<tr><td>Servo SG90 o motor DC pequeño para comedero</td><td>Para accionar la compuerta dispensadora</td><td>$2.000 – $6.000</td></tr>
+<tr><td>Batería 12V sellada (AGM/gel) + panel solar</td><td>7-12Ah, panel de 10-20W (opcional, para ubicaciones sin electricidad)</td><td>$25.000 – $55.000</td></tr>
+<tr><td>Controlador de carga solar PWM/MPPT básico</td><td>Protege la batería de sobrecarga</td><td>$5.000 – $12.000</td></tr>
+<tr><td>Caja estanca IP65 para electrónica</td><td>Protección contra polvo y humedad</td><td>$5.000 – $12.000</td></tr>
+<tr><td>Cables, prensaestopas, conectores resistentes a intemperie</td><td>Consumibles varios</td><td>$4.000 – $8.000</td></tr>
+<tr><td><strong>Total aproximado (sin energía solar)</strong></td><td>&nbsp;</td><td><strong>$40.000 – $90.000</strong></td></tr>
+<tr><td><strong>Total aproximado (con energía solar)</strong></td><td>&nbsp;</td><td><strong>$70.000 – $150.000</strong></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="actuador">
+<h2>Elegir el actuador correcto para la puerta</h2>
+<p>La elección del actuador depende directamente del diseño físico de la puerta que ya tengas o planees construir. No existe una única respuesta correcta; cada opción tiene un caso de uso donde resulta superior.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación de actuadores comúnmente usados en proyectos de puerta automática de gallinero.</caption>
+<thead><tr><th>Actuador</th><th>Tipo de puerta ideal</th><th>Ventaja</th><th>Desventaja</th></tr></thead>
+<tbody>
+<tr><td>Motor DC + caja reductora + husillo/cordón</td><td>Puerta corrediza vertical (guillotina)</td><td>Económico, fácil de conseguir, buen torque con reducción</td><td>Requiere diseño mecánico propio de la transmisión</td></tr>
+<tr><td>Actuador lineal eléctrico 12V</td><td>Puerta corrediza o abatible con recorrido lineal</td><td>Robusto, resistente a la intemperie, movimiento suave</td><td>Más costoso que un motor DC simple</td></tr>
+<tr><td>Servo de alto torque (no el SG90 estándar)</td><td>Puerta pequeña y liviana tipo trampilla giratoria</td><td>Control de posición preciso sin necesidad de fin de carrera</td><td>Torque insuficiente para puertas de mayor tamaño o peso</td></tr>
+<tr><td>Motor paso a paso (stepper) con husillo</td><td>Puertas donde se requiere control fino de velocidad y posición</td><td>Movimiento muy controlado, sin necesidad de encoder</td><td>Mayor complejidad de driver y consumo energético</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Recomendación práctica:</strong> para la mayoría de los gallineros domésticos con puerta corrediza tipo guillotina (la más común y sencilla de construir), un motor DC de 12V con caja reductora, combinado con un husillo o un sistema de cordón y polea, ofrece la mejor relación entre costo, disponibilidad de repuestos y facilidad de control mediante un driver tipo L298N.</div>
+</section>
+
+<section id="circuito">
+<h2>Circuito y conexión de hardware</h2>
+<pre><code>Esquema conceptual de conexion (Arduino/ESP32 + L298N + motor de puerta):
+
+Arduino 5V/3.3V ---- VCC logica del L298N
+Arduino GND ---------- GND comun (Arduino + L298N + fuente de motor)
+Arduino Pin D8 ------- IN1 del L298N
+Arduino Pin D9 ------- IN2 del L298N
+Arduino Pin D10 ------ ENA del L298N (PWM, control de velocidad)
+
+L298N OUT1/OUT2 ------ Terminales del motor DC de la puerta
+L298N +12V ----------- Positivo de la bateria/fuente de 12V
+
+Sensor LDR:
+Arduino 5V --- LDR --- Pin analogico A0 --- Resistencia 10k --- GND
+
+Fines de carrera:
+Pin D2 (INPUT_PULLUP) --- Fin de carrera SUPERIOR --- GND
+Pin D3 (INPUT_PULLUP) --- Fin de carrera INFERIOR --- GND
+
+Sensor de corriente ACS712:
+Arduino 5V --- VCC del ACS712
+Arduino GND -- GND del ACS712
+Arduino Pin A1 --- Salida analogica del ACS712 (en serie con el motor)
+
+Modulo RTC DS3231 (I2C):
+Arduino SDA (A4 en Uno) --- SDA del DS3231
+Arduino SCL (A5 en Uno) --- SCL del DS3231</code></pre>
+<div class="warning"><strong>Aislamiento eléctrico obligatorio:</strong> el motor de la puerta debe alimentarse desde una fuente o batería separada de 12V, nunca directamente desde el pin 5V del Arduino, ya que la corriente de arranque de un motor DC puede superar ampliamente lo que el regulador de la placa puede entregar, dañándola de forma permanente. El driver L298N actúa precisamente como intermediario que aísla la lógica de control (5V, baja corriente) de la etapa de potencia del motor (12V, mayor corriente).</div>
+</section>
+
+<section id="seguridad-obstruccion">
+<h2>Seguridad crítica: detección de obstrucción y protección de las gallinas</h2>
+<p>Esta es, sin lugar a dudas, la sección más importante de todo el proyecto. Una puerta automática mal diseñada puede convertirse en un riesgo real para las propias aves que se supone debe proteger, si no incorpora mecanismos que detecten y respondan ante una obstrucción durante el cierre.</p>
+<ul>
+<li><strong>Sensor de corriente en el motor (ACS712):</strong> cuando la puerta encuentra un obstáculo (una gallina rezagada, una rama, hielo acumulado en invierno), el motor debe hacer más fuerza para seguir moviéndose, lo que se traduce en un aumento medible de la corriente consumida. Monitorear esta corriente en tiempo real permite detectar la obstrucción y detener el motor de inmediato, antes de que la fuerza aplicada cause daño.</li>
+<li><strong>Fines de carrera en ambos extremos:</strong> además de indicar cuándo la puerta llegó completamente abierta o cerrada (evitando forzar el motor contra un tope mecánico), sirven como referencia de posición confiable independiente del conteo de tiempo del motor.</li>
+<li><strong>Velocidad de cierre moderada:</strong> diseñar el sistema de transmisión (relación de reducción del motor, diámetro de la polea) para que el cierre tome varios segundos en vez de ser instantáneo, dando tiempo a que cualquier ave rezagada reaccione y se aparte.</li>
+<li><strong>Retraso de cierre con verificación:</strong> antes de iniciar el cierre nocturno, es recomendable esperar unos minutos adicionales después del horario calculado, dando margen a que todas las gallinas hayan efectivamente ingresado a dormir.</li>
+</ul>
+<div class="warning"><strong>Ninguna automatización reemplaza la supervisión humana periódica.</strong> Especialmente durante las primeras semanas de funcionamiento, se recomienda verificar personalmente que el ciclo de apertura y cierre se completó correctamente y que ninguna ave quedó atrapada o fuera del gallinero. Un sistema de notificación remota (cubierto en la sección de mejoras) ayuda considerablemente a mantener esta supervisión sin necesidad de estar físicamente presente.</div>
+</section>
+
+<section id="codigo-puerta">
+<h2>Código: control de la puerta con máquina de estados</h2>
+<p>El siguiente código integra el RTC, el sensor de luz, los fines de carrera y la detección de corriente en una máquina de estados no bloqueante, siguiendo el mismo patrón robusto usado en proyectos de temporización crítica.</p>
+<pre><code>#include &lt;Wire.h&gt;
+#include &lt;RTClib.h&gt;
+
+RTC_DS3231 rtc;
+
+const int PIN_MOTOR_IN1 = 8;
+const int PIN_MOTOR_IN2 = 9;
+const int PIN_MOTOR_ENA = 10;
+const int PIN_LDR       = A0;
+const int PIN_CORRIENTE = A1;
+const int PIN_FIN_SUP   = 2;
+const int PIN_FIN_INF   = 3;
+
+const int UMBRAL_LUZ_ABRIR  = 400; // ajustar segun calibracion del LDR
+const int UMBRAL_LUZ_CERRAR = 150;
+const float UMBRAL_CORRIENTE_BLOQUEO = 2.2; // amperios, ajustar segun el motor
+
+enum EstadoPuerta { CERRADA, ABRIENDO, ABIERTA, CERRANDO, BLOQUEADA };
+EstadoPuerta estadoPuerta = CERRADA;
+
+unsigned long tiempoInicioMovimiento = 0;
+const unsigned long TIMEOUT_MOVIMIENTO = 20000; // 20s maximo antes de asumir fallo
+
+void detenerMotor() {
+  digitalWrite(PIN_MOTOR_IN1, LOW);
+  digitalWrite(PIN_MOTOR_IN2, LOW);
+  analogWrite(PIN_MOTOR_ENA, 0);
+}
+
+void moverMotorArriba() {
+  digitalWrite(PIN_MOTOR_IN1, HIGH);
+  digitalWrite(PIN_MOTOR_IN2, LOW);
+  analogWrite(PIN_MOTOR_ENA, 180);
+}
+
+void moverMotorAbajo() {
+  digitalWrite(PIN_MOTOR_IN1, LOW);
+  digitalWrite(PIN_MOTOR_IN2, HIGH);
+  analogWrite(PIN_MOTOR_ENA, 180);
+}
+
+float leerCorrienteMotor() {
+  int lectura = analogRead(PIN_CORRIENTE);
+  float voltaje = (lectura / 1023.0) * 5.0;
+  return (voltaje - 2.5) / 0.185; // formula tipica para ACS712 de 5A
+}
+
+bool dentroDeVentanaHoraria(DateTime ahora, int horaIni, int horaFin) {
+  int h = ahora.hour();
+  return (h &gt;= horaIni &amp;&amp; h &lt; horaFin);
+}
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(PIN_MOTOR_IN1, OUTPUT);
+  pinMode(PIN_MOTOR_IN2, OUTPUT);
+  pinMode(PIN_MOTOR_ENA, OUTPUT);
+  pinMode(PIN_FIN_SUP, INPUT_PULLUP);
+  pinMode(PIN_FIN_INF, INPUT_PULLUP);
+
+  if (!rtc.begin()) {
+    Serial.println("Error: RTC no detectado");
+    while (1) delay(1000);
+  }
+
+  // Si el estado inicial de los fines de carrera indica puerta cerrada, mantener CERRADA
+  if (digitalRead(PIN_FIN_SUP) == LOW) estadoPuerta = ABIERTA;
+}
+
+void loop() {
+  DateTime ahora = rtc.now();
+  int luz = analogRead(PIN_LDR);
+  float corriente = leerCorrienteMotor();
+
+  switch (estadoPuerta) {
+
+    case CERRADA:
+      // Ventana horaria de manana + confirmacion de luz real
+      if (dentroDeVentanaHoraria(ahora, 6, 10) &amp;&amp; luz &gt; UMBRAL_LUZ_ABRIR) {
+        moverMotorArriba();
+        tiempoInicioMovimiento = millis();
+        estadoPuerta = ABRIENDO;
+      }
+      break;
+
+    case ABRIENDO:
+      if (corriente &gt; UMBRAL_CORRIENTE_BLOQUEO) {
+        detenerMotor();
+        estadoPuerta = BLOQUEADA;
+        break;
+      }
+      if (digitalRead(PIN_FIN_SUP) == LOW) {
+        detenerMotor();
+        estadoPuerta = ABIERTA;
+      } else if (millis() - tiempoInicioMovimiento &gt; TIMEOUT_MOVIMIENTO) {
+        detenerMotor();
+        estadoPuerta = BLOQUEADA; // no llego al fin de carrera a tiempo
+      }
+      break;
+
+    case ABIERTA:
+      // Ventana horaria de tarde/noche + confirmacion de oscuridad real
+      if (dentroDeVentanaHoraria(ahora, 18, 23) &amp;&amp; luz &lt; UMBRAL_LUZ_CERRAR) {
+        moverMotorAbajo();
+        tiempoInicioMovimiento = millis();
+        estadoPuerta = CERRANDO;
+      }
+      break;
+
+    case CERRANDO:
+      if (corriente &gt; UMBRAL_CORRIENTE_BLOQUEO) {
+        detenerMotor();
+        moverMotorArriba(); // revertir levemente por seguridad ante obstruccion
+        delay(500);
+        detenerMotor();
+        estadoPuerta = BLOQUEADA;
+        break;
+      }
+      if (digitalRead(PIN_FIN_INF) == LOW) {
+        detenerMotor();
+        estadoPuerta = CERRADA;
+      } else if (millis() - tiempoInicioMovimiento &gt; TIMEOUT_MOVIMIENTO) {
+        detenerMotor();
+        estadoPuerta = BLOQUEADA;
+      }
+      break;
+
+    case BLOQUEADA:
+      // Estado de seguridad: requiere reinicio manual o revision
+      detenerMotor();
+      Serial.println("ALERTA: puerta bloqueada, revisar mecanismo");
+      delay(5000);
+      break;
+  }
+}</code></pre>
+<div class="note"><strong>Sobre los umbrales del código:</strong> tanto <code>UMBRAL_LUZ_ABRIR</code>/<code>UMBRAL_LUZ_CERRAR</code> como <code>UMBRAL_CORRIENTE_BLOQUEO</code> deben calibrarse empíricamente en tu instalación específica, observando los valores reales que reporta el sensor en condiciones normales de operación antes de fijar los umbrales definitivos.</div>
+</section>
+
+<section id="comedero">
+<h2>Comedero automático: diseño y temporización</h2>
+<p>El comedero automático más simple y confiable para proyectos DIY consiste en una <strong>tolva</strong> (un contenedor cónico o piramidal que almacena el alimento) con una compuerta en su parte inferior, accionada por un servo o un pequeño motor DC, que se abre brevemente en horarios programados para dejar caer una cantidad controlada de alimento hacia una bandeja inferior.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Consideraciones de diseño para el mecanismo dispensador.</caption>
+<thead><tr><th>Aspecto</th><th>Recomendación</th></tr></thead>
+<tbody>
+<tr><td>Frecuencia de dispensación</td><td>2-3 veces al día en cantidades moderadas, mejor que una sola dispensación grande</td></tr>
+<tr><td>Ángulo de la tolva</td><td>Al menos 45-60° respecto a la horizontal, para evitar que el alimento se compacte y no fluya</td></tr>
+<tr><td>Protección contra humedad</td><td>Tapa superior de la tolva obligatoria; el alimento húmedo se apelmaza y bloquea la compuerta</td></tr>
+<tr><td>Calibración de cantidad</td><td>Determinar empíricamente el tiempo de apertura necesario pesando el alimento dispensado en pruebas repetidas</td></tr>
+<tr><td>Protección contra roedores</td><td>Bandeja de recepción con acceso limitado, evitar dejar grandes cantidades expuestas por largos periodos</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="codigo-comedero">
+<h2>Código: dispensador de alimento programado</h2>
+<pre><code>#include &lt;Servo.h&gt;
+#include &lt;RTClib.h&gt;
+#include &lt;Wire.h&gt;
+
+RTC_DS3231 rtc;
+Servo servoComedero;
+
+const int PIN_SERVO = 6;
+const int ANGULO_CERRADO = 0;
+const int ANGULO_ABIERTO = 70;
+const unsigned long DURACION_APERTURA_MS = 2500; // calibrar segun cantidad deseada
+
+// Horarios de dispensacion (hora, minuto)
+const int horariosComida[3][2] = {
+  {7, 30},
+  {13, 0},
+  {18, 0}
+};
+bool yaDispensadoHoy[3] = {false, false, false};
+int ultimoDiaRevisado = -1;
+
+void dispensarAlimento() {
+  servoComedero.write(ANGULO_ABIERTO);
+  delay(DURACION_APERTURA_MS); // aceptable aqui por ser una accion corta y aislada
+  servoComedero.write(ANGULO_CERRADO);
+}
+
+void setup() {
+  Serial.begin(9600);
+  servoComedero.attach(PIN_SERVO);
+  servoComedero.write(ANGULO_CERRADO);
+
+  if (!rtc.begin()) {
+    Serial.println("Error: RTC no detectado");
+    while (1) delay(1000);
+  }
+}
+
+void loop() {
+  DateTime ahora = rtc.now();
+
+  // Reiniciar las banderas de dispensacion al cambiar de dia
+  if (ahora.day() != ultimoDiaRevisado) {
+    for (int i = 0; i &lt; 3; i++) yaDispensadoHoy[i] = false;
+    ultimoDiaRevisado = ahora.day();
+  }
+
+  for (int i = 0; i &lt; 3; i++) {
+    if (!yaDispensadoHoy[i] &amp;&amp;
+        ahora.hour() == horariosComida[i][0] &amp;&amp;
+        ahora.minute() == horariosComida[i][1]) {
+      dispensarAlimento();
+      yaDispensadoHoy[i] = true;
+      Serial.print("Alimento dispensado, horario: ");
+      Serial.println(i);
+    }
+  }
+
+  delay(1000); // revision cada segundo es suficiente para este proposito
+}</code></pre>
+</section>
+
+<section id="energia">
+<h2>Alimentación: batería y panel solar para instalaciones remotas</h2>
+<p>Muchos gallineros, especialmente en zonas rurales o al fondo de un terreno, no cuentan con acceso directo a electricidad de red. Un sistema de <strong>batería con respaldo solar</strong> resuelve esta limitación, aprovechando además que el consumo real del sistema es bajo: el microcontrolador permanece la mayor parte del día en estado de espera, con picos de consumo breves solo durante el movimiento de los actuadores.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Dimensionamiento orientativo de un sistema solar básico para este proyecto.</caption>
+<thead><tr><th>Componente</th><th>Especificación orientativa</th><th>Función</th></tr></thead>
+<tbody>
+<tr><td>Batería</td><td>Plomo-ácido sellada (AGM/gel) 12V, 7-12Ah</td><td>Almacena energía para varios días sin sol directo</td></tr>
+<tr><td>Panel solar</td><td>10-20W, policristalino o monocristalino</td><td>Recarga la batería durante el día</td></tr>
+<tr><td>Controlador de carga</td><td>PWM básico o MPPT (más eficiente)</td><td>Evita sobrecarga y descarga profunda de la batería</td></tr>
+<tr><td>Regulador de voltaje para el microcontrolador</td><td>Módulo buck 12V a 5V</td><td>Alimenta el Arduino/ESP32 de forma estable desde la batería de 12V</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Optimización de consumo con ESP32:</strong> si se usa un ESP32 en vez de un Arduino Uno, es posible aprovechar sus modos de <em>deep sleep</em> para reducir drásticamente el consumo entre verificaciones periódicas, despertando el microcontrolador solo cada pocos minutos para revisar la hora y el sensor de luz, en vez de mantenerlo activo permanentemente. Esto extiende considerablemente la autonomía del sistema en instalaciones alimentadas exclusivamente por batería y panel solar.</div>
+</section>
+
+<section id="proteccion-clima">
+<h2>Protección contra la intemperie: gabinetes IP y cableado</h2>
+<ul>
+<li><strong>Gabinete IP65 o superior:</strong> toda la electrónica de control (Arduino/ESP32, driver de motor, RTC) debe alojarse en una caja estanca clasificada al menos IP65, protegida contra polvo y chorros de agua, montada en una ubicación resguardada de la lluvia directa.</li>
+<li><strong>Prensaestopas en cada entrada de cable:</strong> evita que la humedad ingrese a la caja siguiendo el recorrido de los cables hacia sensores y actuadores externos.</li>
+<li><strong>Sensor LDR protegido pero expuesto a la luz:</strong> requiere una pequeña ventana o cúpula transparente resistente a la intemperie que permita el paso de luz sin exponer el componente directamente a la lluvia.</li>
+<li><strong>Cableado con calibre adecuado:</strong> el cableado del motor debe dimensionarse considerando la corriente real de arranque y la distancia entre la fuente de poder y el actuador, evitando caídas de voltaje significativas en tramos largos.</li>
+<li><strong>Protección contra insectos y roedores en la caja:</strong> un gabinete bien sellado también evita que insectos o pequeños roedores construyan nidos dentro de la electrónica, un problema sorprendentemente común en instalaciones agrícolas.</li>
+</ul>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y solución de errores</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores frecuentes en proyectos de gallinero automático y su causa más probable.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>La puerta abre o cierra a horas incorrectas</td><td>RTC descalibrado, zona horaria mal configurada, umbral de luz mal calibrado</td><td>Verificar hora del RTC contra un reloj confiable, recalibrar umbrales del LDR</td></tr>
+<tr><td>El motor se detiene siempre antes de llegar al fin de carrera</td><td>Umbral de corriente de bloqueo demasiado bajo, fricción excesiva en el mecanismo</td><td>Recalibrar el umbral de corriente, lubricar o ajustar la guía mecánica de la puerta</td></tr>
+<tr><td>El sistema queda en estado BLOQUEADA sin razón aparente</td><td>Timeout de movimiento demasiado ajustado para la velocidad real del motor</td><td>Aumentar TIMEOUT_MOVIMIENTO según el tiempo real medido del recorrido completo</td></tr>
+<tr><td>El comedero dispensa cantidades inconsistentes</td><td>Alimento humedecido y apelmazado, ángulo de la tolva insuficiente</td><td>Verificar sellado de la tapa superior, aumentar el ángulo de inclinación de la tolva</td></tr>
+<tr><td>El sistema se reinicia solo de forma intermitente</td><td>Caída de voltaje al activar el motor, batería insuficientemente dimensionada</td><td>Separar la alimentación lógica de la de potencia, verificar capacidad de la batería/fuente</td></tr>
+<tr><td>La batería no dura lo esperado en instalación solar</td><td>Panel subdimensionado, controlador de carga defectuoso, consumo en reposo alto</td><td>Recalcular dimensionamiento solar, usar modos de bajo consumo si se usa ESP32</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="mejoras">
+<h2>Mejoras posibles: notificaciones, cámara y registro de datos</h2>
+<ul>
+<li><strong>Notificaciones remotas vía Telegram o app móvil:</strong> usando un ESP32 con conexión Wi-Fi, enviar una alerta cada vez que la puerta complete su ciclo de apertura/cierre, o —más importante— cada vez que el sistema entre en estado BLOQUEADA por una posible obstrucción.</li>
+<li><strong>Cámara de verificación:</strong> una pequeña cámara ESP32-CAM apuntando hacia la puerta permite confirmar visualmente, de forma remota, que el cierre nocturno se realizó correctamente y que ninguna gallina quedó fuera.</li>
+<li><strong>Registro de datos (logging) en tarjeta SD:</strong> guardar un historial de horarios de apertura/cierre, lecturas de luz y eventos de dispensación de alimento, útil para detectar patrones o anomalías a lo largo del tiempo.</li>
+<li><strong>Sensor de temperatura y humedad interior:</strong> agregar un DHT22 dentro del gallinero para monitorear condiciones ambientales, relevante especialmente en climas con inviernos rigurosos.</li>
+<li><strong>Cálculo automático de hora solar por coordenadas GPS:</strong> implementar el algoritmo de cálculo de amanecer/atardecer basado en latitud y longitud, eliminando la necesidad de ajustar manualmente las ventanas horarias según la estación del año.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Automatizar la puerta y el comedero de un gallinero es uno de los proyectos de electrónica aplicada con mayor retorno práctico inmediato: resuelve una tarea diaria ineludible, reduce el riesgo real de pérdida de animales por depredadores, y mejora la regularidad de la alimentación, todo con una inversión de materiales relativamente modesta. La diferencia entre un proyecto que funciona ocasionalmente y uno verdaderamente confiable radica en los detalles que esta guía ha tratado de enfatizar: combinar sensor de luz y reloj de tiempo real para evitar falsos disparos, incorporar detección de corriente para proteger físicamente a las aves ante cualquier obstrucción, y dimensionar correctamente la energía y la protección contra la intemperie para una instalación que, a diferencia de un proyecto de escritorio, debe funcionar de forma desatendida durante meses o años bajo sol, lluvia y frío. Bien ejecutado, este es exactamente el tipo de proyecto donde la automatización deja de ser un pasatiempo y se convierte en una herramienta real de trabajo diario.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Es mejor usar un sensor de luz (LDR) o un reloj RTC para abrir la puerta del gallinero?</summary><p>Cada enfoque tiene una debilidad distinta que conviene compensar combinándolos. Un sensor de luz (LDR) reacciona a la luminosidad real del ambiente, lo que es ideal en teoría porque las gallinas se guían naturalmente por la luz, pero es vulnerable a falsos positivos: una noche de luna llena muy intensa, la luz de un poste cercano, o una tormenta que oscurece el cielo a media tarde pueden activar la puerta en el momento incorrecto. Un reloj de tiempo real (RTC) con cálculo de hora de amanecer/atardecer es mucho más predecible y no se deja engañar por luces artificiales, pero no se adapta a cambios súbitos de clima, como un eclipse parcial o una tormenta severa a mediodía. La solución más robusta usada en proyectos serios es combinar ambos: el RTC define una ventana de tiempo razonable alrededor del amanecer y el atardecer, y dentro de esa ventana, el sensor LDR confirma la condición real de luz antes de accionar el motor.</p></details>
+<details><summary>¿Cómo evito que la puerta automática aplaste a una gallina que esté cruzando en el momento equivocado?</summary><p>La protección más efectiva combina varias capas de seguridad en el software y el hardware. En el software, se debe monitorear el consumo de corriente del motor mediante un sensor de corriente (como el módulo ACS712): un aumento súbito de corriente durante el movimiento de la puerta indica que algo está bloqueando su recorrido, y el sistema debe detener inmediatamente el motor e idealmente revertir el movimiento. En el hardware, es recomendable diseñar la puerta con un mecanismo de cierre relativamente lento (varios segundos, no un cierre brusco e instantáneo) y, si es posible, con un borde de contacto blando en la parte inferior. Ninguna de estas medidas sustituye una supervisión periódica del sistema, especialmente durante las primeras semanas de uso.</p></details>
+<details><summary>¿Cuánto tiempo dura la batería de un gallinero automático alimentado por panel solar?</summary><p>Depende del tamaño de la batería, la eficiencia del panel solar, y la frecuencia de uso de los actuadores, pero como referencia orientativa: un sistema con microcontrolador de bajo consumo en modo de reposo profundo (deep sleep) entre operaciones, alimentado por una batería de plomo-ácido sellada de 12V y 7Ah junto con un panel solar de 10-20W, típicamente mantiene el sistema funcionando de forma autónoma de manera indefinida en la mayoría de las ubicaciones con exposición solar razonable, ya que el consumo real de energía se concentra en dos breves períodos diarios de accionamiento del motor, mientras el resto del día el sistema permanece en un estado de consumo mínimo.</p></details>
+<details><summary>¿Qué pasa si se corta la energía o falla el sistema y la puerta queda abierta toda la noche?</summary><p>Es el escenario de falla más peligroso del proyecto, ya que expone a las gallinas a depredadores nocturnos durante horas. Se recomienda implementar múltiples salvaguardas: una función de watchdog timer por software que reinicie el microcontrolador si detecta que el programa se congeló, una batería de respaldo dimensionada con margen suficiente para varios días sin sol directo, y, para quienes buscan la máxima tranquilidad, un mecanismo de cierre manual de emergencia accesible desde el exterior del gallinero que no dependa de ningún componente electrónico. Algunos proyectos avanzados añaden también notificaciones remotas (vía ESP32 y una app o Telegram) que alertan al dueño si la puerta no completó su ciclo de cierre esperado.</p></details>
+<details><summary>¿El comedero automático puede sobrealimentar a las gallinas o desperdiciar alimento?</summary><p>Sí, si no se dimensiona correctamente la cantidad dispensada por ciclo y la frecuencia de las dispensaciones. Un dispensador basado en un servo o motor que gira una compuerta calibrada por tiempo (por ejemplo, 2 segundos de apertura) debe probarse empíricamente pesando el alimento resultante, ya que la cantidad real depende de la granulometría del alimento, la humedad ambiental y el diseño específico de la tolva. Se recomienda comenzar con dispensaciones pequeñas y frecuentes (por ejemplo, tres veces al día) en vez de una sola dispensación grande, tanto para reducir el desperdicio por derrame como para minimizar el atractivo del comedero para roedores y aves silvestres que podrían acudir a una gran cantidad de alimento expuesto de una sola vez.</p></details>
+<details><summary>¿Necesito saber programar para automatizar mi gallinero, o existen kits comerciales listos para usar?</summary><p>Existen kits comerciales de puertas automáticas para gallinero (algunos con sensor de luz integrado y motor ya ensamblado) que no requieren ningún conocimiento de programación y son una opción perfectamente válida para quien solo busca resolver el problema sin construir nada. La ventaja de un proyecto DIY con Arduino o ESP32, como el que describe esta guía, es la posibilidad de personalizar completamente el comportamiento (ventanas horarias, integración con el comedero, notificaciones remotas, registro de datos), a un costo generalmente menor que los kits comerciales de gama media-alta, a cambio de requerir conocimientos básicos de programación y electrónica que esta misma guía ayuda a desarrollar.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los precios en pesos chilenos son referenciales, varían según vendedor, tipo de cambio y disponibilidad, y deben confirmarse al momento de la compra. Un sistema automatizado nunca debe considerarse un sustituto completo de la supervisión humana periódica cuando hay animales involucrados; se recomienda verificar personalmente el funcionamiento del sistema con regularidad, especialmente durante las primeras semanas de uso. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si este es tu primer proyecto trabajando con motores DC y drivers de puente H, te recomendamos revisar antes <a href="/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa">Control de Motores DC con Arduino y L298N: Guía Completa</a>, donde profundizamos en los fundamentos que aquí aplicamos directamente.</p>
+  <p>Si buscas ampliar tu proyecto con notificaciones remotas y monitoreo, no te pierdas <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">Estación Meteorológica con Arduino y Pantalla OLED</a>, que comparte varios de los mismos principios de sensores ambientales.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa">← Anterior: Control de Motores DC con Arduino y L298N</a>
+  <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">Siguiente: Estación Meteorológica con Arduino y Pantalla OLED →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos técnicos generales de la guía. Se recomienda consultar siempre la hoja de datos específica de cada componente antes de dimensionar el sistema definitivo.</p>
+<ul>
+<li><a href="https://www.arduino.cc/reference/en/libraries/rtclib/" target="_blank" rel="noopener noreferrer">Arduino Library Reference — RTClib para módulos DS3231/DS1307</a></li>
+<li><a href="https://www.sparkfun.com/products/8883" target="_blank" rel="noopener noreferrer">SparkFun — Referencia técnica del módulo sensor de corriente ACS712</a></li>
+<li><a href="https://www.st.com/resource/en/datasheet/l298.pdf" target="_blank" rel="noopener noreferrer">STMicroelectronics — Hoja de datos oficial del driver de motor L298</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 16 de noviembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
