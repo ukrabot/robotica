@@ -122,7 +122,7 @@ a{color:var(--blue);text-underline-offset:3px}
 .article-body li{color:var(--muted);margin:8px 0}
 .article-body strong{color:var(--text)}
 
-.toc,.note,.cta,.author-box{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
 .toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
 .toc ol{margin:0;padding-left:22px}
 .toc a{color:var(--muted);text-decoration:none}
@@ -155,13 +155,6 @@ details p{padding-top:10px;margin-bottom:0}
 .footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
 .footer-nav a:hover{color:var(--gold)}
 
-.author-box{display:flex;gap:16px;align-items:flex-start}
-.author-box .avatar{width:64px;height:64px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid rgba(169,123,35,.35)}
-.author-box .avatar img{width:100%;height:100%;object-fit:cover;display:block}
-.author-box h3{margin:0 0 6px;font-size:1rem;color:var(--text)}
-.author-box p{margin:0 0 8px;font-size:.88rem}
-.author-box p:last-child{margin-bottom:0}
-.author-box a{color:var(--gold);font-size:.82rem}
 
 .disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
 .cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
@@ -192,7 +185,6 @@ details p{padding-top:10px;margin-bottom:0}
 @media(max-width:700px){
   .hero-inner{padding:80px 20px 50px}
   .article-body h2{font-size:1.6rem;margin:44px 0 14px}
-  .author-box{flex-direction:column}
   .article-body{padding-top:48px;padding-bottom:60px}
 }
 
@@ -206,7 +198,7 @@ details p{padding-top:10px;margin-bottom:0}
   .eyebrow{font-size:.7rem}
   .article-body h2{font-size:1.4rem}
   .article-body h3{font-size:1.05rem}
-  .toc,.note,.cta,.author-box,.warning{padding:16px;margin:20px 0}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
   .toc ol{padding-left:18px}
   th,td{padding:10px 10px;font-size:.82rem}
   table{min-width:560px}
@@ -547,13 +539,6 @@ void loop() {
 </div>
 </section>
 
-<div class="author-box">
-  <div class="avatar" aria-hidden="true"><img src="../author_alberto.jpg" alt="Fotografía de Alberto Gallardo, analista programador computacional"></div>
-  <div>
-    <h3>Sobre el autor</h3>
-    <p><strong>Alberto Gallardo</strong> es Analista Programador Computacional con 18 años de experiencia en desarrollo y educación. Escribe y mantiene este sitio, combinando su trayectoria técnica con la docencia en robótica, electrónica y Arduino para makers, docentes y estudiantes en Chile y Latinoamérica. Los circuitos y el código de esta guía son puntos de partida educativos: los valores exactos de componentes pueden requerir ajuste según los materiales disponibles. <a href="/about">Más sobre Alberto →</a></p>
-  </div>
-</div>
 
 <p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y los valores de componentes son referenciales y deben adaptarse y probarse con tu propio hardware; verifica siempre la normativa vigente antes de usar un detector de metales fuera de tu propiedad. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
 
