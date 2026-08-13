@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Guía Esencial de Sensores para Arduino</title>
+<meta name="description" content="Guía completa para elegir, conectar y leer los sensores más usados con Arduino: ultrasónico HC-SR04, DHT22, infrarrojos, gas MQ-2 y PIR. Tipos de sensores, señales digitales y analógicas, comunicación I2C/SPI/UART, alimentación y filtrado de ruido.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/guia-esencial-de-sensores-para-arduino">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Guía Esencial de Sensores para Arduino">
+<meta property="og:description" content="Cómo elegir, conectar y leer los sensores más usados: digitales, analógicos y de bus. Con tablas comparativas, código y filtrado de ruido.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/sensores_arduino_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/guia-esencial-de-sensores-para-arduino">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Esencial de Sensores para Arduino">
+<meta name="twitter:description" content="Sensores digitales, analógicos y de bus: cómo elegir, conectar y leer cada tipo con código comentado.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/sensores_arduino_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Guía Esencial de Sensores para Arduino",
+  "description":"Guía completa para elegir, conectar y leer los sensores más usados con Arduino: qué es un sensor y qué criterios usar para seleccionarlo, tipos de sensores según su salida (digitales, analógicos y de bus), tabla comparativa de los sensores esenciales para proyectos de robótica, lectura con digitalRead y analogRead, alimentación y filtrado de ruido, comunicación I2C, SPI y UART, y un proyecto de integración que combina varios sensores en un solo sketch.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-13",
+  "dateModified":"2026-08-13",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/guia-esencial-de-sensores-para-arduino"},
+  "image":"https://www.ukrabot.cl/blog/sensores_arduino_hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Arduino Uno o compatible, protoboard, jumpers, y los sensores que se quieran probar (HC-SR04, DHT22, infrarrojos, MQ-2 o PIR)",
+  "wordCount":"2500",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Guía Esencial de Sensores para Arduino","item":"https://www.ukrabot.cl/blog/guia-esencial-de-sensores-para-arduino"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Cuál es la diferencia entre un sensor digital y uno analógico?","acceptedAnswer":{"@type":"Answer","text":"Un sensor digital entrega únicamente dos estados posibles —alto o bajo, 0 o 1—, como un pulsador, un sensor de línea o el pin OUT de un módulo PIR o de un detector de gas con comparador. Un sensor analógico entrega un rango continuo de valores que se lee con analogRead(), típicamente entre 0 y 1023 en un Arduino de 10 bits, lo que permite medir magnitudes graduales como la intensidad de luz, la temperatura o la concentración de gas. La regla práctica: si necesitas saber 'sí o no', un sensor digital alcanza; si necesitas saber 'cuánto', usa un sensor analógico."}},
+    {"@type":"Question","name":"¿Cómo sé qué sensor elegir para mi proyecto?","acceptedAnswer":{"@type":"Answer","text":"Elige el sensor según la magnitud física que necesitas medir (distancia, temperatura, movimiento, gas, luz), el tipo de salida que entrega (digital, analógica o de bus I2C/SPI), el rango de medición y la precisión que exige el proyecto, y la facilidad de uso con Arduino (que exista librería y documentación). Para empezar conviene priorizar sensores de módulos con pines VCC/GND/OUT, que se conectan en minutos, y dejar los sensores de bus como DHT22 o MPU6050 para cuando se domine la lectura básica. La tabla comparativa de esta guía resume los cinco sensores esenciales para empezar."}},
+    {"@type":"Question","name":"¿Por qué mis lecturas de sensores tienen valores erráticos o ruido?","acceptedAnswer":{"@type":"Answer","text":"Las lecturas erráticas suelen tener tres causas: alimentación inestable o ruidosa (motores y servos conectados al mismo riel generan caídas de voltaje), cables sueltos o demasiado largos que actúan como antenas, y ausencia de filtrado en el software. Las soluciones son alimentar los sensores con un 5V estable, mantener los cables cortos y separados de los motores, agregar un condensador de 100 µF cerca del sensor, y promediar o tomar la mediana de varias lecturas en el código para eliminar picos aislados."}},
+    {"@type":"Question","name":"¿Puedo conectar varios sensores al mismo Arduino?","acceptedAnswer":{"@type":"Answer","text":"Sí, un Arduino Uno puede manejar varios sensores simultáneamente siempre que los repartas entre sus pines disponibles y vigiles el consumo total de corriente. Los sensores simples comparten los rieles de 5V y GND, y cada uno usa su propio pin de datos digital o analógico. Los sensores de bus I2C pueden compartir los mismos dos pines (SDA y SCL) usando direcciones distintas. La limitación real no es la cantidad de pines sino la corriente que puede entregar el regulador del Arduino; si superas unos 400-500 mA, conviene alimentar los sensores con una fuente externa."}},
+    {"@type":"Question","name":"¿Qué sensores debería comprar primero para aprender?","acceptedAnswer":{"@type":"Answer","text":"Un set inicial recomendado incluye: un sensor ultrasónico HC-SR04 (distancia), un sensor de temperatura y humedad DHT22, un par de sensores infrarrojos TCRT5000 (para robots siguelíneas), un sensor de gas MQ-2 y un sensor PIR de movimiento. Cubren los cinco tipos de medición más comunes en proyectos escolares y de robótica, son baratos, tienen abundante documentación y cada uno tiene una guía dedicada en este sitio. Con esos cinco puedes abordar la mayoría de los proyectos de iniciación e intermedios."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="sensores_arduino_hero.jpg" alt="Conjunto de sensores para Arduino — ultrasónico, DHT22, infrarrojo, gas MQ-2 y PIR — junto a una placa Arduino Uno sobre una mesa de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Sensores y electrónica · Actualizado el <time datetime="2026-08-13">13 de agosto de 2026</time></div>
+    <h1>Guía Esencial de Sensores para Arduino</h1>
+    <p>Cómo elegir el sensor correcto, entender la diferencia entre señales digitales, analógicas y de bus, alimentar sin ruido, leer con código y combinar varios sensores en un solo proyecto.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="sensores_arduino_tabla.jpg" alt="Tabla comparativa de sensores impresa junto a sensores físicos y una placa Arduino Uno sobre un escritorio de trabajo" loading="lazy">
+  <div class="caption">Elegir el sensor correcto es la mitad del proyecto: una tabla comparativa clara evita comprar un componente caro para una tarea que uno barato resuelve.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es un sensor y cómo elegir el correcto</a></li>
+    <li><a href="#tipos">Tipos de sensores: digitales, analógicos y de bus</a></li>
+    <li><a href="#comparativa">Tabla comparativa de los sensores esenciales</a></li>
+    <li><a href="#lectura">Leer un sensor: digitalRead y analogRead</a></li>
+    <li><a href="#alimentacion">Alimentación, ruido y estabilidad de lecturas</a></li>
+    <li><a href="#comunicacion">Comunicación: I2C, SPI y UART</a></li>
+    <li><a href="#integracion">Proyecto: mini centro de sensores</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>Qué es un sensor y cómo elegir el correcto</h2>
+<p>Un sensor es un dispositivo que <strong>convierte una magnitud física del mundo real —distancia, temperatura, luz, movimiento, gas— en una señal eléctrica</strong> que el Arduino puede leer. Sin sensores, un Arduino es solo una placa que ejecuta instrucciones a ciegas; con ellos, se convierte en un sistema capaz de percibir y reaccionar a su entorno, que es exactamente la frontera entre un circuito y un robot.</p>
+<p>Para elegir el sensor correcto conviene responder cuatro preguntas en orden:</p>
+<ul>
+<li><strong>¿Qué magnitud necesito medir?</strong> distancia, temperatura y humedad, posición de una línea, presencia de gas o movimiento humano.</li>
+<li><strong>¿Qué tipo de salida entrega?</strong> digital (sí/no), analógica (rango continuo) o de bus (I2C/SPI con datos más ricos).</li>
+<li><strong>¿Qué rango y precisión exige el proyecto?</strong> un DHT11 mide menos preciso que un DHT22; un sensor de ultrasonido barato pierde fiabilidad a menos de 2 cm.</li>
+<li><strong>¿Qué tan fácil es de usar con Arduino?</strong> los módulos con pines VCC/GND/OUT y librerías maduras se integran en minutos; los sensores desnudos exigen más electrónica auxiliar.</li>
+</ul>
+</section>
+
+<section id="tipos">
+<h2>Tipos de sensores: digitales, analógicos y de bus</h2>
+<p>Según el tipo de señal que entregan, los sensores se dividen en tres grandes familias, y conocer la diferencia evita la mitad de los errores de conexión:</p>
+<ul>
+<li><strong>Digitales (sí/no):</strong> entregan un estado alto o bajo. Ejemplos: el pin OUT de un módulo PIR (movimiento detectado o no), el pin DO de un detector de gas con comparador, un pulsador o un sensor de línea digital. Se leen con <code>digitalRead()</code>.</li>
+<li><strong>Analógicos (cuánto):</strong> entregan un rango continuo de voltaje proporcional a la magnitud medida. Ejemplos: la salida AO de un MQ-2, un potenciómetro, un sensor de luz LDR. Se leen con <code>analogRead()</code>, que devuelve de 0 a 1023 en un Arduino de 10 bits.</li>
+<li><strong>De bus (datos estructurados):</strong> se comunican por protocolos como I2C o SPI y entregan valores ya procesados, a menudo con varias magnitudes a la vez. Ejemplos: el DHT22 (temperatura y humedad), el MPU6050 (acelerómetro y giroscopio), el BMP280 (presión y altitud). Requieren una librería.</li>
+</ul>
+<div class="note"><strong>Regla práctica:</strong> si solo necesitas saber si algo ocurrió, un sensor digital alcanza; si necesitas medir cuánto, usa uno analógico; si necesitas datos precisos y procesados, elige uno de bus con librería.</div>
+</section>
+
+<section id="comparativa">
+<h2>Tabla comparativa de los sensores esenciales</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Los cinco sensores esenciales para empezar, con su magnitud, tipo de salida y guía dedicada en este sitio.</caption>
+<thead><tr><th>Sensor</th><th>Mide</th><th>Salida</th><th>Ideal para</th><th>Guía dedicada</th></tr></thead>
+<tbody>
+<tr><td>Ultrasónico HC-SR04</td><td>Distancia (2–400 cm)</td><td>Digital (TRIG/ECHO)</td><td>Robots evasores, radares, medición</td><td><a href="/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso">HC-SR04 paso a paso</a></td></tr>
+<tr><td>DHT22</td><td>Temperatura y humedad</td><td>Bus (un solo pin)</td><td>Estaciones meteorológicas, invernaderos</td><td><a href="/blog/sensor-dht22-temperatura-y-humedad-con-arduino">DHT22 con Arduino</a></td></tr>
+<tr><td>Infrarrojo TCRT5000</td><td>Reflexión de luz IR</td><td>Analógica y/o digital</td><td>Robots siguelíneas, detección de obstáculos</td><td><a href="/blog/sensores-infrarrojos-para-robots-siguelineas">Sensores infrarrojos</a></td></tr>
+<tr><td>Gas MQ-2</td><td>Gases combustibles y humo</td><td>Analógica y digital</td><td>Alarmas de gas y seguridad</td><td><a href="/blog/detector-de-gas-con-sensor-mq-2-y-alarma-sonora">Detector de gas MQ-2</a></td></tr>
+<tr><td>PIR HC-SR501</td><td>Movimiento humano</td><td>Digital</td><td>Alarmas y luces automáticas</td><td><a href="/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad">Sensor PIR de movimiento</a></td></tr>
+</tbody>
+</table>
+</div>
+<p>Cada uno de estos cinco sensores tiene una guía técnica dedicada en este sitio, enlazada en la tabla. Si recién empiezas, esta <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">guía de primeros pasos con Arduino</a> te deja listo para conectarlos.</p>
+</section>
+
+<section id="lectura">
+<h2>Leer un sensor: digitalRead y analogRead</h2>
+<p>La lectura de un sensor se reduce a dos funciones básicas del lenguaje Arduino, que conviene entender a fondo antes de depender de librerías:</p>
+<pre><code>const int PIN_SENSOR_DIGITAL = 2;   // pin de un sensor digital
+const int PIN_SENSOR_ANALOGO = A0;  // pin de un sensor analogico
+
+void setup() {
+  pinMode(PIN_SENSOR_DIGITAL, INPUT);  // pin digital como entrada
+  Serial.begin(9600);                  // para ver los valores en pantalla
+}
+
+void loop() {
+  int estado = digitalRead(PIN_SENSOR_DIGITAL);  // devuelve HIGH o LOW
+  int valor  = analogRead(PIN_SENSOR_ANALOGO);   // devuelve 0 a 1023
+
+  Serial.print("Digital: ");
+  Serial.print(estado);
+  Serial.print("  |  Analogico: ");
+  Serial.println(valor);
+
+  delay(200);
+}</code></pre>
+<p><code>digitalRead()</code> devuelve <code>HIGH</code> o <code>LOW</code> según el voltaje en el pin, y es la forma de leer pulsadores, finales de carrera y salidas digitales de módulos. <code>analogRead()</code> convierte el voltaje (0–5V) en un número de 0 a 1023, y es la puerta de entrada a cualquier magnitud continua. El monitor serie (<code>Serial.println</code>) es tu mejor herramienta de depuración: antes de programar el comportamiento final, verifica siempre que el sensor entrega valores coherentes.</p>
+</section>
+
+<section id="alimentacion">
+<h2>Alimentación, ruido y estabilidad de lecturas</h2>
+<p>La causa más común de lecturas erráticas no es el sensor, sino la <strong>alimentación ruidosa</strong>. Cuando un motor o un servo comparte el mismo riel de 5V que el sensor, cada arranque del motor produce caídas de voltaje que el sensor interpreta como cambios reales de la magnitud medida.</p>
+<ul>
+<li><strong>Usa 5V estable:</strong> alimenta la lógica con la salida de 5V del Arduino o una fuente regulada, y reserva una fuente aparte para motores y servos de potencia.</li>
+<li><strong>Cables cortos y ordenados:</strong> los cables largos actúan como antenas que captan interferencia; mantenlos cortos y alejados de motores y del cable de red.</li>
+<li><strong>Condensador de desacople:</strong> un condensador electrolítico de 100 µF entre VCC y GND cerca del sensor suaviza los picos de voltaje.</li>
+<li><strong>Filtrado en software:</strong> promedia o toma la mediana de varias lecturas para eliminar picos aislados, técnica que se detalla en la guía del <a href="/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso">sensor ultrasónico</a>.</li>
+</ul>
+<div class="warning"><strong>Nunca alimentes un sensor con más voltaje del especificado:</strong> muchos módulos económicos son de 5V; conectarlos a 9V o 12V los destruye. Revisa siempre la etiqueta VCC del módulo antes de energizar.</div>
+</section>
+
+<section id="comunicacion">
+<h2>Comunicación: I2C, SPI y UART</h2>
+<p>Los sensores más avanzados no entregan un simple voltaje, sino <strong>datos digitales por un protocolo de comunicación</strong>. Conocer los tres principales te permite conectar cualquier sensor que encuentres:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Protocolos de comunicación más usados por los sensores de Arduino.</caption>
+<thead><tr><th>Protocolo</th><th>Pines típicos (Uno)</th><th>Características</th><th>Ejemplos</th></tr></thead>
+<tbody>
+<tr><td>I2C</td><td>SDA (A4), SCL (A5)</td><td>Dos hilos, varios dispositivos por dirección</td><td>Pantallas OLED, MPU6050, BMP280</td></tr>
+<tr><td>SPI</td><td>MOSI (11), MISO (12), SCK (13), SS</td><td>Rápido, un hilo por dato</td><td>Tarjetas SD, pantallas TFT</td></tr>
+<tr><td>UART / Serial</td><td>RX (0), TX (1)</td><td>Comunicación punto a punto</td><td>Módulos Bluetooth HC-05, GPS</td></tr>
+</tbody>
+</table>
+</div>
+<p>Cada protocolo tiene su librería en el gestor de librerías del IDE de Arduino, y casi todos los módulos traen ejemplos listos. La clave es identificar qué protocolo usa el sensor por su hoja de datos y conectar los pines exactos, ya que un pin equivocado en I2C o SPI es la causa más frecuente de "el sensor no aparece".</p>
+</section>
+
+<section id="integracion">
+<h2>Proyecto: mini centro de sensores</h2>
+<p>Una excelente forma de consolidar todo lo anterior es montar un <strong>mini centro de sensores</strong> que combine una lectura digital, una analógica y una de bus en un solo sketch. El ejemplo lee un botón (digital), un potenciómetro (analógico) y muestra todo por el monitor serie:</p>
+<pre><code>const int PIN_BOTON   = 2;   // sensor digital
+const int PIN_POT     = A0;  // sensor analogico
+
+void setup() {
+  pinMode(PIN_BOTON, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  bool botonPresionado = digitalRead(PIN_BOTON);
+  int nivelPot = analogRead(PIN_POT);
+
+  Serial.print("Boton: ");
+  Serial.print(botonPresionado ? "presionado" : "libre");
+  Serial.print("  |  Potenciometro: ");
+  Serial.println(nivelPot);
+
+  // Accion de ejemplo: si el potenciometro supera la mitad, encender
+  // un LED en el pin 13 (proporcional a la lectura).
+  analogWrite(13, nivelPot / 4);  // escala 0-1023 a 0-255 (PWM)
+
+  delay(100);
+}</code></pre>
+<p>Este patrón —leer, decidir, actuar— es el esqueleto de cualquier proyecto con sensores, desde un semáforo hasta un robot completo. Cuando lo domines, cada una de las guías dedicadas de la tabla te mostrará la profundidad específica de cada sensor.</p>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos al trabajar con sensores y su solución.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El sensor no entrega ningún valor</td><td>Alimentación mal conectada o módulo dañado</td><td>Verificar VCC y GND, medir voltaje con multímetro</td></tr>
+<tr><td>Valores erráticos o con picos</td><td>Ruido de alimentación o cables largos</td><td>Condensador de 100 µF, cables cortos, filtrar en software</td></tr>
+<tr><td>Lecturas siempre en 0 o 1023</td><td>Pin analógico equivocado o sensor desconectado</td><td>Verificar que se usa un pin A0–A5 y la continuidad del cable</td></tr>
+<tr><td>El sensor de bus no aparece</td><td>Pines SDA/SCL equivocados o dirección incorrecta</td><td>Revisar el cableado I2C y la dirección con un escáner I2C</td></tr>
+<tr><td>El sensor funciona a ratos</td><td>Falso contacto en la protoboard</td><td>Reasentar cables y preferir soldadura en proyectos definitivos</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Los sensores son el puente entre el código y el mundo físico, y dominar su selección, conexión y lectura es la habilidad que convierte un proyecto de Arduino en un robot que percibe y decide. Empieza por entender la diferencia entre digital y analógico, alimenta con voltaje estable, filtra el ruido y verifica siempre con el monitor serie antes de programar el comportamiento final. Desde aquí, el camino natural es la <a href="/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso">guía del sensor ultrasónico HC-SR04</a>, el sensor más versátil para empezar.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuál es la diferencia entre un sensor digital y uno analógico?</summary><p>Un sensor digital entrega únicamente dos estados posibles —alto o bajo, 0 o 1—, como un pulsador, un sensor de línea o el pin OUT de un módulo PIR o de un detector de gas con comparador. Un sensor analógico entrega un rango continuo de valores que se lee con analogRead(), típicamente entre 0 y 1023 en un Arduino de 10 bits, lo que permite medir magnitudes graduales como la intensidad de luz, la temperatura o la concentración de gas. La regla práctica: si necesitas saber "sí o no", un sensor digital alcanza; si necesitas saber "cuánto", usa un sensor analógico.</p></details>
+<details><summary>¿Cómo sé qué sensor elegir para mi proyecto?</summary><p>Elige el sensor según la magnitud física que necesitas medir (distancia, temperatura, movimiento, gas, luz), el tipo de salida que entrega (digital, analógica o de bus I2C/SPI), el rango de medición y la precisión que exige el proyecto, y la facilidad de uso con Arduino (que exista librería y documentación). Para empezar conviene priorizar sensores de módulos con pines VCC/GND/OUT, que se conectan en minutos, y dejar los sensores de bus como DHT22 o MPU6050 para cuando se domine la lectura básica. La tabla comparativa de esta guía resume los cinco sensores esenciales para empezar.</p></details>
+<details><summary>¿Por qué mis lecturas de sensores tienen valores erráticos o ruido?</summary><p>Las lecturas erráticas suelen tener tres causas: alimentación inestable o ruidosa (motores y servos conectados al mismo riel generan caídas de voltaje), cables sueltos o demasiado largos que actúan como antenas, y ausencia de filtrado en el software. Las soluciones son alimentar los sensores con un 5V estable, mantener los cables cortos y separados de los motores, agregar un condensador de 100 µF cerca del sensor, y promediar o tomar la mediana de varias lecturas en el código para eliminar picos aislados.</p></details>
+<details><summary>¿Puedo conectar varios sensores al mismo Arduino?</summary><p>Sí, un Arduino Uno puede manejar varios sensores simultáneamente siempre que los repartas entre sus pines disponibles y vigiles el consumo total de corriente. Los sensores simples comparten los rieles de 5V y GND, y cada uno usa su propio pin de datos digital o analógico. Los sensores de bus I2C pueden compartir los mismos dos pines (SDA y SCL) usando direcciones distintas. La limitación real no es la cantidad de pines sino la corriente que puede entregar el regulador del Arduino; si superas unos 400-500 mA, conviene alimentar los sensores con una fuente externa.</p></details>
+<details><summary>¿Qué sensores debería comprar primero para aprender?</summary><p>Un set inicial recomendado incluye: un sensor ultrasónico HC-SR04 (distancia), un sensor de temperatura y humedad DHT22, un par de sensores infrarrojos TCRT5000 (para robots siguelíneas), un sensor de gas MQ-2 y un sensor PIR de movimiento. Cubren los cinco tipos de medición más comunes en proyectos escolares y de robótica, son baratos, tienen abundante documentación y cada uno tiene una guía dedicada en este sitio. Con esos cinco puedes abordar la mayoría de los proyectos de iniciación e intermedios.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Ya sabes elegir y leer sensores: ahora profundiza en el más versátil de todos con la <a href="/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso">Guía del Sensor Ultrasónico HC-SR04</a>, o construye un proyecto completo con la <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">Estación Meteorológica con Arduino y Pantalla OLED</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05">← Anterior: Controla tu Arduino por Bluetooth</a>
+  <a href="/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso">Siguiente: Sensor Ultrasónico HC-SR04 →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los rangos exactos de cada sensor varían según el fabricante.</p>
+<ul>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/digital-io/digitalread/" target="_blank" rel="noopener noreferrer">Arduino Reference — digitalRead()</a></li>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/" target="_blank" rel="noopener noreferrer">Arduino Reference — analogRead()</a></li>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/communication/wire/" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería Wire (I2C)</a></li>
+<li><a href="https://www.allaboutcircuits.com/textbook/" target="_blank" rel="noopener noreferrer">All About Circuits — Referencia técnica de electrónica básica</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 13 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

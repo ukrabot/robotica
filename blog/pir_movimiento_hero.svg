@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Ilustración de un sensor PIR de movimiento conectado a una placa Arduino Uno">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141210"/>
+      <stop offset="1" stop-color="#211b14"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e4c07a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#e4c07a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="dome" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d8d4ca"/>
+    </linearGradient>
+    <linearGradient id="board" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2f6fb0"/>
+      <stop offset="1" stop-color="#1f4e7f"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="600" cy="320" r="240" fill="url(#glow)"/>
+
+  <!-- Arcos de movimiento -->
+  <g stroke="#e4c07a" stroke-width="5" fill="none" opacity="0.55" stroke-linecap="round">
+    <path d="M 360 420 A 260 260 0 0 1 840 420"/>
+    <path d="M 420 420 A 200 200 0 0 1 780 420"/>
+    <path d="M 470 420 A 150 150 0 0 1 730 420"/>
+  </g>
+
+  <!-- Placa Arduino -->
+  <g transform="translate(300 470)">
+    <rect x="0" y="0" width="600" height="120" rx="12" fill="url(#board)" stroke="#16354f" stroke-width="3"/>
+    <rect x="18" y="18" width="40" height="40" rx="6" fill="#e8d9b6"/>
+    <rect x="18" y="70" width="40" height="30" rx="6" fill="#cfc7b6"/>
+    <rect x="70" y="18" width="30" height="30" rx="4" fill="#20262e"/>
+    <rect x="110" y="18" width="30" height="30" rx="4" fill="#20262e"/>
+    <g fill="#e8e2d4">
+      <rect x="480" y="24" width="22" height="10" rx="2"/>
+      <rect x="512" y="24" width="22" height="10" rx="2"/>
+      <rect x="480" y="44" width="22" height="10" rx="2"/>
+      <rect x="512" y="44" width="22" height="10" rx="2"/>
+      <rect x="480" y="64" width="22" height="10" rx="2"/>
+      <rect x="512" y="64" width="22" height="10" rx="2"/>
+    </g>
+    <text x="300" y="70" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">Arduino Uno</text>
+  </g>
+
+  <!-- Cables -->
+  <g stroke="#a97b23" stroke-width="8" stroke-linecap="round" fill="none">
+    <path d="M 600 470 C 600 420 500 410 500 360"/>
+    <path d="M 640 470 C 640 430 560 420 560 370"/>
+    <path d="M 560 470 C 560 440 620 430 620 380"/>
+  </g>
+
+  <!-- Sensor PIR (domo) -->
+  <g transform="translate(500 190)">
+    <rect x="-10" y="70" width="220" height="110" rx="10" fill="#23201b" stroke="#0f0d0a" stroke-width="3"/>
+    <rect x="30" y="120" width="12" height="60" fill="#8b8577"/>
+    <rect x="80" y="120" width="12" height="60" fill="#8b8577"/>
+    <rect x="130" y="120" width="12" height="60" fill="#8b8577"/>
+    <path d="M 0 80 Q 100 -60 200 80 Z" fill="url(#dome)" stroke="#9a958a" stroke-width="3"/>
+    <g stroke="#b8b3a7" stroke-width="3" fill="none">
+      <path d="M 100 -45 L 100 80"/>
+      <path d="M 50 -10 L 50 80"/>
+      <path d="M 150 -10 L 150 80"/>
+      <path d="M 25 30 L 25 80"/>
+      <path d="M 175 30 L 175 80"/>
+    </g>
+    <text x="100" y="150" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">PIR</text>
+  </g>
+
+  <text x="600" y="55" text-anchor="middle" fill="#e4c07a" font-family="Georgia, serif" font-size="34">Sensor PIR de Movimiento</text>
+</svg>
