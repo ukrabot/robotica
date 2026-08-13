@@ -9,6 +9,20 @@
   </url>
 
   <url>
+    <loc>https://www.ukrabot.cl/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
     <loc>https://www.ukrabot.cl/about</loc>
     <lastmod>2026-08-11</lastmod>
     <changefreq>yearly</changefreq>
@@ -37,84 +51,7 @@
   </url>
 
   <url>
-    <loc>https://www.ukrabot.cl/blog/automatiza-tu-gallinero-controla-la-puerta-y-comedero-de-manera-efectiva</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/construye-tu-consola-retro-portatil-con-raspberry-pi-zero-2-w</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/los-mejores-programadores-universales-de-eeprom-y-bios</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
     <loc>https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing</loc>
     <lastmod>2026-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -128,15 +65,85 @@
   </url>
 
   <url>
-    <loc>https://www.ukrabot.cl/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real</loc>
+    <loc>https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled</loc>
     <lastmod>2026-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.ukrabot.cl/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico</loc>
+    <loc>https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing</loc>
     <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-llevar-la-robotica-al-aula-guia-para-docentes</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/los-mejores-kits-de-robotica-educativa-para-colegios</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/programacion-por-bloques-con-mblock-y-scratch-para-arduino</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/12-proyectos-de-robotica-para-la-feria-cientifica</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-preparar-a-tu-equipo-para-competencias-de-robotica-escolar</loc>
+    <lastmod>2026-08-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
