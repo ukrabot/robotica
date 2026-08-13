@@ -190,4 +190,39 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://www.ukrabot.cl/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/monitoreo-remoto-de-sensores-con-blynk</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/camara-de-vigilancia-con-esp32-cam</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
