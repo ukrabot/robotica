@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sistema de Riego Automático con Sensor de Humedad de Suelo</title>
+<meta name="description" content="Guía para construir un sistema de riego automático con ESP32 y sensor de humedad de suelo: principio de funcionamiento, conexión del sensor, control de una bomba con relé, lógica de umbral con histéresis y monitoreo remoto.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sistema de Riego Automático con Sensor de Humedad de Suelo">
+<meta property="og:description" content="Principio del sensor capacitivo/resistivo, conexión, control de bomba con relé, histéresis y monitoreo remoto.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/riego_automatico_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sistema de Riego Automático con Sensor de Humedad de Suelo">
+<meta name="twitter:description" content="Sensor de humedad, bomba con relé, lógica de umbral con histéresis y monitoreo remoto.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/riego_automatico_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Sistema de Riego Automático con Sensor de Humedad de Suelo",
+  "description":"Guía para construir un sistema de riego automático con ESP32 y sensor de humedad de suelo: principio de funcionamiento de los sensores resistivos y capacitivos, conexión del sensor, control de una bomba de agua mediante un módulo de relé, lógica de umbral con histéresis para evitar encendidos y apagados constantes, temporización del riego, y monitoreo remoto de la humedad con un panel en la nube.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-13",
+  "dateModified":"2026-08-13",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo"},
+  "image":"https://www.ukrabot.cl/blog/riego_automatico_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Placa ESP32, sensor de humedad de suelo (capacitivo recomendado), módulo de relé, mini bomba de agua de 5V o 12V, manguera, fuente de alimentación y protoboard con jumpers",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Sistema de Riego Automático con Sensor de Humedad de Suelo","item":"https://www.ukrabot.cl/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Qué sensor de humedad de suelo es mejor: el resistivo o el capacitivo?","acceptedAnswer":{"@type":"Answer","text":"El sensor capacitivo es claramente superior para un proyecto que funcione a largo plazo. El sensor resistivo tiene dos electrodos metálicos desnudos que se corroen con el tiempo por electrólisis, entregando lecturas que empeoran y contaminando el sustrato; además sufre si se mantiene alimentado de forma continua. El sensor capacitivo mide la humedad por variación de la constante dieléctrica del suelo sin exponer electrodos desnudos, por lo que no se corroe, dura mucho más y entrega lecturas estables. La diferencia de precio es mínima y se compensa con creces en durabilidad."}},
+    {"@type":"Question","name":"¿Qué es la histéresis y por qué la necesita mi sistema de riego?","acceptedAnswer":{"@type":"Answer","text":"La histéresis es una técnica de control que usa dos umbrales distintos para encender y apagar: por ejemplo, enciende la bomba cuando la humedad baja de 30% y la apaga cuando sube de 60%. Sin histéresis, un solo umbral haría que la bomba se encienda y apague constantemente al oscilar la lectura alrededor del valor límite, desgastando el relé y la bomba y regando de forma ineficiente. La histéresis crea una banda muerta entre ambos umbrales que estabiliza el sistema, y es una de las técnicas de control más importantes y reutilizables."}},
+    {"@type":"Question","name":"¿Cómo calibro el sensor de humedad de suelo?","acceptedAnswer":{"@type":"Answer","text":"La calibración consiste en registrar la lectura del sensor en dos condiciones conocidas y mapear esos valores a porcentajes. El procedimiento: lee el valor analógico con el sensor en aire (suelo seco) y anótalo; luego, con el sensor clavado en tierra húmeda o en un vaso de agua, registra el valor correspondiente a la humedad máxima. Con esos dos puntos puedes escalar las lecturas a un rango 0-100% usando la función map() de Arduino. Recalibra para cada tipo de sustrato, porque la respuesta varía según la tierra usada."}},
+    {"@type":"Question","name":"¿Puedo conectar la bomba de agua directamente al ESP32?","acceptedAnswer":{"@type":"Answer","text":"No, y es un error frecuente que daña la placa. Una bomba de agua, aunque sea pequeña, consume más corriente de la que un pin del ESP32 puede entregar, y además su motor genera picos de voltaje al arrancar y apagar. Siempre debes usar un relé o un transistor (con diodo de protección) para que el ESP32 controle la bomba de forma indirecta, y alimentar la bomba con su propia fuente, separada de la lógica. El ESP32 solo entrega la señal de control al relé; la corriente de la bomba nunca pasa por la placa."}},
+    {"@type":"Question","name":"¿Cada cuánto tiempo debo medir la humedad del suelo?","acceptedAnswer":{"@type":"Answer","text":"La humedad del suelo cambia lentamente, por lo que no tiene sentido medirla muchas veces por segundo. Una lectura cada pocos minutos (por ejemplo, cada 1 a 5 minutos) es más que suficiente para el control de riego, y reduce el desgaste del sensor, el consumo y el ruido en las lecturas. Para el sensor resistivo, espaciar las lecturas y alimentarlo solo en el momento de medir alarga su vida útil; el capacitivo tolera mejor la alimentación continua, pero igual conviene medir con calma y promediar varias lecturas para estabilidad."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="riego_automatico_hero.jpg" alt="Sensor de humedad de suelo clavado en una maceta con una planta junto a una mini bomba de agua y una placa ESP32" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Internet de las Cosas (IoT) · Actualizado el <time datetime="2026-08-13">13 de agosto de 2026</time></div>
+    <h1>Sistema de Riego Automático con Sensor de Humedad de Suelo</h1>
+    <p>Cómo medir la humedad de la tierra, controlar una bomba con relé, aplicar la lógica de umbral con histéresis y monitorear todo a distancia para que tus plantas nunca se queden secas.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="riego_automatico_wiring.jpg" alt="Placa ESP32 conectada a un sensor de humedad de suelo, un módulo relé y una mini bomba de agua sobre una protoboard" loading="lazy">
+  <div class="caption">Sensor, relé y bomba: tres piezas que convierten al ESP32 en un jardinero automático que riega solo cuando la tierra lo pide.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#sensores">Sensores de humedad: resistivo vs. capacitivo</a></li>
+    <li><a href="#conexion">Conexión del sensor al ESP32</a></li>
+    <li><a href="#calibracion">Calibrar y mapear a porcentaje</a></li>
+    <li><a href="#bomba">Controlar la bomba con relé</a></li>
+    <li><a href="#histeresis">Lógica de umbral con histéresis</a></li>
+    <li><a href="#codigo">Código completo del riego</a></li>
+    <li><a href="#monitoreo">Monitoreo remoto de la humedad</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="sensores">
+<h2>Sensores de humedad: resistivo vs. capacitivo</h2>
+<p>Existen dos tipos principales de sensor de humedad de suelo, y la elección importa más de lo que parece:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación entre sensores de humedad resistivos y capacitivos.</caption>
+<thead><tr><th>Aspecto</th><th>Resistivo</th><th>Capacitivo</th></tr></thead>
+<tbody>
+<tr><td>Durabilidad</td><td>Baja (se corroe)</td><td>Alta (sin electrodos expuestos)</td></tr>
+<tr><td>Estabilidad de lectura</td><td>Media</td><td>Alta</td></tr>
+<tr><td>Precio</td><td>Muy barato</td><td>Barato</td></tr>
+<tr><td>Recomendado</td><td>Solo para pruebas cortas</td><td>Proyectos a largo plazo</td></tr>
+</tbody>
+</table>
+</div>
+<p>El sensor <strong>resistivo</strong> tiene dos electrodos metálicos desnudos que se corroen por electrólisis con el tiempo, arruinando las lecturas y contaminando el sustrato. El <strong>capacitivo</strong> mide la humedad por la variación de la constante dieléctrica del suelo sin exponer metal, por lo que no se corroe y dura muchísimo más. Para un riego que funcione semanas o meses, la recomendación es clara: <strong>capacitivo</strong>.</p>
+</section>
+
+<section id="conexion">
+<h2>Conexión del sensor al ESP32</h2>
+<pre><code>Sensor de humedad          ESP32
+------------------         -----
+VCC                  -->   3.3V (o 5V según el modelo)
+GND                  -->   GND
+AOUT (analógica)     -->   GPIO 34 (pin ADC)</code></pre>
+<p>El sensor entrega una señal analógica proporcional a la humedad: a menor lectura, más seco el suelo (en la mayoría de los modelos). Conéctalo a un pin ADC del ESP32 y lee con <code>analogRead()</code>; el valor crudo se interpreta después con la calibración.</p>
+</section>
+
+<section id="calibracion">
+<h2>Calibrar y mapear a porcentaje</h2>
+<p>Para trabajar con números con sentido, calibra el sensor en dos puntos y escala las lecturas a un rango de 0 a 100%:</p>
+<ol>
+<li>Con el sensor <strong>en aire</strong> (seco), lee y anota el valor: será el punto de 0% de humedad.</li>
+<li>Con el sensor <strong>en tierra húmeda</strong> o en agua, lee y anota el valor: será el punto de 100%.</li>
+<li>Escala las lecturas con la función <code>map()</code> entre esos dos extremos.</li>
+</ol>
+<pre><code>int lecturaSeco = 3400;   // ejemplo: valor en aire
+int lecturaMojado = 1400; // ejemplo: valor en tierra saturada
+
+int humedad = map(analogRead(PIN_SENSOR), lecturaMojado, lecturaSeco, 100, 0);
+// Nota: los extremos se invierten porque a mayor humedad, menor lectura.
+// Ajusta los valores con tus propias mediciones.</code></pre>
+<div class="note"><strong>Recalibra por sustrato:</strong> la respuesta del sensor cambia según la tierra. Si cambias de maceta o de tipo de sustrato, repite la calibración para que los porcentajes sigan siendo confiables.</div>
+</section>
+
+<section id="bomba">
+<h2>Controlar la bomba con relé</h2>
+<p>La bomba de agua <strong>nunca se conecta directamente a un pin del ESP32</strong>: consume más corriente de la que el pin puede entregar y su motor genera picos de voltaje. El relé actúa de intermediario:</p>
+<pre><code>Módulo de relé           ESP32          Bomba
+--------------           -----          -----
+VCC                -->   5V
+GND                -->   GND
+IN                 -->   GPIO 26
+COM / NO           ------------------>  circuito de la bomba + fuente propia</code></pre>
+<ul>
+<li>El ESP32 solo entrega la <strong>señal de control</strong> al pin IN del relé.</li>
+<li>La bomba se alimenta con su <strong>propia fuente</strong>, separada de la lógica.</li>
+<li>El relé cierra o abre el circuito de la bomba sin que la corriente pase por la placa.</li>
+</ul>
+<div class="warning"><strong>Alimentación separada siempre:</strong> conectar la bomba a la misma fuente del ESP32 provoca caídas de voltaje y reinicios de la placa. Usa una fuente para la lógica y otra para la bomba, compartiendo solo la tierra (GND) común.</div>
+</section>
+
+<section id="histeresis">
+<h2>Lógica de umbral con histéresis</h2>
+<p>Si usas un solo umbral (por ejemplo, "riega cuando baje de 50%"), la bomba se enciende y apaga constantemente porque la lectura oscila alrededor de ese valor. La <strong>histéresis</strong> resuelve el problema con dos umbrales distintos:</p>
+<ul>
+<li><strong>Umbral de encendido:</strong> si la humedad baja de 30%, enciende la bomba.</li>
+<li><strong>Umbral de apagado:</strong> si la humedad sube de 60%, apaga la bomba.</li>
+</ul>
+<p>La banda entre 30% y 60% es una "zona muerta" donde el sistema no cambia de estado, evitando el encendido y apagado constante. Esta misma técnica se usa en termostatos, sistemas de llenado de tanques y controladores industriales, y es una de las más valiosas para dominar.</p>
+</section>
+
+<section id="codigo">
+<h2>Código completo del riego</h2>
+<pre><code>const int PIN_SENSOR = 34;  // pin ADC del sensor
+const int PIN_RELE   = 26;  // pin de control del rele
+
+// Umbrales con histeresis (ajusta segun tu calibracion)
+const int HUMEDAD_ENCENDIDO = 30;  // riega si baja de 30%
+const int HUMEDAD_APAGADO   = 60;  // apaga si sube de 60%
+
+// Duracion maxima de cada riego (seguridad)
+const unsigned long TIEMPO_MAX_RIEGO = 60000UL;  // 60 segundos
+
+bool bombaEncendida = false;
+unsigned long inicioRiego = 0;
+
+int leerHumedad() {
+  int lecturaSeco   = 3400;   // valor en aire (0%)
+  int lecturaMojado = 1400;   // valor en agua (100%)
+  int crudo = analogRead(PIN_SENSOR);
+  return map(crudo, lecturaMojado, lecturaSeco, 100, 0);
+}
+
+void setup() {
+  pinMode(PIN_RELE, OUTPUT);
+  digitalWrite(PIN_RELE, LOW);  // bomba apagada al inicio
+  Serial.begin(115200);
+}
+
+void loop() {
+  int humedad = leerHumedad();
+  Serial.println(humedad);
+
+  if (!bombaEncendida && humedad < HUMEDAD_ENCENDIDO) {
+    // Tierra seca: encender la bomba
+    digitalWrite(PIN_RELE, HIGH);
+    bombaEncendida = true;
+    inicioRiego = millis();
+  }
+
+  if (bombaEncendida) {
+    bool humedadSuficiente = humedad > HUMEDAD_APAGADO;
+    bool tiempoExcedido = (millis() - inicioRiego) > TIEMPO_MAX_RIEGO;
+
+    if (humedadSuficiente || tiempoExcedido) {
+      digitalWrite(PIN_RELE, LOW);
+      bombaEncendida = false;
+    }
+  }
+
+  delay(5000);  // mide cada 5 segundos (la humedad cambia lento)
+}</code></pre>
+<p>El <code>TIEMPO_MAX_RIEGO</code> es una salvaguarda importante: si el sensor se sale de la tierra o falla, la bomba no queda regando para siempre. Es un patrón de seguridad que todo actuador debe tener.</p>
+</section>
+
+<section id="monitoreo">
+<h2>Monitoreo remoto de la humedad</h2>
+<p>El ESP32 ya tiene WiFi: aprovecha para ver la humedad desde el celular y regar manualmente si lo necesitas. Tienes dos caminos ya cubiertos en este sitio:</p>
+<ul>
+<li><a href="/blog/monitoreo-remoto-de-sensores-con-blynk">Blynk</a>: el camino más rápido para un panel con medidor de humedad y botón de riego manual.</li>
+<li><a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">MQTT</a>: para un sistema propio, publicando la humedad en un tema y suscribiéndote a comandos de riego.</li>
+</ul>
+<p>Y para guardar el historial de humedad a lo largo de los días, el siguiente paso es <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">ThingSpeak</a>.</p>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos del riego automático y su solución.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>La bomba no enciende nunca</td><td>Umbral mal calibrado o relé invertido</td><td>Recalibrar y verificar la lógica del relé</td></tr>
+<tr><td>La bomba se enciende y apaga sin parar</td><td>Falta de histéresis</td><td>Usar dos umbrales con banda muerta</td></tr>
+<tr><td>El ESP32 se reinicia al arrancar la bomba</td><td>Fuente compartida con la bomba</td><td>Separar la alimentación de lógica y bomba</td></tr>
+<tr><td>Lecturas que se degradan con el tiempo</td><td>Sensor resistivo corroído</td><td>Cambiar a un sensor capacitivo</td></tr>
+<tr><td>La bomba queda encendida indefinidamente</td><td>Falta de límite de tiempo</td><td>Agregar TIEMPO_MAX_RIEGO de seguridad</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Un sistema de riego automático combina todo lo esencial del IoT: un sensor que percibe, una lógica que decide con histéresis, un actuador que ejecuta y una conexión inalámbrica que informa. Con un sensor capacitivo, un relé y un ESP32 tienes un jardinero automático confiable que cuida tus plantas y te avisa a distancia. El siguiente paso natural es guardar el historial con <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">ThingSpeak</a> o agregar control por voz con <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">MQTT</a>.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué sensor de humedad de suelo es mejor: el resistivo o el capacitivo?</summary><p>El sensor capacitivo es claramente superior para un proyecto que funcione a largo plazo. El sensor resistivo tiene dos electrodos metálicos desnudos que se corroen con el tiempo por electrólisis, entregando lecturas que empeoran y contaminando el sustrato; además sufre si se mantiene alimentado de forma continua. El sensor capacitivo mide la humedad por variación de la constante dieléctrica del suelo sin exponer electrodos desnudos, por lo que no se corroe, dura mucho más y entrega lecturas estables. La diferencia de precio es mínima y se compensa con creces en durabilidad.</p></details>
+<details><summary>¿Qué es la histéresis y por qué la necesita mi sistema de riego?</summary><p>La histéresis es una técnica de control que usa dos umbrales distintos para encender y apagar: por ejemplo, enciende la bomba cuando la humedad baja de 30% y la apaga cuando sube de 60%. Sin histéresis, un solo umbral haría que la bomba se encienda y apague constantemente al oscilar la lectura alrededor del valor límite, desgastando el relé y la bomba y regando de forma ineficiente. La histéresis crea una banda muerta entre ambos umbrales que estabiliza el sistema, y es una de las técnicas de control más importantes y reutilizables.</p></details>
+<details><summary>¿Cómo calibro el sensor de humedad de suelo?</summary><p>La calibración consiste en registrar la lectura del sensor en dos condiciones conocidas y mapear esos valores a porcentajes. El procedimiento: lee el valor analógico con el sensor en aire (suelo seco) y anótalo; luego, con el sensor clavado en tierra húmeda o en un vaso de agua, registra el valor correspondiente a la humedad máxima. Con esos dos puntos puedes escalar las lecturas a un rango 0-100% usando la función map() de Arduino. Recalibra para cada tipo de sustrato, porque la respuesta varía según la tierra usada.</p></details>
+<details><summary>¿Puedo conectar la bomba de agua directamente al ESP32?</summary><p>No, y es un error frecuente que daña la placa. Una bomba de agua, aunque sea pequeña, consume más corriente de la que un pin del ESP32 puede entregar, y además su motor genera picos de voltaje al arrancar y apagar. Siempre debes usar un relé o un transistor (con diodo de protección) para que el ESP32 controle la bomba de forma indirecta, y alimentar la bomba con su propia fuente, separada de la lógica. El ESP32 solo entrega la señal de control al relé; la corriente de la bomba nunca pasa por la placa.</p></details>
+<details><summary>¿Cada cuánto tiempo debo medir la humedad del suelo?</summary><p>La humedad del suelo cambia lentamente, por lo que no tiene sentido medirla muchas veces por segundo. Una lectura cada pocos minutos (por ejemplo, cada 1 a 5 minutos) es más que suficiente para el control de riego, y reduce el desgaste del sensor, el consumo y el ruido en las lecturas. Para el sensor resistivo, espaciar las lecturas y alimentarlo solo en el momento de medir alarga su vida útil; el capacitivo tolera mejor la alimentación continua, pero igual conviene medir con calma y promediar varias lecturas para estabilidad.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Guarda el historial de humedad y riego con <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">ThingSpeak</a>, o agrega control manual desde el celular con <a href="/blog/monitoreo-remoto-de-sensores-con-blynk">Blynk</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/camara-de-vigilancia-con-esp32-cam">← Anterior: Cámara de Vigilancia con ESP32-CAM</a>
+  <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">Siguiente: Registra y Grafica Datos con ThingSpeak →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante del sensor.</p>
+<ul>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/" target="_blank" rel="noopener noreferrer">Arduino Reference — analogRead()</a></li>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/math/map/" target="_blank" rel="noopener noreferrer">Arduino Reference — map()</a></li>
+<li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/" target="_blank" rel="noopener noreferrer">Espressif — Documentación oficial del ESP32</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 13 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Monitoreo Remoto de Sensores con Blynk</title>
+<meta name="description" content="Guía para monitorear sensores en tiempo real desde el celular con Blynk y ESP32: creación de la app, pines virtuales, envío de datos de temperatura y humedad, botones para actuar y comparativa con MQTT.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/monitoreo-remoto-de-sensores-con-blynk">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Monitoreo Remoto de Sensores con Blynk">
+<meta property="og:description" content="Crea un panel de control en el celular, usa pines virtuales y envía datos de sensores en tiempo real con ESP32.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/blynk_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/monitoreo-remoto-de-sensores-con-blynk">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Monitoreo Remoto de Sensores con Blynk">
+<meta name="twitter:description" content="Panel visual en el celular, pines virtuales y lectura de temperatura y humedad en tiempo real.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/blynk_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Monitoreo Remoto de Sensores con Blynk",
+  "description":"Guía para monitorear sensores en tiempo real desde el celular con Blynk y ESP32: qué es Blynk y cómo se compara con MQTT, creación de una plantilla y un dispositivo en la plataforma, configuración del token de autenticación, uso de pines virtuales para enviar lecturas, construcción de un panel con medidores y botones, código completo para enviar temperatura y humedad de un DHT22, y consejos para organizar un dashboard limpio y útil.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-13",
+  "dateModified":"2026-08-13",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/monitoreo-remoto-de-sensores-con-blynk"},
+  "image":"https://www.ukrabot.cl/blog/blynk_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Placa ESP32, sensor DHT22 (o el sensor que quieras monitorear), red WiFi, celular con la app Blynk IoT y una cuenta en la plataforma Blynk",
+  "wordCount":"2500",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Monitoreo Remoto de Sensores con Blynk","item":"https://www.ukrabot.cl/blog/monitoreo-remoto-de-sensores-con-blynk"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Qué es Blynk y en qué se diferencia de MQTT?","acceptedAnswer":{"@type":"Answer","text":"Blynk es una plataforma de IoT que incluye una aplicación móvil, un servidor en la nube y librerías para microcontroladores, pensada para crear paneles de control visuales (medidores, botones, gráficos) sin programar una app. MQTT, en cambio, es un protocolo de mensajería abierto que requiere construir o configurar cada pieza por separado. Blynk es más rápido para obtener un panel bonito y funcional; MQTT es más flexible, abierto y sin dependencia de un proveedor. Muchos proyectos usan Blynk para prototipar y luego migran a MQTT para producción."}},
+    {"@type":"Question","name":"¿Qué son los pines virtuales en Blynk?","acceptedAnswer":{"@type":"Answer","text":"Los pines virtuales (V0, V1, V2…) son canales abstractos de datos entre el ESP32 y la app, que no corresponden a pines físicos del microcontrolador. Sirven para intercambiar cualquier tipo de información: lecturas de sensores, estados, textos o comandos. Por ejemplo, el código envía la temperatura al pin virtual V1 con la función Blynk.virtualWrite(V1, valor), y el widget de la app configurado en V1 la muestra. Usar pines virtuales en lugar de pines físicos desacopla el hardware del panel y facilita reorganizar la interfaz sin tocar el cableado."}},
+    {"@type":"Question","name":"¿Qué necesito para conectar un ESP32 a Blynk?","acceptedAnswer":{"@type":"Answer","text":"Necesitas cuatro cosas: una placa ESP32 con conexión a internet, una cuenta en la plataforma Blynk (web o app), un 'token' de autenticación único que identifica tu dispositivo y que se pega en el código, y la librería de Blynk instalada en el IDE de Arduino. El token es lo que vincula tu código con el dispositivo creado en la plataforma, y es el error más común al empezar: si el token no coincide, la app no muestra datos."}},
+    {"@type":"Question","name":"¿Blynk es gratuito?","acceptedAnswer":{"@type":"Answer","text":"Blynk ofrece un plan gratuito para uso personal con un número limitado de dispositivos y de 'energía' (créditos que consumen los widgets y las funciones). Para la mayoría de los proyectos de aprendizaje y uso casero, el plan gratuito alcanza de sobra. Los planes de pago amplían la cantidad de dispositivos, el almacenamiento de datos y las funciones avanzadas. Para un monitoreo simple de sensores, empieza con el plan gratuito y evalúa si necesitas más a medida que el proyecto crece."}},
+    {"@type":"Question","name":"¿Puedo monitorear los sensores estando fuera de mi casa?","acceptedAnswer":{"@type":"Answer","text":"Sí, y esa es una de las ventajas de Blynk: como la app se comunica con el servidor en la nube de Blynk (no directamente con el ESP32), puedes ver tus sensores desde cualquier lugar con internet, sin abrir puertos en tu router ni configurar una VPN. El ESP32 se conecta a tu WiFi y envía los datos a la nube de Blynk, y tu celular los lee desde ahí. Es la forma más simple de lograr acceso remoto sin exponer tu red doméstica."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="blynk_hero.jpg" alt="Celular mostrando un panel de control IoT con medidores y botones junto a una placa ESP32 sobre una mesa de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Internet de las Cosas (IoT) · Actualizado el <time datetime="2026-08-13">13 de agosto de 2026</time></div>
+    <h1>Monitoreo Remoto de Sensores con Blynk</h1>
+    <p>Cómo crear un panel de control en tu celular sin programar una app: configuración de la plataforma, pines virtuales, envío de datos de temperatura y humedad, y botones para actuar a distancia.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="blynk_wiring.jpg" alt="Placa ESP32 conectada a un sensor de temperatura DHT22 y una protoboard sobre una mesa de trabajo" loading="lazy">
+  <div class="caption">Un ESP32 y un sensor bastan para tener un monitoreo remoto completo: el resto es configuración en la plataforma Blynk.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es Blynk y cómo se compara con MQTT</a></li>
+    <li><a href="#cuenta">Crear cuenta, plantilla y dispositivo</a></li>
+    <li><a href="#pines-virtuales">Pines virtuales: el puente entre el ESP32 y la app</a></li>
+    <li><a href="#panel">Construir el panel con medidores y botones</a></li>
+    <li><a href="#libreria">Instalar la librería de Blynk</a></li>
+    <li><a href="#codigo">Código: enviar temperatura y humedad</a></li>
+    <li><a href="#dashboard">Consejos para un dashboard útil</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>Qué es Blynk y cómo se compara con MQTT</h2>
+<p><strong>Blynk</strong> es una plataforma de IoT que agrupa en un solo paquete la aplicación móvil, el servidor en la nube y las librerías para microcontroladores. Su gran ventaja: te permite construir un <strong>panel visual</strong> con medidores, botones y gráficos sin programar una app móvil.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación entre Blynk y MQTT para proyectos de monitoreo.</caption>
+<thead><tr><th>Aspecto</th><th>Blynk</th><th>MQTT</th></tr></thead>
+<tbody>
+<tr><td>Curva de aprendizaje</td><td>Baja (app lista)</td><td>Media (armar cada pieza)</td></tr>
+<tr><td>Flexibilidad</td><td>Media (depende de la plataforma)</td><td>Alta (protocolo abierto)</td></tr>
+<tr><td>Panel visual</td><td>Incluido</td><td>Hay que armarlo aparte</td></tr>
+<tr><td>Dependencia de proveedor</td><td>Sí</td><td>No</td></tr>
+<tr><td>Ideal para</td><td>Prototipos y monitoreo rápido</td><td>Producción y control total</td></tr>
+</tbody>
+</table>
+</div>
+<p>La regla práctica: <strong>Blynk para ver resultados en una hora; MQTT para un sistema propio y sin dependencias.</strong> Muchos proyectos empiezan en Blynk y migran a MQTT cuando crecen, usando la <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">guía de MQTT</a> como base.</p>
+</section>
+
+<section id="cuenta">
+<h2>Crear cuenta, plantilla y dispositivo</h2>
+<ol>
+<li>Crea una cuenta en la plataforma Blynk (web o app móvil).</li>
+<li>Crea una <strong>plantilla</strong> (template) que define qué tipo de datos manejará tu dispositivo: asigna los pines virtuales que usarás.</li>
+<li>Agrega un <strong>dispositivo</strong> a partir de la plantilla, seleccionando el hardware ESP32 y el tipo de conexión (WiFi).</li>
+<li>Copia el <strong>token de autenticación</strong> que genera la plataforma: es la llave que vincula tu código con ese dispositivo.</li>
+</ol>
+<div class="warning"><strong>El token es el error más común:</strong> si el token pegado en el código no coincide con el del dispositivo creado, el ESP32 se conecta pero la app no muestra nada. Verifica que copiaste el token completo y sin espacios.</div>
+</section>
+
+<section id="pines-virtuales">
+<h2>Pines virtuales: el puente entre el ESP32 y la app</h2>
+<p>Los <strong>pines virtuales</strong> (V0, V1, V2…) son canales abstractos de datos que no corresponden a pines físicos del microcontrolador. Son el mecanismo estándar para intercambiar información:</p>
+<ul>
+<li><strong>Del ESP32 a la app:</strong> el código envía la temperatura al pin virtual V1 con <code>Blynk.virtualWrite(V1, valor)</code>, y el widget configurado en V1 la muestra.</li>
+<li><strong>De la app al ESP32:</strong> un botón configurado en V2 activa una función en el código cuando se presiona.</li>
+</ul>
+<p>Usar pines virtuales desacopla el hardware del panel: puedes reorganizar la interfaz o cambiar el sensor sin tocar el cableado, solo ajustando qué pin virtual usa cada widget.</p>
+</section>
+
+<section id="panel">
+<h2>Construir el panel con medidores y botones</h2>
+<p>En el editor de la app, arrastra los widgets al dashboard y asígnales un pin virtual:</p>
+<ul>
+<li><strong>Gauge (medidor):</strong> en V1 para la temperatura.</li>
+<li><strong>Gauge o Level:</strong> en V2 para la humedad.</li>
+<li><strong>Button (botón):</strong> en V3 para encender un LED o activar una salida a distancia.</li>
+</ul>
+<p>Cada widget se configura con el pin virtual correspondiente, y automáticamente reflejará lo que el código publique en ese pin. No necesitas escribir código móvil: todo es configuración visual.</p>
+</section>
+
+<section id="libreria">
+<h2>Instalar la librería de Blynk</h2>
+<p>En el IDE de Arduino, abre el <strong>Gestor de Librerías</strong>, busca <strong>"Blynk"</strong> e instala la librería oficial. Blynk también requiere la librería WiFi (incluida en el núcleo del ESP32). Una vez instalada, tendrás acceso a los ejemplos incluidos, que son un excelente punto de partida.</p>
+</section>
+
+<section id="codigo">
+<h2>Código: enviar temperatura y humedad</h2>
+<p>Este código conecta el ESP32 a la red, lee un sensor DHT22 y publica los valores en los pines virtuales V1 y V2:</p>
+<pre><code>#define BLYNK_TEMPLATE_ID   "TU_TEMPLATE_ID"
+#define BLYNK_TEMPLATE_NAME "Monitoreo"
+#define BLYNK_AUTH_TOKEN    "TU_TOKEN_DE_AUTENTICACION"
+
+#include &lt;WiFi.h&gt;
+#include &lt;BlynkSimpleEsp32.h&gt;
+#include &lt;DHT.h&gt;
+
+const char* SSID = "tu_red_wifi";
+const char* PASS = "tu_clave_wifi";
+
+#define PIN_DHT 4
+#define TIPO_DHT DHT22
+DHT sensor(PIN_DHT, TIPO_DHT);
+
+// Temporizador para enviar datos periodicamente
+BlynkTimer timer;
+
+void enviarDatos() {
+  float humedad = sensor.readHumidity();
+  float temperatura = sensor.readTemperature();
+
+  if (!isnan(humedad) && !isnan(temperatura)) {
+    Blynk.virtualWrite(V1, temperatura);  // envia temperatura al medidor V1
+    Blynk.virtualWrite(V2, humedad);      // envia humedad al medidor V2
+  }
+}
+
+void setup() {
+  sensor.begin();
+  Blynk.begin(BLYNK_AUTH_TOKEN, SSID, PASS);
+
+  // Llama a enviarDatos cada 2 segundos
+  timer.setInterval(2000L, enviarDatos);
+}
+
+void loop() {
+  Blynk.run();   // mantiene la conexion y procesa la app
+  timer.run();   // ejecuta el temporizador
+}</code></pre>
+<p>El patrón es simple y reutilizable: lee el sensor, escribe en el pin virtual, y la app lo muestra. El intervalo de 2 segundos respeta además la frecuencia de muestreo del DHT22 (detallada en la <a href="/blog/sensor-dht22-temperatura-y-humedad-con-arduino">guía del DHT22</a>).</p>
+</section>
+
+<section id="dashboard">
+<h2>Consejos para un dashboard útil</h2>
+<ul>
+<li><strong>Menos es más:</strong> muestra solo las métricas que realmente miras; un panel con 15 medidores se vuelve ruido.</li>
+<li><strong>Nombres claros:</strong> etiqueta cada widget con su magnitud y unidad ("Temperatura °C").</li>
+<li><strong>Orden lógico:</strong> agrupa por ambiente o por tipo de dato, y coloca los controles cerca de sus indicadores.</li>
+<li><strong>Historial:</strong> usa widgets de gráfico para ver tendencias, no solo el valor instantáneo.</li>
+</ul>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos al usar Blynk y su solución.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El dispositivo no aparece en la app</td><td>Token incorrecto o red sin internet</td><td>Verificar el token completo y la conexión WiFi</td></tr>
+<tr><td>Los valores no se actualizan</td><td>Pin virtual mal configurado en el widget</td><td>Verificar que el widget usa el mismo pin del código</td></tr>
+<tr><td>El ESP32 se desconecta a ratos</td><td>Señal WiFi débil o fuente de poder inestable</td><td>Acercar al router y usar fuente de 5V estable</td></tr>
+<tr><td>Lecturas en cero o erráticas</td><td>Sensor mal conectado o leído muy rápido</td><td>Revisar cableado y respetar el intervalo del sensor</td></tr>
+<tr><td>El botón no actúa sobre el hardware</td><td>Falta el manejador del pin virtual</td><td>Agregar la función BLYNK_WRITE del pin correspondiente</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Blynk es la forma más rápida de llevar tus sensores al celular: con una placa, una librería y unos minutos de configuración visual tienes un monitoreo remoto completo y accesible desde cualquier lugar. Cuando el proyecto crezca y quieras independencia total, migra a <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">MQTT</a> o guarda historial con <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">ThingSpeak</a>.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué es Blynk y en qué se diferencia de MQTT?</summary><p>Blynk es una plataforma de IoT que incluye una aplicación móvil, un servidor en la nube y librerías para microcontroladores, pensada para crear paneles de control visuales (medidores, botones, gráficos) sin programar una app. MQTT, en cambio, es un protocolo de mensajería abierto que requiere construir o configurar cada pieza por separado. Blynk es más rápido para obtener un panel bonito y funcional; MQTT es más flexible, abierto y sin dependencia de un proveedor. Muchos proyectos usan Blynk para prototipar y luego migran a MQTT para producción.</p></details>
+<details><summary>¿Qué son los pines virtuales en Blynk?</summary><p>Los pines virtuales (V0, V1, V2…) son canales abstractos de datos entre el ESP32 y la app, que no corresponden a pines físicos del microcontrolador. Sirven para intercambiar cualquier tipo de información: lecturas de sensores, estados, textos o comandos. Por ejemplo, el código envía la temperatura al pin virtual V1 con la función Blynk.virtualWrite(V1, valor), y el widget de la app configurado en V1 la muestra. Usar pines virtuales en lugar de pines físicos desacopla el hardware del panel y facilita reorganizar la interfaz sin tocar el cableado.</p></details>
+<details><summary>¿Qué necesito para conectar un ESP32 a Blynk?</summary><p>Necesitas cuatro cosas: una placa ESP32 con conexión a internet, una cuenta en la plataforma Blynk (web o app), un "token" de autenticación único que identifica tu dispositivo y que se pega en el código, y la librería de Blynk instalada en el IDE de Arduino. El token es lo que vincula tu código con el dispositivo creado en la plataforma, y es el error más común al empezar: si el token no coincide, la app no muestra datos.</p></details>
+<details><summary>¿Blynk es gratuito?</summary><p>Blynk ofrece un plan gratuito para uso personal con un número limitado de dispositivos y de "energía" (créditos que consumen los widgets y las funciones). Para la mayoría de los proyectos de aprendizaje y uso casero, el plan gratuito alcanza de sobra. Los planes de pago amplían la cantidad de dispositivos, el almacenamiento de datos y las funciones avanzadas. Para un monitoreo simple de sensores, empieza con el plan gratuito y evalúa si necesitas más a medida que el proyecto crece.</p></details>
+<details><summary>¿Puedo monitorear los sensores estando fuera de mi casa?</summary><p>Sí, y esa es una de las ventajas de Blynk: como la app se comunica con el servidor en la nube de Blynk (no directamente con el ESP32), puedes ver tus sensores desde cualquier lugar con internet, sin abrir puertos en tu router ni configurar una VPN. El ESP32 se conecta a tu WiFi y envía los datos a la nube de Blynk, y tu celular los lee desde ahí. Es la forma más simple de lograr acceso remoto sin exponer tu red doméstica.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. Los nombres de marcas y plataformas pertenecen a sus respectivos dueños. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si quieres control total sin depender de una plataforma, revisa la <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">Domótica con ESP32 y MQTT</a>, o guarda historial y gráficos con <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">ThingSpeak</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">← Anterior: Domótica con ESP32 y MQTT</a>
+  <a href="/blog/camara-de-vigilancia-con-esp32-cam">Siguiente: Cámara de Vigilancia con ESP32-CAM →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. La interfaz de la plataforma puede variar entre versiones.</p>
+<ul>
+<li><a href="https://blynk.io/" target="_blank" rel="noopener noreferrer">Blynk IoT — Plataforma oficial</a></li>
+<li><a href="https://docs.blynk.io/" target="_blank" rel="noopener noreferrer">Documentación de Blynk — Pines virtuales y widgets</a></li>
+<li><a href="https://github.com/blynkkk/blynk-library" target="_blank" rel="noopener noreferrer">Librería de Blynk para Arduino</a></li>
+<li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/" target="_blank" rel="noopener noreferrer">Espressif — Documentación oficial del ESP32</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 13 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Registra y Grafica Datos en la Nube con ThingSpeak</title>
+<meta name="description" content="Guía para registrar y graficar datos de sensores en la nube con ThingSpeak y ESP32: creación de canales, campos, API keys, envío de datos por HTTP, visualización de gráficos y límites del plan gratuito.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Registra y Grafica Datos en la Nube con ThingSpeak">
+<meta property="og:description" content="Canales, campos, API keys, envío por HTTP y gráficos automáticos para el historial de tus sensores.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/thingspeak_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Registra y Grafica Datos en la Nube con ThingSpeak">
+<meta name="twitter:description" content="Crea un canal, envía datos por HTTP con tu ESP32 y obtén gráficos automáticos del historial.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/thingspeak_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Registra y Grafica Datos en la Nube con ThingSpeak",
+  "description":"Guía para registrar y graficar datos de sensores en la nube con ThingSpeak y ESP32: qué es ThingSpeak y por qué es la forma más rápida de guardar historial de datos, creación de un canal y sus campos, obtención de las API keys de escritura y lectura, envío de datos por HTTP con la librería WiFiClient, visualización de los gráficos automáticos, límites del plan gratuito y un proyecto completo de estación meteorológica en la nube.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-13",
+  "dateModified":"2026-08-13",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak"},
+  "image":"https://www.ukrabot.cl/blog/thingspeak_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Placa ESP32, un sensor (por ejemplo DHT22 o de humedad de suelo), red WiFi, y una cuenta gratuita en ThingSpeak",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Registra y Grafica Datos en la Nube con ThingSpeak","item":"https://www.ukrabot.cl/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Qué es ThingSpeak y para qué sirve?","acceptedAnswer":{"@type":"Answer","text":"ThingSpeak es una plataforma en la nube para el Internet de las Cosas que permite a tus dispositivos enviar datos, almacenarlos y visualizarlos en gráficos automáticos. Cada 'canal' tiene hasta 8 campos donde puedes guardar distintas variables (temperatura, humedad, distancia, etc.), y la plataforma genera los gráficos por ti sin que tengas que programar una página web ni una base de datos. Es la forma más rápida de tener historial de datos de tus sensores accesible desde cualquier lugar."}},
+    {"@type":"Question","name":"¿Qué son los campos y las API keys en ThingSpeak?","acceptedAnswer":{"@type":"Answer","text":"Los campos (fields) son las variables del canal: cada campo guarda una magnitud distinta, por ejemplo el campo 1 la temperatura y el campo 2 la humedad. Las API keys son claves de acceso: la clave de escritura (Write API Key) permite a tu ESP32 enviar datos al canal, y la clave de lectura (Read API Key) permite leerlos desde otro programa. La clave de escritura es secreta y no debe compartirse, porque cualquiera con ella podría escribir datos en tu canal; por eso no se publica en sitios ni repositorios."}},
+    {"@type":"Question","name":"¿Cómo envía datos un ESP32 a ThingSpeak?","acceptedAnswer":{"@type":"Answer","text":"El ESP32 envía los datos mediante una petición HTTP GET al servidor de ThingSpeak, incluyendo en la URL la clave de escritura y los valores de cada campo. La librería estándar de HTTP del ESP32 construye la URL con los parámetros y la envía por WiFi; ThingSpeak responde confirmando que guardó los datos. No se necesita una librería especial de ThingSpeak: con WiFiClient y una URL bien formada es suficiente, lo que además ayuda a entender qué ocurre por debajo."}},
+    {"@type":"Question","name":"¿Con qué frecuencia puedo enviar datos a ThingSpeak?","acceptedAnswer":{"@type":"Answer","text":"El plan gratuito de ThingSpeak limita el envío de datos a aproximadamente una actualización cada 15 segundos por canal. Para la mayoría de los sensores ambientales, esto es más que suficiente: la temperatura o la humedad no cambian tan rápido, y enviar cada 1 o 2 minutos es una frecuencia razonable que además ahorra ancho de banda y energía. Si envías datos más rápido de lo permitido, ThingSpeak simplemente los descarta, por lo que conviene respetar el intervalo con un temporizador en el código."}},
+    {"@type":"Question","name":"¿Puedo descargar mis datos de ThingSpeak?","acceptedAnswer":{"@type":"Answer","text":"Sí, ThingSpeak permite exportar los datos de un canal en formatos como CSV o JSON, ya sea desde la interfaz web o mediante la API de lectura. Esto es útil para analizar los datos en una hoja de cálculo, hacer gráficos propios o respaldar el historial. Para proyectos científicos o de feria, exportar el CSV y procesarlo en una planilla es una forma excelente de darle rigor al análisis, calculando promedios, tendencias y comparaciones a lo largo del tiempo."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="thingspeak_hero.jpg" alt="Monitor de computadora mostrando gráficos de series temporales de datos de sensores junto a una placa ESP32 con un sensor conectado" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Internet de las Cosas (IoT) · Actualizado el <time datetime="2026-08-13">13 de agosto de 2026</time></div>
+    <h1>Registra y Grafica Datos en la Nube con ThingSpeak</h1>
+    <p>Cómo guardar el historial de tus sensores en la nube y obtener gráficos automáticos sin programar una base de datos: canales, campos, API keys y envío por HTTP desde tu ESP32.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 11 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="thingspeak_wiring.jpg" alt="Placa ESP32 conectada a un sensor de temperatura sobre una protoboard junto a un notebook mostrando gráficos de datos" loading="lazy">
+  <div class="caption">El historial de datos es lo que convierte un sensor en un proyecto científico: ThingSpeak lo guarda y lo grafica por ti.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es ThingSpeak</a></li>
+    <li><a href="#cuenta">Crear un canal y sus campos</a></li>
+    <li><a href="#api-keys">API keys de escritura y lectura</a></li>
+    <li><a href="#envio">Enviar datos por HTTP</a></li>
+    <li><a href="#codigo">Código ESP32 con WiFiClient</a></li>
+    <li><a href="#graficos">Visualizar los gráficos</a></li>
+    <li><a href="#limites">Límites del plan gratuito</a></li>
+    <li><a href="#proyecto">Proyecto: estación meteorológica en la nube</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>Qué es ThingSpeak</h2>
+<p><strong>ThingSpeak</strong> es una plataforma en la nube para el Internet de las Cosas que permite a tus dispositivos <strong>enviar datos, almacenarlos y visualizarlos en gráficos automáticos</strong>. En lugar de programar tu propia base de datos y página de gráficos, creas un canal, envías los datos y ThingSpeak hace el resto.</p>
+<p>La unidad central es el <strong>canal</strong>: un espacio con hasta 8 campos donde guardar distintas variables. Por ejemplo, un canal de estación meteorológica podría tener la temperatura en el campo 1 y la humedad en el campo 2, y ThingSpeak generará un gráfico para cada uno.</p>
+</section>
+
+<section id="cuenta">
+<h2>Crear un canal y sus campos</h2>
+<ol>
+<li>Crea una cuenta gratuita en ThingSpeak.</li>
+<li>Selecciona <strong>New Channel</strong> (nuevo canal).</li>
+<li>Asigna un nombre y habilita los <strong>campos</strong> (fields) que usarás, uno por variable: por ejemplo, campo 1 = temperatura, campo 2 = humedad.</li>
+<li>Guarda el canal y anota su <strong>Channel ID</strong>.</li>
+</ol>
+<p>La organización en campos es la clave de un canal ordenado: cada magnitud en su campo, con nombres claros y unidades consistentes, para que los gráficos sean legibles desde el primer día.</p>
+</section>
+
+<section id="api-keys">
+<h2>API keys de escritura y lectura</h2>
+<ul>
+<li><strong>Write API Key:</strong> permite a tu ESP32 <strong>escribir</strong> datos en el canal. Es secreta: cualquiera que la tenga puede inyectar datos en tu canal, por lo que no debe publicarse.</li>
+<li><strong>Read API Key:</strong> permite <strong>leer</strong> los datos desde otro programa o exportarlos.</li>
+</ul>
+<div class="warning"><strong>No publiques tu Write API Key:</strong> si subes tu código a un repositorio público o lo compartes, la clave de escritura queda expuesta. Usa variables o archivos de configuración que no se compartan, y trata la clave como una contraseña.</div>
+</section>
+
+<section id="envio">
+<h2>Enviar datos por HTTP</h2>
+<p>ThingSpeak acepta los datos mediante una petición HTTP GET con la clave y los valores en la URL. El formato es:</p>
+<pre><code>GET https://api.thingspeak.com/update?api_key=TU_WRITE_KEY&amp;field1=23.5&amp;field2=60</code></pre>
+<p>Cada <code>fieldN</code> corresponde a un campo del canal. El servidor responde con un número que indica si la escritura fue exitosa; el código puede revisarlo para confirmar que los datos llegaron bien.</p>
+</section>
+
+<section id="codigo">
+<h2>Código ESP32 con WiFiClient</h2>
+<p>No necesitas una librería especial de ThingSpeak: la librería estándar del ESP32 basta para construir y enviar la petición HTTP. Este código lee un DHT22 y envía los valores cada 60 segundos:</p>
+<pre><code>#include &lt;WiFi.h&gt;
+#include &lt;DHT.h&gt;
+
+const char* SSID     = "tu_red_wifi";
+const char* PASS     = "tu_clave_wifi";
+const char* API_KEY  = "TU_WRITE_API_KEY";   // clave de escritura
+
+const char* HOST = "api.thingspeak.com";
+
+#define PIN_DHT 4
+#define TIPO_DHT DHT22
+DHT sensor(PIN_DHT, TIPO_DHT);
+
+const unsigned long INTERVALO = 60000UL;  // envia cada 60 segundos
+unsigned long ultimoEnvio = 0;
+
+void setup() {
+  Serial.begin(115200);
+  sensor.begin();
+  WiFi.begin(SSID, PASS);
+  while (WiFi.status() != WL_CONNECTED) delay(500);
+}
+
+void enviarDatos(float temperatura, float humedad) {
+  WiFiClient cliente;
+
+  if (!cliente.connect(HOST, 80)) {
+    Serial.println("No se pudo conectar a ThingSpeak");
+    return;
+  }
+
+  String url = "/update?api_key=" + String(API_KEY) +
+               "&field1=" + String(temperatura) +
+               "&field2=" + String(humedad);
+
+  cliente.print("GET " + url + " HTTP/1.1\r\n");
+  cliente.print("Host: " + String(HOST) + "\r\n");
+  cliente.print("Connection: close\r\n\r\n");
+
+  delay(200);
+  while (cliente.available()) {
+    Serial.write(cliente.read());   // muestra la respuesta del servidor
+  }
+  cliente.stop();
+}
+
+void loop() {
+  unsigned long ahora = millis();
+
+  if (ahora - ultimoEnvio >= INTERVALO) {
+    ultimoEnvio = ahora;
+
+    float humedad = sensor.readHumidity();
+    float temperatura = sensor.readTemperature();
+
+    if (!isnan(humedad) && !isnan(temperatura)) {
+      enviarDatos(temperatura, humedad);
+    }
+  }
+}</code></pre>
+<p>El intervalo de 60 segundos es una buena práctica: respeta el límite del plan gratuito y es más que suficiente para variables ambientales que cambian lentamente.</p>
+</section>
+
+<section id="graficos">
+<h2>Visualizar los gráficos</h2>
+<p>Al abrir tu canal en la web de ThingSpeak, cada campo muestra su <strong>gráfico automático</strong> con la evolución de la variable a lo largo del tiempo. Puedes:</p>
+<ul>
+<li>Seleccionar el rango de fechas a visualizar.</li>
+<li>Comparar varios campos en un mismo gráfico.</li>
+<li>Hacer públicos los gráficos para compartirlos con un enlace.</li>
+<li>Exportar los datos en <strong>CSV o JSON</strong> para analizarlos en una hoja de cálculo.</li>
+</ul>
+<p>Para un proyecto de feria científica, exportar el CSV y procesarlo en una planilla (promedios, tendencias, comparaciones) le da el rigor que los jueces buscan.</p>
+</section>
+
+<section id="limites">
+<h2>Límites del plan gratuito</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Límites principales del plan gratuito de ThingSpeak (referenciales).</caption>
+<thead><tr><th>Recurso</th><th>Límite gratuito aproximado</th></tr></thead>
+<tbody>
+<tr><td>Frecuencia de escritura</td><td>~1 actualización cada 15 segundos</td></tr>
+<tr><td>Campos por canal</td><td>8</td></tr>
+<tr><td>Canales por usuario</td><td>4 (puede variar según la cuenta)</td></tr>
+<tr><td>Retención de datos</td><td>Limitada (los planes de pago la amplían)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para la mayoría de los proyectos de aprendizaje y monitoreo casero, el plan gratuito es más que suficiente. Si tu proyecto crece y necesitas más frecuencia o más canales, evalúa los planes de pago o migra a una base de datos propia.</p>
+</section>
+
+<section id="proyecto">
+<h2>Proyecto: estación meteorológica en la nube</h2>
+<p>El proyecto integrador natural de esta guía es una <strong>estación meteorológica en la nube</strong>: un DHT22 que envía temperatura y humedad a ThingSpeak cada pocos minutos, generando un historial climático accesible desde cualquier lugar. Combina:</p>
+<ul>
+<li>El <a href="/blog/sensor-dht22-temperatura-y-humedad-con-arduino">sensor DHT22</a> para medir temperatura y humedad.</li>
+<li>El envío por HTTP descrito en esta guía.</li>
+<li>La exportación en CSV para analizar la evolución diaria.</li>
+</ul>
+<p>Si prefieres un panel con control en tiempo real en lugar de solo historial, complementa con <a href="/blog/monitoreo-remoto-de-sensores-con-blynk">Blynk</a>; y si quieres un sistema totalmente propio, la <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">guía de MQTT</a> es el camino.</p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>ThingSpeak elimina la parte más tediosa del IoT —guardar y graficar datos— y te deja concentrarte en lo que importa: medir bien. Con un canal, una API key y un ESP32 que envía por HTTP, tienes historial de datos en la nube en una tarde. Desde aquí, combina el registro con el <a href="/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">riego automático</a> para analizar cuánta agua usan tus plantas, o con la <a href="/blog/camara-de-vigilancia-con-esp32-cam">cámara ESP32-CAM</a> para un sistema de vigilancia con registro.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué es ThingSpeak y para qué sirve?</summary><p>ThingSpeak es una plataforma en la nube para el Internet de las Cosas que permite a tus dispositivos enviar datos, almacenarlos y visualizarlos en gráficos automáticos. Cada "canal" tiene hasta 8 campos donde puedes guardar distintas variables (temperatura, humedad, distancia, etc.), y la plataforma genera los gráficos por ti sin que tengas que programar una página web ni una base de datos. Es la forma más rápida de tener historial de datos de tus sensores accesible desde cualquier lugar.</p></details>
+<details><summary>¿Qué son los campos y las API keys en ThingSpeak?</summary><p>Los campos (fields) son las variables del canal: cada campo guarda una magnitud distinta, por ejemplo el campo 1 la temperatura y el campo 2 la humedad. Las API keys son claves de acceso: la clave de escritura (Write API Key) permite a tu ESP32 enviar datos al canal, y la clave de lectura (Read API Key) permite leerlos desde otro programa. La clave de escritura es secreta y no debe compartirse, porque cualquiera con ella podría escribir datos en tu canal; por eso no se publica en sitios ni repositorios.</p></details>
+<details><summary>¿Cómo envía datos un ESP32 a ThingSpeak?</summary><p>El ESP32 envía los datos mediante una petición HTTP GET al servidor de ThingSpeak, incluyendo en la URL la clave de escritura y los valores de cada campo. La librería estándar de HTTP del ESP32 construye la URL con los parámetros y la envía por WiFi; ThingSpeak responde confirmando que guardó los datos. No se necesita una librería especial de ThingSpeak: con WiFiClient y una URL bien formada es suficiente, lo que además ayuda a entender qué ocurre por debajo.</p></details>
+<details><summary>¿Con qué frecuencia puedo enviar datos a ThingSpeak?</summary><p>El plan gratuito de ThingSpeak limita el envío de datos a aproximadamente una actualización cada 15 segundos por canal. Para la mayoría de los sensores ambientales, esto es más que suficiente: la temperatura o la humedad no cambian tan rápido, y enviar cada 1 o 2 minutos es una frecuencia razonable que además ahorra ancho de banda y energía. Si envías datos más rápido de lo permitido, ThingSpeak simplemente los descarta, por lo que conviene respetar el intervalo con un temporizador en el código.</p></details>
+<details><summary>¿Puedo descargar mis datos de ThingSpeak?</summary><p>Sí, ThingSpeak permite exportar los datos de un canal en formatos como CSV o JSON, ya sea desde la interfaz web o mediante la API de lectura. Esto es útil para analizar los datos en una hoja de cálculo, hacer gráficos propios o respaldar el historial. Para proyectos científicos o de feria, exportar el CSV y procesarlo en una planilla es una forma excelente de darle rigor al análisis, calculando promedios, tendencias y comparaciones a lo largo del tiempo.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. Los nombres de marcas y plataformas pertenecen a sus respectivos dueños; los límites del plan gratuito pueden variar. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Aplica el registro de datos al <a href="/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">Sistema de Riego Automático</a> para analizar el consumo de agua, o combínalo con <a href="/blog/monitoreo-remoto-de-sensores-con-blynk">Blynk</a> para un panel en tiempo real.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">← Anterior: Sistema de Riego Automático</a>
+  <a href="/blog/construye-tu-propio-detector-de-metales-casero-con-arduino">Siguiente: Detector de Metales Casero →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. La interfaz y los límites de la plataforma pueden variar.</p>
+<ul>
+<li><a href="https://thingspeak.com/" target="_blank" rel="noopener noreferrer">ThingSpeak — Plataforma IoT de MathWorks</a></li>
+<li><a href="https://www.mathworks.com/help/thingspeak/" target="_blank" rel="noopener noreferrer">Documentación de ThingSpeak — Canales y API</a></li>
+<li><a href="https://www.arduino.cc/reference/en/libraries/wifi/" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería WiFi</a></li>
+<li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/" target="_blank" rel="noopener noreferrer">Espressif — Documentación oficial del ESP32</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 13 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cámara de Vigilancia con ESP32-CAM</title>
+<meta name="description" content="Guía para montar una cámara de vigilancia casera con ESP32-CAM: programación con FTDI, captura de imágenes, servidor web de video streaming, configuración de la cámara, detección de movimiento y consideraciones de privacidad.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/camara-de-vigilancia-con-esp32-cam">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cámara de Vigilancia con ESP32-CAM">
+<meta property="og:description" content="Programación con FTDI, streaming de video, detección de movimiento y consejos de privacidad para una cámara casera.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/esp32cam_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/camara-de-vigilancia-con-esp32-cam">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cámara de Vigilancia con ESP32-CAM">
+<meta name="twitter:description" content="Programación con FTDI, video streaming, detección de movimiento y privacidad.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/esp32cam_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Cámara de Vigilancia con ESP32-CAM",
+  "description":"Guía para montar una cámara de vigilancia casera con la placa ESP32-CAM: características y pines de la placa, programación con un adaptador FTDI, captura de fotografías, montaje de un servidor web que transmite video en streaming, configuración de resolución y calidad, detección de movimiento por cambio en la imagen y consideraciones de privacidad y seguridad para un uso responsable.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-13",
+  "dateModified":"2026-08-13",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/camara-de-vigilancia-con-esp32-cam"},
+  "image":"https://www.ukrabot.cl/blog/esp32cam_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Placa ESP32-CAM, adaptador FTDI o programador USB a serial, cables dupont, fuente de 5V estable, red WiFi y una tarjeta microSD opcional para guardar imágenes",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Cámara de Vigilancia con ESP32-CAM","item":"https://www.ukrabot.cl/blog/camara-de-vigilancia-con-esp32-cam"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿La placa ESP32-CAM se puede programar conectándola solo por USB?","acceptedAnswer":{"@type":"Answer","text":"No directamente: la ESP32-CAM no trae conector USB ni chip serial integrado, por lo que se programa a través de un adaptador USB a serial externo, como un FTDI o un CH340, conectado a sus pines U0R, U0T, 5V y GND, con un jumper entre GPIO0 y GND para entrar en modo de programación. Tras cargar el código, se quita el jumper y se reinicia la placa. Algunos kits incluyen una placa base con conector USB que simplifica este proceso, pero la placa desnuda requiere el adaptador."}},
+    {"@type":"Question","name":"¿Cómo entro en modo de programación en la ESP32-CAM?","acceptedAnswer":{"@type":"Answer","text":"Para entrar en modo de programación, debes mantener el pin GPIO0 conectado a GND mientras la placa arranca. Con el adaptador FTDI conectado, une GPIO0 con GND (un cable o jumper), presiona el botón de reset de la placa y carga el código desde el IDE. Una vez finalizada la carga, retira el jumper de GPIO0 y presiona reset nuevamente para que la placa ejecute el programa. Si el código no carga, el error más común es olvidar este jumper o no presionar reset."}},
+    {"@type":"Question","name":"¿Puedo ver la cámara desde fuera de mi casa?","acceptedAnswer":{"@type":"Answer","text":"Por defecto, el servidor web de la ESP32-CAM funciona solo dentro de tu red local, por lo que ves la cámara desde el celular o computador conectados al mismo WiFi. Para verla desde fuera de casa necesitas exponerla, lo que implica riesgos de seguridad: abrir puertos en el router o usar servicios de túnel expone la cámara a internet y puede permitir accesos no autorizados. Si lo necesitas, usa una VPN hacia tu red doméstica en lugar de abrir puertos directamente, y activa siempre la autenticación con usuario y contraseña en el código."}},
+    {"@type":"Question","name":"¿Puedo guardar las fotos que captura la cámara?","acceptedAnswer":{"@type":"Answer","text":"Sí, la ESP32-CAM incluye un zócalo para tarjeta microSD donde puedes guardar fotografías de forma local. El código puede capturar una imagen y escribirla en la tarjeta, lo que es útil para registrar eventos de detección de movimiento sin depender de un servidor externo. También es posible enviar las imágenes por WiFi a un servidor o a una plataforma en la nube, pero guardarlas en la microSD es la opción más simple y autónoma para un sistema de vigilancia casero."}},
+    {"@type":"Question","name":"¿Qué consideraciones de privacidad debo tener con una cámara casera?","acceptedAnswer":{"@type":"Answer","text":"Una cámara de vigilancia, aunque sea casera, debe usarse con responsabilidad: apunta la cámara solo hacia espacios propios y nunca hacia áreas públicas o de vecinos, informa a las personas que conviven contigo si hay una cámara activa, y protege el acceso con contraseña para que no cualquiera en tu red pueda ver las imágenes. En Chile, la captación de imágenes de terceros sin consentimiento puede tener implicancias legales, por lo que conviene limitar el uso al ámbito privado y con fines de aprendizaje o seguridad del propio hogar."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="esp32cam_hero.jpg" alt="Placa ESP32-CAM con su lente de cámara en primer plano sobre una mesa de trabajo junto a cables y una antena" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Internet de las Cosas (IoT) · Actualizado el <time datetime="2026-08-13">13 de agosto de 2026</time></div>
+    <h1>Cámara de Vigilancia con ESP32-CAM</h1>
+    <p>Cómo programar la placa con un FTDI, capturar fotografías, montar un servidor web de video streaming, configurar la cámara y activar la detección de movimiento, con las consideraciones de privacidad que no puedes ignorar.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="esp32cam_wiring.jpg" alt="Placa ESP32-CAM conectada a un programador FTDI con cables dupont sobre una mesa de trabajo" loading="lazy">
+  <div class="caption">La ESP32-CAM no tiene puerto USB: el adaptador FTDI es la llave para cargar el código y poner la cámara en marcha.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">La placa ESP32-CAM y sus pines</a></li>
+    <li><a href="#programacion">Programar con el adaptador FTDI</a></li>
+    <li><a href="#captura">Capturar fotografías</a></li>
+    <li><a href="#streaming">Servidor web de video streaming</a></li>
+    <li><a href="#configuracion">Configurar resolución y calidad</a></li>
+    <li><a href="#movimiento">Detección de movimiento</a></li>
+    <li><a href="#microsd">Guardar imágenes en microSD</a></li>
+    <li><a href="#privacidad">Privacidad y seguridad</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>La placa ESP32-CAM y sus pines</h2>
+<p>La <strong>ESP32-CAM</strong> es una placa ESP32 que integra una cámara OV2640 de 2 megapíxeles, un zócalo para tarjeta microSD y una antena WiFi, todo en un formato diminuto. Es el componente ideal para una cámara de vigilancia casera de bajo costo.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Pines principales de la ESP32-CAM y su función en la programación.</caption>
+<thead><tr><th>Pin</th><th>Función</th></tr></thead>
+<tbody>
+<tr><td>5V / GND</td><td>Alimentación de la placa</td></tr>
+<tr><td>U0R / U0T</td><td>Recepción y transmisión serial para programar</td></tr>
+<tr><td>GPIO0</td><td>Debe ir a GND para entrar en modo de programación</td></tr>
+<tr><td>Flash LED (GPIO4)</td><td>LED de flash integrado para fotos</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>La placa no tiene USB:</strong> a diferencia de un ESP32 DevKit, la ESP32-CAM desnuda no trae conector USB ni chip serial, por lo que se programa con un adaptador externo. Algunos kits incluyen una placa base con USB que simplifica todo.</div>
+</section>
+
+<section id="programacion">
+<h2>Programar con el adaptador FTDI</h2>
+<pre><code>FTDI          ESP32-CAM
+-----         ---------
+5V (o VCC) --> 5V
+GND        --> GND
+TX         --> U0R
+RX         --> U0T</code></pre>
+<ol>
+<li>Conecta el FTDI a la ESP32-CAM como indica el esquema.</li>
+<li>Une <strong>GPIO0 con GND</strong> (cable o jumper) para entrar en modo de programación.</li>
+<li>Presiona el botón <strong>reset</strong> de la placa.</li>
+<li>En el IDE de Arduino, selecciona la placa "AI Thinker ESP32-CAM" y carga el código.</li>
+<li>Retira el jumper de GPIO0 y presiona reset nuevamente para ejecutar el programa.</li>
+</ol>
+<div class="warning"><strong>El error más común es olvidar el jumper:</strong> si la carga falla con un error de conexión, verifica que GPIO0 sigue unido a GND y que presionaste reset antes de cargar. También revisa que el adaptador FTDI entregue 5V (algunos entregan 3.3V).</div>
+</section>
+
+<section id="captura">
+<h2>Capturar fotografías</h2>
+<p>El primer paso útil es capturar una fotografía y servirla por un navegador. El ejemplo <code>CameraWebServer</code> incluido en el núcleo ESP32 ya trae la base; para una foto simple, el patrón esencial es:</p>
+<pre><code>camera_fb_t *fb = esp_camera_fb_get();   // captura el frame
+// ... usar fb->buf y fb->len (datos JPEG) ...
+esp_camera_fb_return(fb);                // libera el buffer</code></pre>
+<p>Este patrón captura un frame, te da acceso al JPEG en el buffer y libera la memoria. Es la base sobre la que se construyen tanto la captura de fotos como el streaming y la detección de movimiento.</p>
+</section>
+
+<section id="streaming">
+<h2>Servidor web de video streaming</h2>
+<p>El ejemplo <strong>CameraWebServer</strong> del núcleo ESP32 convierte la placa en un servidor web que transmite video en tiempo real a cualquier navegador de la red local. Su estructura es:</p>
+<ul>
+<li>El ESP32 se conecta a tu WiFi y obtiene una dirección IP local.</li>
+<li>Un servidor web responde a las peticiones del navegador.</li>
+<li>Una ruta de streaming envía los frames JPEG de forma continua, produciendo el video.</li>
+</ul>
+<p>Para usarlo, carga el ejemplo, configura tus credenciales WiFi, abre la IP que imprime el monitor serie en el navegador y pulsa "Start Stream". Verás el video en vivo desde cualquier dispositivo de tu red local.</p>
+</section>
+
+<section id="configuracion">
+<h2>Configurar resolución y calidad</h2>
+<p>La cámara OV2640 permite ajustar resolución y calidad, con un equilibrio directo entre nitidez y fluidez:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Resoluciones comunes de la OV2640 y su efecto en el streaming.</caption>
+<thead><tr><th>Resolución</th><th>Calidad de imagen</th><th>Fluidez</th></tr></thead>
+<tbody>
+<tr><td>QQVGA (160×120)</td><td>Baja</td><td>Muy fluida</td></tr>
+<tr><td>QVGA (320×240)</td><td>Media</td><td>Fluida</td></tr>
+<tr><td>VGA (640×480)</td><td>Alta</td><td>Media</td></tr>
+<tr><td>UXGA (1600×1200)</td><td>Muy alta (solo fotos)</td><td>No apta para streaming</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para video en vivo, <strong>QVGA o VGA</strong> son el equilibrio recomendado; las resoluciones mayores se reservan para fotografías puntuales, porque el ancho de banda y la memoria de la placa no alcanzan para transmitirlas en continuo.</p>
+</section>
+
+<section id="movimiento">
+<h2>Detección de movimiento</h2>
+<p>Para convertir la cámara en un sistema de vigilancia real, agrega <strong>detección de movimiento</strong>: compara frames consecutivos y, si cambian lo suficiente entre sí, considera que hubo movimiento y dispara una acción (guardar foto, encender un LED o enviar un aviso).</p>
+<pre><code>// Idea conceptual de deteccion por diferencia de frames:
+// 1. Captura un frame de referencia.
+// 2. Captura el siguiente frame y compara byte a byte (o por bloques).
+// 3. Si el porcentaje de pixeles cambiados supera un umbral, hay movimiento.
+// 4. Actua (guarda foto en microSD, enciende LED, envia aviso).
+// 5. Actualiza el frame de referencia y repite.</code></pre>
+<p>Este enfoque es más simple que un sensor PIR porque no requiere hardware adicional, pero consume más CPU. Para un sistema híbrido, combina la cámara con el <a href="/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad">sensor PIR</a>, que detecta movimiento con bajo consumo y dispara la cámara solo cuando es necesario.</p>
+</section>
+
+<section id="microsd">
+<h2>Guardar imágenes en microSD</h2>
+<p>La ESP32-CAM trae un zócalo para tarjeta microSD, ideal para guardar fotografías localmente sin depender de un servidor. El patrón es capturar el frame y escribirlo en la tarjeta con un nombre de archivo secuencial, de modo que cada evento de movimiento quede registrado con fecha y hora. Para un uso continuo, asegúrate de usar una fuente de 5V estable, ya que la cámara y la tarjeta consumen picos de corriente que una fuente débil no soporta.</p>
+</section>
+
+<section id="privacidad">
+<h2>Privacidad y seguridad</h2>
+<div class="warning"><strong>Usa la cámara con responsabilidad:</strong> apunta solo hacia espacios propios, nunca hacia áreas públicas o de vecinos, informa a quienes conviven contigo si hay una cámara activa y protege el acceso con contraseña. La captación de imágenes de terceros sin consentimiento puede tener implicancias legales en Chile.</div>
+<ul>
+<li><strong>Protege el acceso:</strong> agrega autenticación con usuario y contraseña al servidor web para que no cualquiera en tu red vea las imágenes.</li>
+<li><strong>No expongas la cámara a internet:</strong> si necesitas acceso remoto, usa una VPN hacia tu red doméstica en lugar de abrir puertos del router.</li>
+<li><strong>Informa y limita:</strong> restringe el uso al ámbito privado y con fines de aprendizaje o seguridad del propio hogar.</li>
+</ul>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La ESP32-CAM es la puerta de entrada a la visión por computador casera: con un adaptador FTDI, un ejemplo del núcleo ESP32 y un poco de configuración, tienes una cámara de vigilancia con streaming en vivo y detección de movimiento por menos de 15.000 pesos. Combínala con el <a href="/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad">sensor PIR</a> para un sistema eficiente, y recuerda siempre las reglas de privacidad. Si quieres llevar los datos de tus sensores a la nube, el siguiente paso es <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">ThingSpeak</a>.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿La placa ESP32-CAM se puede programar conectándola solo por USB?</summary><p>No directamente: la ESP32-CAM no trae conector USB ni chip serial integrado, por lo que se programa a través de un adaptador USB a serial externo, como un FTDI o un CH340, conectado a sus pines U0R, U0T, 5V y GND, con un jumper entre GPIO0 y GND para entrar en modo de programación. Tras cargar el código, se quita el jumper y se reinicia la placa. Algunos kits incluyen una placa base con conector USB que simplifica este proceso, pero la placa desnuda requiere el adaptador.</p></details>
+<details><summary>¿Cómo entro en modo de programación en la ESP32-CAM?</summary><p>Para entrar en modo de programación, debes mantener el pin GPIO0 conectado a GND mientras la placa arranca. Con el adaptador FTDI conectado, une GPIO0 con GND (un cable o jumper), presiona el botón de reset de la placa y carga el código desde el IDE. Una vez finalizada la carga, retira el jumper de GPIO0 y presiona reset nuevamente para que la placa ejecute el programa. Si el código no carga, el error más común es olvidar este jumper o no presionar reset.</p></details>
+<details><summary>¿Puedo ver la cámara desde fuera de mi casa?</summary><p>Por defecto, el servidor web de la ESP32-CAM funciona solo dentro de tu red local, por lo que ves la cámara desde el celular o computador conectados al mismo WiFi. Para verla desde fuera de casa necesitas exponerla, lo que implica riesgos de seguridad: abrir puertos en el router o usar servicios de túnel expone la cámara a internet y puede permitir accesos no autorizados. Si lo necesitas, usa una VPN hacia tu red doméstica en lugar de abrir puertos directamente, y activa siempre la autenticación con usuario y contraseña en el código.</p></details>
+<details><summary>¿Puedo guardar las fotos que captura la cámara?</summary><p>Sí, la ESP32-CAM incluye un zócalo para tarjeta microSD donde puedes guardar fotografías de forma local. El código puede capturar una imagen y escribirla en la tarjeta, lo que es útil para registrar eventos de detección de movimiento sin depender de un servidor externo. También es posible enviar las imágenes por WiFi a un servidor o a una plataforma en la nube, pero guardarlas en la microSD es la opción más simple y autónoma para un sistema de vigilancia casero.</p></details>
+<details><summary>¿Qué consideraciones de privacidad debo tener con una cámara casera?</summary><p>Una cámara de vigilancia, aunque sea casera, debe usarse con responsabilidad: apunta la cámara solo hacia espacios propios y nunca hacia áreas públicas o de vecinos, informa a las personas que conviven contigo si hay una cámara activa, y protege el acceso con contraseña para que no cualquiera en tu red pueda ver las imágenes. En Chile, la captación de imágenes de terceros sin consentimiento puede tener implicancias legales, por lo que conviene limitar el uso al ámbito privado y con fines de aprendizaje o seguridad del propio hogar.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. Usa la cámara con responsabilidad y respeta la privacidad y la normativa vigente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Combina la cámara con el <a href="/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad">Sensor PIR de Movimiento</a> para un sistema eficiente, o lleva los datos de tus sensores a la nube con <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">ThingSpeak</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/monitoreo-remoto-de-sensores-con-blynk">← Anterior: Monitoreo Remoto con Blynk</a>
+  <a href="/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">Siguiente: Sistema de Riego Automático →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los detalles del código pueden variar según la versión del núcleo ESP32.</p>
+<ul>
+<li><a href="https://github.com/espressif/arduino-esp32" target="_blank" rel="noopener noreferrer">arduino-esp32 — Núcleo ESP32 para Arduino (incluye CameraWebServer)</a></li>
+<li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/" target="_blank" rel="noopener noreferrer">Espressif — Documentación oficial del ESP32</a></li>
+<li><a href="https://www.arduino.cc/reference/en/libraries/wifi/" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería WiFi</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 13 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
