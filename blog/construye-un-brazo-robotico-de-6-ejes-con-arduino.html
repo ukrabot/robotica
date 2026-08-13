@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Construye un Brazo Robótico de 6 Ejes con Arduino</title>
+<meta name="description" content="Guía para construir un brazo robótico de 6 ejes con Arduino: grados de libertad, anatomía de la estructura, servos vs. steppers, materiales, cinemática básica, código con la librería Servo y requerimientos de alimentación.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/construye-un-brazo-robotico-de-6-ejes-con-arduino">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Construye un Brazo Robótico de 6 Ejes con Arduino">
+<meta property="og:description" content="Grados de libertad, estructura, servos vs. steppers, cinemática, código y alimentación para tu brazo robótico.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/brazo_robotico_6ejes_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/construye-un-brazo-robotico-de-6-ejes-con-arduino">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Construye un Brazo Robótico de 6 Ejes con Arduino">
+<meta name="twitter:description" content="Anatomía, grados de libertad, servos, cinemática y código para armar tu propio brazo robótico de 6 ejes.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/brazo_robotico_6ejes_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Construye un Brazo Robótico de 6 Ejes con Arduino",
+  "description":"Guía para construir un brazo robótico de 6 ejes con Arduino: qué son los grados de libertad y por qué seis ejes, anatomía de la estructura (base, hombro, codo, muñeca y efector), comparativa entre servomotores y motores paso a paso, materiales de construcción, nociones de cinemática directa e inversa, código con la librería Servo para controlar múltiples servos y los requerimientos de alimentación para un funcionamiento estable.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-13",
+  "dateModified":"2026-08-13",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/construye-un-brazo-robotico-de-6-ejes-con-arduino"},
+  "image":"https://www.ukrabot.cl/blog/brazo_robotico_6ejes_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Placa Arduino (Uno o Mega), 6 servomotores (estándar o de metal), estructura de acrílico o impresión 3D, tornillería, fuente de alimentación de 5-6V con suficiente corriente, protoboard y jumpers",
+  "wordCount":"2500",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Construye un Brazo Robótico de 6 Ejes con Arduino","item":"https://www.ukrabot.cl/blog/construye-un-brazo-robotico-de-6-ejes-con-arduino"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Qué significa que un brazo robótico tenga 6 ejes?","acceptedAnswer":{"@type":"Answer","text":"Cada 'eje' es un grado de libertad, es decir, una articulación que puede girar de forma independiente. Seis ejes es un número especial porque permite posicionar el efector (la pinza o herramienta) en cualquier punto del espacio con cualquier orientación, dentro del alcance del brazo: tres ejes ubican la posición (base, hombro y codo) y tres orientan la muñeca (giro, inclinación y rotación). Por eso los brazos industriales más usados son de 6 ejes: replican el rango de movimiento del brazo humano."}},
+    {"@type":"Question","name":"¿Qué es mejor para un brazo robótico: servos o motores paso a paso?","acceptedAnswer":{"@type":"Answer","text":"Depende del objetivo. Los servomotores son más simples de controlar (reciben un ángulo objetivo y se posicionan solos), económicos y suficientes para brazos educativos de bajo peso; su desventaja es que la mayoría no entrega retroalimentación de posición y su precisión es limitada. Los motores paso a paso ofrecen más torque y movimiento continuo, pero requieren drivers y no saben su posición absoluta sin un encoder. Para empezar, seis servos estándar son la opción más accesible; para brazos que levantan más peso, se migra a servos de engranaje metálico o a steppers con encoder."}},
+    {"@type":"Question","name":"¿Qué estructura conviene para un brazo de 6 ejes casero?","acceptedAnswer":{"@type":"Answer","text":"Las dos opciones más comunes son los kits de acrílico cortado por láser y las piezas impresas en 3D. El acrílico es barato, rígido y viene listo para armar, pero se raya y limita el diseño. La impresión 3D permite diseñar piezas a medida, es ligera y reparable, aunque requiere calibrar bien la impresora. En ambos casos, la clave está en minimizar el juego mecánico en las articulaciones (usar rodamientos o bocinas ajustadas) y elegir servos con engranaje metálico, porque el plástico se desgasta y pierde precisión con el uso."}},
+    {"@type":"Question","name":"¿Por qué mi brazo robótico se reinicia o tiembla al mover varios servos a la vez?","acceptedAnswer":{"@type":"Answer","text":"Es el síntoma clásico de alimentación insuficiente. Cada servo puede consumir picos de 500 mA a 1 A al arrancar, y seis servos juntos superan con creces lo que entrega el regulador del Arduino o un cable USB. La solución es alimentar los servos con una fuente externa de 5-6V con suficiente corriente (3 a 6 amperios para seis servos), conectando la tierra de esa fuente a la tierra del Arduino. Si además tiemblan al mantener posición, suele ser por una señal PWM inestable, y usar un shield de servos o alimentar bien el riel lo corrige."}},
+    {"@type":"Question","name":"¿Puedo controlar un brazo de 6 ejes con un Arduino Uno?","acceptedAnswer":{"@type":"Answer","text":"Sí, un Arduino Uno puede controlar seis servos con la librería Servo, pero con limitaciones: la librería desactiva el PWM de algunos pines y solo genera señales estables en un subconjunto de ellos (típicamente los pines 3, 5, 6, 9, 10 y 11). Además, si necesitas leer encoders, sensores de fuerza o comunicarte por varios buses, los pines y la memoria del Uno se agotan rápido. Para brazos con más periféricos, el Arduino Mega (más pines y memoria) es la opción natural, como se detalla en la guía de cableado con Mega."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="brazo_robotico_6ejes_hero.jpg" alt="Brazo robótico de 6 ejes construido con servomotores y estructura de acrílico sobre una mesa de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y control embebido · Actualizado el <time datetime="2026-08-13">13 de agosto de 2026</time></div>
+    <h1>Construye un Brazo Robótico de 6 Ejes con Arduino</h1>
+    <p>Qué son los grados de libertad, la anatomía de un brazo de 6 ejes, servos frente a steppers, materiales, cinemática básica y el código para mover las seis articulaciones con la librería Servo.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="brazo_robotico_6ejes_armado.jpg" alt="Articulaciones y servomotores de un brazo robótico de 6 ejes en pleno montaje sobre una mesa de trabajo" loading="lazy">
+  <div class="caption">Seis ejes replican el brazo humano: tres posicionan, tres orientan. La precisión final depende tanto del software como del juego mecánico de cada articulación.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#grados">Grados de libertad: por qué 6 ejes</a></li>
+    <li><a href="#anatomia">Anatomía del brazo: base, hombro, codo y muñeca</a></li>
+    <li><a href="#actuadores">Servos vs. motores paso a paso</a></li>
+    <li><a href="#materiales">Materiales de la estructura</a></li>
+    <li><a href="#cinematica">Cinemática directa e inversa (conceptos)</a></li>
+    <li><a href="#codigo">Código: mover seis servos con la librería Servo</a></li>
+    <li><a href="#alimentacion">Alimentación: el error que arruina los brazos</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="grados">
+<h2>Grados de libertad: por qué 6 ejes</h2>
+<p>Cada <strong>eje</strong> de un brazo robótico es un grado de libertad: una articulación que puede girar de forma independiente. Seis ejes es un número especial en robótica porque permite que el efector (la pinza, ventosa o herramienta) alcance <strong>cualquier punto y cualquier orientación</strong> dentro del espacio de trabajo, exactamente como un brazo humano.</p>
+<ul>
+<li><strong>Tres ejes posicionan:</strong> la base (rotación), el hombro y el codo ubican la muñeca en el espacio.</li>
+<li><strong>Tres ejes orientan:</strong> el giro, la inclinación y la rotación de la muñeca apuntan la herramienta en la dirección correcta.</li>
+</ul>
+<p>Los brazos de menos ejes (4 o 5) son más simples pero no alcanzan todas las orientaciones, y los brazos redundantes (7 ejes, como algunos colaborativos) agregan flexibilidad para esquivar obstáculos a costa de mucha más complejidad de control.</p>
+</section>
+
+<section id="anatomia">
+<h2>Anatomía del brazo: base, hombro, codo y muñeca</h2>
+<p>Un brazo de 6 ejes se organiza en segmentos conectados por articulaciones rotatorias:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Articulaciones típicas de un brazo robótico de 6 ejes y su función.</caption>
+<thead><tr><th>Articulación</th><th>Función</th><th>Movimiento</th></tr></thead>
+<tbody>
+<tr><td>Base (J1)</td><td>Gira todo el brazo</td><td>Rotación horizontal (0–180°)</td></tr>
+<tr><td>Hombro (J2)</td><td>Levanta el antebrazo</td><td>Inclinación vertical</td></tr>
+<tr><td>Codo (J3)</td><td>Extiende el brazo</td><td>Inclinación vertical</td></tr>
+<tr><td>Muñeca giro (J4)</td><td>Rota el antebrazo</td><td>Rotación</td></tr>
+<tr><td>Muñeca inclinación (J5)</td><td>Inclina la herramienta</td><td>Inclinación</td></tr>
+<tr><td>Muñeca rotación (J6)</td><td>Rota la herramienta</td><td>Rotación</td></tr>
+</tbody>
+</table>
+</div>
+<p>En un brazo casero con servos, cada articulación es un servomotor que gira dentro de su rango (normalmente 0–180°). La base suele usar un servo de mayor torque porque carga con el peso de todo el brazo, mientras que la muñeca usa servos pequeños para minimizar la inercia.</p>
+</section>
+
+<section id="actuadores">
+<h2>Servos vs. motores paso a paso</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación entre servos y motores paso a paso para brazos robóticos caseros.</caption>
+<thead><tr><th>Aspecto</th><th>Servomotor</th><th>Paso a paso</th></tr></thead>
+<tbody>
+<tr><td>Control</td><td>Ángulo objetivo por PWM</td><td>Pasos y dirección (driver)</td></tr>
+<tr><td>Posición absoluta</td><td>Interna (potenciómetro)</td><td>No (necesita encoder)</td></tr>
+<tr><td>Torque relativo</td><td>Medio-alto (metálicos)</td><td>Alto en baja velocidad</td></tr>
+<tr><td>Facilidad</td><td>Muy alta</td><td>Media</td></tr>
+<tr><td>Ideal para</td><td>Brazos educativos</td><td>Brazos que cargan peso</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Para empezar, servos:</strong> reciben un ángulo y se posicionan solos, sin driver ni encoder. A medida que el proyecto exige más torque o movimiento continuo, se migra a steppers con encoder, que se detallan en las guías de <a href="/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos">encoders</a> y de <a href="/blog/servos-inteligentes-para-brazos-roboticos">servos inteligentes</a>.</div>
+</section>
+
+<section id="materiales">
+<h2>Materiales de la estructura</h2>
+<ul>
+<li><strong>Kits de acrílico cortado por láser:</strong> económicos, rígidos y listos para armar; ideales para el primer brazo, aunque limitan el rediseño.</li>
+<li><strong>Impresión 3D:</strong> piezas a medida, ligeras y reparables; exige buena calibración y filamento resistente (PETG o ABS antes que PLA, que se deforma con el calor).</li>
+<li><strong>Tornillería y rodamientos:</strong> minimizar el juego en cada articulación con bocinas o rodamientos es lo que más mejora la repetibilidad.</li>
+<li><strong>Servos de engranaje metálico:</strong> el engranaje plástico se desgasta y pierde precisión; el metálico dura mucho más bajo carga.</li>
+</ul>
+</section>
+
+<section id="cinematica">
+<h2>Cinemática directa e inversa (conceptos)</h2>
+<p>La <strong>cinemática directa</strong> responde a la pregunta "si pongo cada articulación en estos ángulos, ¿dónde queda la pinza?". Se calcula encadenando las transformaciones de cada articulación. La <strong>cinemática inversa</strong> hace el camino contrario: "quiero que la pinza esté en esta posición y orientación, ¿qué ángulos necesito en cada articulación?".</p>
+<p>Para un brazo casero puedes empezar con una <strong>cinemática inversa geométrica</strong> resuelta con trigonometría simple (triángulos para el plano del hombro y el codo), que es suficiente para posicionar la muñeca sin matrices de rotación. La cinemática completa con orientación de muñeca se aborda en guías más avanzadas de ROS 2 y software.</p>
+</section>
+
+<section id="codigo">
+<h2>Código: mover seis servos con la librería Servo</h2>
+<pre><code>#include &lt;Servo.h&gt;
+
+// Declara un objeto por cada articulacion
+Servo base, hombro, codo, munecaGiro, munecaInc, munecaRot;
+
+// Pines de cada servo (ajusta segun tu conexion)
+const int PIN_BASE       = 3;
+const int PIN_HOMBRO     = 5;
+const int PIN_CODO       = 6;
+const int PIN_MUNECA_GIRO  = 9;
+const int PIN_MUNECA_INC   = 10;
+const int PIN_MUNECA_ROT   = 11;
+
+void setup() {
+  base.attach(PIN_BASE);
+  hombro.attach(PIN_HOMBRO);
+  codo.attach(PIN_CODO);
+  munecaGiro.attach(PIN_MUNECA_GIRO);
+  munecaInc.attach(PIN_MUNECA_INC);
+  munecaRot.attach(PIN_MUNECA_ROT);
+
+  posicionInicial();
+}
+
+// Lleva el brazo a una postura de reposo
+void posicionInicial() {
+  base.write(90);
+  hombro.write(90);
+  codo.write(90);
+  munecaGiro.write(90);
+  munecaInc.write(90);
+  munecaRot.write(90);
+  delay(1000);
+}
+
+// Mueve todas las articulaciones de forma suave hasta un objetivo
+void moverHasta(int b, int h, int c, int mg, int mi, int mr) {
+  int pasos = 30;
+  for (int i = 0; i <= pasos; i++) {
+    base.write(map(i, 0, pasos, base.read(), b));
+    hombro.write(map(i, 0, pasos, hombro.read(), h));
+    codo.write(map(i, 0, pasos, codo.read(), c));
+    munecaGiro.write(map(i, 0, pasos, munecaGiro.read(), mg));
+    munecaInc.write(map(i, 0, pasos, munecaInc.read(), mi));
+    munecaRot.write(map(i, 0, pasos, munecaRot.read(), mr));
+    delay(15);
+  }
+}
+
+void loop() {
+  moverHasta(45, 120, 60, 90, 30, 90);
+  delay(500);
+  posicionInicial();
+  delay(500);
+}</code></pre>
+<p>El movimiento interpolado (en lugar de saltar directo al ángulo) evita golpes bruscos que sacuden la estructura y pierden precisión. A partir de aquí puedes sumar un joystick, un control por Bluetooth con la <a href="/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05">guía del módulo HC-05</a>, o una secuencia de movimientos grabados.</p>
+</section>
+
+<section id="alimentacion">
+<h2>Alimentación: el error que arruina los brazos</h2>
+<p>El síntoma más común al construir un brazo es que <strong>se reinicie o tiemblen los servos al mover varios a la vez</strong>. La causa casi siempre es la alimentación:</p>
+<ul>
+<li>Cada servo puede consumir picos de 500 mA a 1 A al arrancar; seis juntos superan lo que entrega el USB o el regulador del Arduino.</li>
+<li>La solución es una <strong>fuente externa de 5–6V con 3 a 6 A</strong> solo para los servos, con la tierra común conectada a la del Arduino.</li>
+<li>La señal de control va del Arduino al servo; la potencia va de la fuente al servo. Nunca mezcles la corriente de los servos a través de la placa.</li>
+</ul>
+<div class="warning"><strong>Nunca alimentes servos desde el pin 5V del Arduino:</strong> el regulador de la placa no está diseñado para esa corriente y se sobrecalienta o se daña. Usa siempre una fuente externa y comparte solo el GND.</div>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos al construir un brazo robótico con Arduino.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El brazo se reinicia al moverse</td><td>Alimentación insuficiente</td><td>Fuente externa de 5-6V con suficiente corriente</td></tr>
+<tr><td>Los servos tiemblan en reposo</td><td>PWM inestable o fuente ruidosa</td><td>Condensador en el riel y fuente estable</td></tr>
+<tr><td>No llega a la posición exacta</td><td>Juego mecánico en las articulaciones</td><td>Rodamientos, tornillería ajustada, servos metálicos</td></tr>
+<tr><td>Un servo no se mueve</td><td>Pin equivocado o servo dañado</td><td>Verificar el pin y probar el servo solo</td></tr>
+<tr><td>El brazo vibra al cargar peso</td><td>Estructura flexible o servo subdimensionado</td><td>Reforzar estructura y subir de servo</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Construir un brazo de 6 ejes con Arduino es el proyecto que une mecánica, electrónica y programación en un solo desafío: eliges la estructura, dimensionas los servos, alimentas correctamente y programas el movimiento. Con la base funcionando, los siguientes pasos son el <a href="/blog/guia-de-cableado-con-arduino-mega-para-brazos-roboticos">cableado profesional con Arduino Mega</a>, el <a href="/blog/esp32-como-controlador-de-brazo-robotico">control inalámbrico con ESP32</a> y, para precisión real, los <a href="/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos">encoders de articulación</a>.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué significa que un brazo robótico tenga 6 ejes?</summary><p>Cada "eje" es un grado de libertad, es decir, una articulación que puede girar de forma independiente. Seis ejes es un número especial porque permite posicionar el efector (la pinza o herramienta) en cualquier punto del espacio con cualquier orientación, dentro del alcance del brazo: tres ejes ubican la posición (base, hombro y codo) y tres orientan la muñeca (giro, inclinación y rotación). Por eso los brazos industriales más usados son de 6 ejes: replican el rango de movimiento del brazo humano.</p></details>
+<details><summary>¿Qué es mejor para un brazo robótico: servos o motores paso a paso?</summary><p>Depende del objetivo. Los servomotores son más simples de controlar (reciben un ángulo objetivo y se posicionan solos), económicos y suficientes para brazos educativos de bajo peso; su desventaja es que la mayoría no entrega retroalimentación de posición y su precisión es limitada. Los motores paso a paso ofrecen más torque y movimiento continuo, pero requieren drivers y no saben su posición absoluta sin un encoder. Para empezar, seis servos estándar son la opción más accesible; para brazos que levantan más peso, se migra a servos de engranaje metálico o a steppers con encoder.</p></details>
+<details><summary>¿Qué estructura conviene para un brazo de 6 ejes casero?</summary><p>Las dos opciones más comunes son los kits de acrílico cortado por láser y las piezas impresas en 3D. El acrílico es barato, rígido y viene listo para armar, pero se raya y limita el diseño. La impresión 3D permite diseñar piezas a medida, es ligera y reparable, aunque requiere calibrar bien la impresora. En ambos casos, la clave está en minimizar el juego mecánico en las articulaciones (usar rodamientos o bocinas ajustadas) y elegir servos con engranaje metálico, porque el plástico se desgasta y pierde precisión con el uso.</p></details>
+<details><summary>¿Por qué mi brazo robótico se reinicia o tiembla al mover varios servos a la vez?</summary><p>Es el síntoma clásico de alimentación insuficiente. Cada servo puede consumir picos de 500 mA a 1 A al arrancar, y seis servos juntos superan con creces lo que entrega el regulador del Arduino o un cable USB. La solución es alimentar los servos con una fuente externa de 5-6V con suficiente corriente (3 a 6 amperios para seis servos), conectando la tierra de esa fuente a la tierra del Arduino. Si además tiemblan al mantener posición, suele ser por una señal PWM inestable, y usar un shield de servos o alimentar bien el riel lo corrige.</p></details>
+<details><summary>¿Puedo controlar un brazo de 6 ejes con un Arduino Uno?</summary><p>Sí, un Arduino Uno puede controlar seis servos con la librería Servo, pero con limitaciones: la librería desactiva el PWM de algunos pines y solo genera señales estables en un subconjunto de ellos (típicamente los pines 3, 5, 6, 9, 10 y 11). Además, si necesitas leer encoders, sensores de fuerza o comunicarte por varios buses, los pines y la memoria del Uno se agotan rápido. Para brazos con más periféricos, el Arduino Mega (más pines y memoria) es la opción natural, como se detalla en la guía de cableado con Mega.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Con la estructura armada, organiza las conexiones con la <a href="/blog/guia-de-cableado-con-arduino-mega-para-brazos-roboticos">Guía de Cableado con Arduino Mega</a> y lleva el control a la nube con el <a href="/blog/esp32-como-controlador-de-brazo-robotico">ESP32 como Controlador</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/construye-tu-propio-detector-de-metales-casero-con-arduino">← Anterior: Detector de Metales Casero</a>
+  <a href="/blog/guia-de-cableado-con-arduino-mega-para-brazos-roboticos">Siguiente: Guía de Cableado con Arduino Mega →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos de torque y corriente dependen del fabricante del servo.</p>
+<ul>
+<li><a href="https://www.arduino.cc/reference/en/libraries/servo/" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería Servo</a></li>
+<li><a href="https://www.arduino.cc/reference/en/language/functions/math/map/" target="_blank" rel="noopener noreferrer">Arduino Reference — map()</a></li>
+<li><a href="https://www.allaboutcircuits.com/textbook/" target="_blank" rel="noopener noreferrer">All About Circuits — Referencia técnica de electrónica básica</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 13 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
