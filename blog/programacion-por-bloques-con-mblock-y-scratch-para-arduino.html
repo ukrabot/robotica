@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Programación por Bloques con mBlock y Scratch para Arduino</title>
+<meta name="description" content="Aprende a programar Arduino con bloques visuales usando mBlock y Scratch: instalación, conexión de la placa, modo en vivo vs. carga, primer programa paso a paso, lectura de sensores, control de motores, cómo ver el código generado y el camino hacia la programación textual.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/programacion-por-bloques-con-mblock-y-scratch-para-arduino">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Programación por Bloques con mBlock y Scratch para Arduino">
+<meta property="og:description" content="Instalación, conexión de Arduino, modo en vivo vs. carga, primer programa con bloques, sensores, motores, código generado y transición a texto.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/programacion_bloques_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/programacion-por-bloques-con-mblock-y-scratch-para-arduino">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Programación por Bloques con mBlock y Scratch para Arduino">
+<meta name="twitter:description" content="Del primer bloque al primer sketch: mBlock y Scratch para programar Arduino sin escribir código, con el camino hacia el texto.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/programacion_bloques_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Programación por Bloques con mBlock y Scratch para Arduino",
+  "description":"Guía completa de programación por bloques para Arduino usando mBlock y Scratch: qué es y por qué conviene empezar con bloques, comparativa entre mBlock, Scratch, MakeCode y Snap4Arduino, instalación y conexión de la placa, diferencia entre el modo en vivo y la carga del programa, primer programa paso a paso, lectura de sensores y control de motores con bloques, cómo inspeccionar el código generado y el camino de transición hacia la programación textual en el Arduino IDE.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-13",
+  "dateModified":"2026-08-13",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/programacion-por-bloques-con-mblock-y-scratch-para-arduino"},
+  "image":"https://www.ukrabot.cl/blog/programacion_bloques_hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Placa Arduino Uno o compatible, cable USB de datos, computador con mBlock instalado, protoboard, LEDs, resistencias y sensores opcionales",
+  "wordCount":"2600",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Programación por Bloques con mBlock y Scratch para Arduino","item":"https://www.ukrabot.cl/blog/programacion-por-bloques-con-mblock-y-scratch-para-arduino"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Qué es la programación por bloques y por qué se usa para enseñar Arduino?","acceptedAnswer":{"@type":"Answer","text":"La programación por bloques es una forma de programar en la que las instrucciones son piezas visuales que se arrastran y encajan entre sí, como un rompecabezas, en lugar de escribirse como texto. Se usa para enseñar Arduino porque elimina la barrera de la sintaxis: los errores de tipeo, los paréntesis mal cerrados y los puntos y coma olvidados desaparecen, y el estudiante se concentra en la lógica del programa (secuencias, bucles, condicionales) antes de enfrentarse al código escrito. Una vez que la lógica está clara, el paso al código textual es mucho más natural."}},
+    {"@type":"Question","name":"¿Cuál es la diferencia entre mBlock y Scratch?","acceptedAnswer":{"@type":"Answer","text":"Scratch es el entorno de programación por bloques desarrollado por el MIT, pensado originalmente para animaciones y juegos; puede conectarse a hardware mediante extensiones, pero no incluye de fábrica todo el soporte para Arduino. mBlock es un entorno derivado de Scratch desarrollado por Makeblock que mantiene la misma lógica visual pero está especializado en hardware: incluye bloques nativos para Arduino, sensores y motores, permite cargar el programa directamente a la placa y ofrece un modo en vivo para controlar el hardware en tiempo real, además de mostrar el código generado en Python o Arduino para facilitar la transición al texto."}},
+    {"@type":"Question","name":"¿Qué diferencia hay entre el modo en vivo y cargar el programa en Arduino?","acceptedAnswer":{"@type":"Answer","text":"En el modo en vivo (live mode), el programa se ejecuta en el computador y la placa Arduino actúa como una extensión que recibe las órdenes por USB: los cambios en los bloques se reflejan de inmediato sin recargar nada, lo que lo hace ideal para experimentar y depurar rápido. Al cargar (upload) el programa, este se compila y se graba en la memoria del Arduino, que lo ejecuta de forma autónoma aunque se desconecte del computador. El modo en vivo es excelente para aprender; la carga es lo que se usa para un proyecto final que debe funcionar solo."}},
+    {"@type":"Question","name":"¿Puedo ver el código real que generan mis bloques?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es una de las funciones más valiosas de mBlock para el aprendizaje: el entorno puede mostrar el código equivalente generado a partir de los bloques, en Python o en el lenguaje de Arduino. Comparar un bloque como 'encender LED' con la línea digitalWrite que lo implementa permite a los estudiantes entender la relación entre la lógica visual y el código textual, y es el puente ideal para dar el salto al Arduino IDE. Este contraste deliberado entre bloques y texto es una estrategia docente muy efectiva para la transición."}},
+    {"@type":"Question","name":"¿Qué limitaciones tiene programar Arduino solo con bloques?","acceptedAnswer":{"@type":"Answer","text":"La programación por bloques es ideal para aprender lógica, pero tiene limitaciones frente al código textual: los programas complejos con muchas variables y funciones resultan más difíciles de organizar visualmente, algunas funciones avanzadas del microcontrolador no tienen bloque equivalente, y el control fino sobre la memoria o el temporizado preciso es menor. Por eso la recomendación es usar bloques como punto de partida y pasar al código textual cuando el estudiante domine secuencias, bucles y condicionales, un camino que herramientas como mBlock facilitan al mostrar el código generado."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="programacion_bloques_hero.jpg" alt="Pantalla de computador mostrando programación por bloques de colores estilo Scratch junto a una placa Arduino Uno conectada por USB" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Robótica educativa y docencia · Actualizado el <time datetime="2026-08-13">13 de agosto de 2026</time></div>
+    <h1>Programación por Bloques con mBlock y Scratch para Arduino</h1>
+    <p>Del primer bloque al primer sketch: cómo instalar mBlock, conectar tu Arduino, entender el modo en vivo frente a la carga, programar sensores y motores sin escribir código, y usar el código generado como puente hacia la programación textual.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="programacion_bloques_mblock.jpg" alt="Notebook con el software mBlock mostrando bloques de programación apilados y un robot mBot conectado por USB" loading="lazy">
+  <div class="caption">mBlock hereda la lógica visual de Scratch y la orienta al hardware: cada bloque que arrastras se traduce en instrucciones reales para la placa.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es la programación por bloques y por qué empezar con ella</a></li>
+    <li><a href="#comparativa">mBlock, Scratch, MakeCode y Snap4Arduino</a></li>
+    <li><a href="#instalacion">Instalar mBlock y conectar tu Arduino</a></li>
+    <li><a href="#vivo-vs-carga">Modo en vivo vs. cargar el programa</a></li>
+    <li><a href="#primer-programa">Primer programa: LED parpadeante paso a paso</a></li>
+    <li><a href="#sensores">Leer sensores con bloques</a></li>
+    <li><a href="#motores">Controlar motores y servos</a></li>
+    <li><a href="#codigo-generado">Ver el código generado: el puente al texto</a></li>
+    <li><a href="#actividad">Actividad de aula sugerida</a></li>
+    <li><a href="#limitaciones">Limitaciones y transición al Arduino IDE</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>Qué es la programación por bloques y por qué empezar con ella</h2>
+<p>La programación por bloques presenta las instrucciones como <strong>piezas visuales que se arrastran y encajan</strong>, de modo que un programa se arma como un rompecabezas en lugar de escribirse como texto. Cada bloque tiene una forma que solo calza con las piezas compatibles, lo que elimina de raíz la mayoría de los errores de sintaxis que frustran a quien recién empieza: paréntesis mal cerrados, puntos y coma olvidados o mayúsculas mal puestas.</p>
+<p>Para enseñar Arduino, esta abstracción tiene un valor pedagógico enorme: el estudiante se concentra en la <strong>lógica</strong> —secuencias, bucles, condicionales, variables— sin la distracción de la sintaxis. Los conceptos que se aprenden con bloques son exactamente los mismos que se necesitarán después en código textual, lo que convierte a los bloques en una rampa de acceso y no en un callejón sin salida.</p>
+<ul>
+<li><strong>Retroalimentación inmediata:</strong> se arrastra un bloque, se ejecuta y se ve el resultado al instante.</li>
+<li><strong>Menos frustración:</strong> los errores de lógica se detectan observando el comportamiento, sin mensajes de compilación crípticos.</li>
+<li><strong>Accesibilidad:</strong> permite que estudiantes de 8 años en adelante programen hardware real el primer día.</li>
+<li><strong>Puente al texto:</strong> herramientas como mBlock muestran el código generado, preparando la transición al Arduino IDE.</li>
+</ul>
+</section>
+
+<section id="comparativa">
+<h2>mBlock, Scratch, MakeCode y Snap4Arduino</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparativa de los entornos de bloques más usados para programar Arduino y hardware educativo.</caption>
+<thead><tr><th>Entorno</th><th>Soporte Arduino</th><th>Modo en vivo</th><th>Ver código generado</th><th>Ideal para</th></tr></thead>
+<tbody>
+<tr><td>mBlock (Makeblock)</td><td>Nativo y completo</td><td>Sí</td><td>Sí (Python / Arduino)</td><td>Arduino y robots mBot en el aula</td></tr>
+<tr><td>Scratch 3 + extensión</td><td>Mediante extensión de hardware</td><td>Sí</td><td>No</td><td>Introducción general y animaciones</td></tr>
+<tr><td>MakeCode (Microsoft)</td><td>No directo (micro:bit, otras placas)</td><td>Simulador en navegador</td><td>Sí (Python / JS)</td><td>micro:bit y placas soportadas</td></tr>
+<tr><td>Snap4Arduino</td><td>Sí</td><td>Sí</td><td>No</td><td>Alternativa web ligera</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para un taller centrado en Arduino, <strong>mBlock es la opción más completa</strong>: soporte nativo de la placa, modo en vivo, carga a la placa y visualización del código generado en un solo entorno. Scratch original es mejor si el objetivo es introducir conceptos de programación en general antes de tocar hardware; MakeCode brilla con micro:bit.</p>
+</section>
+
+<section id="instalacion">
+<h2>Instalar mBlock y conectar tu Arduino</h2>
+<ol>
+<li><strong>Descarga mBlock:</strong> desde el sitio oficial de Makeblock, en la versión para tu sistema operativo (Windows, macOS o Linux). La versión web también funciona para empezar sin instalar nada.</li>
+<li><strong>Instala el controlador:</strong> si tu placa es una Arduino compatible con chip CH340 (muy común), instala el driver correspondiente para que el computador la reconozca en el puerto.</li>
+<li><strong>Conecta la placa:</strong> usa un <strong>cable USB de datos</strong> (no solo de carga) y conecta la placa al computador.</li>
+<li><strong>Agrega el dispositivo:</strong> en mBlock, selecciona el dispositivo Arduino Uno (o el modelo de tu placa) en la sección de dispositivos, y confirma que el entorno detecta el puerto serie.</li>
+</ol>
+<div class="warning"><strong>Cable equivocado, placa invisible:</strong> el síntoma más común al empezar es que la placa no aparece en el puerto. Casi siempre se debe a un cable USB que solo transmite energía y no datos. Si la placa enciende pero el entorno no la detecta, cambia el cable antes de tocar nada más.</div>
+</section>
+
+<section id="vivo-vs-carga">
+<h2>Modo en vivo vs. cargar el programa</h2>
+<p>mBlock ofrece dos formas de ejecutar un programa, y entender la diferencia evita la confusión típica del primer día:</p>
+<ul>
+<li><strong>Modo en vivo (live):</strong> el programa se ejecuta en el computador y la placa actúa como una extensión que recibe las órdenes por USB. Los cambios se reflejan de inmediato, sin recargar. Ideal para experimentar y depurar.</li>
+<li><strong>Carga (upload):</strong> el programa se compila y se graba en la memoria del Arduino, que lo ejecuta de forma autónoma aunque desconectes el cable. Es lo que se usa para el proyecto final.</li>
+</ul>
+<p>La regla práctica en el aula: <strong>experimenta en vivo, entrega cargado</strong>. Durante la exploración el modo en vivo permite probar rápido; al cerrar el proyecto, cada equipo carga su programa para que el robot funcione de forma independiente.</p>
+</section>
+
+<section id="primer-programa">
+<h2>Primer programa: LED parpadeante paso a paso</h2>
+<p>El equivalente en bloques del clásico Blink es el punto de partida ideal. Conecta un LED al pin 8 con su resistencia de 220 Ω en serie (si necesitas repasar el porqué, revisa la <a href="/blog/semaforo-con-leds-y-arduino-para-principiantes">guía del semáforo con LEDs</a>). Luego arma este programa en mBlock:</p>
+<ol>
+<li>Arrastra un bloque de evento <strong>al presionar bandera</strong> (o el equivalente de inicio del dispositivo).</li>
+<li>Agrega un bloque <strong>por siempre</strong> (bucle infinito) dentro del evento.</li>
+<li>Dentro del bucle, coloca: <strong>fijar pin digital 8 en ALTO</strong>, luego <strong>esperar 1 segundo</strong>, luego <strong>fijar pin digital 8 en BAJO</strong> y otro <strong>esperar 1 segundo</strong>.</li>
+<li>Ejecuta en modo en vivo para verificar, y luego carga el programa a la placa.</li>
+</ol>
+<p>El mismo programa, visto como código Arduino, se ve así — y es exactamente el código que mBlock genera por ti:</p>
+<pre><code>void setup() {
+  pinMode(8, OUTPUT);      // configura el pin 8 como salida
+}
+
+void loop() {
+  digitalWrite(8, HIGH);   // enciende el LED
+  delay(1000);             // espera 1 segundo
+  digitalWrite(8, LOW);    // apaga el LED
+  delay(1000);             // espera 1 segundo
+}</code></pre>
+<p>Desafíos progresivos: cambiar los tiempos de espera, agregar un segundo LED, y luego incorporar un condicional <strong>si/entonces</strong> para encender el LED solo cuando se presione un botón.</p>
+</section>
+
+<section id="sensores">
+<h2>Leer sensores con bloques</h2>
+<p>Una vez dominado el LED, la lectura de sensores sigue el mismo patrón: conectar el sensor, arrastrar el bloque de lectura correspondiente y usar el valor dentro de un condicional. El sensor ultrasónico HC-SR04 es un excelente segundo paso porque su lógica es intuitiva: "si la distancia es menor que 20 cm, enciende el LED".</p>
+<pre><code>// Equivalente en codigo del bloque "si distancia &lt; 20, encender LED":
+
+void loop() {
+  long distancia = leerDistanciaUltrasonico(TRIG, ECHO); // bloque de lectura
+
+  if (distancia < 20) {      // bloque "si ... entonces"
+    digitalWrite(8, HIGH);   // bloque "fijar pin en ALTO"
+  } else {
+    digitalWrite(8, LOW);
+  }
+}</code></pre>
+<p>Este mismo patrón —leer, comparar, actuar— se repite con sensores de línea, de luz, de temperatura o botones, y es la base de proyectos como el <a href="/blog/radar-con-sensor-ultrasonico-y-processing">radar con sensor ultrasónico</a> que ya tenemos publicado en este sitio.</p>
+</section>
+
+<section id="motores">
+<h2>Controlar motores y servos</h2>
+<p>Para dar movimiento al proyecto, mBlock incluye bloques específicos para servomotores y motores DC. Con un <strong>servo SG90</strong> (conectado a un pin PWM) el bloque "fijar ángulo del servo en 90" basta para posicionarlo; con motores DC se usan bloques de velocidad y dirección que, internamente, manejan el driver correspondiente.</p>
+<ul>
+<li><strong>Servo:</strong> bloque de ángulo (0–180°) para brazos, pinzas o mecanismos de barrido.</li>
+<li><strong>Motores DC:</strong> bloques de encendido, velocidad y dirección, ideales para robots móviles tipo mBot.</li>
+<li><strong>Combinación sensores + motores:</strong> "si el sensor de línea detecta negro, girar a la derecha" es el bloque de un siguelíneas completo.</li>
+</ul>
+<p>Para un robot mBot, todos los motores y sensores ya vienen integrados y mBlock los reconoce automáticamente al seleccionar el dispositivo; en una placa suelta, hay que cablear cada componente y usar los bloques genéricos de pin.</p>
+</section>
+
+<section id="codigo-generado">
+<h2>Ver el código generado: el puente al texto</h2>
+<p>La función más valiosa de mBlock para la docencia es la posibilidad de <strong>ver el código que generan los bloques</strong>, en Python o en lenguaje Arduino. Esta vista convierte cada bloque en una lección de programación textual sin esfuerzo adicional:</p>
+<ol>
+<li>Arma el programa con bloques como de costumbre.</li>
+<li>Abre la vista de código del entorno.</li>
+<li>Compara bloque por bloque: el bloque "esperar 1 segundo" corresponde a <code>delay(1000)</code>, el bloque "fijar pin en ALTO" a <code>digitalWrite(8, HIGH)</code>, y el bloque "por siempre" a <code>loop()</code>.</li>
+</ol>
+<p>Este contraste deliberado entre bloques y texto es una estrategia docente muy efectiva: los estudiantes descubren que ya saben programar "en serio" y que el código textual es simplemente otra forma de expresar la misma lógica que ya dominan. Es el momento ideal para presentarles el <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">Arduino IDE y los primeros pasos con código real</a>.</p>
+</section>
+
+<section id="actividad">
+<h2>Actividad de aula sugerida</h2>
+<p>Una sesión de 90 minutos bien estructurada con mBlock podría seguir esta secuencia:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Estructura sugerida para una sesión introductoria de programación por bloques con Arduino.</caption>
+<thead><tr><th>Etapa</th><th>Tiempo</th><th>Actividad</th></tr></thead>
+<tbody>
+<tr><td>Apertura</td><td>10 min</td><td>Presentar el entorno y el objetivo: encender un LED con bloques</td></tr>
+<tr><td>Exploración guiada</td><td>25 min</td><td>Armar el programa parpadeante paso a paso y ejecutarlo en vivo</td></tr>
+<tr><td>Desafío</td><td>25 min</td><td>Agregar un segundo LED y un condicional con botón</td></tr>
+<tr><td>Puente al texto</td><td>15 min</td><td>Abrir la vista de código y comparar bloques con líneas de código</td></tr>
+<tr><td>Cierre</td><td>15 min</td><td>Ronda de avances: cada equipo muestra su programa y explica una decisión</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="limitaciones">
+<h2>Limitaciones y transición al Arduino IDE</h2>
+<p>Los bloques son una rampa excelente, pero llega un punto en que el texto es más eficiente. Señales de que un estudiante está listo para dar el salto:</p>
+<ul>
+<li>Domina secuencias, bucles, condicionales y variables sin ayuda.</li>
+<li>Pregunta "qué pasa por debajo" o quiere reutilizar código encontrado en internet (que casi siempre está en texto).</li>
+<li>Sus programas crecen tanto que el lienzo de bloques se vuelve difícil de organizar.</li>
+<li>Necesita funciones avanzadas sin bloque equivalente (interrupciones, control fino de temporización con <code>millis()</code>).</li>
+</ul>
+<p>La transición ideal es la que ya describimos: usar la vista de código de mBlock para tender el puente, y luego pasar al <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">Arduino IDE</a> con la confianza de que la lógica ya está aprendida. Los conceptos de esta <a href="/blog/semaforo-con-leds-y-arduino-para-principiantes">guía del semáforo</a> (máquina de estados, <code>millis()</code> no bloqueante) son el siguiente escalón natural.</p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La programación por bloques con mBlock y Scratch es el punto de entrada más amigable a Arduino para estudiantes y docentes: elimina la fricción de la sintaxis, entrega retroalimentación inmediata y, gracias a la vista de código generado, prepara el camino hacia la programación textual. Dominar esta herramienta abre la puerta a todos los proyectos de este blog —desde el semáforo hasta la estación meteorológica— y a los <a href="/blog/12-proyectos-de-robotica-para-la-feria-cientifica">proyectos de feria científica</a> que tus estudiantes pueden emprender a continuación.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué es la programación por bloques y por qué se usa para enseñar Arduino?</summary><p>La programación por bloques es una forma de programar en la que las instrucciones son piezas visuales que se arrastran y encajan entre sí, como un rompecabezas, en lugar de escribirse como texto. Se usa para enseñar Arduino porque elimina la barrera de la sintaxis: los errores de tipeo, los paréntesis mal cerrados y los puntos y coma olvidados desaparecen, y el estudiante se concentra en la lógica del programa (secuencias, bucles, condicionales) antes de enfrentarse al código escrito. Una vez que la lógica está clara, el paso al código textual es mucho más natural.</p></details>
+<details><summary>¿Cuál es la diferencia entre mBlock y Scratch?</summary><p>Scratch es el entorno de programación por bloques desarrollado por el MIT, pensado originalmente para animaciones y juegos; puede conectarse a hardware mediante extensiones, pero no incluye de fábrica todo el soporte para Arduino. mBlock es un entorno derivado de Scratch desarrollado por Makeblock que mantiene la misma lógica visual pero está especializado en hardware: incluye bloques nativos para Arduino, sensores y motores, permite cargar el programa directamente a la placa y ofrece un modo en vivo para controlar el hardware en tiempo real, además de mostrar el código generado en Python o Arduino para facilitar la transición al texto.</p></details>
+<details><summary>¿Qué diferencia hay entre el modo en vivo y cargar el programa en Arduino?</summary><p>En el modo en vivo (live mode), el programa se ejecuta en el computador y la placa Arduino actúa como una extensión que recibe las órdenes por USB: los cambios en los bloques se reflejan de inmediato sin recargar nada, lo que lo hace ideal para experimentar y depurar rápido. Al cargar (upload) el programa, este se compila y se graba en la memoria del Arduino, que lo ejecuta de forma autónoma aunque se desconecte del computador. El modo en vivo es excelente para aprender; la carga es lo que se usa para un proyecto final que debe funcionar solo.</p></details>
+<details><summary>¿Puedo ver el código real que generan mis bloques?</summary><p>Sí, y es una de las funciones más valiosas de mBlock para el aprendizaje: el entorno puede mostrar el código equivalente generado a partir de los bloques, en Python o en el lenguaje de Arduino. Comparar un bloque como "encender LED" con la línea digitalWrite que lo implementa permite a los estudiantes entender la relación entre la lógica visual y el código textual, y es el puente ideal para dar el salto al Arduino IDE. Este contraste deliberado entre bloques y texto es una estrategia docente muy efectiva para la transición.</p></details>
+<details><summary>¿Qué limitaciones tiene programar Arduino solo con bloques?</summary><p>La programación por bloques es ideal para aprender lógica, pero tiene limitaciones frente al código textual: los programas complejos con muchas variables y funciones resultan más difíciles de organizar visualmente, algunas funciones avanzadas del microcontrolador no tienen bloque equivalente, y el control fino sobre la memoria o el temporizado preciso es menor. Por eso la recomendación es usar bloques como punto de partida y pasar al código textual cuando el estudiante domine secuencias, bucles y condicionales, un camino que herramientas como mBlock facilitan al mostrar el código generado.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de software o hardware, serán identificados explícitamente. Los nombres de software y marcas pertenecen a sus respectivos dueños. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Con los bloques dominados, da el salto al código real con <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">Primeros Pasos con Arduino Uno</a>, y pon en práctica la lógica con el <a href="/blog/semaforo-con-leds-y-arduino-para-principiantes">Semáforo con LEDs y Arduino</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/los-mejores-kits-de-robotica-educativa-para-colegios">← Anterior: Los Mejores Kits de Robótica Educativa</a>
+  <a href="/blog/12-proyectos-de-robotica-para-la-feria-cientifica">Siguiente: 12 Proyectos de Robótica para la Feria Científica →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación oficial de los entornos mencionados; los pasos exactos pueden variar según la versión del software.</p>
+<ul>
+<li><a href="https://www.mblock.cc/" target="_blank" rel="noopener noreferrer">mBlock — Documentación oficial de Makeblock</a></li>
+<li><a href="https://scratch.mit.edu/" target="_blank" rel="noopener noreferrer">Scratch — Entorno oficial del MIT</a></li>
+<li><a href="https://makecode.microbit.org/" target="_blank" rel="noopener noreferrer">MakeCode — Microsoft, para micro:bit</a></li>
+<li><a href="https://www.arduino.cc/reference/en/" target="_blank" rel="noopener noreferrer">Arduino Reference — Referencia de funciones del lenguaje</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 13 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

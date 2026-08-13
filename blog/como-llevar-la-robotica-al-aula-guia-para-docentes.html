@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cómo Llevar la Robótica al Aula: Guía para Docentes</title>
+<meta name="description" content="Guía práctica para docentes que quieren incorporar robótica educativa en el aula: objetivos por nivel, enfoques con o sin hardware, presupuesto, financiamiento en Chile, gestión del equipo, plan de 8 sesiones, rúbricas de evaluación y una primera actividad lista para usar con Arduino.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/como-llevar-la-robotica-al-aula-guia-para-docentes">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo Llevar la Robótica al Aula: Guía para Docentes">
+<meta property="og:description" content="Objetivos por nivel, enfoques con o sin hardware, presupuesto y fondos en Chile, gestión de equipos, plan de 8 sesiones, rúbricas y una actividad inicial lista para usar con Arduino.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/robotica_aula_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/como-llevar-la-robotica-al-aula-guia-para-docentes">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía para Docentes: Cómo Llevar la Robótica al Aula">
+<meta name="twitter:description" content="Objetivos por nivel, enfoques con o sin hardware, presupuesto, plan de 8 sesiones, rúbricas de evaluación y una actividad inicial con Arduino.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/robotica_aula_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Cómo Llevar la Robótica al Aula: Guía para Docentes",
+  "description":"Guía práctica para docentes que quieren incorporar robótica educativa en el aula: objetivos de aprendizaje por nivel educativo, enfoques pedagógicos con y sin hardware, planificación de presupuesto, fuentes de financiamiento disponibles en Chile, gestión del trabajo en equipo dentro del aula, un plan de unidad de 8 sesiones listo para adaptar, rúbricas de evaluación y una primera actividad de programación con Arduino preparada para usar desde el primer día.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-13",
+  "dateModified":"2026-08-13",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/como-llevar-la-robotica-al-aula-guia-para-docentes"},
+  "image":"https://www.ukrabot.cl/blog/robotica_aula_hero.jpg",
+  "proficiencyLevel":"Docente",
+  "dependencies":"Arduino Uno o placa compatible, computadores con Arduino IDE o mBlock, protoboard, LEDs y resistencias, sensores básicos opcionales, kits de robótica educativa según presupuesto",
+  "wordCount":"2800",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Cómo Llevar la Robótica al Aula: Guía para Docentes","item":"https://www.ukrabot.cl/blog/como-llevar-la-robotica-al-aula-guia-para-docentes"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Necesito ser ingeniero o programador para enseñar robótica en el aula?","acceptedAnswer":{"@type":"Answer","text":"No. La robótica educativa actual está diseñada para que cualquier docente pueda guiarla, independientemente de su formación previa. Herramientas como la programación por bloques de mBlock o Scratch, los simuladores como Tinkercad Circuits y los kits con guías paso a paso permiten empezar sin experiencia previa en electrónica ni en programación. El rol del docente no es saber todas las respuestas técnicas, sino estructurar la clase, plantear desafíos, mediar la colaboración entre estudiantes y evaluar procesos de pensamiento; los detalles técnicos se aprenden junto con el curso."}},
+    {"@type":"Question","name":"¿Con qué presupuesto mínimo puedo empezar un taller de robótica?","acceptedAnswer":{"@type":"Answer","text":"Se puede empezar con un presupuesto muy bajo usando simuladores gratuitos como Tinkercad Circuits o Wokwi, que no requieren ningún hardware. Para pasar a componentes físicos, una placa Arduino compatible cuesta entre 6.000 y 15.000 pesos chilenos, y un set básico de protoboard, LEDs, resistencias y cables agrega entre 2.000 y 5.000 pesos más. Trabajando en equipos de 3 estudiantes, un curso completo de 30 alumnos puede equiparse con menos de 150.000 pesos chilenos si se priorizan placas compatibles y componentes genéricos antes que kits de marca."}},
+    {"@type":"Question","name":"¿Es mejor empezar con robots físicos o con simuladores?","acceptedAnswer":{"@type":"Answer","text":"Lo ideal es un enfoque mixto. Los simuladores permiten que todos los estudiantes programen sin esperar turnos por hardware, eliminan el miedo a dañar componentes y facilitan la tarea a distancia; los robots físicos aportan el componente real de cableado, errores de conexión, calibración de sensores y trabajo en equipo que ningún simulador reproduce por completo. Una secuencia eficaz es empezar cada unidad con simulación para entender la lógica, y pasar luego al hardware real para consolidar, validando el mismo código primero en el simulador y después en la placa física."}},
+    {"@type":"Question","name":"¿Cómo organizo a los estudiantes en equipos de trabajo efectivos?","acceptedAnswer":{"@type":"Answer","text":"Los equipos de 3 estudiantes suelen funcionar mejor que los grupos grandes, porque permiten repartir tres roles claros y rotarlos entre sesiones: constructor (arma el circuito y el chasis), programador (escribe y depura el código) y documentador (registra decisiones, problemas y resultados en la bitácora). La rotación obligatoria de roles es clave para que ningún estudiante se especialice en una sola tarea y para evitar que los más avanzados monopolicen el robot. Conviene agrupar intencionalmente mezclando niveles de habilidad y revisando que cada integrante pueda explicar el trabajo del equipo completo."}},
+    {"@type":"Question","name":"¿Qué competencias curriculares se desarrollan con robótica educativa?","acceptedAnswer":{"@type":"Answer","text":"La robótica educativa desarrolla pensamiento computacional (descomposición de problemas, reconocimiento de patrones, abstracción y diseño de algoritmos), pensamiento lógico-matemático, trabajo colaborativo, comunicación de ideas técnicas, creatividad en el diseño de soluciones y perseverancia frente a problemas abiertos. En el currículo chileno se vincula directamente con Tecnología, Matemática y Ciencias, y de forma transversal con habilidades del siglo XXI como la resolución de problemas, la comunicación y el trabajo en equipo, lo que la convierte en una herramienta de integración curricular más que en una asignatura aislada."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="robotica_aula_hero.jpg" alt="Estudiantes de enseñanza media construyendo robots con placas Arduino y kits educativos en un aula de taller STEM" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Robótica educativa y docencia · Actualizado el <time datetime="2026-08-13">13 de agosto de 2026</time></div>
+    <h1>Cómo Llevar la Robótica al Aula: Guía para Docentes</h1>
+    <p>Cómo diseñar objetivos por nivel, elegir entre hardware y simulación, planificar un presupuesto realista, acceder a fondos en Chile, organizar equipos de trabajo, evaluar con rúbricas y arrancar con una primera actividad lista para usar.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="robotica_aula_planificacion.jpg" alt="Escritorio de docente con planificación de clases, placa Arduino Uno, servos y un robot pequeño sobre un cuaderno abierto" loading="lazy">
+  <div class="caption">La planificación es la mitad del éxito: una unidad de robótica bien estructurada convierte componentes sueltos en una experiencia de aprendizaje con objetivos medibles.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que-robotica">Por qué enseñar robótica en el aula</a></li>
+    <li><a href="#objetivos-por-nivel">Objetivos de aprendizaje por nivel educativo</a></li>
+    <li><a href="#enfoques">Enfoques: hardware físico, simulación o mixto</a></li>
+    <li><a href="#materiales">Materiales y presupuesto para empezar</a></li>
+    <li><a href="#financiamiento">Financiamiento y fondos disponibles en Chile</a></li>
+    <li><a href="#gestion-aula">Gestión del aula y roles de equipo</a></li>
+    <li><a href="#plan-clases">Plan de unidad: 8 sesiones para adaptar</a></li>
+    <li><a href="#evaluacion">Evaluación con rúbricas</a></li>
+    <li><a href="#actividad">Primera actividad lista para usar</a></li>
+    <li><a href="#seguridad">Seguridad en el taller de robótica</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que-robotica">
+<h2>Por qué enseñar robótica en el aula</h2>
+<p>La robótica educativa no es una moda tecnológica: es una metodología activa que obliga al estudiante a <strong>formular un problema, descomponerlo, diseñar una solución y validarla en el mundo real</strong>. A diferencia de una tarea de papel, un robot que no funciona da retroalimentación inmediata y no negociable, y esa iteración —probar, fallar, corregir, volver a probar— es exactamente el tipo de práctica que desarrolla perseverancia y pensamiento crítico.</p>
+<ul>
+<li><strong>Pensamiento computacional:</strong> descomposición de problemas, reconocimiento de patrones, abstracción y diseño de algoritmos, habilidades explícitamente promovidas en los lineamientos curriculares de Tecnología y en las evaluaciones internacionales de competencias digitales.</li>
+<li><strong>Integración curricular real:</strong> un robot que sigue una línea mezcla matemática (proporciones, ángulos, velocidad), ciencias (sensores, luz, electricidad) y tecnología (programación, mecánica) en un solo desafío, en lugar de enseñarlas como compartimentos separados.</li>
+<li><strong>Aprendizaje basado en proyectos (ABP):</strong> cada sesión tiene un entregable observable (un LED que enciende, un sensor que responde, un robot que recorre una pista), lo que facilita la evaluación formativa y mantiene la motivación alta.</li>
+<li><strong>Equidad de acceso:</strong> con placas compatibles de bajo costo y simuladores gratuitos, la robótica dejó de ser un lujo de colegios privados; esta guía está pensada justamente para hacerla viable en contextos con recursos limitados.</li>
+</ul>
+<div class="note"><strong>Mensaje clave para el equipo directivo:</strong> la robótica no compite con Lenguaje ni Matemática, las refuerza. Los proyectos bien diseñados exigen redactar bitácoras, exponer resultados y calcular parámetros, por lo que es más fácil justificar la inversión como un recurso transversal que como una asignatura adicional.</div>
+</section>
+
+<section id="objetivos-por-nivel">
+<h2>Objetivos de aprendizaje por nivel educativo</h2>
+<p>Los objetivos deben escalar con la edad y con la madurez cognitiva del grupo. La siguiente tabla propone una progresión coherente desde la educación parvularia hasta la enseñanza media, alineada con las habilidades que promueven las Bases Curriculares de Tecnología y Matemática en Chile.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Progresión sugerida de objetivos de aprendizaje en robótica educativa, por nivel.</caption>
+<thead><tr><th>Nivel</th><th>Enfoque recomendado</th><th>Objetivos de aprendizaje</th></tr></thead>
+<tbody>
+<tr><td>Educación parvularia (4–6 años)</td><td>Robots de piso tipo Bee-Bot / Blue-Bot, sin pantalla</td><td>Secuenciación de pasos, orientación espacial (adelante, giro), anticipación de trayectorias, trabajo en parejas</td></tr>
+<tr><td>1º a 4º básico (6–9 años)</td><td>Robots de piso y kits de construcción + programación por bloques</td><td>Causa y efecto, bucles simples, sensores básicos (botón, sonido), diseño y construcción de mecanismos simples</td></tr>
+<tr><td>5º a 8º básico (10–13 años)</td><td>mBot / micro:bit / Arduino con bloques (mBlock, MakeCode)</td><td>Condicionales, variables, sensores de distancia y línea, trabajo colaborativo con roles rotativos, documentación básica</td></tr>
+<tr><td>Enseñanza media (14–18 años)</td><td>Arduino con código real (IDE) y/o kits de competición (VEX, SPIKE Prime)</td><td>Programación textual, funciones y estados, control proporcional, diseño de prototipos, bitácora de ingeniería, presentación de resultados</td></tr>
+</tbody>
+</table>
+</div>
+<p>No es necesario cubrir toda la progresión el primer año: la recomendación es elegir <strong>un solo nivel</strong>, dominarlo bien y expandir hacia niveles vecinos en los años siguientes, reutilizando el mismo equipamiento siempre que sea posible.</p>
+</section>
+
+<section id="enfoques">
+<h2>Enfoques: hardware físico, simulación o mixto</h2>
+<p>Antes de comprar nada, define qué mezcla de recursos usarás. Las tres opciones no son excluyentes y la mayoría de los talleres exitosos combinan las dos primeras.</p>
+<ul>
+<li><strong>Simulación (costo cero):</strong> <a href="https://www.tinkercad.com/circuits" target="_blank" rel="noopener noreferrer">Tinkercad Circuits</a> y <a href="https://wokwi.com" target="_blank" rel="noopener noreferrer">Wokwi</a> permiten programar un Arduino virtual, cablear circuitos y ver el resultado sin riesgo de dañar componentes. Ideal para la primera toma de contacto, para clases en línea y para que todos los estudiantes programen sin esperar turnos de hardware.</li>
+<li><strong>Hardware físico:</strong> placas y componentes reales aportan el valor insustituible del error real: cables sueltos, polaridad invertida, sensores que necesitan calibración. Es el escenario donde se desarrolla la perseverancia y el trabajo en equipo.</li>
+<li><strong>Kits cerrados:</strong> robots tipo mBot o kits de construcción (LEGO SPIKE, VEX) reducen la fricción de cableado y permiten concentrarse en la lógica de programación y el diseño mecánico; son más caros por estudiante pero más robustos para cursos numerosos.</li>
+</ul>
+<div class="note"><strong>Secuencia recomendada:</strong> empieza cada unidad en el simulador para fijar la lógica, y pasa al hardware real para consolidar. El mismo código escrito en Tinkercad puede copiarse casi sin cambios al Arduino IDE, lo que hace la transición muy natural.</div>
+</section>
+
+<section id="materiales">
+<h2>Materiales y presupuesto para empezar</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Costos de referencia para el mercado chileno en 2026, considerando placas compatibles y componentes genéricos.</caption>
+<thead><tr><th>Recurso</th><th>Especificación sugerida</th><th>Precio aprox. (CLP)</th></tr></thead>
+<tbody>
+<tr><td>Placa Arduino Uno compatible</td><td>ATmega328P con cable USB</td><td>$6.000 – $15.000</td></tr>
+<tr><td>Set básico por equipo</td><td>Protoboard, 20+ jumpers, LEDs, resistencias, pulsadores</td><td>$2.000 – $5.000</td></tr>
+<tr><td>Sensor ultrasónico HC-SR04</td><td>Para proyectos de distancia y robots evasores</td><td>$1.500 – $3.500</td></tr>
+<tr><td>Servomotor SG90</td><td>Para brazos y mecanismos móviles</td><td>$1.500 – $3.000</td></tr>
+<tr><td>Robot mBot o similar (opcional)</td><td>Plataforma completa con chasis, motores y sensores</td><td>$60.000 – $90.000</td></tr>
+<tr><td>Computadores</td><td>Cualquier equipo que corra el IDE de Arduino o un navegador para el simulador</td><td>Reutilizar los existentes</td></tr>
+</tbody>
+</table>
+</div>
+<p>Con un esquema de <strong>3 estudiantes por equipo</strong>, un curso de 30 estudiantes requiere 10 placas. Usando componentes genéricos, el taller completo puede equiparse por menos de 150.000 pesos chilenos en su versión mínima, y por alrededor de 250.000–350.000 pesos si se agregan sensores y servos para proyectos más ambiciosos. Comprar kits de marca eleva el costo por estudiante pero reduce el tiempo de preparación y la tasa de componentes dañados.</p>
+</section>
+
+<section id="financiamiento">
+<h2>Financiamiento y fondos disponibles en Chile</h2>
+<p>El presupuesto no tiene que salir íntegramente del colegio. En Chile existen varias vías complementarias que conviene explorar antes de descartar el proyecto:</p>
+<ul>
+<li><strong>Subvención Escolar Preferencial (SEP):</strong> los establecimientos que la reciben pueden destinar parte de los recursos a material didáctico y equipamiento de apoyo al aprendizaje, siempre que se justifique pedagógicamente en el Plan de Mejoramiento Educativo (PME).</li>
+<li><strong>Fondos concursables públicos:</strong> programas de fomento de ciencia y tecnología escolar, como los fondos de innovación educativa del Ministerio de Educación y las iniciativas de Explora del Ministerio de Ciencia, financian proyectos de robótica y divulgación científica presentados por colegios.</li>
+<li><strong>Centro de Padres y Apoderados:</strong> una presentación breve con objetivos, presupuesto y resultados esperados suele ser la vía más rápida para proyectos de mediana escala en colegios subvencionados.</li>
+<li><strong>Alianzas con empresas locales:</strong> universidades, empresas tecnológicas y municipios frecuentemente apoyan talleres STEM con donaciones de equipos, espacios o voluntariado técnico.</li>
+<li><strong>Reutilización y escalado por fases:</strong> empezar con simuladores (costo cero), luego placas sueltas y recién después kits completos, distribuye el gasto en dos o tres años fiscales.</li>
+</ul>
+<div class="warning"><strong>Documenta todo el proceso:</strong> para fondos públicos y SEP es indispensable registrar objetivos de aprendizaje, planificaciones y evidencias de evaluación. Guarda fotos de las sesiones, rúbricas aplicadas y bitácoras de los equipos; son el respaldo que justifica la inversión ante cualquier revisión.</div>
+</section>
+
+<section id="gestion-aula">
+<h2>Gestión del aula y roles de equipo</h2>
+<p>La principal variable de éxito de un taller de robótica no es el hardware, sino la <strong>organización de los equipos</strong>. Los grupos grandes generan estudiantes sin tarea y robots monopolizados por los más hábiles; los grupos de tres con roles rotativos resuelven ambos problemas.</p>
+<ul>
+<li><strong>Constructor/a:</strong> arma el circuito o el chasis siguiendo el esquema, y es responsable de que las conexiones estén firmes y ordenadas.</li>
+<li><strong>Programador/a:</strong> escribe y depura el código, y explica al resto del equipo qué hace cada parte del programa.</li>
+<li><strong>Documentador/a:</strong> registra en la bitácora las decisiones, los problemas encontrados y las soluciones, y prepara la presentación del avance.</li>
+</ul>
+<p>La rotación de roles debe ser <strong>obligatoria y visible</strong> (por ejemplo, rotar cada sesión o cada dos sesiones), para que ningún estudiante quede fijado en una sola tarea. Antes de cerrar cada clase, destina 5 minutos a una ronda rápida en que cada equipo muestre su avance y explique un problema que enfrentó; esto convierte los errores en material de aprendizaje compartido y da evidencia inmediata para la evaluación formativa.</p>
+</section>
+
+<section id="plan-clases">
+<h2>Plan de unidad: 8 sesiones para adaptar</h2>
+<p>El siguiente plan de 8 sesiones (de 90 minutos cada una) está pensado para un taller introductorio con Arduino y programación por bloques, y puede acortarse, alargarse o reordenarse según el nivel y la disponibilidad horaria.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Estructura sugerida de una unidad introductoria de robótica, sesión por sesión.</caption>
+<thead><tr><th>Sesión</th><th>Objetivo</th><th>Actividad central</th><th>Entregable</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Conocer el entorno y la placa</td><td>Presentación de la placa, instalación del IDE, primer Blink</td><td>LED parpadeando en placa real o simulador</td></tr>
+<tr><td>2</td><td>Entender entradas y salidas</td><td>Encender un LED externo con resistencia; calcular valor con Ley de Ohm</td><td>Circuito de LED con resistencia correcta</td></tr>
+<tr><td>3</td><td>Controlar flujo de programa</td><td>Secuencias, bucles y condicionales aplicados a LEDs y pulsadores</td><td>Semáforo o secuencia de luces</td></tr>
+<tr><td>4</td><td>Leer sensores</td><td>Conexión y lectura de un sensor de distancia o de línea</td><td>Programa que muestra lecturas en el monitor serie</td></tr>
+<tr><td>5</td><td>Actuar con motores</td><td>Control de un servomotor o de motores con driver</td><td>Mecanismo móvil simple</td></tr>
+<tr><td>6</td><td>Integrar en un mini proyecto</td><td>Definición del desafío y construcción del prototipo</td><td>Prototipo funcional inicial</td></tr>
+<tr><td>7</td><td>Depurar y mejorar</td><td>Pruebas, corrección de errores y mejora del diseño</td><td>Versión mejorada del prototipo</td></tr>
+<tr><td>8</td><td>Comunicar resultados</td><td>Presentación por equipos: qué construyeron, cómo y qué aprendieron</td><td>Exposición + bitácora completa</td></tr>
+</tbody>
+</table>
+</div>
+<p>Este plan conecta de forma natural con los tutoriales prácticos ya publicados en este sitio: la <a href="/blog/semaforo-con-leds-y-arduino-para-principiantes">guía del semáforo con LEDs</a> sirve para las sesiones 2 y 3, y la <a href="/blog/estacion-meteorologica-con-arduino-y-pantalla-oled">estación meteorológica</a> o el <a href="/blog/radar-con-sensor-ultrasonico-y-processing">radar ultrasónico</a> pueden convertirse en el proyecto integrador de las sesiones 6 a 8.</p>
+</section>
+
+<section id="evaluacion">
+<h2>Evaluación con rúbricas</h2>
+<p>Evaluar robótica solo con una nota por el robot terminado pierde de vista el proceso, que es donde ocurre el aprendizaje real. Una rúbrica con cuatro dimensiones independientes da una imagen más justa y entrega retroalimentación accionable:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Dimensiones sugeridas para evaluar un proyecto de robótica y qué observar en cada una.</caption>
+<thead><tr><th>Dimensión</th><th>Qué observar</th></tr></thead>
+<tbody>
+<tr><td>Funcionamiento del prototipo</td><td>¿Cumple el desafío planteado? ¿Es estable o falla de forma aleatoria? ¿Responde correctamente a las condiciones de prueba?</td></tr>
+<tr><td>Comprensión del código</td><td>¿El equipo puede explicar qué hace cada bloque o línea? ¿Puede modificar el programa a pedido y predecir el resultado?</td></tr>
+<tr><td>Proceso y bitácora</td><td>¿Registran decisiones, errores y correcciones? ¿Se evidencia iteración real o solo un resultado final?</td></tr>
+<tr><td>Trabajo colaborativo</td><td>¿Rotan roles? ¿Todos participan? ¿Resuelven desacuerdos de forma respetuosa?</td></tr>
+</tbody>
+</table>
+</div>
+<p>Comparte la rúbrica <strong>antes</strong> de empezar el proyecto: cuando los estudiantes saben exactamente qué se evalúa, la rúbrica funciona como guía de trabajo y no como un castigo sorpresa al final. La autoevaluación y la coevaluación entre equipos, al cierre de cada proyecto, refuerzan además la metacognición.</p>
+</section>
+
+<section id="actividad">
+<h2>Primera actividad lista para usar</h2>
+<p>Esta actividad de apertura no requiere más que una placa, una protoboard, un LED, una resistencia de 220 Ω y dos cables. El objetivo es que en la primera sesión cada equipo vea un resultado tangible y entienda el ciclo completo: escribir, compilar, cargar y verificar.</p>
+<pre><code>// Actividad 1: El semaforo peatonal mas simple
+const int PIN_LED = 8;   // LED conectado al pin digital 8
+                        // (recuerda la resistencia de 220 ohms en serie)
+
+void setup() {
+  pinMode(PIN_LED, OUTPUT);   // declara el pin como salida
+}
+
+void loop() {
+  digitalWrite(PIN_LED, HIGH);  // enciende el LED
+  delay(1000);                  // espera 1 segundo
+  digitalWrite(PIN_LED, LOW);   // apaga el LED
+  delay(1000);                  // espera 1 segundo
+}</code></pre>
+<p>Desafíos progresivos para la misma sesión, en orden de dificultad creciente:</p>
+<ul>
+<li><strong>Nivel 1:</strong> cambiar los tiempos de encendido y apagado y predecir el efecto antes de probarlo.</li>
+<li><strong>Nivel 2:</strong> agregar un segundo LED de otro color y crear una secuencia alternada entre ambos.</li>
+<li><strong>Nivel 3:</strong> conectar un pulsador y hacer que el LED solo encienda mientras se mantiene presionado.</li>
+<li><strong>Nivel 4 (extensión):</strong> reconstruir el semáforo completo de tres LEDs siguiendo la <a href="/blog/semaforo-con-leds-y-arduino-para-principiantes">guía técnica del semáforo</a>, incluyendo la máquina de estados.</li>
+</ul>
+<div class="note"><strong>Consejo de aula:</strong> pide a los equipos que predigan por escrito qué hará el programa <em>antes</em> de cargarlo. Comparar la predicción con el comportamiento real convierte cada circuito en un experimento y entrena la lectura de código, una habilidad que se evalúa con mucha frecuencia en las rúbricas.</div>
+</section>
+
+<section id="seguridad">
+<h2>Seguridad en el taller de robótica</h2>
+<p>Aunque los voltajes de Arduino (5V) no representan un riesgo eléctrico serio para las personas, el taller tiene otros riesgos que conviene gestionar con reglas claras desde el primer día:</p>
+<ul>
+<li><strong>Alimentación:</strong> usar siempre la alimentación USB o una fuente de 5V regulada; nunca conectar la placa a fuentes mayores de 12V en el pin de alimentación, y revisar la polaridad antes de energizar.</li>
+<li><strong>Componentes calientes:</strong> los reguladores de voltaje y algunos drivers de motor pueden calentarse; enseñar a no tocar y a desconectar antes de manipular.</li>
+<li><strong>Herramientas:</strong> si el proyecto incluye pistola de silicona caliente, cúter o soldador, delimitar una zona de trabajo supervisada y establecer quién puede usarlas y cuándo.</li>
+<li><strong>Baterías de litio:</strong> si se usan baterías para robots móviles, aplicar las mismas precauciones de esta <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">guía de baterías de litio</a>: nunca perforar, no cortocircuitar y cargar bajo supervisión.</li>
+<li><strong>Orden del puesto:</strong> cables sueltos sobre la mesa son la causa más común de cortocircuitos accidentales; reservar los últimos 3 minutos de cada sesión para ordenar y guardar.</li>
+</ul>
+</section>
+
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Situaciones típicas de un taller de robótica escolar y su abordaje.</caption>
+<thead><tr><th>Situación</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>La placa no aparece al cargar el programa</td><td>Driver no instalado, cable solo de carga, o puerto equivocado</td><td>Verificar cable de datos, instalar driver CH340 si es placa compatible, seleccionar el puerto correcto en el IDE</td></tr>
+<tr><td>El LED no enciende</td><td>Polaridad invertida o resistencia mal conectada</td><td>Girar el LED, revisar la continuidad del circuito en la protoboard</td></tr>
+<tr><td>Un equipo termina mucho antes que los demás</td><td>Desafío poco escalable</td><td>Tener siempre desafíos de extensión preparados (niveles 2, 3 y 4 de la actividad)</td></tr>
+<tr><td>Un estudiante monopoliza el robot</td><td>Roles no rotados o no explicitados</td><td>Rotar roles con regla visible y pedir que cada integrante explique una parte en la ronda de cierre</td></tr>
+<tr><td>El sensor entrega lecturas erráticas</td><td>Alimentación ruidosa o conexiones flojas</td><td>Ajustar cables, promediar varias lecturas en el código, alimentar sensores con 5V estable</td></tr>
+<tr><td>Falta de motivación al avanzar las sesiones</td><td>Proyectos sin conexión con intereses del grupo</td><td>Dar a elegir entre 2 o 3 desafíos finales equivalentes en dificultad</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Llevar la robótica al aula no requiere un laboratorio costoso ni una formación técnica previa: requiere objetivos claros, una planificación por fases, equipos bien organizados y la disposición a aprender junto con los estudiantes. Empezar con simulación gratuita, pasar a placas compatibles de bajo costo y recién después evaluar kits de marca permite validar el proyecto con poco riesgo y escalar con evidencia. Si esta guía te sirvió de punto de partida, los siguientes pasos naturales son definir <a href="/blog/los-mejores-kits-de-robotica-educativa-para-colegios">qué kits convienen a tu contexto</a> y conocer la <a href="/blog/programacion-por-bloques-con-mblock-y-scratch-para-arduino">programación por bloques con mBlock y Scratch</a>, el punto de entrada más amigable para tus estudiantes.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Necesito ser ingeniero o programador para enseñar robótica en el aula?</summary><p>No. La robótica educativa actual está diseñada para que cualquier docente pueda guiarla, independientemente de su formación previa. Herramientas como la programación por bloques de mBlock o Scratch, los simuladores como Tinkercad Circuits y los kits con guías paso a paso permiten empezar sin experiencia previa en electrónica ni en programación. El rol del docente no es saber todas las respuestas técnicas, sino estructurar la clase, plantear desafíos, mediar la colaboración entre estudiantes y evaluar procesos de pensamiento; los detalles técnicos se aprenden junto con el curso.</p></details>
+<details><summary>¿Con qué presupuesto mínimo puedo empezar un taller de robótica?</summary><p>Se puede empezar con un presupuesto muy bajo usando simuladores gratuitos como Tinkercad Circuits o Wokwi, que no requieren ningún hardware. Para pasar a componentes físicos, una placa Arduino compatible cuesta entre 6.000 y 15.000 pesos chilenos, y un set básico de protoboard, LEDs, resistencias y cables agrega entre 2.000 y 5.000 pesos más. Trabajando en equipos de 3 estudiantes, un curso completo de 30 alumnos puede equiparse con menos de 150.000 pesos chilenos si se priorizan placas compatibles y componentes genéricos antes que kits de marca.</p></details>
+<details><summary>¿Es mejor empezar con robots físicos o con simuladores?</summary><p>Lo ideal es un enfoque mixto. Los simuladores permiten que todos los estudiantes programen sin esperar turnos por hardware, eliminan el miedo a dañar componentes y facilitan la tarea a distancia; los robots físicos aportan el componente real de cableado, errores de conexión, calibración de sensores y trabajo en equipo que ningún simulador reproduce por completo. Una secuencia eficaz es empezar cada unidad con simulación para entender la lógica, y pasar luego al hardware real para consolidar, validando el mismo código primero en el simulador y después en la placa física.</p></details>
+<details><summary>¿Cómo organizo a los estudiantes en equipos de trabajo efectivos?</summary><p>Los equipos de 3 estudiantes suelen funcionar mejor que los grupos grandes, porque permiten repartir tres roles claros y rotarlos entre sesiones: constructor (arma el circuito y el chasis), programador (escribe y depura el código) y documentador (registra decisiones, problemas y resultados en la bitácora). La rotación obligatoria de roles es clave para que ningún estudiante se especialice en una sola tarea y para evitar que los más avanzados monopolicen el robot. Conviene agrupar intencionalmente mezclando niveles de habilidad y revisando que cada integrante pueda explicar el trabajo del equipo completo.</p></details>
+<details><summary>¿Qué competencias curriculares se desarrollan con robótica educativa?</summary><p>La robótica educativa desarrolla pensamiento computacional (descomposición de problemas, reconocimiento de patrones, abstracción y diseño de algoritmos), pensamiento lógico-matemático, trabajo colaborativo, comunicación de ideas técnicas, creatividad en el diseño de soluciones y perseverancia frente a problemas abiertos. En el currículo chileno se vincula directamente con Tecnología, Matemática y Ciencias, y de forma transversal con habilidades del siglo XXI como la resolución de problemas, la comunicación y el trabajo en equipo, lo que la convierte en una herramienta de integración curricular más que en una asignatura aislada.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de kits o componentes, serán identificados explícitamente. Los precios y programas de financiamiento son referenciales y pueden variar; verifica los montos y requisitos vigentes ante las entidades correspondientes. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Una vez que tengas la planificación lista, el siguiente paso es elegir el equipamiento: consulta <a href="/blog/los-mejores-kits-de-robotica-educativa-para-colegios">Los Mejores Kits de Robótica Educativa para Colegios</a> para comparar opciones por nivel y presupuesto.</p>
+  <p>Si tus estudiantes recién empiezan con la placa, acompáñalos con <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">Primeros Pasos con Arduino Uno</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/construye-tu-propio-detector-de-metales-casero-con-arduino">← Anterior: Detector de Metales Casero con Arduino</a>
+  <a href="/blog/los-mejores-kits-de-robotica-educativa-para-colegios">Siguiente: Los Mejores Kits de Robótica Educativa para Colegios →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de esta guía. Los requisitos específicos de financiamiento pueden variar según el año y la región.</p>
+<ul>
+<li><a href="https://www.curriculumnacional.cl/portal/" target="_blank" rel="noopener noreferrer">Currículum Nacional — Ministerio de Educación de Chile (Bases Curriculares de Tecnología)</a></li>
+<li><a href="https://www.comunidadescolar.cl/" target="_blank" rel="noopener noreferrer">Subvención Escolar Preferencial (SEP) — Orientaciones para establecimientos</a></li>
+<li><a href="https://www.explora.cl/" target="_blank" rel="noopener noreferrer">Programa Explora — Ministerio de Ciencia, Tecnología, Conocimiento e Innovación</a></li>
+<li><a href="https://www.arduino.cc/education" target="_blank" rel="noopener noreferrer">Arduino Education — Recursos oficiales para el aula</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 13 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
