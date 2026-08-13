@@ -148,4 +148,46 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://www.ukrabot.cl/blog/guia-esencial-de-sensores-para-arduino</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sensor-dht22-temperatura-y-humedad-con-arduino</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sensores-infrarrojos-para-robots-siguelineas</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/detector-de-gas-con-sensor-mq-2-y-alarma-sonora</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
