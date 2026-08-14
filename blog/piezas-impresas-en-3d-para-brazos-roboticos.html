@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Piezas Impresas en 3D para Brazos Robóticos</title>
+<meta name="description" content="Guía técnica de piezas impresas en 3D para brazos robóticos: qué material elegir, orientación de capas, parámetros de impresión, insertos roscados, tolerancias y cuándo NO imprimir la pieza.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/piezas-impresas-en-3d-para-brazos-roboticos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Piezas Impresas en 3D para Brazos Robóticos">
+<meta property="og:description" content="Materiales, orientación de capas, parámetros, insertos roscados y tolerancias para piezas estructurales impresas de un brazo robótico.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/piezas_3d_brazo_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/piezas-impresas-en-3d-para-brazos-roboticos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Piezas Impresas en 3D para Brazos Robóticos">
+<meta name="twitter:description" content="Materiales, orientación de capas, parámetros, insertos roscados y tolerancias para piezas estructurales impresas de un brazo robótico.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/piezas_3d_brazo_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Piezas Impresas en 3D para Brazos Robóticos",
+  "description": "Guía de diseño de piezas impresas en 3D para brazos robóticos: por qué la impresión funciona en estructura ligera, comparación de materiales (PLA, PETG, ABS/ASA, PC y poliamidas reforzadas con fibra de carbono), el efecto de la orientación de capas sobre la resistencia interlaminar, los parámetros de impresión que realmente aportan rigidez (perímetros frente a relleno), las uniones con insertos roscados y rodamientos, las tolerancias y ajustes reales de la impresión FDM, cómo validar una pieza antes de montarla y los casos en que conviene mecanizar en lugar de imprimir.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/piezas-impresas-en-3d-para-brazos-roboticos"
+  },
+  "image": "https://www.ukrabot.cl/blog/piezas_3d_brazo_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Impresora 3D FDM con extrusor capaz de 250 °C o más, filamento estructural (PETG, ASA, PC o poliamida con fibra de carbono), insertos roscados de latón, soldador con punta para insertos y tornillería métrica",
+  "wordCount": "2600",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Piezas Impresas en 3D para Brazos Robóticos",
+      "item": "https://www.ukrabot.cl/blog/piezas-impresas-en-3d-para-brazos-roboticos"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar PLA para un brazo robótico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para prototipos y para aprender, sí. Para un brazo que trabaje de verdad, no: el PLA sufre fluencia bajo carga sostenida (se deforma lentamente aunque la carga sea pequeña) y se ablanda cerca de los 55 °C, temperatura que un soporte de motor alcanza sin problema. PETG es el mínimo razonable, y ASA, PC o PA-CF son las opciones correctas para piezas estructurales."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto relleno necesita una pieza estructural?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Entre 30 % y 40 % con patrón giroide o cúbico es suficiente en casi todos los casos. Lo que realmente aporta rigidez son los perímetros: pasar de 2 a 5 paredes cambia mucho más el comportamiento de la pieza que subir el relleno a 80 %, y agrega mucho menos peso y tiempo de impresión."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi pieza se rompió justo por una línea de capa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque la carga estaba aplicada perpendicular a las capas y la unión interlaminar es la dirección débil del FDM. Reorienta la pieza para que las capas queden paralelas al esfuerzo, sube la temperatura de boquilla, reduce la ventilación y usa cámara cerrada. Si la geometría no lo permite, divide la pieza y únela con tornillos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Los insertos de latón son realmente necesarios?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En cualquier unión que se vaya a desarmar o que reciba torque, sí. Una rosca hecha directamente en el plástico impreso se barre en pocos ciclos de apriete. Los insertos instalados con calor cuestan muy poco, se ponen en segundos y convierten una unión frágil en una unión metálica confiable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Vale la pena el filamento con fibra de carbono?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Vale la pena cuando necesitas rigidez y estabilidad dimensional: el PA-CF se deforma mucho menos bajo carga sostenida y con la temperatura. Pero exige boquilla endurecida, secado del filamento y, preferentemente, cámara cerrada. Si no puedes cumplir esas tres condiciones, un ASA o un PC bien impresos rendirán mejor que un PA-CF mal impreso."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué precisión puedo esperar de una pieza impresa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con una máquina FDM bien calibrada, alrededor de ±0,2 mm, y los agujeros salen sistemáticamente algo más chicos que el nominal. Para cotas críticas (asientos de rodamiento, alineación de ejes) lo práctico es imprimir con menos material y terminar con broca o escariador, o directamente delegar esa función a un componente metálico."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="piezas_3d_brazo_hero.jpg" alt="Brazo robótico de escritorio construido con piezas estructurales impresas en 3D en filamento negro y gris mate, con líneas de capa visibles, insertos de latón y tornillería metálica, sobre un banco de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Diseño Mecánico y Materiales · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Piezas Impresas en 3D para Brazos Robóticos</h1>
+    <p>Qué material elegir, cómo orientar las capas, qué parámetros importan de verdad y cuándo la pieza impresa deja de ser la respuesta correcta.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#por-que">Por qué imprimir la estructura</a></li><li><a href="#materiales">Elegir el material correcto</a></li><li><a href="#orientacion">Orientación de capas y carga</a></li><li><a href="#parametros">Parámetros que sí importan</a></li><li><a href="#insertos">Insertos, tornillos y rodamientos</a></li><li><a href="#tolerancias">Tolerancias y ajustes reales</a></li><li><a href="#validacion">Cómo validar la pieza</a></li><li><a href="#cuando-no">Cuándo NO imprimir la pieza</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que">
+<h2>Por qué imprimir la estructura de un brazo</h2>
+<p>La impresión 3D cambió la economía del brazo robótico pequeño. Una pieza que mecanizada cuesta semanas y cientos de dólares sale de la impresora en una noche y por unos pocos miles de pesos. Pero la razón por la que funciona no es el precio: es que en un brazo <strong>ligero, cada gramo que quitas de la estructura es torque que no tienes que comprar en el motor</strong>.</p>
+<p>Un eslabón de brazo trabaja fundamentalmente a <strong>flexión</strong>, y en flexión lo que manda es la geometría, no el material. El momento de inercia de una sección crece con el cubo de la altura, así que una pieza impresa hueca y bien nervada puede ser más rígida que una placa de aluminio maciza del mismo peso. Esa es la ventaja real: la impresión te deja poner material exactamente donde la carga lo pide, con nervios, cartelas y paredes gruesas que serían imposibles de mecanizar.</p>
+<div class="note"><strong>La regla que ordena todo el diseño:</strong> el material impreso es débil <em>entre</em> capas y fuerte <em>dentro</em> de la capa. Todo lo demás de este artículo —orientación, perímetros, insertos— se deriva de esa única frase.</div>
+<p>Si estás partiendo desde cero con un brazo de este tipo, la guía de <a href="/blog/construye-un-brazo-robotico-de-6-ejes-con-arduino">construcción de un brazo de 6 ejes con Arduino</a> cubre la parte de control; aquí nos concentramos en que la estructura no sea el eslabón débil.</p>
+</section>
+
+<section id="materiales">
+<h2>Elegir el material correcto</h2>
+<p>El error clásico es imprimir la estructura en el mismo PLA con el que se imprimen figuritas. El PLA es rígido y fácil, pero <strong>fluye bajo carga sostenida (creep)</strong> y pierde su forma cerca de los 55–60 °C: exactamente lo que ocurre dentro de un soporte de motor que trabaja tibio y aguanta un peso todo el día.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Valores típicos de referencia para filamento FDM; varían según fabricante, parámetros y geometría.</caption>
+<thead><tr><th>Material</th><th>Temperatura de servicio aprox.</th><th>Rigidez relativa</th><th>Comportamiento</th><th>Uso recomendado en el brazo</th></tr></thead>
+<tbody>
+<tr><td>PLA</td><td>50–55 °C</td><td>Alta</td><td>Rígido pero frágil; fluye bajo carga constante</td><td>Prototipos y plantillas, no estructura definitiva</td></tr>
+<tr><td>PETG</td><td>70–75 °C</td><td>Media</td><td>Tenaz, tolera impactos, algo flexible</td><td>Carcasas, tapas, piezas no críticas</td></tr>
+<tr><td>ABS / ASA</td><td>90–100 °C</td><td>Media</td><td>Buena temperatura; ASA resiste UV; requieren cámara cerrada</td><td>Soportes de motor, piezas expuestas</td></tr>
+<tr><td>Policarbonato (PC)</td><td>110–130 °C</td><td>Alta</td><td>Muy tenaz y resistente; higroscópico y exigente de imprimir</td><td>Eslabones y bridas muy cargadas</td></tr>
+<tr><td>PA (nylon) + fibra de carbono</td><td>110–140 °C</td><td>Muy alta</td><td>Rígido, estable, baja fluencia; abrasivo y absorbe humedad</td><td>Eslabones estructurales, bases de reductor</td></tr>
+<tr><td>PA + fibra de vidrio</td><td>100–130 °C</td><td>Alta</td><td>Más tenaz que el CF, menos rígido</td><td>Piezas con impacto o vibración</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Qué significa "reforzado con fibra"</h3>
+<p>Los filamentos <strong>PA-CF</strong> o <strong>PET-CF</strong> llevan fibra <em>corta</em> picada, no fibra continua. Esa fibra sube la rigidez y reduce muchísimo la deformación por temperatura y por carga sostenida, pero <strong>no arregla la debilidad entre capas</strong>: la unión sigue dependiendo de la soldadura del polímero. Un PA-CF mal impreso puede ser peor que un PETG bien impreso.</p>
+<div class="warning"><strong>Dos costos ocultos del filamento con fibra:</strong> desgasta la boquilla de latón en pocas horas (necesitas boquilla endurecida de acero o rubí) y absorbe humedad agresivamente. Un nylon que estuvo dos días fuera de la caja seca imprime con burbujas y pierde buena parte de su resistencia. Secar antes de imprimir no es opcional.</div>
+</section>
+
+<section id="orientacion">
+<h2>Orientación de capas y dirección de la carga</h2>
+<p>Esta es la decisión que más influye en si la pieza aguanta, y es gratis: solo cambia cómo la apoyas en la placa.</p>
+<p>Una pieza FDM es un material <strong>anisotrópico</strong>. En el plano XY (dentro de la capa) el material se acerca a sus propiedades nominales. En Z (entre capas) la resistencia puede caer a la mitad o menos, porque cada capa está soldada a la anterior solo por difusión térmica parcial. Una pieza que soportaría 40 MPa en un eje se rompe con 15 MPa en el otro.</p>
+<h3>Cómo decidir la orientación</h3>
+<ol>
+<li><strong>Identifica la carga principal.</strong> En un eslabón es flexión; en una brida de motor, cortante y arrancamiento de tornillos.</li>
+<li><strong>Orienta para que las capas queden paralelas a la fuerza</strong>, no perpendiculares. Nunca dejes que una grieta pueda propagarse siguiendo una línea de capa que cruza la sección crítica.</li>
+<li><strong>Los tornillos tiran en Z:</strong> si un tornillo aprieta perpendicular a las capas, está intentando delaminar la pieza. Ahí es donde revientan las bridas.</li>
+</ol>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Orientación recomendada por tipo de pieza en un brazo robótico.</caption>
+<thead><tr><th>Pieza</th><th>Carga dominante</th><th>Orientación recomendada</th><th>Error frecuente</th></tr></thead>
+<tbody>
+<tr><td>Eslabón largo</td><td>Flexión en el eje largo</td><td>Acostado, eje largo paralelo a la placa</td><td>Imprimirlo de pie: se parte por una capa</td></tr>
+<tr><td>Brida de motor</td><td>Cortante y torsión</td><td>Cara de montaje contra la placa</td><td>Imprimirla inclinada "para evitar soportes"</td></tr>
+<tr><td>Horquilla de articulación</td><td>Apertura de los brazos</td><td>Plano de la horquilla en XY</td><td>Capas cruzando la raíz de la horquilla</td></tr>
+<tr><td>Base</td><td>Compresión y vuelco</td><td>Base plana sobre la placa</td><td>Poco perímetro en las orejas de anclaje</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Truco de diseño:</strong> cuando la geometría te obliga a una orientación mala, parte la pieza en dos, imprime cada mitad en su orientación buena y únelas con tornillos pasantes y pasadores de posicionamiento. Una unión atornillada bien diseñada es más predecible que una capa mal soldada.</div>
+</section>
+
+<section id="parametros">
+<h2>Los parámetros que sí importan</h2>
+<p>Para piezas estructurales, el laminador se configura distinto que para piezas decorativas. La idea central: <strong>la rigidez viene de los perímetros, no del relleno</strong>. En una pieza en flexión, la tensión máxima está en la superficie exterior; el material del centro casi no trabaja.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Punto de partida para piezas estructurales de brazo robótico (boquilla 0,4 mm).</caption>
+<thead><tr><th>Parámetro</th><th>Decorativo típico</th><th>Estructural recomendado</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>Perímetros (paredes)</td><td>2</td><td>4 a 6</td><td>Es donde vive la rigidez a flexión</td></tr>
+<tr><td>Altura de capa</td><td>0,2–0,3 mm</td><td>0,15–0,2 mm</td><td>Capas finas sueldan mejor entre sí</td></tr>
+<tr><td>Relleno</td><td>15 % rejilla</td><td>30–40 % giroide o cúbico</td><td>Soporta las paredes y reparte carga en 3D</td></tr>
+<tr><td>Capas sólidas arriba/abajo</td><td>3/3</td><td>5/5</td><td>Evita hundimiento bajo tornillos</td></tr>
+<tr><td>Temperatura de boquilla</td><td>Media del rango</td><td>Extremo alto del rango</td><td>Mejor soldadura entre capas</td></tr>
+<tr><td>Ventilación de capa</td><td>100 %</td><td>Baja o nula (ABS/PA/PC)</td><td>Enfriar rápido debilita la unión en Z</td></tr>
+<tr><td>Cámara</td><td>Abierta</td><td>Cerrada y templada</td><td>Menos alabeo y mejor adhesión interlaminar</td></tr>
+</tbody>
+</table>
+</div>
+<p>Subir el relleno de 40 % a 80 % agrega mucho peso, mucho tiempo y muy poca rigidez. Subir de 3 a 6 perímetros agrega poco peso y cambia el comportamiento de la pieza. Si tienes que elegir uno, elige perímetros.</p>
+<h3>Estimar la carga antes de imprimir</h3>
+<p>Antes de definir espesores conviene saber qué torque tendrá que aguantar la articulación. Un cálculo estático rápido para el peor caso (brazo horizontal totalmente extendido):</p>
+<pre><code># Torque estático en la articulación con el brazo extendido
+# Peor caso: brazo horizontal, carga en el extremo
+
+g = 9.81            # m/s^2
+m_carga = 0.5       # kg  masa en la pinza
+m_brazo = 0.35      # kg  masa del eslabon
+L = 0.30            # m   largo del eslabon
+L_cg = L / 2        # m   centro de gravedad del eslabon
+
+T_estatico = g * (m_carga * L + m_brazo * L_cg)
+# = 9.81 * (0.5*0.30 + 0.35*0.15) = 1.99 N*m
+
+# Factor dinamico por aceleracion y frenado
+FS_dinamico = 2.0
+T_diseno = T_estatico * FS_dinamico     # ~4.0 N*m
+
+print(f"Torque estatico: {T_estatico:.2f} N*m")
+print(f"Torque de diseno: {T_diseno:.2f} N*m")
+</code></pre>
+<p>Ese <code>T_diseno</code> es el número que debe aguantar tanto el motor como la unión atornillada de la pieza impresa. Si el <a href="/blog/servos-inteligentes-para-brazos-roboticos">servo elegido</a> entrega justo el torque estático, el brazo temblará y la pieza trabajará al límite en cada arranque.</p>
+</section>
+
+<section id="insertos">
+<h2>Uniones: insertos roscados, tornillos y rodamientos</h2>
+<p>Las piezas impresas casi nunca fallan en el medio: fallan en las uniones. Tres reglas cubren el 90 % de los casos.</p>
+<h3>1. Nunca rosques directamente el plástico</h3>
+<p>Un tornillo métrico roscado en plástico impreso aguanta unos pocos ciclos de apriete antes de barrer la rosca. La solución estándar es el <strong>inserto roscado de latón</strong> instalado con calor: el soldador funde el plástico alrededor del inserto moleteado y, al enfriar, queda anclado mecánicamente.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Diámetros orientativos de agujero para insertos de latón instalados con calor. Verifica siempre la ficha del inserto.</caption>
+<thead><tr><th>Rosca</th><th>Ø agujero impreso</th><th>Profundidad mínima</th><th>Pared mínima alrededor</th></tr></thead>
+<tbody>
+<tr><td>M2</td><td>3,2 mm</td><td>4,0 mm</td><td>1,5 mm</td></tr>
+<tr><td>M3</td><td>4,0 mm</td><td>5,7 mm</td><td>2,0 mm</td></tr>
+<tr><td>M4</td><td>5,6 mm</td><td>8,0 mm</td><td>2,5 mm</td></tr>
+<tr><td>M5</td><td>6,4 mm</td><td>9,5 mm</td><td>3,0 mm</td></tr>
+</tbody>
+</table>
+</div>
+<h3>2. Reparte la presión con arandelas</h3>
+<p>La cabeza de un tornillo M3 apoya sobre unos pocos milímetros cuadrados. Bajo esa presión, el termoplástico <strong>fluye lentamente</strong> y la unión se afloja en semanas. Una arandela ancha (o un rebaje con asiento metálico) reparte la carga y mantiene la precarga. Este es el motivo más común de brazos que "se sueltan solos" al mes de armados.</p>
+<h3>3. Los rodamientos van en asiento controlado</h3>
+<p>Un rodamiento montado a presión en plástico impreso relaja su ajuste con el tiempo y la temperatura. Opciones, de mejor a peor:</p>
+<ul>
+<li><strong>Asiento con hombro y retención axial</strong> (tapa o anillo atornillado): el ajuste no depende de la fricción.</li>
+<li><strong>Casquillo de aluminio insertado</strong> que recibe el rodamiento: la mejor opción para articulaciones cargadas.</li>
+<li><strong>Ajuste con adhesivo retenedor</strong> anaeróbico: aceptable en cargas bajas.</li>
+<li><strong>Interferencia pura contra el plástico</strong>: funciona en el banco, falla en servicio.</li>
+</ul>
+<div class="note"><strong>Prefiere carga en compresión.</strong> Diseña la unión para que el plástico trabaje aplastado entre dos superficies metálicas y el tornillo pasante tome la tracción. El plástico impreso es mucho mejor en compresión que en tracción o arrancamiento.</div>
+</section>
+
+<section id="tolerancias">
+<h2>Tolerancias y ajustes reales</h2>
+<p>La impresora no fabrica lo que dibujaste: fabrica lo que dibujaste más el ancho de extrusión, menos la contracción, más la deformación de las esquinas. En la práctica, una impresora FDM bien calibrada trabaja con una tolerancia realista de <strong>±0,2 mm</strong>, y los agujeros salen sistemáticamente <strong>más pequeños</strong> que el nominal por el efecto del flujo en curvas.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Holguras de partida para ajustes en FDM; calíbralas con una pieza de prueba en tu máquina y material.</caption>
+<thead><tr><th>Tipo de ajuste</th><th>Holgura por lado</th><th>Ejemplo de uso</th></tr></thead>
+<tbody>
+<tr><td>Ajuste a presión (interferencia)</td><td>−0,05 a 0 mm</td><td>Pasador de posicionamiento</td></tr>
+<tr><td>Ajuste deslizante ceñido</td><td>+0,10 mm</td><td>Asiento de rodamiento con retención</td></tr>
+<tr><td>Ajuste libre</td><td>+0,20 a +0,30 mm</td><td>Paso de tornillo, eje giratorio</td></tr>
+<tr><td>Piezas que encajan entre sí</td><td>+0,30 a +0,40 mm</td><td>Carcasa en dos mitades</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para cotas críticas hay una salida que ahorra muchísimo tiempo: <strong>imprime el agujero subdimensionado y termínalo con broca o escariador</strong>. Un agujero de rodamiento pasado por escariador queda redondo, a medida y repetible, cosa que ninguna impresora FDM garantiza por sí sola. Lo mismo aplica a las caras de apoyo planas: una pasada de lija sobre vidrio elimina el "pie de elefante" de la primera capa y mejora el alineamiento del conjunto.</p>
+<p>Considera también la <strong>estabilidad dimensional en el tiempo</strong>: las poliamidas absorben humedad y crecen algunas décimas de milímetro. Si tu brazo tiene que mantener repetibilidad, esa deriva importa, y es una razón para llevar los ejes de precisión a componentes metálicos y dejar el plástico en el rol de estructura.</p>
+</section>
+
+<section id="validacion">
+<h2>Cómo validar la pieza antes de confiar en ella</h2>
+<p>No hace falta un laboratorio para saber si una pieza aguanta. Hace falta método.</p>
+<ol>
+<li><strong>Prueba de carga estática con margen.</strong> Monta el eslabón y cuélgale entre 2 y 3 veces la carga nominal durante 24 horas. Si al descargar no vuelve exactamente a su posición, hay fluencia: cambia de material o engrosa la sección.</li>
+<li><strong>Prueba de rigidez.</strong> Con un comparador apoyado en el extremo, aplica una fuerza conocida y mide la flecha. Anota el valor: es tu referencia para comparar rediseños objetivamente en lugar de "se siente más firme".</li>
+<li><strong>Ciclado térmico real.</strong> Haz funcionar el brazo su ciclo típico durante una hora y mide la temperatura de las piezas junto a los motores con una sonda o cámara térmica. Si un soporte de motor pasa de 60 °C, el PLA y buena parte del PETG quedan descartados.</li>
+<li><strong>Prueba de fatiga abreviada.</strong> Programa unos miles de ciclos del movimiento más exigente y revisa las uniones. Las grietas por fatiga aparecen en concentradores de tensión: esquinas vivas, cambios bruscos de sección, la raíz de un nervio.</li>
+<li><strong>Reapriete a la semana.</strong> Vuelve a verificar el torque de todos los tornillos que atraviesan plástico. Si se aflojaron, falta arandela, falta asiento metálico o sobra presión de contacto.</li>
+</ol>
+<div class="note"><strong>Redondea todo.</strong> El cambio más barato y efectivo en una pieza impresa es poner un radio de 2–3 mm en cada esquina interior. Las esquinas vivas concentran tensión y son donde nace la grieta; un filete cuesta cero gramos y cero pesos.</div>
+<p>Si el brazo lleva <a href="/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos">encoders de articulación</a>, tienes un instrumento gratis: compara la posición comandada con la medida bajo carga. La diferencia es, en buena parte, la deformación elástica de tu estructura impresa.</p>
+</section>
+
+<section id="cuando-no">
+<h2>Cuándo NO imprimir la pieza</h2>
+<p>Un buen diseño mezcla procesos. Estas son las señales claras de que la pieza debe ser metálica:</p>
+<ul>
+<li><strong>Superficies de precisión que definen la repetibilidad</strong>: asientos de reductor, bridas de acoplamiento, ejes. La deriva del plástico se come tu precisión.</li>
+<li><strong>Temperaturas sostenidas sobre 80 °C</strong>, típicas junto a motores muy cargados o fuentes de calor. Revisa la guía de <a href="/blog/sistemas-de-refrigeracion-para-motores-de-brazos-roboticos">refrigeración de motores</a> antes de decidir.</li>
+<li><strong>Cargas mantenidas durante horas</strong>: todo termoplástico fluye; el metal no.</li>
+<li><strong>Funciones relacionadas con la seguridad</strong>: soportes de guarda, anclajes, elementos cuya rotura crea un peligro. Eso pertenece al ámbito de la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">evaluación de riesgo</a>, no al de la optimización de peso.</li>
+<li><strong>Series medianas o grandes</strong>: pasadas unas decenas de unidades, el mecanizado o la fundición ganan en costo y consistencia.</li>
+</ul>
+<p>La combinación que mejor funciona en la práctica es un <strong>híbrido</strong>: cuerpo impreso para la geometría compleja y ligera, más insertos, casquillos, ejes y placas metálicas donde hay precisión y carga concentrada. Si el brazo empieza a crecer, el paso natural es un <a href="/blog/diseno-de-chasis-de-aluminio-para-robots">chasis de aluminio</a> con carcasas impresas.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+
+<div class="faq">
+  <details>
+    <summary>¿Puedo usar PLA para un brazo robótico?</summary>
+    <p>Para prototipos y para aprender, sí. Para un brazo que trabaje de verdad, no: el PLA sufre <strong>fluencia</strong> bajo carga sostenida (se deforma lentamente aunque la carga sea pequeña) y se ablanda cerca de los 55 °C, temperatura que un soporte de motor alcanza sin problema. PETG es el mínimo razonable, y ASA, PC o PA-CF son las opciones correctas para piezas estructurales.</p>
+  </details>
+  <details>
+    <summary>¿Cuánto relleno necesita una pieza estructural?</summary>
+    <p>Entre 30 % y 40 % con patrón giroide o cúbico es suficiente en casi todos los casos. Lo que realmente aporta rigidez son los <strong>perímetros</strong>: pasar de 2 a 5 paredes cambia mucho más el comportamiento de la pieza que subir el relleno a 80 %, y agrega mucho menos peso y tiempo de impresión.</p>
+  </details>
+  <details>
+    <summary>¿Por qué mi pieza se rompió justo por una línea de capa?</summary>
+    <p>Porque la carga estaba aplicada perpendicular a las capas y la unión interlaminar es la dirección débil del FDM. Reorienta la pieza para que las capas queden paralelas al esfuerzo, sube la temperatura de boquilla, reduce la ventilación y usa cámara cerrada. Si la geometría no lo permite, divide la pieza y únela con tornillos.</p>
+  </details>
+  <details>
+    <summary>¿Los insertos de latón son realmente necesarios?</summary>
+    <p>En cualquier unión que se vaya a desarmar o que reciba torque, sí. Una rosca hecha directamente en el plástico impreso se barre en pocos ciclos de apriete. Los insertos instalados con calor cuestan muy poco, se ponen en segundos y convierten una unión frágil en una unión metálica confiable.</p>
+  </details>
+  <details>
+    <summary>¿Vale la pena el filamento con fibra de carbono?</summary>
+    <p>Vale la pena cuando necesitas rigidez y estabilidad dimensional: el PA-CF se deforma mucho menos bajo carga sostenida y con la temperatura. Pero exige boquilla endurecida, secado del filamento y, preferentemente, cámara cerrada. Si no puedes cumplir esas tres condiciones, un ASA o un PC bien impresos rendirán mejor que un PA-CF mal impreso.</p>
+  </details>
+  <details>
+    <summary>¿Qué precisión puedo esperar de una pieza impresa?</summary>
+    <p>Con una máquina FDM bien calibrada, alrededor de <strong>±0,2 mm</strong>, y los agujeros salen sistemáticamente algo más chicos que el nominal. Para cotas críticas (asientos de rodamiento, alineación de ejes) lo práctico es imprimir con menos material y terminar con broca o escariador, o directamente delegar esa función a un componente metálico.</p>
+  </details>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La pieza impresa en 3D es una excelente solución estructural para brazos robóticos ligeros, siempre que se diseñe sabiendo que el material es <strong>anisotrópico y sensible a la temperatura y a la carga sostenida</strong>. Elige un material con margen térmico real, orienta las capas contra la dirección de la carga, invierte en perímetros antes que en relleno, resuelve cada unión con insertos y arandelas, y valida con una prueba de carga y un ciclo térmico antes de darla por buena.</p>
+<p>Y ten claro el límite: cuando aparecen la precisión sostenida, el calor continuo o la seguridad, la respuesta correcta deja de ser el plástico. El mejor brazo casero no es el que imprime todo, es el que sabe <strong>qué imprimir y qué no</strong>.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los valores de temperatura, rigidez y tolerancia son referenciales y varían según el fabricante del filamento, la máquina y los parámetros de impresión: valida siempre con probetas y ensayos en tu propio equipo. Ninguna pieza impresa debe usarse en funciones relacionadas con la seguridad sin una evaluación de riesgo por personal competente. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Continúa con las <a href="/blog/mejores-impresoras-3d-para-piezas-de-brazos-roboticos">mejores impresoras 3D para piezas de brazos robóticos</a> y compara el salto al <a href="/blog/diseno-de-chasis-de-aluminio-para-robots">chasis de aluminio</a> cuando el proyecto crece.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/reduccion-de-ruido-en-la-operacion-de-brazos-roboticos">← Anterior: Reducción de Ruido en Brazos Robóticos</a>
+  <a href="/blog/mejores-impresoras-3d-para-piezas-de-brazos-roboticos">Siguiente: Mejores Impresoras 3D para Piezas de Brazos →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias técnicas y normativas generales sobre materiales poliméricos y ensayos mecánicos. Las propiedades exactas dependen del fabricante del filamento y de los parámetros de impresión utilizados.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/56046.html" target="_blank" rel="noopener noreferrer">ISO 527-2 — Plásticos: determinación de propiedades en tracción</a></li><li><a href="https://www.iso.org/standard/70513.html" target="_blank" rel="noopener noreferrer">ISO 178 — Plásticos: determinación de las propiedades en flexión</a></li><li><a href="https://www.iso.org/standard/74514.html" target="_blank" rel="noopener noreferrer">ISO/ASTM 52900 — Fabricación aditiva: principios generales y terminología</a></li><li><a href="https://www.iso.org/standard/61796.html" target="_blank" rel="noopener noreferrer">ISO 75-2 — Determinación de la temperatura de flexión bajo carga (HDT)</a></li><li><a href="https://www.nist.gov/additive-manufacturing" target="_blank" rel="noopener noreferrer">NIST — Additive Manufacturing Materials and Standards</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

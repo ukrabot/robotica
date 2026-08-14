@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Diseño de Chasis de Aluminio para Robots</title>
+<meta name="description" content="Diseño de chasis de aluminio para robots: perfil extruido vs placa mecanizada, aleaciones 6061 y 6082, por qué la rigidez depende de la geometría y no de la aleación, uniones, tolerancias y anodizado.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/diseno-de-chasis-de-aluminio-para-robots">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Diseño de Chasis de Aluminio para Robots">
+<meta property="og:description" content="Perfil extruido vs placa mecanizada, aleaciones, rigidez, uniones y acabados para el chasis de un robot.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/chasis_aluminio_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/diseno-de-chasis-de-aluminio-para-robots">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Diseño de Chasis de Aluminio para Robots">
+<meta name="twitter:description" content="Perfil extruido vs placa mecanizada, aleaciones, rigidez, uniones y acabados para el chasis de un robot.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/chasis_aluminio_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Diseño de Chasis de Aluminio para Robots",
+  "description": "Guía de diseño de chasis de aluminio para robots: comparación entre perfil extruido y placa mecanizada, selección de aleaciones (6061-T6, 6082-T6, 5052 y 7075) y por qué el módulo elástico es prácticamente el mismo en todas, el papel del momento de inercia y la geometría en la rigidez estructural, el diseño de uniones con tuercas en T, escuadras y pasadores, la triangulación frente a la flexión y la torsión, las tolerancias de mecanizado, los acabados como el anodizado y una lista de errores frecuentes en chasis de robots.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/diseno-de-chasis-de-aluminio-para-robots"
+  },
+  "image": "https://www.ukrabot.cl/blog/chasis_aluminio_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Perfil de aluminio extruido o placa de aluminio, tornillería métrica de clase 8.8 o superior, tuercas en T o postizas, escuadras de refuerzo y herramienta de corte y taladrado",
+  "wordCount": "2600",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Diseño de Chasis de Aluminio para Robots",
+      "item": "https://www.ukrabot.cl/blog/diseno-de-chasis-de-aluminio-para-robots"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué aleación de aluminio uso para el chasis de mi robot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "6061-T6, o su equivalente europeo 6082-T6, para el 90 % de los casos: buen precio, disponibilidad, mecanizado limpio y anodizado sin problemas. El 7075 solo se justifica en piezas muy cargadas donde necesitas máxima resistencia con mínimo peso, y el 5052 cuando vas a plegar chapa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El aluminio 7075 hará mi robot más rígido que el 6061?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Prácticamente no. Todas las aleaciones de aluminio tienen un módulo elástico cercano a 69–72 GPa, así que la deformación bajo carga es casi idéntica. El 7075 es mucho más resistente (soporta más tensión antes de deformarse permanentemente), pero si tu problema es que el brazo se flecta, la solución es geométrica: más altura de sección, sección cerrada o triangulación."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Perfil extruido o placa mecanizada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ambos, en su lugar. Perfil extruido para bastidores, bases y todo lo que quieras poder reposicionar; placa mecanizada para las interfaces de precisión como bridas de motor, asientos de reductor y uniones entre eslabones. El perfil aporta flexibilidad y bajo costo; la placa aporta precisión y rigidez."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué se aflojan los tornillos de mi estructura?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Por vibración combinada con precarga insuficiente o fluencia del material bajo la cabeza del tornillo. Verifica que el torque sea el correcto, que la rosca en aluminio tenga al menos dos diámetros de profundidad, usa fijador de roscas de resistencia media en las uniones permanentes y arandelas de bloqueo dentadas donde corresponda. Y programa la revisión de torque en el mantenimiento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito anodizar el chasis?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No es obligatorio, pero es barato y aporta protección contra corrosión, mejor apariencia y una superficie más dura. Ten en cuenta dos efectos: el anodizado crece hacia afuera y puede cerrar agujeros ajustados, y es aislante eléctrico, así que debes prever puntos de contacto para la continuidad de tierra."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo mezclar aluminio con piezas impresas en 3D?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, y es la combinación más eficiente para robots pequeños: chasis y interfaces de precisión en aluminio, carcasas y geometrías complejas impresas. Solo cuida que las piezas impresas no queden en el camino principal de carga ni sosteniendo por sí solas la precisión del conjunto."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="chasis_aluminio_hero.jpg" alt="Chasis de robot construido con perfiles de aluminio extruido anodizado negro y placas de aluminio mecanizadas, con escuadras y tuercas en T visibles, sobre un banco de trabajo junto a un calibre y llaves Allen" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Diseño Mecánico y Materiales · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Diseño de Chasis de Aluminio para Robots</h1>
+    <p>Perfil extruido o placa mecanizada, qué aleación elegir y por qué la rigidez de tu robot depende de la geometría mucho más que del material.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#por-que-aluminio">Por qué aluminio</a></li><li><a href="#extruido-vs-placa">Perfil extruido vs placa</a></li><li><a href="#aleaciones">Aleaciones: cuál elegir</a></li><li><a href="#rigidez">Rigidez: dónde poner el material</a></li><li><a href="#uniones">Uniones que no se aflojan</a></li><li><a href="#fabricacion">Fabricación y acabados</a></li><li><a href="#errores">Errores frecuentes</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que-aluminio">
+<h2>Por qué aluminio y no otra cosa</h2>
+<p>El aluminio domina la estructura de robots por una combinación difícil de igualar: buena relación rigidez/peso, precio razonable, mecanizado fácil, disponibilidad local y la posibilidad de conducir calor fuera de los motores usando la propia estructura.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación general de materiales estructurales. Valores típicos de referencia.</caption>
+<thead><tr><th>Material</th><th>Densidad</th><th>Módulo elástico E</th><th>Rigidez específica</th><th>Nota práctica</th></tr></thead>
+<tbody>
+<tr><td>Aluminio 6061-T6</td><td>2,70 g/cm³</td><td>≈ 69 GPa</td><td>Alta</td><td>El estándar del sector</td></tr>
+<tr><td>Acero al carbono</td><td>7,85 g/cm³</td><td>≈ 200 GPa</td><td>Similar al aluminio</td><td>Rígido pero pesado; se oxida</td></tr>
+<tr><td>Fibra de carbono (laminado)</td><td>≈ 1,6 g/cm³</td><td>70–200 GPa según fibra</td><td>Muy alta</td><td>Caro y difícil de unir</td></tr>
+<tr><td>PA-CF impreso</td><td>≈ 1,2 g/cm³</td><td>3–8 GPa</td><td>Baja</td><td>Diez veces menos rígido que el aluminio</td></tr>
+</tbody>
+</table>
+</div>
+<p>Fíjate en un detalle que sorprende: la <strong>rigidez específica</strong> (E dividido por densidad) del aluminio y del acero es casi la misma. El acero es tres veces más rígido pero también tres veces más pesado. Por eso, a igualdad de peso, un perfil de aluminio con sección más grande es más rígido que uno de acero con sección pequeña. El aluminio gana porque te deja usar <strong>más volumen</strong> por el mismo peso, y en flexión el volumen bien colocado es todo.</p>
+</section>
+
+<section id="extruido-vs-placa">
+<h2>Perfil extruido vs. placa mecanizada</h2>
+<p>Es la primera bifurcación del diseño y condiciona todo lo demás.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Perfil extruido con ranura en T frente a placa mecanizada.</caption>
+<thead><tr><th>Criterio</th><th>Perfil extruido (ranura en T)</th><th>Placa mecanizada</th></tr></thead>
+<tbody>
+<tr><td>Costo inicial</td><td>Bajo; se compra por metro</td><td>Medio a alto según mecanizado</td></tr>
+<tr><td>Herramienta necesaria</td><td>Sierra, escuadra, llaves Allen</td><td>Fresadora CNC o servicio de corte</td></tr>
+<tr><td>Modificable</td><td>Excelente: se reposiciona todo</td><td>Rígido: cambiar implica refabricar</td></tr>
+<tr><td>Rigidez por kg</td><td>Buena, pero limitada por las uniones</td><td>Muy buena si el diseño es cerrado</td></tr>
+<tr><td>Precisión de alineación</td><td>Depende del corte a escuadra</td><td>Alta y repetible</td></tr>
+<tr><td>Estética y limpieza</td><td>Industrial; las ranuras juntan polvo</td><td>Compacta y limpia</td></tr>
+<tr><td>Ideal para</td><td>Bancos, celdas, prototipos, ejes lineales</td><td>Eslabones, bridas, bases de reductor</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>La combinación que funciona:</strong> perfil extruido para el bastidor, la base y todo lo que quieras poder mover después; placa mecanizada para las interfaces de precisión —bridas de motor, asientos de reductor, uniones entre eslabones—. Nadie construye un buen robot con un solo formato.</div>
+<h3>Elegir el tamaño de perfil</h3>
+<p>Los perfiles se nombran por su sección: 20×20, 30×30, 40×40, 45×45 mm, entre otros. La tentación es elegir por peso; el criterio correcto es la <strong>flecha admisible</strong> en la longitud que necesitas. Recuerda que la rigidez a flexión de una viga depende de <code>E·I / L³</code>: duplicar el largo divide la rigidez por ocho.</p>
+<ul>
+<li><strong>20×20:</strong> estructuras pequeñas, soportes de sensores, tramos menores a 300 mm.</li>
+<li><strong>30×30:</strong> bastidores de robots móviles y celdas pequeñas, tramos hasta 600 mm.</li>
+<li><strong>40×40:</strong> bancos de trabajo, pórticos, tramos de 600 a 1.200 mm.</li>
+<li><strong>45×45 y mayores:</strong> estructuras de máquina y celdas robóticas completas.</li>
+</ul>
+</section>
+
+<section id="aleaciones">
+<h2>Aleaciones: cuál elegir (y el mito de la rigidez)</h2>
+<p>Hay una confusión muy extendida que conviene despejar de entrada: <strong>cambiar de aleación de aluminio no hace tu robot más rígido</strong>. El módulo elástico de prácticamente todas las aleaciones de aluminio ronda los 68–72 GPa. El 7075, que cuesta varias veces más que el 6061, es apenas más rígido. Lo que cambia con la aleación es la <strong>resistencia</strong> (a qué tensión se deforma permanentemente o se rompe), no la deformación elástica bajo carga.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Aleaciones habituales en estructura de robots. Valores típicos de referencia.</caption>
+<thead><tr><th>Aleación</th><th>Límite elástico aprox.</th><th>Módulo E</th><th>Mecanizado</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td>6061-T6</td><td>≈ 275 MPa</td><td>69 GPa</td><td>Excelente</td><td>Uso general: placas, bridas, eslabones</td></tr>
+<tr><td>6082-T6</td><td>≈ 260 MPa</td><td>70 GPa</td><td>Muy bueno</td><td>Equivalente europeo del 6061</td></tr>
+<tr><td>6063-T5</td><td>≈ 145 MPa</td><td>69 GPa</td><td>Bueno</td><td>Perfil extruido estructural</td></tr>
+<tr><td>5052-H32</td><td>≈ 195 MPa</td><td>70 GPa</td><td>Se dobla muy bien</td><td>Chapa plegada, carcasas, resistencia marina</td></tr>
+<tr><td>7075-T6</td><td>≈ 500 MPa</td><td>72 GPa</td><td>Bueno, más caro</td><td>Piezas muy cargadas y ligeras</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>Si tu robot vibra o se flecta, no compres 7075.</strong> Vas a pagar mucho más por un 4 % de mejora. La solución a la falta de rigidez es <strong>geométrica</strong>: sección más alta, pared más gruesa, triangulación o cerrar la estructura en cajón. La aleación solo importa cuando la pieza está cerca de su límite de resistencia o cuando necesitas quitar material hasta el extremo.</div>
+<p>Para el 90 % de los robots, <strong>6061-T6</strong> (o el 6082-T6 según disponibilidad local) es la respuesta correcta: barato, disponible, se mecaniza limpio y se anodiza bien.</p>
+</section>
+
+<section id="rigidez">
+<h2>Rigidez: dónde poner el material</h2>
+<p>La flecha de una viga en voladizo con carga en el extremo se calcula así:</p>
+<pre><code># Flecha de un eslabon en voladizo (aluminio)
+# delta = F * L^3 / (3 * E * I)
+
+E = 69e9          # Pa, modulo elastico del aluminio
+
+# Seccion rectangular hueca (tubo) b x h, pared t
+b, h, t = 0.040, 0.040, 0.003     # m
+I_hueco = (b*h**3 - (b-2*t)*(h-2*t)**3) / 12
+
+# Seccion maciza equivalente en peso: barra de 40 x 12 mm
+b2, h2 = 0.040, 0.012
+I_macizo = b2 * h2**3 / 12
+
+F, L = 50.0, 0.35                  # N y m
+
+d_hueco  = F * L**3 / (3 * E * I_hueco)
+d_macizo = F * L**3 / (3 * E * I_macizo)
+
+print(f"Tubo 40x40x3:      {d_hueco*1000:.2f} mm")
+print(f"Barra 40x12:       {d_macizo*1000:.2f} mm")
+# Tubo 40x40x3:      0.10 mm
+# Barra 40x12:       1.06 mm   -> 10 veces peor con peso similar
+</code></pre>
+<p>Mismo material, peso parecido, <strong>diez veces más flecha</strong>. Ese es el mensaje central del diseño estructural: el momento de inercia <code>I</code> crece con el cubo de la altura de la sección, así que alejar el material del eje neutro es infinitamente más eficaz que agregar material al centro.</p>
+<h3>Tres reglas prácticas</h3>
+<ol>
+<li><strong>Prefiere secciones cerradas.</strong> Un tubo cuadrado es órdenes de magnitud más rígido a torsión que un perfil en C abierto de igual peso. En un brazo, la torsión suele ser el modo que más arruina la precisión.</li>
+<li><strong>Triangula.</strong> Un rectángulo articulado se deforma en paralelogramo; con una diagonal, no. Una escuadra diagonal barata puede duplicar la rigidez de un bastidor.</li>
+<li><strong>Acorta los voladizos.</strong> La flecha va con <code>L³</code>. Reducir un voladizo de 400 a 300 mm baja la flecha al 42 %, sin gastar un peso.</li>
+</ol>
+<div class="note"><strong>La rigidez real la fijan las uniones.</strong> Puedes tener perfiles perfectos y un chasis blando si las esquinas ceden. En estructuras de perfil extruido, la unión suele ser el eslabón más flexible del conjunto.</div>
+</section>
+
+<section id="uniones">
+<h2>Uniones que no se aflojan</h2>
+<h3>Perfil extruido: más allá de la tuerca en T</h3>
+<p>La unión típica —tornillo en el extremo del perfil contra una tuerca en T del perfil vecino— es cómoda y modular, pero es la <strong>menos rígida</strong> de todas: la carga se transmite por la fricción de una sola tuerca dentro de la ranura. Mejórala así:</p>
+<ul>
+<li><strong>Escuadras de refuerzo</strong> con dos tornillos por lado en lugar de uno: multiplica la resistencia al giro de la esquina.</li>
+<li><strong>Placas de unión (gussets)</strong> atornilladas sobre la cara del perfil, que reparten el momento en un área grande.</li>
+<li><strong>Tuercas en T de resorte o de martillo de buena calidad</strong>: las económicas se giran dentro de la ranura y pierden precarga.</li>
+<li><strong>Pasadores de posicionamiento</strong> en las interfaces críticas: el tornillo aprieta, el pasador ubica. Nunca confíes la posición al tornillo.</li>
+</ul>
+<h3>Placa mecanizada</h3>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Guía rápida de tornillería en aluminio. El torque real depende de la lubricación y del tipo de rosca; verifica con el proveedor.</caption>
+<thead><tr><th>Rosca</th><th>Torque orientativo (clase 8.8, seco)</th><th>Profundidad de rosca en aluminio</th><th>Ø agujero de paso</th></tr></thead>
+<tbody>
+<tr><td>M3</td><td>1,2 N·m</td><td>≥ 2×D = 6 mm</td><td>3,4 mm</td></tr>
+<tr><td>M4</td><td>2,9 N·m</td><td>≥ 8 mm</td><td>4,5 mm</td></tr>
+<tr><td>M5</td><td>5,7 N·m</td><td>≥ 10 mm</td><td>5,5 mm</td></tr>
+<tr><td>M6</td><td>9,8 N·m</td><td>≥ 12 mm</td><td>6,6 mm</td></tr>
+<tr><td>M8</td><td>23,7 N·m</td><td>≥ 16 mm</td><td>9,0 mm</td></tr>
+</tbody>
+</table>
+</div>
+<p>En aluminio, la rosca necesita <strong>al menos dos veces el diámetro</strong> de profundidad, porque el material es más blando que el tornillo. Si la placa es delgada, usa un inserto de acero tipo helicoidal: convierte una rosca frágil en una rosca reutilizable.</p>
+<div class="warning"><strong>Vibración y aflojamiento.</strong> Un robot es una máquina que vibra miles de ciclos al día. Usa fijador de roscas de resistencia media en las uniones que no desarmas seguido, arandelas de bloqueo dentadas donde corresponda, y programa una <strong>revisión de torque</strong> en el plan de mantenimiento. Las arandelas planas de presión clásicas son las menos efectivas de todas las opciones.</div>
+</section>
+
+<section id="fabricacion">
+<h2>Fabricación, tolerancias y acabados</h2>
+<h3>Tolerancias que puedes pedir</h3>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Tolerancias orientativas por proceso. Confirma siempre con tu taller.</caption>
+<thead><tr><th>Proceso</th><th>Tolerancia típica</th><th>Costo relativo</th><th>Adecuado para</th></tr></thead>
+<tbody>
+<tr><td>Corte con sierra</td><td>±0,5 mm</td><td>Muy bajo</td><td>Largos de perfil no críticos</td></tr>
+<tr><td>Corte láser en chapa</td><td>±0,15 mm</td><td>Bajo</td><td>Placas planas y escuadras</td></tr>
+<tr><td>Corte por chorro de agua</td><td>±0,2 mm</td><td>Medio</td><td>Placas gruesas sin zona afectada por calor</td></tr>
+<tr><td>Fresado CNC 3 ejes</td><td>±0,05 mm</td><td>Medio-alto</td><td>Bridas, asientos, interfaces</td></tr>
+<tr><td>Rectificado</td><td>±0,01 mm</td><td>Alto</td><td>Superficies de referencia</td></tr>
+</tbody>
+</table>
+</div>
+<p>Regla de oro para bajar el costo de mecanizado: <strong>ajusta solo lo que debe estar ajustado</strong>. Un plano lleno de tolerancias estrechas encarece la pieza sin mejorar el robot. Define dos o tres superficies de referencia, ajústalas bien y deja el resto en tolerancia general.</p>
+<h3>Anodizado y otros acabados</h3>
+<ul>
+<li><strong>Anodizado tipo II (decorativo/protector):</strong> capa de 5–25 µm, colores, buena protección frente a corrosión. El estándar para chasis de robots.</li>
+<li><strong>Anodizado tipo III (duro):</strong> 25–100 µm, muy resistente al desgaste, ideal para superficies de deslizamiento.</li>
+<li><strong>Efecto dimensional:</strong> el anodizado <em>crece</em> hacia afuera aproximadamente la mitad de su espesor. En agujeros ajustados y roscas hay que enmascarar o compensar en el plano.</li>
+<li><strong>Aislamiento eléctrico:</strong> el anodizado no conduce. Si necesitas continuidad de tierra —y en un robot con motores la necesitas— deja puntos sin anodizar o usa arandelas dentadas que muerdan la capa. Es una fuente clásica de problemas de ruido eléctrico.</li>
+</ul>
+<div class="warning"><strong>Corrosión galvánica:</strong> aluminio en contacto directo con acero inoxidable o con fibra de carbono, más humedad, forma un par galvánico y el aluminio se corroe. Usa arandelas aislantes, pintura de interfaz o adhesivo estructural en esas uniones, sobre todo en ambientes húmedos o salinos.</div>
+</section>
+
+<section id="errores">
+<h2>Errores frecuentes en chasis de robots</h2>
+<ol>
+<li><strong>Elegir la aleación para ganar rigidez.</strong> No funciona: todas las aleaciones de aluminio tienen prácticamente el mismo módulo. Cambia la geometría.</li>
+<li><strong>Estructuras abiertas sometidas a torsión.</strong> Un perfil en C o un bastidor sin diagonal se retuerce; ciérralo o triangúlalo.</li>
+<li><strong>Confiar la alineación al tornillo.</strong> El agujero de paso tiene holgura. Sin pasadores o topes mecanizados, el conjunto se arma distinto cada vez y pierdes repetibilidad.</li>
+<li><strong>Roscas cortas en aluminio.</strong> Menos de dos diámetros de profundidad y la rosca se barre al segundo apriete.</li>
+<li><strong>Ignorar la trayectoria del calor.</strong> Un motor atornillado a una placa gruesa de aluminio se refrigera solo; el mismo motor sobre un soporte plástico se cocina. Aprovéchalo, como se explica en la guía de <a href="/blog/sistemas-de-refrigeracion-para-motores-de-brazos-roboticos">refrigeración de motores</a>.</li>
+<li><strong>Olvidar el paso de cables.</strong> Diseñar el chasis y después preguntarse por dónde pasan los cables termina en soluciones improvisadas. Revisa la <a href="/blog/gestion-de-cables-para-brazos-roboticos">gestión de cables</a> desde el primer boceto.</li>
+<li><strong>Anodizar todo y perder la tierra eléctrica.</strong> Sin continuidad de masa aparecen problemas de ruido en encoders y sensores.</li>
+<li><strong>No dejar acceso al mantenimiento.</strong> Si para cambiar un rodamiento hay que desarmar medio robot, ese rodamiento no se va a cambiar.</li>
+</ol>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+
+<div class="faq">
+  <details>
+    <summary>¿Qué aleación de aluminio uso para el chasis de mi robot?</summary>
+    <p>6061-T6, o su equivalente europeo 6082-T6, para el 90 % de los casos: buen precio, disponibilidad, mecanizado limpio y anodizado sin problemas. El 7075 solo se justifica en piezas muy cargadas donde necesitas máxima resistencia con mínimo peso, y el 5052 cuando vas a plegar chapa.</p>
+  </details>
+  <details>
+    <summary>¿El aluminio 7075 hará mi robot más rígido que el 6061?</summary>
+    <p>Prácticamente no. Todas las aleaciones de aluminio tienen un módulo elástico cercano a 69–72 GPa, así que la deformación bajo carga es casi idéntica. El 7075 es mucho más <strong>resistente</strong> (soporta más tensión antes de deformarse permanentemente), pero si tu problema es que el brazo se flecta, la solución es geométrica: más altura de sección, sección cerrada o triangulación.</p>
+  </details>
+  <details>
+    <summary>¿Perfil extruido o placa mecanizada?</summary>
+    <p>Ambos, en su lugar. Perfil extruido para bastidores, bases y todo lo que quieras poder reposicionar; placa mecanizada para las interfaces de precisión como bridas de motor, asientos de reductor y uniones entre eslabones. El perfil aporta flexibilidad y bajo costo; la placa aporta precisión y rigidez.</p>
+  </details>
+  <details>
+    <summary>¿Por qué se aflojan los tornillos de mi estructura?</summary>
+    <p>Por vibración combinada con precarga insuficiente o fluencia del material bajo la cabeza del tornillo. Verifica que el torque sea el correcto, que la rosca en aluminio tenga al menos dos diámetros de profundidad, usa fijador de roscas de resistencia media en las uniones permanentes y arandelas de bloqueo dentadas donde corresponda. Y programa la revisión de torque en el mantenimiento.</p>
+  </details>
+  <details>
+    <summary>¿Necesito anodizar el chasis?</summary>
+    <p>No es obligatorio, pero es barato y aporta protección contra corrosión, mejor apariencia y una superficie más dura. Ten en cuenta dos efectos: el anodizado crece hacia afuera y puede cerrar agujeros ajustados, y es aislante eléctrico, así que debes prever puntos de contacto para la continuidad de tierra.</p>
+  </details>
+  <details>
+    <summary>¿Puedo mezclar aluminio con piezas impresas en 3D?</summary>
+    <p>Sí, y es la combinación más eficiente para robots pequeños: chasis y interfaces de precisión en aluminio, carcasas y geometrías complejas impresas. Solo cuida que las piezas impresas no queden en el camino principal de carga ni sosteniendo por sí solas la precisión del conjunto.</p>
+  </details>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Un buen chasis de aluminio no se define por la aleación sino por la <strong>geometría y las uniones</strong>. Elige 6061-T6 salvo que tengas una razón concreta para otra cosa, prioriza secciones cerradas y triangulación, acorta los voladizos y trata cada unión como un componente de diseño: pasador para ubicar, tornillo para apretar, escuadra para tomar el momento.</p>
+<p>La mezcla que mejor resultado da en la práctica es perfil extruido para el bastidor, placa mecanizada para las interfaces de precisión y piezas impresas para carcasas y geometría complementaria. Y no dejes para el final ni el paso de cables ni la disipación de calor: los dos definen el chasis tanto como la carga mecánica.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los valores de propiedades mecánicas, torque y tolerancia son referenciales y varían según proveedor, tratamiento térmico, lubricación y proceso de fabricación: verifica siempre con el certificado del material y con tu taller. Los cálculos presentados son estimaciones estáticas simplificadas y no sustituyen un análisis estructural formal ni la verificación por personal competente. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si buscas aún más rigidez por unidad de peso, compara con las <a href="/blog/piezas-de-fibra-de-carbono-para-brazos-roboticos">piezas de fibra de carbono</a>, y planifica desde ya la <a href="/blog/gestion-de-cables-para-brazos-roboticos">gestión de cables</a> dentro del chasis.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/mejores-impresoras-3d-para-piezas-de-brazos-roboticos">← Anterior: Mejores Impresoras 3D para Piezas de Brazos</a>
+  <a href="/blog/piezas-de-fibra-de-carbono-para-brazos-roboticos">Siguiente: Piezas de Fibra de Carbono para Brazos Robóticos →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas y técnicas generales sobre aluminio estructural, tolerancias y recubrimientos. Las propiedades exactas dependen de la aleación, el temple y el proveedor.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/56646.html" target="_blank" rel="noopener noreferrer">ISO 6361 — Chapa, banda y placa de aluminio y aleaciones de aluminio</a></li><li><a href="https://www.iso.org/standard/7748.html" target="_blank" rel="noopener noreferrer">ISO 2768 — Tolerancias generales para dimensiones sin indicación individual</a></li><li><a href="https://www.iso.org/standard/72525.html" target="_blank" rel="noopener noreferrer">ISO 7599 — Anodizado del aluminio: especificaciones generales</a></li><li><a href="https://www.iso.org/standard/60610.html" target="_blank" rel="noopener noreferrer">ISO 898-1 — Características mecánicas de elementos de fijación de acero</a></li><li><a href="https://www.aluminum.org/standards" target="_blank" rel="noopener noreferrer">The Aluminum Association — Estándares y datos de aleaciones</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Transmisión por Correa vs. por Engranajes en Articulaciones Robóticas</title>
+<meta name="description" content="Correa dentada o engranajes en articulaciones robóticas: comparativa de backlash, rigidez torsional, eficiencia, ruido, mantenimiento y costo, con criterios claros de selección por eje.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transmisión por Correa vs. por Engranajes en Articulaciones Robóticas">
+<meta property="og:description" content="Backlash, rigidez, eficiencia, ruido y costo: cómo elegir entre correa dentada y engranajes en cada articulación.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/correa_vs_engranajes_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Transmisión por Correa vs. por Engranajes en Articulaciones Robóticas">
+<meta name="twitter:description" content="Backlash, rigidez, eficiencia, ruido y costo: cómo elegir entre correa dentada y engranajes en cada articulación.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/correa_vs_engranajes_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Transmisión por Correa vs. por Engranajes en Articulaciones Robóticas",
+  "description": "Comparativa técnica entre transmisión por correa dentada y por engranajes en articulaciones robóticas: cómo funciona cada una, el análisis del juego angular o backlash y su efecto sobre la repetibilidad, la rigidez torsional y las frecuencias propias, la eficiencia y la reversibilidad, el ruido y las vibraciones, el mantenimiento y la vida útil, el efecto de reubicar el motor para reducir la inercia del brazo, una matriz de decisión por tipo de eje y las configuraciones híbridas más habituales en brazos robóticos reales.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas"
+  },
+  "image": "https://www.ukrabot.cl/blog/correa_vs_engranajes_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Correa dentada y poleas (GT2, GT3, HTD o AT) o tren de engranajes, tensor, rodamientos de apoyo y herramienta de medición de tensión de correa",
+  "wordCount": "2600",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Transmisión por Correa vs. por Engranajes en Articulaciones Robóticas",
+      "item": "https://www.ukrabot.cl/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿La correa dentada tiene backlash?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No tiene juego mecánico real como un engranaje, pero sí elasticidad: bajo par se estira y la salida se retrasa, recuperando al soltar. Es un error proporcional y repetible, distinto del salto muerto del backlash, y por eso resulta más manejable para un sistema con realimentación. Eso sí: una correa floja o gastada empieza a comportarse como si tuviera juego."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es más preciso, correa o engranajes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los reductores de engranajes de precisión (planetarios de calidad, cicloidales, harmonic drive) son más precisos y rígidos. Una correa bien tensada y con distancia entre centros corta puede ser muy precisa para brazos ligeros, pero se deforma bajo par y esa deformación crece con la carga. Para la base y el hombro se prefieren engranajes; para muñecas ligeras, la correa suele bastar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi correa salta dientes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Casi siempre por falta de tensión, pero también por poleas de pocos dientes, arco de contacto insuficiente, par por encima de lo previsto o desalineación. Verifica la tensión con un medidor de frecuencia en lugar de a ojo, revisa que las poleas estén alineadas y considera aumentar el ancho de correa o el diámetro de las poleas antes de subir la tensión al límite."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo mover mi brazo a mano si tiene reductores?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de la reversibilidad. Con correa, engranajes rectos o planetarios de pocas etapas sí puedes, y por eso mismo el brazo cae por gravedad si se corta la energía: necesitas freno. Con sinfín-corona o reducciones muy altas, el brazo se queda donde está, pero pierdes el guiado manual y el control de fuerza."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuál hace menos ruido?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La correa dentada, con diferencia. El elastómero amortigua en lugar de transmitir, y no hay impacto metal contra metal en cada diente. Si el robot trabaja en un aula, una oficina o un laboratorio compartido, es un factor muy relevante; puedes profundizar en la guía de reducción de ruido en la operación de brazos robóticos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cada cuánto debo cambiar la correa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No hay un número universal: depende del par, la velocidad, el diámetro de las poleas y la temperatura. Lo correcto es inspeccionar cada seis meses buscando dientes redondeados, grietas en la base del diente y polvo negro alrededor, y reemplazar cuando aparezcan esas señales o cuando la tensión ya no se mantenga entre revisiones."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="correa_vs_engranajes_hero.jpg" alt="Composición técnica que muestra a la izquierda una correa dentada GT2 con poleas de aluminio y tensor, y a la derecha un juego de engranajes rectos de acero engranando, ambos montados en un banco de pruebas de articulación robótica" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Diseño Mecánico y Materiales · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Transmisión por Correa vs. por Engranajes en Articulaciones Robóticas</h1>
+    <p>Backlash, rigidez torsional, eficiencia y ruido: los cuatro parámetros que deciden qué transmisión va en cada eje de tu brazo.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#como-funcionan">Cómo funciona cada una</a></li><li><a href="#backlash">Backlash y repetibilidad</a></li><li><a href="#rigidez">Rigidez torsional y dinámica</a></li><li><a href="#eficiencia">Eficiencia y reversibilidad</a></li><li><a href="#inercia">Reubicar el motor</a></li><li><a href="#decision">Matriz de decisión por eje</a></li><li><a href="#mantenimiento">Mantenimiento y vida útil</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="como-funcionan">
+<h2>Cómo funciona cada transmisión</h2>
+<p>Ambas resuelven el mismo problema: llevar el par del motor a la articulación con la reducción adecuada. Lo hacen de formas mecánicamente muy distintas.</p>
+<h3>Correa dentada síncrona</h3>
+<p>Una correa con dientes moldeados engrana en dos poleas, transmitiendo movimiento <strong>sin deslizamiento</strong>. El elemento flexible es un elastómero reforzado con cables de fibra de vidrio, kevlar o acero, que son los que realmente toman la tracción.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Perfiles de correa dentada habituales en robótica.</caption>
+<thead><tr><th>Perfil</th><th>Paso</th><th>Forma del diente</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td>GT2</td><td>2 mm</td><td>Curvo</td><td>Impresoras 3D, ejes ligeros, bajo backlash</td></tr>
+<tr><td>GT3 / GT5</td><td>3 y 5 mm</td><td>Curvo optimizado</td><td>Mayor par, mejor distribución de carga</td></tr>
+<tr><td>HTD 3M / 5M</td><td>3 y 5 mm</td><td>Curvo profundo</td><td>Par elevado; algo más de juego</td></tr>
+<tr><td>AT5 / AT10</td><td>5 y 10 mm</td><td>Trapezoidal ancho</td><td>Alta rigidez y posicionamiento industrial</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Engranajes</h3>
+<p>Dientes rígidos que engranan directamente. La familia es amplia y cada tipo tiene un perfil de comportamiento distinto:</p>
+<ul>
+<li><strong>Rectos (spur):</strong> simples y económicos; ruidosos y con carga pulsante al entrar cada diente.</li>
+<li><strong>Helicoidales:</strong> el diente entra progresivamente, lo que reduce mucho el ruido; generan empuje axial que los rodamientos deben absorber.</li>
+<li><strong>Planetarios:</strong> varios satélites reparten la carga; muy compactos y coaxiales, son el reductor estándar de servomotores.</li>
+<li><strong>Sinfín-corona:</strong> reducción muy alta en poco espacio y normalmente <strong>no reversible</strong>; eficiencia baja.</li>
+<li><strong>Cicloidales y de onda armónica:</strong> reducción altísima con juego muy bajo; ver la guía específica de <a href="/blog/reductores-harmonic-drive-para-articulaciones-roboticas">reductores harmonic drive</a>.</li>
+</ul>
+</section>
+
+<section id="backlash">
+<h2>Backlash: el parámetro que define la precisión</h2>
+<p>El <strong>backlash</strong> o juego angular es el ángulo que puedes girar la salida sin que la entrada se mueva. Es la razón principal por la que un brazo llega a una posición distinta según venga desde la izquierda o desde la derecha.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Juego angular típico por tipo de transmisión. Valores de referencia; dependen del fabricante, la calidad y el desgaste.</caption>
+<thead><tr><th>Transmisión</th><th>Backlash típico</th><th>¿Se puede ajustar?</th><th>Evolución con el uso</th></tr></thead>
+<tbody>
+<tr><td>Correa dentada tensada</td><td>Muy bajo (elástico, no juego real)</td><td>Sí, con el tensor</td><td>Aumenta al alargarse la correa</td></tr>
+<tr><td>Engranajes rectos estándar</td><td>0,5° a 1,5°</td><td>Difícil</td><td>Aumenta con el desgaste</td></tr>
+<tr><td>Planetario económico</td><td>0,5° a 2°</td><td>No</td><td>Aumenta notoriamente</td></tr>
+<tr><td>Planetario de precisión</td><td>3' a 15' (0,05°–0,25°)</td><td>No</td><td>Estable</td></tr>
+<tr><td>Sinfín-corona</td><td>0,5° a 2°</td><td>Con ajuste de centros</td><td>Aumenta con el desgaste</td></tr>
+<tr><td>Harmonic drive</td><td>Prácticamente nulo</td><td>No aplica</td><td>Muy estable</td></tr>
+<tr><td>Cicloidal</td><td>Menos de 1'</td><td>No</td><td>Muy estable</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Un matiz importante:</strong> una correa tensada no tiene juego mecánico verdadero, tiene <strong>elasticidad</strong>. Bajo par, se estira y la salida se retrasa; al soltar, vuelve. Eso es error de deflexión, no backlash, y se comporta distinto: es repetible y proporcional a la carga, mientras que el backlash es un salto muerto impredecible. Para un sistema con realimentación, la elasticidad es mucho más manejable.</div>
+<p>Puedes cuantificar el efecto en el extremo del brazo así:</p>
+<pre><code># Cuanto se traduce el backlash en error de posicion
+import math
+
+backlash_grados = 0.5      # juego angular de la transmision
+largo_brazo     = 0.40     # m desde la articulacion al efector
+
+error = math.radians(backlash_grados) * largo_brazo
+print(f"Error en el efector: {error*1000:.2f} mm")
+# Error en el efector: 3.49 mm
+
+# Con un planetario de precision de 5 arcominutos:
+bl_precision = 5/60        # grados
+error2 = math.radians(bl_precision) * largo_brazo
+print(f"Con planetario de precision: {error2*1000:.2f} mm")
+# Con planetario de precision: 0.58 mm
+</code></pre>
+<p>Medio grado de juego se convierte en 3,5 mm de error en la punta. Por eso el backlash de las articulaciones de la base y del hombro —las que tienen más brazo de palanca por delante— es mucho más crítico que el de la muñeca.</p>
+</section>
+
+<section id="rigidez">
+<h2>Rigidez torsional y comportamiento dinámico</h2>
+<p>La rigidez torsional determina cuánto se deforma la transmisión bajo par y, sobre todo, dónde quedan las <strong>frecuencias propias</strong> del conjunto. Una transmisión blanda limita las ganancias que puedes usar en el control: si subes la ganancia, el sistema oscila.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comportamiento dinámico comparado.</caption>
+<thead><tr><th>Aspecto</th><th>Correa dentada</th><th>Engranajes</th></tr></thead>
+<tbody>
+<tr><td>Rigidez torsional</td><td>Media; depende de tensión, ancho y distancia entre centros</td><td>Alta</td></tr>
+<tr><td>Amortiguación</td><td>Buena: el elastómero absorbe picos</td><td>Baja: transmite todo</td></tr>
+<tr><td>Tolerancia a impactos</td><td>Alta; puede saltar dientes antes de romper</td><td>Baja; el diente se rompe</td></tr>
+<tr><td>Ganancias de control admisibles</td><td>Limitadas por la elasticidad</td><td>Altas</td></tr>
+<tr><td>Sensibilidad a la desalineación</td><td>Tolerante</td><td>Muy sensible</td></tr>
+<tr><td>Respuesta a par variable</td><td>Se deforma proporcionalmente</td><td>Casi rígida</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Cómo aumentar la rigidez de una correa</h3>
+<ol>
+<li><strong>Acorta la distancia entre centros.</strong> La rigidez de una correa es inversamente proporcional a su longitud libre: es la palanca más efectiva.</li>
+<li><strong>Usa correa más ancha</strong>: la rigidez crece proporcionalmente al ancho.</li>
+<li><strong>Elige refuerzo de acero o carbono</strong> en lugar de fibra de vidrio, cuando el radio de polea lo permita.</li>
+<li><strong>Aumenta el diámetro de las poleas.</strong> Más dientes en contacto, menos tensión por diente y mejor vida útil.</li>
+<li><strong>Tensa correctamente.</strong> Poco tensada pierde rigidez y salta dientes; demasiado tensada mata los rodamientos y el eje del motor.</li>
+</ol>
+<div class="warning"><strong>La tensión no se ajusta "a oído".</strong> Usa un medidor de frecuencia de correa o la deflexión especificada por el fabricante. La sobretensión es una causa muy común de fallo prematuro de rodamientos del motor y de desgaste acelerado de la propia correa.</div>
+</section>
+
+<section id="eficiencia">
+<h2>Eficiencia, reversibilidad y calor</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Eficiencia típica por etapa. Valores de referencia en condiciones de buena lubricación y alineación.</caption>
+<thead><tr><th>Transmisión</th><th>Eficiencia por etapa</th><th>¿Reversible?</th><th>Comentario</th></tr></thead>
+<tbody>
+<tr><td>Correa dentada</td><td>95–98 %</td><td>Sí</td><td>Muy eficiente; sin lubricación</td></tr>
+<tr><td>Engranajes rectos</td><td>96–99 %</td><td>Sí</td><td>La más eficiente, pero ruidosa</td></tr>
+<tr><td>Helicoidales</td><td>94–98 %</td><td>Sí</td><td>Pierde algo por el empuje axial</td></tr>
+<tr><td>Planetario</td><td>90–97 %</td><td>Sí</td><td>Depende de la calidad y las etapas</td></tr>
+<tr><td>Sinfín-corona</td><td>40–85 %</td><td>Habitualmente no</td><td>Baja eficiencia, mucho calor</td></tr>
+<tr><td>Harmonic drive</td><td>70–90 %</td><td>Limitada</td><td>Eficiencia sensible a la carga</td></tr>
+<tr><td>Cicloidal</td><td>85–93 %</td><td>Sí</td><td>Buena capacidad de choque</td></tr>
+</tbody>
+</table>
+</div>
+<p>La <strong>reversibilidad</strong> (backdrivability) es un criterio de diseño que se decide temprano y condiciona todo lo demás:</p>
+<ul>
+<li><strong>Transmisión reversible</strong> (correa, engranajes rectos, planetario de pocas etapas): el brazo se puede mover a mano, es apto para guiado manual y control de fuerza, pero <strong>cae por gravedad al cortar la alimentación</strong>. Necesita freno mecánico en los ejes que sostienen peso.</li>
+<li><strong>Transmisión no reversible</strong> (sinfín-corona, planetarios de reducción muy alta): mantiene la posición sin consumir energía y sin freno, pero impide el guiado manual, dificulta el control de fuerza y desperdicia energía en calor.</li>
+</ul>
+<div class="note"><strong>Consecuencia práctica de seguridad:</strong> si eliges transmisión reversible en el hombro o el codo, el freno no es un accesorio, es un requisito. Un corte de energía con el brazo extendido y carga en la pinza es exactamente el escenario que analiza la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">evaluación de riesgo</a>.</div>
+</section>
+
+<section id="inercia">
+<h2>La gran ventaja oculta de la correa: reubicar el motor</h2>
+<p>Este beneficio no aparece en las tablas de especificaciones y muchas veces es el argumento decisivo. Una correa te permite <strong>separar físicamente el motor de la articulación</strong>: el motor del codo puede vivir junto al hombro, y la correa lleva el par hasta la articulación.</p>
+<p>¿Por qué importa tanto? Porque la masa que se aleja de la base cuesta el doble: pesa y, además, aumenta la inercia que todas las articulaciones anteriores deben acelerar.</p>
+<pre><code># Efecto de reubicar el motor del codo hacia el hombro
+m_motor = 0.8      # kg
+d_codo  = 0.35     # m desde el hombro
+d_base  = 0.05     # m si el motor va junto al hombro
+
+J_en_codo = m_motor * d_codo**2      # kg*m2
+J_en_base = m_motor * d_base**2
+
+print(f"Motor en el codo:   {J_en_codo:.4f} kg*m2")
+print(f"Motor en el hombro: {J_en_base:.4f} kg*m2")
+print(f"Reduccion de inercia: {(1-J_en_base/J_en_codo)*100:.0f} %")
+# Motor en el codo:   0.0980 kg*m2
+# Motor en el hombro: 0.0020 kg*m2
+# Reduccion de inercia: 98 %
+</code></pre>
+<p>Casi toda la inercia aportada por ese motor desaparece del eje del hombro. En un brazo de varios ejes, mover los motores hacia la base con transmisión por correa permite <strong>motores más pequeños, aceleraciones más altas y menos consumo</strong> en toda la cadena. Es exactamente la razón por la que muchos brazos de tipo SCARA y delta usan correas largas.</p>
+<p>El costo de esa ventaja es más complejidad mecánica: poleas intermedias, tensores, correas que cruzan articulaciones y acoplamientos cinemáticos que hay que compensar en software. Vale la pena revisar cómo lo maneja el <a href="/blog/esp32-como-controlador-de-brazo-robotico">controlador</a> antes de comprometerse con la arquitectura.</p>
+</section>
+
+<section id="decision">
+<h2>Matriz de decisión por eje</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Recomendación orientativa por articulación en un brazo antropomórfico de 6 ejes.</caption>
+<thead><tr><th>Eje</th><th>Exigencia principal</th><th>Opción recomendada</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>1 · Base (giro)</td><td>Par alto, precisión angular</td><td>Reductor de engranajes (planetario o cicloidal)</td><td>Toda la precisión del brazo se amplifica desde aquí</td></tr>
+<tr><td>2 · Hombro</td><td>Par muy alto, carga estática</td><td>Engranajes con freno</td><td>Sostiene todo el brazo contra la gravedad</td></tr>
+<tr><td>3 · Codo</td><td>Par medio, inercia crítica</td><td>Correa desde el hombro</td><td>Aleja la masa del motor del extremo</td></tr>
+<tr><td>4 · Muñeca (giro)</td><td>Par bajo, velocidad</td><td>Correa</td><td>Ligera, silenciosa, suficiente</td></tr>
+<tr><td>5 · Muñeca (cabeceo)</td><td>Par bajo, compacidad</td><td>Correa o planetario pequeño</td><td>Espacio muy reducido</td></tr>
+<tr><td>6 · Efector (rotación)</td><td>Velocidad, poca carga</td><td>Correa o acople directo</td><td>Mínima masa en el extremo</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Elige correa cuando…</h3>
+<ul>
+<li>Quieres alejar el motor de la articulación para bajar la inercia.</li>
+<li>El presupuesto es limitado: poleas y correa cuestan una fracción de un reductor.</li>
+<li>El ruido importa (aula, oficina, laboratorio compartido).</li>
+<li>Puede haber impactos: la correa absorbe y, en el peor caso, salta dientes en lugar de romper piezas.</li>
+<li>Necesitas mantenimiento simple, sin lubricación.</li>
+</ul>
+<h3>Elige engranajes cuando…</h3>
+<ul>
+<li>Necesitas máxima rigidez torsional para ganancias de control altas.</li>
+<li>El par es elevado y el espacio, reducido.</li>
+<li>Requieres reducción alta en una sola etapa compacta.</li>
+<li>El eje debe sostener carga estática durante horas sin fluencia.</li>
+<li>Buscas una vida útil larga con carga continua.</li>
+</ul>
+<div class="note"><strong>Casi todos los brazos reales son híbridos.</strong> Reductores de engranajes en la base y el hombro, donde manda el par y la precisión; correas en el codo y la muñeca, donde manda la masa. Plantear la decisión como "correa o engranajes" para todo el brazo es el error de partida.</div>
+</section>
+
+<section id="mantenimiento">
+<h2>Mantenimiento y vida útil</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Plan de mantenimiento orientativo. Ajusta la frecuencia según el ciclo de trabajo real.</caption>
+<thead><tr><th>Elemento</th><th>Revisión</th><th>Frecuencia</th><th>Señal de alarma</th></tr></thead>
+<tbody>
+<tr><td>Tensión de correa</td><td>Medir frecuencia o deflexión</td><td>Cada 3 meses</td><td>Ruido de aleteo, pérdida de pasos</td></tr>
+<tr><td>Desgaste de correa</td><td>Inspección visual de dientes</td><td>Cada 6 meses</td><td>Polvo negro, dientes redondeados, grietas</td></tr>
+<tr><td>Alineación de poleas</td><td>Regla o láser</td><td>Al montar y tras cada ajuste</td><td>Desgaste en un solo borde</td></tr>
+<tr><td>Lubricación de engranajes</td><td>Nivel y estado de la grasa</td><td>Cada 6–12 meses</td><td>Grasa oscura, con partículas metálicas</td></tr>
+<tr><td>Backlash de reductor</td><td>Medir juego con comparador</td><td>Anual</td><td>Crecimiento respecto de la línea base</td></tr>
+<tr><td>Rodamientos</td><td>Ruido, temperatura, vibración</td><td>Continuo</td><td>Zumbido, calentamiento localizado</td></tr>
+</tbody>
+</table>
+</div>
+<p>Dos hábitos valen más que cualquier tabla: <strong>registra una línea base</strong> del backlash y de la tensión cuando la máquina está nueva, y <strong>compara contra esa línea base</strong> en cada revisión. Un juego de 0,3° no dice nada por sí solo; un juego que pasó de 0,1° a 0,3° en seis meses dice que algo se está desgastando rápido.</p>
+<p>La correa es un consumible con vida finita: planifica su reemplazo antes de que falle, no después. Los engranajes duran mucho más, pero cuando fallan lo hacen de golpe y con daño colateral. Ambas cosas pertenecen al <a href="/blog/guia-de-cableado-con-arduino-mega-para-brazos-roboticos">plan de mantenimiento</a> del equipo, no a la improvisación.</p>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+
+<div class="faq">
+  <details>
+    <summary>¿La correa dentada tiene backlash?</summary>
+    <p>No tiene juego mecánico real como un engranaje, pero sí <strong>elasticidad</strong>: bajo par se estira y la salida se retrasa, recuperando al soltar. Es un error proporcional y repetible, distinto del salto muerto del backlash, y por eso resulta más manejable para un sistema con realimentación. Eso sí: una correa floja o gastada empieza a comportarse como si tuviera juego.</p>
+  </details>
+  <details>
+    <summary>¿Qué es más preciso, correa o engranajes?</summary>
+    <p>Los reductores de engranajes de precisión (planetarios de calidad, cicloidales, harmonic drive) son más precisos y rígidos. Una correa bien tensada y con distancia entre centros corta puede ser muy precisa para brazos ligeros, pero se deforma bajo par y esa deformación crece con la carga. Para la base y el hombro se prefieren engranajes; para muñecas ligeras, la correa suele bastar.</p>
+  </details>
+  <details>
+    <summary>¿Por qué mi correa salta dientes?</summary>
+    <p>Casi siempre por falta de tensión, pero también por poleas de pocos dientes, arco de contacto insuficiente, par por encima de lo previsto o desalineación. Verifica la tensión con un medidor de frecuencia en lugar de a ojo, revisa que las poleas estén alineadas y considera aumentar el ancho de correa o el diámetro de las poleas antes de subir la tensión al límite.</p>
+  </details>
+  <details>
+    <summary>¿Puedo mover mi brazo a mano si tiene reductores?</summary>
+    <p>Depende de la reversibilidad. Con correa, engranajes rectos o planetarios de pocas etapas sí puedes, y por eso mismo el brazo cae por gravedad si se corta la energía: necesitas freno. Con sinfín-corona o reducciones muy altas, el brazo se queda donde está, pero pierdes el guiado manual y el control de fuerza.</p>
+  </details>
+  <details>
+    <summary>¿Cuál hace menos ruido?</summary>
+    <p>La correa dentada, con diferencia. El elastómero amortigua en lugar de transmitir, y no hay impacto metal contra metal en cada diente. Si el robot trabaja en un aula, una oficina o un laboratorio compartido, es un factor muy relevante; puedes profundizar en la guía de reducción de ruido en la operación de brazos robóticos.</p>
+  </details>
+  <details>
+    <summary>¿Cada cuánto debo cambiar la correa?</summary>
+    <p>No hay un número universal: depende del par, la velocidad, el diámetro de las poleas y la temperatura. Lo correcto es inspeccionar cada seis meses buscando dientes redondeados, grietas en la base del diente y polvo negro alrededor, y reemplazar cuando aparezcan esas señales o cuando la tensión ya no se mantenga entre revisiones.</p>
+  </details>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>No hay una respuesta única porque las dos transmisiones optimizan cosas distintas. Los <strong>engranajes</strong> dan rigidez, par y reducción compacta, a cambio de ruido, costo y backlash que crece con el desgaste. La <strong>correa</strong> da eficiencia, silencio, tolerancia a impactos y —lo más valioso— la libertad de alejar el motor de la articulación para bajar la inercia del brazo.</p>
+<p>El diseño correcto casi siempre es híbrido: reductores de engranajes en base y hombro, donde manda el par y la precisión angular; correas en codo y muñeca, donde manda la masa. Y cualquiera sea tu elección, define desde el principio si la transmisión debe ser reversible: esa decisión determina si necesitas frenos y cómo se comportará el brazo ante un corte de energía.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los valores de backlash, eficiencia y vida útil son referenciales y varían según el fabricante, la calidad, la lubricación y las condiciones de trabajo: consulta siempre la documentación del proveedor. Los cálculos presentados son estimaciones simplificadas. La selección de transmisión en ejes que sostienen carga tiene implicancias de seguridad y debe verificarse mediante evaluación de riesgo por personal competente. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si necesitas reducción alta con juego casi nulo, sigue con los <a href="/blog/reductores-harmonic-drive-para-articulaciones-roboticas">reductores harmonic drive</a>, y revisa cómo medir el resultado con <a href="/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos">encoders de articulación</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/piezas-de-fibra-de-carbono-para-brazos-roboticos">← Anterior: Piezas de Fibra de Carbono para Brazos Robóticos</a>
+  <a href="/blog/reductores-harmonic-drive-para-articulaciones-roboticas">Siguiente: Reductores Harmonic Drive para Articulaciones →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas y técnicas generales sobre transmisiones mecánicas y ensayo de robots. Los valores de catálogo dependen del fabricante y del modelo específico.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/22244.html" target="_blank" rel="noopener noreferrer">ISO 9283 — Robots manipuladores industriales: criterios de desempeño y métodos de ensayo</a></li><li><a href="https://www.iso.org/standard/40714.html" target="_blank" rel="noopener noreferrer">ISO 5296 — Transmisiones por correa dentada síncrona</a></li><li><a href="https://www.iso.org/standard/45309.html" target="_blank" rel="noopener noreferrer">ISO 1328-1 — Engranajes cilíndricos: sistema de precisión ISO</a></li><li><a href="https://www.iso.org/standard/63819.html" target="_blank" rel="noopener noreferrer">ISO 6336 — Cálculo de la capacidad de carga de engranajes cilíndricos</a></li><li><a href="https://www.agma.org/standards/" target="_blank" rel="noopener noreferrer">AGMA — American Gear Manufacturers Association: estándares de engranajes</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
