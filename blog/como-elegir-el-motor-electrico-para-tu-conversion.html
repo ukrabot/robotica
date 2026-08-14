@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cómo Elegir el Motor Eléctrico para tu Conversión — Guía de Cálculo 2026</title>
+<meta name="description" content="Guía técnica para dimensionar el motor de una conversión eléctrica: tipos de motor, cálculo de potencia y par requeridos, relación de transmisión, refrigeración, selección del inversor y errores frecuentes.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/como-elegir-el-motor-electrico-para-tu-conversion">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo Elegir el Motor Eléctrico para tu Conversión — Guía de Cálculo 2026">
+<meta property="og:description" content="Del vehículo a la especificación: cálculo paso a paso de potencia continua, par, relación de transmisión e inversor para una conversión eléctrica.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/motor_electrico_conversion_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/como-elegir-el-motor-electrico-para-tu-conversion">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cómo elegir el motor eléctrico para tu conversión EV">
+<meta name="twitter:description" content="PMSM, inducción o DC; potencia continua vs pico; relación de transmisión y refrigeración. Con fórmulas y un ejemplo completo.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/motor_electrico_conversion_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Cómo Elegir el Motor Eléctrico para tu Conversión — Guía de Cálculo 2026",
+  "description":"Guía técnica para seleccionar y dimensionar el motor eléctrico de una conversión de vehículo de combustión a eléctrico: comparación entre motores de corriente continua, de inducción, síncronos de imán permanente y de reluctancia conmutada; cálculo de la potencia continua y del par requeridos a partir de la masa, la aerodinámica y los objetivos de desempeño; elección de la relación de transmisión, dimensionamiento de la refrigeración, selección del inversor y verificación de la capacidad de descarga del pack de baterías.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{ "@type":"ImageObject", "url":"https://www.ukrabot.cl/logo.png" }
+  },
+  "datePublished":"2026-08-14",
+  "dateModified":"2026-08-14",
+  "mainEntityOfPage":{ "@type":"WebPage", "@id":"https://www.ukrabot.cl/blog/como-elegir-el-motor-electrico-para-tu-conversion" },
+  "image":"https://www.ukrabot.cl/blog/motor_electrico_conversion_hero.jpg",
+  "inLanguage":"es-CL",
+  "wordCount":3100,
+  "keywords":"motor eléctrico conversión, PMSM vs inducción, cálculo potencia motor EV, par motor conversión eléctrica, relación de transmisión EV, inversor control vectorial, retrofit eléctrico motor",
+  "proficiencyLevel":"Intermedio a avanzado",
+  "dependencies":"Nociones de mecánica vehicular, electricidad trifásica y seguridad en sistemas de alta tensión"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    { "@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/" },
+    { "@type":"ListItem","position":2,"name":"Movilidad Eléctrica y Conversión EV","item":"https://www.ukrabot.cl/#categories" },
+    { "@type":"ListItem","position":3,"name":"Cómo Elegir el Motor Eléctrico para tu Conversión","item":"https://www.ukrabot.cl/blog/como-elegir-el-motor-electrico-para-tu-conversion" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type": "Question", "name": "¿Qué potencia de motor necesito para convertir mi auto?", "acceptedAnswer": {"@type": "Answer", "text": "Menos de la que la intuición sugiere. Un hatchback de 1.420 kilos que debe alcanzar 120 kilómetros por hora sostenidos, acelerar de 0 a 50 en 6 segundos y subir una pendiente del 12 por ciento a 40 kilómetros por hora necesita aproximadamente 25 kilovatios continuos y 60 kilovatios pico. La cifra determinante es la potencia continua, no la potencia pico de catálogo."}},
+    {"@type": "Question", "name": "¿Cuál es la diferencia entre potencia continua y potencia pico?", "acceptedAnswer": {"@type": "Answer", "text": "La potencia pico es la que el motor entrega durante 30 a 60 segundos antes de que su temperatura obligue a limitarla. La potencia continua es la que puede sostener indefinidamente sin sobrecalentarse, y depende directamente del sistema de refrigeración. Para subir una cuesta larga o mantener velocidad de carretera importa la continua."}},
+    {"@type": "Question", "name": "¿Qué tipo de motor conviene, inducción o imán permanente?", "acceptedAnswer": {"@type": "Answer", "text": "Para la mayoría de las conversiones de vehículos livianos conviene un motor síncrono de imán permanente refrigerado por líquido, porque alcanza eficiencias sobre el 95 por ciento, tiene alta densidad de par y permite frenada regenerativa efectiva. Un motor de inducción es preferible cuando el presupuesto es ajustado, se busca máxima robustez o el vehículo trabajará con cargas pesadas."}},
+    {"@type": "Question", "name": "¿Puedo usar un motor de 400 voltios con un pack de 144 voltios?", "acceptedAnswer": {"@type": "Answer", "text": "Puedes conectarlo, pero entregará menos de la mitad de la potencia de catálogo. La velocidad base del motor es proporcional a la tensión del bus: con 144 voltios en lugar de 350, la velocidad base cae en la misma proporción y con ella la potencia disponible. Motor, inversor y tensión del pack deben elegirse en conjunto."}},
+    {"@type": "Question", "name": "¿Debo conservar la caja de cambios original?", "acceptedAnswer": {"@type": "Answer", "text": "En la mayoría de las conversiones bien resueltas sí, dejándola fija en segunda o tercera marcha y eliminando el embrague. Es la opción más simple y económica, aprovecha el diferencial existente y permite ajustar la relación probando distintas marchas durante la puesta a punto. La alternativa es una reductora dedicada de una sola velocidad, más compacta pero que requiere fabricación."}},
+    {"@type": "Question", "name": "¿Qué relación de transmisión debo usar?", "acceptedAnswer": {"@type": "Answer", "text": "Una relación total entre 7 y 10 a 1 funciona bien en la mayoría de las conversiones de vehículos livianos. La regla práctica es elegirla de modo que la velocidad máxima de crucero corresponda al 80 u 85 por ciento de la velocidad máxima del motor, conservando margen y evitando operar permanentemente en debilitamiento de campo."}},
+    {"@type": "Question", "name": "¿Necesito refrigeración líquida en el motor?", "acceptedAnswer": {"@type": "Answer", "text": "Si el motor debe sostener más de 25 kilovatios continuos, sí. Un motor refrigerado por aire forzado sostiene típicamente entre 10 y 25 kilovatios; con camisa de agua, radiador y bomba puede sostener entre 25 y 90 kilovatios. El inversor también debe refrigerarse, y conviene colocarlo aguas arriba del motor en el circuito porque su límite térmico es más bajo."}},
+    {"@type": "Question", "name": "¿Cómo verifico que la batería pueda alimentar el motor?", "acceptedAnswer": {"@type": "Answer", "text": "Divide la potencia pico requerida por la tensión nominal del pack y por la eficiencia del inversor para obtener la corriente, y luego divide esa corriente por la capacidad en amperios hora del pack para obtener la tasa C. Para celdas LFP típicas, hasta 1 C continuo y 2 a 3 C en pulsos es aceptable; superar ese rango de forma repetida acorta la vida del pack."}},
+    {"@type": "Question", "name": "¿Qué pasa si el motor entrega más par del que soporta la caja?", "acceptedAnswer": {"@type": "Answer", "text": "La transmisión falla, habitualmente en los dientes de la primera relación o en los semiejes. Si conservas la caja original, el software del inversor debe limitar el par disponible en las relaciones más cortas para no superar el par de diseño de la transmisión, que en un vehículo pequeño suele estar entre 120 y 160 newton metro."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta,.author-box{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.author-box{display:flex;gap:16px;align-items:flex-start}
+.author-box .avatar{width:64px;height:64px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid rgba(169,123,35,.35)}
+.author-box .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.author-box h3{margin:0 0 6px;font-size:1rem;color:var(--text)}
+.author-box p{margin:0 0 8px;font-size:.88rem}
+.author-box p:last-child{margin-bottom:0}
+.author-box a{color:var(--gold);font-size:.82rem}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .author-box{flex-direction:column}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.author-box,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+
+<header class="hero">
+  <img src="motor_electrico_conversion_hero.jpg" alt="Tres tipos de motores eléctricos de tracción sobre un banco de taller junto a cables trifásicos naranjos y una placa adaptadora de aluminio" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Movilidad eléctrica · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Cómo Elegir el Motor Eléctrico para tu Conversión: Guía de Cálculo</h1>
+    <p>La potencia de catálogo no dice casi nada. Cómo pasar de la masa y la aerodinámica de tu vehículo a una especificación concreta de potencia continua, par, relación de transmisión e inversor, con las fórmulas y un ejemplo resuelto.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 19 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#tipos">Los cuatro tipos de motor y cuándo usar cada uno</a></li>
+    <li><a href="#requisitos">Paso 1: traducir el vehículo a requisitos numéricos</a></li>
+    <li><a href="#par-vs-potencia">Par y potencia: dónde vive cada uno</a></li>
+    <li><a href="#transmision">Paso 2: elegir la relación de transmisión</a></li>
+    <li><a href="#refrigeracion">Paso 3: refrigeración, pico vs continuo</a></li>
+    <li><a href="#inversor">Paso 4: el inversor manda</a></li>
+    <li><a href="#seleccion">Paso 5: de los requisitos al catálogo</a></li>
+    <li><a href="#errores">Errores frecuentes al elegir el motor</a></li>
+    <li><a href="#checklist">Lista de verificación antes de comprar</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+
+<div class="article-img">
+  <img src="motor_electrico_conversion_hero.jpg" alt="Tres motores eléctricos de tracción sobre un banco de taller: un motor de inducción cilíndrico, un PMSM refrigerado por líquido y una unidad motor-inversor integrada" loading="lazy">
+  <div class="caption">Tres arquitecturas, tres proyectos distintos. El motor no se elige por su potencia máxima de catálogo, sino por el par que puede sostener a la velocidad que tu vehículo realmente usa.</div>
+</div>
+
+<p>Es la pregunta que llega después de resolver la batería: <em>«¿qué motor le pongo?»</em>. Y casi siempre viene acompañada de una cifra —«uno de 100 kW»— que en realidad no dice casi nada. La potencia máxima de catálogo de un motor eléctrico es un número de marketing: se sostiene durante 30 o 60 segundos, depende de la tensión del bus que le entregues y no describe el comportamiento del vehículo en el 95&nbsp;% de su operación.</p>
+
+<p>Lo que sí describe el comportamiento es otra cosa: el <strong>par disponible en el rango de velocidad que usas</strong>, la <strong>potencia continua que el motor puede sostener sin sobrecalentarse</strong> y la <strong>relación de transmisión</strong> que los conecta con las ruedas. Esta guía te lleva desde los requisitos del vehículo hasta una especificación concreta de motor, con las fórmulas y los números intermedios.</p>
+
+<p>Si aún no defines la batería, conviene leer primero <a href="/blog/baterias-lfp-vs-nmc-para-conversiones-electricas">baterías LFP vs NMC para conversiones eléctricas</a>: la tensión del pack condiciona directamente qué motores puedes usar.</p>
+
+<h2 id="tipos">Los cuatro tipos de motor y cuándo tiene sentido cada uno</h2>
+
+<div class="table-wrap">
+<table>
+  <caption>Arquitecturas de motor de tracción para conversiones</caption>
+  <thead>
+    <tr><th>Tipo</th><th>Eficiencia pico</th><th>Densidad de potencia</th><th>Costo relativo</th><th>Complejidad de control</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>DC serie / DC con escobillas</td><td>78–85 %</td><td>Baja</td><td>Muy bajo</td><td>Mínima</td></tr>
+    <tr><td>Inducción AC (ACIM)</td><td>88–93 %</td><td>Media</td><td>Bajo-medio</td><td>Media</td></tr>
+    <tr><td>Síncrono de imán permanente (PMSM/BLDC)</td><td>93–97 %</td><td>Alta</td><td>Medio-alto</td><td>Alta</td></tr>
+    <tr><td>Reluctancia conmutada (SRM)</td><td>85–92 %</td><td>Media-alta</td><td>Medio</td><td>Muy alta</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>DC con escobillas: solo para presupuestos mínimos</h3>
+<p>Fue el estándar del retrofit casero durante décadas: un motor de carretilla elevadora de 96 V, un controlador simple y listo. Tolera abuso, se controla con un potenciómetro y cuesta una fracción del resto. Pero pierde 15–20&nbsp;% de la energía en calor, no permite frenada regenerativa y necesita reemplazo de escobillas cada 30.000–50.000 km. Con el costo actual de las baterías, desperdiciar un 15&nbsp;% de la energía significa pagar de más por celdas para compensar la ineficiencia. <strong>Hoy rara vez se justifica.</strong></p>
+
+<h3>Inducción AC: el caballo de batalla robusto</h3>
+<p>Sin imanes, sin escobillas, sin sensores obligatorios en el rotor. Es la arquitectura más tolerante a fallas, la más barata de reparar y la que mejor soporta sobrecargas puntuales. Su eficiencia a carga parcial es menor que la de un PMSM —justamente donde más opera un auto urbano— y necesita más volumen para la misma potencia. Excelente elección para conversiones utilitarias, camionetas y vehículos de trabajo.</p>
+
+<h3>PMSM: el estándar actual</h3>
+<p>Imanes permanentes en el rotor, alta densidad de par, eficiencia sobre 95&nbsp;% en gran parte del mapa de operación y frenada regenerativa efectiva. Es lo que usan prácticamente todos los EV modernos. Sus desventajas: precio superior, dependencia del suministro de tierras raras y un modo de falla incómodo —si el inversor falla a alta velocidad, la fuerza contraelectromotriz del rotor puede generar un frenado brusco o tensiones peligrosas—. Requiere un inversor de calidad con control vectorial y sensor de posición.</p>
+
+<h3>Reluctancia conmutada: interesante en el papel</h3>
+<p>Sin imanes ni bobinas en el rotor, barato de fabricar y tolerante a temperatura. Pero su control es complejo, produce ruido acústico y rizado de par notorios, y hay poca oferta comercial de kits para conversión. Es una opción de nicho para proyectos experimentales.</p>
+
+<div class="note">
+  <strong>Recomendación general.</strong> Para el 80&nbsp;% de las conversiones de vehículos livianos en 2026, un <strong>PMSM refrigerado por líquido con inversor CAN</strong> es la elección correcta. Un ACIM es preferible cuando el presupuesto aprieta, cuando se busca máxima robustez o cuando el vehículo trabajará con cargas pesadas y ciclos exigentes.
+</div>
+
+<h2 id="requisitos">Paso 1: traducir el vehículo a requisitos numéricos</h2>
+
+<p>Antes de mirar catálogos hay que responder cuatro preguntas con números: qué velocidad máxima necesitas, en cuánto tiempo quieres acelerar, qué pendiente debes subir y con qué carga. De ahí sale todo lo demás.</p>
+
+<pre><code>DATOS DEL VEHICULO (ejemplo: hatchback convertido)
+
+  Masa en orden de marcha (con pack) : 1.180 kg
+  Ocupantes y carga                  :   240 kg
+  Masa total de diseno  m            : 1.420 kg
+  Coeficiente aerodinamico  Cd       : 0,34
+  Area frontal  A                    : 1,95 m2
+  Resistencia a la rodadura  Crr     : 0,012
+  Radio dinamico de rueda  r         : 0,295 m
+  Densidad del aire  rho             : 1,20 kg/m3
+  Gravedad  g                        : 9,81 m/s2
+
+OBJETIVOS DE DESEMPENO
+
+  Velocidad maxima sostenida  : 120 km/h (33,3 m/s)
+  0 a 50 km/h                 : 6 s
+  Pendiente sostenida         : 12 % a 40 km/h</code></pre>
+
+<h3>Potencia para mantener velocidad máxima</h3>
+
+<pre><code>RESISTENCIA A LA RODADURA
+  F_rod = Crr x m x g
+        = 0,012 x 1.420 x 9,81 = 167,2 N
+
+RESISTENCIA AERODINAMICA a 33,3 m/s
+  F_aero = 0,5 x rho x Cd x A x v^2
+         = 0,5 x 1,20 x 0,34 x 1,95 x 33,3^2
+         = 0,3978 x 1.108,9 = 441,1 N
+
+FUERZA TOTAL
+  F_total = 167,2 + 441,1 = 608,3 N
+
+POTENCIA EN RUEDA
+  P = F x v = 608,3 x 33,3 = 20.256 W = 20,3 kW
+
+POTENCIA EN EL EJE DEL MOTOR
+  Rendimiento de transmision: 0,92
+  P_motor = 20,3 / 0,92 = 22,0 kW
+
+  --> Se necesitan 22 kW CONTINUOS para 120 km/h</code></pre>
+
+<h3>Potencia y par para la aceleración</h3>
+
+<pre><code>ACELERACION 0 a 50 km/h (13,9 m/s) en 6 s
+
+  a = 13,9 / 6 = 2,32 m/s2
+
+  Factor de masa rotante: 1,06
+  F_inercia = 1,06 x 1.420 x 2,32 = 3.492 N
+
+  Resistencias medias en el tramo (a ~7 m/s):
+    F_rod  = 167 N
+    F_aero = 0,3978 x 49 = 19,5 N
+  F_total = 3.492 + 187 = 3.679 N
+
+  PAR EN RUEDA
+    T_rueda = F x r = 3.679 x 0,295 = 1.085 N.m
+
+  Con relacion total de transmision  i = 8,5 : 1
+    T_motor = 1.085 / (8,5 x 0,92) = 139 N.m
+
+  POTENCIA PICO al final del tramo
+    P = 3.679 N x 13,9 m/s = 51,1 kW
+    P_motor = 51,1 / 0,92 = 55,6 kW</code></pre>
+
+<h3>Par para subir pendiente</h3>
+
+<pre><code>PENDIENTE 12 % SOSTENIDA a 40 km/h (11,1 m/s)
+
+  angulo = atan(0,12) = 6,84 grados
+  F_pend = m x g x sen(6,84) = 1.420 x 9,81 x 0,1191
+         = 1.659 N
+  F_rod  = 167 N
+  F_aero = 0,3978 x 123,2 = 49 N
+  F_total = 1.875 N
+
+  P = 1.875 x 11,1 = 20,8 kW
+  P_motor = 20,8 / 0,92 = 22,6 kW
+
+  T_rueda = 1.875 x 0,295 = 553 N.m
+  T_motor = 553 / (8,5 x 0,92) = 70,7 N.m sostenidos
+
+ESPECIFICACION RESULTANTE DEL MOTOR
+  Potencia continua  : >= 25 kW  (margen sobre 22,6)
+  Potencia pico 60 s : >= 60 kW
+  Par continuo       : >= 75 N.m
+  Par pico           : >= 145 N.m
+  Velocidad maxima   : ver seccion de transmision</code></pre>
+
+<p>Fíjate en el resultado: el vehículo necesita <strong>25 kW continuos</strong> y <strong>60 kW pico</strong>. Un motor «de 100 kW» de catálogo estaría sobredimensionado en pico y, si su potencia continua es de solo 30 kW, apenas cumpliría el requisito real. <strong>La cifra que importa es la continua.</strong></p>
+
+<h2 id="par-vs-potencia">Par y potencia: dónde vive cada uno</h2>
+
+<p>Un motor eléctrico tiene dos regiones de operación separadas por la <strong>velocidad base</strong>:</p>
+
+<ul>
+  <li><strong>Bajo la velocidad base — región de par constante.</strong> El motor entrega su par máximo desde 0 rpm. La potencia crece linealmente con la velocidad. Aquí vive la aceleración desde detenido y la subida de pendientes.</li>
+  <li><strong>Sobre la velocidad base — región de potencia constante.</strong> La fuerza contraelectromotriz alcanza la tensión del bus; el inversor debilita el campo y el par cae de forma inversamente proporcional a la velocidad. Aquí vive la velocidad de crucero.</li>
+</ul>
+
+<pre><code>RELACION FUNDAMENTAL
+
+  P (kW) = T (N.m) x n (rpm) / 9.549
+
+EJEMPLO
+  120 N.m a 3.000 rpm = 120 x 3.000 / 9.549 = 37,7 kW
+  120 N.m a 6.000 rpm = 120 x 6.000 / 9.549 = 75,4 kW
+
+  Mismo par, el doble de potencia:
+  la velocidad de giro es la mitad de la ecuacion.
+
+VELOCIDAD BASE APROXIMADA
+  n_base ~ (V_bus x 9,55) / (k_e x 1,000)
+  donde k_e es la constante de fem en V/krpm
+
+  Con k_e = 55 V/krpm y bus de 350 V:
+    n_base ~ 350 / 55 x 1.000 = 6.360 rpm
+
+  Con el mismo motor y bus de 144 V:
+    n_base ~ 144 / 55 x 1.000 = 2.618 rpm
+
+  El MISMO motor entrega menos de la mitad de
+  potencia con un bus de baja tension.</code></pre>
+
+<div class="warning">
+  <strong>El error más caro del retrofit:</strong> comprar un motor especificado para 400 V y alimentarlo con un pack de 144 V esperando la potencia del catálogo. La potencia del motor está limitada por la tensión del bus y la corriente máxima del inversor. Con menos tensión, la velocidad base cae proporcionalmente y con ella la potencia disponible. Motor, inversor y tensión de pack se eligen <em>juntos</em>, nunca por separado.
+</div>
+
+<h2 id="transmision">Paso 2: elegir la relación de transmisión</h2>
+
+<p>La relación de transmisión es la variable de diseño más barata y más subestimada. Cambiarla no cuesta casi nada y modifica por completo el comportamiento del vehículo.</p>
+
+<pre><code>VELOCIDAD DEL VEHICULO SEGUN RPM DEL MOTOR
+
+  v (km/h) = (n_motor x 2 x pi x r x 60) / (i x 1.000)
+
+  Con r = 0,295 m
+  Circunferencia = 2 x pi x 0,295 = 1,854 m
+
+  A 8.000 rpm de motor:
+    i = 6 : 1  ->  v = 8.000 x 1,854 x 60 / (6 x 1.000)
+                     = 148 km/h
+    i = 8,5: 1 ->  v = 105 km/h
+    i = 11 : 1 ->  v =  81 km/h
+
+REGLA PRACTICA
+  Elige i para que la velocidad maxima de crucero
+  coincida con el 80-85 % de la velocidad maxima
+  del motor. Asi conservas margen y no operas
+  permanentemente en debilitamiento de campo.</code></pre>
+
+<div class="table-wrap">
+<table>
+  <caption>Estrategias de acople a la transmisión existente</caption>
+  <thead><tr><th>Estrategia</th><th>Relación típica</th><th>Ventajas</th><th>Desventajas</th></tr></thead>
+  <tbody>
+    <tr><td>Caja manual completa con embrague</td><td>Variable, 3,5–13:1</td><td>Rango amplio, permite motor pequeño, conserva marcha atrás</td><td>Peso, pérdidas, complejidad</td></tr>
+    <tr><td>Caja manual fijada en 2.ª o 3.ª, sin embrague</td><td>6–9:1</td><td>Simple, liviano, sin cambios que hacer</td><td>Exige motor con buen rango de rpm</td></tr>
+    <tr><td>Reductora dedicada de una velocidad</td><td>7–10:1</td><td>Compacta, eficiente, silenciosa</td><td>Requiere fabricación o adaptación</td></tr>
+    <tr><td>Drive unit integrado de EV de fábrica</td><td>8–9,7:1</td><td>Motor, inversor y reductor probados juntos</td><td>Ingeniería inversa del CAN, adaptación mecánica</td></tr>
+    <tr><td>Acople directo al diferencial</td><td>3,5–4,5:1</td><td>Mínimas pérdidas</td><td>Exige motor de par muy alto y caro</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>La opción más frecuente en conversiones bien resueltas es la segunda: <strong>conservar la caja manual y dejarla fija en una marcha</strong>. Se elimina el embrague, se acopla el motor al eje de entrada mediante una placa adaptadora y un cubo, y se aprovecha el diferencial existente. Conserva la marcha atrás mecánica —aunque en un EV se hace eléctricamente— y permite variar la relación probando distintas marchas durante la puesta a punto.</p>
+
+<div class="note">
+  <strong>Precisión mecánica del acople.</strong> La placa adaptadora debe garantizar concentricidad entre el cigüeñal virtual del motor eléctrico y el eje de entrada de la caja dentro de <strong>0,1–0,2 mm</strong>. Un desalineamiento mayor destruye el rodamiento del motor y el retén de la caja en pocos miles de kilómetros, con un ruido característico que aparece bajo carga. Es una pieza para mecanizar en torno y fresa con planos, no para improvisar.
+</div>
+
+<h2 id="refrigeracion">Paso 3: refrigeración, la diferencia entre pico y continuo</h2>
+
+<p>La potencia continua de un motor no la define su diseño magnético sino su capacidad de evacuar calor. El mismo estator puede entregar 30 kW continuos refrigerado por aire o 55 kW refrigerado por líquido.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>Sistemas de refrigeración del motor de tracción</caption>
+  <thead><tr><th>Sistema</th><th>Potencia continua típica</th><th>Costo adicional</th><th>Aplicación recomendada</th></tr></thead>
+  <tbody>
+    <tr><td>Convección natural</td><td>Hasta 10 kW</td><td>$0</td><td>Vehículos ligeros, baja velocidad</td></tr>
+    <tr><td>Ventilador axial acoplado</td><td>10–25 kW</td><td>$50.000–$150.000</td><td>Uso urbano moderado</td></tr>
+    <tr><td>Camisa de agua + radiador y bomba</td><td>25–90 kW</td><td>$350.000–$900.000</td><td>Uso mixto y carretera</td></tr>
+    <tr><td>Aceite dieléctrico con rociado al estator</td><td>80–200 kW</td><td>$900.000+</td><td>Alto desempeño, competición</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Un detalle que se olvida: el <strong>inversor también necesita refrigeración</strong>, y sus módulos IGBT o SiC son más sensibles a la temperatura que el motor. En una conversión bien hecha, motor e inversor comparten el circuito de refrigerante, con el inversor aguas arriba —recibe el líquido más frío— porque su límite térmico es más bajo.</p>
+
+<pre><code>DIMENSIONAMIENTO DEL RADIADOR
+
+  Potencia mecanica continua : 30 kW
+  Eficiencia motor           : 94 %
+  Eficiencia inversor        : 97 %
+
+  Perdidas motor    = 30 x (1/0,94 - 1) = 1,91 kW
+  Perdidas inversor = 31,9 x 0,03       = 0,96 kW
+  Calor total a disipar                 = 2,87 kW
+
+  Salto termico refrigerante-aire: 25 C
+  Radiador requerido: ~115 W/C
+
+  Referencia: un radiador de intercooler de
+  350 x 250 x 50 mm con ventilador disipa
+  aproximadamente 120-160 W/C. Suficiente.</code></pre>
+
+<h2 id="inversor">Paso 4: el inversor manda</h2>
+
+<p>El inversor determina cuánta potencia puede realmente entregar el motor, cómo se comporta el pedal y si tendrás frenada regenerativa. Estos son los parámetros que hay que verificar antes de comprar.</p>
+
+<ul>
+  <li><strong>Rango de tensión de entrada.</strong> Debe cubrir toda la ventana del pack: desde el corte inferior hasta la tensión de plena carga. Un pack 108S de LFP va de 270 V a 394 V; el inversor debe operar cómodamente en ese rango completo.</li>
+  <li><strong>Corriente máxima de fase, continua y pico.</strong> Es lo que fija el par disponible. Un inversor de 300 A continuos con un motor de 0,45 N·m/A entrega 135 N·m sostenidos.</li>
+  <li><strong>Tipo de control.</strong> Control vectorial orientado al campo (FOC) es lo mínimo aceptable para PMSM. El control escalar produce un manejo tosco y desperdicia eficiencia.</li>
+  <li><strong>Realimentación de posición.</strong> Resolver, encoder o sensores Hall. El resolver es el estándar automotriz por su inmunidad al ruido y a la temperatura.</li>
+  <li><strong>Interfaz CAN.</strong> Imprescindible para integrar con BMS, tablero y lógica del vehículo. Verifica que el protocolo esté documentado; un inversor con CAN cerrado obliga a ingeniería inversa costosa.</li>
+  <li><strong>Frenada regenerativa configurable.</strong> Debe coordinarse con el BMS: si el pack está lleno o frío, la regeneración debe limitarse automáticamente.</li>
+  <li><strong>Precarga y descarga del bus DC.</strong> El inversor debe gestionar la precarga de sus condensadores y descargarlos al desconectar, dejando el bus bajo 60 V en menos de 5 segundos.</li>
+</ul>
+
+<div class="warning">
+  <strong>Compra motor e inversor como conjunto.</strong> Un inversor sin el archivo de parámetros del motor específico —resistencia e inductancia del estator, constante de fem, número de pares de polos, offset del resolver— exige una puesta a punto que puede consumir semanas. Los proveedores serios entregan el par ya caracterizado y con el offset del resolver calibrado de fábrica.
+</div>
+
+<h2 id="seleccion">Paso 5: de los requisitos al catálogo</h2>
+
+<p>Con la especificación calculada —25 kW continuos, 60 kW pico, 75 N·m continuos, 145 N·m pico— estas son las opciones típicas de mercado y sus compromisos.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>Opciones de tren motriz para el ejemplo (vehículo de 1.420 kg)</caption>
+  <thead><tr><th>Opción</th><th>Continuo / pico</th><th>Bus</th><th>Costo puesto en Chile</th><th>Observación</th></tr></thead>
+  <tbody>
+    <tr><td>ACIM 11 kW nominal, sobredimensionado</td><td>18 / 45 kW</td><td>144 V</td><td>$2,1–2,8 M</td><td>Justo; sin margen para carretera</td></tr>
+    <tr><td>PMSM 30 kW refrigerado por líquido</td><td>30 / 70 kW</td><td>350 V</td><td>$3,4–4,6 M</td><td>Cumple con margen; elección equilibrada</td></tr>
+    <tr><td>Drive unit de EV compacto recuperado</td><td>35 / 80 kW</td><td>360 V</td><td>$2,4–4,0 M</td><td>Buen valor si el CAN está documentado</td></tr>
+    <tr><td>PMSM 60 kW alto desempeño</td><td>60 / 140 kW</td><td>400 V</td><td>$5,8–8,0 M</td><td>Sobredimensionado para este vehículo</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Verificación de corriente del pack</h3>
+
+<pre><code>El motor debe ser compatible con lo que el pack
+puede entregar, no solo con lo que el inversor pide.
+
+  Potencia pico requerida : 60 kW
+  Tension nominal del pack: 345 V
+  Eficiencia inversor     : 0,97
+
+  Corriente de pack = 60.000 / (345 x 0,97) = 179 A
+
+  Pack LFP 108S1P de 105 Ah:
+    Tasa de descarga = 179 / 105 = 1,70 C
+
+  Celda tipica LFP: 1 C continuo, 2-3 C en pulsos.
+  --> 1,70 C en pulsos de aceleracion es aceptable.
+  --> Si se pidieran 100 kW, serian 2,99 C: excesivo
+      para uso repetido y castigaria la vida del pack.
+
+CONCLUSION
+  La bateria tambien limita la potencia.
+  No sirve un motor que el pack no puede alimentar.</code></pre>
+
+<h2 id="errores">Errores frecuentes al elegir el motor</h2>
+
+<ul>
+  <li><strong>Elegir por potencia pico.</strong> Un motor de 100 kW pico con 25 kW continuos se protege térmicamente subiendo una cuesta larga. Especifica siempre por potencia continua.</li>
+  <li><strong>Ignorar la tensión del pack.</strong> El mismo motor con 144 V en lugar de 350 V entrega menos de la mitad de la potencia útil.</li>
+  <li><strong>Sobredimensionar «por si acaso».</strong> Un motor más grande pesa más, cuesta más, exige un inversor mayor y opera fuera de su zona de máxima eficiencia en uso normal, gastando más energía.</li>
+  <li><strong>Olvidar el par de la transmisión.</strong> Una caja diseñada para 130 N·m de un motor de combustión recibirá el par instantáneo del motor eléctrico desde 0 rpm. Si el motor entrega 180 N·m sin limitación por software, la caja falla.</li>
+  <li><strong>No limitar el par en primera marcha.</strong> Si conservas la caja con cambios, el software debe reducir el par disponible en las relaciones más cortas.</li>
+  <li><strong>Descuidar el equilibrio de masas.</strong> El motor eléctrico pesa menos que el de combustión: sin corregir el reparto de masas con la ubicación del pack, el vehículo queda liviano de adelante y el frenado empeora.</li>
+  <li><strong>No verificar el sentido de giro y la marcha atrás.</strong> Se resuelve por software, pero debe estar previsto en la configuración del inversor y en la lógica del selector.</li>
+</ul>
+
+<h2 id="checklist">Lista de verificación antes de comprar</h2>
+
+<ul>
+  <li>¿Calculaste potencia continua para velocidad máxima <em>y</em> para pendiente sostenida?</li>
+  <li>¿La potencia continua del motor supera en al menos 15&nbsp;% el mayor de esos dos valores?</li>
+  <li>¿La tensión nominal del motor coincide con la de tu pack en toda su ventana operativa?</li>
+  <li>¿El inversor cubre la tensión mínima de corte y la máxima de plena carga?</li>
+  <li>¿La corriente pico requerida está dentro de la capacidad C del pack?</li>
+  <li>¿Tienes la curva par-velocidad real del motor, no solo dos cifras de catálogo?</li>
+  <li>¿El motor viene caracterizado para ese inversor, con offset de resolver calibrado?</li>
+  <li>¿El protocolo CAN está documentado?</li>
+  <li>¿Existe placa adaptadora para tu caja, o hay que mecanizarla?</li>
+  <li>¿El sistema de refrigeración disipa las pérdidas calculadas?</li>
+  <li>¿El par máximo respeta el límite de la transmisión existente?</li>
+  <li>¿Hay soporte técnico y repuestos disponibles a mediano plazo?</li>
+</ul>
+
+<h2 id="conclusion">Conclusión</h2>
+
+<p>Elegir el motor de una conversión no empieza en el catálogo, empieza en la física del vehículo: masa, área frontal, coeficiente aerodinámico, radio de rueda y los objetivos concretos de velocidad, aceleración y pendiente. De esos datos salen dos cifras —potencia continua y par continuo— que son las que realmente definen la compra. La potencia pico solo describe lo que el conjunto puede hacer durante un minuto.</p>
+
+<p>En el ejemplo desarrollado, un hatchback de 1.420 kg con objetivos perfectamente normales necesita <strong>25 kW continuos y 60 kW pico</strong>: mucho menos de lo que la intuición sugiere. Con un PMSM refrigerado por líquido, un inversor con control vectorial y CAN documentado, una relación de transmisión cercana a 8,5:1 y un pack capaz de entregar 1,7 C en pulsos, el conjunto queda equilibrado, eficiente y dentro del presupuesto.</p>
+
+<p>Y una regla que resume todo lo anterior: <strong>motor, inversor, transmisión y batería se eligen como un sistema único</strong>. Cada componente elegido por separado, por bueno que sea, termina limitado por el eslabón que no conversa con los demás.</p>
+
+<p>Para cerrar el proyecto, revisa <a href="/blog/homologacion-y-tramites-para-vehiculos-convertidos">homologación y trámites para vehículos convertidos</a> y el <a href="/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile">presupuesto completo de una conversión en Chile</a>.</p>
+
+
+<h2 id="faq">Preguntas frecuentes</h2>
+
+<div class="faq">
+  <details>
+    <summary>¿Qué potencia de motor necesito para convertir mi auto?</summary>
+    <p>Menos de la que sugiere la intuición. Un hatchback de 1.420 kg que debe sostener 120 km/h, acelerar de 0 a 50 km/h en 6 s y subir una pendiente del 12&nbsp;% a 40 km/h necesita aproximadamente <strong>25 kW continuos y 60 kW pico</strong>. La cifra determinante es la continua, no la pico de catálogo.</p>
+  </details>
+  <details>
+    <summary>¿Cuál es la diferencia entre potencia continua y potencia pico?</summary>
+    <p>La pico es la que el motor entrega durante 30–60 segundos antes de que la temperatura obligue a limitarla. La continua es la que sostiene indefinidamente sin sobrecalentarse, y depende directamente del sistema de refrigeración. Para subir una cuesta larga o mantener velocidad de carretera importa la <strong>continua</strong>.</p>
+  </details>
+  <details>
+    <summary>¿Qué tipo de motor conviene, inducción o imán permanente?</summary>
+    <p>Para la mayoría de las conversiones de vehículos livianos, un <strong>PMSM refrigerado por líquido</strong>: eficiencia sobre 95&nbsp;%, alta densidad de par y regeneración efectiva. Un motor de inducción es preferible cuando el presupuesto aprieta, se busca máxima robustez o el vehículo trabajará con cargas pesadas y ciclos exigentes.</p>
+  </details>
+  <details>
+    <summary>¿Puedo usar un motor de 400 V con un pack de 144 V?</summary>
+    <p>Puedes conectarlo, pero entregará <strong>menos de la mitad</strong> de la potencia de catálogo. La velocidad base es proporcional a la tensión del bus: con 144 V en lugar de 350 V cae en la misma proporción, y con ella la potencia disponible. Motor, inversor y tensión de pack se eligen en conjunto.</p>
+  </details>
+  <details>
+    <summary>¿Debo conservar la caja de cambios original?</summary>
+    <p>En la mayoría de las conversiones bien resueltas sí, dejándola fija en 2.ª o 3.ª y eliminando el embrague. Es lo más simple y económico, aprovecha el diferencial existente y permite ajustar la relación probando marchas durante la puesta a punto. La alternativa es una reductora dedicada de una velocidad, más compacta pero que requiere fabricación.</p>
+  </details>
+  <details>
+    <summary>¿Qué relación de transmisión debo usar?</summary>
+    <p>Una relación total entre <strong>7 y 10:1</strong> funciona bien en conversiones de vehículos livianos. Regla práctica: elígela de modo que la velocidad máxima de crucero corresponda al 80–85&nbsp;% de la velocidad máxima del motor, conservando margen y evitando operar permanentemente en debilitamiento de campo.</p>
+  </details>
+  <details>
+    <summary>¿Necesito refrigeración líquida en el motor?</summary>
+    <p>Si debe sostener más de 25 kW continuos, sí. Con aire forzado se sostienen típicamente 10–25 kW; con camisa de agua, radiador y bomba, 25–90 kW. El inversor también debe refrigerarse y conviene colocarlo <em>aguas arriba</em> del motor en el circuito, porque su límite térmico es más bajo.</p>
+  </details>
+  <details>
+    <summary>¿Cómo verifico que la batería pueda alimentar el motor?</summary>
+    <p>Divide la potencia pico por la tensión nominal del pack y por la eficiencia del inversor para obtener la corriente; luego divide esa corriente por la capacidad en Ah del pack para obtener la tasa C. Para celdas LFP típicas, hasta 1 C continuo y 2–3 C en pulsos es aceptable; superarlo de forma repetida acorta la vida del pack.</p>
+  </details>
+  <details>
+    <summary>¿Qué pasa si el motor entrega más par del que soporta la caja?</summary>
+    <p>La transmisión falla, habitualmente en los dientes de la primera relación o en los semiejes. Si conservas la caja original, el software del inversor debe <strong>limitar el par en las relaciones más cortas</strong> para no superar el par de diseño de la transmisión, que en un vehículo pequeño suele estar entre 120 y 160 N·m.</p>
+  </details>
+</div>
+
+<div class="author-box">
+  <div class="avatar" aria-hidden="true"><img src="../author_alberto.jpg" alt="Fotografía de Alberto Gallardo, analista programador computacional"></div>
+  <div>
+    <h3>Sobre el autor</h3>
+    <p><strong>Alberto Gallardo</strong> es Analista Programador Computacional con 18 años de experiencia en desarrollo y educación. Escribe y mantiene este sitio, combinando su trayectoria técnica con la docencia en robótica, electrónica y automatización industrial. Los cálculos de esta guía siguen las ecuaciones estándar de resistencia al avance y dinámica longitudinal, con coeficientes representativos de vehículos livianos. Son herramientas de dimensionamiento preliminar: el diseño definitivo de un tren motriz debe validarse con las curvas reales del fabricante y, en Chile, ejecutarse en un taller autorizado por el MTT. <a href="/about">Más sobre Alberto →</a></p>
+  </div>
+</div>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado, y ningún fabricante de motores o inversores ha pagado por aparecer aquí. Los precios son estimaciones de referencia con tipo de cambio $950/USD a agosto de 2026 y varían según proveedor, aranceles y disponibilidad.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>El motor es una pieza de un sistema. Cierra el diseño con <a href="/blog/baterias-lfp-vs-nmc-para-conversiones-electricas">Baterías LFP vs NMC para conversiones eléctricas</a> y el presupuesto con <a href="/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile">Cuánto cuesta convertir un auto a eléctrico en Chile</a>.</p>
+  <p>Cuando el vehículo esté terminado, el último tramo es legal: <a href="/blog/homologacion-y-tramites-para-vehiculos-convertidos">Homologación y trámites para vehículos convertidos</a>. También puedes revisar el <a href="/#categories">temario completo del blog</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/baterias-lfp-vs-nmc-para-conversiones-electricas">← Anterior: Baterías LFP vs NMC</a>
+  <a href="/blog/homologacion-y-tramites-para-vehiculos-convertidos">Siguiente: Homologación y trámites →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los fundamentos de dinámica vehicular y de máquinas eléctricas empleados en los cálculos. Las especificaciones de cada motor e inversor deben verificarse contra la hoja de datos vigente del fabricante.</p>
+<ul>
+<li><a href="https://afdc.energy.gov/vehicles/how-do-all-electric-cars-work" target="_blank" rel="noopener noreferrer">Alternative Fuels Data Center (U.S. DOE) — Funcionamiento de trenes motrices eléctricos</a></li>
+<li><a href="https://www.nrel.gov/transportation/" target="_blank" rel="noopener noreferrer">NREL — Investigación en eficiencia de trenes motrices y sistemas térmicos</a></li>
+<li><a href="https://www.fueleconomy.gov/feg/atv.shtml" target="_blank" rel="noopener noreferrer">FuelEconomy.gov — Eficiencia y consumo de vehículos eléctricos</a></li>
+<li><a href="https://www.subtrans.gob.cl" target="_blank" rel="noopener noreferrer">Subsecretaría de Transportes — Reglamento de transformación de vehículos a propulsión eléctrica</a></li>
+<li><a href="https://www.sec.cl" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles — Normativa de componentes eléctricos</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

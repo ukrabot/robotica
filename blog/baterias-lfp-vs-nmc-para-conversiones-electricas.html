@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Baterías LFP vs NMC para Conversiones Eléctricas — Comparativa Técnica 2026</title>
+<meta name="description" content="Comparativa técnica entre baterías LFP y NMC para conversiones eléctricas: densidad energética, ciclos de vida, seguridad térmica, costo por kWh, diseño del BMS y configuración del pack, con criterios de selección para Chile.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/baterias-lfp-vs-nmc-para-conversiones-electricas">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Baterías LFP vs NMC para Conversiones Eléctricas — Comparativa Técnica 2026">
+<meta property="og:description" content="Densidad, ciclos, seguridad, costo total y diseño del pack: qué química de batería conviene realmente en una conversión eléctrica, con cálculos y tablas.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/lfp_vs_nmc_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/baterias-lfp-vs-nmc-para-conversiones-electricas">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LFP vs NMC para conversiones eléctricas: comparativa técnica">
+<meta name="twitter:description" content="LFP dura 2–3× más y cuesta 20–30 % menos; NMC pesa 40 % menos. Cuándo elegir cada una en una conversión EV.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/lfp_vs_nmc_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Baterías LFP vs NMC para Conversiones Eléctricas — Comparativa Técnica 2026",
+  "description":"Comparativa técnica entre baterías de fosfato de hierro y litio (LFP) y níquel-manganeso-cobalto (NMC) aplicada a conversiones de vehículos de combustión a eléctricos: energía específica, ciclos de vida, estabilidad térmica, costo por kWh y costo total de propiedad, requisitos del BMS, configuración serie-paralelo del pack, comportamiento en frío y criterios de selección bajo la normativa chilena.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{ "@type":"ImageObject", "url":"https://www.ukrabot.cl/logo.png" }
+  },
+  "datePublished":"2026-08-14",
+  "dateModified":"2026-08-14",
+  "mainEntityOfPage":{ "@type":"WebPage", "@id":"https://www.ukrabot.cl/blog/baterias-lfp-vs-nmc-para-conversiones-electricas" },
+  "image":"https://www.ukrabot.cl/blog/lfp_vs_nmc_hero.jpg",
+  "inLanguage":"es-CL",
+  "wordCount":3050,
+  "keywords":"LFP vs NMC, baterías conversión eléctrica, LiFePO4 vs NMC, pack de baterías retrofit, densidad energética batería, BMS LFP, celdas prismáticas conversión EV",
+  "proficiencyLevel":"Intermedio a avanzado",
+  "dependencies":"Conocimientos de electricidad DC, gestión de baterías (BMS) y seguridad en sistemas de alta tensión"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    { "@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/" },
+    { "@type":"ListItem","position":2,"name":"Movilidad Eléctrica y Conversión EV","item":"https://www.ukrabot.cl/#categories" },
+    { "@type":"ListItem","position":3,"name":"Baterías LFP vs NMC para Conversiones Eléctricas","item":"https://www.ukrabot.cl/blog/baterias-lfp-vs-nmc-para-conversiones-electricas" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type": "Question", "name": "¿Cuál es mejor para una conversión eléctrica, LFP o NMC?", "acceptedAnswer": {"@type": "Answer", "text": "Para la mayoría de las conversiones, LFP es la mejor opción: cuesta entre 20 y 30 por ciento menos por kWh, dura de dos a tres veces más ciclos, tolera cargarse al 100 por ciento a diario y resiste unos 270 grados Celsius antes de entrar en fuga térmica frente a 180 a 210 grados de NMC. NMC solo conviene cuando el espacio es la restricción dominante, se buscan más de 300 kilómetros de autonomía o se reutiliza un módulo de fábrica completo."}},
+    {"@type": "Question", "name": "¿Cuánto más pesa un pack LFP que uno NMC de la misma capacidad?", "acceptedAnswer": {"@type": "Answer", "text": "Aproximadamente entre 30 y 60 por ciento más a nivel de celda. Para un pack de 30 kWh la diferencia real instalada ronda los 114 kilos: unos 300 kilos en LFP contra 186 kilos en NMC. Ese peso extra reduce la autonomía solo alrededor de un 5 por ciento, porque la frenada regenerativa recupera parte de la energía invertida en mover la masa."}},
+    {"@type": "Question", "name": "¿Cuántos ciclos dura una batería LFP frente a una NMC?", "acceptedAnswer": {"@type": "Answer", "text": "Una celda LFP entrega entre 3.000 y 6.000 ciclos hasta conservar el 80 por ciento de su capacidad, mientras que una NMC entrega entre 1.000 y 2.500 ciclos. En un vehículo que recorre 20.000 kilómetros al año, eso equivale a unos 25 años con LFP frente a unos 14 años con NMC."}},
+    {"@type": "Question", "name": "¿Es seguro usar baterías NMC en un auto convertido?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, siempre que el pack tenga gestión térmica adecuada, barreras entre celdas, un BMS con medición precisa por celda y protecciones de corte bien dimensionadas. El problema del retrofit es que los packs artesanales rara vez alcanzan el nivel de integración térmica de un vehículo de fábrica, y NMC es menos tolerante a esas carencias que LFP."}},
+    {"@type": "Question", "name": "¿Puedo cargar una batería LFP con frío?", "acceptedAnswer": {"@type": "Answer", "text": "No debes cargar ninguna celda de litio por debajo de 0 grados Celsius sin precalentar, porque se produce depósito metálico de litio en el ánodo, que es irreversible y puede perforar el separador. Descargar en frío sí es aceptable, con menor potencia disponible. La solución habitual son mantas calefactoras gobernadas por el BMS, que cuestan entre 150.000 y 400.000 pesos."}},
+    {"@type": "Question", "name": "¿Qué umbrales de tensión debe tener el BMS con celdas LFP?", "acceptedAnswer": {"@type": "Answer", "text": "Corte por sobretensión en 3,65 voltios por celda y corte por subtensión en 2,50 voltios por celda, con tensión nominal de 3,2 voltios. Para NMC los valores son 4,20 y 3,00 voltios con nominal de 3,6 a 3,7 voltios. Reutilizar un BMS configurado para NMC en un pack LFP sin corregir los umbrales degrada el pack aceleradamente."}},
+    {"@type": "Question", "name": "¿Qué exige la normativa chilena respecto de las baterías del kit de conversión?", "acceptedAnswer": {"@type": "Answer", "text": "El reglamento de transformación a propulsión eléctrica exige que los módulos, paquetes y sistemas de baterías estén conformados por celdas secundarias de litio y cuenten con autorización de uso de la Superintendencia de Electricidad y Combustibles. También exige un dispositivo de monitoreo de aislamiento, cables de alta tensión con cubierta naranja y una resistencia menor a 0,1 ohm entre las partes conductoras expuestas y el chasis."}},
+    {"@type": "Question", "name": "¿Cuánto cuesta un pack de 30 kWh en Chile?", "acceptedAnswer": {"@type": "Answer", "text": "Con celdas LFP nuevas de grado A, aproximadamente 6,3 millones de pesos instalado, incluyendo estructura, BMS, envolvente, gestión térmica por aire y refuerzo estructural. Con celdas NMC, cerca de 7,9 millones, principalmente por el mayor costo de las celdas y la necesidad de refrigeración líquida."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta,.author-box{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.author-box{display:flex;gap:16px;align-items:flex-start}
+.author-box .avatar{width:64px;height:64px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid rgba(169,123,35,.35)}
+.author-box .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.author-box h3{margin:0 0 6px;font-size:1rem;color:var(--text)}
+.author-box p{margin:0 0 8px;font-size:.88rem}
+.author-box p:last-child{margin-bottom:0}
+.author-box a{color:var(--gold);font-size:.82rem}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .author-box{flex-direction:column}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.author-box,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+
+<header class="hero">
+  <img src="lfp_vs_nmc_hero.jpg" alt="Módulos de baterías LFP prismáticas azules y módulos NMC tipo pouch grises comparados lado a lado sobre un banco de trabajo de taller" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Movilidad eléctrica · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Baterías LFP vs NMC para Conversiones Eléctricas: Comparativa Técnica</h1>
+    <p>La química de las celdas define el 45 % del presupuesto, el peso del vehículo y cuántos años durará el pack. Comparación con números concretos: densidad, ciclos, seguridad, costo total y una regla clara de selección.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#quimica">Qué distingue realmente a cada química</a></li>
+    <li><a href="#comparativa">Comparativa técnica lado a lado</a></li>
+    <li><a href="#peso">El impacto del peso: el cálculo que decide</a></li>
+    <li><a href="#vida">Vida útil: el argumento decisivo</a></li>
+    <li><a href="#seguridad">Seguridad y normativa chilena</a></li>
+    <li><a href="#clima">Clima chileno y el factor frío</a></li>
+    <li><a href="#bms">Consecuencias para el diseño del BMS</a></li>
+    <li><a href="#configuracion">Configuración del pack: serie y paralelo</a></li>
+    <li><a href="#costo">Costo total de propiedad del pack</a></li>
+    <li><a href="#cuando">Cuándo elegir cada química</a></li>
+    <li><a href="#compra">Cómo comprar celdas sin equivocarse</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+
+<div class="article-img">
+  <img src="lfp_vs_nmc_hero.jpg" alt="Módulo de celdas prismáticas LFP azules junto a módulos de celdas pouch NMC grises sobre un banco de trabajo, con barras colectoras y cable de alta tensión naranjo" loading="lazy">
+  <div class="caption">Izquierda: celdas prismáticas LFP, gruesas y pesadas, pero tolerantes. Derecha: módulos NMC tipo pouch, densos en energía y exigentes con la gestión térmica. La elección condiciona el peso, el precio, la vida útil y el diseño del pack completo.</div>
+</div>
+
+<p>En una conversión eléctrica, la química de las celdas es la decisión más cara y más irreversible del proyecto. Define entre el 40 y el 55&nbsp;% del presupuesto, fija el peso que colgará del chasis, determina cuántos años durará el vehículo antes de necesitar un pack nuevo y condiciona todo el diseño térmico y de seguridad. Cambiar de motor a mitad de camino es molesto; cambiar de química implica rehacer el pack, el BMS, los soportes y buena parte del cableado.</p>
+
+<p>Las dos opciones realistas para un convertidor en 2026 son <strong>LFP</strong> (fosfato de hierro y litio, LiFePO<sub>4</sub>) y <strong>NMC</strong> (níquel-manganeso-cobalto, LiNiMnCoO<sub>2</sub>). Esta guía las compara con números concretos, aterriza la decisión al contexto chileno —clima, normativa, disponibilidad— y termina con una regla práctica de selección. Si todavía estás dimensionando el presupuesto global, revisa antes <a href="/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile">cuánto cuesta convertir un auto a eléctrico en Chile</a>.</p>
+
+<h2 id="quimica">Qué distingue realmente a cada química</h2>
+
+<p>Ambas son baterías de ion-litio: el litio se mueve entre ánodo y cátodo en cada carga y descarga. Lo que cambia es el material del cátodo, y de ahí se derivan todas las diferencias prácticas.</p>
+
+<h3>LFP: estructura olivina</h3>
+
+<p>El cátodo es fosfato de hierro y litio. Los enlaces fósforo-oxígeno de la estructura olivina son fuertes y no liberan oxígeno fácilmente al calentarse. Esa es la razón física de fondo por la que una celda LFP es intrínsecamente más segura: para que se desencadene una fuga térmica hay que llevarla a temperaturas mucho mayores y, aun entonces, la reacción es menos energética porque el propio cátodo no aporta oxígeno al incendio.</p>
+
+<p>El precio de esa estabilidad es una tensión nominal más baja (3,2 V frente a 3,7 V) y una capacidad específica menor, lo que se traduce en menos energía por kilogramo.</p>
+
+<h3>NMC: estructura laminada</h3>
+
+<p>El cátodo combina óxidos de níquel, manganeso y cobalto en una estructura laminada. El níquel aporta capacidad, el cobalto estabilidad estructural y el manganeso seguridad. Las formulaciones se nombran por su proporción: NMC 111, 532, 622 y 811 —esta última con 80&nbsp;% de níquel—. Cuanto más níquel, más energía específica y también más sensibilidad térmica.</p>
+
+<p>Esta estructura almacena más litio por unidad de masa, pero al degradarse a alta temperatura libera oxígeno, que alimenta la reacción exotérmica. Por eso los packs NMC exigen gestión térmica y BMS más sofisticados.</p>
+
+<h2 id="comparativa">Comparativa técnica lado a lado</h2>
+
+<div class="table-wrap">
+<table>
+  <caption>LFP vs NMC — valores típicos a nivel de celda, 2026</caption>
+  <thead>
+    <tr><th>Parámetro</th><th>LFP</th><th>NMC</th><th>Implicancia en una conversión</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Tensión nominal</td><td>3,2 V</td><td>3,6–3,7 V</td><td>LFP necesita ~15 % más celdas en serie para la misma tensión de bus</td></tr>
+    <tr><td>Ventana de tensión</td><td>2,5 – 3,65 V</td><td>3,0 – 4,2 V</td><td>Define límites de corte del BMS</td></tr>
+    <tr><td>Energía específica</td><td>90–160 Wh/kg</td><td>150–250 Wh/kg</td><td>Pack LFP pesa 30–60 % más para igual kWh</td></tr>
+    <tr><td>Densidad volumétrica</td><td>220–350 Wh/L</td><td>350–600 Wh/L</td><td>LFP ocupa más espacio bajo el piso o en el vano motor</td></tr>
+    <tr><td>Ciclos hasta 80 % SOH</td><td>3.000–6.000</td><td>1.000–2.500</td><td>LFP dura 2–3 veces más</td></tr>
+    <tr><td>Fuga térmica (onset)</td><td>~270 °C</td><td>~180–210 °C</td><td>Margen de seguridad muy superior en LFP</td></tr>
+    <tr><td>Costo celda (US$/kWh)</td><td>80–110</td><td>110–150</td><td>LFP 20–30 % más barata</td></tr>
+    <tr><td>Autodescarga mensual</td><td>1,5–3 %</td><td>2–4 %</td><td>Relevante en vehículos de uso esporádico</td></tr>
+    <tr><td>Capacidad a −20 °C</td><td>60–70 %</td><td>70–80 %</td><td>NMC rinde mejor en frío extremo</td></tr>
+    <tr><td>Carga diaria al 100 % SOC</td><td>Recomendable</td><td>Preferible limitar a 80 %</td><td>LFP entrega más capacidad utilizable en la práctica</td></tr>
+    <tr><td>Contenido de cobalto</td><td>Nulo</td><td>5–20 %</td><td>Costo, volatilidad de precio y trazabilidad de suministro</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note">
+  <strong>Cuidado con comparar celdas contra packs.</strong> Las cifras de la tabla son a nivel de celda. En el pack terminado, la ventaja de densidad de NMC se reduce: la integración estructural tipo <em>cell-to-pack</em> que favorece a las celdas prismáticas LFP recorta la brecha del 40&nbsp;% teórico a un 20–30&nbsp;% real. Compara siempre packs con packs.
+</div>
+
+<h2 id="peso">El impacto del peso: el cálculo que decide</h2>
+
+<p>La diferencia de densidad energética no es un dato de catálogo, es kilos reales colgando del chasis de un auto que no fue diseñado para llevarlos. Hagamos el número para una conversión de 30 kWh.</p>
+
+<pre><code>PACK DE 30 kWh - MASA ESTIMADA DE CELDAS
+
+  LFP  a 130 Wh/kg  ->  30.000 / 130 = 231 kg de celdas
+  NMC  a 210 Wh/kg  ->  30.000 / 210 = 143 kg de celdas
+
+  Diferencia: 88 kg solo en celdas
+
+MASA DEL PACK COMPLETO (factor 1,30 por estructura,
+BMS, cableado, envolvente y gestion termica)
+
+  LFP  ->  231 x 1,30 = 300 kg
+  NMC  ->  143 x 1,30 = 186 kg
+
+  Diferencia real en el vehiculo: 114 kg
+
+EFECTO EN CONSUMO (regla: +100 kg = +4 % consumo)
+  Vehiculo base 950 kg
+  Con pack NMC : 1.136 kg  ->  0,168 kWh/km
+  Con pack LFP : 1.250 kg  ->  0,176 kWh/km  (+4,8 %)
+
+AUTONOMIA CON 30 kWh (90 % utilizable = 27 kWh)
+  NMC : 27 / 0,168 = 161 km
+  LFP : 27 / 0,176 = 153 km
+
+  Perdida de autonomia por la masa extra: 8 km (5 %)</code></pre>
+
+<p>El resultado sorprende a mucha gente: 114 kg adicionales cuestan solo un 5&nbsp;% de autonomía. La penalización del peso en un vehículo eléctrico es mucho menor de lo que se teme, porque la frenada regenerativa recupera buena parte de la energía invertida en acelerar la masa. Donde sí duele el peso es en el <strong>espacio disponible</strong> y en la <strong>capacidad estructural</strong> del vehículo base: 300 kg en un hatchback de los noventa exige refuerzos serios en los puntos de anclaje y una revisión de suspensión y frenos.</p>
+
+<h2 id="vida">Vida útil: el argumento decisivo</h2>
+
+<p>Si el peso es un empate técnico con ventaja moderada para NMC, la vida útil es una victoria clara de LFP. Traducido a la vida real de un vehículo convertido:</p>
+
+<div class="table-wrap">
+<table>
+  <caption>Vida útil esperada de un pack de 30 kWh según uso (hasta 80 % de capacidad remanente)</caption>
+  <thead>
+    <tr><th>Uso anual</th><th>Ciclos equivalentes/año</th><th>LFP (4.000 ciclos)</th><th>NMC (1.800 ciclos)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>10.000 km</td><td>~60</td><td>&gt; 25 años (limita el calendario)</td><td>~22 años (limita el calendario)</td></tr>
+    <tr><td>20.000 km</td><td>~120</td><td>~25 años</td><td>~14 años</td></tr>
+    <tr><td>35.000 km</td><td>~210</td><td>~19 años</td><td>~8,5 años</td></tr>
+    <tr><td>60.000 km (flota)</td><td>~360</td><td>~11 años</td><td>~5 años</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Junto al envejecimiento por ciclos existe el <strong>envejecimiento calendario</strong>: una celda se degrada aunque no la uses, y ese proceso se acelera con la temperatura y con estados de carga altos sostenidos. Aquí LFP vuelve a ganar, porque tolera permanecer al 100&nbsp;% de carga sin castigo apreciable, mientras que una NMC almacenada al 100&nbsp;% durante meses a 30 °C puede perder 4–6&nbsp;% de capacidad al año.</p>
+
+<p>Para una conversión, la aritmética es contundente: si el pack LFP cuesta un 20&nbsp;% menos y dura el doble, su <strong>costo por kWh entregado a lo largo de la vida útil</strong> es aproximadamente 2,4 veces menor que el de NMC. Es el argumento económico más fuerte de toda esta comparación.</p>
+
+<h2 id="seguridad">Seguridad y el rol de la normativa chilena</h2>
+
+<p>La diferencia de temperatura de fuga térmica —270 °C en LFP contra 180–210 °C en NMC— parece un detalle de laboratorio hasta que se traduce a un auto convertido en un garaje residencial. Un pack LFP sometido a un cortocircuito interno, un abuso mecánico o una sobrecarga tiende a hincharse, ventear y calentarse; uno NMC en las mismas condiciones tiene una probabilidad significativamente mayor de propagar la falla celda a celda, con llama y liberación de oxígeno del propio cátodo.</p>
+
+<p>Esto importa especialmente en el retrofit, donde el pack casi nunca tiene el nivel de integración estructural, refrigeración líquida y separación entre celdas de un vehículo diseñado de fábrica. Un pack casero con celdas NMC apiladas sin barreras térmicas concentra todos los riesgos.</p>
+
+<div class="warning">
+  <strong>Requisito normativo en Chile.</strong> El reglamento de transformación a propulsión eléctrica exige que los módulos, paquetes y sistemas de baterías del kit estén conformados por <em>celdas secundarias de litio</em> y cuenten con <strong>autorización de uso de la Superintendencia de Electricidad y Combustibles (SEC)</strong>. También exige un dispositivo de monitoreo de aislamiento, cubierta naranja en los cables de alta tensión, una resistencia inferior a 0,1&nbsp;Ω entre las partes conductoras expuestas y el chasis, y un indicador del estado del sistema de acumulación. Ambas químicas pueden cumplirlo, pero conseguir certificación es hoy más simple con celdas LFP de fabricantes con documentación completa (UN 38.3, IEC 62660, hojas de datos trazables).
+</div>
+
+<h2 id="clima">Clima chileno: el factor frío es menos relevante de lo que parece</h2>
+
+<p>La gran desventaja documentada de LFP es su comportamiento a temperaturas bajo cero: retiene 60–70&nbsp;% de capacidad a −20 °C frente al 70–80&nbsp;% de NMC, y su carga a baja temperatura es más restrictiva. Pero conviene ubicar ese dato en la geografía real de las conversiones chilenas.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>Temperaturas mínimas típicas de invierno y pertinencia de la penalización LFP</caption>
+  <thead><tr><th>Zona</th><th>Mínima media de julio</th><th>¿La penalización LFP es relevante?</th></tr></thead>
+  <tbody>
+    <tr><td>Antofagasta / Iquique</td><td>12–14 °C</td><td>No</td></tr>
+    <tr><td>Valparaíso / Viña</td><td>8–9 °C</td><td>No</td></tr>
+    <tr><td>Santiago</td><td>3–5 °C</td><td>Marginal</td></tr>
+    <tr><td>Concepción / Temuco</td><td>3–6 °C</td><td>Marginal</td></tr>
+    <tr><td>Coyhaique / Punta Arenas</td><td>−2 a 1 °C</td><td>Sí, considerar precalentamiento</td></tr>
+    <tr><td>Zonas cordilleranas y altiplánicas</td><td>−10 a −5 °C</td><td>Sí, obligatorio precalentamiento</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Para el 90&nbsp;% del parque vehicular chileno, el argumento del frío no cambia la decisión. En la zona austral o para vehículos que suben a la cordillera en invierno, la solución no es cambiar de química sino <strong>añadir mantas calefactoras al pack</strong> gobernadas por el BMS, que impidan cargar por debajo de 0 °C y precalienten antes de la carga. Cuesta entre $150.000 y $400.000 y resuelve el problema para ambas químicas.</p>
+
+<div class="note">
+  <strong>La regla que nunca se debe romper:</strong> ninguna celda de litio debe <em>cargarse</em> por debajo de 0 °C sin precalentar. Hacerlo produce <em>lithium plating</em>: depósitos metálicos irreversibles en el ánodo que reducen la capacidad y, en el peor caso, perforan el separador y provocan un cortocircuito interno. Descargar en frío es aceptable —con menos potencia disponible—; cargar en frío no lo es.
+</div>
+
+<h2 id="bms">Consecuencias para el diseño del BMS</h2>
+
+<p>La curva de descarga de LFP es notablemente plana: entre el 20 y el 90&nbsp;% de carga, la tensión de la celda se mueve apenas entre 3,20 y 3,35 V. Eso es excelente para el motor —tensión de bus estable— y pésimo para estimar el estado de carga leyendo tensión.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>Implicancias prácticas para el sistema de gestión de batería</caption>
+  <thead><tr><th>Aspecto del BMS</th><th>Con LFP</th><th>Con NMC</th></tr></thead>
+  <tbody>
+    <tr><td>Estimación de SOC</td><td>Obligatorio conteo de coulombios; la tensión no basta</td><td>Curva con pendiente útil; tensión ayuda</td></tr>
+    <tr><td>Precisión de medición de celda</td><td>±2 mV o mejor</td><td>±5 mV suele bastar</td></tr>
+    <tr><td>Balanceo</td><td>Pasivo suele bastar (deriva lenta)</td><td>Conviene activo en packs grandes</td></tr>
+    <tr><td>Sensores de temperatura</td><td>1 cada 6–8 celdas</td><td>1 cada 3–4 celdas</td></tr>
+    <tr><td>Gestión térmica</td><td>Aire forzado suele bastar hasta 1,5 C</td><td>Refrigeración líquida recomendada</td></tr>
+    <tr><td>Corte por sobretensión</td><td>3,65 V/celda</td><td>4,20 V/celda</td></tr>
+    <tr><td>Corte por subtensión</td><td>2,50 V/celda</td><td>3,00 V/celda</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Un error habitual en conversiones caseras es reutilizar un BMS configurado para NMC en un pack LFP sin corregir los umbrales. El resultado es un pack que nunca se carga del todo o, peor, que sobrepasa los 3,65 V por celda y degrada aceleradamente. Los principios de diagnóstico y balanceo, a escala pequeña, los cubrimos en <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">nuestra guía de reparación de baterías y BMS</a>.</p>
+
+<h2 id="configuracion">Configuración del pack: cuántas celdas y en qué arreglo</h2>
+
+<p>El número de celdas en serie determina la tensión del bus; el número en paralelo, la capacidad. Este es el cálculo base para una conversión de 30 kWh a 350 V nominales.</p>
+
+<pre><code>OPCION LFP - celdas prismaticas 3,2 V / 105 Ah
+
+  Serie   : 350 V / 3,2 V = 109  ->  se adopta 108S
+  Tension : 108 x 3,2  = 345,6 V nominal
+            108 x 3,65 = 394,2 V a plena carga
+            108 x 2,50 = 270,0 V al corte inferior
+  Energia : 345,6 V x 105 Ah = 36,3 kWh brutos
+  Arreglo : 108S1P
+  Masa    : ~2,1 kg/celda x 108 = 227 kg + estructura
+
+OPCION NMC - celdas cilindricas 21700, 3,6 V / 5 Ah
+
+  Serie   : 350 V / 3,6 V = 97   ->  se adopta 96S
+  Tension : 96 x 3,6 = 345,6 V nominal
+            96 x 4,2 = 403,2 V a plena carga
+  Paralelo: 30.000 Wh / (345,6 V x 5 Ah) = 17,4 -> 18P
+  Arreglo : 96S18P = 1.728 celdas
+  Energia : 345,6 V x 90 Ah = 31,1 kWh brutos
+  Masa    : ~70 g x 1.728 = 121 kg + estructura
+
+OBSERVACION
+  El pack LFP usa 108 uniones atornilladas.
+  El pack NMC usa mas de 3.400 soldaduras por puntos.
+  La diferencia en horas de trabajo, riesgo de falla
+  y complejidad del BMS es enorme.</code></pre>
+
+<p>Ese último punto pesa más de lo que sugiere la tabla comparativa: <strong>108 celdas prismáticas atornilladas se ensamblan, inspeccionan y reparan; 1.728 cilíndricas soldadas, no</strong>. Para un taller que debe entregar un vehículo certificado y mantenible, la simplicidad constructiva de las prismáticas LFP es un argumento operativo de primer orden.</p>
+
+<h2 id="costo">Costo total de propiedad del pack</h2>
+
+<p>Comparemos las dos opciones a lo largo de 15 años para un vehículo que recorre 20.000 km al año.</p>
+
+<div class="table-wrap">
+<table>
+  <caption>Costo de propiedad de un pack de 30 kWh a 15 años (TC $950/USD)</caption>
+  <thead><tr><th>Concepto</th><th>LFP</th><th>NMC</th></tr></thead>
+  <tbody>
+    <tr><td>Costo de celdas</td><td>US$2.850 ($2,71 M)</td><td>US$3.900 ($3,71 M)</td></tr>
+    <tr><td>Estructura, BMS y envolvente</td><td>$2,30 M</td><td>$2,60 M</td></tr>
+    <tr><td>Gestión térmica</td><td>$0,35 M (aire forzado)</td><td>$0,95 M (líquida)</td></tr>
+    <tr><td>Instalación y refuerzo estructural</td><td>$0,90 M</td><td>$0,65 M</td></tr>
+    <tr><td><strong>Inversión inicial</strong></td><td><strong>$6,26 M</strong></td><td><strong>$7,91 M</strong></td></tr>
+    <tr><td>Reemplazos en 15 años</td><td>0</td><td>1 (año ~14)</td></tr>
+    <tr><td>Capacidad remanente al año 15</td><td>~84 %</td><td>~92 % (pack nuevo)</td></tr>
+    <tr><td><strong>Costo total a 15 años</strong></td><td><strong>$6,26 M</strong></td><td><strong>$14,5 M aprox.</strong></td></tr>
+    <tr><td>Costo por km recorrido</td><td>$20,9</td><td>$48,3</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Incluso siendo conservadores con la vida útil de NMC y sin descontar el valor del dinero en el tiempo, la brecha es amplia. Solo se cierra si el proyecto necesita la densidad de NMC por una restricción física insalvable de espacio.</p>
+
+<h2 id="cuando">Cuándo elegir cada química</h2>
+
+<h3>Elige LFP si…</h3>
+<ul>
+  <li>Es una conversión de uso urbano o mixto con autonomía objetivo bajo 250 km.</li>
+  <li>Tienes espacio razonable: vano motor liberado, túnel central, maletero o bajo piso.</li>
+  <li>Quieres que el pack dure lo que le queda de vida al vehículo.</li>
+  <li>El vehículo pasará días o semanas estacionado con carga completa.</li>
+  <li>Vas a homologar: la documentación de seguridad es más simple de defender.</li>
+  <li>El pack se ensamblará y mantendrá en taller, no en línea de producción.</li>
+  <li>Operas en clima templado, que es casi todo Chile habitado.</li>
+</ul>
+
+<h3>Elige NMC si…</h3>
+<ul>
+  <li>Necesitas más de 300 km de autonomía en un vehículo con espacio muy limitado.</li>
+  <li>Conviertes un deportivo o un vehículo donde cada kilo compromete el comportamiento dinámico.</li>
+  <li>Reutilizas módulos completos de un EV de fábrica con su gestión térmica original y trazabilidad documentada.</li>
+  <li>El vehículo operará habitualmente bajo −10 °C.</li>
+  <li>Requieres descargas sostenidas sobre 3 C —competición, arrastre pesado— donde la densidad de potencia manda.</li>
+</ul>
+
+<div class="note">
+  <strong>La tercera vía: LFP de nueva generación.</strong> Las celdas LFP con cátodo enriquecido en manganeso (LMFP) y las LFP de alta densidad de 2025–2026 ya alcanzan 160–190 Wh/kg, acercándose al territorio de NMC 622 sin renunciar a la estabilidad térmica. Si tu proyecto arranca hoy, vale la pena cotizarlas: cierran gran parte de la brecha que justificaba elegir NMC.
+</div>
+
+<h2 id="compra">Cómo comprar celdas sin equivocarse</h2>
+
+<ul>
+  <li><strong>Exige grado A con documentación.</strong> Las celdas «grado B» tienen dispersión de capacidad e impedancia interna: en un pack en serie, la peor celda define el comportamiento de todo el conjunto.</li>
+  <li><strong>Pide informe de capacidad y resistencia interna por celda</strong> y verifícalo por muestreo al recibir. Una dispersión mayor al 3&nbsp;% en capacidad o al 15&nbsp;% en resistencia interna es motivo de rechazo.</li>
+  <li><strong>Compra todas las celdas del mismo lote.</strong> Mezclar lotes o fechas de fabricación acorta la vida del pack.</li>
+  <li><strong>Verifica UN 38.3</strong> —requisito de transporte— y solicita las hojas de datos IEC 62660 o equivalentes: sin esos documentos la autorización de uso ante la SEC se vuelve cuesta arriba.</li>
+  <li><strong>Desconfía de precios muy por debajo del mercado.</strong> Bajo US$70/kWh en 2026 casi siempre significa celdas recicladas, de segunda vida o de segunda selección.</li>
+  <li><strong>Considera el flete y la normativa de transporte.</strong> Las celdas de litio son mercancía peligrosa clase 9: el flete aéreo suele estar restringido y el marítimo agrega 6–10 semanas al cronograma.</li>
+</ul>
+
+<h2 id="conclusion">Conclusión</h2>
+
+<p>Para la inmensa mayoría de las conversiones eléctricas que se harán en Chile bajo el nuevo marco regulatorio, <strong>LFP es la respuesta correcta</strong>. Cuesta 20–30&nbsp;% menos por kWh, dura entre dos y tres veces más ciclos, tolera cargarse al 100&nbsp;% todos los días, resiste 60–90 °C más antes de entrar en fuga térmica, se ensambla con celdas prismáticas atornilladas en lugar de miles de soldaduras, y su documentación de seguridad facilita el camino hacia la certificación.</p>
+
+<p>NMC conserva un nicho legítimo y bien definido: proyectos donde el espacio es la restricción dominante, donde se busca autonomía superior a 300 km, o donde se reutiliza un módulo de fábrica completo con su gestión térmica original. Fuera de ese nicho, elegir NMC en una conversión suele significar pagar más por adelantado, complicar el diseño térmico y reemplazar el pack a mitad de la vida del vehículo.</p>
+
+<p>Con la química definida, el siguiente paso es dimensionar el tren motriz: continúa con <a href="/blog/como-elegir-el-motor-electrico-para-tu-conversion">cómo elegir el motor eléctrico para tu conversión</a>.</p>
+
+
+<h2 id="faq">Preguntas frecuentes</h2>
+
+<div class="faq">
+  <details>
+    <summary>¿Cuál es mejor para una conversión eléctrica, LFP o NMC?</summary>
+    <p>Para la mayoría de las conversiones, <strong>LFP</strong>: cuesta 20–30&nbsp;% menos por kWh, dura 2–3 veces más ciclos, tolera cargarse al 100&nbsp;% a diario y resiste ~270 °C antes de la fuga térmica frente a 180–210 °C de NMC. NMC solo conviene cuando el espacio es la restricción dominante, se buscan más de 300 km de autonomía o se reutiliza un módulo de fábrica completo con su gestión térmica.</p>
+  </details>
+  <details>
+    <summary>¿Cuánto más pesa un pack LFP que uno NMC de la misma capacidad?</summary>
+    <p>Entre 30 y 60&nbsp;% más a nivel de celda. Para 30 kWh, la diferencia instalada ronda los <strong>114 kg</strong> (300 kg LFP vs 186 kg NMC). Ese peso extra reduce la autonomía solo un 5&nbsp;% aproximadamente, porque la frenada regenerativa recupera parte de la energía invertida en mover la masa.</p>
+  </details>
+  <details>
+    <summary>¿Cuántos ciclos dura una batería LFP frente a una NMC?</summary>
+    <p>LFP entrega 3.000–6.000 ciclos hasta el 80&nbsp;% de capacidad; NMC, 1.000–2.500. En un vehículo de 20.000 km/año eso equivale a ~25 años con LFP frente a ~14 años con NMC.</p>
+  </details>
+  <details>
+    <summary>¿Es seguro usar baterías NMC en un auto convertido?</summary>
+    <p>Sí, con gestión térmica adecuada, barreras entre celdas, BMS con medición precisa por celda y protecciones bien dimensionadas. El problema del retrofit es que los packs artesanales rara vez alcanzan el nivel de integración térmica de un vehículo de fábrica, y NMC es menos tolerante a esas carencias.</p>
+  </details>
+  <details>
+    <summary>¿Puedo cargar una batería LFP con frío?</summary>
+    <p>No cargues <em>ninguna</em> celda de litio bajo 0 °C sin precalentar: se produce <em>lithium plating</em>, irreversible y capaz de perforar el separador. Descargar en frío sí es aceptable, con menor potencia. La solución son mantas calefactoras gobernadas por el BMS ($150.000–$400.000).</p>
+  </details>
+  <details>
+    <summary>¿Qué umbrales de tensión debe tener el BMS con celdas LFP?</summary>
+    <p>Corte superior en <strong>3,65 V</strong> por celda e inferior en <strong>2,50 V</strong>, con nominal de 3,2 V. Para NMC: 4,20 V y 3,00 V, con nominal de 3,6–3,7 V. Reutilizar un BMS configurado para NMC en un pack LFP sin corregir umbrales degrada el pack aceleradamente.</p>
+  </details>
+  <details>
+    <summary>¿Qué exige la normativa chilena respecto de las baterías del kit?</summary>
+    <p>Que los módulos, paquetes y sistemas de baterías estén conformados por celdas secundarias de litio y cuenten con <strong>autorización de uso de la SEC</strong>. Además se exige dispositivo de monitoreo de aislamiento, cables de alta tensión con cubierta naranja y resistencia menor a 0,1&nbsp;Ω entre partes conductoras expuestas y chasis.</p>
+  </details>
+  <details>
+    <summary>¿Cuánto cuesta un pack de 30 kWh en Chile?</summary>
+    <p>Con celdas LFP nuevas grado A, alrededor de <strong>$6,3 millones</strong> instalado, incluyendo estructura, BMS, envolvente, gestión térmica por aire y refuerzo estructural. Con NMC, cerca de <strong>$7,9 millones</strong>, por el mayor costo de celdas y la necesidad de refrigeración líquida.</p>
+  </details>
+</div>
+
+<div class="author-box">
+  <div class="avatar" aria-hidden="true"><img src="../author_alberto.jpg" alt="Fotografía de Alberto Gallardo, analista programador computacional"></div>
+  <div>
+    <h3>Sobre el autor</h3>
+    <p><strong>Alberto Gallardo</strong> es Analista Programador Computacional con 18 años de experiencia en desarrollo y educación. Escribe y mantiene este sitio, combinando su trayectoria técnica con la docencia en robótica, electrónica y automatización industrial. Las cifras de esta comparativa son rangos editoriales construidos a partir de hojas de datos públicas de fabricantes de celdas, reportes de precios de la industria y la normativa chilena vigente a agosto de 2026. Verifica siempre los valores contra la hoja de datos específica de las celdas que vayas a comprar. <a href="/about">Más sobre Alberto →</a></p>
+  </div>
+</div>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado, y ningún fabricante de celdas o de BMS ha pagado por aparecer aquí. Los precios por kWh varían con rapidez según el mercado de materias primas: úsalos como orden de magnitud y confirma con cotizaciones vigentes antes de comprar.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Con la química resuelta, dimensiona el tren motriz en <a href="/blog/como-elegir-el-motor-electrico-para-tu-conversion">Cómo elegir el motor eléctrico para tu conversión</a> y revisa el presupuesto global en <a href="/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile">Cuánto cuesta convertir un auto a eléctrico en Chile</a>.</p>
+  <p>Si quieres practicar diagnóstico de celdas y balanceo a escala de banco antes de tocar alta tensión, empieza por <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">Cómo reparar baterías de taladros inalámbricos: BMS y celdas</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile">← Anterior: Cuánto cuesta convertir un auto a eléctrico</a>
+  <a href="/blog/como-elegir-el-motor-electrico-para-tu-conversion">Siguiente: Cómo elegir el motor eléctrico →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales y los órdenes de magnitud citados. Las especificaciones exactas de cada celda deben verificarse contra la hoja de datos vigente del fabricante correspondiente.</p>
+<ul>
+<li><a href="https://www.iea.org/reports/global-ev-outlook-2025" target="_blank" rel="noopener noreferrer">Agencia Internacional de Energía — Global EV Outlook: precios y química de baterías</a></li>
+<li><a href="https://www.nrel.gov/transportation/battery-degradation.html" target="_blank" rel="noopener noreferrer">NREL (U.S. DOE) — Investigación sobre degradación y vida útil de baterías de litio</a></li>
+<li><a href="https://www.subtrans.gob.cl" target="_blank" rel="noopener noreferrer">Subsecretaría de Transportes — Reglamento de transformación de vehículos a propulsión eléctrica</a></li>
+<li><a href="https://www.sec.cl" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles — Autorización de uso de componentes eléctricos</a></li>
+<li><a href="https://afdc.energy.gov/vehicles/electric-batteries" target="_blank" rel="noopener noreferrer">Alternative Fuels Data Center — Fundamentos de baterías para vehículos eléctricos</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
