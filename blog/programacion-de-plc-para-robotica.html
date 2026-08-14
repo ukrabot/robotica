@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Programación de PLC para Robótica</title>
+<meta name="description" content="Guía de programación de PLC para robótica: los cinco lenguajes de IEC 61131-3 (Ladder, texto estructurado, FBD y SFC), el handshake PLC-robot, PLC de seguridad y un ejemplo completo de pick & place.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/programacion-de-plc-para-robotica">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Programación de PLC para Robótica">
+<meta property="og:description" content="Los 5 lenguajes de IEC 61131-3, el handshake PLC-robot, PLC de seguridad y un ejemplo completo de pick & place.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/plc_programacion_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/programacion-de-plc-para-robotica">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Programación de PLC para Robótica">
+<meta name="twitter:description" content="Ladder vs texto estructurado, handshake PLC-robot, PLC de seguridad y un ejemplo de pick & place.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/plc_programacion_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Programación de PLC para Robótica",
+  "description": "Guía de programación de PLC para robótica: qué hace un PLC dentro de una célula robótica, los cinco lenguajes de la norma IEC 61131-3 (Ladder, texto estructurado, diagrama de bloques, lista de instrucciones y SFC), cuándo usar cada uno, la gestión de variables y temporizadores, el handshake de señales entre el PLC y el controlador del robot, un ejemplo completo de secuencia pick & place en texto estructurado y el papel del PLC de seguridad en la arquitectura de la célula.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/programacion-de-plc-para-robotica"
+  },
+  "image": "https://www.ukrabot.cl/blog/plc_programacion_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "PLC con entorno IEC 61131-3 (Siemens TIA Portal, Rockwell Studio 5000 o CODESYS), controlador de brazo robótico y, para las funciones de seguridad, un PLC de seguridad o un módulo de seguridad integrado",
+  "wordCount": "2450",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Programación de PLC para Robótica",
+      "item": "https://www.ukrabot.cl/blog/programacion-de-plc-para-robotica"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué lenguaje de PLC conviene para robótica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de quién va a mantener el programa. Ladder (LD) es el más legible para técnicos eléctricos y para lógica de enclavamiento y entradas/salidas discretas; el texto estructurado (ST) es más cómodo para aritmética, comparaciones, bucles y comunicación de datos. En la práctica, la mayoría de las celdas combinan Ladder para la lógica de seguridad y secuenciación visible, con ST en bloques de función que hacen cálculos o comunicaciones."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito un PLC de seguridad aparte del PLC estándar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, o al menos un módulo de seguridad certificado. Las funciones de seguridad (parada de emergencia, monitoreo de velocidad, puertas y cortinas) no deben depender del PLC estándar, porque un fallo en el programa de proceso podría inhibirlas. Se usa un PLC de seguridad dedicado (Siemens S7-1200F/1500F, Allen-Bradley GuardLogix, Pilz) con entradas de doble canal, vigilancia cruzada y un nivel de prestaciones PL d o PL e según el riesgo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo se comunican el PLC y el controlador del robot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hay dos caminos. El más simple es el cableado de entradas/salidas discretas: una señal de arranque, una de parada y las confirmaciones de estado entre ambos. El más potente es un bus de campo industrial (PROFINET, EtherNet/IP, EtherCAT o Modbus TCP), que intercambia palabras de datos enteras: número de programa, posiciones, contadores y alarmas. Muchas instalaciones usan E/S discretas para el handshake crítico y bus de campo para los datos de proceso."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el handshake y por qué importa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es el intercambio de señales de confirmación que evita que el PLC y el robot se adelanten mutuamente. Por ejemplo, el PLC solo abre la pinza o avanza el transportador cuando el robot confirma con la señal de 'ciclo terminado'. Sin ese acuse de recibo, una secuencia puede saltarse pasos y provocar colisiones, piezas mal colocadas o daños al equipo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿La norma IEC 61131-3 se usa en todas las marcas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, es el estándar internacional que define los lenguajes de programación de los PLC y que implementan los principales fabricantes: Siemens (TIA Portal), Rockwell (Studio 5000), CODESYS, Omron, Schneider y Mitsubishi. La sintaxis y la estructura de los lenguajes son comunes, aunque cada entorno tiene diferencias en el hardware, las librerías y la configuración de comunicaciones."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="plc_programacion_hero.jpg" alt="Gabinete de control industrial con un PLC, cableado ordenado y una laptop mostrando programación en escalera, con un brazo robótico al fondo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización Industrial y Seguridad · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Programación de PLC para Robótica</h1>
+    <p>Los cinco lenguajes de IEC 61131-3, el handshake entre el PLC y el controlador del robot, el PLC de seguridad y un ejemplo completo de pick & place para empezar a programar.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#que-hace-un-plc">Qué hace un PLC en una célula robótica</a></li><li><a href="#iec-61131-3">IEC 61131-3: los cinco lenguajes</a></li><li><a href="#ladder-vs-st">Ladder (LD) vs Texto Estructurado (ST)</a></li><li><a href="#variables-y-temporizadores">Variables, temporizadores y bloques de función</a></li><li><a href="#handshake">El handshake PLC ↔ robot</a></li><li><a href="#ejemplo-pick-and-place">Ejemplo: pick & place paso a paso</a></li><li><a href="#plc-seguridad">El PLC de seguridad</a></li><li><a href="#problemas-comunes">Problemas comunes y soluciones</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-hace-un-plc">
+<h2>Qué hace un PLC en una célula robótica</h2>
+<p>El PLC (Controlador Lógico Programable) es el <strong>cerebro de planta</strong>: coordina el brazo robótico con el resto de la línea de producción. El controlador del robot se encarga de mover los ejes con precisión; el PLC decide <strong>cuándo</strong> debe hacerlo y en qué secuencia.</p>
+<ul>
+<li><strong>Secuenciación:</strong> ordena las etapas del proceso (transportador → robot → prensa → expulsión).</li>
+<li><strong>Control de periféricos:</strong> pinzas, sensores, válvulas, motores de transportadores, torretas y mesas posicionadoras.</li>
+<li><strong>Gestión de alarmas:</strong> centraliza fallas, estados y paradas de la línea.</li>
+<li><strong>Intercambio de datos:</strong> recibe y entrega información del robot por E/S discretas o por bus de campo.</li>
+<li><strong>Seguridad:</strong> mediante un PLC de seguridad, ejecuta paradas de emergencia, monitoreo de puertas y cortinas de luz.</li>
+</ul>
+<p>En una arquitectura típica, el PLC actúa como <strong>maestro</strong> y el controlador del robot como <strong>esclavo</strong> de la secuencia: el PLC arranca el programa del robot, espera sus confirmaciones y decide el siguiente paso. Esta división de responsabilidades es la que hace escalable y mantenible una célula con varios robots y equipos.</p>
+</section>
+
+<section id="iec-61131-3">
+<h2>IEC 61131-3: los cinco lenguajes</h2>
+<p>La norma <strong>IEC 61131-3</strong> estandariza los lenguajes de programación de los PLC. Conocerlos te permite programar en cualquier marca y leer programas ajenos sin depender de un fabricante.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Los cinco lenguajes definidos por IEC 61131-3 y su uso típico en robótica.</caption>
+<thead><tr><th>Lenguaje</th><th>Tipo</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td>Ladder (LD)</td><td>Gráfico</td><td>Lógica de enclavamiento, E/S discretas, seguridad visible</td></tr>
+<tr><td>Diagrama de Bloques (FBD)</td><td>Gráfico</td><td>Lógica combinacional, procesamiento de señales, lazos</td></tr>
+<tr><td>Texto Estructurado (ST)</td><td>Textual</td><td>Aritmética, bucles, manejo de datos y comunicaciones</td></tr>
+<tr><td>Lista de Instrucciones (IL)</td><td>Textual</td><td>En desuso; sustituido por ST en la mayoría de los entornos</td></tr>
+<tr><td>Secuencial (SFC)</td><td>Gráfico</td><td>Máquinas de estados: etapas, transiciones y ciclos</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para robótica, los tres más relevantes son <strong>LD</strong>, <strong>ST</strong> y <strong>SFC</strong>: LD para enclavamientos y lógica de campo, ST para cálculos y comunicación, y SFC cuando el proceso es una secuencia de etapas con transiciones claras (arranque, trabajo, fin de ciclo, falla).</p>
+</section>
+
+<section id="ladder-vs-st">
+<h2>Ladder (LD) vs Texto Estructurado (ST)</h2>
+<p>La decisión más frecuente al programar una célula es elegir entre escalera y texto estructurado. No es una competencia: son herramientas complementarias.</p>
+<ul>
+<li><strong>Ladder (LD):</strong> intuitivo para quien viene del cableado eléctrico; ideal para lógica de contactos, enclavamientos y seguridad. Se vuelve ilegible cuando hay cálculos, comparaciones múltiples o bucles.</li>
+<li><strong>Texto Estructurado (ST):</strong> parecido a Pascal; mucho más potente para aritmética, estructuras de datos y comunicación. Exige más disciplina para depurar, sobre todo en paradas de emergencia.</li>
+</ul>
+<div class="note"><strong>Regla práctica:</strong> deja en Ladder los enclavamientos y la lógica que un electricista deba leer rápido; usa ST en bloques de función que calculan, filtran o conversan con el robot.</div>
+</section>
+
+<section id="variables-y-temporizadores">
+<h2>Variables, temporizadores y bloques de función</h2>
+<p>Todo programa de PLC manipula variables. Las más comunes en una célula robótica son:</p>
+<ul>
+<li><strong>Entradas (I):</strong> sensores, finales de carrera, confirmaciones del robot.</li>
+<li><strong>Salidas (Q):</strong> actuadores, válvulas, arranques y comandos hacia el robot.</li>
+<li><strong>Marcas (M):</strong> banderas internas de estado (en ciclo, pieza lista, falla).</li>
+<li><strong>Bloques de datos (DB):</strong> estructuras para contadores, recetas y datos de comunicación.</li>
+</ul>
+<p>Los <strong>temporizadores</strong> son indispensables. El <strong>TON</strong> (retardo a la conexión) filtra rebotes de sensores y confirma que una señal se mantiene estable; el <strong>TOF</strong> (retardo a la desconexión) mantiene una acción un instante tras quitar la condición; el <strong>TP</strong> genera un pulso de duración fija. En robótica se usan para validar que una pieza llegó, que una pinza cerró o que el robot respondió dentro del tiempo esperado.</p>
+</section>
+
+<section id="handshake">
+<h2>El handshake PLC ↔ robot</h2>
+<p>El <strong>handshake</strong> es el protocolo de señales que sincroniza al PLC con el controlador del robot. Cada transición importante se <strong>acusa de recibo</strong> para que ninguno se adelante.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Señales típicas del handshake entre PLC y robot.</caption>
+<thead><tr><th>Dirección</th><th>Señal</th><th>Significado</th></tr></thead>
+<tbody>
+<tr><td>PLC → robot</td><td>Start / Stop</td><td>Arrancar o detener el programa del robot</td></tr>
+<tr><td>PLC → robot</td><td>Selección de programa</td><td>Qué rutina debe ejecutar el robot</td></tr>
+<tr><td>PLC → robot</td><td>Permiso de avance</td><td>El periférico está listo para que el robot actúe</td></tr>
+<tr><td>Robot → PLC</td><td>En posición</td><td>El robot llegó al punto objetivo</td></tr>
+<tr><td>Robot → PLC</td><td>Ciclo terminado</td><td>El robot finalizó su rutina y libera la zona</td></tr>
+<tr><td>Robot → PLC</td><td>En falla / En automático</td><td>Estado operativo del robot</td></tr>
+</tbody>
+</table>
+</div>
+<p>La regla de oro es <strong>no actuar sin confirmación</strong>: el PLC solo abre la pinza o avanza el transportador cuando el robot confirma que terminó. Saltarse este acuse es la causa más común de colisiones y piezas dañadas en celdas nuevas.</p>
+</section>
+
+<section id="ejemplo-pick-and-place">
+<h2>Ejemplo: pick & place paso a paso</h2>
+<p>Escenario: el robot toma una pieza de un transportador y la deposita en una matriz. La secuencia la controla el PLC en texto estructurado, con temporizadores para validar cada confirmación.</p>
+<pre><code>// Pick &amp; place — texto estructurado (IEC 61131-3)
+// Etapa 0: esperar la orden de inicio del operador
+IF boton_inicio AND NOT en_ciclo THEN
+    en_ciclo := TRUE;
+    orden_start := TRUE;        // arranca el programa del robot
+END_IF;
+
+// Etapa 1: el robot confirmó que llegó a la zona de recogida
+IF en_ciclo AND robot_en_punto THEN
+    cerrar_pinza := TRUE;       // la pinza sujeta la pieza
+END_IF;
+
+// Etapa 2: la pinza confirmó cierre (sensor) tras 200 ms estables
+t_confirmacion(IN := pinza_cerrada, PT := T#200ms);
+IF en_ciclo AND t_confirmacion.Q THEN
+    orden_depositar := TRUE;    // el robot puede ir a la matriz
+END_IF;
+
+// Etapa 3: fin de ciclo confirmado por el robot
+IF en_ciclo AND robot_ciclo_terminado THEN
+    en_ciclo := FALSE;
+    orden_start := FALSE;
+    contador := contador + 1;
+END_IF;</code></pre>
+<p>Observa el patrón: cada etapa avanza solo cuando llega la <strong>confirmación</strong> de la etapa anterior. El temporizador <code>t_confirmacion</code> evita que un rebote del sensor de la pinza dispare una transición falsa. Este mismo esqueleto se reutiliza en casi cualquier secuencia industrial.</p>
+</section>
+
+<section id="plc-seguridad">
+<h2>El PLC de seguridad</h2>
+<p>Las funciones de seguridad no se programan en el PLC estándar: se ejecutan en un <strong>PLC de seguridad</strong> con entradas de doble canal, vigilancia cruzada y certificación hasta <strong>PL e (ISO 13849-1)</strong> o <strong>SIL 3 (IEC 62061)</strong>.</p>
+<ul>
+<li><strong>Parada de emergencia:</strong> circuitos redundantes que quitan la energía del movimiento.</li>
+<li><strong>Puertas y cortinas:</strong> monitoreo de accesos con enclavamiento y rearme manual.</li>
+<li><strong>Velocidad segura:</strong> límite de velocidad monitoreado en operación colaborativa o de ajuste.</li>
+<li><strong>Bus de seguridad:</strong> PROFIsafe, FSoE o CIP Safety integran estas señales en la misma red que el proceso.</li>
+</ul>
+<p>El diseño de estas funciones se detalla en las guías de <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">Parada de Emergencia</a> e <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">Integración de Cortinas de Luz</a>. Un PLC de seguridad bien configurado es una capa de protección, no un reemplazo de la evaluación de riesgos de la célula.</p>
+</section>
+
+<section id="problemas-comunes">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores típicos al programar un PLC para robótica.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El robot no arranca</td><td>Falta permiso o señal de start</td><td>Revisar el handshake y el modo automático</td></tr>
+<tr><td>La secuencia se salta pasos</td><td>Transiciones sin confirmación</td><td>Agregar acuses de recibo en cada etapa</td></tr>
+<tr><td>Entradas que rebotan</td><td>Sensor ruidoso o cableado</td><td>Filtrar con temporizador TON</td></tr>
+<tr><td>Comunicación intermitente</td><td>Bus mal terminado o blindaje</td><td>Revisar topología, tierra y terminadores</td></tr>
+<tr><td>PLC en STOP inesperado</td><td>Falla de programa o fuente</td><td>Leer el búfer de diagnóstico del entorno</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Programar un PLC para robótica es coordinar, no mover: el PLC organiza la secuencia, valida cada confirmación y resguarda la seguridad. Dominar IEC 61131-3 (con Ladder para lo visible y ST para lo complejo) y respetar el handshake con el robot son las dos habilidades que separan una célula que arranca a la primera de una que persigue fallas durante semanas. El siguiente paso natural es <a href="/blog/integrando-brazos-roboticos-con-plc">Integrando Brazos Robóticos con PLC</a>, donde vemos el cableado y los buses de campo en detalle.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código y las configuraciones son referenciales y deben adaptarse, probarse y validarse en tu propia instalación por personal calificado. La programación de funciones de seguridad exige hardware certificado y la validación de un integrador competente; nunca debe improvisarse sobre un PLC estándar. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Continúa con <a href="/blog/integrando-brazos-roboticos-con-plc">Integrando Brazos Robóticos con PLC</a> para ver el cableado y los buses de campo, y repasa la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Guía de Evaluación de Riesgo</a> antes de poner la célula en marcha.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/sensores-de-fuerza-torque-para-brazos-roboticos">← Anterior: Sensores de Fuerza-Torque para Brazos Robóticos</a>
+  <a href="/blog/integrando-brazos-roboticos-con-plc">Siguiente: Integrando Brazos Robóticos con PLC →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. La sintaxis exacta y las librerías dependen del fabricante del PLC y de su entorno de programación.</p>
+<ul>
+<li><a href="https://plcopen.org/" target="_blank" rel="noopener noreferrer">PLCopen — IEC 61131-3</a></li><li><a href="https://www.siemens.com/global/en/products/automation/industry-software/automation-software/tia-portal.html" target="_blank" rel="noopener noreferrer">Siemens — TIA Portal</a></li><li><a href="https://www.rockwellautomation.com/en-us/products/software/factorytalk/designsuite/studio-5000.html" target="_blank" rel="noopener noreferrer">Rockwell Automation — Studio 5000</a></li><li><a href="https://www.codesys.com/" target="_blank" rel="noopener noreferrer">CODESYS — IEC 61131-3</a></li><li><a href="https://www.iso.org/standard/69883.html" target="_blank" rel="noopener noreferrer">ISO 13849-1 — Partes de los sistemas de mando relativas a la seguridad</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

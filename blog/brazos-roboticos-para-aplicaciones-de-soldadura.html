@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Brazos Robóticos para Aplicaciones de Soldadura</title>
+<meta name="description" content="Brazos robóticos para soldadura: procesos MIG/MAG, TIG y por puntos, componentes de la célula, seguimiento de cordón, programación offline y seguridad.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/brazos-roboticos-para-aplicaciones-de-soldadura">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Brazos Robóticos para Aplicaciones de Soldadura">
+<meta property="og:description" content="MIG/MAG, TIG y soldadura por puntos, componentes de la célula, seguimiento de cordón, programación y seguridad.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/brazo_soldadura_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/brazos-roboticos-para-aplicaciones-de-soldadura">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Brazos Robóticos para Aplicaciones de Soldadura">
+<meta name="twitter:description" content="MIG/MAG, TIG y por puntos, seguimiento de cordón, programación offline y seguridad de la célula.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/brazo_soldadura_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Brazos Robóticos para Aplicaciones de Soldadura",
+  "description": "Guía de brazos robóticos para aplicaciones de soldadura: por qué robotizar la soldadura y cuándo conviene, los procesos MIG/MAG, TIG y soldadura por puntos, los componentes de una célula de soldadura robótica (antorcha, alimentador de alambre, fuente y posicionador), el seguimiento de cordón por contacto, láser o arco, la programación con teach pendant y programación offline, la seguridad específica de una célula de soldadura (humos, radiación de arco y proyecciones) y la evaluación del retorno de inversión.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/brazos-roboticos-para-aplicaciones-de-soldadura"
+  },
+  "image": "https://www.ukrabot.cl/blog/brazo_soldadura_hero.jpg",
+  "proficiencyLevel": "Avanzado",
+  "dependencies": "Brazo robótico de 6 ejes, fuente de soldadura, antorcha y alimentador de alambre, posicionador y, para programación offline, software de simulación",
+  "wordCount": "2550",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Brazos Robóticos para Aplicaciones de Soldadura",
+      "item": "https://www.ukrabot.cl/blog/brazos-roboticos-para-aplicaciones-de-soldadura"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué proceso de soldadura se robotiza mejor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El MIG/MAG es el más robotizado: es rápido, tolerante a variaciones y se adapta bien a series. El TIG se robotiza cuando se necesita calidad y acabado (acero inoxidable, aluminio), aunque exige más control del cordón. La soldadura por puntos se robotiza en carrocerías con pinzas de gran tamaño y alta cadencia. La elección depende del material, el espesor y el volumen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito seguimiento de cordón en mi célula?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Si las piezas llegan siempre en la misma posición (utillajes precisos), quizá no. Pero en la práctica las piezas varían, y el seguimiento de cordón —por contacto, láser o a través del arco— corrige esa variación y evita cordones corridos. Es una de las inversiones que más calidad aporta en series medias."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto cuesta una célula de soldadura robótica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende del tamaño del robot, la fuente, el posicionador y la ingeniería. Una célula compacta puede partir de algunas decenas de miles de dólares y superar con facilidad los cien mil en configuraciones con posicionadores múltiples y visión. El cálculo de retorno se hace contra el costo de soldadura manual por pieza y el aumento de calidad y cadencia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué formación necesita un programador de soldadura robótica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Soldadura (parámetros, cordón, metalurgia básica) y robótica (programación de trayectorias, coordenadas, utillajes). La soldadura robótica es la unión de ambos mundos: un buen programador ajusta ángulos de antorcha, velocidad y parámetros de arco con criterio de soldador, no solo de programador."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es segura una célula de soldadura robótica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, si se diseñó bien: vallas y enclavamientos según la evaluación de riesgo, extracción de humos, pantallas contra la radiación del arco y proyecciones, y paradas de emergencia verificadas. Los peligros propios de la soldadura (humos, UV, quemaduras) se suman a los del robot y deben contemplarse todos en el análisis de riesgo."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="brazo_soldadura_hero.jpg" alt="Brazo robótico de seis ejes realizando soldadura MIG sobre una pieza metálica con chispas brillantes y pantallas de protección oscuras en la celda" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización Industrial y Seguridad · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Brazos Robóticos para Aplicaciones de Soldadura</h1>
+    <p>MIG/MAG, TIG y soldadura por puntos, los componentes de la célula, el seguimiento de cordón, la programación offline y la seguridad.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#por-que">Por qué robotizar la soldadura</a></li><li><a href="#procesos">Procesos: MIG/MAG, TIG y por puntos</a></li><li><a href="#componentes">Componentes de una célula de soldadura</a></li><li><a href="#seam-tracking">Seguimiento de cordón (seam tracking)</a></li><li><a href="#programacion">Programación: teach pendant y OLP</a></li><li><a href="#seguridad">Seguridad en células de soldadura</a></li><li><a href="#roi">Productividad y retorno de inversión</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que">
+<h2>Por qué robotizar la soldadura</h2>
+<p>La soldadura es la aplicación industrial <strong>más madura</strong> de la robótica: los brazos de 6 ejes llevan décadas soldando carrocerías, estructuras y componentes. Robotizar tiene sentido cuando se cumplen varias de estas condiciones:</p>
+<ul>
+<li><strong>Series repetitivas:</strong> muchas piezas iguales o similares, con cordones en posiciones constantes.</li>
+<li><strong>Calidad exigente:</strong> cordones uniformes y trazables, difíciles de sostener a mano en turnos largos.</li>
+<li><strong>Escasez de soldadores:</strong> el oficio calificado es cada vez más difícil de cubrir.</li>
+<li><strong>Ambiente hostil:</strong> humos, calor y posturas incómodas que el robot soporta sin fatiga.</li>
+</ul>
+<p>No todo se debe robotizar: series muy cortas o piezas con ajustes impredecibles pueden no justificar la inversión en utillajes y programación. La regla es robotizar <strong>repetición y precisión</strong>, no excepciones.</p>
+</section>
+
+<section id="procesos">
+<h2>Procesos: MIG/MAG, TIG y por puntos</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Procesos de soldadura robotizados y sus características.</caption>
+<thead><tr><th>Proceso</th><th>Ventaja</th><th>Aplicación típica</th></tr></thead>
+<tbody>
+<tr><td>MIG/MAG</td><td>Alta cadencia, tolerante a variaciones</td><td>Acero estructural, series medias y grandes</td></tr>
+<tr><td>TIG</td><td>Acabado y precisión superiores</td><td>Inoxidable, aluminio, cordones estéticos</td></tr>
+<tr><td>Puntos (spot)</td><td>Muy alta cadencia, unión rápida</td><td>Carrocerías y chapas delgadas</td></tr>
+</tbody>
+</table>
+</div>
+<p>Cada proceso impone requisitos al robot y a la célula: el TIG exige control fino del cordón y del avance de alambre; la soldadura por puntos necesita pinzas pesadas y, a menudo, robots de gran carga útil. La elección parte del material y del diseño de la pieza, no del robot.</p>
+</section>
+
+<section id="componentes">
+<h2>Componentes de una célula de soldadura</h2>
+<p>Una célula de soldadura es más que un brazo con una antorcha. Las piezas esenciales son:</p>
+<ul>
+<li><strong>Brazo robótico de 6 ejes:</strong> con la carga útil adecuada para antorcha (o pinza) y cableado integrado.</li>
+<li><strong>Fuente de soldadura:</strong> sincronizada con el robot para controlar corriente, tensión y arco.</li>
+<li><strong>Alimentador de alambre:</strong> empuja el consumible hasta la antorcha de forma constante.</li>
+<li><strong>Antorcha y cuello:</strong> con diseño anti-colisión y montaje calibrado al TCP.</li>
+<li><strong>Posicionador:</strong> mesa o ejes adicionales que rotan la pieza para soldar en posición óptima.</li>
+<li><strong>Utillajes:</strong> fijaciones que garantizan la posición repetible de cada pieza.</li>
+</ul>
+<p>La <strong>sincronización robot-fuente</strong> es crítica: el robot avisa cuándo abrir el arco, cuándo mover y cuándo cerrar, y la fuente responde con el estado del arco. Esa integración suele hacerse por bus de campo, como se explica en la guía de <a href="/blog/integrando-brazos-roboticos-con-plc">integración con PLC</a>.</p>
+</section>
+
+<section id="seam-tracking">
+<h2>Seguimiento de cordón (seam tracking)</h2>
+<p>Las piezas reales no llegan exactamente donde el programa espera. El <strong>seguimiento de cordón</strong> corrige esa variación en tiempo real mediante tres técnicas:</p>
+<ul>
+<li><strong>Por contacto (touch sensing):</strong> el robot toca la pieza con tensión de detección y calcula la posición real antes de soldar.</li>
+<li><strong>Por láser:</strong> un sensor láser mide la junta por delante de la antorcha y corrige la trayectoria.</li>
+<li><strong>A través del arco:</strong> el propio arco entrega información de la distancia a la pieza para seguir la junta durante la soldadura.</li>
+</ul>
+<p>La elección depende del presupuesto y de la variación esperada. El touch sensing es el más económico y resuelve la mayoría de los casos; el láser se reserva para juntas exigentes o piezas con tolerancias amplias.</p>
+</section>
+
+<section id="programacion">
+<h2>Programación: teach pendant y OLP</h2>
+<p>Hay dos caminos para programar una trayectoria de soldadura:</p>
+<ul>
+<li><strong>Teach pendant:</strong> se guía el robot punto a punto con la consola, grabando posiciones y parámetros. Es directo, pero ocupa la célula mientras se programa.</li>
+<li><strong>Programación offline (OLP):</strong> se programa sobre el modelo 3D en un software de simulación y se descarga al robot. Mantiene la célula produciendo y permite validar alcances y colisiones en el escritorio.</li>
+</ul>
+<p>En series nuevas, el flujo habitual es: simular en OLP, afinar en el robot con touch sensing, y dejar el programa validado con los parámetros de soldadura correctos. La calidad final la definen los <strong>ángulos de antorcha, la velocidad de avance y los parámetros de arco</strong>, no solo la geometría de la trayectoria.</p>
+</section>
+
+<section id="seguridad">
+<h2>Seguridad en células de soldadura</h2>
+<p>Una célula de soldadura suma los peligros del robot a los del proceso:</p>
+<ul>
+<li><strong>Radiación de arco:</strong> exige pantallas opacas o filtros que protejan la vista de operadores cercanos.</li>
+<li><strong>Humos de soldadura:</strong> requieren extracción localizada y, según el material, filtración específica.</li>
+<li><strong>Proyecciones y quemaduras:</strong> la célula debe contener chispas y salpicaduras.</li>
+<li><strong>Movimiento del robot:</strong> vallas, enclavamientos y cortinas como en cualquier célula.</li>
+</ul>
+<div class="warning"><strong>Doble evaluación:</strong> el análisis de riesgo debe cubrir el robot y el proceso de soldadura a la vez. Un error típico es cercar bien el robot y olvidar la extracción de humos o la pantalla contra el arco.</div>
+<p>Todo parte de la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">evaluación de riesgo</a> y se materializa con las <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">cortinas de luz</a>, las <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">paradas de emergencia</a> y el marco de las <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">normas en Chile</a>.</p>
+</section>
+
+<section id="roi">
+<h2>Productividad y retorno de inversión</h2>
+<p>El retorno de una célula de soldadura se calcula comparando el costo por pieza soldada a mano con el costo robotizado:</p>
+<ul>
+<li><strong>Cadencia:</strong> el robot suelda sin pausas ni fatiga, con un arco encendido mucho mayor porcentaje del tiempo.</li>
+<li><strong>Consumibles:</strong> menos retrabajo y menos alambre desperdiciado por cordones defectuosos.</li>
+<li><strong>Calidad:</strong> menos rechazos y trazabilidad de cada cordón.</li>
+<li><strong>Mano de obra:</strong> un operador puede atender varias células en lugar de soldar una pieza.</li>
+</ul>
+<p>El punto de equilibrio típico en series medias suele estar entre uno y tres años, dependiendo del volumen. La clave no es solo el robot: son los <strong>utillajes</strong> y la <strong>preparación de piezas</strong>, que determinan cuánto tiempo real suelda la célula.</p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La soldadura robótica recompensa a quien la trata como un <strong>sistema</strong> —proceso, utillajes, seguimiento de cordón y seguridad— y no como un brazo con antorcha. Bien dimensionada, entrega cadencia, calidad uniforme y un retorno medible. Si tu aplicación apunta a manipulación y ensamblaje en lugar de soldadura, mira la guía de <a href="/blog/robots-colaborativos-para-lineas-de-ensamblaje">Robots Colaborativos para Líneas de Ensamblaje</a>.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los procesos, configuraciones y costos son referenciales y dependen del material, el volumen y el proveedor. La soldadura robótica exige diseño y validación por personal competente, incluida la evaluación de riesgo del proceso. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Antes de soldar, asegura la célula: repasa la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Evaluación de Riesgo</a> y el marco de las <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">Normas en Chile</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">← Anterior: Normas de Seguridad en Chile</a>
+  <a href="/blog/robots-colaborativos-para-lineas-de-ensamblaje">Siguiente: Robots Colaborativos para Ensamblaje →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas y técnicas generales. Los parámetros de soldadura y las configuraciones exactas dependen del material, la fuente y el fabricante del robot.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/41571.html" target="_blank" rel="noopener noreferrer">ISO 10218-2 — Integración de sistemas robóticos</a></li><li><a href="https://www.iso.org/standard/51528.html" target="_blank" rel="noopener noreferrer">ISO 12100 — Evaluación y reducción del riesgo</a></li><li><a href="https://www.aws.org/" target="_blank" rel="noopener noreferrer">American Welding Society — Robotic Arc Welding</a></li><li><a href="https://webstore.iec.ch/publication/6027" target="_blank" rel="noopener noreferrer">IEC 60974 — Equipos de soldadura por arco</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

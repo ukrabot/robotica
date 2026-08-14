@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Normas de Seguridad para Brazos Robóticos en Chile</title>
+<meta name="description" content="Normas de seguridad para brazos robóticos en Chile: ISO 10218, ISO 12100 e ISO/TS 15066 como NCh-ISO, la Ley 16.744, el D.S. 594 y las responsabilidades del empleador.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Normas de Seguridad para Brazos Robóticos en Chile">
+<meta property="og:description" content="ISO 10218 e ISO 12100 como NCh-ISO, Ley 16.744, D.S. 594 y responsabilidades del empleador en Chile.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/normas_seguridad_chile_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Normas de Seguridad para Brazos Robóticos en Chile">
+<meta name="twitter:description" content="ISO 10218 e ISO 12100 como NCh-ISO, Ley 16.744, D.S. 594 y responsabilidades en Chile.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/normas_seguridad_chile_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Normas de Seguridad para Brazos Robóticos en Chile",
+  "description": "Guía de normas de seguridad para brazos robóticos en Chile: el marco técnico internacional (ISO 10218-1/-2, ISO 12100 e ISO/TS 15066) y su adopción en Chile como normas NCh-ISO a través del INN, la normativa laboral chilena (Ley 16.744 y Decreto Supremo 594), la distribución de responsabilidades entre fabricante, integrador y empleador, el papel de los Comités Paritarios y las mutualidades, y una lista de verificación práctica de cumplimiento.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/normas-de-seguridad-para-brazos-roboticos-en-chile"
+  },
+  "image": "https://www.ukrabot.cl/blog/normas_seguridad_chile_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Acceso a las normas ISO/NCh-ISO aplicables, documentación de la evaluación de riesgo y coordinación con el prevencionista de riesgos de la empresa",
+  "wordCount": "2500",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Normas de Seguridad para Brazos Robóticos en Chile",
+      "item": "https://www.ukrabot.cl/blog/normas-de-seguridad-para-brazos-roboticos-en-chile"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué norma rige la seguridad de un brazo robótico en Chile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La referencia técnica son las normas internacionales adoptadas por el INN (Instituto Nacional de Normalización) como NCh-ISO: principalmente ISO 10218-1 (el robot) e ISO 10218-2 (la integración del sistema), apoyadas en ISO 12100 para la evaluación de riesgo y en ISO/TS 15066 para aplicaciones colaborativas. A ellas se suma la normativa laboral chilena: la Ley 16.744 y el D.S. 594."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es obligatoria la evaluación de riesgo en Chile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, por dos vías. La técnica: ISO 10218-2 exige la evaluación de riesgo según ISO 12100. La legal: la Ley 16.744 obliga al empleador a identificar y controlar los riesgos de los equipos de trabajo, y su incumplimiento puede derivar en multas, paralización de faenas y responsabilidad civil o penal ante un accidente."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el D.S. 594 y aplica a una célula robótica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El Decreto Supremo 594 (MINSAL) aprueba el reglamento sobre condiciones sanitarias y ambientales básicas en los lugares de trabajo. Aplica a todo lugar de trabajo en Chile, incluida una planta con robots: orden y limpieza, ventilación, iluminación, señalización y el deber general de suprimir factores de peligro que afecten la salud o integridad de los trabajadores."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Quién responde si ocurre un accidente con un robot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La responsabilidad principal recae en el empleador, que debe garantizar condiciones seguras. Pero también puede haber responsabilidad del integrador si la instalación no cumplió la norma, y del fabricante si el robot tenía un defecto de diseño. En la práctica, la documentación (evaluación de riesgo, validación, capacitación) es la que delimita responsabilidades."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito certificar la célula ante alguna autoridad en Chile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No existe una certificación obligatoria única de 'celda robótica' ante una autoridad. Lo que sí existe es el deber del empleador de cumplir la Ley 16.744 y el D.S. 594, gestionar los riesgos, constituir el Comité Paritario cuando corresponde y estar afiliado a una mutualidad (ACHS, Mutual de Seguridad o IST). La fiscalización la ejercen la Dirección del Trabajo y la SEREMI de Salud."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="normas_seguridad_chile_hero.jpg" alt="Celda robótica con vallas de seguridad, puerta con enclavamiento y señalética de peligro, con un archivador de normas técnicas y una lista de verificación en primer plano" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización Industrial y Seguridad · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Normas de Seguridad para Brazos Robóticos en Chile</h1>
+    <p>El marco técnico (ISO 10218, ISO 12100, ISO/TS 15066), la Ley 16.744, el D.S. 594 y las responsabilidades del empleador en Chile.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#marco-normativo">El marco técnico: de ISO a NCh-ISO</a></li><li><a href="#normas-clave">Normas clave para brazos robóticos</a></li><li><a href="#normativa-chilena">La normativa laboral chilena</a></li><li><a href="#responsabilidades">Responsabilidades: fabricante, integrador y empleador</a></li><li><a href="#comites-mutualidades">Comités Paritarios y mutualidades</a></li><li><a href="#checklist">Checklist de cumplimiento en Chile</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="marco-normativo">
+<h2>El marco técnico: de ISO a NCh-ISO</h2>
+<p>En Chile no hay una ley específica de 'robots industriales': la seguridad técnica se apoya en las <strong>normas internacionales ISO</strong>, que el <a href="https://www.inn.cl/" target="_blank" rel="noopener noreferrer">INN (Instituto Nacional de Normalización)</a> adopta como normas <strong>NCh-ISO</strong>. Para un brazo robótico, el tronco común es:</p>
+<ul>
+<li><strong>ISO 10218-1:</strong> requisitos de seguridad del robot en sí (diseño y construcción).</li>
+<li><strong>ISO 10218-2:</strong> requisitos de seguridad de la integración del sistema robótico.</li>
+<li><strong>ISO 12100:</strong> metodología de evaluación y reducción del riesgo.</li>
+<li><strong>ISO/TS 15066:</strong> requisitos para aplicaciones colaborativas (cobots).</li>
+</ul>
+<p>Conviene verificar siempre en el INN la <strong>edición adoptada vigente</strong>, porque las normas se actualizan (por ejemplo, la edición 2025 de ISO 10218 integra el contenido de ISO/TS 15066).</p>
+</section>
+
+<section id="normas-clave">
+<h2>Normas clave para brazos robóticos</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Normas técnicas aplicables a una instalación robótica.</caption>
+<thead><tr><th>Norma</th><th>Qué regula</th><th>Uso en la célula</th></tr></thead>
+<tbody>
+<tr><td>ISO 10218-1/-2</td><td>Robot e integración del sistema</td><td>Base del diseño y la validación</td></tr>
+<tr><td>ISO 12100</td><td>Evaluación y reducción del riesgo</td><td>Análisis previo a cualquier diseño</td></tr>
+<tr><td>ISO 13849-1</td><td>Partes de mando relativas a la seguridad (PL)</td><td>Nivel de fiabilidad de las funciones</td></tr>
+<tr><td>IEC 62061</td><td>Seguridad funcional (SIL)</td><td>Alternativa a ISO 13849-1</td></tr>
+<tr><td>ISO 13855 / ISO 13857</td><td>Posición de protecciones y distancias</td><td>Ubicación de cortinas y vallas</td></tr>
+<tr><td>ISO/TS 15066</td><td>Robots colaborativos</td><td>Modos colaborativos y límites de fuerza</td></tr>
+</tbody>
+</table>
+</div>
+<p>No hace falta memorizarlas todas: la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">evaluación de riesgo</a> te dice cuáles aplican a tu instalación concreta y qué nivel de prestaciones exige cada función.</p>
+</section>
+
+<section id="normativa-chilena">
+<h2>La normativa laboral chilena</h2>
+<p>Además de la norma técnica, el empleador está sujeto a la normativa laboral, con dos pilares:</p>
+<ul>
+<li><strong><a href="https://www.bcn.cl/leychile/navegar?idNorma=28650" target="_blank" rel="noopener noreferrer">Ley 16.744</a>:</strong> establece el seguro obligatorio contra accidentes del trabajo y enfermedades profesionales, y el deber del empleador de adoptar todas las medidas de higiene y seguridad necesarias para prevenir los riesgos.</li>
+<li><strong><a href="https://www.bcn.cl/leychile/navegar?idNorma=167766" target="_blank" rel="noopener noreferrer">Decreto Supremo 594</a> (MINSAL):</strong> reglamento sobre condiciones sanitarias y ambientales básicas en los lugares de trabajo, que incluye el deber general de suprimir factores de peligro.</li>
+</ul>
+<p>El incumplimiento puede traer <strong>multas</strong> (hasta cientos de UTM), <strong>paralización de faenas</strong> por riesgo inminente y <strong>responsabilidad civil o penal</strong> ante un accidente grave o fatal. La fiscalización la ejercen la Dirección del Trabajo y la SEREMI de Salud.</p>
+</section>
+
+<section id="responsabilidades">
+<h2>Responsabilidades: fabricante, integrador y empleador</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Distribución de responsabilidades en una instalación robótica.</caption>
+<thead><tr><th>Actor</th><th>Responsabilidad principal</th></tr></thead>
+<tbody>
+<tr><td>Fabricante del robot</td><td>Diseño seguro del robot y documentación de sus funciones de seguridad</td></tr>
+<tr><td>Integrador</td><td>Diseño y validación de la célula según ISO 10218-2, con evaluación de riesgo</td></tr>
+<tr><td>Empleador</td><td>Operar la célula con seguridad, capacitar, mantener y controlar los riesgos</td></tr>
+</tbody>
+</table>
+</div>
+<p>En la práctica, el <strong>empleador</strong> es quien responde ante la autoridad por las condiciones de trabajo, aunque la falla provenga del integrador. Por eso conviene exigir y conservar la documentación de la instalación: evaluación de riesgo, validación, manuales y registros de capacitación.</p>
+</section>
+
+<section id="comites-mutualidades">
+<h2>Comités Paritarios y mutualidades</h2>
+<p>Dos instituciones del sistema chileno que se cruzan con cualquier instalación industrial:</p>
+<ul>
+<li><strong>Comité Paritario de Higiene y Seguridad:</strong> obligatorio en empresas con más de 25 trabajadores; participa en la detección de riesgos y en la investigación de accidentes.</li>
+<li><strong>Mutualidades (ACHS, Mutual de Seguridad, IST):</strong> administran el seguro de la Ley 16.744 y prestan asesoría en prevención de riesgos. Son un aliado práctico: pueden revisar la evaluación de riesgo de la célula y orientar el cumplimiento.</li>
+</ul>
+<p>Involucrar al Comité Paritario y a la mutualidad desde el diseño de la célula no solo reduce riesgo legal: aporta la mirada de quienes operarán el equipo día a día.</p>
+</section>
+
+<section id="checklist">
+<h2>Checklist de cumplimiento en Chile</h2>
+<ol>
+<li><strong>Evaluación de riesgo</strong> según ISO 12100, documentada y vigente.</li>
+<li><strong>Protecciones instaladas</strong> según ISO 10218-2: vallas, enclavamientos, cortinas, paradas.</li>
+<li><strong>Funciones de seguridad</strong> con su PLr definido y su PL logrado verificado.</li>
+<li><strong>Afiliación y asesoría</strong> de la mutualidad correspondiente.</li>
+<li><strong>Comité Paritario</strong> constituido e informado (si aplica por tamaño).</li>
+<li><strong>Capacitación</strong> de operadores y mantenedores, con registro.</li>
+<li><strong>Señalización y orden</strong> del lugar de trabajo conforme al D.S. 594.</li>
+<li><strong>Registros</strong> de pruebas periódicas de las funciones de seguridad.</li>
+</ol>
+<p>Esta lista no reemplaza el análisis caso a caso, pero cubre los puntos que un fiscalizador revisará primero. El orden lógico del proyecto es: <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">evaluar el riesgo</a>, <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">proteger los accesos</a> y <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">asegurar las paradas</a>.</p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>En Chile, la seguridad de un brazo robótico se construye sobre dos capas: la <strong>técnica</strong> (normas ISO/NCh-ISO adoptadas por el INN) y la <strong>legal</strong> (Ley 16.744 y D.S. 594). Cumplir bien la primera es la mejor forma de cumplir la segunda: una evaluación de riesgo sólida, protecciones validadas y registros al día son, a la vez, buena ingeniería y buena defensa legal. Si el robot es para soldadura o trabajo colaborativo, revisa también las guías de <a href="/blog/brazos-roboticos-para-aplicaciones-de-soldadura">Soldadura</a> y de <a href="/blog/robots-colaborativos-para-lineas-de-ensamblaje">Robots Colaborativos</a>.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Es una orientación general sobre el marco normativo y no constituye asesoría legal ni reemplaza la revisión de las normas y leyes en su texto oficial ni la opinión de un prevencionista de riesgos o abogado. La normativa puede actualizarse; verifica siempre la versión vigente en el INN y en la Biblioteca del Congreso Nacional. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Aterriza el marco normativo en tu instalación: empieza por la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Guía de Evaluación de Riesgo</a> y sigue con las <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">Cortinas de Luz</a> y la <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">Parada de Emergencia</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">← Anterior: Sistemas de Parada de Emergencia</a>
+  <a href="/blog/brazos-roboticos-para-aplicaciones-de-soldadura">Siguiente: Brazos Robóticos para Soldadura →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas y legales oficiales. Verifica siempre la edición y versión vigente de cada norma y ley, ya que pueden actualizarse.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/51330.html" target="_blank" rel="noopener noreferrer">ISO 10218-1 — Requisitos de seguridad para robots industriales</a></li><li><a href="https://www.iso.org/standard/51528.html" target="_blank" rel="noopener noreferrer">ISO 12100 — Evaluación y reducción del riesgo</a></li><li><a href="https://www.iso.org/standard/62996.html" target="_blank" rel="noopener noreferrer">ISO/TS 15066 — Robots colaborativos</a></li><li><a href="https://www.bcn.cl/leychile/navegar?idNorma=28650" target="_blank" rel="noopener noreferrer">Biblioteca del Congreso Nacional — Ley 16.744</a></li><li><a href="https://www.bcn.cl/leychile/navegar?idNorma=167766" target="_blank" rel="noopener noreferrer">Biblioteca del Congreso Nacional — Decreto Supremo 594</a></li><li><a href="https://www.inn.cl/" target="_blank" rel="noopener noreferrer">INN — Instituto Nacional de Normalización</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

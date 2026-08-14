@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Integración de Cortinas de Luz en Celdas Robóticas</title>
+<meta name="description" content="Guía de integración de cortinas de luz en celdas robóticas: Tipo 2 vs Tipo 4 (IEC 61496), resolución, cálculo de distancia de seguridad ISO 13855 y conexión al controlador de seguridad.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Integración de Cortinas de Luz en Celdas Robóticas">
+<meta property="og:description" content="Tipo 2 vs Tipo 4, resolución, distancia de seguridad ISO 13855 con ejemplo y conexión al controlador de seguridad.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/cortina_luz_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Integración de Cortinas de Luz en Celdas Robóticas">
+<meta name="twitter:description" content="Tipo 2 vs Tipo 4, resolución, fórmula ISO 13855 y conexión al controlador de seguridad.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/cortina_luz_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Integración de Cortinas de Luz en Celdas Robóticas",
+  "description": "Guía de integración de cortinas de luz en celdas robóticas: qué protege una cortina y cómo funciona, la diferencia entre Tipo 2 y Tipo 4 según IEC 61496 y su correspondencia con PL y SIL, la elección de resolución y altura del campo, el cálculo de la distancia de seguridad con la fórmula de ISO 13855 con un ejemplo numérico, las funciones de muting y blanking, y el cableado hacia un relé o controlador de seguridad.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas"
+  },
+  "image": "https://www.ukrabot.cl/blog/cortina_luz_hero.jpg",
+  "proficiencyLevel": "Avanzado",
+  "dependencies": "Cortina de luz de seguridad (Tipo 2 o Tipo 4), relé o controlador de seguridad, cableado de doble canal y documentación del tiempo de parada del robot",
+  "wordCount": "2500",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Integración de Cortinas de Luz en Celdas Robóticas",
+      "item": "https://www.ukrabot.cl/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuándo necesito una cortina Tipo 4 y no una Tipo 2?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La decide el análisis de riesgo. Si el peligro puede causar lesión grave o amputación, la función de seguridad suele exigir PL e / SIL 3, y eso solo lo alcanza una cortina Tipo 4 (arquitectura redundante con vigilancia continua). La Tipo 2 alcanza como máximo PL c / SIL 1 y sirve para riesgos moderados, como golpes o pellizcos leves. Usar una Tipo 2 en un riesgo grave es un error de diseño."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo calculo a qué distancia instalar la cortina?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con la fórmula de ISO 13855: S = (K × T) + C. K es la velocidad de aproximación (2000 mm/s para las extremidades), T es el tiempo total de parada (respuesta de la cortina + del controlador + del robot) y C depende de la resolución: C = 8 × (d − 14) para resoluciones de hasta 40 mm. El resultado es la distancia mínima en milímetros entre el campo de detección y el punto de peligro."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué resolución de cortina elijo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "14 mm para detección de dedos, 30 mm para detección de manos y 40 mm o más para detección de cuerpo. Cuanto más fina la resolución, más cerca puede estar la cortina del peligro (porque C es menor), pero también es más sensible a falsos disparos. La elección depende de qué parte del cuerpo se quiere proteger y de la tarea."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el muting y cuándo se usa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El muting es una supresión temporal y automática de la función de protección para permitir el paso de material (por ejemplo, un pallet que cruza la cortina) sin detener la célula. Debe activarse con sensores adicionales que confirmen que lo que cruza es material y no una persona, y debe desactivarse al terminar el paso. Si se configura mal, anula la protección y es peligroso."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo conectar la cortina directo a una entrada normal del PLC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. La cortina debe conectarse a un relé o controlador de seguridad con entradas de doble canal y con la categoría y PL adecuados. Conectarla a una entrada estándar del PLC de proceso anula su certificación y deja la protección dependiendo de un sistema no seguro."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="cortina_luz_hero.jpg" alt="Cortina de luz de seguridad con haces infrarrojos montada en los postes del acceso de una celda robótica, con un brazo robótico al fondo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización Industrial y Seguridad · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Integración de Cortinas de Luz en Celdas Robóticas</h1>
+    <p>Tipo 2 frente a Tipo 4, la resolución correcta, el cálculo de la distancia de seguridad según ISO 13855 y la conexión al controlador de seguridad.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#que-es">Qué es una cortina de luz y qué protege</a></li><li><a href="#type-2-vs-type-4">Tipo 2 vs Tipo 4</a></li><li><a href="#resolucion">Resolución y altura del campo</a></li><li><a href="#distancia">Distancia de seguridad: la fórmula ISO 13855</a></li><li><a href="#muting-blanking">Muting y blanking</a></li><li><a href="#cableado">Cableado y controlador de seguridad</a></li><li><a href="#problemas-comunes">Problemas comunes y soluciones</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>Qué es una cortina de luz y qué protege</h2>
+<p>Una <strong>cortina de luz</strong> es un dispositivo de protección electrosensible (ESPE) que crea un plano invisible de haces infrarrojos entre un emisor y un receptor. Si un objeto —o una persona— interrumpe uno o más haces, la cortina envía una señal para detener el movimiento peligroso.</p>
+<p>En una célula robótica se usa sobre todo en los <strong>accesos de carga y descarga</strong>: deja pasar la pieza con la mano, pero detiene el robot si el operador entra en la zona peligrosa. Es una alternativa a la valla física cuando el material debe circular por el acceso.</p>
+</section>
+
+<section id="type-2-vs-type-4">
+<h2>Tipo 2 vs Tipo 4</h2>
+<p>La norma <strong>IEC 61496</strong> clasifica las cortinas por su capacidad de tolerar fallas. La diferencia no es cosmética: determina qué nivel de riesgo pueden proteger.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación entre cortinas Tipo 2 y Tipo 4.</caption>
+<thead><tr><th>Característica</th><th>Tipo 2</th><th>Tipo 4</th></tr></thead>
+<tbody>
+<tr><td>Arquitectura</td><td>Un canal con autocomprobación periódica</td><td>Doble canal con vigilancia continua</td></tr>
+<tr><td>PL alcanzable</td><td>Hasta PL c</td><td>Hasta PL e</td></tr>
+<tr><td>SIL alcanzable</td><td>Hasta SIL 1</td><td>Hasta SIL 3</td></tr>
+<tr><td>Uso típico</td><td>Riesgos moderados (golpes, pellizcos)</td><td>Riesgos graves (amputación, atrapamiento)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para accesos a una célula con brazo robótico en movimiento, el análisis de riesgo casi siempre exige <strong>Tipo 4</strong>: el peligro de atrapamiento es grave y requiere PL e. La Tipo 2 queda reservada para protecciones secundarias de riesgo moderado.</p>
+</section>
+
+<section id="resolucion">
+<h2>Resolución y altura del campo</h2>
+<p>La <strong>resolución</strong> es el tamaño mínimo del objeto que la cortina detecta, determinado por la separación entre haces:</p>
+<ul>
+<li><strong>14 mm:</strong> detección de dedos; permite colocar la cortina muy cerca del peligro.</li>
+<li><strong>30 mm:</strong> detección de manos; el estándar para la mayoría de los accesos de carga.</li>
+<li><strong>40 mm o más:</strong> detección de cuerpo; para accesos de paso de personas.</li>
+</ul>
+<p>La <strong>altura del campo protegido</strong> debe cubrir toda la zona de acceso considerando también que no se pueda pasar por encima, por debajo o por el costado de la cortina (revisa las distancias de alcance de ISO 13857). Una cortina corta o mal montada deja un hueco que la hace inútil.</p>
+</section>
+
+<section id="distancia">
+<h2>Distancia de seguridad: la fórmula ISO 13855</h2>
+<p>La cortina debe instalarse a una distancia tal que el robot se detenga <strong>antes</strong> de que la persona alcance el peligro. La fórmula de <a href="https://www.iso.org/standard/80590.html" target="_blank" rel="noopener noreferrer">ISO 13855</a> para una cortina vertical es:</p>
+<pre><code>S = (K × T) + C</code></pre>
+<p>Donde:</p>
+<ul>
+<li><strong>S:</strong> distancia mínima de seguridad (mm).</li>
+<li><strong>K:</strong> velocidad de aproximación del cuerpo (2000 mm/s para extremidades).</li>
+<li><strong>T:</strong> tiempo total de parada = respuesta de la cortina + controlador + robot (s).</li>
+<li><strong>C:</strong> margen según resolución; para d ≤ 40 mm, C = 8 × (d − 14).</li>
+</ul>
+<div class="note"><strong>Ejemplo con resolución de 30 mm:</strong> si la cortina responde en 10 ms, el controlador de seguridad en 20 ms y el robot tarda 60 ms en frenar, T = 0,09 s. Entonces C = 8 × (30 − 14) = 128 mm y S = 2000 × 0,09 + 128 = <strong>308 mm</strong>. La cortina debe montarse al menos a 308 mm del punto de peligro. Si con K = 2000 el resultado supera los 500 mm, se puede recalcular con K = 1600 mm/s, manteniendo S ≥ 500 mm.</div>
+<p>El valor de T no se adivina: debe medirse el <strong>tiempo de parada real</strong> del robot o tomarse de la documentación del fabricante. Un T subestimado deja la cortina demasiado cerca.</p>
+</section>
+
+<section id="muting-blanking">
+<h2>Muting y blanking</h2>
+<p>Dos funciones avanzadas que conviene entender, porque se configuran mal con frecuencia:</p>
+<ul>
+<li><strong>Muting:</strong> supresión temporal de la protección para dejar pasar material. Requiere sensores que confirmen que lo que cruza es carga y no una persona, y se desactiva al terminar el paso.</li>
+<li><strong>Blanking:</strong> ignora de forma fija una zona del campo (por ejemplo, donde siempre hay una estructura). Reduce el área protegida y debe contemplarse en el análisis de riesgo.</li>
+</ul>
+<div class="warning"><strong>Peligro real:</strong> un muting mal temporizado o sin sensores de validación convierte la cortina en un adorno. Estas funciones deben diseñarse y validarse por personal competente, nunca activarse para 'evitar paradas molestas'.</div>
+</section>
+
+<section id="cableado">
+<h2>Cableado y controlador de seguridad</h2>
+<p>La salida de la cortina no va a una entrada normal del PLC: va a un <strong>relé o controlador de seguridad</strong> que evalúa la señal en doble canal y corta la energía del movimiento mediante contactores de seguridad.</p>
+<ol>
+<li><strong>Doble canal:</strong> las dos salidas (OSSD) de la cortina llegan a dos entradas independientes del controlador.</li>
+<li><strong>Contactores en serie:</strong> el controlador abre dos contactores en serie para garantizar el corte incluso si uno falla.</li>
+<li><strong>Reinicio manual:</strong> tras cada interrupción, la célula no rearranca sola; hay que rearmar con un pulsador fuera de la zona.</li>
+<li><strong>Verificación:</strong> probar la detección con una pieza de prueba del tamaño de la resolución y medir el tiempo de parada.</li>
+</ol>
+<p>Todo el circuito debe alcanzar el <strong>PLr</strong> que definió la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">evaluación de riesgo</a>: de nada sirve una cortina PL e si el relé o el cableado la degradan a PL c.</p>
+</section>
+
+<section id="problemas-comunes">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Fallos típicos en cortinas de luz y su solución.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>La célula no arranca</td><td>Cortina alineada o interrumpida</td><td>Revisar alineación y limpiar las ópticas</td></tr>
+<tr><td>Paradas intermitentes</td><td>Vibración o desalineación</td><td>Reforzar el montaje y reapretar soportes</td></tr>
+<tr><td>No detecta objetos pequeños</td><td>Resolución incorrecta</td><td>Verificar que la resolución cubra el riesgo</td></tr>
+<tr><td>Interferencia entre cortinas</td><td>Dos emisores enfrentados</td><td>Orientar emisores/receptores y configurar canales</td></tr>
+<tr><td>Se puede pasar por arriba</td><td>Altura o alcance insuficiente</td><td>Ajustar altura y distancia según ISO 13857</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Una cortina de luz bien integrada deja pasar el material y detiene a las personas, pero solo si se eligen el tipo y la resolución correctos, se respeta la distancia de seguridad de ISO 13855 y se conecta a un controlador de seguridad del nivel adecuado. Es una de las protecciones más versátiles de la célula, y también una de las que más se puentean mal. Complementa esta guía con los <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">Sistemas de Parada de Emergencia</a> y la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Evaluación de Riesgo</a> que define dónde y con qué nivel instalarla.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El cálculo de distancia es un ejemplo didáctico: el valor real depende de los tiempos medidos de tu instalación y debe validarlo un profesional competente. Las cortinas de seguridad son componentes de seguridad y su instalación exige cumplir la normativa y las instrucciones del fabricante. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Las cortinas protegen los accesos; los <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">Sistemas de Parada de Emergencia</a> son la última línea ante una situación crítica. Revisa ambas dentro de tu <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">evaluación de riesgo</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">← Anterior: Guía de Evaluación de Riesgo</a>
+  <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">Siguiente: Sistemas de Parada de Emergencia →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas y técnicas generales. Los datos exactos de respuesta, alcance y resolución dependen del modelo de cortina y del fabricante.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/80590.html" target="_blank" rel="noopener noreferrer">ISO 13855 — Posicionamiento de los dispositivos de protección</a></li><li><a href="https://www.iso.org/standard/69883.html" target="_blank" rel="noopener noreferrer">ISO 13849-1 — Partes de los sistemas de mando relativas a la seguridad</a></li><li><a href="https://webstore.iec.ch/publication/5983" target="_blank" rel="noopener noreferrer">IEC 61496 — Equipos de protección electrosensibles (ESPE)</a></li><li><a href="https://www.pilz.com/es-ES/support/leyes-normas-directivas" target="_blank" rel="noopener noreferrer">Pilz — Normas y directivas de seguridad</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
