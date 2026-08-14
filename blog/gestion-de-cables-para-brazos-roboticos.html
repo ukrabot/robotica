@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Gestión de Cables para Brazos Robóticos</title>
+<meta name="description" content="Gestión de cables en brazos robóticos: cable de arrastre y torsión, radio de curvatura mínimo, cadenas portacables, dress packs, paso por articulación, separación de señal y potencia, y mantenimiento.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/gestion-de-cables-para-brazos-roboticos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gestión de Cables para Brazos Robóticos">
+<meta property="og:description" content="Radio de curvatura, cadenas portacables, dress packs y separación señal/potencia para que el cableado no sea tu punto débil.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/gestion_cables_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/gestion-de-cables-para-brazos-roboticos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gestión de Cables para Brazos Robóticos">
+<meta name="twitter:description" content="Radio de curvatura, cadenas portacables, dress packs y separación señal/potencia para que el cableado no sea tu punto débil.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/gestion_cables_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Gestión de Cables para Brazos Robóticos",
+  "description": "Guía de gestión de cables para brazos robóticos: por qué el cableado es una causa frecuente de paradas no programadas, la diferencia entre cable estático, de arrastre y de torsión y la construcción interna que lo permite, el radio de curvatura mínimo y cómo calcularlo, las opciones de guiado mediante cadenas portacables, dress packs y paso hueco por el eje, la separación entre cables de potencia y de señal para evitar interferencia electromagnética, los conectores y aliviadores de tracción, el mantenimiento predictivo y los errores más comunes de cableado en robots.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/gestion-de-cables-para-brazos-roboticos"
+  },
+  "image": "https://www.ukrabot.cl/blog/gestion_cables_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Cable apto para arrastre o torsión según el eje, cadena portacables o dress pack, abrazaderas, conectores con aliviador de tracción y malla de apantallamiento con conexión a tierra",
+  "wordCount": "2500",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Gestión de Cables para Brazos Robóticos",
+      "item": "https://www.ukrabot.cl/blog/gestion-de-cables-para-brazos-roboticos"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar cable normal en un brazo robótico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Solo en tramos que no se muevan. En cualquier eje con movimiento, un cable estático común se fatiga en semanas o meses: sus hilos son gruesos y su trenzado no está pensado para flexión repetida. Necesitas cable de arrastre para flexión y cable específico de torsión para ejes que giran sobre sí mismos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuál es el radio de curvatura mínimo de un cable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende del cable y de la aplicación. Como referencia, 4 veces el diámetro exterior en instalación fija, 10 veces en cadena portacables y hasta 15–20 veces en robótica exigente o cables apantallados. Consulta siempre la ficha técnica: es el dato que más determina la vida útil del cable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi encoder da lecturas erráticas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En la gran mayoría de los casos, por interferencia electromagnética desde los cables de motor. Verifica que haya al menos 100 mm de separación entre potencia y señal, que el cable de encoder sea apantallado y de par trenzado, y que la malla esté conectada con contacto de 360° en el conector y no con una cola de hilo retorcido. También revisa la continuidad de tierra del chasis, que el anodizado suele interrumpir."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es un dress pack?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es un sistema de guiado de cables para los ejes superiores de un robot industrial: una manguera flexible que agrupa cables y mangueras, con un mecanismo de retorno por muelle o resorte que recoge la holgura cuando la articulación se mueve. Permite movimiento multidireccional sin que el haz se enganche ni forme bucles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo pasar los cables por dentro del brazo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, y es la mejor solución cuando el diseño lo contempla desde el inicio: los reductores con eje hueco permiten pasar el haz por el centro de la articulación, protegido y con un recorrido limpio. Requiere planificarlo en la etapa mecánica, porque abrir un paso interno en un brazo ya fabricado casi nunca es viable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cada cuánto debo revisar el cableado?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Inspección visual mensual buscando marcas de roce y deformaciones, medición de resistencia de conductores y de continuidad de malla cada seis meses, y revisión del aislamiento una vez al año. Lo más valioso es registrar una línea base cuando el equipo es nuevo y vigilar la tendencia, junto con los contadores de error del bus."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="gestion_cables_hero.jpg" alt="Brazo robótico industrial de seis ejes con una cadena portacables negra y conducto corrugado guiados a lo largo del antebrazo mediante abrazaderas, con un dress pack rodeando la muñeca" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Diseño Mecánico y Materiales · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Gestión de Cables para Brazos Robóticos</h1>
+    <p>El cableado es la causa más frecuente de paradas no programadas en un robot. Radio de curvatura, torsión, guiado y separación de señales.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#por-que">Por qué falla el cableado</a></li><li><a href="#tipos-cable">Cable estático, de arrastre y de torsión</a></li><li><a href="#radio">Radio de curvatura mínimo</a></li><li><a href="#guiado">Sistemas de guiado</a></li><li><a href="#emc">Separar potencia y señal</a></li><li><a href="#conectores">Conectores y aliviadores</a></li><li><a href="#mantenimiento">Mantenimiento predictivo</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que">
+<h2>Por qué el cableado es el punto débil</h2>
+<p>Un brazo robótico es una máquina que dobla, tuerce y estira sus propios cables millones de veces. Mientras la estructura y los motores están dimensionados con factores de seguridad generosos, el cableado suele instalarse "como se pueda" y termina siendo el componente que más paradas no programadas provoca.</p>
+<p>El problema es que el cable falla de forma <strong>gradual e invisible</strong>. Primero se rompen algunos hilos del conductor, luego la resistencia sube, aparecen caídas de tensión intermitentes, un encoder empieza a dar lecturas erráticas y el robot registra fallos esporádicos imposibles de reproducir. Solo al final el conductor se corta del todo. Entre el primer hilo roto y el fallo definitivo pueden pasar meses de diagnóstico frustrante.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Modos de fallo del cableado en robots y su origen.</caption>
+<thead><tr><th>Modo de fallo</th><th>Síntoma</th><th>Causa raíz</th></tr></thead>
+<tbody>
+<tr><td>Fatiga por flexión</td><td>Fallos intermitentes; conductor abierto</td><td>Cable estático usado en movimiento</td></tr>
+<tr><td>Fatiga por torsión</td><td>Rotura cerca del conector</td><td>Cable de arrastre usado en un eje que gira</td></tr>
+<tr><td>Efecto sacacorchos</td><td>El haz se enreda y se aprieta solo</td><td>Cable sin resistencia a torsión en muñeca</td></tr>
+<tr><td>Abrasión</td><td>Aislante desgastado; cortocircuito</td><td>Roce contra estructura o cadena</td></tr>
+<tr><td>Tracción en el conector</td><td>Pin suelto o contacto intermitente</td><td>Falta de aliviador de tracción</td></tr>
+<tr><td>Interferencia electromagnética</td><td>Ruido en encoders y sensores</td><td>Potencia y señal en el mismo haz</td></tr>
+<tr><td>Aplastamiento</td><td>Aislante deformado; fuga</td><td>Abrazadera demasiado apretada</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Diseña el cableado desde el primer boceto.</strong> Añadir el recorrido de cables después de tener la mecánica terminada obliga a compromisos: radios demasiado cerrados, haces que rozan y accesos imposibles para el mantenimiento. El espacio para los cables es parte del <a href="/blog/diseno-de-chasis-de-aluminio-para-robots">diseño del chasis</a>, no un detalle posterior.</div>
+</section>
+
+<section id="tipos-cable">
+<h2>Cable estático, de arrastre y de torsión</h2>
+<p>Hay tres familias de cable y usar la equivocada es el error más caro y más común.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Familias de cable según el movimiento que soportan. Los ciclos son órdenes de magnitud referenciales.</caption>
+<thead><tr><th>Tipo</th><th>Movimiento admitido</th><th>Ciclos típicos</th><th>Construcción</th><th>Costo relativo</th></tr></thead>
+<tbody>
+<tr><td>Estático (instalación fija)</td><td>Ninguno</td><td>—</td><td>Hilos gruesos, relleno simple</td><td>1×</td></tr>
+<tr><td>Flexible ocasional</td><td>Montaje y ajuste</td><td>Miles</td><td>Hilos más finos</td><td>1,5×</td></tr>
+<tr><td>De arrastre (chainflex)</td><td>Flexión repetida en un plano</td><td>Millones</td><td>Hilos muy finos, cableado en haces con paso corto, envuelta deslizante</td><td>3–6×</td></tr>
+<tr><td>De torsión</td><td>Giro sobre su propio eje</td><td>Millones</td><td>Trenzado especial y cubierta que permite el retorcido</td><td>5–10×</td></tr>
+<tr><td>Robótico mixto</td><td>Flexión + torsión</td><td>Millones</td><td>Construcción combinada</td><td>8–15×</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Qué hace distinto a un cable de arrastre</h3>
+<ul>
+<li><strong>Hilos muy finos:</strong> muchos hilos delgados soportan la flexión mucho mejor que pocos hilos gruesos, porque cada hilo se deforma menos.</li>
+<li><strong>Trenzado con paso corto:</strong> los conductores se enrollan en haces con paso corto alrededor de un núcleo central, de modo que cada conductor alterna entre el interior y el exterior de la curva y la deformación se promedia.</li>
+<li><strong>Núcleo central de relleno:</strong> mantiene la geometría del haz y evita que los conductores migren hacia el radio exterior.</li>
+<li><strong>Cubierta resistente a la abrasión y con bajo coeficiente de roce</strong>, típicamente PUR, para deslizar dentro de la cadena sin desgastarse.</li>
+</ul>
+<div class="warning"><strong>Un cable de arrastre no sirve para torsión.</strong> Están optimizados para flexionar siempre en el mismo plano; al retorcerlos, los haces internos se aprietan unos contra otros y el cable falla mucho antes de lo esperado. En muñecas y en cualquier eje que gire sobre sí mismo se necesita cable específico de torsión, con una construcción distinta.</div>
+</section>
+
+<section id="radio">
+<h2>Radio de curvatura mínimo: el número que manda</h2>
+<p>Es el parámetro que más vida útil determina y el más fácil de violar sin darse cuenta. Se expresa como múltiplo del diámetro exterior del cable.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Radios de curvatura mínimos orientativos, expresados en múltiplos del diámetro exterior (D). Consulta siempre la ficha del fabricante.</caption>
+<thead><tr><th>Aplicación</th><th>Radio mínimo</th><th>Ejemplo con cable de 10 mm</th></tr></thead>
+<tbody>
+<tr><td>Instalación fija</td><td>4 × D</td><td>40 mm</td></tr>
+<tr><td>Movimiento ocasional</td><td>6 × D</td><td>60 mm</td></tr>
+<tr><td>Cadena portacables</td><td>10 × D</td><td>100 mm</td></tr>
+<tr><td>Robótica exigente</td><td>15 × D</td><td>150 mm</td></tr>
+<tr><td>Cable apantallado o de fibra</td><td>15–20 × D</td><td>150–200 mm</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code># Verificar el radio de curvatura de un recorrido
+
+D_cable   = 12.0     # mm, diametro exterior
+factor    = 10       # multiplicador segun aplicacion (cadena)
+R_min     = D_cable * factor
+
+R_diseno  = 85.0     # mm, radio disponible en el brazo
+
+print(f"Radio minimo requerido: {R_min:.0f} mm")
+print(f"Radio de diseno:        {R_diseno:.0f} mm")
+
+if R_diseno < R_min:
+    print("PROBLEMA: el cable se fatigara prematuramente")
+    print(f"Opciones: aumentar el radio a {R_min:.0f} mm,")
+    print(f"          o dividir en 2 cables de menor diametro")
+else:
+    print("OK")
+# Radio minimo requerido: 120 mm
+# Radio de diseno:        85 mm
+# PROBLEMA: el cable se fatigara prematuramente
+</code></pre>
+<div class="note"><strong>Truco cuando no hay espacio:</strong> como el radio mínimo depende del diámetro del cable, dos cables de 6 mm necesitan la mitad de radio que uno de 12 mm. Dividir un haz grueso en varios haces finos suele ser la única salida cuando la geometría del brazo no permite un radio mayor.</div>
+</section>
+
+<section id="guiado">
+<h2>Sistemas de guiado: cadena, dress pack o paso hueco</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación de sistemas de guiado de cables en robots.</caption>
+<thead><tr><th>Sistema</th><th>Movimiento</th><th>Ventaja</th><th>Limitación</th><th>Dónde se usa</th></tr></thead>
+<tbody>
+<tr><td>Cadena portacables</td><td>Lineal o angular limitado</td><td>Radio garantizado, cables ordenados</td><td>Voluminosa; no admite torsión</td><td>Ejes lineales, base, pórticos</td></tr>
+<tr><td>Dress pack (manguera con retorno)</td><td>Multidireccional</td><td>Absorbe holgura con muelle o resorte</td><td>Costo alto</td><td>Ejes 3 a 6 de robots industriales</td></tr>
+<tr><td>Paso hueco por el eje</td><td>Rotación continua</td><td>Cable protegido dentro del brazo</td><td>Exige diseño desde el inicio</td><td>Muñecas y ejes con reductor hueco</td></tr>
+<tr><td>Anillo colector (slip ring)</td><td>Giro ilimitado</td><td>Sin límite de vueltas</td><td>Desgaste, ruido eléctrico, ancho de banda limitado</td><td>Ejes de giro continuo</td></tr>
+<tr><td>Bucle libre con abrazaderas</td><td>Flexión suave</td><td>Barato y simple</td><td>Puede engancharse; poco repetible</td><td>Robots pequeños y prototipos</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Reglas de instalación de una cadena portacables</h3>
+<ol>
+<li><strong>No llenes más del 60 % de la sección.</strong> Los cables deben poder moverse y reacomodarse dentro de la cadena.</li>
+<li><strong>Usa separadores</strong> para mantener cada cable en su carril, y separa las mangueras neumáticas de los cables eléctricos.</li>
+<li><strong>Nunca fijes los cables dentro de la cadena</strong>, salvo en los dos puntos de anclaje de los extremos. Un cable amarrado en el medio no puede compensar la diferencia de longitud entre el radio interior y el exterior, y se rompe.</li>
+<li><strong>Reparte el peso</strong>: cables gruesos abajo y hacia el centro, evitando que los delgados queden aplastados.</li>
+<li><strong>Deja el largo neutro correcto:</strong> ni tensado ni sobrante, siguiendo la indicación del fabricante de la cadena.</li>
+</ol>
+<div class="warning"><strong>El error clásico:</strong> apretar bridas plásticas alrededor de los cables dentro de la cadena "para que queden ordenados". Al hacerlo impides el deslizamiento relativo que el cable necesita para curvarse, y garantizas su rotura en pocos meses.</div>
+</section>
+
+<section id="emc">
+<h2>Separar potencia y señal: evitar la interferencia</h2>
+<p>Los cables de motor transportan corrientes conmutadas a alta frecuencia por el variador o el driver. Esos flancos rápidos irradian energía y se acoplan a los cables cercanos. El resultado son encoders con lecturas erráticas, sensores que disparan solos y buses de comunicación con errores intermitentes: fallos que se diagnostican como "problemas de software" durante semanas.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Buenas prácticas de compatibilidad electromagnética en el cableado del brazo.</caption>
+<thead><tr><th>Práctica</th><th>Recomendación</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>Separación física</td><td>Al menos 100 mm entre potencia y señal</td><td>El acoplamiento capacitivo cae con la distancia</td></tr>
+<tr><td>Cruces</td><td>Cuando deban cruzarse, hacerlo a 90°</td><td>Minimiza el área de acoplamiento</td></tr>
+<tr><td>Apantallamiento</td><td>Malla en cables de motor y de encoder</td><td>Encierra el campo y desvía el ruido a tierra</td></tr>
+<tr><td>Conexión de la malla</td><td>360° en el conector, un solo extremo en señal</td><td>Evita bucles de tierra y colas de conexión inductivas</td></tr>
+<tr><td>Par trenzado</td><td>En todas las señales diferenciales</td><td>El ruido se induce igual en ambos conductores y se cancela</td></tr>
+<tr><td>Cadena o conducto</td><td>Carriles separados para potencia y señal</td><td>Mantiene la distancia en todo el recorrido</td></tr>
+<tr><td>Tierra del chasis</td><td>Continuidad verificada punta a punta</td><td>El anodizado aísla y rompe la referencia común</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>El detalle de la "cola de cerdo":</strong> conectar la malla mediante un hilo largo retorcido hasta un tornillo de tierra es una de las prácticas más extendidas y menos efectivas. Esa cola actúa como inductor y anula buena parte del apantallamiento a alta frecuencia. La conexión correcta es un contacto de 360° mediante prensaestopas EMC o abrazadera metálica sobre la malla.</div>
+<p>Si tu brazo usa <a href="/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos">encoders de articulación</a>, ellos serán las primeras víctimas del ruido: sus señales son de bajo nivel y alta frecuencia. Un encoder que "pierde cuentas" casi siempre tiene un problema de cableado, no de electrónica.</p>
+</section>
+
+<section id="conectores">
+<h2>Conectores y aliviadores de tracción</h2>
+<p>El conector es donde el cable pasa de estar guiado a estar sujeto, y por eso es el punto de mayor concentración de esfuerzo. Buena parte de las roturas ocurre en los últimos centímetros antes del conector.</p>
+<ul>
+<li><strong>Aliviador de tracción obligatorio:</strong> la fuerza debe ir a la carcasa del conector o a una abrazadera, nunca a los pines soldados o crimpados.</li>
+<li><strong>Zona de transición recta:</strong> deja un tramo recto de al menos 10 diámetros antes de que empiece cualquier curva. Un cable que sale del conector y dobla inmediatamente se rompe ahí.</li>
+<li><strong>Crimpado antes que soldadura</strong> en zonas con movimiento: la soldadura endurece los hilos y crea un punto de concentración justo donde empieza la flexión.</li>
+<li><strong>Conectores industriales con retención positiva</strong> (bayoneta o rosca) en lugar de conectores a presión que se sueltan con la vibración.</li>
+<li><strong>Codificación e identificación:</strong> etiqueta cada cable en ambos extremos. En una reparación a las 3 de la madrugada, esa etiqueta vale oro.</li>
+<li><strong>Grado IP acorde al ambiente:</strong> revisa la guía de <a href="/blog/proteccion-contra-polvo-y-grado-ip-en-brazos-roboticos">protección contra polvo y grado IP</a>, porque el conector suele ser el eslabón más débil del sellado.</li>
+</ul>
+<p>Para el cableado de control de un brazo con Arduino o ESP32, los principios son idénticos aunque la escala sea menor; la <a href="/blog/guia-de-cableado-con-arduino-mega-para-brazos-roboticos">guía de cableado con Arduino Mega</a> cubre el detalle a nivel de placa.</p>
+</section>
+
+<section id="mantenimiento">
+<h2>Mantenimiento predictivo del cableado</h2>
+<p>El cable avisa antes de fallar, pero solo si alguien lo escucha. Un plan sencillo:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Plan de inspección de cableado. Ajusta la frecuencia según el ciclo de trabajo.</caption>
+<thead><tr><th>Verificación</th><th>Método</th><th>Frecuencia</th><th>Criterio de alarma</th></tr></thead>
+<tbody>
+<tr><td>Inspección visual</td><td>Buscar brillo por roce, deformación, grietas</td><td>Mensual</td><td>Cualquier marca de abrasión</td></tr>
+<tr><td>Resistencia de conductores</td><td>Miliohmímetro punta a punta</td><td>Semestral</td><td>Aumento del 10 % sobre la línea base</td></tr>
+<tr><td>Aislamiento</td><td>Megóhmetro a tensión adecuada</td><td>Anual</td><td>Caída significativa respecto de la referencia</td></tr>
+<tr><td>Continuidad de malla</td><td>Multímetro extremo a extremo</td><td>Semestral</td><td>Discontinuidad o resistencia alta</td></tr>
+<tr><td>Estado de la cadena</td><td>Ruido, holgura en eslabones</td><td>Trimestral</td><td>Chasquidos o juego excesivo</td></tr>
+<tr><td>Errores de comunicación</td><td>Contadores del bus o del controlador</td><td>Continuo</td><td>Tendencia creciente</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>El indicador más útil es gratis:</strong> los contadores de error del bus de campo o del encoder. Un contador que estaba en cero y empieza a subir lentamente es la advertencia más temprana de un cable que se está degradando, mucho antes de que aparezca cualquier falla visible.</div>
+<h3>Errores frecuentes, en resumen</h3>
+<ol>
+<li>Usar cable estático común en un eje que se mueve.</li>
+<li>Usar cable de arrastre en un eje que gira sobre su propio eje.</li>
+<li>Radios de curvatura menores al mínimo del fabricante.</li>
+<li>Amarrar los cables dentro de la cadena portacables.</li>
+<li>Llenar la cadena por encima del 60 % de su sección.</li>
+<li>Potencia y señal en el mismo conducto o haz.</li>
+<li>Conectar la malla con una cola larga en lugar de contacto de 360°.</li>
+<li>Conectores sin aliviador de tracción.</li>
+<li>Dejar el cable sin holgura al final del recorrido del eje.</li>
+<li>No etiquetar nada y descubrirlo el día de la avería.</li>
+</ol>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+
+<div class="faq">
+  <details>
+    <summary>¿Puedo usar cable normal en un brazo robótico?</summary>
+    <p>Solo en tramos que no se muevan. En cualquier eje con movimiento, un cable estático común se fatiga en semanas o meses: sus hilos son gruesos y su trenzado no está pensado para flexión repetida. Necesitas cable de arrastre para flexión y cable específico de torsión para ejes que giran sobre sí mismos.</p>
+  </details>
+  <details>
+    <summary>¿Cuál es el radio de curvatura mínimo de un cable?</summary>
+    <p>Depende del cable y de la aplicación. Como referencia, 4 veces el diámetro exterior en instalación fija, 10 veces en cadena portacables y hasta 15–20 veces en robótica exigente o cables apantallados. Consulta siempre la ficha técnica: es el dato que más determina la vida útil del cable.</p>
+  </details>
+  <details>
+    <summary>¿Por qué mi encoder da lecturas erráticas?</summary>
+    <p>En la gran mayoría de los casos, por interferencia electromagnética desde los cables de motor. Verifica que haya al menos 100 mm de separación entre potencia y señal, que el cable de encoder sea apantallado y de par trenzado, y que la malla esté conectada con contacto de 360° en el conector y no con una cola de hilo retorcido. También revisa la continuidad de tierra del chasis, que el anodizado suele interrumpir.</p>
+  </details>
+  <details>
+    <summary>¿Qué es un dress pack?</summary>
+    <p>Es un sistema de guiado de cables para los ejes superiores de un robot industrial: una manguera flexible que agrupa cables y mangueras, con un mecanismo de retorno por muelle o resorte que recoge la holgura cuando la articulación se mueve. Permite movimiento multidireccional sin que el haz se enganche ni forme bucles.</p>
+  </details>
+  <details>
+    <summary>¿Puedo pasar los cables por dentro del brazo?</summary>
+    <p>Sí, y es la mejor solución cuando el diseño lo contempla desde el inicio: los reductores con eje hueco permiten pasar el haz por el centro de la articulación, protegido y con un recorrido limpio. Requiere planificarlo en la etapa mecánica, porque abrir un paso interno en un brazo ya fabricado casi nunca es viable.</p>
+  </details>
+  <details>
+    <summary>¿Cada cuánto debo revisar el cableado?</summary>
+    <p>Inspección visual mensual buscando marcas de roce y deformaciones, medición de resistencia de conductores y de continuidad de malla cada seis meses, y revisión del aislamiento una vez al año. Lo más valioso es registrar una línea base cuando el equipo es nuevo y vigilar la tendencia, junto con los contadores de error del bus.</p>
+  </details>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La gestión de cables no es una tarea de acabado: es diseño mecánico con las mismas exigencias que la estructura. Elige el cable según el movimiento real de cada tramo —estático, arrastre o torsión—, respeta el radio de curvatura mínimo, guía el haz con cadena, dress pack o paso hueco, y separa físicamente potencia de señal desde el primer boceto.</p>
+<p>Después, trátalo como un componente con vida útil: línea base de resistencia y aislamiento, inspección periódica y vigilancia de los contadores de error. Un cableado bien diseñado y mantenido convierte la causa número uno de paradas no programadas en un no-problema.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los radios de curvatura, ciclos de vida y distancias de separación son valores orientativos: consulta siempre la ficha técnica del fabricante del cable y del sistema de guiado. Los trabajos sobre instalaciones eléctricas deben realizarse por personal competente y con el equipo sin energía. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Complementa con la <a href="/blog/proteccion-contra-polvo-y-grado-ip-en-brazos-roboticos">protección contra polvo y grado IP</a> de conectores y pasacables, y con la <a href="/blog/guia-de-cableado-con-arduino-mega-para-brazos-roboticos">guía de cableado con Arduino Mega</a> si trabajas a escala de maker.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/reductores-harmonic-drive-para-articulaciones-roboticas">← Anterior: Reductores Harmonic Drive para Articulaciones</a>
+  <a href="/blog/sistemas-de-refrigeracion-para-motores-de-brazos-roboticos">Siguiente: Sistemas de Refrigeración para Motores →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas y técnicas generales sobre cables, compatibilidad electromagnética y equipamiento eléctrico de máquinas. Las especificaciones concretas dependen del fabricante del cable.</p>
+<ul>
+<li><a href="https://webstore.iec.ch/publication/62473" target="_blank" rel="noopener noreferrer">IEC 60204-1 — Seguridad de las máquinas: equipo eléctrico de las máquinas</a></li><li><a href="https://webstore.iec.ch/publication/4144" target="_blank" rel="noopener noreferrer">IEC 61000-5-2 — Compatibilidad electromagnética: puesta a tierra y cableado</a></li><li><a href="https://webstore.iec.ch/en/publication/2452" target="_blank" rel="noopener noreferrer">IEC 60529 — Grados de protección proporcionados por las envolventes (código IP)</a></li><li><a href="https://www.iso.org/standard/51330.html" target="_blank" rel="noopener noreferrer">ISO 10218-1 — Requisitos de seguridad para robots industriales</a></li><li><a href="https://webstore.iec.ch/publication/61251" target="_blank" rel="noopener noreferrer">IEC 61076-2 — Conectores para equipos electrónicos: requisitos de calidad</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

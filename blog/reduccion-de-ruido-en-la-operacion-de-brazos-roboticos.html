@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Reducción de Ruido en la Operación de Brazos Robóticos</title>
+<meta name="description" content="Reducción de ruido en brazos robóticos: fuentes de ruido, cómo medir en dB(A), límites del DS 594 en Chile, control en la fuente, en la trayectoria y en el receptor, y errores frecuentes.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/reduccion-de-ruido-en-la-operacion-de-brazos-roboticos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reducción de Ruido en la Operación de Brazos Robóticos">
+<meta property="og:description" content="Fuentes de ruido, medición en dB(A), límites legales y las tres vías de control: fuente, trayectoria y receptor.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/reduccion_ruido_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/reduccion-de-ruido-en-la-operacion-de-brazos-roboticos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reducción de Ruido en la Operación de Brazos Robóticos">
+<meta name="twitter:description" content="Fuentes de ruido, medición en dB(A), límites legales y las tres vías de control: fuente, trayectoria y receptor.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/reduccion_ruido_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Reducción de Ruido en la Operación de Brazos Robóticos",
+  "description": "Guía de reducción de ruido en la operación de brazos robóticos: identificación de las fuentes de ruido mecánico, neumático y aerodinámico, los fundamentos de la medición en decibelios A y la suma logarítmica de niveles, los límites de exposición ocupacional según el DS 594 en Chile y las referencias internacionales, la jerarquía de control mediante intervención en la fuente, en la trayectoria de propagación y en el receptor, el tratamiento específico del ruido neumático de escape, el aislamiento de vibraciones estructurales, el encerramiento acústico y los errores más frecuentes en el control de ruido industrial.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/reduccion-de-ruido-en-la-operacion-de-brazos-roboticos"
+  },
+  "image": "https://www.ukrabot.cl/blog/reduccion_ruido_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Sonómetro con ponderación A (idealmente clase 2 o mejor), acceso al ciclo de trabajo real del robot y, según la solución, materiales absorbentes, silenciadores neumáticos y elementos antivibratorios",
+  "wordCount": "2500",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Reducción de Ruido en la Operación de Brazos Robóticos",
+      "item": "https://www.ukrabot.cl/blog/reduccion-de-ruido-en-la-operacion-de-brazos-roboticos"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuánto ruido hace un brazo robótico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El brazo en sí suele ser sorprendentemente silencioso: el ruido de una celda robótica proviene mayoritariamente de los escapes neumáticos de pinzas y electroválvulas, de los impactos de piezas y de los periféricos como transportadores y ventiladores. Por eso el primer paso siempre es medir cada fuente por separado en lugar de asumir que el culpable es el robot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuál es el límite legal de ruido en Chile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Según el DS 594 del Ministerio de Salud, para una jornada de 8 horas diarias ningún trabajador puede estar expuesto a un nivel de presión sonora continuo equivalente superior a 85 dB(A) lento, medido en la posición del oído. Para niveles distintos se reduce el tiempo permitido según una tabla, y en ningún caso se permite exposición sin protección sobre 115 dB(A)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿La espuma acústica sirve para insonorizar una celda?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sirve para reducir la reverberación dentro del recinto, pero no para impedir que el ruido salga. La espuma absorbe; para aislar hace falta masa y hermeticidad: paneles pesados sin rendijas. Un encerramiento efectivo combina ambas cosas, masa por fuera y absorbente por dentro."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué reducir una fuente de ruido no mejoró nada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Casi seguro atacaste una fuente secundaria. Los decibelios se suman logarítmicamente: si tienes una fuente de 82 dB y otra de 68 dB, eliminar completamente la de 68 dB baja el total apenas unas décimas. Toda la mejora está en la fuente dominante, y por eso es indispensable medir cada una por separado antes de invertir."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es lo más barato que puedo hacer para bajar el ruido?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Instalar silenciadores en los escapes neumáticos y eliminar las fugas de aire comprimido. En la mayoría de las celdas robóticas es la fuente dominante, y la intervención cuesta muy poco comparada con cualquier encerramiento. Después, bajar la presión de trabajo al mínimo necesario y regular el caudal de los cilindros."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Basta con dar protección auditiva a los operadores?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No como primera medida. La jerarquía de control exige intervenir primero en la fuente, luego en la trayectoria de propagación y solo al final en el receptor. La protección auditiva depende del uso correcto y continuo, no reduce el ruido del ambiente y puede aislar al operador de alarmas y comunicaciones. Es complemento, no sustituto."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="reduccion_ruido_hero.jpg" alt="Ingeniero sosteniendo un sonómetro portátil que muestra una lectura en decibelios frente a un brazo robótico industrial en operación dentro de una celda con paneles de espuma acústica gris en la pared" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Diseño Mecánico y Materiales · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Reducción de Ruido en la Operación de Brazos Robóticos</h1>
+    <p>Identificar la fuente dominante, medir bien y atacar en el orden correcto: fuente, trayectoria y receptor. Con los límites que aplican en Chile.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#fuentes">De dónde viene el ruido</a></li><li><a href="#medir">Cómo medir correctamente</a></li><li><a href="#limites">Límites legales en Chile</a></li><li><a href="#fuente">Control en la fuente</a></li><li><a href="#trayectoria">Control en la trayectoria</a></li><li><a href="#receptor">Control en el receptor</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="fuentes">
+<h2>De dónde viene el ruido</h2>
+<p>Antes de comprar espuma acústica hay que responder una pregunta: <strong>¿qué está sonando exactamente?</strong> En una celda robótica, el ruido casi nunca viene del robot en sí, sino de los elementos que lo acompañan.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Fuentes de ruido habituales en una celda robótica y su carácter acústico.</caption>
+<thead><tr><th>Fuente</th><th>Carácter</th><th>Frecuencia dominante</th><th>Nivel relativo</th></tr></thead>
+<tbody>
+<tr><td>Escape neumático (pinza, cilindros)</td><td>Silbido de banda ancha</td><td>Alta</td><td><strong>Habitualmente la mayor</strong></td></tr>
+<tr><td>Engranajes del reductor</td><td>Tono puro y armónicos</td><td>Media-alta</td><td>Alta</td></tr>
+<tr><td>Impactos de piezas</td><td>Golpes impulsivos</td><td>Banda ancha</td><td>Alta en picos</td></tr>
+<tr><td>Ventiladores de refrigeración</td><td>Zumbido continuo</td><td>Media</td><td>Media, permanente</td></tr>
+<tr><td>Servomotores</td><td>Silbido de conmutación</td><td>Alta (kHz)</td><td>Media, molesta</td></tr>
+<tr><td>Vibración estructural transmitida</td><td>Retumbo</td><td>Baja</td><td>Media, se propaga lejos</td></tr>
+<tr><td>Transportadores y periféricos</td><td>Continuo</td><td>Variable</td><td>Media</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>La sorpresa habitual:</strong> en la mayoría de las celdas, la fuente dominante es el <strong>escape neumático</strong> de las electroválvulas y la pinza, no el robot. Es también la más barata de resolver: un silenciador de escape adecuado puede reducir varios decibelios por unas pocas decenas de miles de pesos. Antes de invertir en encerramientos, revisa los escapes.</div>
+</section>
+
+<section id="medir">
+<h2>Cómo medir correctamente</h2>
+<p>El decibelio es una escala <strong>logarítmica</strong>, y eso hace que la intuición falle sistemáticamente.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Interpretación práctica de las diferencias en decibelios.</caption>
+<thead><tr><th>Diferencia</th><th>Relación de energía</th><th>Percepción del oído</th></tr></thead>
+<tbody>
+<tr><td>+3 dB</td><td>Doble de energía</td><td>Apenas perceptible</td></tr>
+<tr><td>+6 dB</td><td>Cuatro veces</td><td>Claramente perceptible</td></tr>
+<tr><td>+10 dB</td><td>Diez veces</td><td>Suena "el doble de fuerte"</td></tr>
+<tr><td>+20 dB</td><td>Cien veces</td><td>Cuatro veces más fuerte</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code># Suma logaritmica: combinar varias fuentes de ruido
+import math
+
+def sumar_db(niveles):
+    return 10 * math.log10(sum(10**(L/10) for L in niveles))
+
+# Cuatro fuentes en la celda
+fuentes = {
+    "escape neumatico": 82.0,
+    "reductores":       74.0,
+    "ventiladores":     68.0,
+    "transportador":    71.0,
+}
+
+total = sumar_db(fuentes.values())
+print(f"Nivel total: {total:.1f} dB(A)")
+# Nivel total: 83.1 dB(A)
+
+# Que pasa si silencio el escape (-10 dB)?
+fuentes["escape neumatico"] = 72.0
+nuevo = sumar_db(fuentes.values())
+print(f"Tras silenciar el escape: {nuevo:.1f} dB(A)")
+print(f"Reduccion lograda: {total - nuevo:.1f} dB")
+# Tras silenciar el escape: 77.2 dB(A)
+# Reduccion lograda: 5.9 dB
+</code></pre>
+<div class="warning"><strong>La lección clave de la suma logarítmica:</strong> atacar cualquier fuente que no sea la dominante es casi inútil. En el ejemplo, eliminar por completo los ventiladores (68 dB) bajaría el total apenas unas décimas. Toda la mejora está en la fuente más ruidosa. <strong>Mide primero, gasta después.</strong></div>
+<h3>Cómo hacer una medición útil</h3>
+<ol>
+<li><strong>Usa ponderación A</strong>, dB(A): aproxima la respuesta del oído humano y es la referencia normativa.</li>
+<li><strong>Mide en la posición del oído del trabajador</strong>, no pegado a la máquina.</li>
+<li><strong>Cubre el ciclo completo</strong> con el nivel equivalente (LAeq): un promedio energético del período, no una lectura instantánea.</li>
+<li><strong>Registra también el pico</strong> en dB(C) si hay impactos, que se evalúan aparte.</li>
+<li><strong>Mide el ruido de fondo</strong> con el robot detenido: si está a menos de 10 dB del total, hay que corregir la medición.</li>
+<li><strong>Haz un mapa por fuente</strong>: mide cerca de cada elemento por separado para identificar al culpable.</li>
+</ol>
+<p>Los métodos formales de determinación de niveles de emisión están descritos en las normas de la serie <a href="https://www.iso.org/standard/54907.html" target="_blank" rel="noopener noreferrer">ISO 11202</a> y relacionadas.</p>
+</section>
+
+<section id="limites">
+<h2>Límites legales: qué exige la normativa en Chile</h2>
+<p>En Chile, la exposición ocupacional a ruido está regulada por el <strong>Decreto Supremo 594</strong> del Ministerio de Salud, que fija los límites permisibles en los lugares de trabajo.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Criterios de exposición a ruido en el trabajo. Referencia: DS 594, MINSAL, Chile. Consulta el texto vigente para el detalle completo de la tabla y las condiciones de aplicación.</caption>
+<thead><tr><th>Criterio</th><th>Valor</th><th>Comentario</th></tr></thead>
+<tbody>
+<tr><td>Ruido estable o fluctuante, jornada de 8 h</td><td>85 dB(A) lento</td><td>Medido en la posición del oído del trabajador</td></tr>
+<tr><td>Niveles distintos de 85 dB(A)</td><td>Tiempo de exposición reducido según tabla</td><td>A más nivel, menos tiempo permitido</td></tr>
+<tr><td>Dosis diaria máxima</td><td>1 (100 %)</td><td>Se suman los períodos de 80 dB(A) o más</td></tr>
+<tr><td>Sin protección auditiva</td><td>Nunca sobre 115 dB(A) lento</td><td>Límite absoluto, cualquiera sea el trabajo</td></tr>
+<tr><td>Ruido impulsivo, jornada de 8 h</td><td>95 dB(C) pico</td><td>Se evalúa de forma independiente</td></tr>
+</tbody>
+</table>
+</div>
+<p>Fuente: <a href="https://www.bcn.cl/leychile/navegar?idNorma=167766" target="_blank" rel="noopener noreferrer">DS 594, Ministerio de Salud de Chile</a>, artículos 74 a 79. La aplicación práctica se apoya además en el protocolo PREXOR de la autoridad sanitaria.</p>
+<div class="note"><strong>Un matiz importante:</strong> cumplir el límite legal no equivale a tener un ambiente cómodo. Un taller a 82 dB(A) cumple la norma para jornada completa, pero es un lugar donde hay que levantar la voz para conversar y donde la fatiga acumulada es real. Si el robot está en un aula, una oficina o un laboratorio compartido, el objetivo razonable está muy por debajo del límite: en el rango de 55 a 65 dB(A).</div>
+<p>El marco general de seguridad de la instalación robótica se aborda en la guía de <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">normas de seguridad para brazos robóticos en Chile</a>.</p>
+</section>
+
+<section id="fuente">
+<h2>Control en la fuente: lo más eficaz</h2>
+<p>La jerarquía de control en ruido es la misma que en cualquier riesgo: primero la fuente, después la trayectoria y solo al final el receptor. Intervenir la fuente es siempre lo más rentable.</p>
+<h3>Ruido neumático: la victoria rápida</h3>
+<ul>
+<li><strong>Silenciadores de escape</strong> en todas las electroválvulas. Es la medida de mejor relación costo-beneficio en una celda robótica.</li>
+<li><strong>Reguladores de caudal</strong> para que los cilindros no lleguen a fin de carrera a máxima velocidad.</li>
+<li><strong>Baja la presión</strong> a la mínima que hace el trabajo: el ruido del escape crece rápidamente con la presión.</li>
+<li><strong>Boquillas de aire de bajo ruido</strong> si hay soplado: las de diseño tipo Coandă reducen mucho el silbido a igual fuerza de soplado.</li>
+<li><strong>Elimina fugas.</strong> Una fuga permanente es ruido continuo y aire desperdiciado las 24 horas.</li>
+</ul>
+<h3>Ruido mecánico</h3>
+<ul>
+<li><strong>Correa en lugar de engranajes</strong> donde sea viable: el elastómero amortigua en vez de transmitir, como se detalla en <a href="/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas">correa vs. engranajes</a>.</li>
+<li><strong>Engranajes helicoidales</strong> en lugar de rectos: el diente entra progresivamente y reduce el golpeteo característico.</li>
+<li><strong>Lubricación correcta</strong>: la grasa degradada aumenta notoriamente el ruido de un reductor y es señal de mantenimiento pendiente.</li>
+<li><strong>Trayectorias con jerk limitado</strong>: los cambios bruscos de aceleración excitan las resonancias de la estructura.</li>
+<li><strong>Amortigua los impactos de pieza</strong>: topes de poliuretano, canaletas forradas y menor altura de caída en los contenedores de descarga.</li>
+</ul>
+<h3>Ruido de ventiladores</h3>
+<ul>
+<li>Control por temperatura en lugar de funcionamiento permanente: si el ventilador solo gira cuando hace falta, el ruido medio baja mucho.</li>
+<li>Ventiladores de mayor diámetro girando más lento mueven el mismo caudal con menos ruido.</li>
+<li>Revisa primero si puedes <a href="/blog/sistemas-de-refrigeracion-para-motores-de-brazos-roboticos">reducir el calor de origen</a> y prescindir del ventilador.</li>
+</ul>
+</section>
+
+<section id="trayectoria">
+<h2>Control en la trayectoria</h2>
+<p>Cuando la fuente ya se atacó y aún falta, se interviene el camino que sigue el sonido hasta las personas. Aquí hay dos mecanismos distintos que se confunden todo el tiempo.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Absorción y aislamiento: dos cosas distintas.</caption>
+<thead><tr><th>Mecanismo</th><th>Qué hace</th><th>Material típico</th><th>Uso correcto</th></tr></thead>
+<tbody>
+<tr><td>Absorción</td><td>Convierte el sonido en calor dentro del material</td><td>Espuma, lana mineral, paneles porosos</td><td>Reducir la reverberación <em>dentro</em> del recinto</td></tr>
+<tr><td>Aislamiento</td><td>Impide que el sonido atraviese</td><td>Masa: acero, hormigón, yeso, vidrio laminado</td><td>Evitar que el ruido <em>salga</em> del recinto</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>El error más común y más caro:</strong> pegar espuma acústica en las paredes para evitar que el ruido salga de la celda. La espuma <strong>absorbe</strong>, no <strong>aísla</strong>. Reduce el eco dentro del recinto, pero deja pasar el sonido casi igual. Para impedir que el ruido salga hace falta <strong>masa y hermeticidad</strong>: paneles pesados, sin rendijas. La ley de masa dice que duplicar la masa por unidad de superficie aporta alrededor de 6 dB de aislamiento adicional.</div>
+<h3>Encerramientos que sí funcionan</h3>
+<ul>
+<li><strong>Hermeticidad ante todo:</strong> una rendija pequeña arruina el desempeño de un panel excelente. El sonido es como el agua, se cuela por cualquier abertura.</li>
+<li><strong>Doble función:</strong> paneles con masa por fuera para aislar y material absorbente por dentro para no crear una cámara reverberante.</li>
+<li><strong>Ventanas de inspección</strong> de policarbonato o vidrio laminado de espesor suficiente; el vidrio simple delgado es el eslabón débil.</li>
+<li><strong>Silenciadores en las aberturas de ventilación:</strong> el aire tiene que entrar y salir, pero el conducto puede tratarse acústicamente.</li>
+<li><strong>Desacople del suelo:</strong> si el encerramiento toca la estructura, transmite vibración y pierde eficacia.</li>
+</ul>
+<h3>Vibración estructural</h3>
+<p>El ruido de baja frecuencia que se escucha en toda la nave suele viajar por la estructura, no por el aire. Se combate con <strong>elementos antivibratorios</strong> bajo la base del robot y de los periféricos, con masa de inercia en la bancada y con juntas flexibles en las conexiones rígidas de tuberías y conductos.</p>
+</section>
+
+<section id="receptor">
+<h2>Control en el receptor: el último recurso</h2>
+<p>Actuar sobre la persona es la última línea de la jerarquía, porque depende del comportamiento humano y no elimina el riesgo: solo lo atenúa mientras el equipo se usa correctamente.</p>
+<ul>
+<li><strong>Protección auditiva:</strong> tapones o orejeras con atenuación adecuada al espectro presente. Sobreproteger también es un problema: aísla al operador de señales de alarma y del habla, y fomenta que se los quite.</li>
+<li><strong>Rotación de puestos</strong> para reducir la dosis diaria acumulada.</li>
+<li><strong>Cabinas de control</strong> aisladas cuando el operador supervisa varias máquinas.</li>
+<li><strong>Automatizar la presencia:</strong> si el ciclo puede ejecutarse sin operador cerca, la exposición desaparece.</li>
+<li><strong>Vigilancia audiológica</strong> según el programa de salud ocupacional aplicable.</li>
+<li><strong>Señalización</strong> de las zonas con obligación de protección auditiva.</li>
+</ul>
+<h3>Errores frecuentes en control de ruido</h3>
+<ol>
+<li>Comprar espuma antes de medir e identificar la fuente dominante.</li>
+<li>Confundir absorción con aislamiento.</li>
+<li>Atacar una fuente secundaria y no notar ninguna mejora, por la suma logarítmica.</li>
+<li>Dejar rendijas en un encerramiento cuidadosamente construido.</li>
+<li>Ignorar el escape neumático, que suele ser la fuente número uno.</li>
+<li>Medir un instante en lugar del nivel equivalente del ciclo completo.</li>
+<li>Medir pegado a la máquina en lugar de en la posición del oído del trabajador.</li>
+<li>Olvidar la vía estructural de transmisión de la vibración.</li>
+<li>Resolver todo con protección auditiva, saltándose la jerarquía de control.</li>
+<li>No volver a medir después de la intervención para verificar el resultado.</li>
+</ol>
+<div class="note"><strong>Cierra siempre el ciclo:</strong> medición inicial, intervención, medición final. Sin la medición posterior no sabes si lograste 1 dB o 10 dB, y sin ese dato no puedes justificar la siguiente inversión ni detectar que el ruido volvió a subir por desgaste.</div>
+</section>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+
+<div class="faq">
+  <details>
+    <summary>¿Cuánto ruido hace un brazo robótico?</summary>
+    <p>El brazo en sí suele ser sorprendentemente silencioso: el ruido de una celda robótica proviene mayoritariamente de los escapes neumáticos de pinzas y electroválvulas, de los impactos de piezas y de los periféricos como transportadores y ventiladores. Por eso el primer paso siempre es medir cada fuente por separado en lugar de asumir que el culpable es el robot.</p>
+  </details>
+  <details>
+    <summary>¿Cuál es el límite legal de ruido en Chile?</summary>
+    <p>Según el DS 594 del Ministerio de Salud, para una jornada de 8 horas diarias ningún trabajador puede estar expuesto a un nivel de presión sonora continuo equivalente superior a <strong>85 dB(A)</strong> lento, medido en la posición del oído. Para niveles distintos se reduce el tiempo permitido según una tabla, y en ningún caso se permite exposición sin protección sobre 115 dB(A).</p>
+  </details>
+  <details>
+    <summary>¿La espuma acústica sirve para insonorizar una celda?</summary>
+    <p>Sirve para reducir la reverberación <em>dentro</em> del recinto, pero no para impedir que el ruido salga. La espuma absorbe; para aislar hace falta <strong>masa y hermeticidad</strong>: paneles pesados sin rendijas. Un encerramiento efectivo combina ambas cosas, masa por fuera y absorbente por dentro.</p>
+  </details>
+  <details>
+    <summary>¿Por qué reducir una fuente de ruido no mejoró nada?</summary>
+    <p>Casi seguro atacaste una fuente secundaria. Los decibelios se suman logarítmicamente: si tienes una fuente de 82 dB y otra de 68 dB, eliminar completamente la de 68 dB baja el total apenas unas décimas. Toda la mejora está en la fuente dominante, y por eso es indispensable medir cada una por separado antes de invertir.</p>
+  </details>
+  <details>
+    <summary>¿Qué es lo más barato que puedo hacer para bajar el ruido?</summary>
+    <p>Instalar silenciadores en los escapes neumáticos y eliminar las fugas de aire comprimido. En la mayoría de las celdas robóticas es la fuente dominante, y la intervención cuesta muy poco comparada con cualquier encerramiento. Después, bajar la presión de trabajo al mínimo necesario y regular el caudal de los cilindros.</p>
+  </details>
+  <details>
+    <summary>¿Basta con dar protección auditiva a los operadores?</summary>
+    <p>No como primera medida. La jerarquía de control exige intervenir primero en la fuente, luego en la trayectoria de propagación y solo al final en el receptor. La protección auditiva depende del uso correcto y continuo, no reduce el ruido del ambiente y puede aislar al operador de alarmas y comunicaciones. Es complemento, no sustituto.</p>
+  </details>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>El control de ruido en una celda robótica no empieza con materiales: empieza con un sonómetro. La suma logarítmica hace que todo el resultado dependa de identificar y atacar la <strong>fuente dominante</strong>, que en la mayoría de los casos es el escape neumático y no el robot.</p>
+<p>Después, respeta la jerarquía: fuente, trayectoria y solo al final receptor. Entiende la diferencia entre absorber y aislar, cuida la hermeticidad de cualquier encerramiento y no olvides la vía estructural de la vibración. Y cierra siempre el ciclo con una medición posterior: sin ella no sabes si mejoraste ni cuánto.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los niveles de ruido indicados son referenciales y varían según el equipo, la instalación y el ciclo de trabajo. La información normativa sobre el DS 594 se entrega con fines informativos y no constituye asesoría legal: consulta el texto vigente y a un profesional en prevención de riesgos o higiene ocupacional para la evaluación de tu instalación. Las mediciones con validez legal deben realizarse con instrumentación calibrada y por personal competente. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Revisa cómo la elección de transmisión afecta el ruido en <a href="/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas">correa vs. engranajes</a> y el marco legal completo en <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">normas de seguridad en Chile</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/proteccion-contra-polvo-y-grado-ip-en-brazos-roboticos">← Anterior: Protección contra Polvo y Grado IP</a>
+  <a href="/blog/piezas-impresas-en-3d-para-brazos-roboticos">Siguiente: Piezas Impresas en 3D para Brazos Robóticos →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas y legales sobre ruido ocupacional y su medición. La normativa aplicable depende del país y de la instalación concreta.</p>
+<ul>
+<li><a href="https://www.bcn.cl/leychile/navegar?idNorma=167766" target="_blank" rel="noopener noreferrer">DS 594 — Reglamento sobre condiciones sanitarias y ambientales básicas en los lugares de trabajo (Chile)</a></li><li><a href="https://www.iso.org/standard/54907.html" target="_blank" rel="noopener noreferrer">ISO 11202 — Acústica: niveles de presión sonora de emisión en el puesto de trabajo</a></li><li><a href="https://www.iso.org/standard/54100.html" target="_blank" rel="noopener noreferrer">ISO 11201 — Acústica: método de ingeniería en campo esencialmente libre</a></li><li><a href="https://www.iso.org/standard/74417.html" target="_blank" rel="noopener noreferrer">ISO 11688-1 — Acústica: diseño de máquinas y equipos de bajo ruido</a></li><li><a href="https://www.iso.org/standard/51330.html" target="_blank" rel="noopener noreferrer">ISO 10218-1 — Requisitos de seguridad para robots industriales</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
