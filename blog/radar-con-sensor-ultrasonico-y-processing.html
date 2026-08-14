@@ -299,6 +299,17 @@ details p{padding-top:10px;margin-bottom:0}
   </ol>
 </div>
 
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
 <section id="principio-fisico">
 <h2>El principio físico: tiempo de vuelo del ultrasonido</h2>
 <p>El sensor <strong>HC-SR04</strong> mide distancia usando el mismo principio físico que emplean los murciélagos para orientarse en la oscuridad: emite un pulso de sonido en una frecuencia por encima del rango audible humano (40 kHz, de ahí el término <strong>ultrasonido</strong>), y mide cuánto tiempo tarda ese pulso en rebotar contra un objeto y regresar como eco a un receptor.</p>
@@ -366,7 +377,7 @@ Naranja ----> Arduino pin digital 11</code></pre>
 <section id="codigo-arduino">
 <h2>Código Arduino: barrido y medición de distancia</h2>
 <p>El siguiente código controla el barrido del servomotor de un extremo a otro y, en cada ángulo, toma una medición de distancia con el HC-SR04, enviando ambos valores por el puerto serie en un formato de texto simple que Processing podrá interpretar fácilmente.</p>
-<pre><code>#include <Servo.h>
+<pre><code>#include &lt;Servo.h&gt;
 
 const int PIN_TRIG = 9;
 const int PIN_ECHO = 10;
@@ -434,6 +445,17 @@ void loop() {
 </ol>
 <div class="note"><strong>Un desafío común de conexión:</strong> Arduino y Processing no pueden usar el puerto serie al mismo tiempo. Si tienes el Monitor Serie del IDE de Arduino abierto mientras intentas ejecutar el sketch de Processing, obtendrás un error de puerto ocupado. Asegúrate de cerrar el Monitor Serie de Arduino antes de ejecutar el código de Processing.</div>
 </section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <section id="codigo-processing">
 <h2>Código Processing: dibujando el radar</h2>
@@ -590,6 +612,17 @@ y = distancia * sin(angulo)</code></pre>
 <h2>Conclusión</h2>
 <p>El radar con HC-SR04 y Processing es uno de esos proyectos donde el resultado visual final —una animación de radar en tiempo real, sincronizada con un servomotor físico girando frente a ti— genera una sensación de logro desproporcionadamente grande respecto a la complejidad real de construirlo. En el camino se aprenden conceptos que trascienden ampliamente este proyecto puntual: el principio físico del tiempo de vuelo de una onda, la separación de responsabilidades entre hardware de medición y software de visualización, un protocolo simple de comunicación serie con delimitadores de texto, y la conversión de coordenadas polares a cartesianas mediante trigonometría básica. Estas herramientas conceptuales reaparecerán, en formas distintas, en prácticamente cualquier proyecto futuro que combine sensores físicos con visualización de datos en pantalla.</p>
 </section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
