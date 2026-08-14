@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Guía de Evaluación de Riesgo para Brazos Robóticos</title>
+<meta name="description" content="Guía de evaluación de riesgo para brazos robóticos según ISO 12100 e ISO 10218-2: identificación de peligros, matriz de riesgo, jerarquía de reducción y determinación del PLr.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Guía de Evaluación de Riesgo para Brazos Robóticos">
+<meta property="og:description" content="Metodología ISO 12100, identificación de peligros, matriz de riesgo, jerarquía de reducción y PLr requerido.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/evaluacion_riesgo_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía de Evaluación de Riesgo para Brazos Robóticos">
+<meta name="twitter:description" content="ISO 12100 paso a paso: peligros, matriz de riesgo, reducción y PLr para celdas robóticas.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/evaluacion_riesgo_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Guía de Evaluación de Riesgo para Brazos Robóticos",
+  "description": "Guía de evaluación de riesgo para brazos robóticos: por qué es el punto de partida obligatorio de cualquier instalación, la metodología de ISO 12100 paso a paso, la identificación sistemática de peligros típicos de una célula robótica, la estimación del riesgo con una matriz de severidad y probabilidad, la jerarquía de reducción del riesgo, la determinación del nivel de prestaciones requerido (PLr según ISO 13849-1) y la documentación y validación exigidas por ISO 10218-2.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos"
+  },
+  "image": "https://www.ukrabot.cl/blog/evaluacion_riesgo_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Plano y alcance de la célula, información del robot (alcance, velocidades, cargas), norma ISO 12100 y, para la validación, ISO 10218-2 e ISO 13849-1",
+  "wordCount": "2650",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Guía de Evaluación de Riesgo para Brazos Robóticos",
+      "item": "https://www.ukrabot.cl/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Es obligatoria la evaluación de riesgo para un brazo robótico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. La norma ISO 10218-2 exige una evaluación de riesgo según ISO 12100 antes de cualquier decisión de diseño de la instalación. Además, en Chile la Ley 16.744 y su reglamentación obligan al empleador a identificar y controlar los riesgos de los equipos de trabajo. Sin evaluación documentada, no hay forma de demostrar que la célula es segura ante un accidente o una fiscalización."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Quién debe hacer la evaluación de riesgo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Idealmente un equipo multidisciplinario: el integrador del robot, el prevencionista de riesgos de la empresa, el operador y el encargado de mantenimiento. El integrador aporta el conocimiento técnico del robot; el prevencionista, la metodología y la normativa; el operador y el mantenedor, las tareas reales que se harán (carga, ajuste, limpieza, recuperación de fallas)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cada cuánto se revisa la evaluación de riesgo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cada vez que cambia algo relevante: un nuevo efector, un cambio de programa o de layout, un incidente o una modificación de la célula. Además conviene una revisión periódica programada, típicamente anual, para confirmar que las medidas siguen vigentes y que las personas no han puenteado protecciones."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia hay entre PLr y PL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El PLr (nivel de prestaciones requerido) es lo que el análisis de riesgo exige que cumpla una función de seguridad; el PL (nivel de prestaciones logrado) es lo que realmente alcanza el circuito que diseñaste, según su arquitectura y sus componentes. La regla es simple: el PL logrado debe ser igual o mayor que el PLr."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué peligros son los más comunes en una célula robótica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los de mayor severidad son el atrapamiento y el aplastamiento contra estructuras, el golpe por movimiento rápido del brazo, la proyección de piezas o herramientas, y los peligros de la tarea asociada (soldadura, manipulación de cargas, etc.). A ellos se suman los peligros de acceso para mantenimiento y los de arranque inesperado durante la recuperación de fallas."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="evaluacion_riesgo_hero.jpg" alt="Ingeniero de seguridad con chaleco reflectante y casco realizando una evaluación de riesgo con una planilla frente a una celda robótica cercada con señalética" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización Industrial y Seguridad · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Guía de Evaluación de Riesgo para Brazos Robóticos</h1>
+    <p>La metodología de ISO 12100 paso a paso: identificación de peligros, matriz de riesgo, jerarquía de reducción y el nivel de prestaciones requerido (PLr).</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#por-que">Por qué la evaluación de riesgo es el punto de partida</a></li><li><a href="#metodologia">Metodología ISO 12100 paso a paso</a></li><li><a href="#peligros">Identificación de peligros</a></li><li><a href="#estimacion">Estimación del riesgo: la matriz</a></li><li><a href="#jerarquia">Jerarquía de reducción del riesgo</a></li><li><a href="#plr">Determinar el PLr requerido</a></li><li><a href="#documentacion">Documentación y validación</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="por-que">
+<h2>Por qué la evaluación de riesgo es el punto de partida</h2>
+<p>Antes de cercar una célula, elegir una cortina de luz o programar una parada de emergencia, hay que saber <strong>qué peligros existen y cuánto riesgo representan</strong>. La evaluación de riesgo no es un trámite: es el documento que decide qué protecciones se instalan, dónde y con qué nivel de fiabilidad.</p>
+<p>La norma <a href="https://www.iso.org/standard/51528.html" target="_blank" rel="noopener noreferrer">ISO 12100</a> define la metodología general, e <a href="https://www.iso.org/standard/41571.html" target="_blank" rel="noopener noreferrer">ISO 10218-2</a> la exige específicamente para sistemas robóticos antes de cualquier decisión de diseño. Todo lo demás —cortinas, paradas, cercas— son <strong>consecuencias</strong> de este análisis.</p>
+</section>
+
+<section id="metodologia">
+<h2>Metodología ISO 12100 paso a paso</h2>
+<ol>
+<li><strong>Definir los límites de la máquina:</strong> alcance del robot, espacio de trabajo, usos previstos y usos indebidos razonablemente previsibles.</li>
+<li><strong>Identificar los peligros:</strong> mecánicos, eléctricos, térmicos, ergonómicos y de la tarea, en cada fase de vida (operación, ajuste, mantenimiento, limpieza, falla).</li>
+<li><strong>Estimar el riesgo:</strong> combinar severidad del daño y probabilidad de ocurrencia.</li>
+<li><strong>Evaluar el riesgo:</strong> decidir si es aceptable o si hay que reducirlo.</li>
+<li><strong>Reducir el riesgo:</strong> aplicar la jerarquía (eliminar, sustituir, proteger, informar).</li>
+<li><strong>Documentar y verificar:</strong> registrar el análisis y comprobar que las medidas funcionan.</li>
+</ol>
+<p>El proceso es <strong>iterativo</strong>: tras aplicar una medida, se vuelve a estimar el riesgo residual hasta que sea aceptable o se justifique con medidas organizativas.</p>
+</section>
+
+<section id="peligros">
+<h2>Identificación de peligros</h2>
+<p>Los peligros de una célula robótica se agrupan por origen. Esta tabla es un punto de partida para no olvidar ninguno:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Peligros típicos en celdas robóticas y su fase de vida.</caption>
+<thead><tr><th>Peligro</th><th>Ejemplo</th><th>Fase típica</th></tr></thead>
+<tbody>
+<tr><td>Atrapamiento / aplastamiento</td><td>Brazo contra mesa o valla</td><td>Operación, ajuste</td></tr>
+<tr><td>Golpe por movimiento</td><td>Desplazamiento rápido entre puntos</td><td>Operación</td></tr>
+<tr><td>Proyección de piezas</td><td>Pinza suelta una carga</td><td>Operación</td></tr>
+<tr><td>Eléctrico</td><td>Gabinete abierto con tensión</td><td>Mantenimiento</td></tr>
+<tr><td>Arranque inesperado</td><td>Reinicio tras una falla</td><td>Recuperación</td></tr>
+<tr><td>De la tarea asociada</td><td>Arco de soldadura, humos, calor</td><td>Según proceso</td></tr>
+<tr><td>Ergonómico</td><td>Posturas al cargar/descargar</td><td>Operación</td></tr>
+</tbody>
+</table>
+</div>
+<p>Un error frecuente es analizar solo el robot en movimiento y olvidar el <strong>acceso de mantenimiento</strong> (con el robot energizado y en modo manual) o la <strong>recuperación de fallas</strong>, que es cuando ocurren muchos accidentes.</p>
+</section>
+
+<section id="estimacion">
+<h2>Estimación del riesgo: la matriz</h2>
+<p>El riesgo se estima combinando la <strong>severidad</strong> del daño posible con la <strong>probabilidad</strong> de que ocurra. Una matriz sencilla de 3×3 o 5×5 permite priorizar:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Matriz de riesgo simplificada (severidad × probabilidad).</caption>
+<thead><tr><th>Probabilidad ↓ / Severidad →</th><th>Leve</th><th>Grave</th><th>Muy grave</th></tr></thead>
+<tbody>
+<tr><td>Improbable</td><td>Bajo</td><td>Medio</td><td>Alto</td></tr>
+<tr><td>Posible</td><td>Medio</td><td>Alto</td><td>Crítico</td></tr>
+<tr><td>Frecuente</td><td>Alto</td><td>Crítico</td><td>Crítico</td></tr>
+</tbody>
+</table>
+</div>
+<p>Por ejemplo, el acceso del operador a la zona de carga de una pieza con el brazo a velocidad completa sería <strong>Muy grave × Posible = Crítico</strong>: exige protección (cortina, valla con enclavamiento o modo colaborativo). El mismo acceso con el robot en parada segura podría quedar en riesgo Bajo.</p>
+</section>
+
+<section id="jerarquia">
+<h2>Jerarquía de reducción del riesgo</h2>
+<p>ISO 12100 establece un orden de prioridad que debe respetarse siempre, de la medida más eficaz a la menos eficaz:</p>
+<ol>
+<li><strong>Diseño intrínsecamente seguro:</strong> eliminar el peligro en el origen (limitar fuerzas, redondear aristas, reducir velocidades).</li>
+<li><strong>Protecciones y dispositivos de seguridad:</strong> vallas, cortinas de luz, enclavamientos, paradas de emergencia.</li>
+<li><strong>Información para el uso:</strong> señalética, manuales, capacitación, procedimientos.</li>
+<li><strong>Equipos de protección personal:</strong> la última barrera, nunca la primera.</li>
+</ol>
+<div class="warning"><strong>No inviertas el orden:</strong> pretender controlar un riesgo crítico solo con señalética o EPP es un incumplimiento de la norma y la causa típica de accidentes graves en celdas robóticas.</div>
+</section>
+
+<section id="plr">
+<h2>Determinar el PLr requerido</h2>
+<p>Cuando una función de seguridad (parada de emergencia, puerta, cortina) es necesaria, hay que asignarle un <strong>nivel de prestaciones requerido (PLr)</strong> según <a href="https://www.iso.org/standard/69883.html" target="_blank" rel="noopener noreferrer">ISO 13849-1</a>. Para robótica, las funciones críticas suelen exigir <strong>PL d</strong> o <strong>PL e</strong> (equivalente a SIL 2 o SIL 3 en IEC 62061).</p>
+<ul>
+<li><strong>Parada de emergencia:</strong> típicamente PL d / categoría 3 como mínimo.</li>
+<li><strong>Enclavamiento de puerta:</strong> PL d o superior si evita un atrapamiento.</li>
+<li><strong>Cortina de luz de acceso:</strong> PL e con cortina Tipo 4 para riesgos de amputación.</li>
+<li><strong>Monitoreo de velocidad (cobots):</strong> según el análisis, usualmente PL d.</li>
+</ul>
+<p>La regla final es que el <strong>PL logrado</strong> por el circuito que instales debe ser igual o superior al <strong>PLr</strong>. Esa verificación se hace con la arquitectura, los componentes y los datos del fabricante, y se registra en la documentación.</p>
+</section>
+
+<section id="documentacion">
+<h2>Documentación y validación</h2>
+<p>La evaluación de riesgo solo vale si queda <strong>documentada y verificada</strong>. El expediente debe incluir:</p>
+<ul>
+<li>El análisis de peligros y la matriz de riesgo con las medidas adoptadas.</li>
+<li>La justificación del PLr de cada función de seguridad y la evidencia del PL logrado.</li>
+<li>Los resultados de las pruebas: tiempos de parada reales, distancia de seguridad medida.</li>
+<li>Los procedimientos de operación, ajuste y mantenimiento.</li>
+<li>El registro de capacitación del personal.</li>
+</ul>
+<p>En el contexto chileno, este expediente es además tu respaldo ante la <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">normativa laboral (Ley 16.744)</a>: demuestra que identificaste los riesgos y adoptaste medidas. Una célula sin este documento es, en la práctica, una instalación sin defensa.</p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La evaluación de riesgo es el plano de la seguridad: define qué protecciones instalar, dónde y con qué fiabilidad. Seguir ISO 12100 de forma disciplinada —identificar, estimar, reducir, documentar— convierte una célula robótica en un sistema defendible y, sobre todo, en un lugar de trabajo seguro. Con el análisis en mano, el siguiente paso es materializarlo: empieza por la <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">Integración de Cortinas de Luz</a> y los <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">Sistemas de Parada de Emergencia</a>.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Es una orientación metodológica general y no reemplaza la evaluación de riesgo realizada por un profesional competente ni la revisión de las normas en su texto oficial. Cada instalación es distinta y debe analizarse caso a caso. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Con el análisis hecho, materializa las protecciones: lee la guía de <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">Integración de Cortinas de Luz</a> y la de <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">Parada de Emergencia</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/integrando-brazos-roboticos-con-plc">← Anterior: Integrando Brazos Robóticos con PLC</a>
+  <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">Siguiente: Integración de Cortinas de Luz →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas que sustentan la metodología descrita. Los criterios de severidad, probabilidad y PLr deben definirse y justificarse para cada instalación concreta.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/51528.html" target="_blank" rel="noopener noreferrer">ISO 12100 — Seguridad de las máquinas: evaluación y reducción del riesgo</a></li><li><a href="https://www.iso.org/standard/41571.html" target="_blank" rel="noopener noreferrer">ISO 10218-2 — Integración de sistemas robóticos</a></li><li><a href="https://www.iso.org/standard/69883.html" target="_blank" rel="noopener noreferrer">ISO 13849-1 — Partes de los sistemas de mando relativas a la seguridad</a></li><li><a href="https://www.iso.org/standard/62996.html" target="_blank" rel="noopener noreferrer">ISO/TS 15066 — Robots colaborativos</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

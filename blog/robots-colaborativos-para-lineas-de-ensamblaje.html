@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Robots Colaborativos para Líneas de Ensamblaje</title>
+<meta name="description" content="Robots colaborativos (cobots) para líneas de ensamblaje: los cuatro modos de ISO/TS 15066, límites de fuerza, aplicaciones, selección e integración con el PLC.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/robots-colaborativos-para-lineas-de-ensamblaje">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Robots Colaborativos para Líneas de Ensamblaje">
+<meta property="og:description" content="Los cuatro modos colaborativos de ISO/TS 15066, límites de fuerza, aplicaciones y selección de cobots.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/robot_colaborativo_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/robots-colaborativos-para-lineas-de-ensamblaje">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Robots Colaborativos para Líneas de Ensamblaje">
+<meta name="twitter:description" content="Modos colaborativos ISO/TS 15066, límites de fuerza, aplicaciones y selección de cobots.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/robot_colaborativo_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Robots Colaborativos para Líneas de Ensamblaje",
+  "description": "Guía de robots colaborativos para líneas de ensamblaje: qué es un cobot y en qué se diferencia de un robot industrial tradicional, los cuatro modos de operación colaborativa de ISO/TS 15066 (parada monitorizada, guiado manual, limitación de fuerza y potencia, y monitoreo de velocidad y separación), los límites de fuerza y presión por región del cuerpo, las aplicaciones típicas de ensamblaje (atornillado, inserción, dispensado e inspección), los criterios de selección de payload, alcance y precisión, y su integración con la línea y el PLC.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/robots-colaborativos-para-lineas-de-ensamblaje"
+  },
+  "image": "https://www.ukrabot.cl/blog/robot_colaborativo_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Brazo robótico colaborativo, efector final adecuado a la tarea (atornillador, pinza o dispensador), y para integración, PLC o controlador de línea",
+  "wordCount": "2500",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Robots Colaborativos para Líneas de Ensamblaje",
+      "item": "https://www.ukrabot.cl/blog/robots-colaborativos-para-lineas-de-ensamblaje"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Un cobot no necesita ninguna protección?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es un mito. El cobot reduce la necesidad de vallas, pero la evaluación de riesgo decide: según la tarea, la herramienta y la velocidad, puede requerir escáneres de área, límites de velocidad o incluso resguardo parcial. La limitación de fuerza protege contra contactos, pero no contra todos los peligros (una herramienta afilada o una pieza caliente siguen siendo peligrosas)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánta fuerza puede aplicar un cobot sobre una persona?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende del modelo y la configuración, pero el diseño colaborativo busca mantenerse bajo los umbrales de ISO/TS 15066 para cada región del cuerpo (por ejemplo, unos 140 N en manos y dedos). Esos valores no se asumen: se miden en la validación, porque la herramienta, la pieza y la velocidad cambian la fuerza real de contacto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué cobot elijo para atornillar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para atornillado se prioriza la repetibilidad, la integración del atornillador (con control de torque) y la rigidez. Los modelos compactos de 3 a 10 kg de carga útil cubren la mayoría de los tornillos de electrónica y componentes. La clave no es el brazo solo: es el conjunto brazo + atornillador + alimentador de tornillos + control de torque."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puede un cobot trabajar al ritmo de un robot industrial?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Generalmente no en velocidad punta: la operación colaborativa limita la velocidad cerca de personas. Pero en ensamblaje, el cuello de botella suele ser la tarea (atornillar, insertar, dispensar), no la velocidad del brazo. Un cobot bien integrado compite por productividad gracias a que no necesita vallas y se reprograma rápido entre referencias."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito integrar el cobot con el PLC de la línea?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Casi siempre sí: el cobot debe sincronizarse con transportadores, sensores y estaciones vecinas. La integración es la misma que con un robot industrial —E/S discretas o bus de campo— y las señales de seguridad se gestionan por el sistema de seguridad de la línea. Revisa la guía de integración con PLC para el detalle."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="robot_colaborativo_hero.jpg" alt="Brazo robótico colaborativo compacto de diseño redondeado trabajando junto a un operador en una línea de ensamblaje, atornillando un dispositivo electrónico" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización Industrial y Seguridad · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Robots Colaborativos para Líneas de Ensamblaje</h1>
+    <p>Los cuatro modos colaborativos de ISO/TS 15066, los límites de fuerza, las aplicaciones de ensamblaje y los criterios de selección.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#que-es">Qué es un cobot y en qué se diferencia</a></li><li><a href="#modos">Los cuatro modos colaborativos</a></li><li><a href="#limites">Límites de fuerza y presión</a></li><li><a href="#aplicaciones">Aplicaciones típicas en ensamblaje</a></li><li><a href="#seleccion">Selección: payload, alcance y precisión</a></li><li><a href="#integracion">Integración con la línea y el PLC</a></li><li><a href="#seguridad">Seguridad y validación</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>Qué es un cobot y en qué se diferencia</h2>
+<p>Un <strong>robot colaborativo (cobot)</strong> es un brazo diseñado para compartir el espacio de trabajo con personas de forma segura. La diferencia con un robot industrial tradicional no es solo estética (formas redondeadas, menos masa): es de <strong>arquitectura de seguridad</strong>.</p>
+<ul>
+<li><strong>Detección de contacto:</strong> sensores de fuerza que detienen o suavizan el movimiento al tocar a una persona.</li>
+<li><strong>Limitación de fuerza y velocidad:</strong> diseñado para no superar los umbrales de lesión en contacto.</li>
+<li><strong>Fácil reprogramación:</strong> guiado manual y software pensado para cambios rápidos de referencia.</li>
+</ul>
+<p>El cobot no es 'un robot sin vallas': es un robot con <strong>un modo de operación colaborativo certificado</strong>, definido por <a href="https://www.iso.org/standard/62996.html" target="_blank" rel="noopener noreferrer">ISO/TS 15066</a>. La aplicación decide si ese modo es suficiente o si sigue necesitando protección.</p>
+</section>
+
+<section id="modos">
+<h2>Los cuatro modos colaborativos</h2>
+<p>ISO/TS 15066 define cuatro formas de operación colaborativa, que pueden combinarse en una misma célula:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Modos de operación colaborativa según ISO/TS 15066.</caption>
+<thead><tr><th>Modo</th><th>Idea central</th><th>Ejemplo en ensamblaje</th></tr></thead>
+<tbody>
+<tr><td>Parada monitorizada</td><td>El robot se detiene si la persona entra</td><td>Operador entra a colocar una pieza, el cobot espera</td></tr>
+<tr><td>Guiado manual</td><td>La persona mueve el brazo directamente</td><td>Enseñar puntos o mover piezas pesadas con asistencia</td></tr>
+<tr><td>Limitación de fuerza y potencia (PFL)</td><td>El contacto no supera umbrales seguros</td><td>Trabajo codo a codo sin vallas</td></tr>
+<tr><td>Monitoreo de velocidad y separación (SSM)</td><td>El robot frena o se aleja según la distancia</td><td>Zonas con velocidad variable según presencia</td></tr>
+</tbody>
+</table>
+</div>
+<p>El modo más usado en ensamblaje es la <strong>limitación de fuerza y potencia</strong>, a menudo combinado con <strong>parada monitorizada</strong> cuando el operador entra a una zona. El guiado manual es ideal para enseñar trayectorias sin programar.</p>
+</section>
+
+<section id="limites">
+<h2>Límites de fuerza y presión</h2>
+<p>ISO/TS 15066 fija valores máximos de fuerza y presión en contacto para distintas regiones del cuerpo. Algunos valores de referencia:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Límites de contacto de referencia (ISO/TS 15066).</caption>
+<thead><tr><th>Región del cuerpo</th><th>Fuerza máxima transitoria</th><th>Presión máxima</th></tr></thead>
+<tbody>
+<tr><td>Cráneo / frente</td><td>130 N</td><td>110 N/cm²</td></tr>
+<tr><td>Cara</td><td>65 N</td><td>110 N/cm²</td></tr>
+<tr><td>Pecho</td><td>140 N</td><td>110 N/cm²</td></tr>
+<tr><td>Manos / dedos</td><td>140 N</td><td>200 N/cm²</td></tr>
+<tr><td>Muslos / rodillas</td><td>220 N</td><td>160 N/cm²</td></tr>
+</tbody>
+</table>
+</div>
+<p>Estos valores no se declaran: se <strong>miden</strong> en la validación de la aplicación, porque la herramienta, la pieza y la velocidad alteran la fuerza real. Un cobot con una herramienta afilada puede incumplir los límites aunque el brazo esté dentro de especificación.</p>
+</section>
+
+<section id="aplicaciones">
+<h2>Aplicaciones típicas en ensamblaje</h2>
+<ul>
+<li><strong>Atornillado:</strong> el cobot aplica el torque justo y registra cada tornillo, con control de calidad integrado.</li>
+<li><strong>Inserción y ajuste:</strong> ensamblar conectores, piezas de precisión o componentes con tolerancias estrechas.</li>
+<li><strong>Dispensado de adhesivos:</strong> cordones de pegamento o sellador con caudal y trayectoria constantes.</li>
+<li><strong>Kitting y alimentación:</strong> preparar kits de piezas o alimentar estaciones automáticas.</li>
+<li><strong>Inspección:</strong> acoplar una cámara o sensor y recorrer la pieza para verificar calidad.</li>
+</ul>
+<p>En todas, el valor no está solo en el brazo: está en el <strong>efector final</strong> (atornillador, pinza, dispensador) y en su integración con el flujo de la línea.</p>
+</section>
+
+<section id="seleccion">
+<h2>Selección: payload, alcance y precisión</h2>
+<ul>
+<li><strong>Payload:</strong> suma el peso de la pieza y el del efector; deja margen para picos dinámicos.</li>
+<li><strong>Alcance:</strong> cubre el área de trabajo de la estación; el alcance útil real es menor que el nominal.</li>
+<li><strong>Repetibilidad:</strong> para inserción y atornillado se prioriza la repetibilidad (±0,02 mm o mejor).</li>
+<li><strong>Fuerza y sensibilidad:</strong> relevante para inserción y para la seguridad del contacto.</li>
+<li><strong>Ecosistema:</strong> disponibilidad de atornilladores, pinzas y software compatibles.</li>
+</ul>
+<p>La tentación es sobredimensionar 'por si acaso'. En ensamblaje, un cobot de <strong>3 a 10 kg</strong> cubre la mayoría de las tareas; lo que define la productividad es la herramienta y la integración, no el tamaño del brazo.</p>
+</section>
+
+<section id="integracion">
+<h2>Integración con la línea y el PLC</h2>
+<p>Un cobot en una línea de ensamblaje no trabaja aislado: se sincroniza con transportadores, sensores y estaciones vecinas. La integración sigue las mismas reglas que con un robot industrial, detalladas en la guía de <a href="/blog/integrando-brazos-roboticos-con-plc">integración con PLC</a>:</p>
+<ul>
+<li><strong>E/S discretas:</strong> arranque, parada y confirmaciones de ciclo con la estación.</li>
+<li><strong>Bus de campo:</strong> datos de proceso, número de referencia y resultados de torque.</li>
+<li><strong>Seguridad:</strong> las funciones de seguridad de la línea (paradas, zonas) se coordinan con el cobot.</li>
+</ul>
+<p>La ventaja práctica del cobot es la <strong>flexibilidad</strong>: cambiar de referencia suele ser cuestión de cargar otro programa y cambiar el efector, sin rehacer vallas ni enclavamientos.</p>
+</section>
+
+<section id="seguridad">
+<h2>Seguridad y validación</h2>
+<p>Aunque el cobot esté diseñado para el contacto, la aplicación debe validarse:</p>
+<ol>
+<li><strong>Evaluación de riesgo</strong> de la estación completa, incluida la herramienta y la pieza.</li>
+<li><strong>Medición de fuerzas</strong> reales de contacto contra los límites de ISO/TS 15066.</li>
+<li><strong>Zonas y velocidades</strong> definidas según la tarea y la presencia de personas.</li>
+<li><strong>Integración de seguridad</strong> con las paradas de emergencia y las protecciones de la línea.</li>
+</ol>
+<div class="warning"><strong>La herramienta importa:</strong> un atornillador, una cuchilla o una pieza caliente convierten un contacto 'seguro' del brazo en un peligro real. La evaluación de riesgo es de la aplicación completa, no del cobot aislado.</div>
+<p>El punto de partida es la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Guía de Evaluación de Riesgo</a>, y el marco legal, las <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">Normas en Chile</a>.</p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Los cobots democratizaron el ensamblaje: menos vallas, reprogramación rápida y tareas que antes no justificaban un robot industrial. Pero 'colaborativo' no significa 'sin análisis': la clave sigue siendo la <strong>evaluación de riesgo de la aplicación completa</strong> y la elección del <strong>efector</strong> correcto. Con eso resuelto, el cobot devuelve flexibilidad y calidad donde la automatización tradicional no llegaba.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los valores de fuerza y las capacidades son referenciales: la aplicación real debe validarse midiendo según ISO/TS 15066 y con la documentación del fabricante. La operación colaborativa exige evaluación de riesgo y verificación por personal competente. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Antes de desplegar el cobot, completa la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Evaluación de Riesgo</a> y revisa la <a href="/blog/integrando-brazos-roboticos-con-plc">integración con PLC</a> de la línea.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/brazos-roboticos-para-aplicaciones-de-soldadura">← Anterior: Brazos Robóticos para Soldadura</a>
+  <a href="/blog/programacion-de-plc-para-robotica">Siguiente: Programación de PLC para Robótica →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas generales. Las capacidades exactas (payload, alcance, repetibilidad, sensibilidad) dependen del fabricante y del modelo de cobot.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/62996.html" target="_blank" rel="noopener noreferrer">ISO/TS 15066 — Robots colaborativos</a></li><li><a href="https://www.iso.org/standard/51330.html" target="_blank" rel="noopener noreferrer">ISO 10218-1 — Requisitos de seguridad para robots industriales</a></li><li><a href="https://www.iso.org/standard/51528.html" target="_blank" rel="noopener noreferrer">ISO 12100 — Evaluación y reducción del riesgo</a></li><li><a href="https://www.iso.org/standard/69883.html" target="_blank" rel="noopener noreferrer">ISO 13849-1 — Partes de los sistemas de mando relativas a la seguridad</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

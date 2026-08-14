@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sistemas de Parada de Emergencia para Brazos Robóticos</title>
+<meta name="description" content="Guía de sistemas de parada de emergencia para brazos robóticos: categorías de parada (0, 1 y 2), requisitos ISO 13850, circuito redundante, rearme y verificación.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sistemas de Parada de Emergencia para Brazos Robóticos">
+<meta property="og:description" content="Categorías de parada 0/1/2, requisitos ISO 13850, circuito redundante, rearme manual y verificación.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/parada_emergencia_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sistemas de Parada de Emergencia para Brazos Robóticos">
+<meta name="twitter:description" content="Categorías de parada 0/1/2, ISO 13850, circuito redundante, rearme y verificación.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/parada_emergencia_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Sistemas de Parada de Emergencia para Brazos Robóticos",
+  "description": "Guía de sistemas de parada de emergencia para brazos robóticos: qué es y qué no es una parada de emergencia, las categorías de parada 0, 1 y 2 según IEC 60204-1, los requisitos de diseño de ISO 13850 (accesibilidad, redundancia, enclavamiento y rearme), la diferencia con la parada protectora de los robots colaborativos, los dispositivos y el cableado de un circuito de seguridad, el procedimiento de rearme y la verificación periódica de la función.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos"
+  },
+  "image": "https://www.ukrabot.cl/blog/parada_emergencia_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Pulsadores de parada de emergencia, relé o PLC de seguridad, contactores de seguridad y la documentación de los tiempos de parada del robot",
+  "wordCount": "2400",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Sistemas de Parada de Emergencia para Brazos Robóticos",
+      "item": "https://www.ukrabot.cl/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuál es la diferencia entre parada de emergencia y parada normal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La parada normal es una función del proceso que detiene el ciclo de forma ordenada; la parada de emergencia es una función de seguridad que debe actuar de inmediato ante un peligro, con prioridad sobre cualquier otra función y con un circuito diseñado para ser fiable incluso ante fallos. Por eso su hardware y su nivel de prestaciones son distintos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué categoría de parada debo usar en un brazo robótico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende del riesgo. La categoría 0 (corte inmediato de energía) es la más segura para el atrapamiento; la categoría 1 (frenado controlado y luego corte) se usa cuando un corte brusco podría crear un nuevo peligro, como la caída de una carga. La elección la define el análisis de riesgo y suele venir especificada por el fabricante del robot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cada cuánto hay que probar las paradas de emergencia?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La norma y las buenas prácticas exigen verificación en la puesta en servicio y pruebas periódicas definidas por el análisis de riesgo; en la práctica se recomienda al menos una prueba funcional periódica (mensual o trimestral según criticidad) y registro de cada prueba. Un botón que nunca se prueba puede fallar justo cuando se necesita."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se puede usar el botón de parada para apagar la máquina al final del turno?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. La parada de emergencia no es un interruptor de encendido/apagado ni un medio de desconexión para mantenimiento. Usarla para apagar la célula a diario desgasta el circuito, normaliza su uso incorrecto y puede dejarla operando con un rearme deficiente. Para apagar se usa el interruptor de desconexión o la parada normal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué la parada de emergencia debe rearmarse manualmente?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque el reinicio no debe ocurrir por sí solo: antes de rearmar, alguien debe confirmar que la zona está despejada y que el peligro pasó. El rearme manual, realizado desde un lugar con visibilidad de la zona peligrosa, es un requisito de ISO 13850 y evita arranques inesperados que provoquen un segundo accidente."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="parada_emergencia_hero.jpg" alt="Botón de parada de emergencia rojo tipo hongo montado en un poste amarillo junto a un panel, con un brazo robótico y la valla de seguridad al fondo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización Industrial y Seguridad · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Sistemas de Parada de Emergencia para Brazos Robóticos</h1>
+    <p>Categorías de parada 0, 1 y 2, los requisitos de ISO 13850, el circuito redundante, el rearme manual y la verificación periódica.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#que-es">Qué es (y qué no es) una parada de emergencia</a></li><li><a href="#categorias">Categorías de parada: 0, 1 y 2</a></li><li><a href="#requisitos">Requisitos de diseño según ISO 13850</a></li><li><a href="#e-stop-vs-parada-protectora">Parada de emergencia vs parada protectora</a></li><li><a href="#dispositivos">Dispositivos y cableado</a></li><li><a href="#rearme">Reinicio y rearme</a></li><li><a href="#verificacion">Verificación y pruebas</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="que-es">
+<h2>Qué es (y qué no es) una parada de emergencia</h2>
+<p>La <strong>parada de emergencia</strong> es una función de seguridad que una persona activa con una sola acción para detener el movimiento peligroso de inmediato ante una situación crítica. Su norma es <a href="https://www.iso.org/standard/59990.html" target="_blank" rel="noopener noreferrer">ISO 13850</a>.</p>
+<ul>
+<li><strong>Es:</strong> una medida complementaria, de accionamiento humano, con prioridad sobre todo lo demás.</li>
+<li><strong>No es:</strong> un sustituto de las vallas, cortinas o del diseño seguro; tampoco es un interruptor de apagado diario ni un dispositivo de desconexión para mantenimiento.</li>
+</ul>
+<div class="warning"><strong>Concepto clave:</strong> la parada de emergencia es la última barrera, no la primera. Si una célula depende de su botón de emergencia para ser segura, el diseño está mal desde el origen.</div>
+</section>
+
+<section id="categorias">
+<h2>Categorías de parada: 0, 1 y 2</h2>
+<p>La norma <strong>IEC 60204-1</strong> define tres categorías de parada, que confunden a menudo:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Categorías de parada según IEC 60204-1.</caption>
+<thead><tr><th>Categoría</th><th>Comportamiento</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>Corte inmediato de la energía de los actuadores</td><td>Atrapamiento, riesgo de golpe inmediato</td></tr>
+<tr><td>1</td><td>Parada controlada y luego corte de energía</td><td>Cuando el frenado brusco crea otro peligro</td></tr>
+<tr><td>2</td><td>Parada controlada manteniendo la energía</td><td>Paradas de proceso (no es parada de emergencia)</td></tr>
+</tbody>
+</table>
+</div>
+<p>La parada de emergencia usa <strong>categoría 0 o 1</strong>. La categoría 2 no es admisible como parada de emergencia porque mantiene la energía en los actuadores: sirve para paradas de ciclo, no para emergencias.</p>
+</section>
+
+<section id="requisitos">
+<h2>Requisitos de diseño según ISO 13850</h2>
+<ul>
+<li><strong>Accesibilidad:</strong> el pulsador debe estar al alcance de la mano en cada puesto donde haya peligro.</li>
+<li><strong>Accionamiento único:</strong> una sola acción humana, sin razonar ni desbloquear nada.</li>
+<li><strong>Prioridad:</strong> prevalece sobre cualquier otra función, incluida la parada normal.</li>
+<li><strong>Enclavamiento:</strong> al pulsar, queda enclavado mecánicamente; solo se libera girando o tirando.</li>
+<li><strong>Fiabilidad:</strong> el circuito debe cumplir el PLr (típicamente PL d o PL e) con arquitectura redundante.</li>
+<li><strong>Reinicio manual:</strong> la máquina no rearranca sola al liberar el botón.</li>
+</ul>
+<p>El color es siempre <strong>rojo sobre fondo amarillo</strong>, con cabezal tipo hongo. La estandarización no es estética: permite que cualquier persona, incluso ajena a la planta, lo reconozca y accione al instante.</p>
+</section>
+
+<section id="e-stop-vs-parada-protectora">
+<h2>Parada de emergencia vs parada protectora</h2>
+<p>En robots colaborativos aparece un segundo concepto que conviene no mezclar:</p>
+<ul>
+<li><strong>Parada protectora (protective stop):</strong> la activa automáticamente el sistema (una cortina, un sensor de fuerza o el PLC de seguridad) ante una condición detectada. Es una función de seguridad, pero automática.</li>
+<li><strong>Parada de emergencia:</strong> la activa <strong>una persona</strong> y es complementaria a la anterior.</li>
+</ul>
+<p>Un cobot puede detenerse por su parada protectora decenas de veces al día sin que nadie pulse nada; la parada de emergencia queda reservada para cuando el operador detecta algo que el sistema no vio. Ambas deben coexistir y cada una cumplir su nivel de prestaciones.</p>
+</section>
+
+<section id="dispositivos">
+<h2>Dispositivos y cableado</h2>
+<p>Un circuito de parada de emergencia típico tiene estos componentes:</p>
+<ol>
+<li><strong>Pulsadores de emergencia:</strong> contactos normalmente cerrados, en cada puesto de operación.</li>
+<li><strong>Relé o PLC de seguridad:</strong> evalúa el circuito en doble canal y detecta cortocircuitos entre canales.</li>
+<li><strong>Contactores de seguridad:</strong> dos en serie, con contactos espejo, que cortan la energía del movimiento.</li>
+<li><strong>Supervisión:</strong> el controlador confirma que los contactores abrieron realmente.</li>
+</ol>
+<p>El cableado es <strong>redundante</strong>: dos canales independientes recorren todos los pulsadores y regresan al controlador. Si un canal se rompe o se puentea, el sistema lo detecta y queda en estado seguro, impidiendo el rearranque hasta reparar.</p>
+</section>
+
+<section id="rearme">
+<h2>Reinicio y rearme</h2>
+<p>Tras una parada de emergencia, la célula <strong>no puede rearrancar sola</strong>. El procedimiento correcto es:</p>
+<ol>
+<li>Eliminar la condición de peligro y despejar la zona.</li>
+<li>Liberar el pulsador (girar o tirar del cabezal).</li>
+<li>Pulsar el <strong>botón de rearme</strong>, ubicado fuera de la zona peligrosa y con visibilidad de ella.</li>
+<li>Confirmar el estado de la célula antes de reanudar el ciclo.</li>
+</ol>
+<p>El rearme es una acción <strong>deliberada y separada</strong> del arranque normal. Esto evita el arranque inesperado, una de las causas clásicas de accidente tras una intervención.</p>
+</section>
+
+<section id="verificacion">
+<h2>Verificación y pruebas</h2>
+<ul>
+<li><strong>Puesta en servicio:</strong> probar cada pulsador, medir el tiempo de parada real y compararlo con el de diseño.</li>
+<li><strong>Pruebas periódicas:</strong> accionar cada pulsador según el programa definido por el análisis de riesgo y registrar el resultado.</li>
+<li><strong>Tras modificaciones:</strong> cualquier cambio en la célula obliga a repetir la verificación de la función.</li>
+<li><strong>Registro:</strong> conservar evidencia de cada prueba para auditorías y ante un accidente.</li>
+</ul>
+<p>Un botón de emergencia sin prueba periódica es una protección que se presume, no que se tiene. La verificación es lo que convierte el diseño en seguridad real, y es parte de lo que exige la <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">normativa en Chile</a>.</p>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La parada de emergencia es simple de entender y fácil de hacer mal. Los tres pilares son: <strong>accesibilidad</strong> (un botón al alcance en cada puesto), <strong>fiabilidad</strong> (circuito redundante con el PLr correcto) y <strong>disciplina</strong> (rearme manual y verificación periódica). Complétala con las <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">Cortinas de Luz</a> y la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Evaluación de Riesgo</a> que define dónde y con qué nivel debe quedar cada función.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Es una orientación general y no sustituye la norma en su texto oficial ni el diseño y validación de un profesional competente. Las paradas de emergencia son funciones de seguridad: su diseño, instalación y prueba deben cumplir la normativa vigente y las instrucciones del fabricante. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>La parada de emergencia es la última línea: revisa antes la <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">Integración de Cortinas de Luz</a> y el marco completo en <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">Normas de Seguridad en Chile</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">← Anterior: Integración de Cortinas de Luz</a>
+  <a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">Siguiente: Normas de Seguridad en Chile →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias normativas generales. Los requisitos específicos de cada robot (categoría de parada, tiempos, conexiones) figuran en la documentación del fabricante.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/59990.html" target="_blank" rel="noopener noreferrer">ISO 13850 — Función de parada de emergencia</a></li><li><a href="https://www.iso.org/standard/69883.html" target="_blank" rel="noopener noreferrer">ISO 13849-1 — Partes de los sistemas de mando relativas a la seguridad</a></li><li><a href="https://webstore.iec.ch/publication/61819" target="_blank" rel="noopener noreferrer">IEC 60204-1 — Equipo eléctrico de las máquinas</a></li><li><a href="https://www.iso.org/standard/41571.html" target="_blank" rel="noopener noreferrer">ISO 10218-2 — Integración de sistemas robóticos</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

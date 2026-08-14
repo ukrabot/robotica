@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Integrando Brazos Robóticos con PLC</title>
+<meta name="description" content="Cómo integrar brazos robóticos con PLC: arquitectura de la célula, E/S discretas vs bus de campo (PROFINET, EtherNet/IP, EtherCAT, Modbus TCP), señales de seguridad y puesta en marcha.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/integrando-brazos-roboticos-con-plc">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Integrando Brazos Robóticos con PLC">
+<meta property="og:description" content="Arquitectura de integración, E/S discretas vs bus de campo, señales de handshake y seguridad, y puesta en marcha.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/plc_brazo_integracion_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/integrando-brazos-roboticos-con-plc">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Integrando Brazos Robóticos con PLC">
+<meta name="twitter:description" content="E/S discretas vs bus de campo, mapas de E/S, señales de seguridad y puesta en marcha.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/plc_brazo_integracion_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Integrando Brazos Robóticos con PLC",
+  "description": "Guía para integrar un brazo robótico con un PLC industrial: la arquitectura típica de una célula, la comparación entre cableado de entradas y salidas discretas frente a buses de campo industriales (PROFINET, EtherNet/IP, EtherCAT y Modbus TCP), las señales de handshake y de seguridad que deben intercambiarse, un mapa de E/S de ejemplo, el protocolo de puesta en marcha y validación, y los problemas más comunes de integración.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-14",
+  "dateModified": "2026-08-14",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/integrando-brazos-roboticos-con-plc"
+  },
+  "image": "https://www.ukrabot.cl/blog/plc_brazo_integracion_hero.jpg",
+  "proficiencyLevel": "Avanzado",
+  "dependencies": "PLC industrial, controlador de brazo robótico, cableado de E/S o módulo de bus de campo (PROFINET, EtherNet/IP, EtherCAT o Modbus TCP), y módulos de E/S de seguridad",
+  "wordCount": "2550",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Integrando Brazos Robóticos con PLC",
+      "item": "https://www.ukrabot.cl/blog/integrando-brazos-roboticos-con-plc"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Conviene E/S discretas o bus de campo para integrar el robot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende del tamaño de la instalación. Para una célula sencilla con pocas señales, las E/S discretas son simples, económicas y fáciles de depurar. Cuando hay que intercambiar números de programa, posiciones, contadores y alarmas —o coordinar varios robots— un bus de campo industrial reduce el cableado y centraliza el diagnóstico. Muchas plantas usan E/S discretas para el handshake crítico y un bus para los datos de proceso."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué bus de campo es mejor para robótica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No hay uno 'mejor' en abstracto: depende del ecosistema. PROFINET domina en instalaciones Siemens, EtherNet/IP en plantas Rockwell, y EtherCAT es habitual en robótica y motion de alto rendimiento. Modbus TCP es el más sencillo de implementar cuando la prioridad es la interoperabilidad. Lo importante es elegir uno soportado tanto por el PLC como por el controlador del robot, y dimensionar la red correctamente."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se pueden llevar las señales de seguridad por el mismo bus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, mediante protocolos de seguridad como PROFIsafe (sobre PROFINET), FSoE (sobre EtherCAT) o CIP Safety (sobre EtherNet/IP). Son capas certificadas que añaden redundancia y vigilancia de integridad a los datos de seguridad. Aun así, las funciones críticas como la parada de emergencia suelen cablearse también en hardware para independencia del bus."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué señales son imprescindibles entre PLC y robot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Como mínimo: arranque y parada desde el PLC, confirmación de 'ciclo terminado' y de 'en falla' desde el robot, y las señales de seguridad (parada de emergencia, puerta de acceso, habilitación). A partir de ahí se suman selección de programa, permiso de avance y datos de posición según la aplicación."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo valido una integración antes de producción?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con un protocolo por etapas: revisión del cableado y aprietes, prueba de cada E/S una a una, verificación del handshake en modo manual, prueba de los enclavamientos y paradas de seguridad, medición del tiempo de parada real, y finalmente ciclos automáticos en vacío supervisados. Todo debe quedar documentado, como exige ISO 10218-2 para la puesta en servicio."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;box-shadow:0 12px 24px rgba(30,25,15,.08);display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="plc_brazo_integracion_hero.jpg" alt="Brazo robótico industrial dentro de una celda conectado por cables de bus de campo a un gabinete PLC, con un ingeniero revisando la conexión en una tablet" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización Industrial y Seguridad · Actualizado el <time datetime="2026-08-14">14 de agosto de 2026</time></div>
+    <h1>Integrando Brazos Robóticos con PLC</h1>
+    <p>Arquitectura de la célula, E/S discretas frente a bus de campo, señales de handshake y de seguridad, y el protocolo de puesta en marcha.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+<li><a href="#arquitectura">Arquitectura típica de integración</a></li><li><a href="#metodos-de-conexion">E/S discretas vs bus de campo</a></li><li><a href="#buses-de-campo">Los principales buses de campo</a></li><li><a href="#handshake-y-seguridad">Señales de handshake y de seguridad</a></li><li><a href="#mapa-de-e-s">Un mapa de E/S de ejemplo</a></li><li><a href="#puesta-en-marcha">Puesta en marcha y validación</a></li><li><a href="#problemas-comunes">Problemas comunes y soluciones</a></li><li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<section id="arquitectura">
+<h2>Arquitectura típica de integración</h2>
+<p>Integrar un brazo robótico con un PLC consiste en conectar dos sistemas que hablan idiomas distintos: el <strong>controlador del robot</strong> (que ejecuta las trayectorias) y el <strong>PLC</strong> (que organiza el proceso). La arquitectura más común tiene estas piezas:</p>
+<ul>
+<li><strong>PLC maestro:</strong> dueño de la secuencia general de la línea.</li>
+<li><strong>Controlador de robot:</strong> ejecuta programas de movimiento y expone señales de estado.</li>
+<li><strong>Capa de comunicación:</strong> E/S discretas cableadas o un bus de campo industrial.</li>
+<li><strong>Capa de seguridad:</strong> circuitos de parada de emergencia, puertas y cortinas, cableados o por bus de seguridad.</li>
+<li><strong>Periféricos:</strong> pinzas, sensores, transportadores y posicionadores controlados por el PLC.</li>
+</ul>
+<p>El resultado es una célula donde el PLC ordena y el robot obedece y reporta. Diseñar bien esa interfaz desde el inicio evita la mayoría de los dolores de cabeza de la puesta en marcha.</p>
+</section>
+
+<section id="metodos-de-conexion">
+<h2>E/S discretas vs bus de campo</h2>
+<p>Existen dos formas de conectar el robot con el PLC, y no son excluyentes.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación entre E/S discretas y bus de campo.</caption>
+<thead><tr><th>Criterio</th><th>E/S discretas</th><th>Bus de campo</th></tr></thead>
+<tbody>
+<tr><td>Cableado</td><td>Un par de hilos por señal</td><td>Un cable de red para todo</td></tr>
+<tr><td>Datos</td><td>Bits sueltos (on/off)</td><td>Palabras completas (enteros, reales)</td></tr>
+<tr><td>Diagnóstico</td><td>Manual, con multímetro</td><td>Centralizado en el PLC</td></tr>
+<tr><td>Costo inicial</td><td>Bajo para pocas señales</td><td>Mayor, pero escalable</td></tr>
+<tr><td>Ideal para</td><td>Células pequeñas, handshake</td><td>Varios robots, recetas, alarmas</td></tr>
+</tbody>
+</table>
+</div>
+<p>En la práctica se combinan: las <strong>E/S discretas</strong> para el handshake crítico (arranque, parada, confirmaciones) y el <strong>bus de campo</strong> para datos de proceso como número de programa, contadores o coordenadas. Esa redundancia mantiene la célula operable incluso si la red falla.</p>
+</section>
+
+<section id="buses-de-campo">
+<h2>Los principales buses de campo</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Buses de campo industriales usados en robótica.</caption>
+<thead><tr><th>Protocolo</th><th>Ecosistema</th><th>Característica</th></tr></thead>
+<tbody>
+<tr><td>PROFINET</td><td>Siemens y general</td><td>Extendido en manufactura; variante PROFIsafe para seguridad</td></tr>
+<tr><td>EtherNet/IP</td><td>Rockwell / Allen-Bradley</td><td>Basado en Ethernet estándar; variante CIP Safety</td></tr>
+<tr><td>EtherCAT</td><td>Motion y robótica</td><td>Determinista y de ciclo corto; variante FSoE</td></tr>
+<tr><td>Modbus TCP</td><td>Multi-vendor</td><td>Simple y abierto; ideal para interoperabilidad básica</td></tr>
+</tbody>
+</table>
+</div>
+<p>La elección casi siempre viene determinada por el PLC que ya existe en la planta. Cambiar de ecosistema solo por preferencia suele salir caro: lo práctico es elegir el protocolo que <strong>ambos</strong> equipos soporten nativamente y documentar bien el mapa de datos.</p>
+</section>
+
+<section id="handshake-y-seguridad">
+<h2>Señales de handshake y de seguridad</h2>
+<p>Las señales que intercambian el PLC y el robot se dividen en dos grupos con requisitos muy distintos.</p>
+<h3>Señales de proceso (handshake)</h3>
+<ul>
+<li><strong>PLC → robot:</strong> Start, Stop, selección de programa, permiso de avance, reset de falla.</li>
+<li><strong>Robot → PLC:</strong> en posición, ciclo terminado, en falla, en automático, contador de ciclos.</li>
+</ul>
+<h3>Señales de seguridad</h3>
+<ul>
+<li><strong>Parada de emergencia:</strong> cableada en circuito redundante y monitoreada por el PLC de seguridad.</li>
+<li><strong>Puerta de acceso:</strong> enclavamiento que detiene el robot al abrir, con rearme manual.</li>
+<li><strong>Habilitación (enabling):</strong> solo permite movimiento con el operador presente y pulsando.</li>
+</ul>
+<div class="warning"><strong>Nunca mezcles ambas capas:</strong> las señales de seguridad deben viajar por canales certificados (cableado doble o bus de seguridad) y no por las E/S de proceso. Un fallo en el programa de proceso no puede dejar sin protección a la célula.</div>
+</section>
+
+<section id="mapa-de-e-s">
+<h2>Un mapa de E/S de ejemplo</h2>
+<p>Un mapa de E/S claro es la base de cualquier integración. Este es un ejemplo mínimo para una célula de carga/descarga:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Mapa de señales entre PLC y controlador de robot.</caption>
+<thead><tr><th>Señal</th><th>Dirección</th><th>Tipo</th><th>Descripción</th></tr></thead>
+<tbody>
+<tr><td>Robot_Start</td><td>PLC → Robot</td><td>DO</td><td>Arranca el programa seleccionado</td></tr>
+<tr><td>Robot_Stop</td><td>PLC → Robot</td><td>DO</td><td>Detiene el ciclo al final del paso</td></tr>
+<tr><td>Sel_Prog[0..7]</td><td>PLC → Robot</td><td>Datos</td><td>Número de programa (receta)</td></tr>
+<tr><td>Permiso_Avance</td><td>PLC → Robot</td><td>DO</td><td>El periférico está listo</td></tr>
+<tr><td>Robot_EnPunto</td><td>Robot → PLC</td><td>DI</td><td>Llegó al punto objetivo</td></tr>
+<tr><td>Robot_CicloTerm</td><td>Robot → PLC</td><td>DI</td><td>Ciclo finalizado, zona libre</td></tr>
+<tr><td>Robot_Falla</td><td>Robot → PLC</td><td>DI</td><td>Alarma activa en el robot</td></tr>
+<tr><td>EStop_Estado</td><td>Seguridad</td><td>DI doble</td><td>Estado del circuito de parada de emergencia</td></tr>
+</tbody>
+</table>
+</div>
+<p>Con este mapa, cualquier técnico puede diagnosticar la célula sin abrir el programa: si <code>Permiso_Avance</code> está en 0, el problema está en el periférico; si <code>Robot_Falla</code> está en 1, hay que leer la alarma del robot.</p>
+</section>
+
+<section id="puesta-en-marcha">
+<h2>Puesta en marcha y validación</h2>
+<ol>
+<li><strong>Revisión física:</strong> aprietes, tierras, blindajes y etiquetado de cada cable.</li>
+<li><strong>Prueba de E/S:</strong> forzar cada señal y verificar que llega al destino correcto.</li>
+<li><strong>Handshake en manual:</strong> simular las confirmaciones del robot y observar la secuencia del PLC.</li>
+<li><strong>Enclavamientos y paradas:</strong> abrir cada puerta, pulsar cada parada y medir el tiempo de detención real.</li>
+<li><strong>Ciclos en vacío:</strong> correr el proceso automático supervisado antes de cargar piezas reales.</li>
+<li><strong>Documentación:</strong> registrar el mapa de E/S, las pruebas y la validación final de seguridad.</li>
+</ol>
+<p>La norma <a href="https://www.iso.org/standard/41571.html" target="_blank" rel="noopener noreferrer">ISO 10218-2</a> exige verificar y validar el sistema integrado antes de ponerlo en producción, y documentar esa validación. No es burocracia: es lo que permite demostrar que la célula es segura.</p>
+</section>
+
+<section id="problemas-comunes">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Fallos típicos de integración robot-PLC.</caption>
+<thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El robot no responde al Start</td><td>Falta permiso o modo equivocado</td><td>Verificar handshake y modo automático</td></tr>
+<tr><td>Señales cruzadas</td><td>Mapa de E/S desactualizado</td><td>Revalidar el mapa punto por punto</td></tr>
+<tr><td>Paradas aleatorias</td><td>Ruido o bus sin blindaje</td><td>Blindaje, tierra y terminadores</td></tr>
+<tr><td>La puerta no detiene el robot</td><td>Enclavamiento puenteado o mal cableado</td><td>Reparar y revalidar la función de seguridad</td></tr>
+<tr><td>Datos incorrectos por bus</td><td>Orden de bytes o versión distinta</td><td>Revisar endianness y revisiones de firmware</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Una buena integración robot-PLC se resume en tres cosas: un <strong>mapa de señales claro</strong>, un <strong>handshake con confirmaciones</strong> y una <strong>capa de seguridad separada y certificada</strong>. Si además eliges el bus de campo que ambos equipos hablan nativo y validas por etapas, la puesta en marcha deja de ser una apuesta. Antes de encender nada, repasa la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Guía de Evaluación de Riesgo</a>: define qué protecciones necesita la célula y qué nivel de prestaciones debe cumplir cada función.</p>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los mapas de E/S y las configuraciones son referenciales y deben adaptarse y validarse con tu hardware y tu integrador. Las funciones de seguridad requieren componentes certificados y verificación por personal competente. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>La integración correcta empieza por el análisis de riesgos: lee la <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Guía de Evaluación de Riesgo para Brazos Robóticos</a> y luego diseña las protecciones con la guía de <a href="/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas">Cortinas de Luz</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/programacion-de-plc-para-robotica">← Anterior: Programación de PLC para Robótica</a>
+  <a href="/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos">Siguiente: Guía de Evaluación de Riesgo →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias oficiales de los protocolos y de la norma de integración. Las características exactas de cada controlador dependen del fabricante del robot y del PLC.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/41571.html" target="_blank" rel="noopener noreferrer">ISO 10218-2 — Robots y dispositivos robóticos: integración de sistemas</a></li><li><a href="https://www.profibus.com/" target="_blank" rel="noopener noreferrer">PROFINET — PI International</a></li><li><a href="https://www.odva.org/" target="_blank" rel="noopener noreferrer">ODVA — EtherNet/IP y CIP Safety</a></li><li><a href="https://www.ethercat.org/" target="_blank" rel="noopener noreferrer">EtherCAT Technology Group</a></li><li><a href="https://modbus.org/" target="_blank" rel="noopener noreferrer">Modbus Organization</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 14 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
