@@ -300,6 +300,17 @@ details p{padding-top:10px;margin-bottom:0}
   </ol>
 </div>
 
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
 <section id="por-que-i2c">
 <h2>Por qué I2C es la base de este proyecto</h2>
 <p>Casi todos los proyectos de estaciones meteorológicas caseras con Arduino terminan girando alrededor del mismo protocolo de comunicación: <strong>I2C (Inter-Integrated Circuit)</strong>. La razón es simple y muy práctica: tanto los sensores ambientales digitales modernos (como el BME280) como las pantallas OLED económicas (como el módulo SSD1306) se comunican por I2C, lo que significa que ambos dispositivos pueden compartir exactamente los mismos dos pines de Arduino — <strong>SDA</strong> (datos) y <strong>SCL</strong> (reloj) — sin necesidad de cableado adicional por cada componente que agregues.</p>
@@ -471,6 +482,17 @@ void loop() {
 }</code></pre>
 <p>Nótese que la dirección I2C del BME280 se pasa explícitamente en <code>bme.begin(0x76)</code> — si tu sketch escáner detectó <code>0x77</code> en vez de <code>0x76</code>, ese es el valor que debes usar aquí. Es un error de configuración muy común cuando se copia código de internet sin verificar la dirección real del módulo propio.</p>
 </section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <section id="codigo-avanzado">
 <h2>Código Arduino: pantallas rotativas y registro de extremos</h2>
@@ -665,6 +687,17 @@ void loop() {
 <h2>Conclusión</h2>
 <p>Una estación meteorológica con Arduino, BME280 y pantalla OLED es uno de esos proyectos que combina aprendizaje técnico real —protocolo I2C, manejo de EEPROM, programación no bloqueante con millis(), física básica de presión atmosférica— con un resultado final genuinamente útil que puedes dejar funcionando sobre tu escritorio de forma indefinida. El bus I2C compartido simplifica enormemente el cableado frente a lo que uno esperaría de un proyecto con dos periféricos distintos, y el camino de upgrade hacia ESP32 está disponible sin necesidad de reescribir la lógica central del proyecto. Si es tu primer proyecto con sensores I2C, el sketch escáner de esta guía te ahorrará más de una sesión de depuración innecesaria.</p>
 </section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
