@@ -300,6 +300,17 @@ details p{padding-top:10px;margin-bottom:0}
   </ol>
 </div>
 
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
 <section id="que-es-hc05">
 <h2>Qué es el HC-05 y cómo funciona</h2>
 <p>El <strong>HC-05</strong> es un módulo Bluetooth basado en el chip CSR BC417143, que implementa Bluetooth v2.0+EDR con el perfil <strong>SPP (Serial Port Profile)</strong>. En términos prácticos, esto significa que el módulo actúa como un puente transparente entre una conexión serie UART tradicional (los pines TX/RX que ya conoces de Arduino) y un enlace Bluetooth inalámbrico: todo lo que envíes por el puerto serie hacia el HC-05 sale por Bluetooth hacia el dispositivo emparejado, y todo lo que ese dispositivo envíe llega de vuelta como datos serie normales.</p>
@@ -459,6 +470,17 @@ void loop() {
 <p>Este ejemplo, aunque simple, contiene el patrón que reutilizarás en prácticamente cualquier proyecto de control por Bluetooth: leer un byte disponible en el <code>SoftwareSerial</code>, interpretarlo, y responder con una confirmación de texto — algo muy útil para depurar durante el desarrollo, aunque puedas quitarlo después para reducir tráfico innecesario.</p>
 </section>
 
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
 <section id="codigo-avanzado">
 <h2>Código Arduino: múltiples salidas y control PWM</h2>
 <p>El siguiente ejemplo escala el concepto anterior a un protocolo de comandos de texto más flexible, capaz de controlar el brillo de un LED por PWM y activar/desactivar un relé, todo desde comandos legibles enviados como línea de texto terminada en salto de línea.</p>
@@ -572,6 +594,17 @@ void procesarComando(String cmd) {
 <h2>Conclusión</h2>
 <p>El HC-05 sigue siendo, años después de su lanzamiento, una de las puertas de entrada más accesibles a la comunicación inalámbrica con Arduino: un puñado de componentes económicos, un divisor de voltaje de menos de $300 pesos, y un puñado de comandos AT bien entendidos son suficientes para pasar de un proyecto controlado por cable USB a uno controlado a distancia desde el bolsillo. Su principal limitación —ser Bluetooth clásico y no BLE— se vuelve evidente sobre todo cuando el público objetivo usa iPhone o cuando la energía disponible es limitada, y en esos casos el camino de upgrade hacia BLE con HM-10 o ESP32 está claramente trazado. Para aprender el patrón fundamental de control remoto por comandos de texto sobre un enlace serie inalámbrico, sin embargo, es difícil encontrar un punto de partida más directo.</p>
 </section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
