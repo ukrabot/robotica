@@ -1,1 +1,630 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Guía Definitiva para Elegir entre Encoder Rotativo Incremental y Absoluto</title>
+<meta name="description" content="Cómo elegir entre encoder rotativo incremental y absoluto: principio de funcionamiento, canales A/B/Z, código Gray, resolución, interfaces y criterios de selección.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/guia-definitiva-para-elegir-entre-encoder-rotativo-incremental-y-absoluto">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Guía Definitiva para Elegir entre Encoder Rotativo Incremental y Absoluto">
+<meta property="og:description" content="Incremental o absoluto: canales, código Gray, resolución, precio y cuándo cada uno es la respuesta correcta.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/encoder_rotativo_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/guia-definitiva-para-elegir-entre-encoder-rotativo-incremental-y-absoluto">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guía Definitiva para Elegir entre Encoder Rotativo Incremental y Absoluto">
+<meta name="twitter:description" content="La guía definitiva para elegir entre encoder incremental y absoluto en tus proyectos de robótica y CNC.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/encoder_rotativo_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Guía Definitiva: Encoder Rotativo Incremental vs. Absoluto",
+  "description":"Guía definitiva para elegir entre encoder rotativo incremental y absoluto: qué es un encoder y qué mide (posición, velocidad, sentido), principio de funcionamiento del encoder incremental (discos con ranuras, canales A y B en cuadratura, pulso de índice Z, conteo de pulsos por revolución PPR), principio del encoder absoluto (código Gray, posición única por vuelta, resolución en bits, versiones de una vuelta y multiturno), comparativa técnica y de precios entre ambos, criterios de selección según la aplicación (brazos robóticos, CNC, motores, impresoras 3D, paneles solares), interfaces con Arduino (interrupciones, librería Encoder, encoders magnéticos por I2C como el AS5600), y preguntas frecuentes sobre precisión, resolución y costos.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-15",
+  "dateModified":"2026-08-15",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/guia-definitiva-para-elegir-entre-encoder-rotativo-incremental-y-absoluto"},
+  "image":"https://www.ukrabot.cl/blog/encoder_rotativo_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Encoder incremental (óptico o magnético) o módulo absoluto (AS5600, AS5048), Arduino Uno, protoboard y jumpers, librería Encoder o controlador I2C",
+  "wordCount":"2700",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Guía Definitiva: Encoder Rotativo Incremental vs. Absoluto","item":"https://www.ukrabot.cl/blog/guia-definitiva-para-elegir-entre-encoder-rotativo-incremental-y-absoluto"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[{"@type":"Question","name":"¿Qué diferencia hay entre encoder incremental y absoluto en la práctica?","acceptedAnswer":{"@type":"Answer","text":"La diferencia esencial es si el encoder sabe su posición al encender. El incremental solo cuenta pulsos desde que se energiza: si el eje se movió con el sistema apagado, la posición se pierde y hay que hacer homing (buscar un final de carrera o el pulso de índice). El absoluto reporta la posición real siempre, desde el primer instante de encendido, porque cada ángulo tiene un código único. En la práctica: impresoras y CNC usan incrementales con homing; robots y ejes de seguridad usan absolutos."}},{"@type":"Question","name":"¿Qué significa PPR y cuántos necesito?","acceptedAnswer":{"@type":"Answer","text":"PPR son los pulsos por revolución del canal A. Con decodificación en cuadratura (4x) el conteo efectivo por vuelta es 4× PPR. Para la mayoría de proyectos con reductora, 100–400 PPR en el motor son suficientes; midiendo el eje de salida directamente, 600–1.000 PPR dan una resolución de 0,09–0,15°, más que suficiente considerando el juego mecánico real. Más PPR no mejora la precisión si la mecánica tiene holguras mayores que la resolución del encoder."}},{"@type":"Question","name":"¿Qué es el código Gray y por qué se usa en los encoders absolutos?","acceptedAnswer":{"@type":"Answer","text":"El código Gray es una numeración binaria donde entre valores consecutivos cambia un solo bit. Se usa en los discos de encoders absolutos porque elimina el error de lectura en los límites entre posiciones: en binario puro, pasar de 0111 a 1000 cambia los cuatro bits, y si las pistas no están perfectamente alineadas se puede leer 1111 (una posición equivocada por 8 pasos); en Gray, el cambio de un bit solo produce un error de un paso como máximo, que además se detecta fácilmente."}},{"@type":"Question","name":"¿Puedo usar un encoder absoluto magnético (AS5600) para medir velocidad?","acceptedAnswer":{"@type":"Answer","text":"Sí, derivando el ángulo respecto al tiempo, pero con una limitación: el I2C a 400 kHz permite muestrear a 1–2 kHz, suficiente para medir velocidad de ejes lentos y medianos (hasta unos cientos de RPM), pero no para ejes de alta velocidad, donde perderás pasos de ángulo entre lecturas. Para control de velocidad de motores rápidos, el incremental con interrupciones sigue siendo la opción correcta; el AS5600 brilla en posición absoluta de articulaciones."}},{"@type":"Question","name":"¿Cuánto cuesta un encoder y qué debo comprar para empezar?","acceptedAnswer":{"@type":"Answer","text":"Un encoder incremental óptico de 200–600 PPR ronda los 2–8 USD en módulos maker; uno industrial con robustez certificada cuesta 30–150 USD. Un módulo absoluto magnético AS5600 cuesta 3–8 USD (12 bits), y versiones industriales absolutas de 13–17 bits van de 50 a 400 USD. Para empezar, compra un incremental económico para aprender cuadratura e interrupciones y un AS5600 para posición absoluta: con menos de 15 USD tienes ambos mundos."}}]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="encoder_rotativo_hero.jpg" alt="Encoders rotativos óptico incremental y magnético absoluto sobre un banco de trabajo junto a un Arduino Uno" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Sensores y electrónica · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Guía Definitiva: Encoder Rotativo Incremental vs. Absoluto</h1>
+    <p>Posición relativa vs. posición absoluta: el principio de funcionamiento, la resolución, los costos y la regla práctica para elegir bien.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="encoder_wiring.svg" alt="Diagrama de conexión de un encoder incremental y de un encoder magnético absoluto por I2C a un Arduino Uno" loading="lazy">
+  <div class="caption">Incremental cuenta pulsos desde que enciende; absoluto sabe su ángulo al instante. La aplicación decide cuál necesitas.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es un encoder rotativo</a></li>
+    <li><a href="#incremental">Encoder incremental: canales A, B y Z</a></li>
+    <li><a href="#absoluto">Encoder absoluto: código Gray y resolución</a></li>
+    <li><a href="#comparativa">Comparativa técnica y de precios</a></li>
+    <li><a href="#criterios">Criterios de selección por aplicación</a></li>
+    <li><a href="#arduino">Interfaces con Arduino: interrupciones y I2C</a></li>
+    <li><a href="#magnéticos">Encoders magnéticos: el AS5600</a></li>
+    <li><a href="#preguntas">Decisiones prácticas</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="que-es">
+<h2>Qué es un encoder rotativo</h2>
+<p>Un <strong>encoder rotativo</strong> es un sensor que convierte el giro de un eje en una señal eléctrica que un controlador puede interpretar como <strong>posición angular, velocidad o sentido de rotación</strong>. Es el instrumento de retroalimentación estándar en motores, brazos robóticos, CNC, impresoras 3D, paneles de control y automatización industrial.</p>
+<p>Existen dos familias según el principio físico:</p>
+<ul>
+<li><strong>Ópticos:</strong> un disco con ranuras interrumpe un haz de luz entre un LED y un fotodetector; cada interrupción genera un pulso. Alta resolución y precisión, sensibles a polvo y suciedad.</li>
+<li><strong>Magnéticos:</strong> un imán en el eje gira frente a sensores Hall; el ángulo se calcula por la orientación del campo. Más robustos a la suciedad y más baratos, con resolución generalmente menor (aunque los modernos llegan a 14–16 bits).</li>
+</ul>
+<p>Pero la clasificación que define la arquitectura de tu sistema no es el principio físico: es <strong>si el encoder entrega posición relativa o absoluta</strong>.</p>
+</section>
+<section id="incremental">
+<h2>Encoder incremental: canales A, B y Z</h2>
+<p>Un encoder <strong>incremental</strong> genera pulsos proporcionales al giro, pero <em>no sabe dónde está</em>: solo cuenta cuántos pulsos han pasado desde el punto de partida. Su salida típica tiene tres señales:</p>
+<ul>
+<li><strong>Canal A:</strong> una onda cuadrada con N pulsos por revolución (PPR, pulsos por revolución).</li>
+<li><strong>Canal B:</strong> la misma onda desfasada 90° eléctricos respecto a A (<strong>cuadratura</strong>). Comparando el orden de los flancos de A y B, el controlador deduce el <strong>sentido de giro</strong>.</li>
+<li><strong>Canal Z (índice):</strong> un pulso único por revolución que marca un punto de referencia físico, usado para homing.</li>
+</ul>
+<p>Con cuadratura, cada revolución produce <strong>4× PPR conteos</strong> (detección de ambos flancos de ambos canales), técnica llamada <em>decodificación 4x</em>. Un encoder de 200 PPR puede así reportar 800 conteos por vuelta — suficiente para muchas aplicaciones de hobby.</p>
+<p>La característica decisiva: <strong>al encender, el controlador no sabe la posición</strong>. Si el eje se movió con el sistema apagado, la posición se pierde y hay que re-hacer homing (mover contra un final de carrera o buscar el pulso Z). Es el precio de su simplicidad y su bajo costo.</p>
+</section>
+<section id="absoluto">
+<h2>Encoder absoluto: código Gray y resolución</h2>
+<p>Un encoder <strong>absoluto</strong> entrega la posición real del eje en todo momento, incluso recién encendido. Su disco tiene pistas concéntricas con un <strong>código binario (normalmente código Gray)</strong>: cada ángulo del disco produce un patrón único de bits. Por ejemplo, un encoder absoluto de 12 bits divide la vuelta en 4.096 posiciones, cada una con su código irrepetible.</p>
+<p>Por qué se usa <strong>código Gray</strong> en lugar de binario puro: entre posiciones consecutivas cambia un solo bit, de modo que un error de lectura entre dos pistas nunca produce una posición disparatada. Es la diferencia entre leer "181°" en lugar de "189°" por un error de alineación.</p>
+<p>Dos subfamilias:</p>
+<ul>
+<li><strong>De una vuelta (single-turn):</strong> reporta el ángulo dentro de una revolución (0–360°). Suficiente para articulaciones de robots, antenas y paneles.</li>
+<li><strong>Multivuelta (multi-turn):</strong> además del ángulo, cuenta las revoluciones completas, típicamente con un engranaje interno o una pila de respaldo. Necesario en husillos, grúas y mecanismos que giran muchas vueltas y deben recordar la posición absoluta.</li>
+</ul>
+<p>Las interfaces comunes son <strong>SSI</strong> (serial síncrono industrial), <strong>RS-485/BiSS/CANopen</strong> (industrial), y en el mundo maker <strong>I2C o SPI</strong> (módulos magnéticos). Los absolutos industriales de 13–17 bits cuestan desde decenas a cientos de dólares; los magnéticos maker (AS5600) rondan los 3–8 USD con 12 bits.</p>
+</section>
+<section id="comparativa">
+<h2>Comparativa técnica y de precios</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Característica</th><th>Incremental</th><th>Absoluto</th></tr></thead>
+<tbody>
+<tr><td>Posición al encender</td><td>Desconocida (requiere homing)</td><td>Conocida al instante</td></tr>
+<tr><td>Salida típica</td><td>Pulsos A/B/Z (cuadratura)</td><td>Código Gray, SSI, I2C/SPI</td></tr>
+<tr><td>Resolución típica</td><td>100–5.000 PPR (×4 en cuadratura)</td><td>8–17 bits por vuelta</td></tr>
+<tr><td>Pérdida de posición con cortes de energía</td><td>Sí, si el eje se mueve apagado</td><td>No (single-turn dentro de su rango)</td></tr>
+<tr><td>Complejidad de cableado</td><td>3 señales (A, B, Z) + alimentación</td><td>Más líneas en paralelo o bus serial</td></tr>
+<tr><td>Coste maker (módulo)</td><td>1–10 USD</td><td>3–25 USD (magnético), 30–300 USD (industrial)</td></tr>
+<tr><td>Ruido eléctrico</td><td>Pulsos sensibles a ruido; requiere filtrado</td><td>Serial/digital: más inmune</td></tr>
+</tbody>
+</table>
+</div>
+<p>La regla económica de oro: <strong>el incremental gana en costo y simplicidad cuando el sistema siempre hace homing al arrancar</strong> (impresoras 3D, CNC, brazos con finales de carrera); el absoluto gana cuando el arranque debe ser inmediato y confiable sin rutina de búsqueda (robots colaborativos, ejes de grúa, aplicaciones de seguridad).</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="criterios">
+<h2>Criterios de selección por aplicación</h2>
+<p>La decisión práctica se resume en cuatro preguntas:</p>
+<p><strong>1. ¿El sistema puede hacer homing al encender?</strong> Si sí (finales de carrera en cada eje, o un pulso Z alcanzable), el incremental resuelve casi todo con la décima parte del presupuesto. Si el arranque debe ser instantáneo y sin movimientos de búsqueda — como un brazo que debe saber su pose al energizar por seguridad —, el absoluto es obligatorio.</p>
+<p><strong>2. ¿Cuánta resolución necesita realmente?</strong> Un incremental de 1.000 PPR con decodificación 4x da 4.000 conteos por vuelta (0,09°). Un absoluto de 12 bits da 4.096 posiciones (0,088°). Ambos superan con holgura lo que un motor con reductora entrega en precisión mecánica real. No pagues por 17 bits si tu mecánica tiene juego de 0,5°.</p>
+<p><strong>3. ¿Gira muchas vueltas y debe recordar la posición?</strong> Un encoder absoluto de una vuelta "se pierde" fuera de 0–360°. Para husillos o ejes rotatorios continuos necesitas absoluto multivuelta (o incremental con homing).</p>
+<p><strong>4. ¿El entorno es sucio o vibra?</strong> Los ópticos sufren con polvo y grasa; los magnéticos son prácticamente inmunes. En un taller de mecanizado, el magnético incremental o absoluto es la elección natural.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Aplicación</th><th>Recomendación</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>Impresora 3D / CNC</td><td>Incremental + finales de carrera</td><td>Homing estándar, costo mínimo</td></tr>
+<tr><td>Brazo robótico educativo</td><td>Absoluto magnético (AS5600)</td><td>Pose conocida al encender, I2C simple</td></tr>
+<tr><td>Motor con control de velocidad</td><td>Incremental (óptico o magnético)</td><td>Solo necesita velocidad y sentido</td></tr>
+<tr><td>Panel solar / antena</td><td>Absoluto de una vuelta</td><td>Debe orientarse sin homing tras apagón</td></tr>
+<tr><td>Grúa / husillo largo</td><td>Absoluto multivuelta</td><td>Posición absoluta en muchas vueltas</td></tr>
+<tr><td>Volante / panel de control</td><td>Incremental con pulsador</td><td>Economía y sentido intuitivo</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="arduino">
+<h2>Interfaces con Arduino: interrupciones y I2C</h2>
+<p><strong>Con un encoder incremental</strong>, los canales A y B se conectan a pines con interrupción (en el Uno: D2 y D3) y el conteo se hace en la interrupción, nunca en <code>loop()</code> con <code>digitalRead()</code> — a alta velocidad perderás pulsos:</p>
+<pre><code>#include &lt;Encoder.h&gt;
+Encoder miEncoder(2, 3);   // pines A y B
+
+long posicionAnterior = 0;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  long posicion = miEncoder.read();
+  if (posicion != posicionAnterior) {
+    Serial.print("Conteos: ");
+    Serial.println(posicion);
+    posicionAnterior = posicion;
+  }
+}</code></pre>
+<p>La librería <strong>Encoder</strong> (de Paul Stoffregen) maneja la cuadratura en las interrupciones internas y no se pierde pulsos en velocidades razonables de hobby. Para leer el pulso Z y hacer homing, otro pin digital con <code>attachInterrupt</code>.</p>
+<p><strong>Con un encoder absoluto magnético I2C</strong> (AS5600), la lectura es una instrucción:</p>
+<pre><code>#include &lt;Wire.h&gt;
+
+#define AS5600_ADDR 0x36
+#define ANGLE_REG   0x0E
+
+void setup() {
+  Wire.begin();
+  Serial.begin(9600);
+}
+
+void loop() {
+  Wire.beginTransmission(AS5600_ADDR);
+  Wire.write(ANGLE_REG);
+  Wire.endTransmission(false);
+  Wire.requestFrom(AS5600_ADDR, 2);
+  if (Wire.available() == 2) {
+    int alto = Wire.read();
+    int bajo = Wire.read();
+    int angulo12 = (alto &lt;&lt; 8) | bajo;         // 0 a 4095
+    float grados = angulo12 * 360.0 / 4096.0;
+    Serial.println(grados, 2);
+  }
+  delay(50);
+}</code></pre>
+<p>La ventaja es enorme: sin interrupciones, sin conteos que perder, y la posición sobrevive a reinicios. La desventaja: la velocidad de lectura la limita el bus I2C (a 400 kHz, ~1–2 kHz de muestreo realista), insuficiente para ejes que giran muy rápido.</p>
+</section>
+<section id="magnéticos">
+<h2>Encoders magnéticos: el AS5600</h2>
+<p>El <strong>AS5600</strong> de ams-OSRAM es el encoder magnético absoluto más popular del mundo maker: 12 bits (4.096 posiciones por vuelta), interfaz I2C o PWM, un imán dipolar en el eje y un coste de 3–8 USD. Sus cifras:</p>
+<ul>
+<li><strong>Resolución:</strong> 0,088° por paso (4096 pasos/vuelta).</li>
+<li><strong>Rango:</strong> 360° — el chip no cuenta vueltas (para eso está el AS5048 con interfaz SPI más rápida, o el AS5601/AS5047 en versiones de mayor velocidad).</li>
+<li><strong>Robustez:</strong> inmune a polvo, aceite y luz; ideal para impresoras 3D, brazos y volantes.</li>
+<li><strong>Salidas:</strong> I2C (lectura del ángulo), PWM (ancho de pulso proporcional) y una salida de dirección/giro para detección rápida de sentido.</li>
+</ul>
+<p>Para articulaciones de brazos robóticos, la combinación <strong>motor + reductora + AS5600 en el eje de salida</strong> (detrás de la reductora) da una retroalimentación absoluta real de la articulación, mucho mejor que medir el motor directamente — se detalla en la guía de <a href="/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos">encoders de articulación para brazos robóticos</a>.</p>
+</section>
+<section id="preguntas">
+<h2>Decisiones prácticas</h2>
+<ul>
+<li><strong>¿Cuánto PPR necesito?</strong> Para control de posición con reductora 10:1, un encoder de 100–400 PPR en el motor da una resolución de salida más que suficiente; para medición directa del eje, 600–1.000 PPR son el estándar cómodo.</li>
+<li><strong>¿Filtro las señales?</strong> Los pulsos de un encoder incremental en un entorno con motores necesitan filtro RC (por ejemplo, 1 kΩ + 10 nF) o un esquema Schmitt trigger; los pulsos sucios producen conteos fantasma.</li>
+<li><strong>¿Cuál comprar para empezar?</strong> Un encoder incremental óptico de 200–600 PPR para aprender cuadratura e interrupciones, y un AS5600 para aprender posición absoluta. Los dos juntos cuestan menos de 15 USD y cubren todo el espectro educativo.</li>
+<li><strong>¿Y en un brazo robótico de 6 ejes?</strong> La combinación industrial estándar es incremental en el motor (velocidad) + absoluto en la articulación (pose); para proyectos educativos, un absoluto por articulación resuelve la pose al encender sin homing.</li>
+</ul>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La elección entre encoder incremental y absoluto no es una batalla de especificaciones, sino una pregunta de arquitectura: <strong>¿tu sistema puede permitirse una rutina de búsqueda de origen al encender?</strong> Si la respuesta es sí, el incremental ofrece la mejor relación precio/rendimiento del mercado. Si la respuesta es no — porque la seguridad, la operación remota o la complejidad lo impiden —, el absoluto es la única respuesta correcta, y los magnéticos modernos lo han puesto al alcance de cualquier proyecto maker.</p>
+<p>Para la mayoría de los proyectos caseros, la fórmula ganadora es incremental para medir velocidad en el motor y absoluto en las articulaciones que deben recordar su pose. Con eso cubres precisión, robustez y presupuesto en una sola arquitectura.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué diferencia hay entre encoder incremental y absoluto en la práctica?</summary><p>La diferencia esencial es si el encoder sabe su posición al encender. El incremental solo cuenta pulsos desde que se energiza: si el eje se movió con el sistema apagado, la posición se pierde y hay que hacer homing (buscar un final de carrera o el pulso de índice). El absoluto reporta la posición real siempre, desde el primer instante de encendido, porque cada ángulo tiene un código único. En la práctica: impresoras y CNC usan incrementales con homing; robots y ejes de seguridad usan absolutos.</p></details>
+<details><summary>¿Qué significa PPR y cuántos necesito?</summary><p>PPR son los pulsos por revolución del canal A. Con decodificación en cuadratura (4x) el conteo efectivo por vuelta es 4× PPR. Para la mayoría de proyectos con reductora, 100–400 PPR en el motor son suficientes; midiendo el eje de salida directamente, 600–1.000 PPR dan una resolución de 0,09–0,15°, más que suficiente considerando el juego mecánico real. Más PPR no mejora la precisión si la mecánica tiene holguras mayores que la resolución del encoder.</p></details>
+<details><summary>¿Qué es el código Gray y por qué se usa en los encoders absolutos?</summary><p>El código Gray es una numeración binaria donde entre valores consecutivos cambia un solo bit. Se usa en los discos de encoders absolutos porque elimina el error de lectura en los límites entre posiciones: en binario puro, pasar de 0111 a 1000 cambia los cuatro bits, y si las pistas no están perfectamente alineadas se puede leer 1111 (una posición equivocada por 8 pasos); en Gray, el cambio de un bit solo produce un error de un paso como máximo, que además se detecta fácilmente.</p></details>
+<details><summary>¿Puedo usar un encoder absoluto magnético (AS5600) para medir velocidad?</summary><p>Sí, derivando el ángulo respecto al tiempo, pero con una limitación: el I2C a 400 kHz permite muestrear a 1–2 kHz, suficiente para medir velocidad de ejes lentos y medianos (hasta unos cientos de RPM), pero no para ejes de alta velocidad, donde perderás pasos de ángulo entre lecturas. Para control de velocidad de motores rápidos, el incremental con interrupciones sigue siendo la opción correcta; el AS5600 brilla en posición absoluta de articulaciones.</p></details>
+<details><summary>¿Cuánto cuesta un encoder y qué debo comprar para empezar?</summary><p>Un encoder incremental óptico de 200–600 PPR ronda los 2–8 USD en módulos maker; uno industrial con robustez certificada cuesta 30–150 USD. Un módulo absoluto magnético AS5600 cuesta 3–8 USD (12 bits), y versiones industriales absolutas de 13–17 bits van de 50 a 400 USD. Para empezar, compra un incremental económico para aprender cuadratura e interrupciones y un AS5600 para posición absoluta: con menos de 15 USD tienes ambos mundos.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Aplica lo aprendido en articulaciones reales con la guía de <a href="/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos">Encoders de Articulación para Brazos Robóticos</a>, o combínalo con otros sensores en la <a href="/blog/guia-esencial-de-sensores-para-arduino">Guía Esencial de Sensores</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos">← Anterior: Encoders de Articulación</a>
+  <a href="/blog/sensores-de-fuerza-torque-para-brazos-roboticos">Siguiente: Sensores de Fuerza-Torque →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias oficiales de fabricantes y documentación de librerías. Las resoluciones y precios son orientativos y dependen del modelo y canal de compra.</p>
+<ul>
+<li><a href="https://ams-osram.com/products/sensors/position-sensors/angle-position-sensors/ams-as5600-360-degree-angle-sensor" target="_blank" rel="noopener noreferrer">ams-OSRAM — Hoja de datos del AS5600</a></li>
+<li><a href="https://www.pjrc.com/teensy/td_libs_Encoder.html" target="_blank" rel="noopener noreferrer">Paul Stoffregen — Librería Encoder para Arduino/Teensy</a></li>
+<li><a href="https://www.encoder.com/technical-articles" target="_blank" rel="noopener noreferrer">Encoder Products — Artículos técnicos sobre encoders</a></li>
+<li><a href="https://www.dynapar.com/knowledge-base/absolute-encoder/" target="_blank" rel="noopener noreferrer">Dynapar — Encoders absolutos: guía técnica</a></li>
+<li><a href="https://www.dynapar.com/knowledge-base/incremental-encoder/" target="_blank" rel="noopener noreferrer">Dynapar — Encoders incrementales: guía técnica</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Gray_code" target="_blank" rel="noopener noreferrer">Wikipedia — Código Gray (definición y aplicaciones)</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 

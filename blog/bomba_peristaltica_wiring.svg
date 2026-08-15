@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" role="img" aria-label="Diagrama de conexión de una bomba peristáltica con motor NEMA 17, driver A4988 y Arduino Uno">
+  <rect width="1200" height="860" fill="#f6f4ee"/>
+  <text x="600" y="60" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="36">Conexión de la Bomba Peristáltica a Arduino (driver A4988)</text>
+
+  <!-- Arduino Uno -->
+  <g transform="translate(90 120)">
+    <rect x="0" y="0" width="380" height="280" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="0" y="0" width="380" height="52" rx="14" fill="#2f6fb0"/>
+    <text x="190" y="34" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">Arduino Uno</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="20" fill="#1e1b15">
+      <text x="30" y="100">5V</text>
+      <text x="30" y="150">GND</text>
+      <text x="30" y="200">D2  (STEP)</text>
+      <text x="30" y="250">D3  (DIR)</text>
+    </g>
+    <g fill="#e8e2d4">
+      <rect x="280" y="80" width="60" height="16" rx="3"/>
+      <rect x="280" y="130" width="60" height="16" rx="3"/>
+      <rect x="280" y="180" width="60" height="16" rx="3"/>
+      <rect x="280" y="230" width="60" height="16" rx="3"/>
+    </g>
+  </g>
+
+  <!-- Driver A4988 -->
+  <g transform="translate(600 120)">
+    <rect x="0" y="0" width="240" height="280" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="0" y="0" width="240" height="52" rx="14" fill="#23201b"/>
+    <text x="120" y="34" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">A4988</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#1e1b15">
+      <text x="30" y="100">STEP</text>
+      <text x="30" y="150">DIR</text>
+      <text x="30" y="200">VDD (5V)</text>
+      <text x="30" y="250">VMOT (12V)</text>
+    </g>
+    <g fill="#e8e2d4">
+      <rect x="150" y="80" width="60" height="16" rx="3"/>
+      <rect x="150" y="130" width="60" height="16" rx="3"/>
+      <rect x="150" y="180" width="60" height="16" rx="3"/>
+      <rect x="150" y="230" width="60" height="16" rx="3"/>
+    </g>
+  </g>
+
+  <!-- Motor NEMA 17 -->
+  <g transform="translate(940 150)">
+    <rect x="0" y="0" width="200" height="220" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="25" y="30" width="150" height="120" rx="8" fill="#2a2a2a"/>
+    <text x="100" y="110" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">NEMA 17</text>
+    <line x1="100" y1="150" x2="100" y2="190" stroke="#8b8577" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="100" cy="196" r="7" fill="#8b8577"/>
+    <text x="100" y="235" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">A1 A2 B1 B2</text>
+  </g>
+
+  <!-- Cables principales -->
+  <g stroke-linecap="round" fill="none">
+    <path d="M 240 240 C 420 240 420 210 600 210" stroke="#2f6fb0" stroke-width="7"/>
+    <path d="M 240 280 C 440 280 440 260 600 260" stroke="#3a3a3a" stroke-width="7"/>
+    <path d="M 240 130 C 440 130 440 90 940 90" stroke="#b04a3a" stroke-width="7"/>
+    <path d="M 240 180 C 440 180 440 400 1040 400" stroke="#a97b23" stroke-width="7"/>
+    <path d="M 720 280 C 780 340 780 400 1040 400" stroke="#3a3a3a" stroke-width="7"/>
+    <path d="M 1060 240 C 1060 300 1000 330 960 340" stroke="#2f6fb0" stroke-width="7"/>
+    <path d="M 1020 240 C 1020 330 1010 340 1000 340" stroke="#3a3a3a" stroke-width="7"/>
+    <path d="M 980 240 C 980 320 900 340 880 340" stroke="#b04a3a" stroke-width="7"/>
+    <path d="M 940 240 C 940 300 830 330 800 330" stroke="#3a3a3a" stroke-width="7"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="20" fill="#57534a">
+    <text x="420" y="200">STEP → D2</text>
+    <text x="420" y="245">DIR → D3</text>
+    <text x="430" y="90">VMOT → 12V</text>
+    <text x="700" y="130">GND común</text>
+    <text x="700" y="180">5V → VDD</text>
+    <text x="700" y="460">Motor: 4 fases a A1 A2 B1 B2</text>
+    <text x="700" y="490">Corriente máxima ajustable con el potenciómetro del driver</text>
+  </g>
+
+  <!-- Fuente de poder -->
+  <g transform="translate(940 560)">
+    <rect x="0" y="0" width="200" height="140" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="100" y="45" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Fuente 12V</text>
+    <text x="100" y="90" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">VMOT del driver</text>
+    <text x="100" y="120" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">(2–3 A recomendados)</text>
+  </g>
+
+  <!-- OLED y botones -->
+  <g transform="translate(90 560)">
+    <rect x="0" y="0" width="380" height="180" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="30" y="24" width="150" height="80" rx="6" fill="#10141a"/>
+    <text x="105" y="70" text-anchor="middle" fill="#7fd1c8" font-family="ui-monospace, monospace" font-size="20">12.4 ml</text>
+    <text x="230" y="45" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="600">OLED 0.96" I2C</text>
+    <text x="230" y="78" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="17">SDA → A4 · SCL → A5</text>
+    <text x="230" y="108" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="17">VCC → 5V · GND → GND</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <rect x="40" y="130" width="80" height="34" rx="6" fill="#b04a3a"/><text x="80" y="153" text-anchor="middle" fill="#fff" font-weight="600">DOSIFICAR</text>
+      <rect x="140" y="130" width="80" height="34" rx="6" fill="#2f6fb0"/><text x="180" y="153" text-anchor="middle" fill="#fff" font-weight="600">AUMENTAR</text>
+      <rect x="240" y="130" width="80" height="34" rx="6" fill="#3a3a3a"/><text x="280" y="153" text-anchor="middle" fill="#fff" font-weight="600">LIMPIAR</text>
+    </g>
+  </g>
+
+  <text x="600" y="830" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="18">La corriente del motor se ajusta con el potenciómetro del A4988: apunta a 0,6–0,8 A para un NEMA 17 típico de dosificación.</text>
+</svg>

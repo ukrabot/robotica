@@ -1,1 +1,627 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Construye tu Propio Altavoz Bluetooth de Alta Fidelidad</title>
+<meta name="description" content="Guía para construir un altavoz Bluetooth Hi-Fi casero: diseño acústico con Thiele-Small, amplificador clase D, crossover, montaje, medición y presupuesto.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Construye tu Propio Altavoz Bluetooth de Alta Fidelidad">
+<meta property="og:description" content="Caja con Thiele-Small, amplificador clase D, módulo Bluetooth y crossover: el paso a paso del altavoz Hi-Fi casero.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/altavoz_bluetooth_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Construye tu Propio Altavoz Bluetooth de Alta Fidelidad">
+<meta name="twitter:description" content="De la caja al sonido: cómo diseñar y construir tu propio altavoz Bluetooth de alta fidelidad.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/altavoz_bluetooth_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Construye tu Propio Altavoz Bluetooth de Alta Fidelidad",
+  "description":"Guía completa para construir un altavoz Bluetooth de alta fidelidad casero: qué significa realmente 'alta fidelidad' en un altavoz portátil, diseño acústico de la caja con los parámetros Thiele-Small (volumen, sintonía bass-reflex, puerto), elección de drivers (woofer, tweeter o full-range), amplificadores clase D (TPA3116, TAS5754), módulos Bluetooth con aptX y AAC, diseño del crossover de 2 vías, construcción de la caja en MDF con amortiguación interna, montaje de la electrónica evitando ruido y zumbido, medición de la respuesta en frecuencia con apps y micrófono, un presupuesto realista por componentes y una tabla de problemas comunes con sus soluciones.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-15",
+  "dateModified":"2026-08-15",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad"},
+  "image":"https://www.ukrabot.cl/blog/altavoz_bluetooth_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Módulo Bluetooth 5.x con aptX, amplificador clase D (TPA3116D2), woofer 5-6,5\", tweeter, MDF 15-18 mm, crossover pasivo, fuente 24V, sellante y material absorbente",
+  "wordCount":"3100",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Construye tu Propio Altavoz Bluetooth de Alta Fidelidad","item":"https://www.ukrabot.cl/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[{"@type":"Question","name":"¿Qué tan difícil es construir un altavoz Bluetooth casero?","acceptedAnswer":{"@type":"Answer","text":"Es un proyecto de fin de semana para alguien con experiencia básica en electrónica y herramientas de carpintería. El nivel de dificultad real está en la caja (corte y sellado) y en el cableado ordenado; la electrónica en sí es conectar cinco bloques. Si es tu primer proyecto, usa un driver full-range (eliminas el crossover) y una caja sellada: baja el riesgo sin sacrificar el resultado."}},{"@type":"Question","name":"¿Necesito batería o puedo usar una fuente de pared?","acceptedAnswer":{"@type":"Answer","text":"Ambas funcionan. Una fuente de 24V/4-5A es más simple y barata, pero ata el altavoz a un enchufe. Con batería Li-ion (por ejemplo, 6 celdas 18650 en 3S2P con BMS, unos 21-25V nominales) el altavoz es portátil; en ese caso elige un amplificador que funcione bien con el voltaje de la batería y ten en cuenta que la autonomía con música a volumen medio ronda las 4-8 horas con 2.000-4.000 mAh efectivos."}},{"@type":"Question","name":"¿Cuánto dura la batería de un altavoz Bluetooth casero?","acceptedAnswer":{"@type":"Answer","text":"Depende del consumo: un amplificador clase D de 2×25 W rms consume alrededor de 1,5-2 A a 24V con música a volumen medio. Con un pack 3S de 5.000 mAh (unos 55 Wh), eso da entre 4 y 7 horas de reproducción realista. A volumen alto el consumo se duplica, así que define el pack según tu uso: uso doméstico con fuente, uso portátil con pack grande."}},{"@type":"Question","name":"¿Por qué suena mejor con aptX que con SBC?","acceptedAnswer":{"@type":"Answer","text":"El códec SBC estándar del Bluetooth funciona en modo conservador en la mayoría de los teléfonos (tasa de bits baja), lo que recorta las frecuencias altas y añade artefactos. aptX y aptX HD transmiten más bits por segundo y preservan mejor la señal original; AAC hace lo propio en iPhones. La diferencia se nota sobre todo en platillos, voces y texturas; en podcasts o música ambiental es casi imperceptible."}},{"@type":"Question","name":"¿Puedo convertir un altavoz viejo en Bluetooth?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es el proyecto más rentable: si el altavoz (la caja y los drivers) está sano, solo necesitas añadir un módulo Bluetooth con salida analógica conectado a la entrada del amplificador existente o reemplazar el amplificador completo por un TPA3116. En altavoces de estantería pasivos necesitarás amplificador interno; en activos, un módulo Bluetooth a la entrada suele bastar. Mide el altavoz antes de gastar: si el woofer tiene la suspensión rota o la bobina suena raspada, no vale la pena."}}]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="altavoz_bluetooth_hero.jpg" alt="Altavoz Bluetooth casero en construcción sobre un banco de trabajo con woofer, tweeter y placa amplificadora" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Audio y electrónica de sonido · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Construye tu Propio Altavoz Bluetooth de Alta Fidelidad</h1>
+    <p>Diseño acústico de la caja con Thiele-Small, amplificador clase D, módulo Bluetooth con aptX, crossover de 2 vías y medición real del resultado.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="altavoz_bluetooth_esquema.svg" alt="Diagrama de bloques de un altavoz Bluetooth de alta fidelidad casero: fuente, módulo Bluetooth, amplificador clase D, crossover y drivers" loading="lazy">
+  <div class="caption">La cadena completa del altavoz: cada bloque degrada o preserva la señal, y el más barato suele ser el eslabón que arruina el sonido.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es-hifi">Qué significa "alta fidelidad" en un altavoz</a></li>
+    <li><a href="#diseno-caja">Diseño acústico: sellada vs. bass-reflex</a></li>
+    <li><a href="#drivers">Elección de drivers: woofer, tweeter y full-range</a></li>
+    <li><a href="#amplificador">Amplificador clase D y módulo Bluetooth</a></li>
+    <li><a href="#crossover">El crossover de 2 vías</a></li>
+    <li><a href="#construccion">Construcción de la caja en MDF</a></li>
+    <li><a href="#electronica">Montaje electrónico y gestión del ruido</a></li>
+    <li><a href="#medicion">Medición y ajuste fino</a></li>
+    <li><a href="#presupuesto">Presupuesto realista</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="que-es-hifi">
+<h2>Qué significa "alta fidelidad" en un altavoz</h2>
+<p>Antes de comprar componentes, conviene definir el objetivo. Un altavoz "Hi-Fi" es aquel que reproduce la señal de entrada con la menor alteración posible: respuesta en frecuencia plana dentro del rango audible (20 Hz–20 kHz), baja distorsión armónica total (THD) y respuesta transitoria limpia. En la práctica, para un altavoz Bluetooth doméstico esto se traduce en:</p>
+<ul>
+<li><strong>Respuesta en frecuencia</strong> razonablemente plana entre 50–60 Hz y 18 kHz, con una caída suave en los extremos.</li>
+<li><strong>THD bajo</strong> (menor a 1 %) a niveles de escucha normales; los amplificadores clase D modernos lo logran fácilmente.</li>
+<li><strong>Sin compresión de audio</strong> en la fuente: el Bluetooth debe soportar códecs de alta calidad (aptX, aptX HD o AAC) en lugar de SBC de baja tasa.</li>
+<li><strong>Caja sin resonancias audibles:</strong> paneles rígidos y amortiguados que no canten con la música.</li>
+</ul>
+<p>Un error común es gastar todo el presupuesto en drivers y descuidar la caja: un buen woofer dentro de una caja incorrecta suena peor que un woofer mediocre en una caja bien calculada. La caja <strong>es</strong> el instrumento.</p>
+</section>
+<section id="diseno-caja">
+<h2>Diseño acústico: sellada vs. bass-reflex</h2>
+<p>La caja controla el movimiento del woofer. Sin caja, el sonido delantero y trasero del cono se cancelan; con la caja adecuada, la presión interna actúa como un resorte que domina el comportamiento del altavoz en graves. Hay dos familias principales:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Característica</th><th>Caja sellada (closed box)</th><th>Caja bass-reflex (con puerto)</th></tr></thead>
+<tbody>
+<tr><td>Respuesta en graves</td><td>Caída suave de 12 dB/oct</td><td>Extensión mayor con pendiente de 24 dB/oct</td></tr>
+<tr><td>Transitorios</td><td>Control más firme, menos retardo</td><td>Sensibles al ajuste del puerto; riesgo de resonancia</td></tr>
+<tr><td>Volumen necesario</td><td>Menor</td><td>Mayor (típicamente 1,5–2×)</td></tr>
+<tr><td>Complejidad de construcción</td><td>Simple</td><td>Requiere calcular largo y diámetro del puerto</td></tr>
+<tr><td>Ideal para</td><td>Música con graves definidos, salas pequeñas</td><td>Más extensión de graves por el mismo woofer</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para un primer altavoz, la <strong>caja sellada</strong> es la elección sensata: perdonas errores de construcción, no hay que sintonizar puerto y el control del cono es más predecible. Si quieres más graves, pasas a bass-reflex en el segundo proyecto.</p>
+<p>El volumen interno recomendado para cada woofer aparece en su hoja de datos como <strong>Vas</strong> (volumen equivalente de aire) junto con <strong>Qts</strong> y <strong>Fs</strong>. Como regla general, una caja sellada de 6 a 12 litros funciona con woofer de 5–6,5 pulgadas de Qts entre 0,4 y 0,7. Calcula el volumen neto <em>descontando</em> el volumen que ocupan drivers, refuerzos y el puerto.</p>
+<div class="note"><strong>Nota:</strong> los parámetros Thiele-Small (Vas, Qts, Fs) los publica el fabricante del woofer en su hoja de datos. Si el woofer no trae hoja de datos, no lo compres: sin esos números estás diseñando a ciegas.</div>
+</section>
+<section id="drivers">
+<h2>Elección de drivers: woofer, tweeter y full-range</h2>
+<p>Tienes dos arquitecturas posibles:</p>
+<p><strong>Un solo driver full-range.</strong> Un altavoz de cono completo de 3–4 pulgadas reproduce casi todo el espectro sin crossover. Es la opción más simple (un driver por canal), ideal para un primer altavoz mono o estéreo pequeño. El compromiso: los extremos (subgraves y agudos muy finos) se recortan y el patrón de dispersión cambia con la frecuencia.</p>
+<p><strong>Dos vías (woofer + tweeter).</strong> Un woofer de 5–6,5 pulgadas para graves/medios y un tweeter de cúpula para agudos, unidos por un crossover. Suena más completo y permite orientar cada driver a lo que hace bien. Es la arquitectura de este artículo y se detalla en la <a href="/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias">guía de diseño de crossover de 2 vías</a>.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Componente</th><th>Qué buscar</th><th>Rango orientativo de precio (USD)</th></tr></thead>
+<tbody>
+<tr><td>Woofer 5–6,5"</td><td>Hoja de datos con Thiele-Small, bobina de 1", imán de ferrita o neodimio</td><td>20–50</td></tr>
+<tr><td>Tweeter de cúpula blanda</td><td>Respuesta plana hasta 20 kHz, sensibilidad ~90 dB</td><td>10–30</td></tr>
+<tr><td>Full-range 3–4"</td><td>Fostex, Tang Band, Dayton o equivalentes con buena respuesta</td><td>15–40</td></tr>
+</tbody>
+</table>
+</div>
+<p>Un criterio clave es la <strong>sensibilidad</strong> (SPL a 1 W/1 m): si el woofer y el tweeter difieren más de 3 dB, la rama más eficiente dominará y habrá que atenuarla con un L-pad (resistencias) en el crossover. Idealmente, elige drivers de sensibilidad parecida.</p>
+</section>
+<section id="amplificador">
+<h2>Amplificador clase D y módulo Bluetooth</h2>
+<p>Los <strong>amplificadores clase D</strong> convierten la señal en PWM de alta frecuencia y filtran la salida, alcanzando eficiencias del 85–90 % frente al 50–60 % de un clase AB. Para un altavoz a batería o fuente externa, eso significa menos calor y más volumen útil. Opciones probadas:</p>
+<ul>
+<li><strong>TPA3116D2 (Texas Instruments):</strong> el favorito de la comunidad DIY; entrega 2×50 W a 21 V con 4 Ω y suena limpio hasta niveles altos.</li>
+<li><strong>TAS5754 o TAS5805:</strong> amplificadores digitales con DSP integrado (ecualización, límites); ideales si quieres ajustar la respuesta por software.</li>
+<li><strong>PAM8403 / PAM8610:</strong> muy baratos (2–5 USD) y buenos para un primer prototipo pequeño, pero con ruido de fondo perceptible y poca potencia.</li>
+</ul>
+<p>El <strong>módulo Bluetooth</strong> debe cumplir dos requisitos: soportar códecs de alta calidad (aptX, aptX HD o AAC) y entregar salida analógica estéreo o salida digital I2S. Los módulos más usados son los basados en <strong>CSR8645</strong> (aptX) y los <strong>AC6925</strong>. Evita los módulos genéricos de un dólar sin código soportado: suelen limitarse a SBC, que suena bien en podcasts pero deja la música plana.</p>
+<p>La conexión es directa: salida L/R del módulo Bluetooth → entrada del amplificador, con un potenciómetro de volumen en medio o usando el control del propio módulo. La fuente de alimentación (24V / 4–5 A para un TPA3116) debe tener margen: un altavoz que pide 50 W pico necesita una fuente que entregue picos de 5 A sin caer de voltaje.</p>
+</section>
+<section id="crossover">
+<h2>El crossover de 2 vías</h2>
+<p>El crossover divide la señal: envía los graves al woofer y los agudos al tweeter, en la <strong>frecuencia de cruce</strong> (normalmente 2–3 kHz para woofer de 5–6,5 pulgadas con tweeter). Un diseño de segundo orden (12 dB/octava) con alineación Linkwitz-Riley es el estándar de facto para DIY: cancela los problemas de fase en la zona de cruce y produce una respuesta suma plana si ambos drivers están en fase.</p>
+<p>Para una frecuencia de cruce <em>f</em> y una impedancia nominal del driver <em>R</em>, los valores de segundo orden Linkwitz-Riley se calculan con:</p>
+<pre><code>L = R / (2 · π · f)        // bobina en serie con el woofer
+C = 1 / (2 · π · f · R)    // capacitor en serie con el tweeter
+// y las secciones paralelo de cada rama usan 2L y 2C</code></pre>
+<p>Con R = 8 Ω y f = 2500 Hz: L ≈ 0,51 mH, C ≈ 7,96 µF. El diseño completo, el esquema y el ejemplo numérico están en la <a href="/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias">guía de diseño de crossover pasivo</a>; los componentes se montan en una placa pequeña dentro de la caja, pegada a la pared trasera con la bobina alejada del imán del woofer para evitar interferencia.</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="construccion">
+<h2>Construcción de la caja en MDF</h2>
+<p>El <strong>MDF de 15–18 mm</strong> es el material por excelencia: denso, barato y sin vetas que resuenen. Las reglas de la buena caja:</p>
+<ol>
+<li><strong>Corte preciso:</strong> si cortas a mano, haz guías rectas; las rendijas de 1 mm en las uniones se convierten en fugas de aire que silban. Un corte a sierra de mesa o un servicio de corte a medida en el corralón evita dolores de cabeza.</li>
+<li><strong>Sellado:</strong> pega las uniones con cola blanca y refuerza con tornillos; luego sella el interior con sellante acrílico en todas las esquinas. El altavoz debe ser hermético salvo el puerto (si es bass-reflex).</li>
+<li><strong>Refuerzos:</strong> los paneles grandes vibran. Coloca un travesaño de MDF entre paredes opuestas (por ejemplo, entre baffle y trasera) para romper resonancias de panel.</li>
+<li><strong>Amortiguación interna:</strong> cubre el interior (sin obstruir el cono ni el puerto) con lana acústica, guata o espuma de poliuretano de celda abierta; elimina el "sonido de caja".</li>
+<li><strong>Baffle:</strong> corta los agujeros del woofer y tweeter con fresadora o serrucho de calar con guía; el tweeter debe quedar al ras y centrado, y conviene redondear (chaflán) los bordes del agujero del woofer para reducir difracción.</li>
+</ol>
+<p>La caja terminada se puede forrar con tela acústica, vinilo o pintura. Un acabado prolijo no suena mejor, pero convierte el proyecto en un mueble que vale la pena mostrar.</p>
+</section>
+<section id="electronica">
+<h2>Montaje electrónico y gestión del ruido</h2>
+<p>El zumbido y el ruido son los enemigos clásicos del DIY. La mayoría se evita con tres reglas:</p>
+<ul>
+<li><strong>Separación de tierras:</strong> las corrientes de potencia (amplificador → woofer) deben formar un lazo pequeño y no compartir trayecto con las señales de audio del módulo Bluetooth. Une las tierras en un solo punto (estrella).</li>
+<li><strong>Cables de señal trenzados y cortos:</strong> el cable entre Bluetooth y amplificador es la antena de ruido; mantenlo alejado de la fuente de 24V y del propio amplificador.</li>
+<li><strong>Blindaje y filtrado:</strong> un núcleo de ferrita en el cable de alimentación y, si el módulo Bluetooth queda cerca del transformador, una chapa metálica de separación a masa.</li>
+</ul>
+<p>El orden de encendido también importa: conecta la batería o fuente solo cuando todo esté cableado, y comprueba cada etapa por separado (fuente → amplificador → módulo BT) antes de cerrar la caja. Cerrar una caja con un problema de ruido significa abrirla de nuevo: todo se prueba con el baffle suelto.</p>
+</section>
+<section id="medicion">
+<h2>Medición y ajuste fino</h2>
+<p>El oído engaña: lo que parece "más agudos" suele ser resonancia, y lo que parece "más graves" puede ser distorsión. Mide la respuesta en frecuencia para tomar decisiones objetivas:</p>
+<ul>
+<li><strong>Micrófono:</strong> un micrófono USB de medición (miniDSP UMIK-1 o similares) o el micrófono del celular con una app como <em>Spectroid</em> o <em>AudioTool</em> permiten ver el espectro.</li>
+<li><strong>Señal de prueba:</strong> reproduce barridos senoidales (log-sweep de 20 Hz a 20 kHz) a volumen moderado y observa la curva en la app.</li>
+<li><strong>Qué ajustar:</strong> picos estrechos en la curva = resonancias de caja (refuerza o amortigua); caídas bruscas = puerto mal sintonizado (largo del puerto); desnivel general = desbalance de sensibilidad entre drivers (L-pad).</li>
+</ul>
+<p>Una herramienta más avanzada es <strong>REW (Room EQ Wizard)</strong> con un micrófono de medición: genera la respuesta en frecuencia, la impedancia y los retrasos de grupo con precisión de laboratorio, y es gratuita.</p>
+</section>
+<section id="presupuesto">
+<h2>Presupuesto realista</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Componente</th><th>Opción económica</th><th>Opción recomendada</th></tr></thead>
+<tbody>
+<tr><td>Módulo Bluetooth</td><td>8 USD (SBC)</td><td>25–40 USD (aptX/aptX HD)</td></tr>
+<tr><td>Amplificador clase D</td><td>10 USD (PAM8403)</td><td>25–45 USD (TPA3116D2 2×50W)</td></tr>
+<tr><td>Woofer 5–6,5"</td><td>15 USD</td><td>25–50 USD con hoja de datos</td></tr>
+<tr><td>Tweeter</td><td>6 USD</td><td>12–30 USD cúpula blanda</td></tr>
+<tr><td>Crossover (componentes)</td><td>10 USD</td><td>20–35 USD polipropileno y bobinas de aire</td></tr>
+<tr><td>MDF 15 mm + herrajes</td><td>10 USD</td><td>15–25 USD</td></tr>
+<tr><td>Fuente 24V</td><td>12 USD</td><td>20–30 USD con margen de corriente</td></tr>
+<tr><td><strong>Total por altavoz</strong></td><td><strong>~70–90 USD</strong></td><td><strong>~130–250 USD</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>El total depende sobre todo del módulo Bluetooth y los drivers. El salto de calidad más importante por dólar está en el módulo Bluetooth (SBC → aptX) y en una caja bien construida y amortiguada; el amplificador de 40 USD suena casi idéntico a uno de 15 USD a niveles domésticos.</p>
+</section>
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Síntoma</th><th>Causa más probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Zumbido de 50/60 Hz constante</td><td>Lazo de tierra o cable de señal junto a la fuente</td><td>Tierras en estrella; separa cables; ferrita en alimentación</td></tr>
+<tr><td>Ruido "digital" al mover volumen</td><td>Volumen por software del módulo BT saturado</td><td>Sube el volumen del módulo al 80 % y controla con el amplificador</td></tr>
+<tr><td>Suena apagado, sin agudos</td><td>Tweeter fuera de fase o crossover mal conectado</td><td>Verifica polaridad y el esquema del crossover</td></tr>
+<tr><td>El amplificador se corta solo</td><td>Protección térmica o fuente insuficiente</td><td>Fuente con más corriente; revisa ventilación</td></tr>
+<tr><td>Graves que "boquean" o distorsionan</td><td>Puerto mal sintonizado o caja con fugas</td><td>Sella fugas; ajusta largo del puerto; baja el volumen de prueba</td></tr>
+<tr><td>Se corta el Bluetooth a 2 metros</td><td>Antena del módulo obstruida por metal</td><td>Aleja el módulo de la chapa/fuente; orienta su antena al exterior</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Construir un altavoz Bluetooth Hi-Fi casero es el proyecto que reúne mecánica, acústica y electrónica en un solo objeto que usas todos los días. El resultado de un buen diseño — caja calculada, drivers con hoja de datos, amplificador clase D limpio y Bluetooth con aptX — supera con claridad a la mayoría de altavoces comerciales del mismo precio, porque estás pagando componentes, no marketing.</p>
+<p>Empieza con una caja sellada y un solo driver full-range si es tu primera vez, o ve directo a la arquitectura de 2 vías con el crossover bien calculado: ambas rutas terminan en el mismo lugar, con un altavoz que suena a mucho más de lo que costó.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué tan difícil es construir un altavoz Bluetooth casero?</summary><p>Es un proyecto de fin de semana para alguien con experiencia básica en electrónica y herramientas de carpintería. El nivel de dificultad real está en la caja (corte y sellado) y en el cableado ordenado; la electrónica en sí es conectar cinco bloques. Si es tu primer proyecto, usa un driver full-range (eliminas el crossover) y una caja sellada: baja el riesgo sin sacrificar el resultado.</p></details>
+<details><summary>¿Necesito batería o puedo usar una fuente de pared?</summary><p>Ambas funcionan. Una fuente de 24V/4-5A es más simple y barata, pero ata el altavoz a un enchufe. Con batería Li-ion (por ejemplo, 6 celdas 18650 en 3S2P con BMS, unos 21-25V nominales) el altavoz es portátil; en ese caso elige un amplificador que funcione bien con el voltaje de la batería y ten en cuenta que la autonomía con música a volumen medio ronda las 4-8 horas con 2.000-4.000 mAh efectivos.</p></details>
+<details><summary>¿Cuánto dura la batería de un altavoz Bluetooth casero?</summary><p>Depende del consumo: un amplificador clase D de 2×25 W rms consume alrededor de 1,5-2 A a 24V con música a volumen medio. Con un pack 3S de 5.000 mAh (unos 55 Wh), eso da entre 4 y 7 horas de reproducción realista. A volumen alto el consumo se duplica, así que define el pack según tu uso: uso doméstico con fuente, uso portátil con pack grande.</p></details>
+<details><summary>¿Por qué suena mejor con aptX que con SBC?</summary><p>El códec SBC estándar del Bluetooth funciona en modo conservador en la mayoría de los teléfonos (tasa de bits baja), lo que recorta las frecuencias altas y añade artefactos. aptX y aptX HD transmiten más bits por segundo y preservan mejor la señal original; AAC hace lo propio en iPhones. La diferencia se nota sobre todo en platillos, voces y texturas; en podcasts o música ambiental es casi imperceptible.</p></details>
+<details><summary>¿Puedo convertir un altavoz viejo en Bluetooth?</summary><p>Sí, y es el proyecto más rentable: si el altavoz (la caja y los drivers) está sano, solo necesitas añadir un módulo Bluetooth con salida analógica conectado a la entrada del amplificador existente o reemplazar el amplificador completo por un TPA3116. En altavoces de estantería pasivos necesitarás amplificador interno; en activos, un módulo Bluetooth a la entrada suele bastar. Mide el altavoz antes de gastar: si el woofer tiene la suspensión rota o la bobina suena raspada, no vale la pena.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Aprende a calcular los componentes exactos de la división de frecuencias en la <a href="/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias">guía de diseño de crossover pasivo de 2 vías</a>, y si te interesa el procesamiento de audio por software, compara placas en <a href="/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real">Teensy 4.1 vs Arduino Due</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/guia-esencial-de-sensores-para-arduino">← Anterior: Guía Esencial de Sensores para Arduino</a>
+  <a href="/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias">Siguiente: Diseño de Crossover Pasivo de 2 Vías →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan el diseño acústico, la selección de amplificadores clase D y la teoría de cajas y crossover. Las especificaciones exactas dependen de la hoja de datos de cada driver.</p>
+<ul>
+<li><a href="https://www.ti.com/product/TPA3116D2" target="_blank" rel="noopener noreferrer">Texas Instruments — Hoja de datos del TPA3116D2</a></li>
+<li><a href="https://www.ti.com/lit/an/slaa701/slaa701.pdf" target="_blank" rel="noopener noreferrer">TI — Nota de aplicación sobre clase D y diseño de filtros de salida</a></li>
+<li><a href="https://www.audiosciencereview.com/forum/index.php?threads/all-about-aptx-aptx-hd-and-ldac.21823/" target="_blank" rel="noopener noreferrer">AudioScienceReview — Debate técnico sobre códecs Bluetooth</a></li>
+<li><a href="https://www.roomeqwizard.com/" target="_blank" rel="noopener noreferrer">REW — Room EQ Wizard, software de medición acústica</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Thiele/Small" target="_blank" rel="noopener noreferrer">Parámetros Thiele-Small (definición y uso)</a></li>
+<li><a href="https://www.parts-express.com/learn-about-speakers" target="_blank" rel="noopener noreferrer">Parts Express — Artículos de aprendizaje sobre diseño de altavoces</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 

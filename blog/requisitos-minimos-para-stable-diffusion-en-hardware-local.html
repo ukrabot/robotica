@@ -1,1 +1,619 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Requisitos Mínimos para Stable Diffusion en Hardware Local</title>
+<meta name="description" content="Requisitos mínimos de hardware para Stable Diffusion en local: VRAM por modelo (SD 1.5, SDXL), GPU NVIDIA/AMD/Apple, RAM, disco y configuración.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/requisitos-minimos-para-stable-diffusion-en-hardware-local">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Requisitos Mínimos para Stable Diffusion en Hardware Local">
+<meta property="og:description" content="VRAM por modelo, GPUs NVIDIA vs AMD vs Apple, RAM, disco y cómo ejecutar SD 1.5 con solo 4 GB: la guía de hardware definitiva.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/stable_diffusion_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/requisitos-minimos-para-stable-diffusion-en-hardware-local">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Requisitos Mínimos para Stable Diffusion en Hardware Local">
+<meta name="twitter:description" content="¿Puede tu PC correr Stable Diffusion? VRAM, GPU y configuración: la guía de requisitos mínimos.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/stable_diffusion_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Requisitos Mínimos para Stable Diffusion en Hardware Local",
+  "description":"Guía de requisitos mínimos de hardware para ejecutar Stable Diffusion en local: qué es Stable Diffusion y su arquitectura de difusión latente (CLIP, UNet, VAE) y por qué la VRAM de la GPU es el recurso crítico, tabla de requisitos por tarea (generación SD 1.5 a 512x512, SDXL a 1024x1024, fine-tuning con LoRA, generación de video), comparativa de plataformas (NVIDIA con CUDA, AMD con ROCm, Apple Silicon con MPS, CPUs sin GPU), recomendaciones de GPU por presupuesto (4 GB, 6 GB, 8 GB, 12 GB, 16 GB y 24 GB), requisitos de RAM y almacenamiento (peso de los modelos), configuración de software (Automatic1111, ComfyUI, Fooocus, optimizaciones xformers, fp16, modos --medvram y --lowvram, cuantización), cómo ejecutar SD 1.5 con solo 4 GB de VRAM, y cuándo conviene usar servicios en la nube en lugar de hardware local.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-15",
+  "dateModified":"2026-08-15",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/requisitos-minimos-para-stable-diffusion-en-hardware-local"},
+  "image":"https://www.ukrabot.cl/blog/stable_diffusion_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"GPU NVIDIA (recomendada) o AMD/Apple Silicon, 8-16 GB de RAM, 10-30 GB de espacio libre, Windows/Linux con controladores actualizados",
+  "wordCount":"2700",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Requisitos Mínimos para Stable Diffusion en Hardware Local","item":"https://www.ukrabot.cl/blog/requisitos-minimos-para-stable-diffusion-en-hardware-local"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[{"@type":"Question","name":"¿Cuál es el requisito mínimo real para ejecutar Stable Diffusion?","acceptedAnswer":{"@type":"Answer","text":"Para generar SD 1.5 a 512×512 con una experiencia usable: una GPU NVIDIA con 6 GB de VRAM (o 4 GB con optimizaciones como xformers y --medvram), 16 GB de RAM y unos 20 GB de disco. Para SDXL a 1024×1024, el mínimo realista son 8 GB de VRAM con optimizaciones y 12 GB para fluidez. Sin GPU, se puede generar en CPU (1–5 minutos por imagen) o usar la nube. Estos mínimos asumen fp16 y las optimizaciones estándar de las interfaces modernas."}},{"@type":"Question","name":"¿Sirve una tarjeta de video de 4 GB para Stable Diffusion?","acceptedAnswer":{"@type":"Answer","text":"Sí, limitada a SD 1.5 con optimizaciones: con xformers, --medvram (o --lowvram) y resolución 512×512, una GTX 1650/1660 de 4–6 GB genera una imagen en 15–60 segundos. No podrás correr SDXL (falla o va a memoria compartida, con tiempos de minutos), el batch se limita a 1 y el hi-res fix debe ser moderado. Es la puerta de entrada perfecta para probar el mundo SD; si te engancha, el salto a 12 GB es transformador."}},{"@type":"Question","name":"¿NVIDIA o AMD para Stable Diffusion en 2026?","acceptedAnswer":{"@type":"Answer","text":"NVIDIA sigue siendo la recomendación general: CUDA es el estándar de facto, xformers y la mayoría de las optimizaciones funcionan solo allí, y la instalación es un clic. AMD funciona con ROCm en Linux (y DirectML en Windows con menor rendimiento), con 10–30 % menos rendimiento que NVIDIA equivalente y más fricción de configuración; es una opción válida solo si ya tienes la GPU o el presupuesto la hace irresistible (por ejemplo, una RX 6700 XT de 12 GB usada). En igualdad de precios, NVIDIA gana para IA."}},{"@type":"Question","name":"¿Cuánto espacio en disco necesito realmente?","acceptedAnswer":{"@type":"Answer","text":"Para empezar, 20–30 GB libres son suficientes: la interfaz (~2 GB), el modelo base SD 1.5 (~2–4 GB) o SDXL (~7 GB), un par de LoRA (~100–300 MB cada uno) y los archivos temporales. El espacio se dispara con el hábito: los usuarios activos acumulan decenas de checkpoints (2–7 GB cada uno), resultados PNG, modelos de entrenamiento y cachés que llenan 100–500 GB. Usa un SSD NVMe para la carga de modelos y la carpeta de resultados; el disco es el componente que más se subestima."}},{"@type":"Question","name":"¿Vale la pena generar en la nube en lugar de comprar una GPU?","acceptedAnswer":{"@type":"Answer","text":"Depende del volumen y la privacidad. Si generas menos de ~1.500–2.500 imágenes al mes, la nube por uso (RunPod, Vast.ai, Colab) puede costar menos que una GPU de 400–600 USD, sin mantenimiento y con GPUs de gama alta (RTX 4090) por hora. Si generas a diario, entrenas LoRA o trabajas con datos sensibles, la GPU local se paga sola en meses y te da control total. El híbrido — GPU local modesta + nube para picos — es la estrategia más racional para la mayoría."}}]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="stable_diffusion_hero.jpg" alt="Estación de trabajo con tarjeta gráfica NVIDIA de gran tamaño instalada y un monitor mostrando una imagen generada por IA" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Inteligencia artificial y hardware · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Requisitos Mínimos para Stable Diffusion en Hardware Local</h1>
+    <p>La VRAM manda: qué necesita cada modelo, qué GPU comprar según presupuesto y cómo generar SD 1.5 con solo 4 GB.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="stable_diffusion_pipeline.svg" alt="Diagrama del pipeline de Stable Diffusion: prompt, CLIP, UNet, VAE e imagen, con tabla de VRAM necesaria por modelo y resolución" loading="lazy">
+  <div class="caption">El pipeline completo de Stable Diffusion: el UNet consume la mayor parte de la VRAM durante los pasos de difusión.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es Stable Diffusion y por qué la GPU manda</a></li>
+    <li><a href="#modelos">Modelos: SD 1.5, SDXL y sus variantes</a></li>
+    <li><a href="#vram">VRAM: el recurso crítico</a></li>
+    <li><a href="#gpu-nvidia">GPU NVIDIA: la ruta más fácil</a></li>
+    <li><a href="#amd-apple">AMD y Apple Silicon</a></li>
+    <li><a href="#cpu-sin-gpu">¿Se puede sin GPU? CPU y alternativas</a></li>
+    <li><a href="#resto-hardware">RAM, disco y el resto del equipo</a></li>
+    <li><a href="#software">Software: Automatic1111, ComfyUI y Fooocus</a></li>
+    <li><a href="#optimizar">Optimizar para poca VRAM</a></li>
+    <li><a href="#cuando-nube">¿Local o nube?</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="que-es">
+<h2>Qué es Stable Diffusion y por qué la GPU manda</h2>
+<p><strong>Stable Diffusion</strong> es un modelo de difusión latente de código abierto: parte de ruido aleatorio y, guiado por un texto (el prompt), elimina el ruido en decenas de pasos hasta formar una imagen. A diferencia de los modelos generativos anteriores, no trabaja directamente sobre píxeles, sino sobre un <strong>espacio latente comprimido</strong> — de ahí su eficiencia relativa.</p>
+<p>El pipeline tiene tres componentes que cargan en memoria:</p>
+<ul>
+<li><strong>CLIP:</strong> convierte el texto en "embeddings" numéricos (una red pequeña, unos cientos de MB).</li>
+<li><strong>UNet:</strong> la red grande que hace el denoising paso a paso — <strong>el mayor consumidor de VRAM</strong>, con ~1,7–2,5 GB solo en pesos para SD 1.5, y 5–7 GB para SDXL.</li>
+<li><strong>VAE:</strong> decodifica el latente final en píxeles (unos 300–500 MB).</li>
+</ul>
+<p>Durante la generación, además de los pesos, la GPU necesita espacio para los <strong>activaciones y buffers de cada paso</strong> (que crecen con la resolución de la imagen) y para los estados intermedios del optimizador si entrenas. Por eso el requisito de VRAM no es el tamaño del modelo, sino modelo + activaciones + resolución + (si aplica) entrenamiento.</p>
+</section>
+<section id="modelos">
+<h2>Modelos: SD 1.5, SDXL y sus variantes</h2>
+<p>Elegir el modelo base es la primera decisión de hardware, porque define el piso de VRAM:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Modelo</th><th>Tamaño de pesos</th><th>Resolución nativa</th><th>VRAM mínima (generación)</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td>SD 1.5</td><td>~2 GB (fp16)</td><td>512×512</td><td>4 GB (optimizado)</td><td>El estándar de la comunidad; miles de checkpoints y LoRA</td></tr>
+<tr><td>SD 2.x</td><td>~2,5 GB</td><td>768×768</td><td>6 GB</td><td>Menos popular en la comunidad</td></tr>
+<tr><td>SDXL</td><td>~7 GB (fp16)</td><td>1024×1024</td><td>8 GB (optimizado)</td><td>Calidad superior; requiere 8 GB cómodos o 12 para fluidez</td></tr>
+<tr><td>SD 3.5 / Flux</td><td>7–24 GB</td><td>1024×1024</td><td>12–24 GB</td><td>Modelos nuevos; Flux necesita 16 GB+ cómodos (o cuantizado)</td></tr>
+<tr><td>Video (SVD, AnimateDiff)</td><td>+1–3 GB</td><td>576×1024</td><td>12–16 GB</td><td>El video multiplica la memoria por pasos</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para decidir el hardware, piensa en el modelo <em>que querrás dentro de un año</em>, no el de hoy. Comprar una GPU con 8 GB hoy te deja en SDXL optimizado; con 12–16 GB tienes margen para SD 3.5 y video; con 4–6 GB, te quedas en SD 1.5 — que sigue siendo increíblemente capaz con los checkpoints y LoRA correctos.</p>
+</section>
+<section id="vram">
+<h2>VRAM: el recurso crítico</h2>
+<p>La VRAM (memoria de la GPU) es el cuello de botella: sin suficiente, la generación se vuelve lenta (el sistema cae a memoria compartida del sistema) o falla con el clásico error <code>CUDA out of memory</code>. Reglas generales por cantidad:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>VRAM</th><th>Puedes hacer</th><th>Con limitaciones</th></tr></thead>
+<tbody>
+<tr><td>4 GB</td><td>SD 1.5 a 512×512 con optimizaciones</td><td>Sin SDXL; batch 1; resolución limitada</td></tr>
+<tr><td>6 GB</td><td>SD 1.5 cómodo, 768×768, LoRA de entrenamiento corto</td><td>SDXL solo con mucha optimización y lento</td></tr>
+<tr><td>8 GB</td><td>SDXL básico con optimizaciones, SD 1.5 a gusto</td><td>SDXL sin xformers puede agotarse; entrenamiento limitado</td></tr>
+<tr><td>12 GB</td><td>SDXL fluido, LoRA de entrenamiento, video corto</td><td>Flux completo, no; batch grandes, no</td></tr>
+<tr><td>16 GB</td><td>SDXL a toda velocidad, Flux cuantizado, video corto</td><td>Entrenamiento completo de modelos, no</td></tr>
+<tr><td>24 GB</td><td>Todo lo anterior + Flux completo + entrenamiento serio</td><td>Casi nada, salvo clústeres de investigación</td></tr>
+</tbody>
+</table>
+</div>
+<p>El salto de 8 GB a 12 GB es el más importante en valor: separa "SDXL optimizado y lento" de "SDXL fluido". El salto de 12 a 16 abre el video; de 16 a 24, el entrenamiento y los modelos nuevos.</p>
+</section>
+<section id="gpu-nvidia">
+<h2>GPU NVIDIA: la ruta más fácil</h2>
+<p>NVIDIA domina la generación local de imágenes porque <strong>todo el ecosistema está optimizado para CUDA</strong>: PyTorch, xformers, los aceleradores de cada interfaz y la mayoría de los tutoriales asumen una GPU NVIDIA. Cualquier compra debería partir aquí.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>GPU (rango de precio 2026, aprox.)</th><th>VRAM</th><th>Perfil de uso</th></tr></thead>
+<tbody>
+<tr><td>GTX 1650/1660 Super (usada, 100–150 USD)</td><td>4–6 GB</td><td>SD 1.5 básico con optimizaciones; entrada</td></tr>
+<tr><td>RTX 3060 12GB (usada, 200–260 USD)</td><td>12 GB</td><td>El rey del presupuesto: SDXL fluido y LoRA</td></tr>
+<tr><td>RTX 4060 Ti 16GB (nueva, 450–550 USD)</td><td>16 GB</td><td>SDXL + video corto sin despeinarse</td></tr>
+<tr><td>RTX 4070 Super 12GB (nueva, 600–700 USD)</td><td>12 GB</td><td>Rápida en SDXL, VRAM justa para video</td></tr>
+<tr><td>RTX 4080/4090 (nueva, 1.000–2.000 USD)</td><td>16–24 GB</td><td>Todo: Flux, video, entrenamiento</td></tr>
+</tbody>
+</table>
+</div>
+<p>Dos advertencias: <strong>la RTX 4060 Ti de 8 GB</strong> es una mala compra para IA (la de 16 GB cuesta poco más y duplica la memoria); y <strong>evita GPUs con menos de 6 GB</strong> para cualquier proyecto futuro. En el mercado de usadas, la RTX 3060 12GB es, con diferencia, la recomendación más repetida del mundo SD.</p>
+</section>
+<section id="amd-apple">
+<h2>AMD y Apple Silicon</h2>
+<p><strong>AMD:</strong> desde la versión 2.0 de ROCm, PyTorch soporta oficialmente GPUs AMD (RX 6000/7000 y las profesionales), y las interfaces principales funcionan, pero con tres costos: instalación más frágil (a veces hay que usar el binario de ROCm o compilar), rendimiento típicamente 10–30 % inferior al de una NVIDIA equivalente, y soporte solo en Linux (Windows usa DirectML, más lento y con menos funciones). Para un usuario avanzado, una RX 6700 XT de 12 GB es una alternativa de bajo costo razonable; para el que quiere que "simplemente funcione", NVIDIA sigue ganando.</p>
+<p><strong>Apple Silicon (MPS):</strong> los Mac con M1/M2/M3/M4 ejecutan Stable Diffusion gracias al backend MPS de PyTorch. La memoria unificada hace que un Mac de 16 GB maneje SDXL que una GPU de 8 GB no tocaría, y los modelos más nuevos funcionan. Las limitaciones: la generación es 2–4× más lenta que una GPU NVIDIA dedicada comparable, y xformers y algunas optimizaciones de NVIDIA no aplican. Para uso ocasional y portabilidad, un Mac de 16 GB es una opción real; para productividad seria, no.</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="cpu-sin-gpu">
+<h2>¿Se puede sin GPU? CPU y alternativas</h2>
+<p>Sí, se puede ejecutar Stable Diffusion en CPU, pero los tiempos son de otro planeta: una imagen SD 1.5 de 512×512 que una GPU moderna hace en 2–5 segundos tarda <strong>1–5 minutos</strong> en CPU. Para probar el concepto o generar ocasionalmente, es viable; para uso serio, no. Si no tienes GPU y quieres probar sin instalar nada, hay opciones:</p>
+<ul>
+<li><strong>Google Colab (gratis con límites):</strong> genera SD 1.5 y SDXL en GPUs de Google por sesión, sin hardware local.</li>
+<li><strong>Servicios por suscripción o por uso:</strong> RunPod, Vast.ai, Fal.ai y similares cobran por hora de GPU (desde 0,20–0,40 USD/hora para RTX 3090/4090 en el mercado de alquiler).</li>
+<li><strong>API de la nube:</strong> Stability AI y Replicate ofrecen APIs de pago por imagen.</li>
+</ul>
+<p>La regla económica: si generas menos de ~2.000 imágenes al mes, la nube por uso puede ser más barata que comprar una GPU; si generas a diario o entrenas, la GPU local se paga sola.</p>
+</section>
+<section id="resto-hardware">
+<h2>RAM, disco y el resto del equipo</h2>
+<p>La VRAM es la estrella, pero el resto del equipo no es gratis:</p>
+<ul>
+<li><strong>RAM del sistema: 16 GB recomendados, 32 GB si entrenas.</strong> PyTorch carga el modelo en RAM antes de pasarlo a la GPU y mantiene buffers; con 8 GB verás intercambio a disco y lentitud general.</li>
+<li><strong>Disco: 30–60 GB de espacio libre.</strong> Cada checkpoint de SD 1.5 pesa 2–4 GB (los de SDXL, 6–7 GB), y los usuarios serios acumulan decenas; además los modelos VAE, LoRA y los archivos temporales de entrenamiento. Un SSD NVMe acelera la carga inicial del modelo (10–30 s vs. 1–2 min en HDD).</li>
+<li><strong>CPU: cualquiera moderna de 4+ núcleos.</strong> No acelera la generación, pero preprocesa (clip skip, tokenización) y evita cuellos de botella en el guardado.</li>
+<li><strong>Fuente de alimentación:</strong> las GPU de 12 GB+ piden 500–850 W con su margen; no escatimes en la fuente de una máquina con RTX 4070+.</li>
+<li><strong>Refrigeración:</strong> la generación satura la GPU al 100 % durante minutos; una buena disipación evita thermal throttling.</li>
+</ul>
+</section>
+<section id="software">
+<h2>Software: Automatic1111, ComfyUI y Fooocus</h2>
+<p>El hardware es la mitad; la interfaz define la experiencia:</p>
+<ul>
+<li><strong>Automatic1111 (SD WebUI):</strong> la interfaz más popular y la más documentada. Ideal para aprender, con pestañas para generar, entrenar, y miles de extensiones. Algo pesada y con deuda técnica, pero es donde está la comunidad.</li>
+<li><strong>ComfyUI:</strong> interfaz por nodos, más empinada al inicio, pero <strong>la más eficiente en VRAM</strong> (carga y descarga módulos bajo demanda) y la elegida para flujos avanzados y video. Si tu VRAM es justa, ComfyUI saca más partido de la misma tarjeta.</li>
+<li><strong>Fooocus:</strong> el "Midjourney local": una sola ventana, prompts simples, parámetros automáticos. Perfecta para empezar sin aprender nada; menos control fino.</li>
+</ul>
+<p>Todas soportan los modelos SD 1.5 y SDXL, y todas se instalan con un script en Windows/Linux con Python 3.10+. La instalación de la GPU (drivers CUDA) se valida con <code>python -c "import torch; print(torch.cuda.is_available())"</code> — debe decir <code>True</code>.</p>
+</section>
+<section id="optimizar">
+<h2>Optimizar para poca VRAM</h2>
+<p>Con 4–6 GB (o una GPU AMD), estas opciones hacen la diferencia entre generar y fallar:</p>
+<ul>
+<li><strong>fp16 (media precisión):</strong> a mitad de memoria por pesos, con calidad prácticamente idéntica; se activa con el parámetro <code>--no-half</code> desactivado (por defecto en la mayoría) o <code>--precision full</code> si hay artefactos.</li>
+<li><strong>xformers:</strong> el optimizador de atención más usado; en Automatic1111 se activa con <code>--xformers</code> y suele recortar 20–40 % de memoria y acelerar. Solo NVIDIA (en AMD se usa <code>--opt-sdp-attention</code>).</li>
+<li><strong>Modos de memoria:</strong> <code>--medvram</code> (mueve pesos a RAM entre pasos) y <code>--lowvram</code> (el extremo: funciona con 2–4 GB, lento pero funciona). En ComfyUI estos modos son automáticos.</li>
+<li><strong>Reducir resolución y batch:</strong> una imagen de 512×512 usa ~2× menos memoria que una de 768×768; batch de 1 como estándar y <em>hi-res fix</em> (upscale en dos pasos) en lugar de generar grande directo.</li>
+<li><strong>Cuantización:</strong> modelos cuantizados a 8 bits o 4 bits (con los loaders de ComfyUI o extensiones como BitsandBytes) permiten SDXL en 6 GB y Flux en 8–12 GB a cambio de algo de calidad.</li>
+</ul>
+</section>
+<section id="cuando-nube">
+<h2>¿Local o nube?</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Criterio</th><th>Local</th><th>Nube</th></tr></thead>
+<tbody>
+<tr><td>Costo inicial</td><td>300–1.500 USD en GPU</td><td>0 (pago por uso)</td></tr>
+<tr><td>Costo por imagen (volumen alto)</td><td>Bajo (electricidad)</td><td>0,01–0,10 USD por imagen típica</td></tr>
+<tr><td>Privacidad</td><td>Total: los prompts no salen de casa</td><td>Tus prompts pasan por el proveedor</td></tr>
+<tr><td>Latencia y control</td><td>Total: versiones, extensiones, experimentos</td><td>Limitado a la plataforma</td></tr>
+<tr><td>Mantenimiento</td><td>Tuyo (drivers, actualizaciones)</td><td>Del proveedor</td></tr>
+</tbody>
+</table>
+</div>
+<p>La decisión es de uso: <strong>generación frecuente, privada o experimental = local</strong>; generación ocasional o de producción con demanda variable = nube. Muchos hacen híbrido: una GPU local de gama media para el día a día y nube para los trabajos grandes.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Los requisitos mínimos honestos para Stable Diffusion local se resumen en una línea: <strong>una GPU NVIDIA con al menos 8 GB de VRAM y 16 GB de RAM</strong> da una experiencia digna con SD 1.5 y SDXL optimizado; <strong>12 GB</strong> es el punto dulce (SDXL fluido + LoRA); <strong>16–24 GB</strong> abre el video, Flux y el entrenamiento.</p>
+<p>Si el presupuesto no alcanza, el camino no es renunciar: SD 1.5 con xformers y <code>--medvram</code> corre en 4–6 GB, y la nube por uso cubre el resto sin invertir en hardware. Lo que no debes hacer es comprar a ciegas: define el modelo objetivo, mira la tabla de VRAM de esta guía y compra la GPU que quede un peldaño por encima de tu necesidad de hoy. El margen se paga solo con la velocidad y la tranquilidad de los próximos años.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuál es el requisito mínimo real para ejecutar Stable Diffusion?</summary><p>Para generar SD 1.5 a 512×512 con una experiencia usable: una GPU NVIDIA con 6 GB de VRAM (o 4 GB con optimizaciones como xformers y --medvram), 16 GB de RAM y unos 20 GB de disco. Para SDXL a 1024×1024, el mínimo realista son 8 GB de VRAM con optimizaciones y 12 GB para fluidez. Sin GPU, se puede generar en CPU (1–5 minutos por imagen) o usar la nube. Estos mínimos asumen fp16 y las optimizaciones estándar de las interfaces modernas.</p></details>
+<details><summary>¿Sirve una tarjeta de video de 4 GB para Stable Diffusion?</summary><p>Sí, limitada a SD 1.5 con optimizaciones: con xformers, --medvram (o --lowvram) y resolución 512×512, una GTX 1650/1660 de 4–6 GB genera una imagen en 15–60 segundos. No podrás correr SDXL (falla o va a memoria compartida, con tiempos de minutos), el batch se limita a 1 y el hi-res fix debe ser moderado. Es la puerta de entrada perfecta para probar el mundo SD; si te engancha, el salto a 12 GB es transformador.</p></details>
+<details><summary>¿NVIDIA o AMD para Stable Diffusion en 2026?</summary><p>NVIDIA sigue siendo la recomendación general: CUDA es el estándar de facto, xformers y la mayoría de las optimizaciones funcionan solo allí, y la instalación es un clic. AMD funciona con ROCm en Linux (y DirectML en Windows con menor rendimiento), con 10–30 % menos rendimiento que NVIDIA equivalente y más fricción de configuración; es una opción válida solo si ya tienes la GPU o el presupuesto la hace irresistible (por ejemplo, una RX 6700 XT de 12 GB usada). En igualdad de precios, NVIDIA gana para IA.</p></details>
+<details><summary>¿Cuánto espacio en disco necesito realmente?</summary><p>Para empezar, 20–30 GB libres son suficientes: la interfaz (~2 GB), el modelo base SD 1.5 (~2–4 GB) o SDXL (~7 GB), un par de LoRA (~100–300 MB cada uno) y los archivos temporales. El espacio se dispara con el hábito: los usuarios activos acumulan decenas de checkpoints (2–7 GB cada uno), resultados PNG, modelos de entrenamiento y cachés que llenan 100–500 GB. Usa un SSD NVMe para la carga de modelos y la carpeta de resultados; el disco es el componente que más se subestima.</p></details>
+<details><summary>¿Vale la pena generar en la nube en lugar de comprar una GPU?</summary><p>Depende del volumen y la privacidad. Si generas menos de ~1.500–2.500 imágenes al mes, la nube por uso (RunPod, Vast.ai, Colab) puede costar menos que una GPU de 400–600 USD, sin mantenimiento y con GPUs de gama alta (RTX 4090) por hora. Si generas a diario, entrenas LoRA o trabajas con datos sensibles, la GPU local se paga sola en meses y te da control total. El híbrido — GPU local modesta + nube para picos — es la estrategia más racional para la mayoría.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Sigue explorando hardware de computación en <a href="/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real">Teensy 4.1 vs Arduino Due</a> y descubre qué hacer con el resto del banco de trabajo en la <a href="/blog/guia-esencial-de-sensores-para-arduino">Guía Esencial de Sensores</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real">← Anterior: Teensy 4.1 vs Arduino Due</a>
+  <a href="/blog/programacion-de-plc-para-robotica">Siguiente: Programación de PLC para Robótica →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias oficiales del proyecto Stable Diffusion, PyTorch y las interfaces principales. Las cifras de VRAM son orientativas y dependen de la versión de software y del modelo exacto.</p>
+<ul>
+<li><a href="https://stability.ai/" target="_blank" rel="noopener noreferrer">Stability AI — Desarrolladores de Stable Diffusion</a></li>
+<li><a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui" target="_blank" rel="noopener noreferrer">AUTOMATIC1111 — Stable Diffusion WebUI (documentación y requisitos)</a></li>
+<li><a href="https://github.com/comfyanonymous/ComfyUI" target="_blank" rel="noopener noreferrer">ComfyUI — Interfaz por nodos (documentación oficial)</a></li>
+<li><a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener noreferrer">PyTorch — Instalación local y soporte CUDA/ROCm/MPS</a></li>
+<li><a href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0" target="_blank" rel="noopener noreferrer">Hugging Face — Modelo SDXL base 1.0</a></li>
+<li><a href="https://www.pugetsystems.com/solutions/artificial-intelligence-stable-diffusion/" target="_blank" rel="noopener noreferrer">Puget Systems — Guías de hardware para Stable Diffusion</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 

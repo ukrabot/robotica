@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-label="Diagrama de bloques de un altavoz Bluetooth de alta fidelidad casero">
+  <rect width="1200" height="820" fill="#f6f4ee"/>
+  <text x="600" y="60" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="36">Arquitectura de un Altavoz Bluetooth Hi-Fi</text>
+
+  <!-- Fuente -->
+  <g transform="translate(70 130)">
+    <rect x="0" y="0" width="240" height="150" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="120" y="45" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Fuente 24V / 5A</text>
+    <text x="120" y="80" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="18">(o adaptador 19V laptop)</text>
+    <text x="120" y="115" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="18">Selección según el amplificador</text>
+  </g>
+
+  <!-- BT module -->
+  <g transform="translate(70 360)">
+    <rect x="0" y="0" width="240" height="150" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="120" y="45" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Bluetooth 5.x</text>
+    <text x="120" y="80" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="18">Soporte aptX / AAC</text>
+    <text x="120" y="115" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="18">Salida estéreo analógica</text>
+  </g>
+
+  <!-- Amplificador -->
+  <g transform="translate(430 130)">
+    <rect x="0" y="0" width="320" height="380" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="0" y="0" width="320" height="52" rx="14" fill="#23201b"/>
+    <text x="160" y="34" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">Amplificador Clase D</text>
+    <text x="160" y="100" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="600">TPA3116D2 / TAS5754</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <text x="40" y="150">Entrada L/R (RCA o 3,5 mm)</text>
+      <text x="40" y="195">50 W × 2 (21V, 4 Ω)</text>
+      <text x="40" y="240">Potenciometro de volumen</text>
+      <text x="40" y="285">Salida canal L y canal R</text>
+      <text x="40" y="330">Protección térmica y de CC</text>
+    </g>
+  </g>
+
+  <!-- Crossover -->
+  <g transform="translate(850 130)">
+    <rect x="0" y="0" width="280" height="380" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="140" y="45" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Crossover pasivo</text>
+    <text x="140" y="85" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="18">2 vías · 12 dB/oct</text>
+    <text x="140" y="130" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="18">Frecuencia de cruce:</text>
+    <text x="140" y="165" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="600">2,5 – 3 kHz</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <text x="60" y="235">Bobinas de aire</text>
+      <text x="60" y="280">Capacitores de polipropileno</text>
+      <text x="60" y="325">L-pad de atenuación</text>
+    </g>
+  </g>
+
+  <!-- Drivers -->
+  <g transform="translate(430 560)">
+    <rect x="0" y="0" width="700" height="180" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="350" y="40" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="600">Drivers por canal</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <circle cx="120" cy="120" r="55" fill="#2a2a2a"/>
+      <text x="120" y="128" text-anchor="middle" fill="#e4c07a">Woofer 5–6,5"</text>
+      <circle cx="420" cy="120" r="30" fill="#3a3a3a"/>
+      <text x="420" y="126" text-anchor="middle" fill="#fff" font-size="15">Tweeter</text>
+      <text x="600" y="100">Caja sellada o bass-reflex</text>
+      <text x="600" y="135">MDF 15–18 mm con refuerzos</text>
+      <text x="600" y="170">Damping interno (lana o espuma)</text>
+    </g>
+  </g>
+
+  <!-- Flechas -->
+  <g stroke="#3a3a3a" stroke-width="5" fill="none" marker-end="url(#arrow)">
+    <defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#3a3a3a"/></marker></defs>
+    <path d="M 310 205 C 370 205 370 220 430 220"/>
+    <path d="M 310 435 C 370 435 370 300 430 300"/>
+    <path d="M 750 300 C 800 300 800 280 850 280"/>
+    <path d="M 990 300 C 990 380 900 500 850 540"/>
+    <path d="M 750 340 C 800 340 800 520 700 560"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+    <text x="340" y="190">24V DC</text>
+    <text x="330" y="390">audio L/R</text>
+    <text x="760" y="270">señal filtrada</text>
+    <text x="820" y="470">agudos</text>
+    <text x="770" y="520">graves</text>
+  </g>
+
+  <text x="600" y="795" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="18">Un solo altavoz mono de 1 vía es la opción más simple para empezar; este diagrama muestra el paso siguiente con crossover de 2 vías.</text>
+</svg>
