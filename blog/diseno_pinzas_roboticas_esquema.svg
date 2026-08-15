@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Cinemática de pinzas paralelas de dos dedos y cálculo de fuerza de agarre con cono de fricción">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Fundamentos de Diseño y Cinemática de Pinzas Robóticas</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Física del agarre por fricción vs cierre de forma, cono de rozamiento y brida ISO 9409-1</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Gripper Mechanism & Force Diagram -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">Pinza Paralela de Dos Dedos y Fuerzas</text>
+    
+    <!-- Gripper Body -->
+    <rect x="140" y="60" width="200" height="90" rx="8" fill="#241a06"/>
+    <circle cx="240" cy="80" r="15" fill="#d4af37"/>
+    <text x="240" y="125" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff" font-weight="bold">Actuador (Husillo / Neumático)</text>
+    
+    <!-- Left Finger -->
+    <rect x="150" y="150" width="30" height="180" rx="4" fill="#495057"/>
+    <rect x="170" y="240" width="10" height="70" rx="2" fill="#d4af37"/>
+    
+    <!-- Right Finger -->
+    <rect x="300" y="150" width="30" height="180" rx="4" fill="#495057"/>
+    <rect x="300" y="240" width="10" height="70" rx="2" fill="#d4af37"/>
+    
+    <!-- Clamped Workpiece -->
+    <rect x="180" y="230" width="120" height="120" rx="6" fill="#2f6fb0" opacity="0.9"/>
+    <text x="240" y="295" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Pieza (Masa m)</text>
+    
+    <!-- Force Vectors -->
+    <!-- Clamping Force F_grip -->
+    <line x1="120" y1="275" x2="170" y2="275" stroke="#c92a2a" stroke-width="4"/>
+    <polygon points="170,270 180,275 170,280" fill="#c92a2a"/>
+    <text x="135" y="265" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a" font-weight="bold">F_grip</text>
+    
+    <line x1="360" y1="275" x2="310" y2="275" stroke="#c92a2a" stroke-width="4"/>
+    <polygon points="310,270 300,275 310,280" fill="#c92a2a"/>
+    <text x="325" y="265" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a" font-weight="bold">F_grip</text>
+    
+    <!-- Gravity & Acceleration Vector -->
+    <line x1="240" y1="350" x2="240" y2="420" stroke="#1e1b15" stroke-width="4"/>
+    <polygon points="235,420 240,430 245,420" fill="#1e1b15"/>
+    <text x="255" y="400" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">F_inercia = m·(g + a_max)</text>
+    
+    <!-- Friction arrows upward -->
+    <line x1="175" y1="280" x2="175" y2="230" stroke="#2b8a3e" stroke-width="3"/>
+    <polygon points="171,230 175,220 179,230" fill="#2b8a3e"/>
+    <text x="130" y="235" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">F_fricción = μ·F_grip</text>
+    
+    <!-- Formula Box -->
+    <rect x="25" y="445" width="430" height="75" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="215" y="470" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#c92a2a" font-weight="bold">F_grip = (m · (g + a) · S) / (n · μ)</text>
+    <text x="215" y="495" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">S = Factor de seguridad (1.5 - 2.5) · n = Nº de dedos (2) · μ = Coeficiente de fricción</text>
+  </g>
+  
+  <!-- Right Side: Friction Materials & Flange Standards -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Materiales de Contacto &amp; Acople ISO</text>
+    
+    <!-- Table of Friction Coefficients -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="430" height="210" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Coeficientes de Fricción (μ) Típicos:</text>
+      
+      <text x="15" y="60" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• Acero seco sobre Acero:</text>
+      <text x="320" y="60" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a" font-weight="bold">μ ≈ 0.15 - 0.20</text>
+      
+      <text x="15" y="90" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• Aluminio sobre Aluminio:</text>
+      <text x="320" y="90" font-family="Inter, sans-serif" font-size="12" fill="#57534a" font-weight="bold">μ ≈ 0.30 - 0.40</text>
+      
+      <text x="15" y="120" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• TPU 95A (Impreso en 3D) sobre Metal:</text>
+      <text x="320" y="120" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">μ ≈ 0.50 - 0.65</text>
+      
+      <text x="15" y="150" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• Caucho de Silicona (50 Shore A):</text>
+      <text x="320" y="150" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">μ ≈ 0.70 - 0.90</text>
+      
+      <text x="15" y="185" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0">Garras con recubrimiento de silicona reducen la fuerza requerida en 4x.</text>
+    </g>
+    
+    <!-- ISO 9409-1 Flange Pattern -->
+    <g transform="translate(25, 285)">
+      <rect x="0" y="0" width="430" height="235" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">Estándar Mecánico de Brida ISO 9409-1:</text>
+      
+      <text x="15" y="55" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>ISO 9409-1-50-4-M6:</strong> Diámetro PCD 50 mm, 4 tornillos M6</text>
+      <text x="15" y="78" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Estándar en cobots Universal Robots UR3e/UR5e, Doosan, Fanuc CRX</text>
+      
+      <text x="15" y="105" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>ISO 9409-1-31.5-4-M5:</strong> PCD 31.5 mm (Robots ligeros &lt; 3kg)</text>
+      <text x="15" y="128" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>Perno de Centrado (Dowels):</strong> Ø6 mm para repetibilidad angular</text>
+      
+      <rect x="15" y="150" width="400" height="65" rx="5" fill="#ffffff" stroke="#2b8a3e"/>
+      <text x="25" y="172" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Cambiadores Rápidos de Herramientas (Tool Changers):</text>
+      <text x="25" y="195" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Permiten intercambio automático de pinzas con paso neumático y eléctrico en &lt; 3s</text>
+    </g>
+  </g>
+</g>
+</svg>

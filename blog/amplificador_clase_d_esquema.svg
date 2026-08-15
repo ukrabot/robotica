@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Flujo de señal y topología de amplificadores de audio Clase D">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Topología y Montaje de Amplificadores Clase D (TPA3255 / MA12070)</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Modulación PWM, conmutación MOSFET a alta frecuencia, filtro LC de salida y masa en estrella</text>
+
+<!-- Flowchart of Class D -->
+<g transform="translate(60, 120)">
+  <rect x="0" y="0" width="1080" height="340" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  <text x="540" y="36" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">Cadena de Procesamiento de Señal en Clase D</text>
+  
+  <!-- Block 1: Audio In & Buffer -->
+  <g transform="translate(40, 70)">
+    <rect x="0" y="0" width="160" height="130" rx="8" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="80" y="32" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Entrada &amp; Op-Amp</text>
+    <text x="80" y="55" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Buffer OPA1612 / NE5532</text>
+    <text x="80" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Acondicionamiento</text>
+    <text x="80" y="95" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Señal Analógica Senoidal</text>
+  </g>
+  <line x1="200" y1="135" x2="240" y2="135" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="240,130 250,135 240,140" fill="#1e1b15"/>
+  
+  <!-- Block 2: PWM Modulator -->
+  <g transform="translate(250, 70)">
+    <rect x="0" y="0" width="170" height="130" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="85" y="32" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">Modulador PWM</text>
+    <text x="85" y="55" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Oscilador Triangular</text>
+    <text x="85" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Frec: 300 - 600 kHz</text>
+    <text x="85" y="95" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">Ancho de Pulso Variable</text>
+  </g>
+  <line x1="420" y1="135" x2="460" y2="135" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="460,130 470,135 460,140" fill="#1e1b15"/>
+  
+  <!-- Block 3: Gate Driver & H-Bridge -->
+  <g transform="translate(470, 70)">
+    <rect x="0" y="0" width="180" height="130" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="90" y="32" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Puente H MOSFETs</text>
+    <text x="90" y="55" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Conmutación Rápida</text>
+    <text x="90" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Eficiencia &gt; 92%</text>
+    <text x="90" y="95" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Alimentación: 24 - 48V DC</text>
+  </g>
+  <line x1="650" y1="135" x2="690" y2="135" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="690,130 700,135 690,140" fill="#1e1b15"/>
+  
+  <!-- Block 4: LC Low Pass Filter -->
+  <g transform="translate(700, 70)">
+    <rect x="0" y="0" width="170" height="130" rx="8" fill="#eefaf0" stroke="#2b8a3e" stroke-width="1.5"/>
+    <text x="85" y="32" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#2b8a3e" font-weight="bold">Filtro LC Salida</text>
+    <text x="85" y="55" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Inductores Blindados (10μH)</text>
+    <text x="85" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Capacitores Film WIMA (0.68μF)</text>
+    <text x="85" y="95" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">Corte Fc ~ 35 kHz</text>
+  </g>
+  <line x1="870" y1="135" x2="910" y2="135" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="910,130 920,135 910,140" fill="#1e1b15"/>
+  
+  <!-- Block 5: Speaker Output -->
+  <g transform="translate(920, 70)">
+    <rect x="0" y="0" width="120" height="130" rx="8" fill="#ffffff" stroke="#1e1b15" stroke-width="1.5"/>
+    <text x="60" y="32" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Altavoz</text>
+    <text x="60" y="60" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#2f6fb0" font-weight="bold">4Ω / 8Ω</text>
+    <text x="60" y="85" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Audio Puro</text>
+    <text x="60" y="105" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">THD+N &lt; 0.005%</text>
+  </g>
+  
+  <!-- Bottom note on feedback (PFFB) -->
+  <path d="M 870,220 L 870,260 L 200,260 L 200,210" fill="none" stroke="#2f6fb0" stroke-width="2" stroke-dasharray="4"/>
+  <polygon points="195,210 200,200 205,210" fill="#2f6fb0"/>
+  <text x="535" y="255" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Post-Filter Feedback (PFFB): Retroalimentación tras el filtro para eliminar distorsión dependiente de la impedancia</text>
+</g>
+
+<!-- Bottom: Wiring & Grounding Guide -->
+<g transform="translate(60, 480)">
+  <rect x="0" y="0" width="1080" height="230" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  <text x="540" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#1e1b15" font-weight="bold">Reglas Cruciales de Montaje y Fuente de Alimentación</text>
+  
+  <g transform="translate(30, 50)">
+    <rect x="0" y="0" width="310" height="150" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1"/>
+    <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#a97b23" font-weight="bold">1. Dimensionamiento de Fuente (SMPS)</text>
+    <text x="15" y="50" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• TPA3255: Fuente 48V DC · 7.5A a 10A (350 - 500W)</text>
+    <text x="15" y="75" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• TPA3116D2: Fuente 24V DC · 5A (120W)</text>
+    <text x="15" y="100" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Ripple / Ruido &lt; 100mVpp para evitar zumbido</text>
+    <text x="15" y="125" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e">✓ Fuentes recomendadas: Mean Well LRS-350-48</text>
+  </g>
+  
+  <g transform="translate(370, 50)">
+    <rect x="0" y="0" width="310" height="150" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1"/>
+    <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">2. Topología de Masa en Estrella (Star Ground)</text>
+    <text x="15" y="50" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Un único punto de unión de masas al chasis</text>
+    <text x="15" y="75" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Separar masa analógica de audio (AGND) de potencia (PGND)</text>
+    <text x="15" y="100" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Aislar conectores RCA del chasis con arandelas</text>
+    <text x="15" y="125" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e">✓ Elimina 100% el siseo y lazos de tierra (Ground Loops)</text>
+  </g>
+  
+  <g transform="translate(710, 50)">
+    <rect x="0" y="0" width="340" height="150" rx="8" fill="#faf7f0" stroke="#8b8577" stroke-width="1"/>
+    <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">3. Gestión Térmica y Blindaje EMI</text>
+    <text x="15" y="50" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Disipador de aluminio anodizado sobredimensionado</text>
+    <text x="15" y="75" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Pasta térmica de alta conductividad (&gt; 4 W/mK)</text>
+    <text x="15" y="100" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Caja de aluminio conectada a tierra para blindaje RF</text>
+    <text x="15" y="125" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a">⚠ Cables de salida trenzados para reducir EMI</text>
+  </g>
+</g>
+</svg>

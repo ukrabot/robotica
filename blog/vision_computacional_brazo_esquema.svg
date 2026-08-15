@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Calibración Hand-Eye (Eye-in-Hand vs Eye-to-Hand) para brazos robóticos">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Sistemas de Visión y Calibración Hand-Eye para Brazos Robóticos</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Comparativa de arquitecturas: Cámara en la Muñeca (Eye-in-Hand) vs Cámara Fija Externa (Eye-to-Hand)</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Eye-in-Hand -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">1. Configuración Eye-in-Hand (Cámara en Muñeca)</text>
+    
+    <!-- Schematic drawing -->
+    <g transform="translate(50, 60)">
+      <!-- Robot Base -->
+      <rect x="20" y="200" width="60" height="20" rx="2" fill="#1e1b15"/>
+      <text x="50" y="235" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">Base {B}</text>
+      
+      <!-- Arm links -->
+      <line x1="50" y1="200" x2="110" y2="100" stroke="#1e1b15" stroke-width="6"/>
+      <circle cx="50" cy="200" r="8" fill="#d4af37"/>
+      <line x1="110" y1="100" x2="200" y2="70" stroke="#1e1b15" stroke-width="6"/>
+      <circle cx="110" cy="100" r="8" fill="#d4af37"/>
+      
+      <!-- Flange {F} & Camera {C} mounted on wrist -->
+      <circle cx="200" cy="70" r="10" fill="#2f6fb0"/>
+      <text x="180" y="55" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0" font-weight="bold">Brida {F}</text>
+      
+      <rect x="200" y="60" width="40" height="25" rx="3" fill="#c92a2a"/>
+      <text x="220" y="100" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">Cámara {C}</text>
+      
+      <!-- Target Workpiece with ArUco / Object {T} -->
+      <rect x="240" y="200" width="70" height="25" rx="2" fill="#2b8a3e"/>
+      <text x="275" y="240" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Objeto {T}</text>
+      
+      <!-- Transformation Arrows -->
+      <path d="M 50,195 Q 120,60 195,65" fill="none" stroke="#1e1b15" stroke-width="2" stroke-dasharray="4"/>
+      <text x="120" y="130" font-family="Georgia, serif" font-size="12" fill="#1e1b15">^B T_F</text>
+      
+      <line x1="220" y1="85" x2="275" y2="195" stroke="#c92a2a" stroke-width="2"/>
+      <text x="270" y="140" font-family="Georgia, serif" font-size="12" fill="#c92a2a">^C T_T</text>
+      
+      <line x1="200" y1="70" x2="220" y2="70" stroke="#2f6fb0" stroke-width="3"/>
+      <text x="210" y="45" font-family="Georgia, serif" font-size="12" fill="#2f6fb0" font-weight="bold">^F T_C (Incógnita X)</text>
+    </g>
+    
+    <!-- Mathematics -->
+    <rect x="25" y="320" width="430" height="195" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="20" y="25" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Ecuación Matricial Clásica: A · X = X · B</text>
+    <text x="20" y="50" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• <strong>A:</strong> Movimiento relativo entre dos poses de brida (^B T_F).</text>
+    <text x="20" y="70" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• <strong>B:</strong> Movimiento relativo medido por la cámara del patrón (^C T_T).</text>
+    <text x="20" y="90" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• <strong>X:</strong> Transformación rígida constante brida-cámara (^F T_C).</text>
+    <text x="20" y="115" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0">Algoritmos de resolución: Tsai-Lenz / Park-Martin / Horaud</text>
+    <text x="20" y="140" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">✓ Función OpenCV: cv2.calibrateHandEye()</text>
+    <text x="20" y="165" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">Ventaja: Cero oclusiones al acercarse a la pieza.</text>
+  </g>
+  
+  <!-- Right Side: Eye-to-Hand -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">2. Configuración Eye-to-Hand (Cámara Fija)</text>
+    
+    <!-- Schematic drawing -->
+    <g transform="translate(50, 60)">
+      <!-- Robot Base -->
+      <rect x="20" y="200" width="60" height="20" rx="2" fill="#1e1b15"/>
+      <text x="50" y="235" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">Base {B}</text>
+      
+      <!-- Arm links -->
+      <line x1="50" y1="200" x2="110" y2="100" stroke="#1e1b15" stroke-width="6"/>
+      <circle cx="50" cy="200" r="8" fill="#d4af37"/>
+      <line x1="110" y1="100" x2="200" y2="110" stroke="#1e1b15" stroke-width="6"/>
+      <circle cx="110" cy="100" r="8" fill="#d4af37"/>
+      
+      <!-- Gripper holding target -->
+      <rect x="200" y="100" width="30" height="20" rx="2" fill="#495057"/>
+      <rect x="230" y="95" width="30" height="30" rx="2" fill="#2b8a3e"/>
+      <text x="245" y="145" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Patrón en Garra</text>
+      
+      <!-- Fixed Overhead Camera {C} -->
+      <rect x="300" y="20" width="50" height="30" rx="3" fill="#c92a2a"/>
+      <text x="325" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">Cámara Fija {C}</text>
+      
+      <!-- Transformation Arrows -->
+      <line x1="325" y1="50" x2="245" y2="95" stroke="#c92a2a" stroke-width="2"/>
+      <text x="300" y="85" font-family="Georgia, serif" font-size="12" fill="#c92a2a">^C T_F</text>
+      
+      <path d="M 50,195 Q 180,180 320,50" fill="none" stroke="#2f6fb0" stroke-width="2" stroke-dasharray="4"/>
+      <text x="210" y="170" font-family="Georgia, serif" font-size="12" fill="#2f6fb0" font-weight="bold">^B T_C (Incógnita X)</text>
+    </g>
+    
+    <!-- Mathematics -->
+    <rect x="25" y="320" width="430" height="195" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="20" y="25" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Ecuación Matricial Dual: A · X = Y · B</text>
+    <text x="20" y="50" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• La cámara observa el espacio de trabajo completo.</text>
+    <text x="20" y="70" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Cero peso extra en el extremo del robot (Masa EOAT mínima).</text>
+    <text x="20" y="90" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Inmune a vibraciones generadas por aceleraciones del robot.</text>
+    <text x="20" y="115" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Cámaras 3D Industriales: Zivid Two, Photoneo PhoXi, RealSense D435i</text>
+    <text x="20" y="140" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">Técnicas 3D: Luz estructurada / Time-of-Flight / Stereo activo</text>
+    <text x="20" y="165" font-family="Inter, sans-serif" font-size="11" fill="#a97b23" font-weight="bold">Ideal para Bin Picking (desorden) y paletizado de alta velocidad.</text>
+  </g>
+</g>
+</svg>

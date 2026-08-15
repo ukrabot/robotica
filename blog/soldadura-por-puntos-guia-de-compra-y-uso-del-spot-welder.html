@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Soldadura por Puntos: Guía de Compra y Uso del Spot Welder</title>
+<meta name="description" content="Guía completa de spot welders para baterías 18650 y 21700: supercaps vs batería LiPo vs transformador MOT, calibración de pulsos y prueba del níquel puro.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/soldadura-por-puntos-guia-de-compra-y-uso-del-spot-welder">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Soldadura por Puntos: Guía de Compra y Uso del Spot Welder">
+<meta property="og:description" content="Guía completa de spot welders para baterías 18650 y 21700: supercaps vs batería LiPo vs transformador MOT, calibración de pulsos y prueba del níquel puro.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/spot_welder_esquema.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/soldadura-por-puntos-guia-de-compra-y-uso-del-spot-welder">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Soldadura por Puntos: Guía de Compra y Uso del Spot Welder">
+<meta name="twitter:description" content="Guía completa de spot welders para baterías 18650 y 21700: supercaps vs batería LiPo vs transformador MOT, calibración de pulsos y prueba del níquel puro.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/spot_welder_esquema.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Soldadura por Puntos: Guía de Compra y Uso del Spot Welder",
+  "description": "Guía completa de spot welders para baterías 18650 y 21700: supercaps vs batería LiPo vs transformador MOT, calibración de pulsos y prueba del níquel puro.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/soldadura-por-puntos-guia-de-compra-y-uso-del-spot-welder"
+  },
+  "image": "https://www.ukrabot.cl/blog/spot_welder_esquema.svg",
+  "proficiencyLevel": "Intermedio - Avanzado",
+  "dependencies": "Spot Welder (capacitivo o LiPo), cinta de níquel puro (0.15 - 0.20 mm), electrodos de cobre-alúmina, gafas de protección, alcohol isopropílico",
+  "wordCount": "3450",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Soldadura por Puntos: Guía de Compra y Uso del Spot Welder",
+      "item": "https://www.ukrabot.cl/blog/soldadura-por-puntos-guia-de-compra-y-uso-del-spot-welder"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar un soldador de estaño potente de 100W si lo aplico muy rápido?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No es recomendable bajo ninguna circunstancia. Aunque un soldador de 100W caliente más rápido, la masa térmica del polo de la celda absorbe calor hacia el separador interno de polietileno. El daño térmico interno no siempre causa fuego instantáneo, sino una degradación silenciosa que eleva la autodescarga y puede provocar una falla semanas después."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué espesor de níquel es el ideal para un spot welder de supercondensadores?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para la gran mayoría de packs de bicicletas eléctricas, scooters y taladros, el espesor óptimo es 0.15 mm con ancho de 8 mm en níquel puro (99.6%). Es lo suficientemente flexible para acomodarse a las celdas y permite una fusión limpia con potencias intermedias (30-50 Joules)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mis electrodos de cobre se pegan a la tira de níquel al soldar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ocurre principalmente por dos causas: electrodos de cobre electrolítico común en lugar de cobre-alúmina (Glidcop), o puntas sucias con depósitos de carbón y óxido. Lija las puntas de los electrodos suavemente con lija de grano 800-1000 para mantener la superficie cónica y limpia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia hay entre cinta de níquel continua y ranurada (slotted)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La cinta ranurada tiene un pequeño corte central entre los dos puntos de contacto de los electrodos. Esto obliga a la corriente a viajar a través del terminal de la celda en lugar de pasar directamente de un electrodo a otro por encima del níquel, aumentando la penetración y fuerza de la soldadura en un 40%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuántos puntos de soldadura se deben aplicar por celda?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El estándar industrial es aplicar un mínimo de 4 puntos de soldadura (dos disparos dobles) por cada terminal de celda 18650, y 6 puntos (tres disparos) en celdas 21700. Esto reduce la resistencia de contacto global y proporciona redundancia mecánica ante vibraciones."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:50vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:90px 24px 60px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(1.9rem,5.5vw,3.8rem);line-height:1.15;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:1.9rem;font-weight:400;line-height:1.2;margin:54px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:70px 20px 40px}
+  .article-body h2{font-size:1.55rem;margin:40px 0 14px}
+  .article-body{padding-top:44px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:55vh}
+  .hero-inner{padding:60px 16px 35px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="spot_welder_esquema.svg" alt="Soldadura por Puntos: Guía de Compra y Uso del Spot Welder" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Baterías y Reparación Electrónica · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Soldadura por Puntos: Guía de Compra y Uso del Spot Welder</h1>
+    <p>Por qué nunca debes estañar celdas de litio, física del calentamiento Joule (Q = I²·R·t), comparativa entre spot welders de supercondensadores, LiPo y transformador, y técnica de soldadura con cinta de níquel puro.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 20 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="spot_welder_esquema.svg" alt="Circuito eléctrico de descarga por supercondensadores, forma de onda de doble pulso y prueba de níquel puro." loading="lazy">
+  <div class="caption">Circuito eléctrico de descarga por supercondensadores, forma de onda de doble pulso y prueba de níquel puro.</div>
+</div>
+
+<nav class="toc" aria-label="Índice del contenido">
+  <h2>Contenido de la guía</h2>
+  <ol>
+    <li><a href="#por-que-spot-welder">Por qué el soldador de estaño destruye las celdas de litio</a></li>
+<li><a href="#tipos-spot-welders">Comparativa de tecnologías: Supercondensadores, LiPo y Transformador</a></li>
+<li><a href="#cinta-niquel-puro">Cinta de níquel: cómo detectar el falso níquel y dimensionar la corriente</a></li>
+<li><a href="#tecnica-soldadura">Técnica de soldadura: presión de electrodos, perfil de doble pulso y peel test</a></li>
+<li><a href="#protocolo-seguridad-litio">Protocolo de seguridad eléctrica y térmica en el banco de trabajo</a></li>
+<li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+
+<section id="por-que-spot-welder">
+<h2>Por qué el soldador de estaño destruye las celdas de litio</h2>
+
+<p>El error más grave que cometen los aficionados al ensamblar baterías es utilizar un cautín o soldador de estaño convencional directamente sobre los terminales de celdas 18650 o 21700. Aunque el punto de fusión del estaño con plomo ronda los 183 °C (y 217 °C para aleaciones libres de plomo), la masa metálica de la tapa de la celda disipa el calor con rapidez hacia el interior, obligando al operador a mantener la punta caliente durante 5 a 15 segundos.</p>
+<p>Este calentamiento prolongado provoca dos fallas catastróficas internas invisibles desde el exterior:</p>
+<ul>
+  <li><strong>Degradación del separador polimérico:</strong> El separador microporoso de polietileno/polipropileno (con un espesor de apenas 12 a 20 micrómetros) se reblandece y contrae a temperaturas superiores a 80 °C, creando micro-cortocircuitos internos y una tasa de autodescarga elevada.</li>
+  <li><strong>Deterioro de la junta de estanqueidad (Gasket):</strong> El anillo de sellado de polímero que aísla el cátodo del ánodo se deforma, permitiendo la evaporación lenta del electrolito orgánico inflamable y reduciendo la vida útil del pack a menos de 50 ciclos.</li>
+</ul>
+<div class="note"><strong>La solución de ingeniería:</strong> La <strong>soldadura por puntos por resistencia (Resistance Spot Welding)</strong> aplica una corriente masiva (de 800 A a 1.500 A) durante un lapso de apenas <strong>5 a 25 milisegundos</strong>. El calor generado por efecto Joule ($Q = I^2 \cdot R \cdot t$) se confina estrictamente en la interfaz microscópica de contacto entre el níquel y el terminal de acero, fundiendo el metal sin que la temperatura del interior de la celda aumente ni 2 °C.</div>
+
+</section>
+<section id="tipos-spot-welders">
+<h2>Comparativa de tecnologías: Supercondensadores, LiPo y Transformador</h2>
+
+<p>En el mercado existen cuatro familias principales de equipos de soldadura por puntos para packs de baterías. Cada una presenta ventajas, costos y limitaciones operativas claras:</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Topología de Spot Welder</th>
+<th>Fuente de Energía</th>
+<th>Pico de Corriente</th>
+<th>Control de Pulso</th>
+<th>Capacidad de Níquel</th>
+<th>Precio Estimado</th>
+<th>Veredicto de Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Supercondensadores (Supercaps)</strong><br><em>(ej: Glitter 801D, kWeld, DIY Maxwell)</em></td>
+<td>Banco de 2 a 6 Supercaps (5.4V, 600 - 3000F)</td>
+<td>1.200 A - 2.000 A</td>
+<td>Microprocesador (0.1 a 30 ms con doble pulso)</td>
+<td>Níquel puro hasta 0.30 mm / Cobre 0.15 mm</td>
+<td>$120 - $280 USD</td>
+<td><strong>La mejor opción profesional:</strong> Vida útil ilimitada, recarga en segundos, ultra-consistente.</td>
+</tr>
+<tr>
+<td><strong>Batería LiPo Portátil</strong><br><em>(ej: SeeSii, Docreate, Batería 3S/4S RC)</em></td>
+<td>Batería interna LiPo 3.7V / 7.4V de alta descarga (60C-100C)</td>
+<td>500 A - 800 A</td>
+<td>Niveles de potencia prefijados (Gears 1-99)</td>
+<td>Níquel puro 0.10 - 0.15 mm (Límite real)</td>
+<td>$35 - $75 USD</td>
+<td><strong>Ideal para reparaciones esporádicas:</strong> Portátil y compacto, pero la batería LiPo se degrada tras 2 años.</td>
+</tr>
+<tr>
+<td><strong>Transformador MOT AC</strong><br><em>(Transformador Microondas modificado)</em></td>
+<td>Red eléctrica 220V / 110V AC con secundario de 35-50 mm²</td>
+<td>600 A - 1.100 A</td>
+<td>Placa controladora con Triac (BTA41/BTA100)</td>
+<td>Níquel puro 0.15 - 0.20 mm</td>
+<td>$40 - $90 USD (DIY)</td>
+<td><strong>Excelente potencia fija:</strong> Muy económico de construir, pero pesado y dependiente de la estabilidad de la red.</td>
+</tr>
+<tr>
+<td><strong>Batería de Plomo-Ácido de Coche</strong><br><em>(Placa DIY con MOSFETs a 12V)</em></td>
+<td>Batería de arranque de automóvil (CCA &gt; 500A)</td>
+<td>700 A - 1.200 A</td>
+<td>Placa temporizadora básica de 4-8 MOSFETs</td>
+<td>Níquel puro 0.15 mm</td>
+<td>$25 USD (solo placa)</td>
+<td><strong>Económico pero arriesgado:</strong> Si un MOSFET se quema en corto, funde la celda y arruina la batería de plomo.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="cinta-niquel-puro">
+<h2>Cinta de níquel: cómo detectar el falso níquel y dimensionar la corriente</h2>
+
+<p>El material de unión es tan crítico como la máquina soldadora. El mercado chino está inundado de <strong>cinta de acero niquelado (Nickel-Plated Steel)</strong> vendida fraudulentamente como níquel puro. El acero tiene una resistividad eléctrica cuatro veces mayor que el níquel puro, lo que provoca que los puentes de conexión se calienten peligrosamente cuando el pack entrega corrientes elevadas.</p>
+
+<h3>Pruebas infalibles para detectar níquel puro:</h3>
+<ol>
+  <li><strong>Prueba del corte y solución salina:</strong> Corta un trozo de cinta con tijeras (exponiendo el núcleo metálico central) y sumérgelo en un vaso con agua tibia y sal durante 24 a 48 horas. El níquel puro (99.6% Ni) permanecerá brillante y sin cambios; el acero niquelado mostrará manchas intensas de óxido marrón en los bordes cortados.</li>
+  <li><strong>Prueba de la chispa al esmerilar:</strong> Toca la cinta con una muela abrasiva o disco Dremel. El acero produce chispas anaranjadas brillantes; el níquel puro no genera prácticamente ninguna chispa visible.</li>
+  <li><strong>Comportamiento en soldadura:</strong> El acero niquelado chisporrotea con violencia y tiende a perforar la tapa de la celda; el níquel puro se suelda con un zumbido limpio y sin salpicaduras incandescentes.</li>
+</ol>
+
+<div class="note"><strong>Dimensionamiento de corriente en tiras de níquel puro:</strong>
+<ul>
+  <li>Tira 0.15 mm × 8 mm de níquel puro: Soporta hasta <strong>10 A continuos</strong> (15 A pico).</li>
+  <li>Tira 0.20 mm × 8 mm de níquel puro: Soporta hasta <strong>15 A continuos</strong> (22 A pico).</li>
+  <li>Para corrientes mayores a 30 A por paralelo: Utiliza <strong>cinta ranurada (slotted strip)</strong>, doble capa de níquel o puentes sándwich de <em>cobre + níquel</em>.</li>
+</ul>
+</div>
+
+</section>
+<section id="tecnica-soldadura">
+<h2>Técnica de soldadura: presión de electrodos, perfil de doble pulso y peel test</h2>
+
+<p>Lograr una soldadura con calidad de fábrica automotriz requiere dominar tres variables fundamentales:</p>
+<h3>1. Presión y ángulo de los electrodos</h3>
+<p>Los electrodos deben ser de aleación de <strong>cobre-alúmina (CuAl2O3 / Glidcop)</strong> para evitar que se peguen al níquel. Mantén los electrodos con un ángulo perpendicular de 90° respecto a la celda y aplica una presión firme y uniforme (aproximadamente 1.5 a 2.5 kg de fuerza). Si la presión es insuficiente, habrá un arco eléctrico que perforará el metal; si es excesiva, la resistencia de contacto bajará tanto que no se generará suficiente calor para fundir la unión.</p>
+
+<h3>2. Configuración de Doble Pulso (Dual Pulse)</h3>
+<p>Los spot welders modernos de calidad utilizan dos pulsos consecutivos separados por una pequeña pausa:</p>
+<ul>
+  <li><strong>Pulso 1 (Pre-pulso / Limpieza):</strong> Un pulso corto de baja energía (2 a 5 ms) que evapora impurezas, quema micro-óxidos y asienta el níquel contra el terminal.</li>
+  <li><strong>Pausa (Delay):</strong> 5 a 10 ms para permitir que el metal asiente sin perder calor base.</li>
+  <li><strong>Pulso 2 (Soldadura principal):</strong> Un pulso de alta corriente (10 a 20 ms) que funde el núcleo y forma los puntos de soldadura (nuggets) definitivos.</li>
+</ul>
+
+<h3>3. Validación destructiva mediante Prueba de Desgarro (Peel Test)</h3>
+<p>Antes de soldar un pack completo, suelda una tira de níquel sobre una celda de prueba y jálala verticalmente con un alicate de punta. <strong>Una soldadura perfecta debe desgarrar el níquel</strong>, dejando dos pequeños círculos de níquel soldados permanentemente sobre el terminal de la celda. Si la tira se despega limpiamente sin romper el material, la energía fue insuficiente y la conexión fallará bajo las vibraciones de uso.</p>
+
+</section>
+<section id="protocolo-seguridad-litio">
+<h2>Protocolo de seguridad eléctrica y térmica en el banco de trabajo</h2>
+
+<p>Al manipular celdas de litio sin circuito de protección (bms), el riesgo de cortocircuito accidental con chispas de 500 A es constante. Sigue estas precauciones obligatorias:</p>
+<ul>
+  <li><strong>Aisladores de papel de cebada (Barley Paper):</strong> Pega siempre arandelas autoadhesivas de papel aislante en el polo positivo de cada celda antes de colocar el níquel. El hombro exterior del polo positivo es en realidad el ánodo (-) separado por una membrana de menos de 1 mm.</li>
+  <li><strong>Retirar anillos, relojes y pulseras metálicas:</strong> Un contacto accidental con una herramienta o joya provocará quemaduras graves instantáneas.</li>
+  <li><strong>Espaciadores plásticos celulares (Cell Holders):</strong> Nunca pegues celdas entre sí directamente con pegamento caliente; usa marcos plásticos entrelazables que garantizan 1 a 2 mm de espacio de ventilación y absorción de impactos.</li>
+  <li><strong>Cubo de arena seca o extintor Clase D:</strong> Ten siempre arena seca o vermiculita junto a la mesa. El agua común reacciona exotérmicamente con litio metálico expuesto en celdas dañadas.</li>
+</ul>
+
+</section>
+
+
+<section class="faq" id="faq" aria-label="Preguntas frecuentes">
+<h2>Preguntas Frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo usar un soldador de estaño potente de 100W si lo aplico muy rápido?</summary><p>No es recomendable bajo ninguna circunstancia. Aunque un soldador de 100W caliente más rápido, la masa térmica del polo de la celda absorbe calor hacia el separador interno de polietileno. El daño térmico interno no siempre causa fuego instantáneo, sino una degradación silenciosa que eleva la autodescarga y puede provocar una falla semanas después.</p></details>
+<details><summary>¿Qué espesor de níquel es el ideal para un spot welder de supercondensadores?</summary><p>Para la gran mayoría de packs de bicicletas eléctricas, scooters y taladros, el espesor óptimo es 0.15 mm con ancho de 8 mm en níquel puro (99.6%). Es lo suficientemente flexible para acomodarse a las celdas y permite una fusión limpia con potencias intermedias (30-50 Joules).</p></details>
+<details><summary>¿Por qué mis electrodos de cobre se pegan a la tira de níquel al soldar?</summary><p>Ocurre principalmente por dos causas: electrodos de cobre electrolítico común en lugar de cobre-alúmina (Glidcop), o puntas sucias con depósitos de carbón y óxido. Lija las puntas de los electrodos suavemente con lija de grano 800-1000 para mantener la superficie cónica y limpia.</p></details>
+<details><summary>¿Qué diferencia hay entre cinta de níquel continua y ranurada (slotted)?</summary><p>La cinta ranurada tiene un pequeño corte central entre los dos puntos de contacto de los electrodos. Esto obliga a la corriente a viajar a través del terminal de la celda en lugar de pasar directamente de un electrodo a otro por encima del níquel, aumentando la penetración y fuerza de la soldadura en un 40%.</p></details>
+<details><summary>¿Cuántos puntos de soldadura se deben aplicar por celda?</summary><p>El estándar industrial es aplicar un mínimo de 4 puntos de soldadura (dos disparos dobles) por cada terminal de celda 18650, y 6 puntos (tres disparos) en celdas 21700. Esto reduce la resistencia de contacto global y proporciona redundancia mecánica ante vibraciones.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
+
+<div class="cta">
+  <h3>Continúa explorando tutoriales técnicos</h3>
+  <p>Complementa tu taller aprendiendo a diagnosticar y reparar placas BMS en nuestra guía especializada.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/como-elegir-celdas-18650-y-21700-sin-caer-en-falsificaciones">← Cómo Elegir Celdas 18650 y 21700 sin Caer en Falsificaciones</a>
+  <a href="/blog/diagnostico-de-bms-reparar-o-reemplazar-la-placa-de-proteccion">Diagnóstico de BMS: Reparar o Reemplazar la Placa de Protección →</a>
+</div>
+
+</article>
+
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Hojas de datos oficiales, estándares internacionales de ingeniería y documentación técnica citada en este artículo.</p>
+<ul>
+<li><a href="https://www.aws.org/" target="_blank" rel="noopener noreferrer">RWMA — Resistance Welding Manufacturing Alliance Handbook, Bulletin 16</a></li>
+<li><a href="https://www.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA Engineering and Safety Center — Design and Fabrication of Aerospace Battery Packs</a></li>
+<li><a href="https://www.materion.com/" target="_blank" rel="noopener noreferrer">GlidCop — Copper-Alumina Dispersion Strengthened Resistance Welding Electrodes Data</a></li>
+<li><a href="https://ieeexplore.ieee.org/" target="_blank" rel="noopener noreferrer">IEEE Transactions on Industrial Electronics — Resistance Spot Welding of Lithium-Ion Pouch and Cylindrical Cells</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

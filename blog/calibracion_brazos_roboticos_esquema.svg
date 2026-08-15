@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Métodos de calibración de brazos robóticos: TCP 4 puntos, precisión absoluta vs repetibilidad ISO 9283">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Calibración Cinemática y de TCP en Brazos Robóticos</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Precisión absoluta vs repetibilidad (ISO 9283), método TCP de 4 puntos y calibración de parámetros DH</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: TCP Calibration Method (4 Points) -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">Método TCP de 4 Puntos de Orientación</text>
+    
+    <!-- Fixed Reference Pointer -->
+    <g transform="translate(190, 260)">
+      <polygon points="50,120 45,60 55,60" fill="#c92a2a"/>
+      <circle cx="50" cy="60" r="4" fill="#c92a2a"/>
+      <rect x="20" y="120" width="60" height="15" rx="2" fill="#1e1b15"/>
+      <text x="50" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Punta de Referencia Fija P_ref</text>
+    </g>
+    
+    <!-- 4 Flange Orientations converging to same point -->
+    <!-- Flange 1 (Top) -->
+    <line x1="240" y1="120" x2="240" y2="320" stroke="#2f6fb0" stroke-width="3" stroke-dasharray="3"/>
+    <rect x="220" y="100" width="40" height="20" rx="3" fill="#2f6fb0"/>
+    <text x="240" y="90" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0" font-weight="bold">Pose 1</text>
+    
+    <!-- Flange 2 (Left tilted) -->
+    <line x1="100" y1="180" x2="240" y2="320" stroke="#2b8a3e" stroke-width="3" stroke-dasharray="3"/>
+    <rect x="80" y="165" width="40" height="20" rx="3" fill="#2b8a3e" transform="rotate(45 100 175)"/>
+    <text x="80" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Pose 2</text>
+    
+    <!-- Flange 3 (Right tilted) -->
+    <line x1="380" y1="180" x2="240" y2="320" stroke="#a97b23" stroke-width="3" stroke-dasharray="3"/>
+    <rect x="360" y="165" width="40" height="20" rx="3" fill="#a97b23" transform="rotate(-45 380 175)"/>
+    <text x="400" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#a97b23" font-weight="bold">Pose 3</text>
+    
+    <!-- Mathematical System Box -->
+    <rect x="25" y="435" width="430" height="85" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="215" y="460" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#1e1b15">p_ref = p_flange_i + R_flange_i · p_tcp</text>
+    <text x="215" y="485" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Sistema sobredeterminado resuelto mediante Mínimos Cuadrados (SVD)</text>
+    <text x="215" y="505" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Calcula el vector offset [X_tcp, Y_tcp, Z_tcp] con error &lt; 0.1 mm</text>
+  </g>
+  
+  <!-- Right Side: Accuracy vs Repeatability & Levels -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Niveles de Calibración Robótica</text>
+    
+    <!-- Level 1 -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="430" height="95" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Nivel 1: Calibración de Cero Articular (Mastering)</text>
+      <text x="15" y="46" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Calibra el offset de encoders absolutos o topes mecánicos.</text>
+      <text x="15" y="65" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Esencial tras cambio de motor, reductor o pérdida de batería.</text>
+      <text x="15" y="85" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Garantiza repetibilidad de postura pero no precisión absoluta.</text>
+    </g>
+    
+    <!-- Level 2 -->
+    <g transform="translate(25, 165)">
+      <rect x="0" y="0" width="430" height="110" rx="6" fill="#ffffff" stroke="#2f6fb0" stroke-width="1.5"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">Nivel 2: Calibración Cinemática (Parámetros DH)</text>
+      <text x="15" y="46" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Identifica variaciones reales de longitudes de eslabón (a_i, d_i).</text>
+      <text x="15" y="65" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Corrige no-perpendicularidad entre ejes articulares (alfa_i, theta_i).</text>
+      <text x="15" y="85" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Medición con Laser Tracker, brazo CMM o cámara estéreo.</text>
+      <text x="15" y="102" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Mejora la precisión absoluta de 5 mm a <strong>0.3 mm</strong>.</text>
+    </g>
+    
+    <!-- Level 3 -->
+    <g transform="translate(25, 290)">
+      <rect x="0" y="0" width="430" height="100" rx="6" fill="#ffffff" stroke="#a97b23"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="13" fill="#a97b23" font-weight="bold">Nivel 3: Calibración No Cinemática (Rigidez &amp; Carga)</text>
+      <text x="15" y="46" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Modela deflexiones elásticas bajo carga (Fuerzas de gravedad/inercia).</text>
+      <text x="15" y="65" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Compensación de holgura en reductores Harmonic Drive / Cicloidales.</text>
+      <text x="15" y="85" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Compensación térmica por dilatación del chasis de aluminio.</text>
+    </g>
+    
+    <!-- Summary Comparison Box -->
+    <g transform="translate(25, 405)">
+      <rect x="0" y="0" width="430" height="115" rx="8" fill="#eefaf0" stroke="#2b8a3e" stroke-width="1"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Repetibilidad vs Precisión Absoluta (ISO 9283):</text>
+      <text x="15" y="48" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Repetibilidad (RP):</strong> Volver al mismo punto aprendido (±0.02 mm).</text>
+      <text x="15" y="70" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Precisión Absoluta (AP):</strong> Ir a una coordenada [X,Y,Z] teórica de CAD.</text>
+      <text x="15" y="95" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0">La programación offline (OLP) exige obligatoriamente Nivel 2.</text>
+    </g>
+  </g>
+</g>
+</svg>

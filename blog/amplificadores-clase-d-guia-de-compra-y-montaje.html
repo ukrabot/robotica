@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Amplificadores Clase D: Guía de Compra y Montaje</title>
+<meta name="description" content="Guía completa de amplificadores de audio Clase D: TPA3255 vs MA12070 vs TPA3116D2, fuentes de alimentación, filtro LC de salida, PFFB y montaje sin ruido ni zumbidos.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/amplificadores-clase-d-guia-de-compra-y-montaje">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Amplificadores Clase D: Guía de Compra y Montaje">
+<meta property="og:description" content="Guía completa de amplificadores de audio Clase D: TPA3255 vs MA12070 vs TPA3116D2, fuentes de alimentación, filtro LC de salida, PFFB y montaje sin ruido ni zumbidos.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/amplificador_clase_d_esquema.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/amplificadores-clase-d-guia-de-compra-y-montaje">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Amplificadores Clase D: Guía de Compra y Montaje">
+<meta name="twitter:description" content="Guía completa de amplificadores de audio Clase D: TPA3255 vs MA12070 vs TPA3116D2, fuentes de alimentación, filtro LC de salida, PFFB y montaje sin ruido ni zumbidos.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/amplificador_clase_d_esquema.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Amplificadores Clase D: Guía de Compra y Montaje",
+  "description": "Guía completa de amplificadores de audio Clase D: TPA3255 vs MA12070 vs TPA3116D2, fuentes de alimentación, filtro LC de salida, PFFB y montaje sin ruido ni zumbidos.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/amplificadores-clase-d-guia-de-compra-y-montaje"
+  },
+  "image": "https://www.ukrabot.cl/blog/amplificador_clase_d_esquema.svg",
+  "proficiencyLevel": "Intermedio - Avanzado",
+  "dependencies": "Placa amplificadora Clase D (TPA3255 / MA12070), fuente de alimentación conmutada industrial (Mean Well LRS-350-48 o 24V), cables de audio apantallados, caja metálica de aluminio, multímetro",
+  "wordCount": "3400",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Amplificadores Clase D: Guía de Compra y Montaje",
+      "item": "https://www.ukrabot.cl/blog/amplificadores-clase-d-guia-de-compra-y-montaje"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Por qué un amplificador Clase D suena 'frío' o 'digital' según algunos audiófilos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Esa reputación proviene de los primeros chips de los años 90 con bajas frecuencias de conmutación y filtros LC pobres. Los chips modernos de alta gama (TPA3255 con PFFB, Hypex Ncore, Purifi Eigentakt) tienen tasas de distorsión y ruido inaudibles (< 0.002%), con una neutralidad y transparencia idénticas a los mejores amplificadores Clase AB de miles de dólares."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué pasa si alimento mi placa TPA3255 con una fuente de 12V de PC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Funcionará, pero la potencia de salida quedará severamente limitada a menos de 10 Watts por canal antes de entrar en distorsión por recorte (clipping), desaprovechando completamente el potencial del circuito."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesita disipador térmico con ventilador un amplificador Clase D?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En aplicaciones domésticas normales de música estéreo, un buen disipador pasivo de aluminio anodizado es más que suficiente debido a su eficiencia del 90%. Solo se recomienda ventilación forzada en aplicaciones de megafonía continua (PA) o en subwoofers sometidos a tonos senoidales constantes a máxima potencia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo conectar un amplificador Clase D en modo puente mono (PBTL)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. La mayoría de las placas basadas en TPA3255 o TPA3116 tienen micro-interruptores o jumpers para configurar el chip en Parallel Bridge Tied Load (PBTL). Esto une las salidas en paralelo duplicando la entrega de corriente para alimentar subwoofers exigentes de 2 Ω con hasta 600 W pico."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué se calientan los inductores del filtro de salida LC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los inductores de salida deben estar construidos con núcleos toroidales de polvo de hierro especial o ferritas blindadas de bajas pérdidas por histéresis a 400 kHz (como Sagami, Coilcraft o Wurth). Si la placa usa inductores baratos de núcleo sólido no blindados, se calentarán intensamente debido a las corrientes parásitas de Foucault generadas por la portadora PWM."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:50vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:90px 24px 60px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(1.9rem,5.5vw,3.8rem);line-height:1.15;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:1.9rem;font-weight:400;line-height:1.2;margin:54px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:70px 20px 40px}
+  .article-body h2{font-size:1.55rem;margin:40px 0 14px}
+  .article-body{padding-top:44px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:55vh}
+  .hero-inner{padding:60px 16px 35px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="amplificador_clase_d_esquema.svg" alt="Amplificadores Clase D: Guía de Compra y Montaje" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Audio y Electrónica de Sonido · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Amplificadores Clase D: Guía de Compra y Montaje</h1>
+    <p>Fundamentos de conmutación PWM de alta frecuencia, comparativa de chipsets (Texas Instruments TPA3255, Infineon MA12070, TPA3116D2), cálculo de fuentes SMPS, filtro de reconstrucción LC, retroalimentación PFFB y masa en estrella.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 19 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="amplificador_clase_d_esquema.svg" alt="Cadena de señal de audio en un amplificador Clase D: modulación PWM, puente H MOSFET de potencia, filtro LC pasivo y circuito de masa en estrella." loading="lazy">
+  <div class="caption">Cadena de señal de audio en un amplificador Clase D: modulación PWM, puente H MOSFET de potencia, filtro LC pasivo y circuito de masa en estrella.</div>
+</div>
+
+<nav class="toc" aria-label="Índice del contenido">
+  <h2>Contenido de la guía</h2>
+  <ol>
+    <li><a href="#que-es-clase-d">Principios de operación: por qué la Clase D domina el audio moderno</a></li>
+<li><a href="#comparativa-chipsets">Comparativa de chipsets líderes: TPA3255 vs MA12070 vs TPA3116D2</a></li>
+<li><a href="#tecnologia-pffb">La revolución del Post-Filter Feedback (PFFB)</a></li>
+<li><a href="#fuente-alimentacion-dimensionamiento">Fuentes de alimentación (SMPS) y dimensionamiento eléctrico</a></li>
+<li><a href="#montaje-masa-estrella">Montaje en chasis, topología de masa en estrella y eliminación de ruido</a></li>
+<li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+
+<section id="que-es-clase-d">
+<h2>Principios de operación: por qué la Clase D domina el audio moderno</h2>
+
+<p>Durante décadas, el mundo del audio de alta fidelidad estuvo dominado por amplificadores lineales en <strong>Clase AB</strong> o <strong>Clase A</strong>. Aunque ofrecían una excelente linealidad, su eficiencia energética teórica rara vez superaba el 50% a 65% (y menos del 25% en Clase A pura), disipando el resto de la potencia en forma de calor masivo que requería transformadores toroidales gigantescos y pesados disipadores de aluminio.</p>
+<p>El amplificador <strong>Clase D</strong> no es un amplificador "digital" (la letra D fue simplemente la siguiente en la nomenclatura tras la Clase C). Es un amplificador <strong>de conmutación analógica por modulación de ancho de pulso (PWM)</strong>:</p>
+<ol>
+  <li>La señal de audio analógica de entrada se compara con una onda triangular de alta frecuencia (entre 300 kHz y 600 kHz).</li>
+  <li>El modulador genera un tren de pulsos cuadrados cuyo ciclo de trabajo (Duty Cycle) varía en función de la amplitud de la música.</li>
+  <li>Los transistores MOSFET de potencia del puente H operan exclusivamente en dos estados: <em>completamente abiertos (resistencia infinita, corriente cero) o completamente saturados (resistencia casi nula, caída de voltaje mínima)</em>. En ambos estados, la potencia disipada internamente ($P = V \cdot I$) es teóricamente cero.</li>
+  <li>Un <strong>filtro pasabajo LC pasivo</strong> en la salida reconstruye la señal senoidal audible eliminando la portadora de alta frecuencia antes de llegar a los altavoces.</li>
+</ol>
+<div class="note"><strong>Resultado de ingeniería:</strong> Eficiencias energéticas superiores al <strong>90% a 93%</strong>, permitiendo entregar 300 W por canal en placas del tamaño de una tarjeta de crédito que apenas se entibian durante horas de uso a alto volumen.</div>
+
+</section>
+<section id="comparativa-chipsets">
+<h2>Comparativa de chipsets líderes: TPA3255 vs MA12070 vs TPA3116D2</h2>
+
+<p>Al armar o comprar un amplificador DIY, la elección del circuito integrado principal define el techo de rendimiento audiófilo y la potencia disponible:</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Chipset / Fabricante</th>
+<th>Arquitectura</th>
+<th>Potencia Máxima (THD 1%)</th>
+<th>Rango de Voltaje DC</th>
+<th>THD+N Típico</th>
+<th>Soporte PFFB</th>
+<th>Perfil y Recomendación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Texas Instruments TPA3255</strong></td>
+<td>PurePath Ultra-HD (Puente H Clásico)</td>
+<td>2 × 315 W (4Ω @ 51V)<br>2 × 150 W (8Ω @ 48V)</td>
+<td>18 V a 53.5 V DC</td>
+<td>0.005 %</td>
+<td>Sí (Nativo o modificado)</td>
+<td><strong>El rey de la potencia y calidad audiófila:</strong> Graves profundos, dinámica brutal y excelente micro-detalle. Requiere fuente de 48V.</td>
+</tr>
+<tr>
+<td><strong>Infineon MERUS MA12070</strong></td>
+<td>Conmutación Multinivel (5 niveles)</td>
+<td>2 × 80 W (4Ω @ 26V)<br>2 × 40 W (8Ω @ 26V)</td>
+<td>4.5 V a 26.0 V DC</td>
+<td>0.003 %</td>
+<td>No requiere</td>
+<td><strong>Eficiencia extrema y cero filtro LC:</strong> No necesita inductores grandes de salida ni disipador. Ideal para audio de escritorio y cajas a batería.</td>
+</tr>
+<tr>
+<td><strong>Texas Instruments TPA3251</strong></td>
+<td>PurePath Ultra-HD</td>
+<td>2 × 175 W (4Ω @ 36V)</td>
+<td>12 V a 36.0 V DC</td>
+<td>0.002 % (Muy bajo)</td>
+<td>Sí</td>
+<td><strong>Máxima pureza en distorsión:</strong> Misma arquitectura que el 3255 pero optimizado para voltajes de 32V a 36V.</td>
+</tr>
+<tr>
+<td><strong>Texas Instruments TPA3116D2</strong></td>
+<td>Clase D Clásica (2012)</td>
+<td>2 × 50 W (4Ω @ 21V)</td>
+<td>4.5 V a 26.0 V DC</td>
+<td>0.1 %</td>
+<td>No</td>
+<td><strong>Opción ultra-económica básica:</strong> Bueno para proyectos maker y altavoces Bluetooth pequeños, pero inferior en detalle y agudos.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="tecnologia-pffb">
+<h2>La revolución del Post-Filter Feedback (PFFB)</h2>
+
+<p>El talón de Aquiles tradicional de la Clase D era la <strong>dependencia de la impedancia del altavoz</strong>. Debido a que el filtro de salida LC (inductores y capacitores) se diseña para una impedancia fija (típicamente 4 Ω u 8 Ω), conectar un altavoz cuya impedancia real varía con la frecuencia causaba un realce excesivo o una caída prematura en las frecuencias agudas (&gt; 10 kHz).</p>
+<p>La tecnología <strong>Post-Filter Feedback (PFFB)</strong> resuelve esto tomando la señal de retroalimentación <em>después</em> del filtro LC de salida (en lugar de antes de los inductores), inyectándola de vuelta en la etapa de entrada del amplificador operacional:</p>
+<ul>
+  <li><strong>Respuesta en frecuencia completamente plana:</strong> Inmune a la carga del altavoz (la curva de 4 Ω y 8 Ω es idéntica hasta 40 kHz).</li>
+  <li><strong>Reducción drástica de distorsión:</strong> Baja el THD+N a la mitad y mejora el factor de amortiguamiento (Damping Factor) para un control de graves más seco y preciso.</li>
+  <li><strong>Placas recomendadas con PFFB de fábrica:</strong> <em>3e Audio TPA3255, Aiyima A07 Pro (versiones actualizadas), Fosi Audio V3 / ZA3</em>.</li>
+</ul>
+
+</section>
+<section id="fuente-alimentacion-dimensionamiento">
+<h2>Fuentes de alimentación (SMPS) y dimensionamiento eléctrico</h2>
+
+<p>El 50% del sonido de un amplificador Clase D depende de la fuente de alimentación. La afirmación publicitaria "amplificador de 600W" alimentado por un transformador de 24V 3A (72W) es una ilusión matemática.</p>
+<div class="note"><strong>Fórmula de potencia continua real:</strong>
+$$P_{real} = rac{V_{DC}^2}{2 \cdot R_{altavoz}} \cdot \eta$$
+Para un altavoz de 8 Ω con fuente de 48V y eficiencia $\eta = 0.90$:
+$$P_{real} = rac{48^2}{16} \cdot 0.90 = rac{2304}{16} \cdot 0.90 = 144 \cdot 0.90 = \mathbf{129.6	ext{ Watts por canal}}$$
+</div>
+<h3>Selección de fuente recomendada:</h3>
+<ul>
+  <li>Para exprimir al máximo una placa TPA3255 estéreo (2 canales): Utiliza una fuente conmutada industrial <strong>Mean Well LRS-350-48</strong> (48V DC, 7.3A, 350W) o <strong>Mean Well SE-600-48</strong> si vas a conectar subwoofers de 2 Ω.</li>
+  <li><strong>Filtrado de rizado:</strong> Agrega un banco desacoplador de capacitores electrolíticos Low-ESR (por ejemplo, 2 × 2200 μF / 63V) cerca de los bornes de la placa para suplir transitorios rápidos de graves sin caídas de tensión.</li>
+</ul>
+
+</section>
+<section id="montaje-masa-estrella">
+<h2>Montaje en chasis, topología de masa en estrella y eliminación de ruido</h2>
+
+<p>Para evitar el zumbido de red (hum de 50/60 Hz) y el siseo de conmutación de alta frecuencia en los tweeters, aplica estas normas de ensamblaje en tu gabinete:</p>
+<ol>
+  <li><strong>Masa en Estrella (Star Ground):</strong> Debe existir un único punto central de conexión a masa en el chasis metálico de aluminio. La masa de la fuente de potencia (PGND), la masa de señal de audio (AGND) y la tierra de protección de la red eléctrica de 220V se unen exclusivamente en ese punto a través de una red Ground Lift (resistencia de 10 Ω en paralelo con capacitor de 100 nF y puente de diodos).</li>
+  <li><strong>Aislamiento de conectores RCA:</strong> Los conectores RCA hembra del panel posterior deben estar aislados del chasis mediante arandelas plásticas para no crear bucles de masa (Ground Loops).</li>
+  <li><strong>Cables de señal apantallados y cables de salida trenzados:</strong> Trenza los cables que van desde la placa a los bornes de altavoz (Binding Posts); esto cancela el campo electromagnético residual de conmutación PWM.</li>
+</ol>
+
+</section>
+
+
+<section class="faq" id="faq" aria-label="Preguntas frecuentes">
+<h2>Preguntas Frecuentes</h2>
+<div class="faq">
+<details><summary>¿Por qué un amplificador Clase D suena 'frío' o 'digital' según algunos audiófilos?</summary><p>Esa reputación proviene de los primeros chips de los años 90 con bajas frecuencias de conmutación y filtros LC pobres. Los chips modernos de alta gama (TPA3255 con PFFB, Hypex Ncore, Purifi Eigentakt) tienen tasas de distorsión y ruido inaudibles (< 0.002%), con una neutralidad y transparencia idénticas a los mejores amplificadores Clase AB de miles de dólares.</p></details>
+<details><summary>¿Qué pasa si alimento mi placa TPA3255 con una fuente de 12V de PC?</summary><p>Funcionará, pero la potencia de salida quedará severamente limitada a menos de 10 Watts por canal antes de entrar en distorsión por recorte (clipping), desaprovechando completamente el potencial del circuito.</p></details>
+<details><summary>¿Necesita disipador térmico con ventilador un amplificador Clase D?</summary><p>En aplicaciones domésticas normales de música estéreo, un buen disipador pasivo de aluminio anodizado es más que suficiente debido a su eficiencia del 90%. Solo se recomienda ventilación forzada en aplicaciones de megafonía continua (PA) o en subwoofers sometidos a tonos senoidales constantes a máxima potencia.</p></details>
+<details><summary>¿Puedo conectar un amplificador Clase D en modo puente mono (PBTL)?</summary><p>Sí. La mayoría de las placas basadas en TPA3255 o TPA3116 tienen micro-interruptores o jumpers para configurar el chip en Parallel Bridge Tied Load (PBTL). Esto une las salidas en paralelo duplicando la entrega de corriente para alimentar subwoofers exigentes de 2 Ω con hasta 600 W pico.</p></details>
+<details><summary>¿Por qué se calientan los inductores del filtro de salida LC?</summary><p>Los inductores de salida deben estar construidos con núcleos toroidales de polvo de hierro especial o ferritas blindadas de bajas pérdidas por histéresis a 400 kHz (como Sagami, Coilcraft o Wurth). Si la placa usa inductores baratos de núcleo sólido no blindados, se calentarán intensamente debido a las corrientes parásitas de Foucault generadas por la portadora PWM.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
+
+<div class="cta">
+  <h3>Continúa explorando tutoriales técnicos</h3>
+  <p>Aprende cómo medir y calibrar acústicamente tus cajas acústicas en nuestra guía de medición con REW y micrófono USB.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/reacondicionar-baterias-de-scooter-y-bicicleta-electrica">← Reacondicionar Baterías de Scooter y Bicicleta Eléctrica</a>
+  <a href="/blog/medicion-de-altavoces-con-rew-y-microfono-usb">Medición de Altavoces con REW y Micrófono USB →</a>
+</div>
+
+</article>
+
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Hojas de datos oficiales, estándares internacionales de ingeniería y documentación técnica citada en este artículo.</p>
+<ul>
+<li><a href="https://www.ti.com/" target="_blank" rel="noopener noreferrer">Texas Instruments — TPA3255 315-W Stereo / 600-W Mono Ultra-HD Analog-Input Class-D Amplifier Datasheet</a></li>
+<li><a href="https://www.ti.com/lit/an/slaa701a/slaa701a.pdf" target="_blank" rel="noopener noreferrer">Texas Instruments Application Report (SLAA701) — Post-Filter Feedback (PFFB) Design for Class-D Amplifiers</a></li>
+<li><a href="https://www.infineon.com/" target="_blank" rel="noopener noreferrer">Infineon Technologies — MERUS MA12070 Proprietary Multi-level Switching Class-D Audio Amplifier</a></li>
+<li><a href="https://www.aes.org/" target="_blank" rel="noopener noreferrer">Audio Engineering Society (AES) — High-Performance Class-D Audio Amplifiers and Filter Topologies</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

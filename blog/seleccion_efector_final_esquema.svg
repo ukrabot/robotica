@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Árbol de decisión y balance de carga útil para selección de efector final robótico">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Metodología de Selección de Efectores Finales (EOAT)</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Árbol de decisión por material, tiempo de ciclo, balance de masa útil y cálculo de inercia</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Decision Tree -->
+  <g transform="translate(30, 30)">
+    <rect x="0" y="0" width="600" height="540" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="300" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">Árbol de Decisión según Material y Geometría</text>
+    
+    <!-- Root Node -->
+    <rect x="180" y="60" width="240" height="40" rx="6" fill="#1e1b15"/>
+    <text x="300" y="85" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#ffffff" font-weight="bold">Análisis de la Pieza a Manipular</text>
+    
+    <!-- Branch 1: Ferromagnetic Sheet / Steel -->
+    <line x1="220" y1="100" x2="100" y2="150" stroke="#1e1b15" stroke-width="2"/>
+    <rect x="20" y="150" width="160" height="65" rx="6" fill="#ffffff" stroke="#2f6fb0"/>
+    <text x="100" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Acero / Ferromagnético</text>
+    <text x="100" y="195" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Pinza Magnética EPM</text>
+    
+    <!-- Branch 2: Flat Non-Porous / Glass / Boxes -->
+    <line x1="300" y1="100" x2="300" y2="150" stroke="#1e1b15" stroke-width="2"/>
+    <rect x="220" y="150" width="160" height="65" rx="6" fill="#ffffff" stroke="#2b8a3e"/>
+    <text x="300" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Superficie Lisa / Cartón</text>
+    <text x="300" y="195" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Pinza de Vacío / Ventosa</text>
+    
+    <!-- Branch 3: Complex 3D Shape / Rigid / Fragile -->
+    <line x1="380" y1="100" x2="500" y2="150" stroke="#1e1b15" stroke-width="2"/>
+    <rect x="420" y="150" width="160" height="65" rx="6" fill="#ffffff" stroke="#a97b23"/>
+    <text x="500" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Geometría Compleja</text>
+    <text x="500" y="195" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#a97b23" font-weight="bold">Pinza Mecánica Paralela</text>
+    
+    <!-- Sub-options detail box -->
+    <g transform="translate(20, 240)">
+      <rect x="0" y="0" width="560" height="270" rx="8" fill="#ffffff" stroke="#c9c4b8"/>
+      <text x="20" y="28" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Criterios de Selección Tecnológica:</text>
+      
+      <text x="20" y="60" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">1. <strong>Tiempo de Ciclo &lt; 0.8 s:</strong> Eyector Venturi neumático o pinza servo de carrera corta.</text>
+      <text x="20" y="90" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">2. <strong>Piezas Deformables / Alimentos:</strong> Pinzas blandas de silicona (Soft Robotics).</text>
+      <text x="20" y="120" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">3. <strong>Procesos de Fabricación:</strong> Antorchas de soldadura, husillos de fresado, dosificadores.</text>
+      <text x="20" y="150" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">4. <strong>Cambio de Producto (High Mix):</strong> Garras con dedos impresos en 3D de cambio rápido.</text>
+      <text x="20" y="180" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">5. <strong>Sensórica Requerida:</strong> Sensor de fuerza/torque 6-ejes en muñeca para inserciones.</text>
+      
+      <text x="20" y="235" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0" font-weight="bold">Norma de Interfaz: Brida ISO 9409-1 (PCD 31.5 / 40 / 50 / 63 / 80 mm)</text>
+    </g>
+  </g>
+  
+  <!-- Right Side: Payload Budget & Inertia -->
+  <g transform="translate(650, 30)">
+    <rect x="0" y="0" width="400" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="200" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Balance de Carga Útil (Payload)</text>
+    
+    <!-- Payload equation visual breakdown -->
+    <g transform="translate(20, 60)">
+      <rect x="0" y="0" width="360" height="150" rx="8" fill="#151310"/>
+      <text x="180" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#e4c07a" font-weight="bold">Presupuesto de Masa del Robot:</text>
+      
+      <text x="180" y="60" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#ffffff">M_robot ≥ M_efector + M_pieza + M_cables</text>
+      
+      <text x="20" y="95" font-family="Inter, sans-serif" font-size="11" fill="#adb5bd">• Capacidad Nominal Robot (ej: UR5e): <strong>5.0 kg</strong></text>
+      <text x="20" y="115" font-family="Inter, sans-serif" font-size="11" fill="#adb5bd">• Peso Pinza Mecánica + Acople: <strong>- 1.2 kg</strong></text>
+      <text x="20" y="135" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">✓ Carga Máxima de Pieza Admisible: <strong>3.8 kg</strong></text>
+    </g>
+    
+    <!-- Center of Gravity Offset & Inertia Box -->
+    <g transform="translate(20, 230)">
+      <rect x="0" y="0" width="360" height="280" rx="8" fill="#ffffff" stroke="#c92a2a" stroke-width="1.5"/>
+      <text x="180" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#c92a2a" font-weight="bold">Centro de Gravedad (CoG) e Inercia</text>
+      
+      <text x="15" y="60" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">¡No basta con respetar el peso en kg!</text>
+      <text x="15" y="80" font-family="Inter, sans-serif" font-size="11" fill="#57534a">A mayor distancia L_cog desde la brida, mayor es el momento torsor en los ejes 4, 5 y 6:</text>
+      
+      <text x="180" y="120" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#c92a2a" font-weight="bold">Torque = m · (g + a_max) · L_cog</text>
+      
+      <text x="15" y="160" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• L_cog admisible típica: &lt; 100 - 150 mm</text>
+      <text x="15" y="185" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Inercia rotacional: J = m · r² (kg·m²)</text>
+      <text x="15" y="210" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">⚠ Exceder la inercia provoca sobrecalentamiento de motores y error de parada de emergencia.</text>
+      
+      <text x="180" y="260" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Diseñar EOATs en aluminio 7075 o Nylon-CF ligero.</text>
+    </g>
+  </g>
+</g>
+</svg>

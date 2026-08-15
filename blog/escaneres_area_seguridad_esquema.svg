@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Campos de protección y cálculo de distancia de seguridad según EN ISO 13855 en escáneres láser LiDAR">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Seguridad Robótica: Escáneres Láser de Área (EN ISO 13855)</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Zonas de advertencia y protección, cálculo de distancia mínima S = (K×T) + C y salidas OSSD duales</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Optical Safety Fields Layout -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#c92a2a" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#c92a2a" font-weight="bold">Disposición de Campos de Seguridad (275°)</text>
+    
+    <!-- Scanner Device -->
+    <g transform="translate(190, 70)">
+      <rect x="30" y="0" width="40" height="40" rx="8" fill="#fcc419" stroke="#1e1b15" stroke-width="2"/>
+      <circle cx="50" cy="20" r="12" fill="#1e1b15"/>
+      <text x="50" y="-10" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Escáner Láser (ej: SICK / Keyence)</text>
+    </g>
+    
+    <!-- Warning Field Outer Arc (Yellow) -->
+    <path d="M 50,330 A 240,240 0 0,1 430,330 L 240,90 Z" fill="#ffd43b" opacity="0.4" stroke="#f59f00" stroke-width="2"/>
+    
+    <!-- Protective Field Inner Arc (Red) -->
+    <path d="M 120,270 A 150,150 0 0,1 360,270 L 240,90 Z" fill="#ff6b6b" opacity="0.5" stroke="#c92a2a" stroke-width="2"/>
+    
+    <!-- Robot in Center -->
+    <rect x="220" y="130" width="40" height="40" rx="4" fill="#1e1b15"/>
+    <text x="240" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#ffffff">Robot</text>
+    
+    <!-- Legend Labels -->
+    <g transform="translate(25, 360)">
+      <rect x="0" y="0" width="430" height="150" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+      <circle cx="20" cy="25" r="8" fill="#ff6b6b"/>
+      <text x="38" y="30" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">1. Zona de Protección (Stop Zone):</text>
+      <text x="38" y="48" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Dispara parada Cat. 0 / Cat. 1 en &lt; 20 ms (OSSD OFF).</text>
+      
+      <circle cx="20" cy="80" r="8" fill="#ffd43b"/>
+      <text x="38" y="85" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">2. Zona de Advertencia (Warning Zone):</text>
+      <text x="38" y="103" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Alarma acústica + Reducción de velocidad colaborativa.</text>
+      
+      <text x="20" y="135" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Conmutación dinámica de campos según la posición de la celda.</text>
+    </g>
+  </g>
+  
+  <!-- Right Side: EN ISO 13855 Distance Formula & OSSD -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Cálculo de Distancia Mínima (EN ISO 13855)</text>
+    
+    <!-- Formula Box -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="430" height="95" rx="6" fill="#ffffff" stroke="#c92a2a" stroke-width="1.5"/>
+      <text x="215" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#c92a2a" font-weight="bold">S = (K × T) + C + Z_R + Z_F</text>
+      <text x="215" y="60" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">K = 1600 mm/s (Velocidad de aproximación del cuerpo humano)</text>
+      <text x="215" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">T = T_escáner (80ms) + T_relé (20ms) + T_freno_robot (250ms) = <strong>350ms</strong></text>
+    </g>
+    
+    <!-- Calculation Example -->
+    <g transform="translate(25, 165)">
+      <rect x="0" y="0" width="430" height="150" rx="6" fill="#eef6fc" stroke="#2f6fb0"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Ejemplo Numérico Real:</text>
+      <text x="15" y="50" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• K × T = 1600 mm/s × 0.350 s = <strong>560 mm</strong></text>
+      <text x="15" y="72" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• C = 850 mm (Suplemento de penetración de extremidades a 300mm de altura)</text>
+      <text x="15" y="94" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• Z_R + Z_F = 100 mm + 100 mm (Tolerancias de medición y frenado)</text>
+      <text x="15" y="125" font-family="Inter, sans-serif" font-size="13" fill="#c92a2a" font-weight="bold">Distancia Mínima de Protección: S = 1.610 mm (1.61 m)</text>
+    </g>
+    
+    <!-- OSSD Wiring Box -->
+    <g transform="translate(25, 330)">
+      <rect x="0" y="0" width="430" height="180" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Salidas de Seguridad OSSD 1 y OSSD 2 (PNP):</text>
+      <text x="15" y="50" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Doble canal redundante categoría 4 / PL e (ISO 13849-1).</text>
+      <text x="15" y="70" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Pulsos de prueba de microsegundos para detección de cortocircuitos cruzados.</text>
+      <text x="15" y="90" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Conexión directa a Relé de Seguridad (Pilz PNOZ) o PLC Seguro (Siemens F-CPU).</text>
+      <text x="15" y="115" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">✓ Función de Rearme Manual Supervisado (EDM / Feedback Loop)</text>
+    </g>
+  </g>
+</g>
+</svg>

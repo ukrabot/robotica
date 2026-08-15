@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Componentes de transmisión para CNC rígida: husillos de bolas SFU1605, motores paso a paso closed-loop y spindle HF">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Husillos de Bolas y Motores Paso a Paso para CNC Rígida</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Comparativa de transmisión SFU1605 vs Varilla Trapezoidal, Motores Paso a Paso Closed-Loop y Spindle de Alta Frecuencia</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Ball Screw SFU1605 vs Lead Screw -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Transmisión: Husillo de Bolas SFU1605</text>
+    
+    <!-- Ball Screw Diagram -->
+    <g transform="translate(40, 60)">
+      <!-- Fixed Support BK12 -->
+      <rect x="0" y="25" width="50" height="70" rx="4" fill="#1e1b15"/>
+      <text x="25" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#ffffff">BK12</text>
+      <text x="25" y="115" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1e1b15">Fijo (Doble Angular)</text>
+      
+      <!-- Screw Shaft -->
+      <rect x="50" y="45" width="280" height="30" fill="#dee2e6" stroke="#495057" stroke-width="1.5"/>
+      <line x1="60" y1="45" x2="70" y2="75" stroke="#8b8577" stroke-width="2"/>
+      <line x1="80" y1="45" x2="90" y2="75" stroke="#8b8577" stroke-width="2"/>
+      <line x1="100" y1="45" x2="110" y2="75" stroke="#8b8577" stroke-width="2"/>
+      <line x1="120" y1="45" x2="130" y2="75" stroke="#8b8577" stroke-width="2"/>
+      
+      <!-- Ball Nut (Tuerca con recirculación) -->
+      <rect x="150" y="30" width="80" height="60" rx="4" fill="#2f6fb0"/>
+      <circle cx="170" cy="60" r="5" fill="#ffffff"/>
+      <circle cx="190" cy="60" r="5" fill="#ffffff"/>
+      <circle cx="210" cy="60" r="5" fill="#ffffff"/>
+      <text x="190" y="115" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0" font-weight="bold">Tuerca de Bolas (Juego &lt; 0.02 mm)</text>
+      
+      <!-- Floating Support BF12 -->
+      <rect x="330" y="25" width="40" height="70" rx="4" fill="#495057"/>
+      <text x="350" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#ffffff">BF12</text>
+      <text x="350" y="115" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#495057">Flotante (Radial)</text>
+    </g>
+    
+    <!-- Specs Comparison Table -->
+    <g transform="translate(25, 200)">
+      <rect x="0" y="0" width="430" height="180" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">SFU1605 vs Varilla Trapezoidal TR8x8:</text>
+      
+      <text x="15" y="55" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Eficiencia Mecánica:</strong> SFU1605: <strong>90 - 95%</strong> vs TR8: <strong>30 - 45%</strong></text>
+      <text x="15" y="80" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Holgura (Backlash):</strong> SFU1605 C7: <strong>&lt; 0.03 mm</strong> vs TR8: <strong>0.15 - 0.30 mm</strong></text>
+      <text x="15" y="105" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Rigidez Axial:</strong> Soporta cargas pesadas de fresado en aluminio y latón.</text>
+      <text x="15" y="130" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Vida Útil:</strong> 10.000+ horas con lubricación de litio NLGI 2.</text>
+      <text x="15" y="155" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">✓ El cambio a SFU1605 elimina marcas de vibración y chatter en mecanizado.</text>
+    </g>
+    
+    <rect x="25" y="395" width="430" height="120" rx="8" fill="#eefaf0" stroke="#2b8a3e" stroke-width="1"/>
+    <text x="20" y="25" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Cálculo de Resolución de Movimiento:</text>
+    <text x="20" y="50" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">Paso p = 5.0 mm/rev · Motor 200 pasos/rev · Microstepping 1/8:</text>
+    <text x="20" y="75" font-family="Georgia, serif" font-size="13" fill="#2f6fb0">Steps/mm = (200 × 8) / 5.0 = <strong>320.0 pasos/mm</strong></text>
+    <text x="20" y="100" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Resolución teórica: 0.003125 mm (3.12 μm por micropaso)</text>
+  </g>
+  
+  <!-- Right Side: Closed Loop Steppers & Spindle -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">Motores Closed-Loop y Husillo HF (Spindle)</text>
+    
+    <!-- Stepper Closed Loop Box -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="430" height="210" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#a97b23" font-weight="bold">Motores Paso a Paso Closed-Loop (Easy Servo NEMA 23):</text>
+      
+      <text x="15" y="55" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Cero Pérdida de Pasos:</strong> Encoder de 1000 PPR integrado en el rotor.</text>
+      <text x="15" y="80" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Torque Alto a Alta Velocidad:</strong> Mantiene 2.2 - 3.0 Nm hasta 1200 RPM.</text>
+      <text x="15" y="105" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Control de Corriente Dinámico:</strong> Cero sobrecalentamiento en reposo.</text>
+      <text x="15" y="130" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Alimentación Recomendada:</strong> Driver CL57T a <strong>36V - 48V DC</strong>.</text>
+      <text x="15" y="155" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Fórmula de voltaje: V_max ≈ 32 × √(Inductancia en mH)</text>
+      <text x="15" y="185" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Salida Alarm: Pausa instantánea de GRBL si la fresa se atasca.</text>
+    </g>
+    
+    <!-- HF Spindle vs Router -->
+    <g transform="translate(25, 280)">
+      <rect x="0" y="0" width="430" height="235" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">Husillo HF (Spindle 1.5kW / 2.2kW ER20) vs Ruteadora:</text>
+      
+      <text x="15" y="55" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Descentramiento (Runout):</strong> &lt; 0.005 mm (Spindle HF) vs &gt; 0.05 mm (Makita RT0700).</text>
+      <text x="15" y="85" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Rodamientos:</strong> 4 rodamientos cerámicos de contacto angular 7002/7005.</text>
+      <text x="15" y="115" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Variador de Frecuencia (VFD):</strong> Control vectorial sin sensores 24.000 RPM (400 Hz).</text>
+      <text x="15" y="145" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Nivel de Ruido:</strong> Spindle refrigerado por agua: <strong>&lt; 60 dBA</strong> (Ultra-silencioso).</text>
+      
+      <text x="15" y="185" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">¡Obligatorio cable apantallado (VFD shielded cable) con tierra para evitar cuelgues por EMI!</text>
+    </g>
+  </g>
+</g>
+</svg>

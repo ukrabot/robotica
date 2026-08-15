@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Pirámide de lenguajes de programación en robótica: de tiempo real a inteligencia artificial">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Stack de Lenguajes de Programación para Brazos Robóticos</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Distribución por capas: C++ determinista, Python para IA, y lenguajes nativos industriales</text>
+
+<g transform="translate(100, 110)">
+  <rect x="0" y="0" width="1000" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Tier 1: Top (AI, Perception & Cloud) -->
+  <g transform="translate(150, 40)">
+    <polygon points="100,0 600,0 550,110 150,110" fill="#eef6fc" stroke="#2f6fb0" stroke-width="2"/>
+    <text x="350" y="38" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Python · IA, Visión y Planificación</text>
+    <text x="350" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#57534a">MoveIt 2 Commander · PyTorch / OpenCV · NumPy · ROS 2 rclpy</text>
+    <text x="350" y="88" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Ventaja: Prototipado ultra-rápido y ecosistema de ML masivo</text>
+  </g>
+  
+  <!-- Tier 2: Middle (Industrial DSLs & Offline Programming) -->
+  <g transform="translate(150, 160)">
+    <polygon points="140,0 560,0 500,120 200,120" fill="#faf7f0" stroke="#a97b23" stroke-width="2"/>
+    <text x="350" y="38" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">Lenguajes Industriales Nativos (DSLs)</text>
+    <text x="350" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#57534a">ABB RAPID · KUKA KRL · Fanuc KAREL/TP · UR URScript · Stäubli VAL3</text>
+    <text x="350" y="88" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">Ventaja: Certificación de seguridad integrada y ejecución directa en Teach Pendant</text>
+  </g>
+  
+  <!-- Tier 3: Bottom (Real-Time Control & Hardware Drivers) -->
+  <g transform="translate(150, 290)">
+    <polygon points="190,0 510,0 450,130 250,130" fill="#faf7f0" stroke="#c92a2a" stroke-width="2"/>
+    <text x="350" y="38" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#c92a2a" font-weight="bold">C / C++ (C++17 / C++20)</text>
+    <text x="350" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#57534a">ros2_control · Control de Motores (1 kHz) · Kinematics Solvers (KDL/Pinocchio)</text>
+    <text x="350" y="88" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Requisito: Determinismo temporal, cero recolección de basura, gestión de memoria RAII</text>
+  </g>
+  
+  <!-- Tier 4: Base (Microcontrollers & Firmware) -->
+  <g transform="translate(150, 430)">
+    <polygon points="240,0 460,0 420,110 280,110" fill="#151310" stroke="#151310" stroke-width="2"/>
+    <text x="350" y="42" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" fill="#e4c07a" font-weight="bold">Firmware Embebido &amp; Micro-ROS</text>
+    <text x="350" y="68" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#adb5bd">C / C++ Baremetal · FreeRTOS · Zephyr · Rust Embebido</text>
+    <text x="350" y="88" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#adb5bd">STM32 / ESP32 / Arduino / RP2040</text>
+  </g>
+</g>
+</svg>

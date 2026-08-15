@@ -1,498 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <url>
     <loc>https://www.ukrabot.cl/</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/baterias-lfp-vs-nmc-para-conversiones-electricas</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/homologacion-y-tramites-para-vehiculos-convertidos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/como-elegir-el-motor-electrico-para-tu-conversion</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
   <url>
     <loc>https://www.ukrabot.cl/about</loc>
-    <lastmod>2026-08-11</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
-
   <url>
     <loc>https://www.ukrabot.cl/contact</loc>
-    <lastmod>2026-08-11</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
-
   <url>
     <loc>https://www.ukrabot.cl/privacy</loc>
-    <lastmod>2026-08-11</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
   <url>
     <loc>https://www.ukrabot.cl/terms</loc>
-    <lastmod>2026-08-11</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/semaforo-con-leds-y-arduino-para-principiantes</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada</loc>
-    <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/como-llevar-la-robotica-al-aula-guia-para-docentes</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/los-mejores-kits-de-robotica-educativa-para-colegios</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/programacion-por-bloques-con-mblock-y-scratch-para-arduino</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <url>
     <loc>https://www.ukrabot.cl/blog/12-proyectos-de-robotica-para-la-feria-cientifica</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/como-preparar-a-tu-equipo-para-competencias-de-robotica-escolar</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/guia-esencial-de-sensores-para-arduino</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/sensor-dht22-temperatura-y-humedad-con-arduino</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/sensores-infrarrojos-para-robots-siguelineas</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/detector-de-gas-con-sensor-mq-2-y-alarma-sonora</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/monitoreo-remoto-de-sensores-con-blynk</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/camara-de-vigilancia-con-esp32-cam</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/construye-un-brazo-robotico-de-6-ejes-con-arduino</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/guia-de-cableado-con-arduino-mega-para-brazos-roboticos</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/esp32-como-controlador-de-brazo-robotico</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/servos-inteligentes-para-brazos-roboticos</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/sensores-de-fuerza-torque-para-brazos-roboticos</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/programacion-de-plc-para-robotica</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/integrando-brazos-roboticos-con-plc</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/normas-de-seguridad-para-brazos-roboticos-en-chile</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/brazos-roboticos-para-aplicaciones-de-soldadura</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/robots-colaborativos-para-lineas-de-ensamblaje</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/piezas-impresas-en-3d-para-brazos-roboticos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/mejores-impresoras-3d-para-piezas-de-brazos-roboticos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/diseno-de-chasis-de-aluminio-para-robots</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/piezas-de-fibra-de-carbono-para-brazos-roboticos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/reductores-harmonic-drive-para-articulaciones-roboticas</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/gestion-de-cables-para-brazos-roboticos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/sistemas-de-refrigeracion-para-motores-de-brazos-roboticos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/proteccion-contra-polvo-y-grado-ip-en-brazos-roboticos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/reduccion-de-ruido-en-la-operacion-de-brazos-roboticos</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/construye-tu-propio-brazo-robotico-impreso-en-3d-con-motores-paso-a-paso</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://www.ukrabot.cl/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad</loc>
+    <loc>https://www.ukrabot.cl/blog/amplificadores-clase-d-guia-de-compra-y-montaje</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/domotica-local-al-alcance-de-todos-la-revolucion-de-home-assistant-green</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/como-convertir-una-bicicleta-normal-en-electrica-paso-a-paso</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/bomba-peristaltica-controlada-por-arduino-dosificacion</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/celdas-lifepo4-grado-a-vs-grado-b-como-distinguirlas-antes-de-comprar</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/guia-definitiva-para-elegir-entre-encoder-rotativo-incremental-y-absoluto</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/modulo-gps-neo-6m-con-arduino-seguimiento-en-tiempo-real</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.ukrabot.cl/blog/requisitos-minimos-para-stable-diffusion-en-hardware-local</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <url>
     <loc>https://www.ukrabot.cl/blog/automatiza-tu-gallinero-controla-la-puerta-y-comedero-de-manera-efectiva</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/baterias-lfp-vs-nmc-para-conversiones-electricas</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -504,7 +61,43 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/bomba-peristaltica-controlada-por-arduino-dosificacion</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/brazos-roboticos-para-aplicaciones-de-soldadura</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/camara-de-vigilancia-con-esp32-cam</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/camaras-termicas-para-detectar-cortocircuitos-en-pcb</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/celdas-lifepo4-grado-a-vs-grado-b-como-distinguirlas-antes-de-comprar</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -516,7 +109,73 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/cinematica-inversa-para-brazos-roboticos-de-6-ejes</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/codigo-de-un-solver-de-cinematica-inversa</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/como-calibrar-la-potencia-de-un-laser-diodo-para-diferentes-materiales</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-convertir-una-bicicleta-normal-en-electrica-paso-a-paso</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-elegir-celdas-18650-y-21700-sin-caer-en-falsificaciones</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-elegir-el-motor-electrico-para-tu-conversion</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-llevar-la-robotica-al-aula-guia-para-docentes</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-preparar-a-tu-equipo-para-competencias-de-robotica-escolar</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-seleccionar-un-efector-final-para-robots</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -528,7 +187,43 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/comparativa-de-software-de-simulacion-de-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/construye-tu-consola-retro-portatil-con-raspberry-pi-zero-2-w</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/construye-tu-propio-brazo-robotico-impreso-en-3d-con-motores-paso-a-paso</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/construye-un-brazo-robotico-de-6-ejes-con-arduino</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -540,7 +235,61 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/detector-de-gas-con-sensor-mq-2-y-alarma-sonora</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/diagnostico-de-bms-reparar-o-reemplazar-la-placa-de-proteccion</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/diseno-de-chasis-de-aluminio-para-robots</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/domotica-local-al-alcance-de-todos-la-revolucion-de-home-assistant-green</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/escaneres-de-area-para-seguridad-en-celdas-roboticas</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -552,7 +301,127 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/esp32-como-controlador-de-brazo-robotico</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/estacion-meteorologica-con-arduino-y-pantalla-oled</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/extraccion-de-humos-y-seguridad-ocular-en-grabado-laser</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/fine-tuning-de-modelos-de-imagen-con-lora-en-hardware-local</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/framework-ros-2-control-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/fundamentos-de-diseno-de-pinzas-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/gestion-de-cables-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/grbl-vs-marlin-en-maquinas-cnc-caseras</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/guia-de-cableado-con-arduino-mega-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/guia-de-calibracion-de-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/guia-de-evaluacion-de-riesgo-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/guia-definitiva-para-elegir-entre-encoder-rotativo-incremental-y-absoluto</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/guia-esencial-de-sensores-para-arduino</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/homologacion-y-tramites-para-vehiculos-convertidos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/husillos-y-motores-paso-a-paso-para-una-cnc-rigida</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/integracion-de-cortinas-de-luz-en-celdas-roboticas</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/integrando-brazos-roboticos-con-plc</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/kits-de-robots-hexapodos-programables-precios</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/las-mejores-impresoras-3d-de-gran-formato-500mm-para-makers</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/lenguajes-de-programacion-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/los-mejores-kits-de-robotica-educativa-para-colegios</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -576,13 +445,49 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/medicion-de-altavoces-con-rew-y-microfono-usb</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/mejores-impresoras-3d-para-piezas-de-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/mejores-ups-sistemas-de-alimentacion-para-impresoras-3d</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/modelos-de-lenguaje-locales-con-ollama</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/modulo-de-carga-tp4056-cargar-baterias-lipo-de-forma-segura</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/modulo-gps-neo-6m-con-arduino-seguimiento-en-tiempo-real</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/monitoreo-remoto-de-sensores-con-blynk</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/normas-de-seguridad-para-brazos-roboticos-en-chile</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -594,15 +499,207 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/piano-electronico-con-botones-y-buzzer</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/piezas-de-fibra-de-carbono-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/piezas-impresas-en-3d-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/pinzas-de-vacio-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/pinzas-magneticas-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/programa-de-mantenimiento-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/programacion-de-plc-para-robotica</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/programacion-por-bloques-con-mblock-y-scratch-para-arduino</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/proteccion-contra-polvo-y-grado-ip-en-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/radar-con-sensor-ultrasonico-y-processing</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/reacondicionar-baterias-de-scooter-y-bicicleta-electrica</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/reduccion-de-ruido-en-la-operacion-de-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/reductores-harmonic-drive-para-articulaciones-roboticas</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/requisitos-minimos-para-stable-diffusion-en-hardware-local</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/robots-colaborativos-para-lineas-de-ensamblaje</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/semaforo-con-leds-y-arduino-para-principiantes</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sensor-dht22-temperatura-y-humedad-con-arduino</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sensores-de-fuerza-torque-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sensores-infrarrojos-para-robots-siguelineas</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/servos-inteligentes-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sistemas-de-refrigeracion-para-motores-de-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/sistemas-de-vision-computacional-para-brazos-roboticos</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/sistemas-ros-2-hardware-compatible-para-tus-proyectos-de-robotica</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/soldadura-por-puntos-guia-de-compra-y-uso-del-spot-welder</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/vision-por-computadora-con-frigate-en-un-mini-pc</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

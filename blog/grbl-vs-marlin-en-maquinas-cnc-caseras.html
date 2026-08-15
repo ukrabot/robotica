@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>GRBL vs. Marlin en Máquinas CNC Caseras</title>
+<meta name="description" content="GRBL vs Marlin para fresadoras CNC caseras y láser: comparativa de firmware, planificador de movimiento, coordenadas G54-G59, placas 32-bit y senders.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/grbl-vs-marlin-en-maquinas-cnc-caseras">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="GRBL vs. Marlin en Máquinas CNC Caseras">
+<meta property="og:description" content="GRBL vs Marlin para fresadoras CNC caseras y láser: comparativa de firmware, planificador de movimiento, coordenadas G54-G59, placas 32-bit y senders.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/grbl_vs_marlin_cnc_esquema.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/grbl-vs-marlin-en-maquinas-cnc-caseras">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GRBL vs. Marlin en Máquinas CNC Caseras">
+<meta name="twitter:description" content="GRBL vs Marlin para fresadoras CNC caseras y láser: comparativa de firmware, planificador de movimiento, coordenadas G54-G59, placas 32-bit y senders.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/grbl_vs_marlin_cnc_esquema.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "GRBL vs. Marlin en Máquinas CNC Caseras",
+  "description": "GRBL vs Marlin para fresadoras CNC caseras y láser: comparativa de firmware, planificador de movimiento, coordenadas G54-G59, placas 32-bit y senders.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/grbl-vs-marlin-en-maquinas-cnc-caseras"
+  },
+  "image": "https://www.ukrabot.cl/blog/grbl_vs_marlin_cnc_esquema.svg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Controladores Arduino Uno, ESP32, STM32 o placas de impresora 3D (BTT SKR), software CAM (Fusion 360 / Aspire / LightBurn)",
+  "wordCount": "3450",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "GRBL vs. Marlin en Máquinas CNC Caseras",
+      "item": "https://www.ukrabot.cl/blog/grbl-vs-marlin-en-maquinas-cnc-caseras"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Por qué el Arduino Uno con GRBL original de 8 bits se está quedando obsoleto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El chip ATmega328P de 8 bits opera a solo 16 MHz y tiene 2 KB de RAM, limitando la frecuencia de pulsos a 30 kHz (insuficiente para microstepping alto a gran velocidad) y carece de memoria para funciones avanzadas como Wi-Fi o control de 4º y 5º eje rotativo. Placas de 32 bits con ESP32 (FluidNC) cuestan lo mismo ($6 USD) y operan a 240 MHz."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se puede conectar una pantalla táctil offline a una placa con GRBL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, mediante controladores externos dedicados (como las pantallas Makerbase MKS TFT24/32 con firmware CNC) o usando interfaces web integradas en FluidNC accesibles desde el navegador de cualquier tablet o smartphone vía Wi-Fi."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el modo láser $32 en GRBL y por qué no se debe fresar con él activado?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El comando `$32=1` activa la modulación dinámica de potencia: cuando la máquina desacelera, reduce la potencia del láser proporcionalmente. Si fresas madera con `$32=1` y detienes el movimiento, el husillo se apagará automáticamente; para fresado CNC clásico el modo láser debe estar desactivado (`$32=0`)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo configurar el post-procesador en Fusion 360 para GRBL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En el menú de exportación de mecanizado CAM de Fusion 360, selecciona el post-procesador oficial gratuito llamado `grbl.cps`. Esto generará un archivo con arcos G2/G3 limpios y sistemas de coordenadas G54 sin códigos no compatibles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué significa que FluidNC sea configurado por archivo YAML?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A diferencia de GRBL o Marlin clásico (donde para cambiar un pin de fin de carrera o micropasos debías recompilar todo el código en Arduino IDE), FluidNC almacena toda la configuración de pines, motores y pasos por mm en un archivo de texto plano `config.yaml` que se edita al instante por Wi-Fi sin recompilar nada."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:50vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:90px 24px 60px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(1.9rem,5.5vw,3.8rem);line-height:1.15;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:1.9rem;font-weight:400;line-height:1.2;margin:54px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:70px 20px 40px}
+  .article-body h2{font-size:1.55rem;margin:40px 0 14px}
+  .article-body{padding-top:44px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:55vh}
+  .hero-inner{padding:60px 16px 35px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="grbl_vs_marlin_cnc_esquema.svg" alt="GRBL vs. Marlin en Máquinas CNC Caseras" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Fabricación Digital: CNC y Láser · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>GRBL vs. Marlin en Máquinas CNC Caseras</h1>
+    <p>Comparativa de arquitecturas de firmware: planificador de aceleración, soporte de sistemas de coordenadas G54-G59, control analógico/Modbus de husillos, modo láser instantáneo $32 y ecosistemas de software (UGS, Candle, LightBurn vs OctoPrint).</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 20 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="grbl_vs_marlin_cnc_esquema.svg" alt="Arquitectura de control de movimiento: diferencias en el planificador, ejecución de G-code nativo CNC y soporte de pantallas/control autónomo." loading="lazy">
+  <div class="caption">Arquitectura de control de movimiento: diferencias en el planificador, ejecución de G-code nativo CNC y soporte de pantallas/control autónomo.</div>
+</div>
+
+<nav class="toc" aria-label="Índice del contenido">
+  <h2>Contenido de la guía</h2>
+  <ol>
+    <li><a href="#origenes-enfoque-firmware">Orígenes y filosofías opuestas de diseño</a></li>
+<li><a href="#comparativa-arquitectura-movimiento">Planificador de movimiento (Motion Planner) y Look-Ahead</a></li>
+<li><a href="#soporte-gcode-cnc-industrial">Soporte de dialectos G-code industriales: Sistemas de Coordenadas de Trabajo (WCS)</a></li>
+<li><a href="#ecosistema-software-senders">Ecosistema de programas de control (Senders / GUIs)</a></li>
+<li><a href="#veredictos-finales">Veredicto técnico y recomendaciones de hardware</a></li>
+<li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+
+<section id="origenes-enfoque-firmware">
+<h2>Orígenes y filosofías opuestas de diseño</h2>
+
+<p>Al construir o actualizar una fresadora CNC casera (Router CNC para madera o aluminio), cortadora de plasma o grabadora láser de diodo/CO2, la elección del firmware del microcontrolador determina la precisión del mecanizado, la velocidad de corte y la compatibilidad con el software de diseño CAM.</p>
+<p>Existen dos gigantes en el mundo del código abierto con filosofías radicalmente distintas:</p>
+<ul>
+  <li><strong>GRBL (y sus derivados modernos grblHAL y FluidNC):</strong> Diseñado por Sungeun K. Jeon exclusivamente para máquinas de mecanizado por arranque de viruta y corte industrial. Es un firmware de tiempo real minimalista, ultra-optimizado y enfocado al 100% en la fidelidad matemática del movimiento cartesiano.</li>
+  <li><strong>Marlin Firmware:</strong> Desarrollado originalmente para impresoras 3D FDM. Integra miles de líneas de código para control térmico PID de fusores y camas calientes, motores de extrusión, nivelación de malla (Mesh Bed Leveling) y pantallas LCD/TFT a color independientes.</li>
+</ul>
+
+</section>
+<section id="comparativa-arquitectura-movimiento">
+<h2>Planificador de movimiento (Motion Planner) y Look-Ahead</h2>
+
+<p>La diferencia técnica más profunda reside en cómo procesan las curvas y trayectorias:</p>
+<h3>Planificador de GRBL:</h3>
+<ul>
+  <li>Mantiene un buffer circular de movimientos con aceleraciones trapezoidales constantes calculadas en tiempo real.</li>
+  <li><strong>Gestión instantánea de Overrides:</strong> Permite alterar la velocidad de avance (Feedrate Override) o la velocidad del husillo (Spindle Override) en tiempo real mediante comandos directos de un solo byte (<code>0x90</code>, <code>0x91</code>) sin vaciar el buffer ni provocar paradas mecánicas bruscas.</li>
+  <li><strong>Modo Láser ($32=1):</strong> Modula la potencia del láser instantáneamente en función de la aceleración del cabezal para evitar quemar las esquinas donde la máquina frena para cambiar de dirección.</li>
+</ul>
+
+<h3>Planificador de Marlin:</h3>
+<ul>
+  <li>Diseñado para extrusión continua de plástico caliente con aceleraciones de curva en S (S-Curve Acceleration).</li>
+  <li>En fresado CNC, cuando Marlin procesa comandos de pausa o cambio de velocidad, tiende a vaciar el buffer planner (Dwell), dejando la fresa girando sobre el mismo punto de la madera y provocando <strong>marcas de quemado y pérdida de tolerancia</strong>.</li>
+</ul>
+
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="soporte-gcode-cnc-industrial">
+<h2>Soporte de dialectos G-code industriales: Sistemas de Coordenadas de Trabajo (WCS)</h2>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Función CNC Crítica</th>
+<th>GRBL / grblHAL / FluidNC</th>
+<th>Marlin 2.x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sistemas de Coordenadas de Trabajo (G54 - G59)</strong></td>
+<td><strong>Nativo al 100%:</strong> Estándar industrial NIST RS274NGC. Permite fijar múltiples orígenes de piezas y mordazas.</td>
+<td>Requiere habilitar flags condicionales en <code>Configuration_adv.h</code> (#define CNC_COORDINATE_SYSTEMS).</td>
+</tr>
+<tr>
+<td><strong>Sondeo Automático de Herramienta (Probing)</strong></td>
+<td>Nativo vía <code>G38.2</code> (Touch Plate con parada instantánea) y compensación de longitud de fresa <code>G43.1</code>.</td>
+<td>Basado en rutinas de nivelación de cama de impresión 3D (<code>G29</code> / <code>G30</code>), menos intuitivo para placas de palpado Z.</td>
+</tr>
+<tr>
+<td><strong>Control de Husillo de Alta Frecuencia (VFD)</strong></td>
+<td>Salida PWM para 0-10V analógico y comunicación nativa <strong>Modbus RS485</strong> hacia variadores Huanyang/Delta.</td>
+<td>Control básico de relé ON/OFF o PWM sin retroalimentación de RPM reales.</td>
+</tr>
+<tr>
+<td><strong>Frecuencia de Paso Máxima (Step Rate)</strong></td>
+<td>• GRBL (Arduino Uno 8-bit): 30 kHz<br>• <strong>grblHAL / FluidNC (ESP32/Teensy 32-bit): Hasta 250 kHz</strong></td>
+<td>Marlin (Placas 32-bit SKR): 50 a 120 kHz</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+<section id="ecosistema-software-senders">
+<h2>Ecosistema de programas de control (Senders / GUIs)</h2>
+
+<p>La experiencia de uso diaria depende del programa que envía el archivo G-code desde la computadora a la máquina:</p>
+<ul>
+  <li><strong>Ecosistema GRBL:</strong>
+    <ul>
+      <li><strong>Candle (grblControl):</strong> Visualizador 3D ligero con soporte de escaneo de superficie por palpado (Heightmap / Auto-leveling de PCB).</li>
+      <li><strong>Universal Gcode Sender (UGS):</strong> Plataforma Java multiplataforma con macros personalizables, colgante web móvil y visualizador de trayectorias.</li>
+      <li><strong>LightBurn:</strong> El software líder mundial en grabado y corte láser (se comunica de forma nativa e impecable con GRBL).</li>
+    </ul>
+  </li>
+  <li><strong>Ecosistema Marlin:</strong> Diseñado para funcionar de forma autónoma con tarjetas SD / pendrives y pantallas táctiles (BTT TFT35) o conectado a servidores web como <em>OctoPrint</em>.</li>
+</ul>
+
+</section>
+<section id="veredictos-finales">
+<h2>Veredicto técnico y recomendaciones de hardware</h2>
+
+<ul>
+  <li><strong>Para Fresadoras CNC de madera, aluminio o corte láser dedicado:</strong> Instala <strong>FluidNC (en placas ESP32)</strong> o <strong>grblHAL (en Teensy 4.1 o STM32)</strong>. Es la plataforma más rápida, sólida, precisa y compatible con los post-procesadores de Fusion 360 y Vectric Aspire.</li>
+  <li><strong>Para Máquinas Híbridas 2 en 1 (Impresora 3D con cabezal desmontable para grabado ligero):</strong> Utiliza <strong>Marlin 2.x</strong> para mantener el control térmico de extrusión y la facilidad de uso desde la pantalla LCD sin necesidad de una computadora permanentemente conectada.</li>
+</ul>
+
+</section>
+
+
+<section class="faq" id="faq" aria-label="Preguntas frecuentes">
+<h2>Preguntas Frecuentes</h2>
+<div class="faq">
+<details><summary>¿Por qué el Arduino Uno con GRBL original de 8 bits se está quedando obsoleto?</summary><p>El chip ATmega328P de 8 bits opera a solo 16 MHz y tiene 2 KB de RAM, limitando la frecuencia de pulsos a 30 kHz (insuficiente para microstepping alto a gran velocidad) y carece de memoria para funciones avanzadas como Wi-Fi o control de 4º y 5º eje rotativo. Placas de 32 bits con ESP32 (FluidNC) cuestan lo mismo ($6 USD) y operan a 240 MHz.</p></details>
+<details><summary>¿Se puede conectar una pantalla táctil offline a una placa con GRBL?</summary><p>Sí, mediante controladores externos dedicados (como las pantallas Makerbase MKS TFT24/32 con firmware CNC) o usando interfaces web integradas en FluidNC accesibles desde el navegador de cualquier tablet o smartphone vía Wi-Fi.</p></details>
+<details><summary>¿Qué es el modo láser $32 en GRBL y por qué no se debe fresar con él activado?</summary><p>El comando `$32=1` activa la modulación dinámica de potencia: cuando la máquina desacelera, reduce la potencia del láser proporcionalmente. Si fresas madera con `$32=1` y detienes el movimiento, el husillo se apagará automáticamente; para fresado CNC clásico el modo láser debe estar desactivado (`$32=0`).</p></details>
+<details><summary>¿Cómo configurar el post-procesador en Fusion 360 para GRBL?</summary><p>En el menú de exportación de mecanizado CAM de Fusion 360, selecciona el post-procesador oficial gratuito llamado `grbl.cps`. Esto generará un archivo con arcos G2/G3 limpios y sistemas de coordenadas G54 sin códigos no compatibles.</p></details>
+<details><summary>¿Qué significa que FluidNC sea configurado por archivo YAML?</summary><p>A diferencia de GRBL o Marlin clásico (donde para cambiar un pin de fin de carrera o micropasos debías recompilar todo el código en Arduino IDE), FluidNC almacena toda la configuración de pines, motores y pasos por mm en un archivo de texto plano `config.yaml` que se edita al instante por Wi-Fi sin recompilar nada.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
+
+<div class="cta">
+  <h3>Continúa explorando tutoriales técnicos</h3>
+  <p>Aprende a elegir los husillos de bolas y motores paso a paso para maximizar la rigidez de tu CNC en nuestra siguiente guía.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/escaneres-de-area-para-seguridad-en-celdas-roboticas">← Escáneres de Área para Seguridad en Celdas Robóticas</a>
+  <a href="/blog/husillos-y-motores-paso-a-paso-para-una-cnc-rigida">Husillos y Motores Paso a Paso para una CNC Rígida →</a>
+</div>
+
+</article>
+
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Hojas de datos oficiales, estándares internacionales de ingeniería y documentación técnica citada en este artículo.</p>
+<ul>
+<li><a href="https://github.com/gnea/grbl" target="_blank" rel="noopener noreferrer">GRBL Open Source CNC Controller Project Specifications</a></li>
+<li><a href="https://github.com/grblHAL" target="_blank" rel="noopener noreferrer">grblHAL — 32-bit ARM & ESP32 Port Documentation</a></li>
+<li><a href="http://wiki.fluidnc.com/" target="_blank" rel="noopener noreferrer">FluidNC — Next Generation Modular CNC Firmware for ESP32</a></li>
+<li><a href="https://marlinfw.org/" target="_blank" rel="noopener noreferrer">Marlin 3D Printer Firmware Official Documentation</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

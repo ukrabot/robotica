@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Circuito magnético de imán electro-permanente EPM para manipulación de piezas ferromagnéticas">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Pinzas Magnéticas y Tecnología Electro-Permanente (EPM)</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Física del flujo magnético reversible, seguridad intrínseca ante corte de energía y cálculo de fuerza</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: State OFF (Internal Short Circuit) -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#8b8577" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#495057" font-weight="bold">Estado DESACTIVADO (OFF): Flujo Interno</text>
+    
+    <!-- Core Magnets -->
+    <g transform="translate(60, 70)">
+      <!-- NdFeB Fixed Magnet -->
+      <rect x="40" y="40" width="100" height="60" rx="4" fill="#2f6fb0"/>
+      <text x="90" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff" font-weight="bold">NdFeB (Fijo)</text>
+      
+      <!-- AlNiCo Reversible Magnet with Coil -->
+      <rect x="220" y="40" width="100" height="60" rx="4" fill="#c92a2a"/>
+      <text x="270" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff" font-weight="bold">AlNiCo (Reversible)</text>
+      
+      <!-- Solenoid Coil around AlNiCo -->
+      <rect x="210" y="30" width="120" height="80" rx="6" fill="none" stroke="#d4af37" stroke-width="3" stroke-dasharray="4"/>
+      <text x="270" y="20" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#a97b23">Bobina de Conmutación</text>
+      
+      <!-- Steel Pole Shoes (Housing) -->
+      <path d="M 10,10 L 350,10 L 350,160 L 310,160 L 310,110 L 50,110 L 50,160 L 10,160 Z" fill="#adb5bd" opacity="0.6"/>
+      
+      <!-- Internal Flux Loop Arrow -->
+      <ellipse cx="180" cy="70" rx="110" ry="30" fill="none" stroke="#2b8a3e" stroke-width="3" stroke-dasharray="5"/>
+      <text x="180" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">B_interno (Bucle Cerrado)</text>
+      
+      <!-- Workpiece Below -->
+      <rect x="10" y="200" width="340" height="40" rx="4" fill="#343a40"/>
+      <text x="180" y="225" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff">Pieza Ferromagnética (Sin Fuerza de Sujeción)</text>
+    </g>
+    
+    <rect x="25" y="360" width="430" height="150" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="20" y="25" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Principio Físico en Estado OFF:</text>
+    <text x="20" y="50" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Las polaridades magnéticas de NdFeB y AlNiCo se oponen.</text>
+    <text x="20" y="70" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• El flujo magnético se cortocircuita dentro de la carcasa de acero.</text>
+    <text x="20" y="90" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Flujo exterior = 0 Gauss · Cero magnetismo residual.</text>
+    <text x="20" y="115" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">✓ La pieza se libera instantáneamente por gravedad.</text>
+  </g>
+  
+  <!-- Right Side: State ON (Active Holding) -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2b8a3e" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2b8a3e" font-weight="bold">Estado ACTIVADO (ON): Flujo a través de Pieza</text>
+    
+    <!-- Core Magnets -->
+    <g transform="translate(60, 70)">
+      <!-- NdFeB Fixed Magnet -->
+      <rect x="40" y="40" width="100" height="60" rx="4" fill="#2f6fb0"/>
+      <text x="90" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff" font-weight="bold">NdFeB (N-S)</text>
+      
+      <!-- AlNiCo Reversible Magnet with Inverted Polarisation -->
+      <rect x="220" y="40" width="100" height="60" rx="4" fill="#2f6fb0"/>
+      <text x="270" y="75" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff" font-weight="bold">AlNiCo (N-S)</text>
+      
+      <!-- Steel Pole Shoes -->
+      <path d="M 10,10 L 350,10 L 350,160 L 310,160 L 310,110 L 50,110 L 50,160 L 10,160 Z" fill="#adb5bd" opacity="0.6"/>
+      
+      <!-- Workpiece Below -->
+      <rect x="10" y="165" width="340" height="40" rx="4" fill="#2f6fb0"/>
+      <text x="180" y="190" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff" font-weight="bold">Pieza Atrapada (Circuito Magnético Cerrado)</text>
+      
+      <!-- Deep Flux Loop Through Workpiece -->
+      <path d="M 90,70 L 90,185 L 270,185 L 270,70 Z" fill="none" stroke="#c92a2a" stroke-width="4"/>
+      <text x="180" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a" font-weight="bold">Flujo de Retención B &gt; 1.5 Tesla</text>
+    </g>
+    
+    <!-- Safety and Specs -->
+    <rect x="25" y="360" width="430" height="150" rx="6" fill="#eefaf0" stroke="#2b8a3e" stroke-width="1"/>
+    <text x="20" y="25" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Ventajas Clave de la Tecnología EPM:</text>
+    <text x="20" y="50" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Seguridad 100% Fail-Safe:</strong> Si se corta la energía, la pieza NO cae.</text>
+    <text x="20" y="70" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Consumo Cero:</strong> Solo requiere un pulso eléctrico de 300 ms al cambiar de estado.</text>
+    <text x="20" y="90" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Cálculo de Fuerza:</strong> F_mag = (B² · A) / (2 · μ₀)</text>
+    <text x="20" y="115" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Efecto del entrehierro: 0.5 mm de polvo/óxido reduce la fuerza en un 50%.</text>
+  </g>
+</g>
+</svg>
