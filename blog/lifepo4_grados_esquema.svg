@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="840" viewBox="0 0 1200 840" role="img" aria-label="Diagrama del proceso de gradación de celdas LiFePO4 en fábrica: grado A, B y C">
+  <rect width="1200" height="840" fill="#f6f4ee"/>
+  <text x="600" y="60" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="36">Cómo se clasifican las celdas LiFePO4 en fábrica</text>
+
+  <!-- Entrada -->
+  <g transform="translate(430 110)">
+    <rect x="0" y="0" width="340" height="120" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="170" y="45" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="600">Línea de producción</text>
+    <text x="170" y="80" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Celdas recién fabricadas</text>
+    <text x="170" y="108" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Prueba de capacidad y resistencia</text>
+  </g>
+
+  <!-- Flecha -->
+  <path d="M 600 230 L 600 280" stroke="#3a3a3a" stroke-width="5" fill="none" marker-end="url(#arr)"/>
+  <defs><marker id="arr" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#3a3a3a"/></marker></defs>
+
+  <!-- Grade A -->
+  <g transform="translate(60 300)">
+    <rect x="0" y="0" width="330" height="300" rx="14" fill="#ffffff" stroke="#1e7a52" stroke-width="4"/>
+    <rect x="0" y="0" width="330" height="52" rx="14" fill="#1e7a52"/>
+    <text x="165" y="34" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">Grado A</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <text x="25" y="95">Capacidad ≥ 100% nominal</text>
+      <text x="25" y="130">Resistencia interna baja y pareja</text>
+      <text x="25" y="165">Mismo lote y voltaje</text>
+      <text x="25" y="200">Datos trazables (QR único)</text>
+      <text x="25" y="235">Garantía de fábrica</text>
+      <text x="25" y="275" fill="#1e7a52" font-weight="600">Precio: referencia del mercado</text>
+    </g>
+  </g>
+
+  <!-- Grade B -->
+  <g transform="translate(435 300)">
+    <rect x="0" y="0" width="330" height="300" rx="14" fill="#ffffff" stroke="#a97b23" stroke-width="4"/>
+    <rect x="0" y="0" width="330" height="52" rx="14" fill="#a97b23"/>
+    <text x="165" y="34" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">Grado B</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <text x="25" y="95">Capacidad 90–100% nominal</text>
+      <text x="25" y="130">Fuera de especificación (cosmético)</text>
+      <text x="25" y="165">Rechazada en control de calidad</text>
+      <text x="25" y="200">O de lotes descatalogados</text>
+      <text x="25" y="235">Sin garantía de marca</text>
+      <text x="25" y="275" fill="#a97b23" font-weight="600">Precio: 20–40% menor</text>
+    </g>
+  </g>
+
+  <!-- Grade C -->
+  <g transform="translate(810 300)">
+    <rect x="0" y="0" width="330" height="300" rx="14" fill="#ffffff" stroke="#b2281e" stroke-width="4"/>
+    <rect x="0" y="0" width="330" height="52" rx="14" fill="#b2281e"/>
+    <text x="165" y="34" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">Grado C / recicladas</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <text x="25" y="95">Capacidad &lt; 90% nominal</text>
+      <text x="25" y="130">Celdas usadas o reacondicionadas</text>
+      <text x="25" y="165">Resistencia interna desigual</text>
+      <text x="25" y="200">Sin trazabilidad real</text>
+      <text x="25" y="235">Alto riesgo de fallo prematuro</text>
+      <text x="25" y="275" fill="#b2281e" font-weight="600">Riesgo: no recomendadas para packs</text>
+    </g>
+  </g>
+
+  <!-- Flechas desde entrada -->
+  <g stroke="#3a3a3a" stroke-width="5" fill="none">
+    <path d="M 470 230 C 400 260 320 280 250 300"/>
+    <path d="M 600 230 L 600 300"/>
+    <path d="M 730 230 C 800 260 880 280 950 300"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="18" fill="#57534a">
+    <text x="200" y="270">mayor % pasa QA</text>
+    <text x="780" y="270">rechazo QA / 2ª vida</text>
+  </g>
+
+  <!-- Pruebas -->
+  <g transform="translate(60 650)">
+    <rect x="0" y="0" width="1080" height="120" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="540" y="38" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Cómo comprobar el grado al recibir celdas</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <text x="30" y="85">1. Verificar voltaje (3,0–3,65 V) · 2. Prueba de descarga completa a 0,5C · 3. Medir resistencia interna (≤ 1 mΩ en celdas nuevas de 100 Ah) · 4. Comparar con la hoja de datos</text>
+    </g>
+  </g>
+
+  <text x="600" y="820" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="18">El grado lo define el fabricante con su control de calidad; los vendedores deben mostrar el informe de prueba de cada lote.</text>
+</svg>

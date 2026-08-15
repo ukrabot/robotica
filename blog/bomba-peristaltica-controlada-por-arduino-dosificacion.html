@@ -1,1 +1,649 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Bomba Peristáltica Controlada por Arduino: Dosificación de Precisión</title>
+<meta name="description" content="Cómo construir una bomba peristáltica dosificadora con Arduino: principio de funcionamiento, motor paso a paso, circuito, código, calibración y aplicaciones.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/bomba-peristaltica-controlada-por-arduino-dosificacion">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bomba Peristáltica Controlada por Arduino: Dosificación de Precisión">
+<meta property="og:description" content="Motor NEMA 17, driver A4988 y Arduino: dosificación por volumen con precisión, calibrada y lista para hidroponía o laboratorio.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/bomba_peristaltica_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/bomba-peristaltica-controlada-por-arduino-dosificacion">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bomba Peristáltica Controlada por Arduino: Dosificación de Precisión">
+<meta name="twitter:description" content="Dosificación de precisión con Arduino: la bomba peristáltica explicada con circuito, código y calibración.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/bomba_peristaltica_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Bomba Peristáltica Controlada por Arduino: Dosificación de Precisión",
+  "description":"Guía técnica para construir una bomba peristáltica dosificadora controlada por Arduino: principio de funcionamiento de la bomba peristáltica (rodillos que comprimen un tubo de silicona y desplazan un volumen exacto sin contacto del fluido con la mecánica), por qué es ideal para dosificación (precisión, no contaminación, autoprimado), componentes necesarios (cabezal de bomba, tubo de silicona, motor NEMA 17, driver A4988, Arduino Uno, pantalla OLED, botones), circuito completo de conexión, cálculo del volumen por revolución y por paso, código Arduino con AccelStepper para dosificar mililitros exactos, calibración práctica con agua (la técnica del peso o de la probeta), aplicaciones reales (hidroponía, acuarios, laboratorio, química), y una tabla de problemas comunes con sus soluciones.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-15",
+  "dateModified":"2026-08-15",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/bomba-peristaltica-controlada-por-arduino-dosificacion"},
+  "image":"https://www.ukrabot.cl/blog/bomba_peristaltica_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Cabezal de bomba peristáltica, tubo de silicona, motor NEMA 17, driver A4988, Arduino Uno, fuente 12V, pantalla OLED 0,96\" y botones",
+  "wordCount":"2700",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Bomba Peristáltica Controlada por Arduino: Dosificación de Precisión","item":"https://www.ukrabot.cl/blog/bomba-peristaltica-controlada-por-arduino-dosificacion"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[{"@type":"Question","name":"¿Qué precisión tiene una bomba peristáltica con Arduino?","acceptedAnswer":{"@type":"Answer","text":"Con un motor paso a paso bien calibrado y un tubo de silicona nuevo y bien asentado, se logran errores del 1–2 % en dosis de 10–100 ml, y del 3–5 % en dosis muy pequeñas (1–5 ml). La precisión depende más de la calidad de la calibración y del tubo que del motor: un NEMA 17 con microstepping 1/16 da un control de posición tan fino que el error dominante es el volumen desplazado por los rodillos, que varía levemente con la temperatura y el desgaste del tubo."}},{"@type":"Question","name":"¿Qué tubo debo usar y cada cuánto cambiarlo?","acceptedAnswer":{"@type":"Answer","text":"El tubo debe ser de silicona (mejor, silicona de platino curado o silicona alimentaria) del diámetro que especifique tu cabezal. La silicona es compatible con agua, la mayoría de soluciones nutritivas, ácidos diluidos y alimentos; para solventes orgánicos agresivos se necesitan tubos especiales (Viton, Tygon). La vida útil del tubo depende de las horas de giro: en uso continuo puede durar semanas; en dosificación diaria intermitente, meses. Cambia el tubo cuando veas grietas, opacidad o cuando la dosis empiece a variar."}},{"@type":"Question","name":"¿Puedo usar un motor DC o un servo en lugar del paso a paso?","acceptedAnswer":{"@type":"Answer","text":"Puedes, pero perderás precisión y repetibilidad. Un motor DC con encoder puede cerrar un lazo de control, pero el sistema se complica y el encoder añade coste. Un servo estándar solo gira ~180°, insuficiente para un rotor de bomba (que gira de forma continua); necesitarías un servo de rotación continua, que no tiene control de posición. El paso a paso bipolar con driver es la opción correcta: control de posición exacta, par alto a baja velocidad y sin encoder."}},{"@type":"Question","name":"¿Cómo evito que el líquido fluya cuando la bomba está apagada?","acceptedAnswer":{"@type":"Answer","text":"El propio mecanismo peristáltico lo evita: el rodillo que queda comprimiendo el tubo actúa como válvula de retención, siempre que el apriete del cabezal sea el correcto. Si notas sifonado al apagar, revisa el ajuste de la separación entre rodillos y carcasa (debe comprimir el tubo hasta sellarlo sin aplastarlo de forma permanente). Como precaución adicional en montajes donde la entrada queda por encima de la salida, usa un tubo de salida que suba ligeramente antes de bajar."}},{"@type":"Question","name":"¿Cuánto cuesta montar una dosificadora de laboratorio casera?","acceptedAnswer":{"@type":"Answer","text":"Con cabezal impreso en 3D: motor NEMA 17 (10–15 USD) + driver A4988 (2–5 USD) + Arduino Uno (8–15 USD) + fuente 12V (10–15 USD) + tubo de silicona (5–10 USD) + OLED y botones (5–10 USD), el total ronda los 40–70 USD. Con un cabezal comercial de precisión para laboratorio, el cabezal suma 30–80 USD. Comparado con una bomba peristáltica de laboratorio comercial (200–800 USD), es una fracción del costo con la misma electrónica de control."}}]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="bomba_peristaltica_hero.jpg" alt="Cabezal de bomba peristáltica con tubo de silicona y motor NEMA 17 junto a un Arduino Uno y un driver de motor en el banco de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y control embebido · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Bomba Peristáltica Controlada por Arduino: Dosificación de Precisión</h1>
+    <p>Por qué la bomba peristáltica dosifica mejor que una centrífuga, cómo calcular el volumen por revolución y el código para dispensar mililitros exactos.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="bomba_peristaltica_wiring.svg" alt="Diagrama de conexión de la bomba peristáltica con motor NEMA 17, driver A4988 y Arduino Uno con pantalla OLED y botones" loading="lazy">
+  <div class="caption">El circuito completo de la dosificadora: el Arduino cuenta pasos, el driver los convierte en corriente y el motor mueve los rodillos con precisión.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es una bomba peristáltica y por qué dosifica bien</a></li>
+    <li><a href="#componentes">Componentes del proyecto</a></li>
+    <li><a href="#circuito">El circuito: motor, driver y Arduino</a></li>
+    <li><a href="#calculo">Calcular el volumen por revolución</a></li>
+    <li><a href="#codigo">Código: dosificar mililitros con AccelStepper</a></li>
+    <li><a href="#calibracion">Calibración práctica con agua</a></li>
+    <li><a href="#interfaz">Interfaz: botones y pantalla OLED</a></li>
+    <li><a href="#aplicaciones">Aplicaciones reales</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="que-es">
+<h2>Qué es una bomba peristáltica y por qué dosifica bien</h2>
+<p>Una bomba peristáltica impulsa líquidos <strong>comprimiendo un tubo flexible con rodillos</strong> montados en un rotor. Al girar, los rodillos "pellizcan" el tubo y empujan el contenido hacia adelante; el tramo que se suelta recupera su forma y aspira más líquido. Es el mismo principio del peristaltismo intestinal, y de ahí su nombre.</p>
+<p>Sus ventajas frente a una bomba centrífuga convencional la hacen la reina de la dosificación:</p>
+<ul>
+<li><strong>El fluido no toca la mecánica:</strong> solo entra en contacto con el tubo, por lo que no contamina el líquido ni se corroe la bomba. Ideal para químicos, alimentos y soluciones de cultivo.</li>
+<li><strong>Volumen desplazado exacto:</strong> cada revolución completa del rotor mueve un volumen fijo, determinado por el diámetro del tubo y la geometría del cabezal. El caudal depende solo de la velocidad de giro.</li>
+<li><strong>Autocebado:</strong> la bomba se llena sola y puede trabajar "en seco" sin dañarse (dentro de límites), algo imposible para una centrífuga.</li>
+<li><strong>Retorno nulo:</strong> el pellizco del tubo actúa como válvula de retención, evitando sifonado cuando la bomba está detenida.</li>
+</ul>
+<p>La desventaja es el desgaste del tubo (el componente consumible) y un caudal limitado, pero para dosificar mililitros o litros por hora, es perfecta.</p>
+</section>
+<section id="componentes">
+<h2>Componentes del proyecto</h2>
+<p>Esta construcción usa un <strong>cabezal de bomba peristáltica con motor NEMA 17</strong>, la configuración más común en el mundo maker por su precio y precisión:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Componente</th><th>Especificación recomendada</th><th>Función</th></tr></thead>
+<tbody>
+<tr><td>Cabezal de bomba</td><td>3 rodillos, tubo de 4–8 mm interior</td><td>Mecanismo de compresión del tubo</td></tr>
+<tr><td>Tubo de silicona</td><td>Silicona alimentaria o de platino curado</td><td>Único elemento en contacto con el líquido</td></tr>
+<tr><td>Motor NEMA 17</td><td>Bipolar, 1,8°/paso, 40–45 N·cm</td><td>Gira el rotor del cabezal</td></tr>
+<tr><td>Driver A4988</td><td>1/16 microstepping</td><td>Control de corriente y pulsos</td></tr>
+<tr><td>Arduino Uno</td><td>—</td><td>Genera pasos y gestiona la interfaz</td></tr>
+<tr><td>Fuente 12V / 2–3 A</td><td>—</td><td>Alimentación del motor</td></tr>
+<tr><td>OLED 0,96" I2C</td><td>SSD1306</td><td>Muestra volumen y estado</td></tr>
+<tr><td>Botones</td><td>3 pulsadores con resistencias pull-down</td><td>Interfaz de dosificación</td></tr>
+</tbody>
+</table>
+</div>
+<p>Puedes comprar el cabezal con motor integrado (los modelos para impresoras de laboratorio) o imprimir en 3D un cabezal compatible con NEMA 17; hay diseños probados en Printables y Thingiverse con resultados sorprendentemente buenos.</p>
+</section>
+<section id="circuito">
+<h2>El circuito: motor, driver y Arduino</h2>
+<p>La electrónica repite el patrón estándar de un motor paso a paso con driver, ya detallado en la guía del <a href="/blog/construye-tu-propio-brazo-robotico-impreso-en-3d-con-motores-paso-a-paso">brazo robótico impreso en 3D</a>:</p>
+<ul>
+<li><strong>Driver A4988:</strong> STEP en el pin 2 del Arduino, DIR en el pin 3, MS1–MS3 a VCC para 1/16 de paso, VDD a 5V, VMOT a 12V.</li>
+<li><strong>Motor:</strong> las dos fases (A1/A2, B1/B2) a los cuatro pines del driver, con el orden del fabricante.</li>
+<li><strong>Fuente:</strong> 12V a VMOT con un condensador electrolítico de 470–1000 µF cerca del driver, y GND común con el Arduino.</li>
+<li><strong>OLED:</strong> SDA a A4, SCL a A5, VCC a 5V.</li>
+<li><strong>Botones:</strong> a los pines 6, 7 y 8 con pull-down de 10 kΩ (o pull-up interno).</li>
+</ul>
+<div class="warning"><strong>Advertencia:</strong> la corriente del driver se ajusta con su potenciómetro (Vref). Para un NEMA 17 de 1,7 A con A4988: Vref ≈ 0,85 V. Un Vref excesivo calienta el motor y el driver hasta apagarse; uno bajo hace que el motor pierda pasos contra la resistencia del tubo.</div>
+</section>
+<section id="calculo">
+<h2>Calcular el volumen por revolución</h2>
+<p>El dato maestro del sistema es <strong>cuántos mililitros desplaza una revolución del rotor</strong>. Dos caminos para obtenerlo:</p>
+<p><strong>1. Por geometría (aproximación):</strong> cada rodillo comprime un volumen aproximado de <em>π · r² · largo_efectivo</em>, donde <em>r</em> es el radio interno del tubo y el largo efectivo es la porción comprimida. Con 3 rodillos, una revolución desplaza 3 veces ese volumen. Es una estimación útil, pero el radio interno real de los tubos de silicona varía y el ajuste de la carcasa influye.</p>
+<p><strong>2. Por medición (la forma correcta):</strong> haz girar el motor un número entero de revoluciones con el tubo aspirando agua destilada y mide el volumen recogido en una probeta graduada:</p>
+<pre><code>volumen_por_revolucion = volumen_recogido_ml / revoluciones
+
+// Ejemplo: 10 revoluciones desplazaron 28,4 ml
+volumen_por_rev = 28,4 / 10 = 2,84 ml/rev
+
+// Con el microstepping y el motor de 200 pasos/rev:
+pasos_por_revolucion = 200 * 16 = 3.200 pasos
+ml_por_paso = 2,84 / 3.200 = 0,0008875 ml/paso</code></pre>
+<p>Con ese factor calibrado, dosificar 50 ml son <code>50 / 0,0008875 ≈ 56.338 pasos</code>. La precisión final dependerá de que el tubo esté bien asentado, del diámetro exacto y de que la velocidad no sea tan alta que los rodillos resbalen.</p>
+</section>
+<section id="codigo">
+<h2>Código: dosificar mililitros con AccelStepper</h2>
+<p>Usamos <strong>AccelStepper</strong> por la misma razón que en el brazo robótico: aceleración controlada que evita perder pasos. El programa principal dosifica un volumen objetivo en mililitros usando el factor calibrado:</p>
+<pre><code>#include &lt;AccelStepper.h&gt;
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+#define STEP_PIN 2
+#define DIR_PIN  3
+
+// Factor calibrado: ml por paso (ajustar tras la calibración)
+float mlPorPaso = 0.0008875;
+
+// Motor en modo DRIVER
+AccelStepper motor(AccelStepper::DRIVER, STEP_PIN, DIR_PIN);
+
+float volumenObjetivo = 0;   // ml a dosificar
+float dosificado = 0;        // ml ya entregados
+
+void setup() {
+  motor.setMaxSpeed(1200);      // pasos/s
+  motor.setAcceleration(800);   // pasos/s²
+  motor.setSpeed(0);
+}
+
+void dosificar(float ml) {
+  long pasos = (long)(ml / mlPorPaso);
+  motor.move(pasos);            // posición relativa
+  while (motor.distanceToGo() != 0) {
+    motor.run();
+  }
+  dosificado += ml;
+}
+
+void loop() {
+  // Ejemplo: dosificar 25 ml al recibir orden (sustituir por botones)
+  if (ordenRecibida) {
+    dosificar(25.0);
+    ordenRecibida = false;
+  }
+}</code></pre>
+<div class="note"><strong>Nota:</strong> <code>motor.move()</code> con un valor negativo invierte el sentido: útil para llenar y vaciar (primavera del tubo o limpieza). El sentido de giro del cabezal determina si bombea o aspira; verifícalo con agua antes de fijar los tubos.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="calibracion">
+<h2>Calibración práctica con agua</h2>
+<p>La calibración es el paso que separa una bomba "que mueve agua" de una <strong>dosificadora de precisión</strong>. El procedimiento, con agua destilada a temperatura ambiente:</p>
+<ol>
+<li>Instala el tubo de silicona nuevo, bien asentado en el cabezal, y purga el aire: haz girar el rotor hasta que el agua fluya sin burbujas.</li>
+<li>Coloca una probeta graduada de precisión en la salida y una pesa/tara en la entrada con agua.</li>
+<li>Ordena exactamente 10 revoluciones (con el código de prueba) y anota los ml recogidos. Repite 3 veces.</li>
+<li>Promedia y calcula <code>ml/paso</code>. Introduce el valor en el sketch.</li>
+<li>Verificación: dosifica 10 ml, 25 ml y 50 ml y mide el error. Un sistema bien calibrado entrega errores menores al 1–2 %.</li>
+</ol>
+<div class="warning"><strong>Importante:</strong> la calibración cambia si cambias el diámetro o la marca del tubo, si ajustas el apriete del cabezal o si la temperatura del líquido cambia mucho. Repite la calibración al cambiar el tubo (que además debe reemplazarse periódicamente: el tubo es el consumible del sistema).</div>
+</section>
+<section id="interfaz">
+<h2>Interfaz: botones y pantalla OLED</h2>
+<p>Con tres botones y la pantalla OLED el equipo se vuelve autónomo, sin computador:</p>
+<ul>
+<li><strong>Botón 1 (DOSIFICAR):</strong> ejecuta la dosificación del volumen seleccionado.</li>
+<li><strong>Botón 2 (AUMENTAR):</strong> sube el volumen objetivo en pasos de 5 ml (con pulsación larga: 50 ml).</li>
+<li><strong>Botón 3 (LIMPIAR):</strong> invierte el giro 10 segundos para purgar o limpiar el tubo.</li>
+</ul>
+<p>La pantalla muestra el volumen objetivo, el progreso en ml y el estado (LISTO / DOSIFICANDO / LIMPIEZA). El código integra la librería <code>Adafruit_SSD1306</code> y lectura de botones con debounce; el volumen objetivo se conserva en la EEPROM si quieres que persista al reiniciar.</p>
+<p>Para proyectos más ambiciosos, el mismo Arduino puede recibir órdenes por <strong>MQTT o serial</strong> (dosis exacta en gramos/ml), integrarse a un sistema de <a href="/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">riego con sensor de humedad</a> o registrar cada dosificación con fecha y hora.</p>
+</section>
+<section id="aplicaciones">
+<h2>Aplicaciones reales</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Aplicación</th><th>Qué dosifica</th><th>Rango típico</th><th>Nota</th></tr></thead>
+<tbody>
+<tr><td>Hidroponía</td><td>Soluciones nutritivas A/B</td><td>1–10 ml por dosis</td><td>Precisión diaria; tubo resistente a pH</td></tr>
+<tr><td>Acuario</td><td>Aditivos, CO2 líquido</td><td>0,5–5 ml/día</td><td>Dosificación automática horaria</td></tr>
+<tr><td>Laboratorio</td><td>Reactivos, medios de cultivo</td><td>0,1–50 ml</td><td>Tubo de platino curado</td></tr>
+<tr><td>Química doméstica</td><td>Lejía, ácidos diluidos</td><td>10–100 ml</td><td>Verificar compatibilidad del tubo</td></tr>
+<tr><td>Café / cerveza</td><td>Agua y aditivos</td><td>50–500 ml</td><td>Tubo alimentario</td></tr>
+</tbody>
+</table>
+</div>
+<p>En todos los casos la ventaja es la misma: <strong>dosis repetibles, programables y documentables</strong>, sin contacto humano con el líquido y sin depender de medir a ojo.</p>
+</section>
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Síntoma</th><th>Causa más probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>No sale líquido aunque el motor gira</td><td>Tubo mal asentado, rodillos flojos o sentido invertido</td><td>Reasienta el tubo; verifica el sentido con una prueba de agua</td></tr>
+<tr><td>El volumen entregado varía dosis a dosis</td><td>Burbujas de aire o tubo desgastado</td><td>Purgar; reemplazar el tubo y recalibrar</td></tr>
+<tr><td>El motor pierde pasos al dosificar rápido</td><td>Aceleración o velocidad máximas demasiado altas</td><td>Baja <code>setMaxSpeed</code>/<code>setAcceleration</code>; revisa Vref</td></tr>
+<tr><td>El driver se apaga solo</td><td>Sobrecorriente o sobrecalentamiento</td><td>Baja Vref, pon disipador, revisa la fuente</td></tr>
+<tr><td>El líquido sifona hacia atrás al detenerse</td><td>Rodillos mal ajustados (no sellan el tubo)</td><td>Ajusta la separación rodillos-carcasa</td></tr>
+<tr><td>Lecturas de pantalla corruptas</td><td>Cables I2C largos o ruido del motor</td><td>Acorta cables, añade ferrita o separa el cableado</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La bomba peristáltica controlada por Arduino es uno de los proyectos más útiles de la electrónica aplicada: resuelve un problema real (dosificar líquidos con precisión y sin contaminación) con componentes baratos y un código que cabe en una página. La combinación cabezal + NEMA 17 + driver + Arduino + calibración con agua produce un instrumento de laboratorio casero que compite con equipos comerciales de cientos de dólares.</p>
+<p>La clave del éxito, como en todo proyecto de precisión, está en la calibración y en el respeto al único componente consumible: el tubo de silicona. Cuídalo, recalibra al cambiarlo y tu dosificadora será exacta durante años.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué precisión tiene una bomba peristáltica con Arduino?</summary><p>Con un motor paso a paso bien calibrado y un tubo de silicona nuevo y bien asentado, se logran errores del 1–2 % en dosis de 10–100 ml, y del 3–5 % en dosis muy pequeñas (1–5 ml). La precisión depende más de la calidad de la calibración y del tubo que del motor: un NEMA 17 con microstepping 1/16 da un control de posición tan fino que el error dominante es el volumen desplazado por los rodillos, que varía levemente con la temperatura y el desgaste del tubo.</p></details>
+<details><summary>¿Qué tubo debo usar y cada cuánto cambiarlo?</summary><p>El tubo debe ser de silicona (mejor, silicona de platino curado o silicona alimentaria) del diámetro que especifique tu cabezal. La silicona es compatible con agua, la mayoría de soluciones nutritivas, ácidos diluidos y alimentos; para solventes orgánicos agresivos se necesitan tubos especiales (Viton, Tygon). La vida útil del tubo depende de las horas de giro: en uso continuo puede durar semanas; en dosificación diaria intermitente, meses. Cambia el tubo cuando veas grietas, opacidad o cuando la dosis empiece a variar.</p></details>
+<details><summary>¿Puedo usar un motor DC o un servo en lugar del paso a paso?</summary><p>Puedes, pero perderás precisión y repetibilidad. Un motor DC con encoder puede cerrar un lazo de control, pero el sistema se complica y el encoder añade coste. Un servo estándar solo gira ~180°, insuficiente para un rotor de bomba (que gira de forma continua); necesitarías un servo de rotación continua, que no tiene control de posición. El paso a paso bipolar con driver es la opción correcta: control de posición exacta, par alto a baja velocidad y sin encoder.</p></details>
+<details><summary>¿Cómo evito que el líquido fluya cuando la bomba está apagada?</summary><p>El propio mecanismo peristáltico lo evita: el rodillo que queda comprimiendo el tubo actúa como válvula de retención, siempre que el apriete del cabezal sea el correcto. Si notas sifonado al apagar, revisa el ajuste de la separación entre rodillos y carcasa (debe comprimir el tubo hasta sellarlo sin aplastarlo de forma permanente). Como precaución adicional en montajes donde la entrada queda por encima de la salida, usa un tubo de salida que suba ligeramente antes de bajar.</p></details>
+<details><summary>¿Cuánto cuesta montar una dosificadora de laboratorio casera?</summary><p>Con cabezal impreso en 3D: motor NEMA 17 (10–15 USD) + driver A4988 (2–5 USD) + Arduino Uno (8–15 USD) + fuente 12V (10–15 USD) + tubo de silicona (5–10 USD) + OLED y botones (5–10 USD), el total ronda los 40–70 USD. Con un cabezal comercial de precisión para laboratorio, el cabezal suma 30–80 USD. Comparado con una bomba peristáltica de laboratorio comercial (200–800 USD), es una fracción del costo con la misma electrónica de control.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Combina la dosificadora con el <a href="/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">sistema de riego automático con sensor de humedad</a> para un huerto totalmente autónomo, o explora más sensores en la <a href="/blog/guia-esencial-de-sensores-para-arduino">Guía Esencial de Sensores</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">← Anterior: Riego Automático con Sensor de Humedad</a>
+  <a href="/blog/guia-esencial-de-sensores-para-arduino">Siguiente: Guía Esencial de Sensores para Arduino →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias sobre bombas peristálticas, control de motores paso a paso y dosificación. El factor ml/paso debe calibrarse con el tubo y cabezal reales.</p>
+<ul>
+<li><a href="https://www.airspayce.com/mikem/arduino/AccelStepper/" target="_blank" rel="noopener noreferrer">AccelStepper — Documentación oficial de la librería</a></li>
+<li><a href="https://www.pololu.com/product/1182" target="_blank" rel="noopener noreferrer">Pololu — Guía del driver A4988</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Peristaltic_pump" target="_blank" rel="noopener noreferrer">Wikipedia — Bomba peristáltica (principio y aplicaciones)</a></li>
+<li><a href="https://www.adafruit.com/product/326" target="_blank" rel="noopener noreferrer">Adafruit — Pantalla OLED SSD1306 y documentación</a></li>
+<li><a href="https://www.coleparmer.com/tech-article/peristaltic-pump-tubing-guide" target="_blank" rel="noopener noreferrer">Cole-Parmer — Guía de tubos para bombas peristálticas</a></li>
+<li><a href="https://www.arduino.cc/reference/en/libraries/accelstepper/" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería AccelStepper</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 

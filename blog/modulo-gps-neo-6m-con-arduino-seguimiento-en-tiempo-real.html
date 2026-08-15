@@ -1,1 +1,692 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Módulo GPS NEO-6M con Arduino: Seguimiento en Tiempo Real</title>
+<meta name="description" content="Cómo conectar y programar el módulo GPS u-blox NEO-6M con Arduino: cableado UART, tramas NMEA, librería TinyGPS++, pantalla OLED y seguimiento en tiempo real.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/modulo-gps-neo-6m-con-arduino-seguimiento-en-tiempo-real">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Módulo GPS NEO-6M con Arduino: Seguimiento en Tiempo Real">
+<meta property="og:description" content="Cableado, tramas NMEA, TinyGPS++ y seguimiento en vivo: el NEO-6M explicado de principio a fin.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/gps_neo6m_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/modulo-gps-neo-6m-con-arduino-seguimiento-en-tiempo-real">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Módulo GPS NEO-6M con Arduino: Seguimiento en Tiempo Real">
+<meta name="twitter:description" content="Posicionamiento en tiempo real con Arduino y el GPS NEO-6M: conexión, código y tramas NMEA.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/gps_neo6m_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Módulo GPS NEO-6M con Arduino: Seguimiento en Tiempo Real",
+  "description":"Guía completa del módulo GPS u-blox NEO-6M con Arduino para seguimiento en tiempo real: qué es el sistema GPS y cómo funciona la trilateración, especificaciones del NEO-6M (sensibilidad de seguimiento, 50 canales, precisión de 2,5 metros, tramas NMEA 0183 a 9600 baud), conexión eléctrica por UART con SoftwareSerial (VCC, GND, TX, RX y la antena cerámica), primer código para leer las tramas NMEA en bruto, parseo de las sentencias GGA y RMC con la librería TinyGPS++, visualización de latitud, longitud, altitud, velocidad y hora en una pantalla OLED, envío de la posición a la nube con ThingSpeak, problemas de recepción en interiores y cómo mejorarla (antena externa, cielo despejado, tiempo de fix en frío/caliente), y la comparación con módulos más nuevos (NEO-8M, NEO-M9N) para decidir la compra.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-15",
+  "dateModified":"2026-08-15",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/modulo-gps-neo-6m-con-arduino-seguimiento-en-tiempo-real"},
+  "image":"https://www.ukrabot.cl/blog/gps_neo6m_hero.jpg",
+  "proficiencyLevel":"Principiante a intermedio",
+  "dependencies":"Módulo GPS u-blox NEO-6M (con antena cerámica), Arduino Uno, protoboard y jumpers, pantalla OLED 0,96\" opcional",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Módulo GPS NEO-6M con Arduino: Seguimiento en Tiempo Real","item":"https://www.ukrabot.cl/blog/modulo-gps-neo-6m-con-arduino-seguimiento-en-tiempo-real"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[{"@type":"Question","name":"¿Por qué mi GPS NEO-6M no encuentra satélites dentro de la casa?","acceptedAnswer":{"@type":"Answer","text":"Porque la señal GPS de 1.575 MHz es muy débil y los techos y muros de hormigón la atenúan drásticamente. El receptor necesita ver al menos 4 satélites, y dentro de una casa suele ver cero. Prueba junto a una ventana con el módulo horizontal (antena hacia arriba) y espera 1–5 minutos si es la primera fijación (arranque en frío). Si el proyecto exige funcionar en interiores o en cajas metálicas, usa una antena externa activa."}},{"@type":"Question","name":"¿Qué significan las tramas GGA y RMC del GPS?","acceptedAnswer":{"@type":"Answer","text":"Son dos sentencias del protocolo NMEA 0183. La GGA entrega la posición (latitud y longitud en grados y minutos), la calidad del fix, el número de satélites en uso y la altitud. La RMC es la 'sentencia mínima recomendada': posición, velocidad en nudos, rumbo, fecha y hora UTC, más el campo de estado A/V (A = fix válido, V = inválido). Para el 90 % de los proyectos solo necesitas estas dos, y la librería TinyGPS++ las parsea automáticamente."}},{"@type":"Question","name":"¿Qué tan precisa es la posición del NEO-6M?","acceptedAnswer":{"@type":"Answer","text":"La precisión típica declarada por u-blox es de 2,5 metros CEP (círculo de error probable del 50 %): la mitad de las posiciones reportadas caen dentro de 2,5 m del punto real. En la práctica, con cielo despejado y buena recepción verás errores de 1 a 4 metros, que pueden subir en ciudades con reflejos de señal (multipath). Para precisión sub-métrica se necesitan sistemas diferenciales (RTK), incompatibles con el NEO-6M."}},{"@type":"Question","name":"¿Puedo usar el NEO-6M con un ESP32 o una Raspberry Pi?","acceptedAnswer":{"@type":"Answer","text":"Sí. Con ESP32 usa el UART hardware (Serial2: RX2/TX2) o SoftwareSerial, y la misma librería TinyGPS++ que con Arduino; la ventaja es que el ESP32 puede publicar la posición por Wi-Fi directamente a ThingSpeak o MQTT. Con Raspberry Pi, conecta el módulo a los GPIO UART (ttyAMA0 o ttyS0) y usa gpsd + la librería gps-python, o lee las tramas NMEA directamente en Python. El módulo es solo un generador de tramas serie: cualquier plataforma con UART puede consumirlas."}},{"@type":"Question","name":"¿Qué módulo GPS me conviene comprar en 2026: NEO-6M, NEO-8M o M9N?","acceptedAnswer":{"@type":"Answer","text":"Si es para aprender y el presupuesto manda, el NEO-6M (3–8 USD) sigue siendo válido y funciona igual que siempre. Para un proyecto real de seguimiento, el NEO-8M (5–12 USD) es la mejor relación: mismo cableado y código, pero con GPS+GLONASS+Galileo+BeiDou, lo que acelera la fijación y mejora la recepción urbana. El NEO-M9N (15–30 USD) se justifica si necesitas la mejor precisión y consumo mínimo. Los tres hablan NMEA 0183 a 9600 baud, así que el código de este artículo sirve para todos."}}]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="gps_neo6m_hero.jpg" alt="Módulo GPS NEO-6M con antena cerámica conectado por jumpers a un Arduino Uno sobre el banco de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y control embebido · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Módulo GPS NEO-6M con Arduino: Seguimiento en Tiempo Real</h1>
+    <p>Latitud, longitud, altitud, velocidad y hora exactas en tu Arduino: cableado, tramas NMEA, TinyGPS++ y seguimiento en pantalla.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="gps_neo6m_wiring.svg" alt="Diagrama de conexión del módulo GPS NEO-6M a un Arduino Uno por UART con SoftwareSerial" loading="lazy">
+  <div class="caption">Cuatro cables y una antena apuntando al cielo: el NEO-6M convierte tu Arduino en un navegador completo.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es el GPS y qué hace el NEO-6M</a></li>
+    <li><a href="#especificaciones">Especificaciones del NEO-6M</a></li>
+    <li><a href="#conexion">Conexión de hardware</a></li>
+    <li><a href="#nmea">Primer código: tramas NMEA en bruto</a></li>
+    <li><a href="#parseo">Parsear con TinyGPS++: GGA y RMC</a></li>
+    <li><a href="#pantalla">Mostrar la posición en una pantalla OLED</a></li>
+    <li><a href="#nube">Seguimiento en la nube con ThingSpeak</a></li>
+    <li><a href="#recepción">Recepción: interiores, fijación en frío y antena</a></li>
+    <li><a href="#alternativas">NEO-6M vs. NEO-8M vs. NEO-M9N</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="que-es">
+<h2>Qué es el GPS y qué hace el NEO-6M</h2>
+<p>El <strong>GPS</strong> (Global Positioning System) es una constelación de satélites estadounidenses que transmiten continuamente su posición y hora exacta. Un receptor como el <strong>u-blox NEO-6M</strong> escucha esas transmisiones, calcula la distancia a varios satélites (trilateración) y resuelve su propia posición, velocidad y hora. Con 4 o más satélites visibles, el receptor entrega latitud, longitud, altitud y hora UTC con una precisión típica de 2,5 metros.</p>
+<p>El NEO-6M es el módulo GPS más usado en proyectos maker por tres razones: es <strong>barato</strong> (3–8 USD), <strong>simple de conectar</strong> (UART, 4 pines) y <strong>muy documentado</strong>. Aunque u-blox lo marcó como diseño heredado, sigue vendiéndose por millones en módulos con antena cerámica integrada, y sus sucesores mantienen el mismo cableado y protocolo.</p>
+</section>
+<section id="especificaciones">
+<h2>Especificaciones del NEO-6M</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Parámetro</th><th>Valor</th></tr></thead>
+<tbody>
+<tr><td>Receptor</td><td>u-blox 6, 50 canales</td></tr>
+<tr><td>Precisión de posición</td><td>2,5 m CEP</td></tr>
+<tr><td>Sensibilidad de seguimiento</td><td>−161 dBm</td></tr>
+<tr><td>Sensibilidad de adquisición (frío)</td><td>−148 dBm</td></tr>
+<tr><td>Primera fijación en frío</td><td>27 s (típico)</td></tr>
+<tr><td>Primera fijación en caliente</td><td>1 s</td></tr>
+<tr><td>Protocolo</td><td>NMEA 0183, UBX (9600 baud por defecto)</td></tr>
+<tr><td>Alimentación</td><td>2,7–3,6 V (los módulos traen regulador a 3,3 V)</td></tr>
+<tr><td>Respaldo</td><td>RTC y memoria RAM con batería (pila de botón en los módulos)</td></tr>
+</tbody>
+</table>
+</div>
+<p>El dato que más frustra a los principiantes es el de <strong>primera fijación en frío</strong>: si el módulo no tiene almanaque ni efemérides (receptor apagado hace días o sin batería de respaldo), tardará entre 27 segundos y varios minutos en fijar por primera vez, y necesita <strong>cielo despejado</strong>. Dentro de una casa, con techo y muros de hormigón, es habitual que no fije nunca — no es un módulo defectuoso, es física de las señales de 1.575 MHz.</p>
+</section>
+<section id="conexion">
+<h2>Conexión de hardware</h2>
+<p>La mayoría de los módulos NEO-6M comerciales traen un regulador de 3,3 V integrado, por lo que se alimentan con 5V del Arduino y se comunican por UART con niveles TTL:</p>
+<ul>
+<li><strong>VCC → 5V</strong> del Arduino.</li>
+<li><strong>GND → GND</strong> (tierra común).</li>
+<li><strong>TX del módulo → D3</strong> del Arduino (entrada RX del SoftwareSerial).</li>
+<li><strong>RX del módulo → D2</strong> (salida TX del SoftwareSerial).</li>
+</ul>
+<p>El módulo además suele tener una <strong>antena cerámica</strong> en la placa (el cuadradito metálico) y a veces un conector u.FL para antena externa. Si la placa trae pines PPS y 3.3V: el PPS (pulso por segundo) sirve para sincronización de tiempo y el 3.3V es salida del regulador (no lo uses para alimentar otros circuitos).</p>
+<div class="note"><strong>Detalle:</strong> la salida TX del módulo es de 3,3 V, perfectamente legible por los pines 5V del Arduino (los umbrales altos se superan). El pin RX del módulo soporta 5V en la mayoría de los módulos comerciales por el regulador, pero si el tuyo es un módulo desnudo sin protección, un divisor de voltaje (1 kΩ en serie y 2 kΩ a GND) elimina cualquier riesgo.</div>
+</section>
+<section id="nmea">
+<h2>Primer código: tramas NMEA en bruto</h2>
+<p>Antes de parsear nada, verifica que el módulo habla. Este sketch imprime en el Monitor Serie las tramas NMEA tal cual llegan:</p>
+<pre><code>#include &lt;SoftwareSerial.h&gt;
+
+SoftwareSerial gps(3, 2);   // RX, TX
+
+void setup() {
+  Serial.begin(115200);
+  gps.begin(9600);
+  Serial.println("Esperando tramas NMEA...");
+}
+
+void loop() {
+  while (gps.available()) {
+    char c = gps.read();
+    Serial.write(c);
+  }
+}</code></pre>
+<p>Con el módulo junto a una ventana o al aire libre deberías ver líneas como:</p>
+<pre><code>$GPGGA,195208.000,3326.7891,S,07037.5672,W,1,07,1.2,584.2,M,-2.3,M,,*5A
+$GPRMC,195208.000,A,3326.7891,S,07037.5672,W,0.02,45.67,150826,,,D*7B</code></pre>
+<p>Dos sentencias bastan para el 90 % de los proyectos:</p>
+<ul>
+<li><strong>GGA:</strong> posición (lat/lon en grados y minutos), calidad del fix, número de satélites, altitud.</li>
+<li><strong>RMC:</strong> la "recomendada mínima": posición, velocidad en nudos, rumbo, fecha y hora UTC, y el campo A/V (A = fix válido, V = sin fix).</li>
+</ul>
+</section>
+<section id="parseo">
+<h2>Parsear con TinyGPS++: GGA y RMC</h2>
+<p>Parsear NMEA a mano es tedioso y propenso a errores; la librería <strong>TinyGPS++</strong> (de Mikal Hart) lo hace por ti. Se instala desde el Gestor de Librerías del IDE:</p>
+<pre><code>#include &lt;SoftwareSerial.h&gt;
+#include &lt;TinyGPSPlus.h&gt;
+
+SoftwareSerial gps(3, 2);
+TinyGPSPlus gpsPlus;
+
+void setup() {
+  Serial.begin(115200);
+  gps.begin(9600);
+}
+
+void loop() {
+  while (gps.available()) {
+    gpsPlus.encode(gps.read());
+  }
+  if (gpsPlus.location.isUpdated()) {
+    Serial.print("Lat: ");  Serial.print(gpsPlus.location.lat(), 6);
+    Serial.print("  Lon: "); Serial.print(gpsPlus.location.lng(), 6);
+    Serial.print("  Sat: "); Serial.println(gpsPlus.satellites.value());
+  }
+}</code></pre>
+<p>Campos útiles de TinyGPS++:</p>
+<ul>
+<li><code>location.lat() / location.lng()</code> — latitud y longitud en grados decimales.</li>
+<li><code>altitude.meters()</code> — altitud sobre el nivel del mar.</li>
+<li><code>speed.kmph()</code> — velocidad en km/h (derivada del campo de nudos).</li>
+<li><code>course.deg()</code> — rumbo en grados.</li>
+<li><code>time.hour()/minute()/second()</code> — hora UTC (suma tu offset para hora local).</li>
+<li><code>satellites.value()</code> — satélites en uso.</li>
+<li><code>location.isValid()</code> — distingue fix real de datos sin validar.</li>
+</ul>
+<div class="warning"><strong>Importante:</strong> la hora del GPS es UTC. En Chile (UTC−3 en invierno, UTC−4 en verano con horario de cambio), recuerda aplicar el offset según la fecha. No uses la hora GPS sin verificar el estado del fix: sin satélites válidos, el dato puede ser de la batería de respaldo.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="pantalla">
+<h2>Mostrar la posición en una pantalla OLED</h2>
+<p>Con una pantalla OLED 0,96" I2C (SSD1306) el módulo se convierte en un navegador de mano:</p>
+<pre><code>#include &lt;SoftwareSerial.h&gt;
+#include &lt;TinyGPSPlus.h&gt;
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+#define ANCHO 128
+#define ALTO  64
+
+SoftwareSerial gps(3, 2);
+TinyGPSPlus gpsPlus;
+Adafruit_SSD1306 display(ANCHO, ALTO, &amp;Wire, -1);
+
+void setup() {
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.clearDisplay();
+  gps.begin(9600);
+}
+
+void loop() {
+  while (gps.available()) {
+    gpsPlus.encode(gps.read());
+  }
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  if (gpsPlus.location.isValid()) {
+    display.println("Lat: " + String(gpsPlus.location.lat(), 5));
+    display.println("Lon: " + String(gpsPlus.location.lng(), 5));
+    display.println("Vel: " + String(gpsPlus.speed.kmph(), 1) + " km/h");
+    display.println("Sat: " + String(gpsPlus.satellites.value()));
+    display.println("Hora UTC: " + String(gpsPlus.time.hour()) + ":" +
+                    String(gpsPlus.time.minute()));
+  } else {
+    display.println("Buscando satelites...");
+    display.println("(cielo despejado)");
+  }
+  display.display();
+  delay(500);
+}</code></pre>
+<p>Este mismo patrón sirve para cualquier salida: una tarjeta SD que registra rutas, un módulo LoRa que transmite la posición, o un reloj que se auto-sincroniza con el GPS.</p>
+</section>
+<section id="nube">
+<h2>Seguimiento en la nube con ThingSpeak</h2>
+<p>Para seguimiento remoto, el patrón estándar es GPS + ESP8266/ESP32 (Wi-Fi) + <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">ThingSpeak</a>. El ESP32 puede recibir las tramas del NEO-6M por su UART (Serial2) y publicar latitud y longitud en el canal cada N segundos:</p>
+<pre><code>// Fragmento: publicación en ThingSpeak
+String url = "https://api.thingspeak.com/update?api_key=TUKKEY&amp;field1=" +
+             String(gpsPlus.location.lat(), 6) + "&amp;field2=" +
+             String(gpsPlus.location.lng(), 6);
+http.begin(url);
+http.GET();   // solo cuando location.isValid()
+http.end();</code></pre>
+<p>ThingSpeak puede dibujar la posición en un mapa con su widget de Google Maps, lo que convierte el montaje en un rastreador en tiempo real visible desde cualquier navegador. La regla de oro: <strong>solo publica datos con fix válido</strong>; publicar lat/lon = 0 o posiciones fantasma contamina el gráfico y el mapa.</p>
+</section>
+<section id="recepción">
+<h2>Recepción: interiores, fijación en frío y antena</h2>
+<p>La señal GPS es extremadamente débil (−130 dBm en el mejor caso) y no atraviesa bien edificios. Si el módulo no fija:</p>
+<ul>
+<li><strong>Muévelo a la ventana o al exterior.</strong> Un techo de hormigón o un techo metálico bloquean casi toda la señal.</li>
+<li><strong>Espera el fix en frío.</strong> La primera fijación puede tardar 1–5 minutos si el almanaque no está almacenado. Deja el módulo fijo mirando al cielo y observa la pantalla; al fijar una vez, los siguientes arranques serán mucho más rápidos (fix en caliente) gracias a la batería de respaldo.</li>
+<li><strong>Orientación de la antena.</strong> La antena cerámica integrada tiene su punto ciego hacia la placa: déjala horizontal (hacia arriba), no vertical contra una pared.</li>
+<li><strong>Antena externa.</strong> Si el montaje va dentro de una caja metálica o en un vehículo, usa una antena activa con conector u.FL/SMA (las de 3–5 V con amplificador interno funcionan con el pin de alimentación del módulo).</li>
+<li><strong>Condensador de respaldo:</strong> algunos módulos traen un supercondensador en lugar de pila; si tu módulo pierde el almanaque cada vez que se apaga, revisa si la pila de botón está presente y cargada.</li>
+</ul>
+</section>
+<section id="alternativas">
+<h2>NEO-6M vs. NEO-8M vs. NEO-M9N</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Módulo</th><th>Canales</th><th>Constelaciones</th><th>Precisión</th><th>Precio orientativo</th></tr></thead>
+<tbody>
+<tr><td>NEO-6M</td><td>50</td><td>GPS</td><td>2,5 m</td><td>3–8 USD</td></tr>
+<tr><td>NEO-8M</td><td>72</td><td>GPS, GLONASS, BeiDou, Galileo</td><td>2,5 m</td><td>5–12 USD</td></tr>
+<tr><td>NEO-M9N</td><td>184</td><td>GPS, GLONASS, Galileo, BeiDou, QZSS</td><td>1,5 m</td><td>15–30 USD</td></tr>
+</tbody>
+</table>
+</div>
+<p>El NEO-8M es el reemplazo natural del 6M: mismo cableado, mismo protocolo NMEA y <strong>mejor fijación en entornos difíciles</strong> por el soporte multi-constelación (con GLONASS y Galileo, más satélites visibles en ciudades con edificios). El M9N añade precisión y consumo menor, y es la opción para proyectos serios de seguimiento. Para aprender y para proyectos de bajo presupuesto, el 6M sigue siendo perfectamente funcional: la física del GPS no cambió, solo la sensibilidad del receptor.</p>
+</section>
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Síntoma</th><th>Causa más probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>No llega ninguna trama al monitor serie</td><td>TX/RX invertidos o baudios incorrectos</td><td>Verifica que TX del módulo vaya al RX del SoftwareSerial (pin 3) y que sean 9600 baud</td></tr>
+<tr><td>Llegan tramas pero location.isValid() es false</td><td>Sin fix: el módulo no ve suficientes satélites</td><td>Ventana/exterior, orientación de antena hacia arriba, espera el fix en frío</td></tr>
+<tr><td>Lat/lon = 0 o valores absurdos</td><td>Se leen datos sin validar</td><td>Filtra con isValid()/isUpdated() antes de usar</td></tr>
+<tr><td>Se pierde el fix al mover el montaje</td><td>Antena cerámica obstruida o señal marginal</td><td>Antena externa activa; coloca el módulo lejos del metal y del motor</td></tr>
+<tr><td>El módulo tarda minutos en fijar cada vez</td><td>Batería de respaldo ausente o descargada</td><td>Revisa la pila de botón; deja el módulo encendido un rato para refrescar el almanaque</td></tr>
+<tr><td>Basura en el monitor serie</td><td>SoftwareSerial inestable o interferencia</td><td>Usa Serial1/Serial2 (UART hardware) o reduce la frecuencia de impresión</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>El NEO-6M sigue siendo la puerta de entrada perfecta al posicionamiento con Arduino: cuatro cables, una librería y en una tarde tienes latitud, longitud, velocidad y hora en pantalla. Los conceptos que aprendes — tramas NMEA, fijación en frío vs. caliente, importancia de la antena — son exactamente los mismos con cualquier receptor GPS, desde el módulo de 3 dólares hasta el de navegación agrícola.</p>
+<p>El proyecto natural siguiente es el rastreador: GPS + ESP32 + ThingSpeak para ver tu posición en un mapa desde el celular, o GPS + tarjeta SD para registrar rutas. Y si el 6M te queda corto en ciudad, el salto al NEO-8M es directo: mismo código, misma conexión, más satélites.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Por qué mi GPS NEO-6M no encuentra satélites dentro de la casa?</summary><p>Porque la señal GPS de 1.575 MHz es muy débil y los techos y muros de hormigón la atenúan drásticamente. El receptor necesita ver al menos 4 satélites, y dentro de una casa suele ver cero. Prueba junto a una ventana con el módulo horizontal (antena hacia arriba) y espera 1–5 minutos si es la primera fijación (arranque en frío). Si el proyecto exige funcionar en interiores o en cajas metálicas, usa una antena externa activa.</p></details>
+<details><summary>¿Qué significan las tramas GGA y RMC del GPS?</summary><p>Son dos sentencias del protocolo NMEA 0183. La GGA entrega la posición (latitud y longitud en grados y minutos), la calidad del fix, el número de satélites en uso y la altitud. La RMC es la 'sentencia mínima recomendada': posición, velocidad en nudos, rumbo, fecha y hora UTC, más el campo de estado A/V (A = fix válido, V = inválido). Para el 90 % de los proyectos solo necesitas estas dos, y la librería TinyGPS++ las parsea automáticamente.</p></details>
+<details><summary>¿Qué tan precisa es la posición del NEO-6M?</summary><p>La precisión típica declarada por u-blox es de 2,5 metros CEP (círculo de error probable del 50 %): la mitad de las posiciones reportadas caen dentro de 2,5 m del punto real. En la práctica, con cielo despejado y buena recepción verás errores de 1 a 4 metros, que pueden subir en ciudades con reflejos de señal (multipath). Para precisión sub-métrica se necesitan sistemas diferenciales (RTK), incompatibles con el NEO-6M.</p></details>
+<details><summary>¿Puedo usar el NEO-6M con un ESP32 o una Raspberry Pi?</summary><p>Sí. Con ESP32 usa el UART hardware (Serial2: RX2/TX2) o SoftwareSerial, y la misma librería TinyGPS++ que con Arduino; la ventaja es que el ESP32 puede publicar la posición por Wi-Fi directamente a ThingSpeak o MQTT. Con Raspberry Pi, conecta el módulo a los GPIO UART (ttyAMA0 o ttyS0) y usa gpsd + la librería gps-python, o lee las tramas NMEA directamente en Python. El módulo es solo un generador de tramas serie: cualquier plataforma con UART puede consumirlas.</p></details>
+<details><summary>¿Qué módulo GPS me conviene comprar en 2026: NEO-6M, NEO-8M o M9N?</summary><p>Si es para aprender y el presupuesto manda, el NEO-6M (3–8 USD) sigue siendo válido y funciona igual que siempre. Para un proyecto real de seguimiento, el NEO-8M (5–12 USD) es la mejor relación: mismo cableado y código, pero con GPS+GLONASS+Galileo+BeiDou, lo que acelera la fijación y mejora la recepción urbana. El NEO-M9N (15–30 USD) se justifica si necesitas la mejor precisión y consumo mínimo. Los tres hablan NMEA 0183 a 9600 baud, así que el código de este artículo sirve para todos.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Publica la posición de tu rastreador en la nube con <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">ThingSpeak</a>, combínalo con sensores de movimiento en la <a href="/blog/guia-esencial-de-sensores-para-arduino">Guía Esencial de Sensores</a> o mide distancias con el <a href="/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso">HC-SR04</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso">← Anterior: Sensor Ultrasónico HC-SR04</a>
+  <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">Siguiente: Registra Datos con ThingSpeak →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias oficiales de u-blox, documentación de la librería TinyGPS++ y del protocolo NMEA. Las especificaciones corresponden a la serie NEO-6 de u-blox.</p>
+<ul>
+<li><a href="https://content.u-blox.com/sites/default/files/products/documents/NEO-6_DataSheet_(UBX-13003366).pdf" target="_blank" rel="noopener noreferrer">u-blox — Hoja de datos del NEO-6</a></li>
+<li><a href="https://github.com/mikalhart/TinyGPSPlus" target="_blank" rel="noopener noreferrer">Mikal Hart — Librería TinyGPS++ para Arduino</a></li>
+<li><a href="https://www.arduino.cc/en/Reference/SoftwareSerial" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería SoftwareSerial</a></li>
+<li><a href="https://www.gpsinformation.org/dale/nmea.htm" target="_blank" rel="noopener noreferrer">NMEA 0183 — Referencia de sentencias de navegación</a></li>
+<li><a href="https://www.gps.gov/systems/gps/performance/accuracy/" target="_blank" rel="noopener noreferrer">GPS.gov — Precisión del sistema GPS</a></li>
+<li><a href="https://content.u-blox.com/sites/default/files/products/documents/NEO-M9N_DataSheet_%28UBX-19014285%29.pdf" target="_blank" rel="noopener noreferrer">u-blox — Hoja de datos del NEO-M9N (comparativa de generaciones)</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 

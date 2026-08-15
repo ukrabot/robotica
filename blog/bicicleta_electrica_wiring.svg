@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="840" viewBox="0 0 1200 840" role="img" aria-label="Diagrama del sistema eléctrico de una conversión de bicicleta a eléctrica con motor hub y controlador">
+  <rect width="1200" height="840" fill="#f6f4ee"/>
+  <text x="600" y="60" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="36">Sistema Eléctrico de una Conversión a Bicicleta Eléctrica</text>
+
+  <!-- Batería -->
+  <g transform="translate(80 130)">
+    <rect x="0" y="0" width="280" height="260" rx="16" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="30" y="25" width="220" height="140" rx="10" fill="#2a2a2a"/>
+    <text x="140" y="105" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">Batería 36/48V</text>
+    <text x="140" y="240" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Salida: conector XT60 / Anderson</text>
+    <text x="140" y="150" text-anchor="middle" fill="#fff" font-family="Inter, Arial, sans-serif" font-size="17">B+ y B-</text>
+  </g>
+
+  <!-- Controlador -->
+  <g transform="translate(470 130)">
+    <rect x="0" y="0" width="300" height="260" rx="16" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="0" y="0" width="300" height="52" rx="16" fill="#23201b"/>
+    <text x="150" y="34" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">Controlador</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#1e1b15">
+      <text x="25" y="100">Batería (B+/B-)</text>
+      <text x="25" y="145">Fases motor U/V/W</text>
+      <text x="25" y="190">Throttle (1–4 V)</text>
+      <text x="25" y="235">Sensor PAS + Display</text>
+    </g>
+  </g>
+
+  <!-- Motor hub -->
+  <g transform="translate(880 130)">
+    <circle cx="130" cy="130" r="120" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <circle cx="130" cy="130" r="70" fill="#2a2a2a"/>
+    <circle cx="130" cy="130" r="16" fill="#e4c07a"/>
+    <text x="130" y="290" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">Motor hub</text>
+    <text x="130" y="318" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Fases U · V · W</text>
+  </g>
+
+  <!-- Cables principales -->
+  <g stroke-linecap="round" fill="none">
+    <path d="M 360 200 C 420 200 420 200 470 200" stroke="#b04a3a" stroke-width="7"/>
+    <path d="M 360 250 C 430 250 430 250 470 250" stroke="#3a3a3a" stroke-width="7"/>
+    <path d="M 770 200 C 830 200 830 200 880 200" stroke="#a97b23" stroke-width="7"/>
+    <path d="M 770 250 C 830 250 830 250 880 250" stroke="#3a3a3a" stroke-width="7"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="20" fill="#57534a">
+    <text x="330" y="170">B+ (rojo) y B- (negro)</text>
+    <text x="760" y="170">3 fases (azul, amarillo, verde)</text>
+  </g>
+
+  <!-- Periféricos -->
+  <g transform="translate(80 500)">
+    <rect x="0" y="0" width="500" height="210" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="250" y="40" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="600">Manillar y pedales</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <rect x="30" y="70" width="200" height="44" rx="8" fill="#2f6fb0"/><text x="130" y="99" text-anchor="middle" fill="#fff" font-weight="600">Display LCD</text>
+      <rect x="270" y="70" width="200" height="44" rx="8" fill="#b04a3a"/><text x="370" y="99" text-anchor="middle" fill="#fff" font-weight="600">Throttle</text>
+      <rect x="30" y="140" width="200" height="44" rx="8" fill="#a97b23"/><text x="130" y="169" text-anchor="middle" fill="#fff" font-weight="600">Sensor PAS</text>
+      <rect x="270" y="140" width="200" height="44" rx="8" fill="#3a3a3a"/><text x="370" y="169" text-anchor="middle" fill="#fff" font-weight="600">Frenos con corte</text>
+    </g>
+  </g>
+
+  <g transform="translate(700 500)">
+    <rect x="0" y="0" width="420" height="210" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="210" y="40" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="600">Notas de seguridad</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <text x="30" y="85">• Usa torque arm en la horquilla o vaina.</text>
+      <text x="30" y="120">• Funde e instala un portafusibles en B+ (10–15 A).</text>
+      <text x="30" y="155">• Verifica frenos en V y disco antes de probar.</text>
+      <text x="30" y="190">• Conecta la batería de última al probar el sistema.</text>
+    </g>
+  </g>
+
+  <!-- Conexiones periféricas -->
+  <g stroke-linecap="round" fill="none">
+    <path d="M 620 310 C 620 420 330 430 330 500" stroke="#2f6fb0" stroke-width="6"/>
+    <path d="M 640 310 C 640 450 420 460 420 500" stroke="#b04a3a" stroke-width="6"/>
+    <path d="M 660 310 C 660 470 600 480 590 500" stroke="#a97b23" stroke-width="6"/>
+  </g>
+  <text x="640" y="380" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Cable UART / conector JST del display</text>
+  <text x="645" y="445" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Throttle: señal y GND</text>
+
+  <text x="600" y="805" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="18">El orden de instalación recomendado: motor → controlador → periféricos → batería, siempre con el sistema apagado.</text>
+</svg>

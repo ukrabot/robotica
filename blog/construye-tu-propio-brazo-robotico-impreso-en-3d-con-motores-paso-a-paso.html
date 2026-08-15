@@ -1,1 +1,691 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Construye tu Propio Brazo Robótico Impreso en 3D con Motores Paso a Paso</title>
+<meta name="description" content="Guía paso a paso para construir un brazo robótico impreso en 3D con motores paso a paso: materiales, impresión, electrónica, código con AccelStepper y calibración.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/construye-tu-propio-brazo-robotico-impreso-en-3d-con-motores-paso-a-paso">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Construye tu Propio Brazo Robótico Impreso en 3D con Motores Paso a Paso">
+<meta property="og:description" content="Materiales, impresión 3D, motores NEMA 17, drivers, ensamblaje, código y calibración para tu brazo robótico casero.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/brazo_3d_motores_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/construye-tu-propio-brazo-robotico-impreso-en-3d-con-motores-paso-a-paso">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Construye tu Propio Brazo Robótico Impreso en 3D con Motores Paso a Paso">
+<meta name="twitter:description" content="De la impresora 3D al brazo en movimiento: guía completa de construcción con motores paso a paso.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/brazo_3d_motores_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Construye tu Propio Brazo Robótico Impreso en 3D con Motores Paso a Paso",
+  "description":"Guía paso a paso para construir un brazo robótico impreso en 3D con motores paso a paso: por qué la impresión 3D es ideal para prototipos robóticos, planificación de alcance y carga útil, lista de materiales completa (impresora, filamento, motores NEMA 17, drivers A4988 o DRV8825, placa Arduino, fuente de alimentación), dónde conseguir modelos 3D o diseñar los propios, parámetros de impresión recomendados (relleno, perímetros, soportes, temperatura), selección de motores y configuración de microstepping, electrónica y alimentación, orden de ensamblaje mecánico, código con la librería AccelStepper para mover varias articulaciones, calibración de pasos por grado y homing, y una tabla de problemas comunes con sus soluciones.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-15",
+  "dateModified":"2026-08-15",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/construye-tu-propio-brazo-robotico-impreso-en-3d-con-motores-paso-a-paso"},
+  "image":"https://www.ukrabot.cl/blog/brazo_3d_motores_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Impresora 3D (FDM), filamento PLA o PETG, 3-4 motores NEMA 17, drivers A4988 o DRV8825, placa Arduino Uno o Mega, fuente de 12V de al menos 5A, rodamientos 608 y tornillería M3/M5",
+  "wordCount":"2900",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Construye tu Propio Brazo Robótico Impreso en 3D con Motores Paso a Paso","item":"https://www.ukrabot.cl/blog/construye-tu-propio-brazo-robotico-impreso-en-3d-con-motores-paso-a-paso"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[{"@type":"Question","name":"¿Qué motores necesito para un brazo robótico impreso en 3D?","acceptedAnswer":{"@type":"Answer","text":"Para un primer brazo, motores NEMA 17 bipolares de 1,8° por paso con par de retención de 40–45 N·cm son la opción más equilibrada: hay drivers baratos, documentación abundante y suficiente par para eslabones de 20–30 cm. Los NEMA 23 son más potentes pero más pesados y exigen drivers y fuentes más caras; los servos MG996R sirven para brazos muy ligeros, pero no entregan la repetibilidad angular de un paso a paso bien calibrado."}},{"@type":"Question","name":"¿PLA o PETG para las piezas del brazo?","acceptedAnswer":{"@type":"Answer","text":"El PLA+ es el punto de partida ideal: rígido, fácil de imprimir y barato. Su debilidad es la temperatura (se deforma alrededor de 55–60 °C) y la fragilidad a impactos. El PETG es más tenaz y tolera más calor, pero es más propenso a hilos y requiere temperaturas más altas. Si el brazo trabajará cerca de motores que se calientan o a la intemperie, elige PETG; para un taller o escritorio, PLA+ es suficiente."}},{"@type":"Question","name":"¿Cuánto cuesta construir un brazo robótico casero en 3D?","acceptedAnswer":{"@type":"Answer","text":"Con tres motores NEMA 17, drivers, un Arduino Uno, un kilo de filamento, rodamientos y tornillería, el presupuesto se mueve entre 60 y 90 USD. Si ya tienes impresora 3D y Arduino, el desembolso adicional es de unos 40–50 USD por motores, drivers y fuente. Comparado con kits comerciales de brazo educativo (80–200 USD), sale competitivo y, a diferencia de un kit, cada pieza es reemplazable y personalizable."}},{"@type":"Question","name":"¿Por qué mi brazo pierde pasos y se descoloca?","acceptedAnswer":{"@type":"Answer","text":"La causa número uno es la aceleración demasiado agresiva: el motor no puede seguir el ritmo de pulsos y pierde pasos, acumulando un error de posición. La segunda causa es la alimentación: picos de corriente que hacen caer el voltaje y reiniciar la placa. La tercera es mecánica: juego excesivo o fricción en una articulación que el motor no puede vencer de forma constante. Baja la aceleración, refuerza la fuente y lubrica o afloja la articulación problemática."}},{"@type":"Question","name":"¿Puedo controlar un brazo de motores paso a paso sin Arduino?","acceptedAnswer":{"@type":"Answer","text":"Sí: una Raspberry Pi con los drivers conectados a sus GPIO (con la librería RPi.GPIO o con una placa de control dedicada como la HAT de Adafruit), un ESP32 con la librería AccelStepper, o incluso una placa RAMPS de impresora 3D con Marlin adaptado son alternativas reales. El ESP32 es especialmente interesante porque añade Wi-Fi/Bluetooth para control remoto. Para empezar, sin embargo, el Arduino sigue siendo lo más simple y robusto."}}]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="brazo_3d_motores_hero.jpg" alt="Brazo robótico impreso en 3D con motores NEMA 17 ensamblado sobre una mesa de trabajo con su electrónica de control" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Impresión 3D y robótica · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Construye tu Propio Brazo Robótico Impreso en 3D con Motores Paso a Paso</h1>
+    <p>Del archivo STL al brazo en movimiento: materiales, parámetros de impresión, motores NEMA 17 con drivers, ensamblaje, código con AccelStepper y calibración de pasos por grado.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="brazo_3d_motores_wiring.svg" alt="Diagrama de la electrónica de control de un brazo robótico impreso en 3D con tres motores paso a paso y drivers" loading="lazy">
+  <div class="caption">Tres motores paso a paso bien alimentados y con drivers configurados dan movimientos firmes y repetibles: la base del brazo hecho en casa.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que-3d">Por qué imprimir en 3D un brazo robótico</a></li>
+    <li><a href="#planificacion">Planificación: alcance, carga útil y grados de libertad</a></li>
+    <li><a href="#materiales">Lista de materiales completa</a></li>
+    <li><a href="#diseno">Diseño: modelos listos o piezas propias</a></li>
+    <li><a href="#impresion">Parámetros de impresión recomendados</a></li>
+    <li><a href="#motores">Motores paso a paso y drivers</a></li>
+    <li><a href="#electronica">Electrónica y alimentación</a></li>
+    <li><a href="#ensamblaje">Ensamblaje mecánico paso a paso</a></li>
+    <li><a href="#codigo">Código: mover el brazo con AccelStepper</a></li>
+    <li><a href="#calibracion">Calibración: pasos por grado y homing</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="por-que-3d">
+<h2>Por qué imprimir en 3D un brazo robótico</h2>
+<p>La impresión 3D FDM (modelado por deposición fundida) se convirtió en la forma más accesible de construir un brazo robótico <strong>sin depender de kits caros ni de mecanizados de taller</strong>. Un brazo de acrílico cortado por láser limita el diseño a piezas planas; uno impreso en 3D puede tener geometrías que ningún kit ofrece: cajas de engranajes integradas, soportes de rodamiento a medida, pasacables y piezas que se reimprimen en horas si se rompen.</p>
+<p>Las ventajas concretas frente a otras técnicas:</p>
+<ul>
+<li><strong>Coste marginal mínimo:</strong> un kilogramo de filamento PLA cuesta menos que una sola pieza mecanizada y alcanza para imprimir un brazo completo.</li>
+<li><strong>Iteración rápida:</strong> si una articulación tiene demasiado juego o no calza, se corrige el modelo y se reimprime esa pieza, no todo el conjunto.</li>
+<li><strong>Peso bajo:</strong> el plástico reduce la masa de los eslabones, lo que alivia el torque que deben entregar los motores.</li>
+<li><strong>Curva de aprendizaje valiosa:</strong> aprender a diseñar para impresión 3D es una habilidad que se transfiere directo a la fabricación de cualquier otro robot.</li>
+</ul>
+<p>La desventaja principal es la <strong>rigidez</strong>: el plástico impreso es menos rígido que el aluminio, y las piezas largas pueden flexionarse bajo carga. Por eso la regla de oro es mantener los eslabones cortos y gruesos, y nunca imprimir piezas estructurales con menos del 30 % de relleno.</p>
+</section>
+<section id="planificacion">
+<h2>Planificación: alcance, carga útil y grados de libertad</h2>
+<p>Antes de descargar el primer STL, define tres números: <strong>cuánto debe alcanzar</strong> (distancia horizontal máxima desde la base), <strong>cuánto debe levantar</strong> (carga útil en la pinza) y <strong>cuántas articulaciones</strong> necesita.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Configuración</th><th>Alcance típico</th><th>Carga útil</th><th>Uso recomendado</th></tr></thead>
+<tbody>
+<tr><td>Brazo pequeño de 3 ejes (base, hombro, codo)</td><td>15–25 cm</td><td>100–300 g</td><td>Pinza de demostración, pick &amp; place ligero</td></tr>
+<tr><td>Brazo de 4 ejes con muñeca</td><td>25–40 cm</td><td>200–500 g</td><td>Robótica educativa, primeras rutinas</td></tr>
+<tr><td>Brazo de 5–6 ejes con NEMA 17</td><td>40–60 cm</td><td>300–800 g</td><td>Proyectos serios, orientación completa de herramienta</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para un primer proyecto, tres ejes movidos por motores paso a paso más una pinza con servo es el equilibrio perfecto: <strong>menos piezas, menos puntos de juego mecánico y un presupuesto cercano a los 60–90 USD</strong>. Con esa base puedes escalar después a seis ejes.</p>
+<div class="note"><strong>Nota de carga útil:</strong> la carga útil real cae a medida que el brazo se extiende. El par necesario crece con la distancia al centro de rotación, así que una carga de 300 g en el extremo puede equivaler a 900 g de par efectivo en el hombro. Usa un factor de seguridad de 2 sobre tus estimaciones.</div>
+</section>
+<section id="materiales">
+<h2>Lista de materiales completa</h2>
+<p>Esta lista corresponde a un brazo de 3–4 ejes con motores paso a paso, la configuración más didáctica y confiable:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Componente</th><th>Cantidad</th><th>Función</th><th>Coste orientativo (USD)</th></tr></thead>
+<tbody>
+<tr><td>Filamento PLA o PETG (1,75 mm)</td><td>1 kg</td><td>Estructura y piezas</td><td>15–25</td></tr>
+<tr><td>Motor NEMA 17 (bipolar, 1,8°/paso)</td><td>3–4</td><td>Articulaciones</td><td>10–15 c/u</td></tr>
+<tr><td>Driver A4988 o DRV8825</td><td>3–4</td><td>Control de corriente del motor</td><td>2–5 c/u</td></tr>
+<tr><td>Placa Arduino Uno o Mega</td><td>1</td><td>Controlador</td><td>8–20</td></tr>
+<tr><td>Fuente de 12V DC (5 A o más)</td><td>1</td><td>Alimentación de motores</td><td>12–20</td></tr>
+<tr><td>Rodamientos 608 o 623</td><td>4–8</td><td>Articulaciones de la base y el hombro</td><td>1–2 c/u</td></tr>
+<tr><td>Tornillería M3 y M5, insertos de latón</td><td>—</td><td>Uniones</td><td>5–10</td></tr>
+<tr><td>Condensador 470–1000 µF / 25V</td><td>1</td><td>Estabilizar VMOT</td><td>1</td></tr>
+<tr><td>Servo SG90 o MG90 (opcional)</td><td>1</td><td>Pinza</td><td>2–4</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>Advertencia:</strong> no alimentes los motores desde el pin de 5V del Arduino ni desde USB. Los picos de corriente de tres NEMA 17 superan con holgura lo que entrega el regulador de la placa y provocarán reinicios aleatorios, exactamente el fallo más reportado en este tipo de proyectos.</div>
+</section>
+<section id="diseno">
+<h2>Diseño: modelos listos o piezas propias</h2>
+<p>Tienes dos caminos para conseguir las piezas:</p>
+<p><strong>1. Descargar un diseño probado.</strong> Plataformas como Printables, Thingiverse y Cults3D alojan cientos de brazos robóticos con motores paso a paso. Busca términos como <em>robotic arm stepper</em>, <em>3DOF arm</em> o <em>EEZYbotARM</em>. Al elegir un diseño ajeno, revisa que indique: material y relleno usados por el autor, si necesita inserts o tuercas embebidas, y si otros usuarios reportaron resultados. Un diseño con 500 descargas y fotos de brazos terminados vale más que uno con renders perfectos.</p>
+<p><strong>2. Diseñar tus propias piezas.</strong> Fusion 360 (licencia personal gratuita), FreeCAD u Onshape permiten modelar el brazo a la medida de tus motores. Diseñar tu propio brazo te obliga a entender la relación entre dimensiones, torque y juego mecánico; es la mejor forma de aprender, pero suma semanas al proyecto. Si eliges este camino, respeta estas reglas:</p>
+<ul>
+<li>Diseña los alojamientos de motor con <strong>ajuste de interferencia leve</strong> o tornillos de fijación; un motor suelto destruye la precisión.</li>
+<li>Usa <strong>rodamientos</strong> en el eje de cada articulación, no plástico contra plástico.</li>
+<li>Deja <strong>huecos de 0,2–0,3 mm</strong> entre piezas móviles; demasiado apretado se traba, demasiado holgado genera juego.</li>
+<li>Redondea las esquinas interiores (filetes) de al menos el doble del diámetro de boquilla para evitar defectos de impresión.</li>
+</ul>
+</section>
+<section id="impresion">
+<h2>Parámetros de impresión recomendados</h2>
+<p>La calidad de impresión define el juego mecánico del brazo. Un relleno bajo o una boquilla sucia se traducen en piezas débiles y articulaciones imprecisas. Parámetros de partida para FDM:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Parámetro</th><th>Valor recomendado</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>Material</td><td>PLA+ o PETG</td><td>PLA+ es rígido y fácil; PETG aguanta mejor impactos y calor</td></tr>
+<tr><td>Altura de capa</td><td>0,2 mm</td><td>Equilibrio entre velocidad y calidad</td></tr>
+<tr><td>Perímetros</td><td>4–5</td><td>La pared exterior soporta el esfuerzo de flexión</td></tr>
+<tr><td>Relleno</td><td>40–60 % (giroide o cúbico)</td><td>Rigidez estructural sin peso excesivo</td></tr>
+<tr><td>Top/bottom layers</td><td>6–7</td><td>Evita que se vea el relleno en las caras de apoyo</td></tr>
+<tr><td>Soportes</td><td>Solo si el modelo lo requiere</td><td>Los soportes dejan marcas: usa tocar buildplate si es posible</td></tr>
+<tr><td>Temperatura PLA+</td><td>215–225 °C boquilla / 55–60 °C cama</td><td>Adhesión de capas sin deformación</td></tr>
+<tr><td>Velocidad</td><td>50–70 mm/s</td><td>La calidad del acabado importa más que la velocidad</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Consejo:</strong> imprime una pieza de prueba de cada articulación y comprueba el calce con el rodamiento y el eje del motor <em>antes</em> de imprimir el lote completo. Reimprimir una pieza cuesta 2 horas; reimprimir el brazo entero cuesta un fin de semana.</div>
+</section>
+<section id="motores">
+<h2>Motores paso a paso y drivers</h2>
+<p>Los <strong>NEMA 17 bipolares</strong> son el estándar de facto para brazos impresos en 3D: entregan par de retención de 40–45 N·cm, son baratos y se controlan con drivers de bajo coste. Cada motor tiene cuatro cables (dos fases A y B) que se conectan al driver en el orden indicado por el fabricante; si las fases se invierten, el motor solo vibrará sin girar.</p>
+<p>Los drivers <strong>A4988</strong> y <strong>DRV8825</strong> (y los silenciosos TMC2208/2209) hacen tres cosas: regulan la corriente máxima, interpretan los pulsos STEP y DIR, y ofrecen <strong>microstepping</strong> — dividen cada paso completo en fracciones (1/16 en el A4988) que reducen vibración y ruido a costa de un poco de par máximo.</p>
+<p>Los pines clave del driver:</p>
+<ul>
+<li><strong>STEP:</strong> cada pulso en este pin avanza el motor una fracción de paso.</li>
+<li><strong>DIR:</strong> define el sentido de giro (alto/bajo).</li>
+<li><strong>MS1–MS3:</strong> seleccionan el microstepping (por ejemplo, todos a VCC = 1/16 en el A4988).</li>
+<li><strong>VMOT y GND:</strong> alimentación de potencia (12V) — con un condensador electrolítico de 470–1000 µF cerca del driver para absorber picos.</li>
+<li><strong>VDD y GND:</strong> lógica (5V del Arduino).</li>
+</ul>
+<div class="warning"><strong>Importante:</strong> la corriente máxima del motor se ajusta con el potenciómetro del driver midiendo el voltaje de referencia (Vref). Para un NEMA 17 típico de 1,7 A, con el A4988 apunta a Vref ≈ 0,85 V (corriente = Vref × 2). Un driver sin disipador se apaga solo si lo exiges por encima de lo razonable.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="electronica">
+<h2>Electrónica y alimentación</h2>
+<p>La topología es simple: el Arduino genera los pulsos STEP/DIR, los drivers amplifican la corriente, y los motores mueven las articulaciones. Una fuente externa de 12V alimenta VMOT de los drivers, y su tierra se une a la tierra del Arduino (GND común) para que la lógica tenga referencia.</p>
+<ul>
+<li><strong>Pines:</strong> reserva dos pines digitales por motor (STEP y DIR). Con tres motores y una pinza, un Arduino Uno basta; si añades sensores de límite, encoders y pantalla, el Mega da más margen.</li>
+<li><strong>Condensador:</strong> un electrolítico de 470–1000 µF / 25V entre VMOT y GND, lo más cerca posible del driver.</li>
+<li><strong>Disipadores:</strong> los A4988 sin disipador trabajan al límite con motores de 1,5 A; pega un disipador pequeño con cinta térmica.</li>
+<li><strong>Cableado:</strong> trenza o acorta los cables entre driver y motor; el ruido eléctrico en cables largos causa pasos perdidos.</li>
+</ul>
+<p>Si el brazo se reinicia cuando arranca un motor, es un síntoma inequívoco de alimentación insuficiente o de picos sin filtrar: revisa la fuente y el condensador antes que el código.</p>
+</section>
+<section id="ensamblaje">
+<h2>Ensamblaje mecánico paso a paso</h2>
+<p>El orden de montaje evita rehacer trabajo:</p>
+<ol>
+<li><strong>Base:</strong> instala el rodamiento en la base y fija el motor de rotación con su acople al plato giratorio. La base debe quedar firme sobre la mesa (tornillos o abrazadera) para que el resto del brazo no la vuelque.</li>
+<li><strong>Hombro:</strong> monta el motor del hombro en su soporte y desliza el eslabón inferior; verifica que gire libre en todo el rango y que el cable del motor pase por el pasacables sin engancharse.</li>
+<li><strong>Codo y antebrazo:</strong> repite el proceso; en esta articulación el juego mecánico se nota el doble, así que usa rodamientos y aprieta sin deformar las piezas.</li>
+<li><strong>Muñeca y pinza:</strong> el servo de la pinza se atornilla al final del antebrazo. Prueba el servo por separado con un sketch de barrido antes de fijarlo.</li>
+<li><strong>Cableado:</strong> pasa los cables por el interior o con cinchas hacia el exterior, dejando holgura en cada articulación para que el movimiento no los tense. Los cables tensados son la causa número uno de pasos perdidos intermitentes.</li>
+<li><strong>Prueba estática:</strong> con el código de ejemplo, mueve cada eje <strong>individualmente</strong> a baja velocidad antes de hacer movimientos coordinados.</li>
+</ol>
+</section>
+<section id="codigo">
+<h2>Código: mover el brazo con AccelStepper</h2>
+<p>La librería <strong>AccelStepper</strong> gestiona aceleración, desaceleración y velocidad máxima por motor, lo que evita los tirones que hacen perder pasos a los motores. Instálala desde el Gestor de Librerías del IDE de Arduino.</p>
+<pre><code>#include &lt;AccelStepper.h&gt;
+
+// Motor 1: base  (pines STEP, DIR)
+// Motor 2: hombro (pines STEP, DIR)
+// Motor 3: codo   (pines STEP, DIR)
+AccelStepper base(AccelStepper::DRIVER, 2, 5);
+AccelStepper hombro(AccelStepper::DRIVER, 3, 6);
+AccelStepper codo(AccelStepper::DRIVER, 4, 7);
+
+const float PASOS_POR_GRADO = 17.78;  // ver calibración
+
+void setup() {
+  // Configuración de cada motor
+  base.setMaxSpeed(1200);
+  base.setAcceleration(600);
+  hombro.setMaxSpeed(800);
+  hombro.setAcceleration(400);
+  codo.setMaxSpeed(800);
+  codo.setAcceleration(400);
+
+  // Posición inicial: 90° en el hombro y el codo
+  hombro.moveTo(PASOS_POR_GRADO * 90);
+  codo.moveTo(PASOS_POR_GRADO * 90);
+  runTodos();
+}
+
+void loop() {
+  // Ejemplo: rotar la base de 0° a 180° y volver
+  base.moveTo(PASOS_POR_GRADO * 180);
+  runTodos();
+  delay(1000);
+  base.moveTo(0);
+  runTodos();
+  delay(1000);
+}
+
+void runTodos() {
+  // Avanza todos los motores hasta que terminen su destino
+  while (base.distanceToGo() != 0 ||
+         hombro.distanceToGo() != 0 ||
+         codo.distanceToGo() != 0) {
+    base.run();
+    hombro.run();
+    codo.run();
+  }
+}</code></pre>
+<p>Nota: <code>moveTo()</code> trabaja con posición absoluta en pasos. Llevar un registro mental de la posición en pasos y convertir a grados con la constante calibrada evita errores de ángulo acumulados.</p>
+</section>
+<section id="calibracion">
+<h2>Calibración: pasos por grado y homing</h2>
+<p>El número clave del brazo es <strong>cuántos pasos recibe el motor para girar un grado</strong>:</p>
+<pre><code>pasos_por_revolucion_motor = 200              // NEMA 17, 1,8°/paso
+microstepping = 16                             // A4988 en 1/16
+relacion_reductora = 3                         // poleas o engranajes 3:1
+
+pasos_por_revolucion_salida = 200 * 16 * 3     // = 9.600
+pasos_por_grado = pasos_por_revolucion_salida / 360  // ≈ 26,67</code></pre>
+<p>Con ese cálculo previo, calibra finamente en la práctica: ordena mover exactamente 90° y mide el ángulo real con un transportador de brazo o un inclinómetro de teléfono. Ajusta la constante con una regla de tres y repite hasta que el error sea menor a 1°.</p>
+<p>Para que el brazo siempre sepa dónde está al encender, añade <strong>sensores de límite (finales de carrera)</strong> en cada eje: al arrancar, mueve el eje lentamente contra el sensor y cuenta esa posición como cero. Sin homing, cada encendido pierde la referencia absoluta y las posiciones quedan desplazadas.</p>
+</section>
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Síntoma</th><th>Causa más probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El motor zumba pero no gira</td><td>Fases mal conectadas o corriente demasiado baja</td><td>Revisa el orden A1-A2-B1-B2 y el Vref</td></tr>
+<tr><td>Pierde pasos al acelerar</td><td>Aceleración demasiado alta o alimentación débil</td><td>Baja la aceleración; sube la corriente; verifica 12V estables</td></tr>
+<tr><td>El brazo se reinicia solo</td><td>Picos de corriente sin filtrar o fuente insuficiente</td><td>Condensador en VMOT y fuente de 5 A como mínimo</td></tr>
+<tr><td>Juego excesivo en una articulación</td><td>Rodamiento mal calzado o tuercas flojas</td><td>Calza el rodamiento con presión suave y usa threadlocker</td></tr>
+<tr><td>Piezas que se parten al apretar</td><td>Relleno bajo o agujeros sin inserts</td><td>Usa inserts de latón y relleno ≥ 40 %</td></tr>
+<tr><td>El driver se calienta mucho</td><td>Corriente alta sin disipador</td><td>Disipador + ventilación; revisa Vref</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Construir un brazo robótico impreso en 3D con motores paso a paso es el proyecto que une las dos habilidades más demandadas en robótica de bajo coste: <strong>fabricación aditiva y control de motores</strong>. El resultado es una plataforma que puedes extender indefinidamente — más ejes, sensores de límite, encoders, pinza con retroalimentación o control por Bluetooth.</p>
+<p>El secreto está en los detalles que este artículo repite una y otra vez: alimentación con margen, drivers bien configurados, rodamientos en todas las articulaciones y calibración con homing. Si respetas esas cuatro reglas, el brazo se moverá con una suavidad y repetibilidad que sorprende a quien lo ve por primera vez.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué motores necesito para un brazo robótico impreso en 3D?</summary><p>Para un primer brazo, motores NEMA 17 bipolares de 1,8° por paso con par de retención de 40–45 N·cm son la opción más equilibrada: hay drivers baratos, documentación abundante y suficiente par para eslabones de 20–30 cm. Los NEMA 23 son más potentes pero más pesados y exigen drivers y fuentes más caras; los servos MG996R sirven para brazos muy ligeros, pero no entregan la repetibilidad angular de un paso a paso bien calibrado.</p></details>
+<details><summary>¿PLA o PETG para las piezas del brazo?</summary><p>El PLA+ es el punto de partida ideal: rígido, fácil de imprimir y barato. Su debilidad es la temperatura (se deforma alrededor de 55–60 °C) y la fragilidad a impactos. El PETG es más tenaz y tolera más calor, pero es más propenso a hilos y requiere temperaturas más altas. Si el brazo trabajará cerca de motores que se calientan o a la intemperie, elige PETG; para un taller o escritorio, PLA+ es suficiente.</p></details>
+<details><summary>¿Cuánto cuesta construir un brazo robótico casero en 3D?</summary><p>Con tres motores NEMA 17, drivers, un Arduino Uno, un kilo de filamento, rodamientos y tornillería, el presupuesto se mueve entre 60 y 90 USD. Si ya tienes impresora 3D y Arduino, el desembolso adicional es de unos 40–50 USD por motores, drivers y fuente. Comparado con kits comerciales de brazo educativo (80–200 USD), sale competitivo y, a diferencia de un kit, cada pieza es reemplazable y personalizable.</p></details>
+<details><summary>¿Por qué mi brazo pierde pasos y se descoloca?</summary><p>La causa número uno es la aceleración demasiado agresiva: el motor no puede seguir el ritmo de pulsos y pierde pasos, acumulando un error de posición. La segunda causa es la alimentación: picos de corriente que hacen caer el voltaje y reiniciar la placa. La tercera es mecánica: juego excesivo o fricción en una articulación que el motor no puede vencer de forma constante. Baja la aceleración, refuerza la fuente y lubrica o afloja la articulación problemática.</p></details>
+<details><summary>¿Puedo controlar un brazo de motores paso a paso sin Arduino?</summary><p>Sí: una Raspberry Pi con los drivers conectados a sus GPIO (con la librería RPi.GPIO o con una placa de control dedicada como la HAT de Adafruit), un ESP32 con la librería AccelStepper, o incluso una placa RAMPS de impresora 3D con Marlin adaptado son alternativas reales. El ESP32 es especialmente interesante porque añade Wi-Fi/Bluetooth para control remoto. Para empezar, sin embargo, el Arduino sigue siendo lo más simple y robusto.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Con la mecánica lista, aprende a controlar una pinza y más articulaciones en la guía del <a href="/blog/construye-un-brazo-robotico-de-6-ejes-con-arduino">Brazo Robótico de 6 Ejes con Arduino</a>, y si piensas comprar una impresora para este proyecto, revisa las <a href="/blog/mejores-impresoras-3d-para-piezas-de-brazos-roboticos">Mejores Impresoras 3D para Brazos Robóticos</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/mejores-impresoras-3d-para-piezas-de-brazos-roboticos">← Anterior: Mejores Impresoras 3D para Brazos Robóticos</a>
+  <a href="/blog/construye-un-brazo-robotico-de-6-ejes-con-arduino">Siguiente: Brazo Robótico de 6 Ejes con Arduino →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos de impresión, control de motores paso a paso y calibración. Los valores de corriente y par dependen del fabricante del motor y del driver.</p>
+<ul>
+<li><a href="https://www.airspayce.com/mikem/arduino/AccelStepper/" target="_blank" rel="noopener noreferrer">AccelStepper — Documentación oficial de la librería</a></li>
+<li><a href="https://www.arduino.cc/reference/en/libraries/stepper/" target="_blank" rel="noopener noreferrer">Arduino Reference — Librería Stepper</a></li>
+<li><a href="https://www.pololu.com/product/1182" target="_blank" rel="noopener noreferrer">Pololu — Hoja de datos y guía del driver A4988</a></li>
+<li><a href="https://www.pololu.com/product/2133" target="_blank" rel="noopener noreferrer">Pololu — Guía del driver DRV8825</a></li>
+<li><a href="https://reprap.org/wiki/RAMPS_1.4" target="_blank" rel="noopener noreferrer">RepRap Wiki — Placa RAMPS 1.4 y su electrónica</a></li>
+<li><a href="https://teachingtechyt.github.io/calibration.html" target="_blank" rel="noopener noreferrer">Teaching Tech — Guía de calibración de impresoras 3D</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 

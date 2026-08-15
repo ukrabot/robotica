@@ -1,1 +1,630 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cómo Diseñar un Crossover Pasivo para Altavoces de 2 Vías</title>
+<meta name="description" content="Diseña tu propio crossover pasivo de 2 vías: frecuencia de cruce, alineaciones Butterworth y Linkwitz-Riley, cálculo de bobinas y capacitores, simulación y construcción.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo Diseñar un Crossover Pasivo para Altavoces de 2 Vías">
+<meta property="og:description" content="Frecuencia de cruce, pendientes, fórmulas de bobinas y capacitores, y simulación: el crossover de 2 vías explicado al detalle.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/crossover_pasivo_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cómo Diseñar un Crossover Pasivo para Altavoces de 2 Vías">
+<meta name="twitter:description" content="Del cálculo a la caja: cómo diseñar un crossover pasivo de 2 vías con la alineación correcta.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/crossover_pasivo_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Cómo Diseñar un Crossover Pasivo para Altavoces de 2 Vías",
+  "description":"Guía técnica completa para diseñar un crossover pasivo para altavoces de 2 vías: qué es un crossover y por qué ningún driver puede cubrir todo el espectro, conceptos de frecuencia de cruce y pendiente en dB por octava, órdenes de filtro (primero, segundo, tercero y cuarto orden), alineaciones Butterworth, Linkwitz-Riley y Bessel y cuándo elegir cada una, componentes del crossover (bobinas con núcleo de aire, capacitores de polipropileno, resistencias y el circuito L-pad de atenuación), diseño paso a paso de un filtro de segundo orden Linkwitz-Riley a 2,5 kHz para drivers de 8 ohm con el cálculo numérico completo de inductancias y capacitancias, consideraciones de impedancia, sensibilidad y polaridad de los drivers, simulación con VituixCAD o XSim y medición con REW, y construcción física del crossover (montaje, cableado, separación de bobinas) con una tabla de problemas comunes.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-08-15",
+  "dateModified":"2026-08-15",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias"},
+  "image":"https://www.ukrabot.cl/blog/crossover_pasivo_hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Woofer y tweeter con hoja de datos (impedancia y sensibilidad), bobinas de aire, capacitores de polipropileno, resistencias de potencia, soldador, placa de montaje",
+  "wordCount":"2900",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Cómo Diseñar un Crossover Pasivo para Altavoces de 2 Vías","item":"https://www.ukrabot.cl/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[{"@type":"Question","name":"¿Qué frecuencia de cruce debo usar para un woofer de 6,5 pulgadas?","acceptedAnswer":{"@type":"Answer","text":"Para un woofer de 6,5\" con tweeter de cúpula, el cruce típico va de 2 a 3 kHz. El límite práctico lo marca el comportamiento del woofer en sus agudos (cuando el cono empieza a 'partirse' en modos de rotación) y la capacidad del tweeter en graves (su frecuencia de resonancia, típicamente 800 Hz–1,5 kHz, y su desplazamiento máximo). Con 2,5 kHz estás cómodo en el 90 % de los casos; consulta la curva de respuesta de tus drivers: cruza donde el woofer aún está plano y el tweeter ya está en su zona lineal."}},{"@type":"Question","name":"¿Qué es mejor: crossover de 6 dB, 12 dB o 24 dB por octava?","acceptedAnswer":{"@type":"Answer","text":"No hay un 'mejor' absoluto: cada pendiente exige drivers que cooperen. Los de 6 dB/oct son los más transparentes en fase pero dejan pasar mucha energía fuera de banda: solo funcionan con drivers excepcionalmente suaves fuera de su rango. Los de 12 dB/oct (2º orden) equilibran componentes, fase y protección, y con alineación Linkwitz-Riley son la elección clásica del DIY. Los de 24 dB/oct (4º orden) protegen mejor al tweeter y son el estándar de los diseños serios, a costa de más componentes y más complejidad. Para empezar: 12 dB/oct LR2."}},{"@type":"Question","name":"¿Puedo usar condensadores electrolíticos en un crossover?","acceptedAnswer":{"@type":"Answer","text":"Se puede (los altavoces económicos los usan), pero no es recomendable: los electrolíticos bipolares tienen tolerancia amplia, se degradan con los años y distorsionan más que un capacitor de polipropileno. La diferencia es pequeña en un altavoz de 50 dólares, pero audible en uno bueno. Si el presupuesto aprieta, usa electrolíticos bipolares solo para la rama del woofer (donde la señal es grande y la distorsión menos audible) y polipropileno en la rama del tweeter, que es donde se nota la calidad del capacitor."}},{"@type":"Question","name":"¿Necesito un L-pad si mi woofer y mi tweeter tienen la misma sensibilidad?","acceptedAnswer":{"@type":"Answer","text":"Si ambos drivers declaran exactamente la misma sensibilidad (por ejemplo, 89 dB), técnicamente no. Pero dos matices: la sensibilidad declarada se mide en la banda del fabricante, y en la práctica el woofer y el tweeter pueden diferir 1–3 dB en la zona de cruce por la propia respuesta del driver montado en la caja. Lo correcto es medir la respuesta de cada vía en el altavoz real y decidir el L-pad con esos datos: a menudo hace falta atenuar 1–2 dB aunque las hojas de datos coincidan."}},{"@type":"Question","name":"¿Cuánto cuesta el crossover de un altavoz de 2 vías?","acceptedAnswer":{"@type":"Answer","text":"Con componentes de calidad media (bobinas de núcleo de aire, capacitores de polipropileno y resistencias de potencia), el crossover completo de un altavoz de 2 vías ronda los 15–35 USD en componentes. Los capacitores grandes (8–10 µF) y las bobinas de 0,5–1 mH bien calibradas son los ítems más caros. Si añades el tiempo de diseño, simulación y montaje, el costo real está en la hora de taller: por eso comprar un crossover genérico de 5 dólares 'para 8 ohm' suele sonar peor que diseñar el propio."}}]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="crossover_pasivo_hero.jpg" alt="Componentes de un crossover pasivo: capacitores de polipropileno, bobinas de aire y resistencias junto a un esquema en papel" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Audio y electrónica de sonido · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Cómo Diseñar un Crossover Pasivo para Altavoces de 2 Vías</h1>
+    <p>La frecuencia de cruce, la pendiente y la alineación correctas: cálculo numérico completo, simulación y construcción del filtro de 2 vías.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="crossover_2vias_esquema.svg" alt="Esquema de un crossover pasivo de 2 vías de segundo orden Linkwitz-Riley a 2 kHz para altavoces de 8 ohm con los valores de bobinas y capacitores" loading="lazy">
+  <div class="caption">El esquema del crossover de ejemplo: cada rama filtra una banda, y la alineación Linkwitz-Riley hace que las dos sumen planas en la zona de cruce.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es un crossover y por qué se necesita</a></li>
+    <li><a href="#conceptos">Frecuencia de cruce, pendiente y orden</a></li>
+    <li><a href="#alineaciones">Alineaciones: Butterworth, Linkwitz-Riley y Bessel</a></li>
+    <li><a href="#componentes">Componentes: bobinas, capacitores y resistencias</a></li>
+    <li><a href="#paso-a-paso">Diseño paso a paso: segundo orden LR a 2,5 kHz</a></li>
+    <li><a href="#numerico">El cálculo numérico completo</a></li>
+    <li><a href="#drivers">Impedancia, sensibilidad y polaridad de los drivers</a></li>
+    <li><a href="#simulacion">Simulación y medición</a></li>
+    <li><a href="#construccion">Construcción física del crossover</a></li>
+    <li><a href="#troubleshooting">Problemas comunes y soluciones</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="que-es">
+<h2>Qué es un crossover y por qué se necesita</h2>
+<p>Ningún altavoz reproduce bien todo el espectro audible. Un woofer de 6 pulgadas no llega con energía a 15 kHz, y un tweeter de cúpula no puede mover el aire necesario a 80 Hz. El <strong>crossover</strong> (filtro divisor de frecuencias) resuelve el problema: envía los graves y medios al woofer, los agudos al tweeter, y alinea las dos fuentes para que la suma suene como un solo altavoz.</p>
+<p>El crossover es, de hecho, el corazón del diseño de un altavoz de 2 vías. Un crossover mal diseñado hace que dos excelentes drivers suenen peor que un full-range mediocre: la zona de cruce puede tener un pico, un valle, o una cancelación de fase que destruye la imagen estéreo.</p>
+<p>Dos tipos de crossover dominan:</p>
+<ul>
+<li><strong>Activo (electrónico):</strong> filtra la señal a nivel de línea <em>antes</em> del amplificador, con un amplificador por vía. Más flexible y preciso, pero más caro y complejo.</li>
+<li><strong>Pasivo:</strong> filtros de bobinas, capacitores y resistencias conectados <em>entre</em> el amplificador y los drivers, dentro de la caja. Es el estándar de los altavoces comerciales de gama media y del DIY de este artículo: un solo amplificador y sin electrónica extra.</li>
+</ul>
+</section>
+<section id="conceptos">
+<h2>Frecuencia de cruce, pendiente y orden</h2>
+<p>Tres parámetros definen el filtro:</p>
+<p><strong>1. Frecuencia de cruce (fc):</strong> el punto donde las dos ramas están a media potencia (−3 dB o −6 dB según la alineación). La elige el límite superior útil del woofer y el límite inferior del tweeter: un woofer de 6,5" con cono de aluminio suele cruzar a 2–3 kHz; uno de papel más blando, a 1,5–2,5 kHz; los full-range con whizzer a 5–7 kHz. Cruza <em>dentro</em> del rango donde ambos drivers están en su zona lineal.</p>
+<p><strong>2. Pendiente:</strong> la velocidad de atenuación, medida en dB por octava. Una pendiente de primer orden cae 6 dB/oct, una de segundo 12 dB/oct, tercero 18 dB/oct y cuarto 24 dB/oct.</p>
+<p><strong>3. Orden:</strong> el número de elementos reactivos (bobinas y capacitores) por rama. Más orden = pendiente más pronunciada = menos energía fuera de banda, pero más fase y más componentes.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Orden</th><th>Pendiente</th><th>Componentes por rama</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td>1º</td><td>6 dB/oct</td><td>1 (L o C)</td><td>Diseños minimalistas; exige drivers muy suaves fuera de banda</td></tr>
+<tr><td>2º</td><td>12 dB/oct</td><td>2 (L + C)</td><td>El estándar DIY: buen equilibrio, 2 componentes por rama</td></tr>
+<tr><td>3º</td><td>18 dB/oct</td><td>3</td><td>Protege tweeters delicados</td></tr>
+<tr><td>4º</td><td>24 dB/oct</td><td>4</td><td>El favorito de los diseños serios (Linkwitz-Riley de 4º orden)</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="alineaciones">
+<h2>Alineaciones: Butterworth, Linkwitz-Riley y Bessel</h2>
+<p>La <strong>alineación</strong> describe la respuesta del filtro en la zona de cruce, y define cuánto se suman las dos ramas:</p>
+<ul>
+<li><strong>Butterworth (BW):</strong> respuesta plana en cada rama individual, pero las ramas se suman en fase y el cruce presenta un pico de +3 dB si no se invierte la polaridad del tweeter. Se usa con inversión de polaridad en segundo orden.</li>
+<li><strong>Linkwitz-Riley (LR):</strong> cada rama cae a −6 dB en el cruce, y la suma es <strong>plana y en fase</strong> sin pico. Es la alineación más usada en 2º y 4º orden porque perdonas errores de fase del mundo real.</li>
+<li><strong>Bessel:</strong> retardo de grupo máximo plano (transitorios más fieles) a costa de una pendiente inicial más suave. Rara en pasivos de 2 vías, común en equipos profesionales.</li>
+</ul>
+<p>Regla práctica: <strong>elige Linkwitz-Riley de segundo orden (LR2) para tu primer diseño</strong>. Es la que este artículo calcula en detalle: solo dos componentes por rama, fase benigna y suma plana, la combinación más perdonadora del mundo DIY.</p>
+</section>
+<section id="componentes">
+<h2>Componentes: bobinas, capacitores y resistencias</h2>
+<p>Los tres componentes pasivos y sus reglas de calidad:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Componente</th><th>Función</th><th>Qué comprar</th></tr></thead>
+<tbody>
+<tr><td>Bobina (inductor)</td><td>Deja pasar graves, bloquea agudos (pasabajos)</td><td>Núcleo de aire (sin saturación, sin distorsión); calibre de alambre ≥ 0,8 mm</td></tr>
+<tr><td>Capacitor</td><td>Deja pasar agudos, bloquea graves (pasaaltos)</td><td>Polipropileno (film) de buena tolerancia (±5 %); evita electrolíticos bipolares en la señal</td></tr>
+<tr><td>Resistencia</td><td>Atenuación (L-pad) y ajuste de impedancia</td><td>Resistencias de potencia ≥ 10 W para el L-pad</td></tr>
+</tbody>
+</table>
+</div>
+<p>Los valores comerciales no siempre coinciden con los calculados: se usan los valores estándar más cercanos (serie E12/E24) y, para capacitancias grandes, se combinan capacitores en paralelo (10 µF + 4,7 µF = 14,7 µF). La tolerancia del componente introduce error de frecuencia de cruce: un capacitor de ±10 % desplaza el cruce ~10 %, por eso se prefiere ±5 %.</p>
+</section>
+<section id="paso-a-paso">
+<h2>Diseño paso a paso: segundo orden LR a 2,5 kHz</h2>
+<p>Vamos a diseñar el crossover del altavoz de 2 vías del proyecto de <a href="/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad">altavoz Bluetooth Hi-Fi</a>: woofer de 6,5" y tweeter de cúpula, ambos de <strong>8 Ω nominales</strong>, cruce a <strong>2.500 Hz</strong>.</p>
+<p><strong>Paso 1 — Elige la topología LR2.</strong> El filtro de segundo orden Linkwitz-Riley es dos filtros de primer orden en cascada por rama. Las fórmulas canónicas (con la impedancia nominal R y la frecuencia fc en Hz):</p>
+<pre><code>Para CADA rama de segundo orden LR:
+
+  Rama pasabajos (woofer):
+    L_serie = R / (2 · π · fc)          // en henrios
+    C_paralelo = 1 / (2 · π · fc · R)   // en faradios
+
+  Rama pasaaltos (tweeter):
+    C_serie = 1 / (2 · π · fc · R)      // en faradios
+    L_paralelo = R / (2 · π · fc)       // en henrios</code></pre>
+<p><strong>Paso 2 — Calcula.</strong> Con R = 8 Ω y fc = 2.500 Hz (los valores completos en la siguiente sección): L ≈ 0,51 mH y C ≈ 7,96 µF por rama.</p>
+<p><strong>Paso 3 — Verifica la fase.</strong> En LR2 ambas ramas salen con la misma fase en la zona de cruce; conecta <strong>ambos drivers en la misma polaridad</strong> (o invierte ambos — la regla es que los dos se conecten igual entre sí en LR2, a diferencia del Butterworth de 2º orden que exige invertir el tweeter).</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="numerico">
+<h2>El cálculo numérico completo</h2>
+<pre><code>Datos:
+  R  = 8 Ω          (impedancia nominal de ambos drivers)
+  fc = 2.500 Hz     (frecuencia de cruce)
+
+Rama pasabajos (woofer):
+  L1 = R / (2·π·fc) = 8 / (6,2832 · 2500) = 0,000509 H = 0,51 mH
+  C1 = 1 / (2·π·fc·R) = 1 / (6,2832 · 2500 · 8) = 0,00000796 F = 7,96 µF
+
+Rama pasaaltos (tweeter):
+  C2 = C1 = 7,96 µF
+  L2 = L1 = 0,51 mH
+
+Valores comerciales más cercanos:
+  L1 = L2 = 0,5 mH (núcleo de aire)
+  C1 = C2 = 8,2 µF (o 4,7 + 3,3 µF en paralelo)</code></pre>
+<p>Con esos valores, la frecuencia real de cruce queda:</p>
+<pre><code>fc = R / (2·π·L) = 8 / (6,2832 · 0,0005) = 2.546 Hz   (con L = 0,5 mH)
+fc = 1 / (2·π·C·R) = 1 / (6,2832 · 0,0000082 · 8) = 2.426 Hz  (con C = 8,2 µF)</code></pre>
+<p>El par de valores comerciales cruza alrededor de 2,5 kHz, perfecto para el woofer de 6,5". Si el woofer tiene una impedancia real de 6 Ω en la zona de cruce (impedancias reales de los drivers no son planas), el cruce sube un poco: por eso el siguiente paso es simular y medir, no quedarse con la hoja de cálculo.</p>
+<div class="note"><strong>Nota:</strong> en un LR2 estricto, las ramas caen −6 dB en el cruce (no −3 dB). Si tu multímetro de banco te dice otra cosa, es porque el fabricante del driver o la impedancia real desplazaron la curva: la simulación con la impedancia medida lo aclara.</div>
+</section>
+<section id="drivers">
+<h2>Impedancia, sensibilidad y polaridad de los drivers</h2>
+<p>Tres realidades de los drivers que el cálculo ideal ignora:</p>
+<p><strong>1. La impedancia real no es constante.</strong> Un woofer puede tener un pico de resonancia a 60 Hz (30–50 Ω) y caer a 6–7 Ω en el cruce; un tweeter suele estar en 4–6 Ω a 2,5 kHz. Como el crossover filtra <em>voltaje</em> y los drivers consumen según su impedancia real, la frecuencia de cruce efectiva se desplaza. La solución profesional: medir la impedancia (con REW o un adaptador) y usar esos datos en la simulación, o cruzar con margen usando la impedancia promedio de la zona de cruce.</p>
+<p><strong>2. La sensibilidad define el balance.</strong> Si el tweeter tiene 92 dB/1W/1m y el woofer 88 dB, el tweeter dominará por 4 dB. Se corrige con un <strong>L-pad</strong>: dos resistencias (una en serie, una en paralelo con el tweeter) que atenúan sin cambiar la impedancia vista por el filtro. Para atenuar 4 dB en 8 Ω: R1 ≈ 1,8 Ω en serie y R2 ≈ 15 Ω en paralelo (los valores exactos salen de las fórmulas del L-pad, que se pueden calcular en cualquier calculadora de L-pad online o en la hoja de cálculo del simulador).</p>
+<p><strong>3. La polaridad es ley.</strong> En LR2 los dos drivers van en la misma fase eléctrica; conectar el tweeter invertido crea un hueco profundo en la zona de cruce. Antes de cerrar la caja, prueba de polaridad: reproduce una señal cerca del cruce y escucha el tono; si al invertir la polaridad del tweeter el sonido se vuelve más lleno, déjalo así (y revisa la alineación que elegiste).</p>
+</section>
+<section id="simulacion">
+<h2>Simulación y medición</h2>
+<p>Ningún crossover moderno se diseña a ciegas con la calculadora. El flujo de trabajo real:</p>
+<ol>
+<li><strong>Mide la impedancia</strong> de cada driver en la caja (REW + jig de medición de impedancia, o un medidor de impedancia económico).</li>
+<li><strong>Mide la respuesta en frecuencia</strong> de cada driver montado en la caja, a 30–60 cm con un micrófono de medición (miniDSP UMIK-1 o similar). Sin respuesta medida, el crossover se diseña a ciegas.</li>
+<li><strong>Simula con VituixCAD o XSim:</strong> importa las curvas medidas, dibuja el esquema del crossover y ajusta valores hasta que la respuesta suma sea plana (±2 dB) en el rango útil.</li>
+<li><strong>Construye, mide y ajusta:</strong> arma el crossover en una placa de prueba, mide la respuesta del altavoz completo en el eje y a 15–30° fuera del eje, y ajusta L-pad y valores finos.</li>
+</ol>
+<p>Esta es la diferencia entre un "altavoz con crossover" y un altavoz bien diseñado: los valores calculados son el punto de partida, los valores simulados con datos reales son el diseño.</p>
+</section>
+<section id="construccion">
+<h2>Construcción física del crossover</h2>
+<p>Reglas de montaje que evitan problemas de sonido y de seguridad:</p>
+<ul>
+<li><strong>Placa base:</strong> monta los componentes sobre una placa de madera o plástico (los PCB de crossover comerciales también existen), fijados con silicona caliente o bridas, no sueltos dentro de la caja.</li>
+<li><strong>Separación de bobinas:</strong> las bobinas de aire generan campos magnéticos que interactúan; sepáralas al menos 2 diámetros entre sí y orienta sus ejes perpendiculares. Una bobina pegada al imán del woofer induce ruido.</li>
+<li><strong>Cableado:</strong> usa cable de sección adecuada (≥ 1 mm²) y conexiones firmes (crimp, terminal o soldadura con buen estaño); un contacto intermitente produce chasquidos y pérdida intermitente de una vía.</li>
+<li><strong>Protección:</strong> si el altavoz puede recibir potencia alta, los capacitores de la rama del tweeter trabajan a voltajes considerables: usa capacitores con tensión nominal ≥ 100 V y resistencias del L-pad de al menos 10 W (el tweeter solo recibe agudos, pero los transitorios pico son altos).</li>
+<li><strong>Prueba antes de cerrar:</strong> con el altavoz completo, reproduce música a volumen moderado y barridos; verifica que ambas vías suenen y que no haya chasquidos al tocar los cables.</li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2>Problemas comunes y soluciones</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Síntoma</th><th>Causa más probable</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Hueco profundo en la zona de cruce</td><td>Polaridad invertida en una rama (LR2)</td><td>Conecta ambos drivers en la misma polaridad</td></tr>
+<tr><td>Pico en el cruce (+6 dB o más)</td><td>Alineación Butterworth sin inversión, o cruce en un pico de impedancia</td><td>Cambia a LR2 o invierte el tweeter; revisa la impedancia real</td></tr>
+<tr><td>Suenan demasiado los agudos</td><td>Tweeter de mayor sensibilidad sin L-pad</td><td>Calcula e instala el L-pad de atenuación</td></tr>
+<tr><td>El tweeter se quema</td><td>Frecuencia de cruce demasiado baja o pendiente insuficiente</td><td>Sube fc dentro del rango del tweeter; usa 3er/4º orden</td></tr>
+<tr><td>Chasquidos al mover el altavoz</td><td>Conexiones flojas o cable desnudo</td><td>Revisa cada terminal y refuerza las soldaduras</td></tr>
+<tr><td>El bajo suena "descajetado"</td><td>Rama pasabajos sin bobina de núcleo de aire bien dimensionada</td><td>Bobina con calibre suficiente y sin saturación a potencia alta</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Diseñar un crossover pasivo de 2 vías es el paso que separa al que junta componentes del que diseña altavoces. Con la alineación Linkwitz-Riley de segundo orden, dos fórmulas y un par de valores comerciales, consigues un filtro correcto; con la impedancia y la respuesta medidas, el simulador y un micrófono, consigues un filtro <em>bien diseñado</em>.</p>
+<p>El camino recomendado: calcula con las fórmulas, simula con los datos reales de tus drivers, construye con buenos componentes y mide el resultado. Ese circuito — del cálculo a la medición — es exactamente el mismo que usan los diseñadores profesionales, y convierte tu altavoz casero en un instrumento con carácter propio.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué frecuencia de cruce debo usar para un woofer de 6,5 pulgadas?</summary><p>Para un woofer de 6,5" con tweeter de cúpula, el cruce típico va de 2 a 3 kHz. El límite práctico lo marca el comportamiento del woofer en sus agudos (cuando el cono empieza a 'partirse' en modos de rotación) y la capacidad del tweeter en graves (su frecuencia de resonancia, típicamente 800 Hz–1,5 kHz, y su desplazamiento máximo). Con 2,5 kHz estás cómodo en el 90 % de los casos; consulta la curva de respuesta de tus drivers: cruza donde el woofer aún está plano y el tweeter ya está en su zona lineal.</p></details>
+<details><summary>¿Qué es mejor: crossover de 6 dB, 12 dB o 24 dB por octava?</summary><p>No hay un 'mejor' absoluto: cada pendiente exige drivers que cooperen. Los de 6 dB/oct son los más transparentes en fase pero dejan pasar mucha energía fuera de banda: solo funcionan con drivers excepcionalmente suaves fuera de su rango. Los de 12 dB/oct (2º orden) equilibran componentes, fase y protección, y con alineación Linkwitz-Riley son la elección clásica del DIY. Los de 24 dB/oct (4º orden) protegen mejor al tweeter y son el estándar de los diseños serios, a costa de más componentes y más complejidad. Para empezar: 12 dB/oct LR2.</p></details>
+<details><summary>¿Puedo usar condensadores electrolíticos en un crossover?</summary><p>Se puede (los altavoces económicos los usan), pero no es recomendable: los electrolíticos bipolares tienen tolerancia amplia, se degradan con los años y distorsionan más que un capacitor de polipropileno. La diferencia es pequeña en un altavoz de 50 dólares, pero audible en uno bueno. Si el presupuesto aprieta, usa electrolíticos bipolares solo para la rama del woofer (donde la señal es grande y la distorsión menos audible) y polipropileno en la rama del tweeter, que es donde se nota la calidad del capacitor.</p></details>
+<details><summary>¿Necesito un L-pad si mi woofer y mi tweeter tienen la misma sensibilidad?</summary><p>Si ambos drivers declaran exactamente la misma sensibilidad (por ejemplo, 89 dB), técnicamente no. Pero dos matices: la sensibilidad declarada se mide en la banda del fabricante, y en la práctica el woofer y el tweeter pueden diferir 1–3 dB en la zona de cruce por la propia respuesta del driver montado en la caja. Lo correcto es medir la respuesta de cada vía en el altavoz real y decidir el L-pad con esos datos: a menudo hace falta atenuar 1–2 dB aunque las hojas de datos coincidan.</p></details>
+<details><summary>¿Cuánto cuesta el crossover de un altavoz de 2 vías?</summary><p>Con componentes de calidad media (bobinas de núcleo de aire, capacitores de polipropileno y resistencias de potencia), el crossover completo de un altavoz de 2 vías ronda los 15–35 USD en componentes. Los capacitores grandes (8–10 µF) y las bobinas de 0,5–1 mH bien calibradas son los ítems más caros. Si añades el tiempo de diseño, simulación y montaje, el costo real está en la hora de taller: por eso comprar un crossover genérico de 5 dólares 'para 8 ohm' suele sonar peor que diseñar el propio.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Construye el altavoz completo con esta guía hermana: <a href="/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad">Altavoz Bluetooth de Alta Fidelidad</a>, o explora el procesamiento de audio por software en <a href="/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real">Teensy 4.1 vs Arduino Due</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad">← Anterior: Altavoz Bluetooth Hi-Fi</a>
+  <a href="/blog/teensy-4-1-vs-arduino-due-procesamiento-de-audio-en-tiempo-real">Siguiente: Teensy 4.1 vs Arduino Due →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias de diseño de filtros para altavoces y herramientas de simulación. Los valores calculados deben verificarse con la impedancia real de los drivers.</p>
+<ul>
+<li><a href="https://www.linkwitzlab.com/crossovers.htm" target="_blank" rel="noopener noreferrer">Siegfried Linkwitz — Filtros crossover y alineaciones</a></li>
+<li><a href="https://www.ti.com/lit/an/sloa119/sloa119.pdf" target="_blank" rel="noopener noreferrer">TI — Nota de aplicación sobre filtros activos y pasivos (conceptos de orden y pendiente)</a></li>
+<li><a href="https://kimmosaunisto.net/Software/XSim/XSim.html" target="_blank" rel="noopener noreferrer">XSim — Simulador de crossover gratuito</a></li>
+<li><a href="https://kimmosaunisto.net/Software/VituixCAD/VituixCAD.html" target="_blank" rel="noopener noreferrer">VituixCAD — Software de diseño y simulación de altavoces</a></li>
+<li><a href="https://www.roomeqwizard.com/" target="_blank" rel="noopener noreferrer">REW — Room EQ Wizard (medición de impedancia y respuesta)</a></li>
+<li><a href="https://www.audioxpress.com/" target="_blank" rel="noopener noreferrer">audioXpress — Publicaciones técnicas sobre diseño de altavoces</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 

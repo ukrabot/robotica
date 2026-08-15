@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" role="img" aria-label="Diagrama de conexión de un encoder incremental y de un encoder magnético absoluto a un Arduino">
+  <rect width="1200" height="860" fill="#f6f4ee"/>
+  <text x="600" y="60" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="36">Encoders Incremental y Absoluto conectados a Arduino</text>
+
+  <!-- Encoder incremental -->
+  <g transform="translate(90 130)">
+    <rect x="0" y="0" width="430" height="300" rx="16" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="0" y="0" width="430" height="52" rx="16" fill="#23201b"/>
+    <text x="215" y="34" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">Encoder incremental óptico</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="20" fill="#1e1b15">
+      <text x="30" y="100">VCC (5V)</text>
+      <text x="30" y="145">GND</text>
+      <text x="30" y="190">Canal A → D2 (INT0)</text>
+      <text x="30" y="235">Canal B → D3 (INT1)</text>
+      <text x="30" y="280">Canal Z (índice) → D4</text>
+    </g>
+    <g fill="#e8e2d4">
+      <rect x="330" y="80" width="70" height="16" rx="3"/>
+      <rect x="330" y="125" width="70" height="16" rx="3"/>
+      <rect x="330" y="170" width="70" height="16" rx="3"/>
+      <rect x="330" y="215" width="70" height="16" rx="3"/>
+      <rect x="330" y="260" width="70" height="16" rx="3"/>
+    </g>
+  </g>
+
+  <!-- Arduino -->
+  <g transform="translate(640 130)">
+    <rect x="0" y="0" width="380" height="300" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="0" y="0" width="380" height="52" rx="14" fill="#2f6fb0"/>
+    <text x="190" y="34" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">Arduino Uno</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="20" fill="#1e1b15">
+      <text x="30" y="100">5V</text>
+      <text x="30" y="145">GND</text>
+      <text x="30" y="190">D2</text>
+      <text x="30" y="235">D3</text>
+      <text x="30" y="280">D4 / A4 (SDA)</text>
+    </g>
+    <g fill="#e8e2d4">
+      <rect x="270" y="80" width="70" height="16" rx="3"/>
+      <rect x="270" y="125" width="70" height="16" rx="3"/>
+      <rect x="270" y="170" width="70" height="16" rx="3"/>
+      <rect x="270" y="215" width="70" height="16" rx="3"/>
+      <rect x="270" y="260" width="70" height="16" rx="3"/>
+    </g>
+  </g>
+
+  <!-- Cables incremental -->
+  <g stroke-linecap="round" fill="none">
+    <path d="M 150 270 C 300 270 300 210 640 210" stroke="#b04a3a" stroke-width="6"/>
+    <path d="M 170 270 C 320 270 320 240 640 240" stroke="#3a3a3a" stroke-width="6"/>
+    <path d="M 190 270 C 340 270 340 270 640 270" stroke="#a97b23" stroke-width="6"/>
+    <path d="M 210 270 C 360 270 360 300 640 300" stroke="#2f6fb0" stroke-width="6"/>
+    <path d="M 230 270 C 380 270 380 330 640 330" stroke="#3a3a3a" stroke-width="6"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+    <text x="300" y="165">A → D2</text>
+    <text x="300" y="250">B → D3</text>
+    <text x="310" y="320">Z → D4</text>
+  </g>
+
+  <!-- Encoder absoluto (AS5600) -->
+  <g transform="translate(90 520)">
+    <rect x="0" y="0" width="430" height="260" rx="16" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="0" y="0" width="430" height="52" rx="16" fill="#23201b"/>
+    <text x="215" y="34" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">Encoder absoluto magnético (AS5600)</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="20" fill="#1e1b15">
+      <text x="30" y="100">VCC (3.3–5V)</text>
+      <text x="30" y="145">GND</text>
+      <text x="30" y="190">SDA → A4</text>
+      <text x="30" y="235">SCL → A5</text>
+    </g>
+    <g fill="#e8e2d4">
+      <rect x="330" y="80" width="70" height="16" rx="3"/>
+      <rect x="330" y="125" width="70" height="16" rx="3"/>
+      <rect x="330" y="170" width="70" height="16" rx="3"/>
+      <rect x="330" y="215" width="70" height="16" rx="3"/>
+    </g>
+  </g>
+
+  <!-- Cables I2C -->
+  <g stroke-linecap="round" fill="none">
+    <path d="M 520 610 C 580 610 580 300 820 300" stroke="#b04a3a" stroke-width="6"/>
+    <path d="M 520 650 C 600 650 600 340 820 340" stroke="#3a3a3a" stroke-width="6"/>
+    <path d="M 520 680 C 620 680 620 380 830 380" stroke="#2f6fb0" stroke-width="6"/>
+    <path d="M 520 720 C 640 720 640 420 830 420" stroke="#a97b23" stroke-width="6"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+    <text x="560" y="470">VCC · GND</text>
+    <text x="560" y="560">SDA → A4 · SCL → A5</text>
+  </g>
+
+  <text x="600" y="825" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="18">El incremental cuenta pulsos relativos; el absoluto entrega el ángulo real (0–360°) por I2C, útil en articulaciones de brazos robóticos.</text>
+</svg>

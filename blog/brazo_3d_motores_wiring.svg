@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" role="img" aria-label="Diagrama de la electrónica de control de un brazo robótico impreso en 3D con tres motores paso a paso y drivers">
+  <rect width="1200" height="860" fill="#f6f4ee"/>
+  <text x="600" y="60" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="36">Electrónica de Control del Brazo (3 motores paso a paso)</text>
+
+  <!-- Controladora -->
+  <g transform="translate(80 120)">
+    <rect x="0" y="0" width="330" height="300" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="0" y="0" width="330" height="52" rx="14" fill="#2f6fb0"/>
+    <text x="165" y="34" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">Arduino Mega / Uno</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#1e1b15">
+      <text x="25" y="100">Base     → STEP/DIR</text>
+      <text x="25" y="145">Hombro   → STEP/DIR</text>
+      <text x="25" y="190">Codo     → STEP/DIR</text>
+      <text x="25" y="235">5V y GND lógicos</text>
+      <text x="25" y="275">Serial (opcional, depuración)</text>
+    </g>
+  </g>
+
+  <!-- Drivers -->
+  <g transform="translate(560 100)">
+    <rect x="0" y="0" width="520" height="160" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="260" y="34" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Drivers A4988 / DRV8825 (microstepping)</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="18" fill="#57534a">
+      <rect x="40" y="60" width="130" height="60" rx="8" fill="#23201b"/><text x="105" y="97" text-anchor="middle" fill="#e4c07a">Driver 1 · Base</text>
+      <rect x="195" y="60" width="130" height="60" rx="8" fill="#23201b"/><text x="260" y="97" text-anchor="middle" fill="#e4c07a">Driver 2 · Hombro</text>
+      <rect x="350" y="60" width="130" height="60" rx="8" fill="#23201b"/><text x="415" y="97" text-anchor="middle" fill="#e4c07a">Driver 3 · Codo</text>
+      <text x="260" y="150" text-anchor="middle">VDD 5V · VMOT 12V · GND común · corriente por potenciómetro</text>
+    </g>
+  </g>
+
+  <!-- Motores -->
+  <g transform="translate(560 320)">
+    <rect x="0" y="0" width="520" height="180" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="260" y="34" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Motores NEMA 17 en las articulaciones</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="18" fill="#57534a">
+      <rect x="40" y="60" width="130" height="70" rx="8" fill="#2a2a2a"/><text x="105" y="102" text-anchor="middle" fill="#e4c07a">Base</text>
+      <rect x="195" y="60" width="130" height="70" rx="8" fill="#2a2a2a"/><text x="260" y="102" text-anchor="middle" fill="#e4c07a">Hombro</text>
+      <rect x="350" y="60" width="130" height="70" rx="8" fill="#2a2a2a"/><text x="415" y="102" text-anchor="middle" fill="#e4c07a">Codo</text>
+      <text x="260" y="165" text-anchor="middle">Cada motor: 4 fases (A1 A2 B1 B2) a su driver</text>
+    </g>
+  </g>
+
+  <!-- Alimentación -->
+  <g transform="translate(80 500)">
+    <rect x="0" y="0" width="330" height="180" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="165" y="40" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Fuente 12V (5 A o más)</text>
+    <text x="165" y="85" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">VMOT de los drivers</text>
+    <text x="165" y="120" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Nunca alimentar por USB</text>
+    <text x="165" y="155" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">GND común con la placa</text>
+  </g>
+
+  <!-- Cables -->
+  <g stroke-linecap="round" fill="none">
+    <path d="M 410 180 C 480 180 480 130 560 130" stroke="#2f6fb0" stroke-width="6"/>
+    <path d="M 410 220 C 500 220 500 170 560 170" stroke="#3a3a3a" stroke-width="6"/>
+    <path d="M 410 260 C 520 260 520 210 560 210" stroke="#a97b23" stroke-width="6"/>
+    <path d="M 245 300 C 245 340 300 340 300 380" stroke="#3a3a3a" stroke-width="6"/>
+    <path d="M 320 420 C 320 460 500 460 500 500" stroke="#3a3a3a" stroke-width="6"/>
+    <path d="M 640 260 C 640 300 640 310 640 320" stroke="#3a3a3a" stroke-width="6"/>
+    <path d="M 790 260 C 790 300 790 310 790 320" stroke="#3a3a3a" stroke-width="6"/>
+    <path d="M 940 260 C 940 300 940 310 940 320" stroke="#3a3a3a" stroke-width="6"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+    <text x="430" y="130">STEP/DIR × 3</text>
+    <text x="430" y="230">VDD y GND lógicos</text>
+    <text x="230" y="340">GND común</text>
+    <text x="340" y="470">VMOT 12V</text>
+  </g>
+
+  <!-- Consejo -->
+  <g transform="translate(560 560)">
+    <rect x="0" y="0" width="520" height="170" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="260" y="40" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Recomendaciones</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">
+      <text x="30" y="85">• Condensador electrolítico 470–1000 µF en VMOT.</text>
+      <text x="30" y="120">• Disipador en los drivers si el motor supera 1 A.</text>
+      <text x="30" y="155">• Cables trenzados y cortos entre driver y motor.</text>
+    </g>
+  </g>
+
+  <text x="600" y="820" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="18">Los ejes de muñeca pueden usar servos estándar: ver la guía de brazos con servos para esa variante.</text>
+</svg>
