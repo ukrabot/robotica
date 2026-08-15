@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>ESP32 como Analizador WiFi: Detección de Redes y Dispositivos</title>
+<meta name="description" content="Cómo convertir un ESP32 en analizador WiFi: escaneo de redes, medición de RSSI, elección del mejor canal, modo promiscuo para capturar tramas de gestión y detección de dispositivos, con código completo y advertencias legales.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32 como Analizador WiFi: Detección de Redes y Dispositivos">
+<meta property="og:description" content="Escaneo de redes, RSSI, mapa de canales y modo promiscuo: el ESP32 como herramienta de diagnóstico WiFi.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/esp32_wifi_analyzer_hero.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ESP32 como Analizador WiFi: Detección de Redes y Dispositivos">
+<meta name="twitter:description" content="Convierte un ESP32 en analizador WiFi: escaneo, RSSI, canales saturados y captura de tramas de gestión.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/esp32_wifi_analyzer_hero.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "ESP32 como Analizador WiFi: Detección de Redes y Dispositivos",
+  "description": "Guía técnica para utilizar un ESP32 como analizador de redes inalámbricas: fundamentos del estándar IEEE 802.11 en la banda de 2,4 gigahercios y distribución de canales, escaneo activo y pasivo de redes con la biblioteca WiFi de Arduino, interpretación correcta del indicador de intensidad de señal recibida y su relación con la distancia, elaboración de un mapa de ocupación de canales para elegir el menos congestionado, activación del modo promiscuo del ESP32 mediante la interfaz de ESP-IDF para capturar tramas de gestión, estructura de las tramas beacon y probe request del estándar, detección de dispositivos cercanos y limitaciones impuestas por la aleatorización de direcciones MAC en los sistemas operativos modernos, construcción de un analizador portátil con pantalla OLED y consideraciones legales sobre el análisis de espectro radioeléctrico.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos"
+  },
+  "image": "https://www.ukrabot.cl/blog/esp32_wifi_analyzer_hero.svg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "ESP32 (cualquier variante con radio de 2,4 GHz), Arduino IDE o ESP-IDF, cable USB y conocimientos básicos de C++",
+  "wordCount": "3100",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "ESP32 como Analizador WiFi: Detección de Redes y Dispositivos",
+      "item": "https://www.ukrabot.cl/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿El ESP32 puede analizar redes WiFi de 5 GHz?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Ni el ESP32 original ni las variantes S2, S3, C3 o C6 disponen de radio para la banda de 5 GHz: todas operan exclusivamente en 2,4 GHz. El ESP32-C5 es el primer chip de la familia que incorpora doble banda, pero su disponibilidad y su soporte de software todavía son limitados. Para analizar 5 GHz o 6 GHz necesitas un adaptador USB con chipset compatible con modo monitor conectado a un portátil, o una herramienta comercial. El ESP32 sigue siendo perfectamente válido para diagnosticar la banda de 2,4 GHz, que es donde se concentran los dispositivos domóticos y donde más congestión suele haber."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo leer las contraseñas o el contenido de las redes cercanas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El modo promiscuo entrega las tramas tal como viajan por el aire, y en una red WPA2 o WPA3 la carga útil está cifrada con una clave derivada de la contraseña que el ESP32 no posee. Solo las cabeceras y las tramas de gestión son legibles, lo que permite ver direcciones MAC, nombres de red y tipos de trama, pero nunca el contenido. Capturar el intercambio de autenticación para intentar romper la clave por fuerza bruta es técnicamente posible con otras herramientas, pero constituye un delito de acceso no autorizado si la red no es tuya."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi analizador detecta muchos más dispositivos de los que hay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Casi con certeza por la aleatorización de direcciones MAC. Los teléfonos modernos generan una dirección distinta cada vez que buscan redes, de modo que un único teléfono puede aparecer como diez dispositivos diferentes a lo largo de media hora. Puedes filtrar comprobando el bit localmente administrado, el segundo bit menos significativo del primer byte de la dirección: si está a uno, la MAC es aleatoria y no representa un dispositivo único. Aun aplicando ese filtro, el recuento de personas mediante WiFi ha dejado de ser fiable con las políticas de privacidad actuales."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuál es el mejor canal para configurar mi router en 2,4 GHz?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Siempre uno de los tres canales que no se solapan: 1, 6 u 11. Ejecuta el mapa de ocupación durante varios minutos en distintos momentos del día y quédate con el que acumule menos carga ponderada entre esos tres. Aunque el análisis señale que el canal 3 o el 8 están más despejados, elegirlos es contraproducente: interfieren parcialmente con dos grupos de vecinos que reaccionarán aumentando su potencia. Repite la medición cada pocos meses, porque el panorama radioeléctrico de un edificio cambia cada vez que alguien instala un router nuevo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es legal usar un ESP32 en modo promiscuo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Escuchar las emisiones públicas de radio, que es lo que hacen los beacons y los probes, no suele ser ilegal en sí mismo. El problema aparece con lo que ocurre después: almacenar direcciones MAC asociables a personas constituye tratamiento de datos personales y queda sujeto a la normativa correspondiente, y cualquier intento de descifrar tráfico ajeno o de interferir con emisiones propias es directamente delictivo. En Chile aplican la Ley 21.459 de delitos informáticos y la Ley 19.628 sobre protección de datos. Limítate a tu propia red o trabaja con autorización escrita del titular."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia hay entre escaneo activo y pasivo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El escaneo activo emite tramas de sondeo dirigidas y espera respuesta de los puntos de acceso, lo que lo hace rápido, en torno a cien milisegundos por canal, pero revela tu presencia a cualquiera que esté escuchando. El escaneo pasivo se limita a esperar los beacons que los puntos de acceso emiten espontáneamente cada cien milisegundos aproximadamente, por lo que necesita más tiempo por canal, entre doscientos y trescientos milisegundos, pero no genera tráfico y detecta redes configuradas para ignorar sondeos dirigidos. Para diagnóstico prolongado el pasivo es preferible; para una comprobación rápida basta el activo."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="esp32_wifi_analyzer_hero.svg" alt="Ilustración de una placa ESP32 rodeada de ondas de radio y un gráfico de barras con la ocupación de los canales de la banda de 2,4 gigahercios" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">ESP32 y microcontroladores · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>ESP32 como Analizador WiFi: Detección de Redes y Dispositivos</h1>
+    <p>Con quince líneas de código el ESP32 enumera todas las redes a su alcance. Con el modo promiscuo activado se convierte en algo bastante más interesante: un sniffer de tramas de gestión que revela qué dispositivos hay alrededor.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="esp32_wifi_analyzer_esquema.svg" alt="Diagrama de los tres modos de operación del ESP32 para análisis WiFi: escaneo estándar, modo promiscuo con captura de tramas y salida por pantalla OLED" loading="lazy">
+  <div class="caption">Tres niveles de análisis: escaneo de redes, medición de ocupación por canal y captura de tramas en modo promiscuo.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#fundamentos">Qué puede y qué no puede ver un ESP32</a></li>
+    <li><a href="#escaneo">Escaneo básico de redes</a></li>
+    <li><a href="#rssi">Interpretar el RSSI sin engañarte</a></li>
+    <li><a href="#canales">Mapa de ocupación: elegir el mejor canal</a></li>
+    <li><a href="#promiscuo">Modo promiscuo: capturar tramas</a></li>
+    <li><a href="#dispositivos">Detección de dispositivos y sus límites</a></li>
+    <li><a href="#portatil">Analizador portátil con pantalla</a></li>
+    <li><a href="#legal">Qué es legal y qué no</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="fundamentos">
+<h2>Qué puede y qué no puede ver un ESP32</h2>
+<p>Antes de escribir una línea de código conviene tener claro el alcance real de la herramienta, porque circula bastante mitología al respecto. El ESP32 lleva una radio 802.11 b/g/n de 2,4 GHz con acceso a la capa física, y eso le permite hacer cosas que una tarjeta de red convencional no expone. Pero también tiene límites duros.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Capacidad</th><th>¿Puede el ESP32?</th><th>Detalle</th></tr></thead>
+<tbody>
+<tr><td>Listar redes visibles (SSID, canal, RSSI, cifrado)</td><td>Sí</td><td>Función <code>WiFi.scanNetworks()</code>, sin configuración especial</td></tr>
+<tr><td>Detectar redes ocultas</td><td>Parcialmente</td><td>Aparecen con SSID vacío; el nombre se revela si un cliente se asocia</td></tr>
+<tr><td>Medir ocupación por canal</td><td>Sí</td><td>Contando tramas en modo promiscuo canal por canal</td></tr>
+<tr><td>Capturar tramas de gestión y control</td><td>Sí</td><td>Modo promiscuo con filtro configurable</td></tr>
+<tr><td>Ver direcciones MAC de clientes asociados</td><td>Sí</td><td>En las cabeceras de las tramas de datos, no en su contenido</td></tr>
+<tr><td>Leer el contenido de tramas cifradas</td><td>No</td><td>WPA2/WPA3 cifra la carga útil; el ESP32 entrega bytes ininteligibles</td></tr>
+<tr><td>Operar en la banda de 5 GHz</td><td>No</td><td>Ni el ESP32 clásico ni el S3 ni el C3 tienen radio de 5 GHz</td></tr>
+<tr><td>Capturar tramas 802.11ac o ax</td><td>No</td><td>La radio es b/g/n; las tramas de estándares posteriores no se decodifican</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning">La limitación de los 5 GHz es la más importante en la práctica. En 2026, buena parte del tráfico doméstico y casi todo el tráfico exigente vive en 5 GHz o en 6 GHz. Un ESP32 solo ve la mitad del panorama, y esa mitad es la más congestionada. Úsalo para diagnosticar problemas en 2,4 GHz, que es donde viven los dispositivos IoT, no para auditar una red moderna completa.</div>
+<h3>La banda de 2,4 GHz y sus catorce canales</h3>
+<p>La banda va de 2.400 a 2.483,5 MHz y está dividida en catorce canales separados 5 MHz entre sí. El problema es que cada canal ocupa unos 22 MHz de ancho, así que <strong>los canales adyacentes se solapan</strong>. Solo tres combinaciones no interfieren entre sí: <strong>1, 6 y 11</strong>. Cualquier red configurada en el canal 3 está contaminando simultáneamente el 1 y el 6.</p>
+<ul>
+<li><strong>Canales 1 al 11:</strong> permitidos en toda América, incluido Chile.</li>
+<li><strong>Canales 12 y 13:</strong> permitidos en Europa y buena parte de Asia con restricciones de potencia.</li>
+<li><strong>Canal 14:</strong> solo Japón y únicamente para 802.11b.</li>
+</ul>
+<p>El ESP32 respeta la región configurada en el firmware. Si escaneas en Chile y no ves nada en los canales 12 y 13, no es un fallo del código: es el <em>country code</em> haciendo su trabajo.</p>
+</section>
+<section id="escaneo">
+<h2>Escaneo básico de redes</h2>
+<p>El punto de partida es la biblioteca WiFi del núcleo de Arduino para ESP32. El escaneo es sorprendentemente simple y ya devuelve información útil.</p>
+<pre><code>#include &lt;WiFi.h&gt;
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.mode(WIFI_STA);      // modo estación, sin conectar
+  WiFi.disconnect();        // asegura que no hay asociación previa
+  delay(100);
+}
+
+void loop() {
+  Serial.println("Escaneando...");
+  int n = WiFi.scanNetworks();   // escaneo bloqueante
+
+  if (n == 0) {
+    Serial.println("No se encontraron redes.");
+  } else {
+    Serial.printf("%d redes encontradas\n\n", n);
+    Serial.println("  # | Ch | RSSI | Cifrado    | SSID");
+    Serial.println("----+----+------+------------+-----------------");
+
+    for (int i = 0; i &lt; n; i++) {
+      Serial.printf("%3d | %2d | %4d | %-10s | %s\n",
+                    i + 1,
+                    WiFi.channel(i),
+                    WiFi.RSSI(i),
+                    cifrado(WiFi.encryptionType(i)),
+                    WiFi.SSID(i).c_str());
+      delay(5);
+    }
+  }
+  WiFi.scanDelete();   // libera la memoria del resultado
+  delay(10000);
+}
+
+const char* cifrado(wifi_auth_mode_t t) {
+  switch (t) {
+    case WIFI_AUTH_OPEN:            return "ABIERTA";
+    case WIFI_AUTH_WEP:             return "WEP";
+    case WIFI_AUTH_WPA_PSK:         return "WPA";
+    case WIFI_AUTH_WPA2_PSK:        return "WPA2";
+    case WIFI_AUTH_WPA_WPA2_PSK:    return "WPA/WPA2";
+    case WIFI_AUTH_WPA2_ENTERPRISE: return "WPA2-EAP";
+    case WIFI_AUTH_WPA3_PSK:        return "WPA3";
+    case WIFI_AUTH_WPA2_WPA3_PSK:   return "WPA2/WPA3";
+    default:                        return "DESCONOCIDO";
+  }
+}</code></pre>
+<div class="note"><strong>Detalle que importa:</strong> <code>WiFi.scanDelete()</code> libera el búfer del resultado. Sin esa llamada, un sketch que escanea en bucle acaba agotando la memoria dinámica tras unas horas. Es una de las causas más frecuentes de reinicios inexplicables en analizadores caseros.</div>
+<h3>Escaneo asíncrono</h3>
+<p>El escaneo bloqueante detiene el resto del programa entre uno y tres segundos. Si tu analizador tiene pantalla o atiende un servidor web, eso se nota. La versión asíncrona resuelve el problema:</p>
+<pre><code>WiFi.scanNetworks(true);          // true = asíncrono, devuelve inmediatamente
+
+// más tarde, en el bucle principal:
+int n = WiFi.scanComplete();
+if (n == WIFI_SCAN_RUNNING) {
+  // sigue escaneando, haz otra cosa
+} else if (n &gt;= 0) {
+  procesarResultados(n);
+  WiFi.scanDelete();
+  WiFi.scanNetworks(true);        // lanza el siguiente
+}</code></pre>
+<h3>Escaneo activo frente a pasivo</h3>
+<p>Por defecto el ESP32 hace <strong>escaneo activo</strong>: emite tramas <em>probe request</em> y espera respuestas. Es rápido pero delata tu presencia, porque cualquier otro analizador en la zona verá tus <em>probes</em>. El <strong>escaneo pasivo</strong> se limita a escuchar los <em>beacons</em> que los puntos de acceso emiten cada 100 milisegundos aproximadamente:</p>
+<pre><code>// Escaneo pasivo: async, show_hidden, passive, tiempo por canal (ms)
+WiFi.scanNetworks(true, true, true, 300);</code></pre>
+<p>Con 300 ms por canal y once canales, un barrido pasivo completo tarda algo más de tres segundos. Es más lento, pero detecta redes que no responden a <em>probes</em> dirigidos y no genera tráfico.</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="rssi">
+<h2>Interpretar el RSSI sin engañarte</h2>
+<p>El RSSI (<em>Received Signal Strength Indicator</em>) se expresa en dBm y siempre es negativo. Cuanto más cerca de cero, mejor. Es el dato más consultado y también el peor interpretado.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>RSSI</th><th>Calidad</th><th>Qué esperar en la práctica</th></tr></thead>
+<tbody>
+<tr><td>−30 a −50 dBm</td><td>Excelente</td><td>Muy cerca del punto de acceso; velocidad máxima</td></tr>
+<tr><td>−50 a −60 dBm</td><td>Muy buena</td><td>Streaming y videollamadas sin problemas</td></tr>
+<tr><td>−60 a −67 dBm</td><td>Buena</td><td>Umbral recomendado mínimo para voz sobre IP</td></tr>
+<tr><td>−67 a −70 dBm</td><td>Aceptable</td><td>Navegación y IoT correctos; vídeo con cortes ocasionales</td></tr>
+<tr><td>−70 a −80 dBm</td><td>Débil</td><td>Reconexiones frecuentes; tasa de datos muy reducida</td></tr>
+<tr><td>Por debajo de −80 dBm</td><td>Inutilizable</td><td>La red aparece en la lista pero no sostiene una conexión</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Por qué el RSSI no es un telémetro</h3>
+<p>La tentación de convertir RSSI en distancia es enorme y produce resultados decepcionantes. La relación teórica en espacio libre es logarítmica, pero en un entorno real intervienen tres factores que la destrozan:</p>
+<ol>
+<li><strong>Atenuación por materiales.</strong> Una pared de hormigón armado resta entre 10 y 20 dB. Un vidrio con recubrimiento metálico puede restar 25 dB. Una puerta de madera, 3 dB.</li>
+<li><strong>Multitrayecto.</strong> La señal rebota en superficies metálicas y llega por varios caminos con distinta fase. Dos puntos separados 30 centímetros pueden diferir 15 dB.</li>
+<li><strong>Orientación de la antena.</strong> Girar el ESP32 90 grados cambia la lectura varios decibelios. Las antenas de PCB de los módulos baratos son notoriamente direccionales.</li>
+</ol>
+<div class="note">Usa el RSSI de forma <strong>relativa y comparativa</strong>: mismo dispositivo, misma orientación, varios puntos de la casa. Así identificas dónde cae la cobertura. No lo uses para estimar metros; los sistemas serios de posicionamiento por WiFi usan FTM (802.11mc) o triangulación con múltiples anclajes calibrados.</div>
+<h3>Promediar antes de decidir</h3>
+<p>Una única lectura de RSSI no significa nada. Toma al menos diez muestras separadas un segundo y calcula la mediana, que es más robusta que la media frente a valores atípicos:</p>
+<pre><code>int32_t medirRSSI(const char* ssid, int muestras) {
+  int32_t v[32];
+  int obtenidas = 0;
+  for (int m = 0; m &lt; muestras &amp;&amp; obtenidas &lt; 32; m++) {
+    int n = WiFi.scanNetworks(false, false, false, 200);
+    for (int i = 0; i &lt; n; i++) {
+      if (WiFi.SSID(i) == ssid) { v[obtenidas++] = WiFi.RSSI(i); break; }
+    }
+    WiFi.scanDelete();
+    delay(800);
+  }
+  if (obtenidas == 0) return 0;
+  // ordenación por inserción y mediana
+  for (int i = 1; i &lt; obtenidas; i++) {
+    int32_t k = v[i]; int j = i - 1;
+    while (j &gt;= 0 &amp;&amp; v[j] &gt; k) { v[j + 1] = v[j]; j--; }
+    v[j + 1] = k;
+  }
+  return v[obtenidas / 2];
+}</code></pre>
+</section>
+<section id="canales">
+<h2>Mapa de ocupación: elegir el mejor canal</h2>
+<p>Esta es, con diferencia, la aplicación más útil del ESP32 como analizador. Cuando el WiFi de casa va mal, la causa más habitual no es la distancia: es que tu router y los cinco de los vecinos comparten el mismo canal.</p>
+<h3>Puntuación ponderada por solapamiento</h3>
+<p>Contar cuántas redes hay en cada canal es un enfoque ingenuo, porque ignora el solapamiento. Una red potente en el canal 4 interfiere en el 1, el 2, el 3, el 5 y el 6. El siguiente algoritmo reparte el impacto de cada red entre los canales vecinos, ponderado por su intensidad:</p>
+<pre><code>void mapaDeCanales() {
+  float carga[15] = {0};                 // índices 1..14
+  int n = WiFi.scanNetworks(false, true);
+
+  for (int i = 0; i &lt; n; i++) {
+    int ch = WiFi.channel(i);
+    int rssi = WiFi.RSSI(i);
+    // peso: 1,0 para señal fuerte, ~0 para señal despreciable
+    float peso = constrain((rssi + 95) / 65.0, 0.0, 1.0);
+
+    for (int d = -4; d &lt;= 4; d++) {      // solapamiento +/-4 canales
+      int c = ch + d;
+      if (c &lt; 1 || c &gt; 14) continue;
+      float factor = 1.0 - (abs(d) * 0.22);   // decae con la distancia
+      carga[c] += peso * factor;
+    }
+  }
+  WiFi.scanDelete();
+
+  Serial.println("\nOcupacion por canal:");
+  int mejor = 1; float minimo = 9999;
+  for (int c = 1; c &lt;= 13; c++) {
+    Serial.printf("Ch %2d [%5.2f] ", c, carga[c]);
+    int barras = (int)(carga[c] * 4);
+    for (int b = 0; b &lt; barras &amp;&amp; b &lt; 40; b++) Serial.print('#');
+    if (c == 1 || c == 6 || c == 11) Serial.print("  <- no solapado");
+    Serial.println();
+    if (carga[c] &lt; minimo) { minimo = carga[c]; mejor = c; }
+  }
+  Serial.printf("\nCanal recomendado: %d\n", mejor);
+}</code></pre>
+<div class="warning">Si el canal con menos carga resulta ser el 3, el 8 o cualquier otro solapado, <strong>ignóralo y quédate con el mejor entre 1, 6 y 11</strong>. Colocar tu red en un canal intermedio te da menos interferencia inicial pero contamina a dos grupos de vecinos, que subirán su potencia y acabarán empeorando tu situación. Es un caso de libro de óptimo local perjudicial.</div>
+<h3>Medir tráfico real, no solo presencia</h3>
+<p>Una red con excelente señal pero sin tráfico casi no molesta. Una red débil que transfiere vídeo permanentemente ocupa el medio y te bloquea. Para medir ocupación real hay que contar tramas por canal en modo promiscuo, que es lo que veremos a continuación.</p>
+</section>
+<section id="promiscuo">
+<h2>Modo promiscuo: capturar tramas</h2>
+<p>El modo promiscuo indica a la radio que entregue al software todas las tramas que detecte, no solo las dirigidas a nuestra dirección MAC. En el ESP32 se activa desde la API de ESP-IDF, accesible también desde el entorno de Arduino.</p>
+<pre><code>#include &lt;WiFi.h&gt;
+#include "esp_wifi.h"
+
+volatile uint32_t contMgmt = 0, contData = 0, contCtrl = 0;
+
+// Estructura de la cabecera 802.11 (los primeros bytes de cada trama)
+typedef struct {
+  uint16_t frame_ctrl;
+  uint16_t duration;
+  uint8_t  addr1[6];   // receptor
+  uint8_t  addr2[6];   // transmisor
+  uint8_t  addr3[6];   // BSSID
+  uint16_t seq_ctrl;
+} __attribute__((packed)) hdr80211_t;
+
+void IRAM_ATTR sniffer(void *buf, wifi_promiscuous_pkt_type_t tipo) {
+  const wifi_promiscuous_pkt_t *pkt = (wifi_promiscuous_pkt_t *)buf;
+  const hdr80211_t *h = (hdr80211_t *)pkt-&gt;payload;
+
+  switch (tipo) {
+    case WIFI_PKT_MGMT: contMgmt++; break;
+    case WIFI_PKT_DATA: contData++; break;
+    case WIFI_PKT_CTRL: contCtrl++; break;
+    default: break;
+  }
+
+  uint8_t subtipo = (h-&gt;frame_ctrl &gt;&gt; 4) &amp; 0x0F;
+  if (tipo == WIFI_PKT_MGMT &amp;&amp; subtipo == 0x04) {   // probe request
+    Serial.printf("PROBE de %02X:%02X:%02X:%02X:%02X:%02X  RSSI %d\n",
+      h-&gt;addr2[0], h-&gt;addr2[1], h-&gt;addr2[2],
+      h-&gt;addr2[3], h-&gt;addr2[4], h-&gt;addr2[5],
+      pkt-&gt;rx_ctrl.rssi);
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.mode(WIFI_STA);
+  esp_wifi_set_promiscuous(true);
+  esp_wifi_set_promiscuous_rx_cb(&amp;sniffer);
+  esp_wifi_set_channel(6, WIFI_SECOND_CHAN_NONE);
+}
+
+void loop() {
+  // salto de canal cada 400 ms para cubrir toda la banda
+  static uint8_t ch = 1;
+  esp_wifi_set_channel(ch, WIFI_SECOND_CHAN_NONE);
+  delay(400);
+  if (++ch &gt; 13) {
+    Serial.printf("Mgmt:%lu Data:%lu Ctrl:%lu\n", contMgmt, contData, contCtrl);
+    contMgmt = contData = contCtrl = 0;
+    ch = 1;
+  }
+}</code></pre>
+<div class="warning">La función de retrollamada se ejecuta en el contexto de la tarea WiFi y debe ser <strong>extremadamente rápida</strong>. Imprimir por serie dentro de ella, como hace el ejemplo por claridad didáctica, provoca pérdida de tramas y puede disparar el <em>watchdog</em>. En un analizador serio se guardan los datos en una cola o en un búfer circular y se procesan en el bucle principal.</div>
+<h3>Los tres tipos de trama</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Tipo</th><th>Subtipos habituales</th><th>Para qué sirve al analizar</th></tr></thead>
+<tbody>
+<tr><td><strong>Gestión</strong> (0x00)</td><td>Beacon, probe request/response, authentication, association, deauthentication</td><td>Nunca va cifrada: es la fuente principal de información</td></tr>
+<tr><td><strong>Control</strong> (0x01)</td><td>RTS, CTS, ACK, block ACK</td><td>Indica actividad y colisiones en el medio</td></tr>
+<tr><td><strong>Datos</strong> (0x02)</td><td>Data, QoS data, null</td><td>Cabecera legible, carga útil cifrada por WPA2/WPA3</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Filtrar para no ahogarse</h3>
+<p>En un entorno urbano el ESP32 puede recibir miles de tramas por segundo. Filtrar en la radio, antes de que lleguen al software, es imprescindible:</p>
+<pre><code>wifi_promiscuous_filter_t filtro = {
+  .filter_mask = WIFI_PROMIS_FILTER_MASK_MGMT   // solo gestión
+};
+esp_wifi_set_promiscuous_filter(&amp;filtro);</code></pre>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="dispositivos">
+<h2>Detección de dispositivos y sus límites</h2>
+<p>Los teléfonos y portátiles emiten <em>probe requests</em> periódicamente para buscar redes conocidas. Cada uno lleva la dirección MAC del emisor, y a partir de ahí se puede construir un contador de dispositivos presentes. Es el principio detrás de los contadores de aforo comerciales.</p>
+<pre><code>struct Dispositivo { uint8_t mac[6]; int8_t rssi; uint32_t visto; };
+Dispositivo lista[120];
+int total = 0;
+
+void registrar(const uint8_t *mac, int8_t rssi) {
+  for (int i = 0; i &lt; total; i++) {
+    if (memcmp(lista[i].mac, mac, 6) == 0) {
+      lista[i].rssi  = rssi;
+      lista[i].visto = millis();
+      return;
+    }
+  }
+  if (total &lt; 120) {
+    memcpy(lista[total].mac, mac, 6);
+    lista[total].rssi  = rssi;
+    lista[total].visto = millis();
+    total++;
+  }
+}
+
+void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
+  uint32_t ahora = millis();
+  for (int i = 0; i &lt; total; ) {
+    if (ahora - lista[i].visto &gt; ventanaMs) {
+      lista[i] = lista[--total];
+    } else i++;
+  }
+}</code></pre>
+<h3>La aleatorización de MAC lo cambió todo</h3>
+<p>Desde iOS 8 y Android 6, y de forma agresiva desde iOS 14 y Android 10, los teléfonos <strong>generan direcciones MAC aleatorias</strong> para las tramas de sondeo cuando no están asociados. Android 10 introdujo además MAC aleatoria por red, y las versiones recientes la rotan periódicamente incluso estando conectado.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Situación</th><th>MAC observada</th><th>¿Sirve para contar?</th></tr></thead>
+<tbody>
+<tr><td>Teléfono moderno buscando redes</td><td>Aleatoria, cambia cada pocos minutos</td><td>No: sobrestima enormemente el recuento</td></tr>
+<tr><td>Teléfono asociado a una red</td><td>MAC por red, estable mientras dure la sesión</td><td>Sí, dentro de esa red</td></tr>
+<tr><td>Dispositivo IoT (ESP32, cámara, enchufe)</td><td>MAC real del fabricante</td><td>Sí, con total fiabilidad</td></tr>
+<tr><td>Portátil con Windows 11 por defecto</td><td>Aleatoria en sondeo, real al asociarse</td><td>Parcialmente</td></tr>
+</tbody>
+</table>
+</div>
+<p>¿Cómo distinguir una MAC aleatoria de una real? El <strong>segundo bit menos significativo del primer byte</strong> es el bit «localmente administrado». Si está a uno, la dirección es aleatoria:</p>
+<pre><code>bool esAleatoria(const uint8_t *mac) {
+  return (mac[0] &amp; 0x02) != 0;
+}</code></pre>
+<div class="note">Para inventario de dispositivos IoT propios el método sigue siendo excelente: un ESP32, una cámara o un enchufe inteligente usan su MAC real y su prefijo OUI identifica al fabricante. Para contar personas, en cambio, la aleatorización ha hecho que los recuentos ingenuos exageren por factores de tres a diez.</div>
+</section>
+<section id="portatil">
+<h2>Analizador portátil con pantalla</h2>
+<p>Un analizador conectado por USB al portátil es útil en el escritorio; uno autónomo con pantalla y batería es el que realmente usas para recorrer una casa buscando zonas muertas.</p>
+<h3>Lista de materiales</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Componente</th><th>Recomendación</th><th>Nota</th></tr></thead>
+<tbody>
+<tr><td>Placa</td><td>ESP32-WROOM-32 o ESP32-S3</td><td>El S3 tiene más RAM para búferes de captura</td></tr>
+<tr><td>Pantalla</td><td>OLED SSD1306 de 128×64 por I²C</td><td>Consumo bajo; suficiente para gráficos de barras</td></tr>
+<tr><td>Alternativa</td><td>TFT ST7789 de 240×240 por SPI</td><td>Color y más resolución; consume bastante más</td></tr>
+<tr><td>Batería</td><td>Celda LiPo de 1.000 a 2.000 mAh</td><td>Autonomía de tres a seis horas escaneando</td></tr>
+<tr><td>Carga</td><td>Módulo TP4056 con protección</td><td>Salida siempre por los terminales OUT</td></tr>
+<tr><td>Entrada</td><td>Dos pulsadores</td><td>Cambio de modo y congelar pantalla</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Reparto entre los dos núcleos</h3>
+<p>El ESP32 tiene dos núcleos y esta aplicación se beneficia claramente de usarlos: la captura no puede pararse mientras se refresca la pantalla.</p>
+<pre><code>void setup() {
+  // núcleo 0: captura y salto de canal
+  xTaskCreatePinnedToCore(tareaCaptura, "captura", 4096, NULL, 2, NULL, 0);
+  // núcleo 1: interfaz de usuario
+  xTaskCreatePinnedToCore(tareaPantalla, "pantalla", 4096, NULL, 1, NULL, 1);
+}</code></pre>
+<p>La comunicación entre ambas tareas debe hacerse con una cola de FreeRTOS o con un mutex protegiendo la estructura compartida. Acceder al mismo array desde dos núcleos sin sincronización produce corrupción de datos difícil de depurar.</p>
+<h3>Consumo y autonomía</h3>
+<ul>
+<li><strong>Escaneando de forma continua:</strong> 120 a 160 mA. Con 2.000 mAh, unas doce horas teóricas y siete u ocho reales.</li>
+<li><strong>Modo promiscuo permanente:</strong> 130 a 180 mA. La radio está siempre recibiendo.</li>
+<li><strong>Con OLED encendido:</strong> añade 15 a 25 mA según el número de píxeles activos.</li>
+<li><strong>Sueño ligero entre barridos:</strong> baja la media a 40 o 50 mA si escaneas cada 30 segundos.</li>
+</ul>
+</section>
+<section id="legal">
+<h2>Qué es legal y qué no</h2>
+<p>Esta sección no es un adorno. El mismo hardware sirve para diagnosticar tu red y para cometer un delito, y la diferencia está en lo que haces con él.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Actividad</th><th>Valoración general</th></tr></thead>
+<tbody>
+<tr><td>Escanear SSID y RSSI de redes visibles</td><td>Legal: son emisiones públicas por diseño</td></tr>
+<tr><td>Medir ocupación de canales para configurar tu router</td><td>Legal y recomendable</td></tr>
+<tr><td>Capturar tramas de gestión en modo promiscuo</td><td>Zona gris; depende de la jurisdicción y del uso posterior</td></tr>
+<tr><td>Registrar direcciones MAC de terceros y asociarlas a personas</td><td>Tratamiento de datos personales: sujeto a la ley de protección de datos</td></tr>
+<tr><td>Descifrar tráfico ajeno o capturar handshakes para romper claves</td><td>Delito de acceso no autorizado en prácticamente todas partes</td></tr>
+<tr><td>Emitir tramas de desautenticación</td><td>Interferencia intencionada al servicio: sancionable</td></tr>
+<tr><td>Suplantar un punto de acceso legítimo</td><td>Delito informático y, según el caso, fraude</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning">En Chile, la Ley 21.459 de delitos informáticos sanciona la interceptación indebida de comunicaciones y el acceso ilícito a sistemas de información. La Ley 19.628 regula el tratamiento de datos personales, categoría en la que una dirección MAC vinculable a una persona puede encajar. En la Unión Europea el RGPD considera explícitamente la MAC como identificador. La subsecretaría de telecomunicaciones regula además el uso del espectro: emitir señales que degraden el servicio ajeno tiene consecuencias administrativas propias.</div>
+<p>Regla simple y suficiente para el 99 % de los casos: <strong>analiza tu propia red y tu propio espectro</strong>. Si necesitas auditar una red ajena, hazlo con autorización escrita del titular y con un alcance definido por adelantado. Es exactamente lo que hace cualquier profesional de seguridad ofensiva, y el motivo por el que el contrato precede al escaneo.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>El ESP32 es, por unos pocos miles de pesos, la herramienta de diagnóstico WiFi con mejor relación entre coste y capacidad que existe. Para el trabajo cotidiano — <strong>averiguar por qué el WiFi va mal en una habitación, decidir entre el canal 1, el 6 y el 11, o verificar que un dispositivo IoT está transmitiendo</strong> — resuelve el problema sin necesidad de un analizador de espectro de laboratorio.</p>
+<p>Sus dos límites reales conviene tenerlos siempre presentes: <strong>no ve la banda de 5 GHz</strong>, donde vive gran parte del tráfico moderno, y <strong>la aleatorización de direcciones MAC ha invalidado el conteo ingenuo de personas</strong>. Reconocer esos límites es lo que separa una herramienta útil de una fuente de conclusiones equivocadas.</p>
+<p>Si vas a construir uno solo, hazlo con pantalla y batería. Un analizador que puedes pasear por la casa mientras miras el gráfico de barras en tiempo real enseña más sobre propagación de radio en una tarde que cualquier cantidad de lectura teórica.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿El ESP32 puede analizar redes WiFi de 5 GHz?</summary><p>No. Ni el ESP32 original ni las variantes S2, S3, C3 o C6 disponen de radio para la banda de 5 GHz: todas operan exclusivamente en 2,4 GHz. El ESP32-C5 es el primer chip de la familia que incorpora doble banda, pero su disponibilidad y su soporte de software todavía son limitados. Para analizar 5 GHz o 6 GHz necesitas un adaptador USB con chipset compatible con modo monitor conectado a un portátil, o una herramienta comercial. El ESP32 sigue siendo perfectamente válido para diagnosticar la banda de 2,4 GHz, que es donde se concentran los dispositivos domóticos y donde más congestión suele haber.</p></details>
+<details><summary>¿Puedo leer las contraseñas o el contenido de las redes cercanas?</summary><p>No. El modo promiscuo entrega las tramas tal como viajan por el aire, y en una red WPA2 o WPA3 la carga útil está cifrada con una clave derivada de la contraseña que el ESP32 no posee. Solo las cabeceras y las tramas de gestión son legibles, lo que permite ver direcciones MAC, nombres de red y tipos de trama, pero nunca el contenido. Capturar el intercambio de autenticación para intentar romper la clave por fuerza bruta es técnicamente posible con otras herramientas, pero constituye un delito de acceso no autorizado si la red no es tuya.</p></details>
+<details><summary>¿Por qué mi analizador detecta muchos más dispositivos de los que hay?</summary><p>Casi con certeza por la aleatorización de direcciones MAC. Los teléfonos modernos generan una dirección distinta cada vez que buscan redes, de modo que un único teléfono puede aparecer como diez dispositivos diferentes a lo largo de media hora. Puedes filtrar comprobando el bit localmente administrado, el segundo bit menos significativo del primer byte de la dirección: si está a uno, la MAC es aleatoria y no representa un dispositivo único. Aun aplicando ese filtro, el recuento de personas mediante WiFi ha dejado de ser fiable con las políticas de privacidad actuales.</p></details>
+<details><summary>¿Cuál es el mejor canal para configurar mi router en 2,4 GHz?</summary><p>Siempre uno de los tres canales que no se solapan: 1, 6 u 11. Ejecuta el mapa de ocupación durante varios minutos en distintos momentos del día y quédate con el que acumule menos carga ponderada entre esos tres. Aunque el análisis señale que el canal 3 o el 8 están más despejados, elegirlos es contraproducente: interfieren parcialmente con dos grupos de vecinos que reaccionarán aumentando su potencia. Repite la medición cada pocos meses, porque el panorama radioeléctrico de un edificio cambia cada vez que alguien instala un router nuevo.</p></details>
+<details><summary>¿Es legal usar un ESP32 en modo promiscuo?</summary><p>Escuchar las emisiones públicas de radio, que es lo que hacen los beacons y los probes, no suele ser ilegal en sí mismo. El problema aparece con lo que ocurre después: almacenar direcciones MAC asociables a personas constituye tratamiento de datos personales y queda sujeto a la normativa correspondiente, y cualquier intento de descifrar tráfico ajeno o de interferir con emisiones propias es directamente delictivo. En Chile aplican la Ley 21.459 de delitos informáticos y la Ley 19.628 sobre protección de datos. Limítate a tu propia red o trabaja con autorización escrita del titular.</p></details>
+<details><summary>¿Qué diferencia hay entre escaneo activo y pasivo?</summary><p>El escaneo activo emite tramas de sondeo dirigidas y espera respuesta de los puntos de acceso, lo que lo hace rápido, en torno a cien milisegundos por canal, pero revela tu presencia a cualquiera que esté escuchando. El escaneo pasivo se limita a esperar los beacons que los puntos de acceso emiten espontáneamente cada cien milisegundos aproximadamente, por lo que necesita más tiempo por canal, entre doscientos y trescientos milisegundos, pero no genera tráfico y detecta redes configuradas para ignorar sondeos dirigidos. Para diagnóstico prolongado el pasivo es preferible; para una comprobación rápida basta el activo.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Aprovecha los dos núcleos del chip para separar captura e interfaz con la guía de <a href="/blog/como-usar-los-2-nucleos-del-esp32-simultaneamente">programación multinúcleo en el ESP32</a>, y alimenta tu analizador portátil con seguridad usando el <a href="/blog/modulo-de-carga-tp4056-cargar-baterias-lipo-de-forma-segura">módulo de carga TP4056</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/sistemas-ros-2-hardware-compatible-para-tus-proyectos-de-robotica">← Anterior: Sistemas ROS 2: Hardware Compatible para tus Proyectos</a>
+  <a href="/blog/las-mejores-impresoras-3d-de-gran-formato-500mm-para-makers">Siguiente: Las Mejores Impresoras 3D de Gran Formato (500 mm) →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación oficial de Espressif y textos normativos citados. Verifica siempre la legislación vigente en tu jurisdicción antes de capturar tráfico.</p>
+<ul>
+<li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_wifi.html" target="_blank" rel="noopener noreferrer">Espressif — API de Wi-Fi de ESP-IDF (modo promiscuo y filtros)</a></li>
+<li><a href="https://standards.ieee.org/ieee/802.11/7028/" target="_blank" rel="noopener noreferrer">IEEE 802.11 — Estándar de redes inalámbricas de área local</a></li>
+<li><a href="https://www.wi-fi.org/discover-wi-fi/security" target="_blank" rel="noopener noreferrer">Wi-Fi Alliance — Seguridad WPA3</a></li>
+<li><a href="https://docs.espressif.com/projects/arduino-esp32/en/latest/api/wifi.html" target="_blank" rel="noopener noreferrer">Espressif — Arduino core para ESP32, biblioteca WiFi</a></li>
+<li><a href="https://www.bcn.cl/leychile/navegar?idNorma=1177743" target="_blank" rel="noopener noreferrer">Biblioteca del Congreso Nacional de Chile — Ley 21.459 sobre delitos informáticos</a></li>
+<li><a href="https://www.bcn.cl/leychile/navegar?idNorma=141599" target="_blank" rel="noopener noreferrer">Biblioteca del Congreso Nacional de Chile — Ley 19.628 sobre protección de la vida privada</a></li>
+<li><a href="https://www.subtel.gob.cl/" target="_blank" rel="noopener noreferrer">Subsecretaría de Telecomunicaciones de Chile — Normativa de espectro</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

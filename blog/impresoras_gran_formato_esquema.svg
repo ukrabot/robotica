@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-label="Comparativa de cinemáticas para impresoras 3D de gran formato: cartesiana de pórtico, núcleo XY y delta">
+  <rect width="1200" height="820" fill="#f6f4ee"/>
+
+  <text x="600" y="55" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="35">Cinematicas para volumenes de 500 mm</text>
+  <text x="600" y="88" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Como cambia el comportamiento cuando el bastidor crece</text>
+
+  <!-- Cartesiana de portico -->
+  <g>
+    <rect x="55" y="125" width="345" height="590" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="227" y="165" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Cartesiana de portico</text>
+
+    <g transform="translate(97 190)">
+      <rect x="0" y="0" width="260" height="200" rx="6" fill="#f6f4ee" stroke="#8b8577" stroke-width="3"/>
+      <rect x="10" y="30" width="240" height="12" rx="3" fill="#2f6fb0"/>
+      <rect x="110" y="26" width="44" height="34" rx="5" fill="#23201b"/>
+      <path d="M 126 60 L 138 60 L 134 78 L 130 78 Z" fill="#a97b23"/>
+      <rect x="30" y="160" width="200" height="16" rx="4" fill="#b2281e"/>
+      <text x="130" y="196" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">cama fija, portico movil en Z</text>
+    </g>
+
+    <g font-family="Inter, Arial, sans-serif" font-size="16">
+      <text x="82" y="430" fill="#2f5c22" font-weight="600">Ventajas</text>
+      <text x="82" y="458" fill="#57534a">Cama estatica: sin inercia de pieza</text>
+      <text x="82" y="484" fill="#57534a">Escala bien en los tres ejes</text>
+      <text x="82" y="510" fill="#57534a">Mecanica sencilla de depurar</text>
+      <text x="82" y="536" fill="#57534a">Cerramiento facil de montar</text>
+
+      <text x="82" y="580" fill="#7a1c14" font-weight="600">Inconvenientes</text>
+      <text x="82" y="608" fill="#57534a">Portico pesado limita la aceleracion</text>
+      <text x="82" y="634" fill="#57534a">Necesita doble husillo sincronizado</text>
+      <text x="82" y="660" fill="#57534a">Flexion del eje X en tramos largos</text>
+    </g>
+    <rect x="82" y="678" width="290" height="26" rx="6" fill="#f0f6ef"/>
+    <text x="227" y="697" text-anchor="middle" fill="#2f5c22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600">La opcion mas comun por encima de 400 mm</text>
+  </g>
+
+  <!-- Nucleo XY -->
+  <g>
+    <rect x="428" y="125" width="345" height="590" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="600" y="165" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Nucleo XY (CoreXY)</text>
+
+    <g transform="translate(470 190)">
+      <rect x="0" y="0" width="260" height="200" rx="6" fill="#f6f4ee" stroke="#8b8577" stroke-width="3"/>
+      <g stroke="#a97b23" stroke-width="3" fill="none">
+        <path d="M 20 20 L 240 20 L 240 130 L 20 130 Z"/>
+        <path d="M 20 20 L 150 75 L 240 130"/>
+        <path d="M 240 20 L 110 75 L 20 130"/>
+      </g>
+      <rect x="108" y="56" width="44" height="34" rx="5" fill="#23201b"/>
+      <circle cx="20" cy="20" r="8" fill="#2f6fb0"/>
+      <circle cx="240" cy="20" r="8" fill="#2f6fb0"/>
+      <text x="130" y="170" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">dos motores fijos, correas cruzadas</text>
+      <text x="130" y="192" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">la cama baja en Z</text>
+    </g>
+
+    <g font-family="Inter, Arial, sans-serif" font-size="16">
+      <text x="455" y="430" fill="#2f5c22" font-weight="600">Ventajas</text>
+      <text x="455" y="458" fill="#57534a">Masa movil minima: mas aceleracion</text>
+      <text x="455" y="484" fill="#57534a">Motores fijos al bastidor</text>
+      <text x="455" y="510" fill="#57534a">Cerramiento natural y compacto</text>
+      <text x="455" y="536" fill="#57534a">Excelente calidad a alta velocidad</text>
+
+      <text x="455" y="580" fill="#7a1c14" font-weight="600">Inconvenientes</text>
+      <text x="455" y="608" fill="#57534a">Correas muy largas: tension critica</text>
+      <text x="455" y="634" fill="#57534a">Cama pesada de 500 mm en Z</text>
+      <text x="455" y="660" fill="#57534a">Montaje y puesta a punto exigentes</text>
+    </g>
+    <rect x="455" y="678" width="290" height="26" rx="6" fill="#f0f6ef"/>
+    <text x="600" y="697" text-anchor="middle" fill="#2f5c22" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600">Voron y RatRig: la via para quien monta</text>
+  </g>
+
+  <!-- Delta -->
+  <g>
+    <rect x="800" y="125" width="345" height="590" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="972" y="165" text-anchor="middle" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">Delta</text>
+
+    <g transform="translate(842 190)">
+      <rect x="0" y="0" width="260" height="200" rx="6" fill="#f6f4ee" stroke="#8b8577" stroke-width="3"/>
+      <g stroke="#57534a" stroke-width="5">
+        <line x1="40" y1="16" x2="40" y2="160"/>
+        <line x1="130" y1="16" x2="130" y2="160"/>
+        <line x1="220" y1="16" x2="220" y2="160"/>
+      </g>
+      <g fill="#2f6fb0">
+        <rect x="32" y="40" width="16" height="26" rx="3"/>
+        <rect x="122" y="60" width="16" height="26" rx="3"/>
+        <rect x="212" y="40" width="16" height="26" rx="3"/>
+      </g>
+      <g stroke="#a97b23" stroke-width="3">
+        <line x1="40" y1="56" x2="128" y2="112"/>
+        <line x1="130" y1="74" x2="130" y2="112"/>
+        <line x1="220" y1="56" x2="132" y2="112"/>
+      </g>
+      <rect x="112" y="110" width="36" height="22" rx="4" fill="#23201b"/>
+      <ellipse cx="130" cy="166" rx="86" ry="10" fill="#b2281e"/>
+      <text x="130" y="192" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">tres torres, cama circular fija</text>
+    </g>
+
+    <g font-family="Inter, Arial, sans-serif" font-size="16">
+      <text x="827" y="430" fill="#2f5c22" font-weight="600">Ventajas</text>
+      <text x="827" y="458" fill="#57534a">Altura Z muy grande y barata</text>
+      <text x="827" y="484" fill="#57534a">Efector ligerisimo con Bowden</text>
+      <text x="827" y="510" fill="#57534a">Ideal para piezas altas y esbeltas</text>
+      <text x="827" y="536" fill="#57534a">Cama fija sin inercia</text>
+
+      <text x="827" y="580" fill="#7a1c14" font-weight="600">Inconvenientes</text>
+      <text x="827" y="608" fill="#57534a">Calibracion geometrica delicada</text>
+      <text x="827" y="634" fill="#57534a">Area util circular, no cuadrada</text>
+      <text x="827" y="660" fill="#57534a">Bowden penaliza materiales flexibles</text>
+    </g>
+    <rect x="827" y="678" width="290" height="26" rx="6" fill="#fdf9ef"/>
+    <text x="972" y="697" text-anchor="middle" fill="#7a5715" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600">Nicho: columnas, jarrones, prototipos altos</text>
+  </g>
+
+  <text x="600" y="768" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="17">En gran formato la rigidez del bastidor y la estabilidad termica pesan mas que la cinematica elegida.</text>
+  <text x="600" y="796" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="16">Un perfil de 2020 que basta a 220 mm flexa de forma visible a 500 mm: busca 3030 o 4040 en los tramos largos.</text>
+</svg>

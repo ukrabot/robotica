@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Ilustración de una placa ESP32 emitiendo ondas de radio junto a un gráfico de ocupación de los canales de la banda de 2,4 gigahercios">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141210"/>
+      <stop offset="1" stop-color="#211b14"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e4c07a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#e4c07a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="board" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2f6fb0"/>
+      <stop offset="1" stop-color="#1f4e7f"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e4c07a"/>
+      <stop offset="1" stop-color="#a97b23"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="330" cy="330" r="250" fill="url(#glow)"/>
+
+  <text x="600" y="55" text-anchor="middle" fill="#e4c07a" font-family="Georgia, serif" font-size="34">ESP32 como Analizador Wi-Fi</text>
+
+  <!-- Ondas de radio -->
+  <g stroke="#e4c07a" stroke-width="5" fill="none" opacity="0.5" stroke-linecap="round">
+    <path d="M 400 200 A 190 190 0 0 1 400 460"/>
+    <path d="M 380 240 A 140 140 0 0 1 380 420"/>
+    <path d="M 360 280 A 90 90 0 0 1 360 380"/>
+  </g>
+
+  <!-- Placa ESP32 -->
+  <g transform="translate(120 250)">
+    <rect x="0" y="0" width="230" height="160" rx="12" fill="url(#board)" stroke="#16354f" stroke-width="3"/>
+    <rect x="20" y="18" width="120" height="70" rx="6" fill="#c9c4b8" stroke="#8b8577" stroke-width="2"/>
+    <rect x="34" y="30" width="92" height="46" rx="4" fill="#23201b"/>
+    <text x="80" y="60" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">ESP32</text>
+    <path d="M 150 24 L 210 24 L 210 34 L 168 34 L 168 44 L 210 44 L 210 54 L 168 54" stroke="#e8d9b6" stroke-width="4" fill="none"/>
+    <g fill="#e8e2d4">
+      <rect x="16" y="120" width="18" height="9" rx="2"/>
+      <rect x="44" y="120" width="18" height="9" rx="2"/>
+      <rect x="72" y="120" width="18" height="9" rx="2"/>
+      <rect x="100" y="120" width="18" height="9" rx="2"/>
+      <rect x="128" y="120" width="18" height="9" rx="2"/>
+      <rect x="156" y="120" width="18" height="9" rx="2"/>
+      <rect x="184" y="120" width="18" height="9" rx="2"/>
+    </g>
+    <text x="115" y="150" text-anchor="middle" fill="#dfe8f2" font-family="Inter, Arial, sans-serif" font-size="15">modo promiscuo</text>
+  </g>
+
+  <!-- Panel de canales -->
+  <g transform="translate(560 130)">
+    <rect x="0" y="0" width="540" height="380" rx="16" fill="#1b1813" stroke="#3d3629" stroke-width="3"/>
+    <text x="270" y="42" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="600">Ocupacion banda 2,4 GHz</text>
+
+    <line x1="50" y1="310" x2="500" y2="310" stroke="#57534a" stroke-width="3"/>
+    <line x1="50" y1="70" x2="50" y2="310" stroke="#57534a" stroke-width="3"/>
+
+    <g fill="url(#bar)">
+      <rect x="66" y="150" width="26" height="160" rx="4"/>
+      <rect x="100" y="240" width="26" height="70" rx="4"/>
+      <rect x="134" y="266" width="26" height="44" rx="4"/>
+      <rect x="168" y="222" width="26" height="88" rx="4"/>
+      <rect x="202" y="278" width="26" height="32" rx="4"/>
+      <rect x="236" y="110" width="26" height="200" rx="4"/>
+      <rect x="270" y="252" width="26" height="58" rx="4"/>
+      <rect x="304" y="284" width="26" height="26" rx="4"/>
+      <rect x="338" y="262" width="26" height="48" rx="4"/>
+      <rect x="372" y="290" width="26" height="20" rx="4"/>
+      <rect x="406" y="196" width="26" height="114" rx="4"/>
+    </g>
+
+    <g fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="14" text-anchor="middle">
+      <text x="79" y="332">1</text>
+      <text x="113" y="332">2</text>
+      <text x="147" y="332">3</text>
+      <text x="181" y="332">4</text>
+      <text x="215" y="332">5</text>
+      <text x="249" y="332">6</text>
+      <text x="283" y="332">7</text>
+      <text x="317" y="332">8</text>
+      <text x="351" y="332">9</text>
+      <text x="385" y="332">10</text>
+      <text x="419" y="332">11</text>
+    </g>
+    <text x="270" y="358" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">canal</text>
+    <text x="24" y="190" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15" transform="rotate(-90 24 190)">redes</text>
+  </g>
+
+  <text x="600" y="580" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="19">Escaneo de redes, medida de RSSI y captura de tramas de gestion</text>
+</svg>

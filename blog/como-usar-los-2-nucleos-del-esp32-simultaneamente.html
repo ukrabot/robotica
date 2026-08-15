@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cómo Usar los 2 Núcleos del ESP32 Simultáneamente</title>
+<meta name="description" content="Guía práctica para usar los dos núcleos del ESP32 con FreeRTOS: crear tareas con xTaskCreatePinnedToCore, prioridades, colas, semáforos, secciones críticas, watchdog y errores frecuentes explicados con código.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/como-usar-los-2-nucleos-del-esp32-simultaneamente">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo Usar los 2 Núcleos del ESP32 Simultáneamente">
+<meta property="og:description" content="xTaskCreatePinnedToCore, colas, mutex y watchdog: cómo repartir trabajo entre los dos núcleos del ESP32 sin corromper datos.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/esp32_dual_core_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/como-usar-los-2-nucleos-del-esp32-simultaneamente">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cómo Usar los 2 Núcleos del ESP32 Simultáneamente">
+<meta name="twitter:description" content="Aprende a usar los dos núcleos del ESP32 con FreeRTOS: tareas, colas, semáforos y los errores que cuelgan la placa.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/esp32_dual_core_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Cómo Usar los 2 Núcleos del ESP32 Simultáneamente",
+  "description": "Guía técnica completa sobre programación multinúcleo en el ESP32: arquitectura interna con los núcleos PRO_CPU y APP_CPU y el reparto por defecto de tareas del sistema, fundamentos de FreeRTOS aplicados al ESP32, creación de tareas con xTaskCreate y xTaskCreatePinnedToCore, dimensionado del tamaño de pila y detección de desbordamientos, sistema de prioridades y planificación preventiva, comunicación segura entre núcleos mediante colas, protección de recursos compartidos con semáforos y mutex, secciones críticas y variables atómicas, uso correcto de volatile, notificaciones de tarea como mecanismo ligero, gestión del watchdog y de la cesión de CPU, patrones de diseño recomendados como productor-consumidor, errores frecuentes que provocan reinicios y guarda de pánico, y medición del uso real de CPU por núcleo.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/como-usar-los-2-nucleos-del-esp32-simultaneamente"
+  },
+  "image": "https://www.ukrabot.cl/blog/esp32_dual_core_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "ESP32 con procesador dual-core, Arduino IDE o ESP-IDF, FreeRTOS incluido en el framework, cable USB de datos",
+  "wordCount": "3200",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Cómo Usar los 2 Núcleos del ESP32 Simultáneamente",
+      "item": "https://www.ukrabot.cl/blog/como-usar-los-2-nucleos-del-esp32-simultaneamente"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Todos los ESP32 tienen dos núcleos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El ESP32 original, el ESP32-S3 y el ESP32-P4 son de doble núcleo. El ESP32-S2, el ESP32-C3 y el ESP32-C6 tienen un solo núcleo principal. En estas variantes de un núcleo, la función xTaskCreatePinnedToCore compila sin errores pero el parámetro de núcleo se ignora y todas las tareas comparten el mismo procesador. Verifica el modelo exacto de tu placa antes de diseñar en torno al multinúcleo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar delay() dentro de una tarea de FreeRTOS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En el ESP32, la función delay() de Arduino está implementada sobre vTaskDelay(), así que cede el procesador correctamente y su uso dentro de una tarea es aceptable. Lo que sí bloquea el núcleo es un bucle while activo sin ninguna cesión, o el uso de delayMicroseconds() con valores grandes, que sí es una espera activa. Para tareas periódicas, vTaskDelayUntil() es preferible porque mantiene el periodo exacto sin acumular deriva."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánta pila necesita una tarea del ESP32?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de lo que haga. Una tarea sencilla con aritmética y llamadas a digitalRead funciona con 2048 bytes. Si usa Serial.printf, cadenas String o bibliotecas de red, empieza en 4096 y sube a 8192 para tareas con WiFi, TLS o MQTT. Recuerda que en el ESP32 el parámetro se expresa en bytes, no en palabras. La forma correcta de ajustarlo es medir con uxTaskGetStackHighWaterMark tras ejecutar todos los caminos del código y dejar un margen del 25 por ciento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi ESP32 se reinicia con el mensaje del task watchdog?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque una tarea acaparó un núcleo durante más de cinco segundos sin ceder el procesador, impidiendo que se ejecutara la tarea IDLE. La causa habitual es un bucle for o while que consulta constantemente un pin o una condición sin ninguna llamada a vTaskDelay. La solución inmediata es añadir vTaskDelay al final del bucle; la solución correcta es rediseñar la tarea para que se bloquee esperando un evento mediante una cola, un semáforo o una notificación."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo compartir una variable global entre los dos núcleos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No de forma directa y segura. Cada núcleo tiene su propia caché, una estructura de varios campos puede leerse a medio escribir y el compilador puede reordenar accesos. Para datos que fluyen de una tarea a otra usa una cola de FreeRTOS, que copia por valor y es segura entre núcleos. Para variables simples de acceso muy frecuente usa una sección crítica con portMUX_TYPE, y para recursos compartidos como un bus I2C usa un mutex. La palabra clave volatile por sí sola no resuelve el problema."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué ganancia real de rendimiento obtengo al usar los dos núcleos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No es el doble. La mejora depende de si tu carga se puede dividir en partes verdaderamente independientes. El beneficio principal del multinúcleo en el ESP32 no suele ser la velocidad bruta sino el aislamiento temporal: al mover el muestreo de sensores o el control de motores al núcleo 1, dejan de verse afectados por las pausas impredecibles que introducen las pilas de WiFi y Bluetooth en el núcleo 0. Esa previsibilidad vale más que el rendimiento adicional en la mayoría de los proyectos."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="esp32_dual_core_hero.jpg" alt="Placa de desarrollo ESP32 sobre una protoboard con un osciloscopio mostrando dos señales simultáneas en el fondo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">ESP32 y microcontroladores · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Cómo Usar los 2 Núcleos del ESP32 Simultáneamente</h1>
+    <p>Tu ESP32 tiene dos procesadores y probablemente estés usando uno solo. El problema no es arrancar el segundo: es compartir datos sin corromperlos.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 18 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="esp32_dual_core_esquema.svg" alt="Diagrama de los dos núcleos del ESP32 mostrando el reparto de tareas del sistema, las tareas de usuario ancladas a cada núcleo y la cola FreeRTOS que los comunica" loading="lazy">
+  <div class="caption">La cola es la frontera segura entre núcleos: los datos cruzan por ella, nunca por variables globales sin protección.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#arquitectura">La arquitectura real del ESP32</a></li>
+    <li><a href="#freertos">FreeRTOS en treinta segundos</a></li>
+    <li><a href="#crear-tareas">Crear tareas ancladas a cada núcleo</a></li>
+    <li><a href="#prioridades">Prioridades y reparto de trabajo</a></li>
+    <li><a href="#colas">Colas: la forma correcta de pasar datos</a></li>
+    <li><a href="#mutex">Mutex, semáforos y secciones críticas</a></li>
+    <li><a href="#watchdog">El watchdog y por qué se reinicia tu ESP32</a></li>
+    <li><a href="#errores">Errores frecuentes y cómo evitarlos</a></li>
+    <li><a href="#proyecto">Ejemplo completo: estación de sensores con MQTT</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="arquitectura">
+<h2>La arquitectura real del ESP32</h2>
+<p>El ESP32 clásico incorpora dos núcleos <strong>Xtensa LX6</strong> de 32 bits que funcionan a hasta 240 MHz. No son núcleos especializados ni desiguales: ambos tienen las mismas capacidades y acceden a la misma memoria. Sus nombres provienen del uso que Espressif les dio originalmente:</p>
+<ul>
+<li><strong>Núcleo 0 — PRO_CPU</strong> (<em>protocol CPU</em>): aquí se ejecutan por defecto las tareas de WiFi, Bluetooth y la pila TCP/IP.</li>
+<li><strong>Núcleo 1 — APP_CPU</strong> (<em>application CPU</em>): aquí corre tu código de Arduino. Las funciones <code>setup()</code> y <code>loop()</code> viven en este núcleo.</li>
+</ul>
+<div class="note"><strong>Sorpresa habitual:</strong> si programas el ESP32 con el IDE de Arduino, ya estás usando FreeRTOS y ya estás usando los dos núcleos. Tu <code>loop()</code> es una tarea de FreeRTOS llamada <code>loopTask</code>, anclada al núcleo 1 con prioridad 1. Mientras tanto, el núcleo 0 mantiene viva la conectividad. Lo que falta no es activar nada, sino <strong>repartir tu propio trabajo</strong>.</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Variante</th><th>Núcleos</th><th>Arquitectura</th><th>Frecuencia máxima</th><th>Multinúcleo</th></tr></thead>
+<tbody>
+<tr><td>ESP32 (original)</td><td>2</td><td>Xtensa LX6</td><td>240 MHz</td><td>Sí</td></tr>
+<tr><td>ESP32-S2</td><td>1</td><td>Xtensa LX7</td><td>240 MHz</td><td>No</td></tr>
+<tr><td>ESP32-S3</td><td>2</td><td>Xtensa LX7</td><td>240 MHz</td><td>Sí</td></tr>
+<tr><td>ESP32-C3</td><td>1</td><td>RISC-V</td><td>160 MHz</td><td>No</td></tr>
+<tr><td>ESP32-C6</td><td>1 + 1 de bajo consumo</td><td>RISC-V</td><td>160 MHz</td><td>Parcial</td></tr>
+<tr><td>ESP32-P4</td><td>2</td><td>RISC-V</td><td>400 MHz</td><td>Sí</td></tr>
+</tbody>
+</table>
+</div>
+<p>Antes de escribir código multinúcleo, verifica qué chip tienes. El código de esta guía funciona en ESP32 y ESP32-S3; en las variantes de un solo núcleo, <code>xTaskCreatePinnedToCore</code> compila pero ignora el parámetro de núcleo.</p>
+</section>
+<section id="freertos">
+<h2>FreeRTOS en treinta segundos</h2>
+<p><strong>FreeRTOS</strong> es un sistema operativo de tiempo real que reparte el procesador entre varias <em>tareas</em>. Cada tarea es una función que se ejecuta en un bucle infinito y tiene su propia pila de memoria. El planificador decide en cada momento cuál se ejecuta, con dos reglas simples:</p>
+<ol>
+<li>Siempre corre la tarea lista de <strong>mayor prioridad</strong>.</li>
+<li>Entre tareas de igual prioridad, el tiempo se reparte por turnos (<em>round-robin</em>) cada tick del sistema, que en el ESP32 es de 1 ms por defecto.</li>
+</ol>
+<p>La palabra "preventivo" es clave: el planificador <strong>puede interrumpir tu tarea en cualquier instrucción</strong> para dar paso a otra de mayor prioridad. Esa es exactamente la razón por la que compartir datos entre tareas requiere cuidado.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Estado</th><th>Significado</th></tr></thead>
+<tbody>
+<tr><td>Running</td><td>Ejecutándose ahora mismo en un núcleo</td></tr>
+<tr><td>Ready</td><td>Lista para ejecutarse, esperando su turno</td></tr>
+<tr><td>Blocked</td><td>Esperando un evento: un dato en una cola, un semáforo o un retardo</td></tr>
+<tr><td>Suspended</td><td>Detenida explícitamente; no se planifica</td></tr>
+</tbody>
+</table>
+</div>
+<p>El estado <strong>Blocked</strong> es el más importante y el peor entendido. Una tarea bloqueada <strong>no consume CPU</strong>: el planificador la ignora hasta que ocurra lo que espera. Por eso <code>vTaskDelay()</code> es radicalmente distinto de <code>delay()</code> de Arduino en un bucle vacío: el primero cede el procesador, el segundo también lo hace en ESP32, pero un bucle <code>while</code> sin cesión bloquea el núcleo entero.</p>
+</section>
+<section id="crear-tareas">
+<h2>Crear tareas ancladas a cada núcleo</h2>
+<p>La función clave es <code>xTaskCreatePinnedToCore()</code>, que crea una tarea y la fija a un núcleo concreto.</p>
+<pre><code>BaseType_t xTaskCreatePinnedToCore(
+    TaskFunction_t  pvTaskCode,    // función de la tarea
+    const char *    pcName,        // nombre para depuración
+    uint32_t        usStackDepth,  // tamaño de pila EN BYTES en ESP32
+    void *          pvParameters,  // parámetro que recibe la tarea
+    UBaseType_t     uxPriority,    // prioridad: 0 = mínima
+    TaskHandle_t *  pvCreatedTask, // manejador (puede ser NULL)
+    BaseType_t      xCoreID        // 0, 1 o tskNO_AFFINITY
+);</code></pre>
+<div class="warning"><strong>Diferencia importante frente al FreeRTOS estándar:</strong> en el ESP32 el parámetro de pila se expresa en <strong>bytes</strong>, no en palabras de 4 bytes como en la implementación original. Un valor de 2048 significa 2 KB, no 8 KB. Quedarse corto provoca un desbordamiento de pila y un reinicio inmediato del chip.</div>
+<h3>Ejemplo mínimo funcional</h3>
+<pre><code>TaskHandle_t tareaSensorHandle = NULL;
+TaskHandle_t tareaRedHandle    = NULL;
+
+void tareaSensor(void *parametros) {
+  // Lectura periódica precisa, anclada al núcleo 1
+  TickType_t ultimoDespertar = xTaskGetTickCount();
+  const TickType_t periodo = pdMS_TO_TICKS(100);   // 10 Hz
+
+  for (;;) {
+    int lectura = analogRead(34);
+    Serial.printf("[Núcleo %d] Sensor: %d\n", xPortGetCoreID(), lectura);
+
+    // Espera hasta el próximo múltiplo exacto de 100 ms:
+    // no acumula deriva como vTaskDelay
+    vTaskDelayUntil(&amp;ultimoDespertar, periodo);
+  }
+}
+
+void tareaRed(void *parametros) {
+  for (;;) {
+    Serial.printf("[Núcleo %d] Trabajo de red\n", xPortGetCoreID());
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  xTaskCreatePinnedToCore(tareaSensor, "sensor", 4096, NULL, 2, &amp;tareaSensorHandle, 1);
+  xTaskCreatePinnedToCore(tareaRed,    "red",    4096, NULL, 1, &amp;tareaRedHandle,    0);
+}
+
+void loop() {
+  // loopTask corre en el núcleo 1 con prioridad 1.
+  // Si no la necesitas, cede el procesador o elimínala.
+  vTaskDelay(pdMS_TO_TICKS(1000));
+}</code></pre>
+<p>Fíjate en <code>vTaskDelayUntil()</code>: a diferencia de <code>vTaskDelay()</code>, que espera un intervalo <em>desde ahora</em>, este espera hasta un instante absoluto. Si el trabajo de la tarea tarda 30 ms, <code>vTaskDelay(100)</code> produce un periodo real de 130 ms y la deriva se acumula. <code>vTaskDelayUntil()</code> mantiene los 100 ms exactos. Para muestreo de sensores, es la diferencia entre datos con marca temporal fiable y datos que se desfasan.</p>
+<h3>Dimensionar la pila correctamente</h3>
+<pre><code>// Consultar cuánta pila quedó sin usar (en bytes, valor mínimo histórico)
+UBaseType_t libre = uxTaskGetStackHighWaterMark(tareaSensorHandle);
+Serial.printf("Pila libre mínima: %u bytes\n", libre);</code></pre>
+<p>Método práctico: asigna 4096 bytes, ejecuta el programa haciendo todo lo que la tarea deba hacer, y consulta el <em>high water mark</em>. Ajusta dejando al menos un 25 % de margen. Las tareas que usan <code>Serial.printf</code>, cadenas <code>String</code>, TLS o la biblioteca WiFi necesitan bastante más: 8192 bytes es un punto de partida razonable en esos casos.</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="prioridades">
+<h2>Prioridades y reparto de trabajo</h2>
+<p>En el ESP32 las prioridades van de 0 (la más baja, reservada a la tarea inactiva) hasta <code>configMAX_PRIORITIES - 1</code>, que por defecto es 24. Algunas referencias útiles del sistema:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Prioridad</th><th>Ocupante habitual</th><th>Núcleo</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>Tarea IDLE</td><td>Ambos</td></tr>
+<tr><td>1</td><td><code>loopTask</code> de Arduino</td><td>1</td></tr>
+<tr><td>1</td><td>Tarea de eventos del sistema</td><td>0</td></tr>
+<tr><td>18</td><td>Pila WiFi</td><td>0</td></tr>
+<tr><td>23</td><td>Controlador de temporizadores</td><td>0</td></tr>
+<tr><td>24</td><td>Máxima disponible</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>No pongas tus tareas por encima de la prioridad 18 en el núcleo 0</strong> salvo que sepas exactamente lo que haces: puedes dejar sin CPU a la pila WiFi y provocar desconexiones o reinicios por watchdog. Como regla, usa prioridades entre 1 y 5 para tareas de aplicación y reserva las altas para respuestas verdaderamente críticas en el tiempo.</div>
+<h3>Cómo repartir el trabajo entre núcleos</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Tipo de trabajo</th><th>Núcleo sugerido</th><th>Motivo</th></tr></thead>
+<tbody>
+<tr><td>WiFi, Bluetooth, MQTT, HTTP</td><td>0</td><td>Convive con las pilas del sistema que ya viven allí</td></tr>
+<tr><td>Muestreo de sensores con temporización estricta</td><td>1</td><td>Menos interferencia de las tareas de radio</td></tr>
+<tr><td>Control de motores, PWM, generación de pulsos</td><td>1</td><td>Requiere determinismo</td></tr>
+<tr><td>Pantallas, interfaz de usuario</td><td>1</td><td>Puede tolerar variaciones</td></tr>
+<tr><td>Procesamiento de datos, filtros, FFT</td><td>1</td><td>Carga de cálculo aislada de la red</td></tr>
+<tr><td>Registro en tarjeta SD</td><td>0</td><td>Operaciones lentas y bloqueantes</td></tr>
+</tbody>
+</table>
+</div>
+<p>La regla general: <strong>todo lo que hable con el mundo exterior por radio, al núcleo 0; todo lo que necesite tiempos precisos, al núcleo 1</strong>. Si una tarea no tiene requisitos especiales, puedes crearla con <code>tskNO_AFFINITY</code> y dejar que el planificador la ubique donde haya hueco.</p>
+</section>
+<section id="colas">
+<h2>Colas: la forma correcta de pasar datos</h2>
+<p>Aquí está el corazón del asunto. Dos tareas en núcleos distintos <strong>no pueden compartir una variable global sin protección</strong>. Los motivos son concretos y no teóricos:</p>
+<ul>
+<li>Cada núcleo tiene su propia caché; un valor escrito por uno puede no ser visible aún para el otro.</li>
+<li>Una estructura de varios campos puede leerse a medio escribir, dando un estado incoherente.</li>
+<li>El compilador puede reordenar o eliminar accesos que considera redundantes.</li>
+</ul>
+<p>La <strong>cola de FreeRTOS</strong> resuelve todo esto: es segura entre núcleos, copia los datos por valor y permite que el receptor se bloquee sin consumir CPU mientras espera.</p>
+<pre><code>typedef struct {
+  uint32_t marcaTiempo;
+  float    temperatura;
+  float    humedad;
+  uint8_t  idSensor;
+} LecturaSensor_t;
+
+QueueHandle_t colaLecturas;
+
+void tareaProductor(void *pv) {
+  LecturaSensor_t muestra;
+  TickType_t t = xTaskGetTickCount();
+
+  for (;;) {
+    muestra.marcaTiempo  = millis();
+    muestra.temperatura  = leerTemperatura();
+    muestra.humedad      = leerHumedad();
+    muestra.idSensor     = 1;
+
+    // Envío sin bloquear: si la cola está llena, se descarta y se avisa
+    if (xQueueSend(colaLecturas, &amp;muestra, 0) != pdPASS) {
+      Serial.println("Cola llena: muestra descartada");
+    }
+    vTaskDelayUntil(&amp;t, pdMS_TO_TICKS(100));
+  }
+}
+
+void tareaConsumidor(void *pv) {
+  LecturaSensor_t recibida;
+
+  for (;;) {
+    // Espera bloqueado hasta 1 s. No consume CPU mientras espera.
+    if (xQueueReceive(colaLecturas, &amp;recibida, pdMS_TO_TICKS(1000)) == pdPASS) {
+      Serial.printf("[N%d] t=%lu  T=%.2f  H=%.2f\n",
+                    xPortGetCoreID(), recibida.marcaTiempo,
+                    recibida.temperatura, recibida.humedad);
+      publicarMQTT(recibida);
+    } else {
+      Serial.println("Sin datos en 1 s");
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  colaLecturas = xQueueCreate(20, sizeof(LecturaSensor_t));
+  if (colaLecturas == NULL) {
+    Serial.println("Error: sin memoria para la cola");
+    while (true) { vTaskDelay(1000); }
+  }
+
+  xTaskCreatePinnedToCore(tareaProductor,  "prod", 4096, NULL, 3, NULL, 1);
+  xTaskCreatePinnedToCore(tareaConsumidor, "cons", 8192, NULL, 2, NULL, 0);
+}</code></pre>
+<p>Este patrón <strong>productor-consumidor</strong> resuelve la mayoría de los proyectos reales: un núcleo muestrea con temporización estricta, el otro publica por red a su ritmo, y la cola absorbe las diferencias de velocidad. Si la red se pone lenta, la cola se llena y descartas muestras de forma controlada en lugar de bloquear el muestreo.</p>
+<div class="note"><strong>Dimensiona la cola con criterio:</strong> capacidad = tasa de producción × peor tiempo de respuesta del consumidor. Si produces 10 muestras por segundo y el consumidor puede tardar hasta 2 segundos en una reconexión MQTT, necesitas al menos 20 huecos. Y siempre maneja el caso de cola llena: ignorarlo es perder datos en silencio.</div>
+</section>
+<section id="mutex">
+<h2>Mutex, semáforos y secciones críticas</h2>
+<p>Cuando el recurso compartido no son datos que fluyen sino algo que se usa —un bus I2C, una pantalla, la tarjeta SD—, la herramienta correcta es el <strong>mutex</strong>.</p>
+<pre><code>SemaphoreHandle_t mutexI2C;
+
+void setup() {
+  mutexI2C = xSemaphoreCreateMutex();
+}
+
+void usarBusI2C() {
+  if (xSemaphoreTake(mutexI2C, pdMS_TO_TICKS(100)) == pdTRUE) {
+    // Sección protegida: solo una tarea a la vez
+    Wire.beginTransmission(0x68);
+    Wire.write(0x3B);
+    Wire.endTransmission(false);
+    Wire.requestFrom(0x68, 6);
+    // ... leer datos ...
+
+    xSemaphoreGive(mutexI2C);   // liberar SIEMPRE
+  } else {
+    Serial.println("Bus I2C ocupado, se omite esta lectura");
+  }
+}</code></pre>
+<p>Un mutex de FreeRTOS incorpora <strong>herencia de prioridad</strong>: si una tarea de baja prioridad tiene el mutex y una de alta prioridad lo pide, la primera sube temporalmente de prioridad para liberarlo cuanto antes. Esto evita la <em>inversión de prioridad</em>, un fallo clásico de los sistemas de tiempo real.</p>
+<h3>Secciones críticas para datos muy pequeños</h3>
+<pre><code>portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
+volatile uint32_t contadorPulsos = 0;
+
+void IRAM_ATTR isrPulso() {
+  portENTER_CRITICAL_ISR(&amp;mux);
+  contadorPulsos++;
+  portEXIT_CRITICAL_ISR(&amp;mux);
+}
+
+uint32_t leerYReiniciarContador() {
+  uint32_t valor;
+  portENTER_CRITICAL(&amp;mux);
+  valor = contadorPulsos;
+  contadorPulsos = 0;
+  portEXIT_CRITICAL(&amp;mux);
+  return valor;
+}</code></pre>
+<div class="warning">Una sección crítica <strong>desactiva las interrupciones</strong> en ese núcleo. Debe ser extremadamente breve: unas pocas instrucciones. Nunca llames dentro de ella a <code>Serial.print</code>, <code>delay</code>, <code>malloc</code> ni a ninguna función que pueda bloquear. Hacerlo provoca reinicios por watchdog y comportamientos imposibles de depurar.</div>
+<h3>Notificaciones de tarea: la opción ligera</h3>
+<p>Cuando solo necesitas avisar a una tarea de que ocurrió algo, sin transportar datos, las notificaciones son mucho más rápidas y consumen menos memoria que un semáforo:</p>
+<pre><code>TaskHandle_t tareaProcesoHandle;
+
+void IRAM_ATTR isrBoton() {
+  BaseType_t despertarTareaMayor = pdFALSE;
+  vTaskNotifyGiveFromISR(tareaProcesoHandle, &amp;despertarTareaMayor);
+  portYIELD_FROM_ISR(despertarTareaMayor);
+}
+
+void tareaProceso(void *pv) {
+  for (;;) {
+    // Se bloquea hasta recibir la notificación
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    Serial.println("Botón pulsado, procesando...");
+  }
+}</code></pre>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="watchdog">
+<h2>El watchdog y por qué se reinicia tu ESP32</h2>
+<p>El error más frecuente al empezar con multinúcleo es este mensaje:</p>
+<pre><code>E (5234) task_wdt: Task watchdog got triggered.
+E (5234) task_wdt: The following tasks did not reset the watchdog in time:
+E (5234) task_wdt:  - IDLE0 (CPU 0)</code></pre>
+<p>Significa que la tarea IDLE de un núcleo no pudo ejecutarse durante 5 segundos, porque una tarea de mayor prioridad nunca cedió el procesador. La causa casi siempre es un bucle como este:</p>
+<pre><code>// MAL: acapara el núcleo por completo
+void tareaMala(void *pv) {
+  for (;;) {
+    if (digitalRead(PIN) == HIGH) {
+      hacerAlgo();
+    }
+    // sin ninguna cesión: el planificador nunca recupera el control
+  }
+}
+
+// BIEN: cede el procesador en cada vuelta
+void tareaBuena(void *pv) {
+  for (;;) {
+    if (digitalRead(PIN) == HIGH) {
+      hacerAlgo();
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));   // cede 10 ms
+  }
+}
+
+// MEJOR: no consulta en bucle, espera un evento
+void tareaOptima(void *pv) {
+  for (;;) {
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);   // 0 % de CPU esperando
+    hacerAlgo();
+  }
+}</code></pre>
+<p>La tercera versión es la que deberías buscar siempre: en lugar de preguntar constantemente si algo ocurrió, la tarea se bloquea hasta que una interrupción o una cola la despierta. Consume cero CPU mientras espera y responde en microsegundos cuando llega el evento.</p>
+<h3>Medir el uso real de cada núcleo</h3>
+<pre><code>// Requiere habilitar las estadísticas de tiempo de ejecución en menuconfig
+void imprimirEstadisticas() {
+  char buffer[1024];
+  vTaskGetRunTimeStats(buffer);
+  Serial.println("Tarea\t\tTiempo\t\t%");
+  Serial.println(buffer);
+}
+
+// Alternativa siempre disponible: memoria libre y marca de agua
+void diagnostico() {
+  Serial.printf("Heap libre: %u bytes (mínimo histórico: %u)\n",
+                ESP.getFreeHeap(), ESP.getMinFreeHeap());
+  Serial.printf("Tareas activas: %u\n", uxTaskGetNumberOfTasks());
+}</code></pre>
+</section>
+<section id="errores">
+<h2>Errores frecuentes y cómo evitarlos</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Error</th><th>Síntoma</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Pila insuficiente</td><td>Guru Meditation / Stack canary watchpoint</td><td>Aumentar pila; medir con <code>uxTaskGetStackHighWaterMark</code></td></tr>
+<tr><td>Bucle sin cesión</td><td>Task watchdog got triggered</td><td>Añadir <code>vTaskDelay</code> o bloquear en un evento</td></tr>
+<tr><td>Variable global compartida sin protección</td><td>Valores incoherentes e intermitentes</td><td>Usar cola, mutex o sección crítica</td></tr>
+<tr><td>Tarea que retorna</td><td>Reinicio inmediato</td><td>Bucle infinito o terminar con <code>vTaskDelete(NULL)</code></td></tr>
+<tr><td>Uso de <code>delay()</code> en ISR</td><td>Cuelgue o pánico</td><td>Las ISR deben ser mínimas y usar variantes <code>FromISR</code></td></tr>
+<tr><td>ISR sin <code>IRAM_ATTR</code></td><td>Fallo al acceder a flash durante escritura</td><td>Marcar la ISR con <code>IRAM_ATTR</code></td></tr>
+<tr><td>Prioridad alta en núcleo 0</td><td>WiFi inestable, desconexiones</td><td>Mantener las tareas de usuario por debajo de 18</td></tr>
+<tr><td>Cola creada después de usarla</td><td>Cuelgue al arrancar</td><td>Crear objetos de sincronización antes que las tareas</td></tr>
+<tr><td>No comprobar el retorno de <code>xQueueSend</code></td><td>Pérdida silenciosa de datos</td><td>Verificar siempre el valor devuelto</td></tr>
+<tr><td>Fragmentación del heap con <code>String</code></td><td>Fallos tras horas de funcionamiento</td><td>Usar búferes de tamaño fijo en tareas de larga vida</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Sobre <code>volatile</code>:</strong> marcar una variable como <code>volatile</code> impide que el compilador la optimice, pero <strong>no la hace segura entre núcleos</strong>. Es necesario para variables modificadas dentro de una ISR y leídas fuera, pero no sustituye a un mutex ni a una sección crítica cuando hay accesos concurrentes desde dos núcleos.</div>
+</section>
+<section id="proyecto">
+<h2>Ejemplo completo: estación de sensores con MQTT</h2>
+<p>Un caso realista que combina todo lo anterior: muestreo determinista en el núcleo 1, publicación por red en el núcleo 0, y una cola entre ambos.</p>
+<pre><code>#include &lt;WiFi.h&gt;
+#include &lt;PubSubClient.h&gt;
+
+#define TAM_COLA   30
+#define PERIODO_MS 200
+
+typedef struct {
+  uint32_t ms;
+  float    valor;
+} Muestra_t;
+
+QueueHandle_t     colaMuestras;
+SemaphoreHandle_t mutexSerie;
+WiFiClient        wifiCliente;
+PubSubClient      mqtt(wifiCliente);
+
+void logSeguro(const char *msg) {
+  if (xSemaphoreTake(mutexSerie, pdMS_TO_TICKS(50)) == pdTRUE) {
+    Serial.printf("[N%d] %s\n", xPortGetCoreID(), msg);
+    xSemaphoreGive(mutexSerie);
+  }
+}
+
+// NÚCLEO 1 — adquisición con periodo estricto
+void tareaAdquisicion(void *pv) {
+  TickType_t t = xTaskGetTickCount();
+  Muestra_t m;
+
+  for (;;) {
+    m.ms    = millis();
+    m.valor = analogRead(34) * (3.3f / 4095.0f);
+
+    if (xQueueSend(colaMuestras, &amp;m, 0) != pdPASS) {
+      logSeguro("Cola llena: muestra descartada");
+    }
+    vTaskDelayUntil(&amp;t, pdMS_TO_TICKS(PERIODO_MS));
+  }
+}
+
+// NÚCLEO 0 — red y publicación
+void tareaPublicacion(void *pv) {
+  Muestra_t m;
+  char carga[64];
+
+  for (;;) {
+    if (!mqtt.connected()) {
+      logSeguro("Reconectando MQTT...");
+      mqtt.connect("esp32-estacion");
+      vTaskDelay(pdMS_TO_TICKS(2000));
+      continue;
+    }
+    mqtt.loop();
+
+    if (xQueueReceive(colaMuestras, &amp;m, pdMS_TO_TICKS(500)) == pdPASS) {
+      snprintf(carga, sizeof(carga),
+               "{\"ms\":%lu,\"v\":%.3f}", m.ms, m.valor);
+      mqtt.publish("estacion/sensor", carga);
+    }
+  }
+}
+
+// NÚCLEO 1 — supervisión de salud del sistema
+void tareaSupervision(void *pv) {
+  char buf[96];
+  for (;;) {
+    snprintf(buf, sizeof(buf), "Heap:%u  EnCola:%u",
+             ESP.getFreeHeap(),
+             (unsigned)uxQueueMessagesWaiting(colaMuestras));
+    logSeguro(buf);
+    vTaskDelay(pdMS_TO_TICKS(10000));
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  mutexSerie   = xSemaphoreCreateMutex();
+  colaMuestras = xQueueCreate(TAM_COLA, sizeof(Muestra_t));
+  configASSERT(mutexSerie &amp;&amp; colaMuestras);
+
+  WiFi.begin("miRed", "miClave");
+  mqtt.setServer("192.168.1.10", 1883);
+
+  xTaskCreatePinnedToCore(tareaAdquisicion, "adq",  4096, NULL, 4, NULL, 1);
+  xTaskCreatePinnedToCore(tareaPublicacion, "pub",  8192, NULL, 2, NULL, 0);
+  xTaskCreatePinnedToCore(tareaSupervision, "sup",  4096, NULL, 1, NULL, 1);
+
+  vTaskDelete(NULL);   // no necesitamos loopTask
+}
+
+void loop() { }</code></pre>
+<p>Observa el detalle final: <code>vTaskDelete(NULL)</code> al terminar <code>setup()</code> elimina la <code>loopTask</code> de Arduino y libera su pila, unos 8 KB. Cuando toda la lógica vive en tareas propias, mantener un <code>loop()</code> vacío es desperdiciar memoria.</p>
+<p>Este esquema se aplica igual a un proyecto de <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">domótica con ESP32 y MQTT</a> o al control de un <a href="/blog/esp32-como-controlador-de-brazo-robotico">brazo robótico con ESP32</a>, donde la temporización del control no puede depender de la latencia de la red.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Usar los dos núcleos del ESP32 no consiste en "activar" nada: consiste en <strong>diseñar tu programa como un conjunto de tareas que se comunican por canales seguros</strong>. La función <code>xTaskCreatePinnedToCore()</code> es la parte fácil; lo que separa un proyecto estable de uno que se reinicia cada pocas horas es cómo compartes los datos.</p>
+<p>Tres reglas que resuelven la mayoría de los casos: <strong>los datos que fluyen viajan por colas</strong>, <strong>los recursos que se comparten se protegen con mutex</strong>, y <strong>ninguna tarea acapara un núcleo sin ceder el procesador</strong>. Si respetas esas tres, el resto es ajustar prioridades y tamaños de pila.</p>
+<p>Empieza midiendo: añade una tarea de supervisión que informe del heap libre, de la marca de agua de las pilas y de la ocupación de las colas. Esos tres números te dirán antes que ningún otro síntoma si tu diseño se sostiene o si estás a unas horas de un reinicio inesperado.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Todos los ESP32 tienen dos núcleos?</summary><p>No. El ESP32 original, el ESP32-S3 y el ESP32-P4 son de doble núcleo. El ESP32-S2, el ESP32-C3 y el ESP32-C6 tienen un solo núcleo principal. En estas variantes de un núcleo, la función xTaskCreatePinnedToCore compila sin errores pero el parámetro de núcleo se ignora y todas las tareas comparten el mismo procesador. Verifica el modelo exacto de tu placa antes de diseñar en torno al multinúcleo.</p></details>
+<details><summary>¿Puedo usar delay() dentro de una tarea de FreeRTOS?</summary><p>En el ESP32, la función delay() de Arduino está implementada sobre vTaskDelay(), así que cede el procesador correctamente y su uso dentro de una tarea es aceptable. Lo que sí bloquea el núcleo es un bucle while activo sin ninguna cesión, o el uso de delayMicroseconds() con valores grandes, que sí es una espera activa. Para tareas periódicas, vTaskDelayUntil() es preferible porque mantiene el periodo exacto sin acumular deriva.</p></details>
+<details><summary>¿Cuánta pila necesita una tarea del ESP32?</summary><p>Depende de lo que haga. Una tarea sencilla con aritmética y llamadas a digitalRead funciona con 2048 bytes. Si usa Serial.printf, cadenas String o bibliotecas de red, empieza en 4096 y sube a 8192 para tareas con WiFi, TLS o MQTT. Recuerda que en el ESP32 el parámetro se expresa en bytes, no en palabras. La forma correcta de ajustarlo es medir con uxTaskGetStackHighWaterMark tras ejecutar todos los caminos del código y dejar un margen del 25 por ciento.</p></details>
+<details><summary>¿Por qué mi ESP32 se reinicia con el mensaje del task watchdog?</summary><p>Porque una tarea acaparó un núcleo durante más de cinco segundos sin ceder el procesador, impidiendo que se ejecutara la tarea IDLE. La causa habitual es un bucle for o while que consulta constantemente un pin o una condición sin ninguna llamada a vTaskDelay. La solución inmediata es añadir vTaskDelay al final del bucle; la solución correcta es rediseñar la tarea para que se bloquee esperando un evento mediante una cola, un semáforo o una notificación.</p></details>
+<details><summary>¿Puedo compartir una variable global entre los dos núcleos?</summary><p>No de forma directa y segura. Cada núcleo tiene su propia caché, una estructura de varios campos puede leerse a medio escribir y el compilador puede reordenar accesos. Para datos que fluyen de una tarea a otra usa una cola de FreeRTOS, que copia por valor y es segura entre núcleos. Para variables simples de acceso muy frecuente usa una sección crítica con portMUX_TYPE, y para recursos compartidos como un bus I2C usa un mutex. La palabra clave volatile por sí sola no resuelve el problema.</p></details>
+<details><summary>¿Qué ganancia real de rendimiento obtengo al usar los dos núcleos?</summary><p>No es el doble. La mejora depende de si tu carga se puede dividir en partes verdaderamente independientes. El beneficio principal del multinúcleo en el ESP32 no suele ser la velocidad bruta sino el aislamiento temporal: al mover el muestreo de sensores o el control de motores al núcleo 1, dejan de verse afectados por las pausas impredecibles que introducen las pilas de WiFi y Bluetooth en el núcleo 0. Esa previsibilidad vale más que el rendimiento adicional en la mayoría de los proyectos.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Aplica este patrón en un proyecto real con la guía de <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">domótica con ESP32 y MQTT</a>, o llévalo al control de movimiento con <a href="/blog/esp32-como-controlador-de-brazo-robotico">ESP32 como controlador de brazo robótico</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/esp32-como-controlador-de-brazo-robotico">← Anterior: ESP32 como Controlador de Brazo Robótico</a>
+  <a href="/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos">Siguiente: ESP32 como Analizador WiFi →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación oficial de Espressif y de FreeRTOS. Las prioridades y tamaños indicados corresponden a la configuración por defecto del framework Arduino para ESP32 y pueden variar según la versión.</p>
+<ul>
+<li><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/freertos.html" target="_blank" rel="noopener noreferrer">Espressif — Guía de FreeRTOS para ESP-IDF</a></li>
+<li><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/performance/speed.html" target="_blank" rel="noopener noreferrer">Espressif — Soporte multinúcleo simétrico en ESP32</a></li>
+<li><a href="https://www.freertos.org/a00106.html" target="_blank" rel="noopener noreferrer">FreeRTOS — Referencia de la API de tareas y colas</a></li>
+<li><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/wdts.html" target="_blank" rel="noopener noreferrer">Espressif — Temporizador watchdog de tareas</a></li>
+<li><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" target="_blank" rel="noopener noreferrer">Espressif — Hoja de datos técnica de la serie ESP32</a></li>
+<li><a href="https://github.com/espressif/arduino-esp32" target="_blank" rel="noopener noreferrer">Arduino-ESP32 — Repositorio oficial del núcleo Arduino</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

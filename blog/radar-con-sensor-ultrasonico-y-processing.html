@@ -377,7 +377,7 @@ Naranja ----> Arduino pin digital 11</code></pre>
 <section id="codigo-arduino">
 <h2>Código Arduino: barrido y medición de distancia</h2>
 <p>El siguiente código controla el barrido del servomotor de un extremo a otro y, en cada ángulo, toma una medición de distancia con el HC-SR04, enviando ambos valores por el puerto serie en un formato de texto simple que Processing podrá interpretar fácilmente.</p>
-<pre><code>#include <Servo.h>
+<pre><code>#include &lt;Servo.h&gt;
 
 const int PIN_TRIG = 9;
 const int PIN_ECHO = 10;

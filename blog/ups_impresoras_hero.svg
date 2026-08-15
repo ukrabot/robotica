@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Ilustración de un sistema de alimentación ininterrumpida conectado a una impresora 3D, con forma de onda senoidal e indicador de autonomía">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141210"/>
+      <stop offset="1" stop-color="#211b14"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e4c07a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#e4c07a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ups" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a352c"/>
+      <stop offset="1" stop-color="#23201b"/>
+    </linearGradient>
+    <linearGradient id="board" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2f6fb0"/>
+      <stop offset="1" stop-color="#1f4e7f"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="600" cy="340" r="270" fill="url(#glow)"/>
+
+  <text x="600" y="55" text-anchor="middle" fill="#e4c07a" font-family="Georgia, serif" font-size="34">UPS para Impresoras 3D</text>
+
+  <!-- UPS -->
+  <g transform="translate(110 270)">
+    <rect x="0" y="0" width="330" height="220" rx="14" fill="url(#ups)" stroke="#0f0d0a" stroke-width="4"/>
+    <rect x="24" y="26" width="180" height="80" rx="8" fill="#101c14" stroke="#2f5c22" stroke-width="3"/>
+    <text x="114" y="62" text-anchor="middle" fill="#7ad46a" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="600">EN LINEA</text>
+    <text x="114" y="90" text-anchor="middle" fill="#7ad46a" font-family="Inter, Arial, sans-serif" font-size="20">230 V  /  100 %</text>
+
+    <!-- Barras de carga -->
+    <g>
+      <rect x="228" y="26" width="78" height="80" rx="6" fill="#141210" stroke="#57534a" stroke-width="2"/>
+      <rect x="238" y="86" width="58" height="12" rx="2" fill="#7ad46a"/>
+      <rect x="238" y="70" width="58" height="12" rx="2" fill="#7ad46a"/>
+      <rect x="238" y="54" width="58" height="12" rx="2" fill="#e4c07a"/>
+      <rect x="238" y="38" width="58" height="12" rx="2" fill="#3a352c"/>
+    </g>
+
+    <g fill="#8b8577">
+      <circle cx="52" cy="150" r="16"/>
+      <circle cx="118" cy="150" r="16"/>
+      <circle cx="184" cy="150" r="16"/>
+      <circle cx="250" cy="150" r="16"/>
+    </g>
+    <g fill="#141210">
+      <rect x="46" y="142" width="4" height="16"/>
+      <rect x="56" y="142" width="4" height="16"/>
+      <rect x="112" y="142" width="4" height="16"/>
+      <rect x="122" y="142" width="4" height="16"/>
+      <rect x="178" y="142" width="4" height="16"/>
+      <rect x="188" y="142" width="4" height="16"/>
+      <rect x="244" y="142" width="4" height="16"/>
+      <rect x="254" y="142" width="4" height="16"/>
+    </g>
+    <text x="165" y="202" text-anchor="middle" fill="#c9c4b8" font-family="Inter, Arial, sans-serif" font-size="19">Linea interactiva  ·  1000 VA</text>
+  </g>
+
+  <!-- Cable -->
+  <g stroke="#a97b23" stroke-width="9" fill="none" stroke-linecap="round">
+    <path d="M 440 380 C 520 380 520 330 600 330 C 680 330 680 380 760 380"/>
+  </g>
+
+  <!-- Onda senoidal -->
+  <g transform="translate(470 130)">
+    <rect x="0" y="0" width="270" height="130" rx="10" fill="#1b1813" stroke="#3d3629" stroke-width="3"/>
+    <line x1="16" y1="72" x2="254" y2="72" stroke="#57534a" stroke-width="2"/>
+    <path d="M 20 72 C 44 8 78 8 102 72 C 126 136 160 136 184 72 C 202 26 228 26 250 60" stroke="#e4c07a" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <text x="135" y="116" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="17">senoidal pura</text>
+  </g>
+
+  <!-- Impresora -->
+  <g transform="translate(760 240)">
+    <rect x="0" y="0" width="300" height="250" rx="10" fill="#2c2823" stroke="#0f0d0a" stroke-width="4"/>
+    <rect x="24" y="24" width="252" height="180" rx="6" fill="#1b1813" stroke="#3d3629" stroke-width="3"/>
+    <rect x="40" y="52" width="220" height="12" rx="3" fill="#57534a"/>
+    <rect x="130" y="46" width="46" height="34" rx="5" fill="url(#board)"/>
+    <path d="M 147 80 L 159 80 L 155 98 L 151 98 Z" fill="#c9c4b8"/>
+    <rect x="60" y="170" width="180" height="14" rx="3" fill="#b2281e"/>
+    <rect x="86" y="118" width="128" height="52" rx="3" fill="#2f6fb0" stroke="#16354f" stroke-width="2"/>
+    <text x="150" y="232" text-anchor="middle" fill="#c9c4b8" font-family="Inter, Arial, sans-serif" font-size="19">Impresora 3D</text>
+  </g>
+
+  <!-- Indicador de autonomia -->
+  <g transform="translate(470 420)">
+    <rect x="0" y="0" width="270" height="86" rx="10" fill="#1b1813" stroke="#3d3629" stroke-width="3"/>
+    <text x="135" y="34" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="17">Autonomia estimada</text>
+    <text x="135" y="68" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="600">12 min</text>
+  </g>
+
+  <text x="600" y="580" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="19">Topologia, forma de onda y autonomia real para no perder una impresion de 30 horas</text>
+</svg>

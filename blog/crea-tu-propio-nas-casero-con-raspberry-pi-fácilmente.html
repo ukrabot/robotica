@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Crea tu Propio NAS Casero con Raspberry Pi Fácilmente</title>
+<meta name="description" content="Guía completa para montar un NAS casero con Raspberry Pi: elección de hardware, discos y alimentación, formateo y montaje automático, Samba y NFS, RAID con mdadm, OpenMediaVault, copias de seguridad y rendimiento real.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/crea-tu-propio-nas-casero-con-raspberry-pi-f%C3%A1cilmente">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Crea tu Propio NAS Casero con Raspberry Pi Fácilmente">
+<meta property="og:description" content="Hardware, alimentación, sistemas de archivos, Samba, RAID y copias de seguridad: todo lo necesario para un NAS con Raspberry Pi que no pierda datos.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/nas_raspberry_pi_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/crea-tu-propio-nas-casero-con-raspberry-pi-f%C3%A1cilmente">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crea tu Propio NAS Casero con Raspberry Pi Fácilmente">
+<meta name="twitter:description" content="Monta un NAS con Raspberry Pi paso a paso: discos, montaje automático, Samba, RAID y respaldos.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/nas_raspberry_pi_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Crea tu Propio NAS Casero con Raspberry Pi Fácilmente",
+  "description": "Guía técnica detallada para construir un servidor de almacenamiento en red (NAS) casero basado en Raspberry Pi: comparación entre Raspberry Pi 4 y 5 y sus límites de ancho de banda USB y Ethernet, criterios de elección de discos duros y por qué la alimentación externa es obligatoria, preparación del sistema operativo, particionado y elección de sistema de archivos ext4 frente a exFAT y Btrfs, montaje automático mediante UUID en fstab, instalación y configuración segura de Samba para clientes Windows y macOS, exportación por NFS para clientes Linux, arreglos RAID por software con mdadm y por qué RAID no sustituye a una copia de seguridad, la alternativa OpenMediaVault con interfaz web, estrategia de respaldo 3-2-1 con rsync, medición de rendimiento real y resolución de los problemas más frecuentes.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/crea-tu-propio-nas-casero-con-raspberry-pi-f%C3%A1cilmente"
+  },
+  "image": "https://www.ukrabot.cl/blog/nas_raspberry_pi_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Raspberry Pi 4 u 8 GB o Raspberry Pi 5, fuente de alimentación oficial, tarjeta microSD o SSD NVMe, discos duros USB 3.0 con alimentación externa, cable Ethernet",
+  "wordCount": "3300",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Crea tu Propio NAS Casero con Raspberry Pi Fácilmente",
+      "item": "https://www.ukrabot.cl/blog/crea-tu-propio-nas-casero-con-raspberry-pi-f%C3%A1cilmente"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuánta velocidad real alcanza un NAS con Raspberry Pi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con Raspberry Pi 4 o 5, cable Ethernet Gigabit y discos mecánicos en buen estado, entre 90 y 112 MB/s en transferencias de archivos grandes por Samba, que es prácticamente el techo de una red Gigabit. Con muchos archivos pequeños la velocidad cae a 10-30 MB/s por la latencia de cada operación del protocolo, algo que le ocurre igual a cualquier NAS comercial. Por WiFi la cifra depende de la calidad del enlace y raramente supera los 40 MB/s."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo conectar discos de 3,5 pulgadas directamente a la Raspberry Pi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No con alimentación desde el puerto USB. Un disco de 3,5\" consume hasta 12 W durante el arranque del motor y los puertos USB de la Pi entregan como máximo unos 6 W repartidos entre todos. Necesitas una carcasa con fuente propia o un hub USB 3.0 con alimentación externa. Intentarlo sin alimentación adecuada provoca desconexiones aleatorias y corrupción del sistema de archivos. Los discos de 2,5 pulgadas sí funcionan directamente porque consumen unos 5 W."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es mejor Samba o NFS para mi NAS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de los clientes. Samba (SMB) funciona en Windows, macOS, Linux, Android e iOS sin instalar nada, y es la opción correcta en una red doméstica mixta. NFS es más rápido y conserva los permisos POSIX de forma nativa, pero está pensado para clientes Linux o Unix. Nada impide exportar los mismos directorios por ambos protocolos: usa NFS entre máquinas Linux y Samba para todo lo demás."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito RAID en un NAS casero?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Casi nunca. RAID 1 mantiene el servicio funcionando si un disco falla físicamente, pero no protege contra borrados accidentales, ransomware ni corrupción de archivos, porque replica esos errores al instante en ambos discos. Para un uso doméstico suele ser más útil dedicar el segundo disco a una copia diaria con rsync y la opción --backup-dir, que te da una ventana de recuperación de 24 horas frente al error humano, que es mucho más frecuente que la muerte de un disco."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué Raspberry Pi conviene más para un NAS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La Raspberry Pi 5 es la mejor opción porque su conector PCIe permite arrancar desde un SSD NVMe, evitando el desgaste de la microSD, y su controlador USB gestiona mejor las transferencias simultáneas. La Raspberry Pi 4 con 4 GB de RAM sigue siendo una elección válida y más económica. Evita la Pi 3B+ y modelos anteriores: su Ethernet comparte bus con el USB 2.0 y el rendimiento se limita a unos 300 Mb/s. Para un NAS puro con Samba, 4 GB de RAM bastan; sube a 8 GB solo si vas a ejecutar Docker o Nextcloud."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar el NAS como servidor multimedia con Plex o Jellyfin?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, siempre que se limite a reproducción directa, es decir, cuando el cliente puede leer el formato original sin conversión. La Raspberry Pi no tiene potencia para transcodificar video 1080p o 4K en tiempo real para varios usuarios simultáneos, y menos aún con codificación por software. Si tu biblioteca está en formatos que tus dispositivos reproducen de forma nativa, funcionará bien; si necesitas transcodificación habitual, necesitas hardware con aceleración por GPU."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="nas_raspberry_pi_hero.jpg" alt="Raspberry Pi 5 montada junto a dos discos duros externos en un escritorio, funcionando como servidor de almacenamiento en red" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Raspberry Pi y servidores · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>NAS Casero con Raspberry Pi: Guía Completa</h1>
+    <p>Un NAS de fábrica cuesta lo que cuesta. Una Raspberry Pi con dos discos y Samba hace el 90 % del trabajo por una fracción del precio, si entiendes dónde están los cuellos de botella.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 19 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="nas_raspberry_arquitectura.svg" alt="Diagrama de la arquitectura de un NAS con Raspberry Pi mostrando discos USB con alimentación externa, el bus USB 3.0 compartido, la red Gigabit y los clientes" loading="lazy">
+  <div class="caption">El cuello de botella casi nunca es la CPU: es el bus USB compartido y la red.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que">Por qué una Raspberry Pi como NAS (y cuándo no)</a></li>
+    <li><a href="#hardware">Hardware: qué comprar y qué evitar</a></li>
+    <li><a href="#preparacion">Preparar el sistema y los discos</a></li>
+    <li><a href="#samba">Samba: compartir con Windows, macOS y Linux</a></li>
+    <li><a href="#nfs">NFS para clientes Linux</a></li>
+    <li><a href="#raid">RAID con mdadm: qué protege y qué no</a></li>
+    <li><a href="#respaldos">Copias de seguridad: la regla 3-2-1</a></li>
+    <li><a href="#omv">OpenMediaVault: la alternativa con interfaz web</a></li>
+    <li><a href="#rendimiento">Rendimiento real y resolución de problemas</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="por-que">
+<h2>Por qué una Raspberry Pi como NAS (y cuándo no)</h2>
+<p>Un <strong>NAS</strong> (<em>Network Attached Storage</em>) es un equipo conectado a tu red cuya única función es servir archivos. Comprar uno de fábrica de dos bahías cuesta una cifra respetable antes de añadir los discos. Una Raspberry Pi con un par de discos USB hace lo mismo para un uso doméstico, y de paso te enseña cómo funciona todo por dentro.</p>
+<h3>Casos donde la Pi es una excelente elección</h3>
+<ul>
+<li>Almacenamiento compartido de documentos, fotos y proyectos entre varios equipos de casa.</li>
+<li>Destino de copias de seguridad automáticas de portátiles y escritorios.</li>
+<li>Servidor multimedia para reproducción directa (sin transcodificación) en la red local.</li>
+<li>Repositorio Git privado, servidor de archivos para impresión 3D, o almacenamiento de imágenes de cámaras de seguridad.</li>
+<li>Aprender administración de sistemas Linux con un objetivo útil.</li>
+</ul>
+<h3>Casos donde deberías comprar un NAS real</h3>
+<ul>
+<li><strong>Transcodificación de video 4K</strong> en vivo para varios usuarios. La Pi no tiene músculo para eso.</li>
+<li><strong>Más de cuatro discos</strong> o necesidad de bahías intercambiables en caliente.</li>
+<li><strong>Datos críticos de negocio</strong> donde el tiempo de recuperación importa y necesitas soporte del fabricante.</li>
+<li><strong>Rendimiento sostenido por encima de 110 MB/s</strong>, que es el techo práctico de una red Gigabit.</li>
+</ul>
+<div class="note"><strong>Expectativa realista de velocidad.</strong> Con Raspberry Pi 4 o 5, red Gigabit y discos mecánicos sanos, obtendrás entre <strong>90 y 112 MB/s</strong> en transferencias grandes por Samba. Eso llena un disco de 1 TB en unas tres horas. Con muchos archivos pequeños, la cifra cae drásticamente: es normal, y le pasa igual a un NAS comercial.</div>
+</section>
+<section id="hardware">
+<h2>Hardware: qué comprar y qué evitar</h2>
+<h3>La placa</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Modelo</th><th>Ethernet</th><th>USB 3.0</th><th>Arranque desde NVMe</th><th>Veredicto como NAS</th></tr></thead>
+<tbody>
+<tr><td>Raspberry Pi 3B+</td><td>Gigabit limitada a ~300 Mb/s</td><td>No (solo USB 2.0)</td><td>No</td><td>Insuficiente</td></tr>
+<tr><td>Raspberry Pi 4 (4/8 GB)</td><td>Gigabit real</td><td>Sí, 2 puertos</td><td>Solo por USB</td><td>Muy buena opción</td></tr>
+<tr><td>Raspberry Pi 5 (4/8/16 GB)</td><td>Gigabit real</td><td>Sí, 2 puertos</td><td>Sí, por PCIe con HAT</td><td>La mejor opción</td></tr>
+</tbody>
+</table>
+</div>
+<p>La <strong>Raspberry Pi 5</strong> es preferible por dos motivos concretos: su conector PCIe permite arrancar el sistema desde un SSD NVMe (mucho más fiable que una microSD, que acabará muriendo por escrituras) y su controlador USB gestiona mejor las transferencias concurrentes. La Pi 4 con 4 GB sigue siendo perfectamente válida y suele encontrarse más barata.</p>
+<p>La memoria RAM importa menos de lo que parece para un NAS puro: 4 GB sobran para Samba. Sube a 8 GB solo si vas a ejecutar contenedores Docker, Nextcloud o un servidor multimedia en la misma placa.</p>
+<h3>Los discos: el punto crítico</h3>
+<div class="warning"><strong>No alimentes discos de 3,5 pulgadas desde el puerto USB de la Pi.</strong> Un disco de escritorio necesita hasta 12 W en el arranque; los puertos USB de la Pi entregan como máximo 1,2 A repartidos entre todos. El resultado es corrupción de datos, desconexiones aleatorias y, en el peor caso, un sistema de archivos destruido. Usa siempre discos de 3,5" con su propia fuente, o discos de 2,5" que consuman poco.</div>
+<p>Opciones ordenadas de mejor a peor:</p>
+<ol>
+<li><strong>Disco de 3,5" en carcasa con fuente de alimentación propia.</strong> La opción más fiable y con mejor precio por terabyte.</li>
+<li><strong>Disco de 2,5" en carcasa USB 3.0.</strong> Se alimenta del puerto, consume poco (unos 5 W). Válido para uno o dos discos con una fuente oficial de la Pi.</li>
+<li><strong>SSD SATA en adaptador USB 3.0.</strong> Silencioso, rápido y sin partes móviles. Más caro por terabyte, pero excelente para volúmenes moderados.</li>
+<li><strong>Hub USB 3.0 con alimentación externa</strong> si necesitas conectar varios discos. Compra uno de marca conocida: los hubs baratos son la causa número uno de desconexiones misteriosas.</li>
+</ol>
+<h3>Alimentación de la propia Pi</h3>
+<p>Usa la <strong>fuente oficial</strong>: 5 V/3 A para la Pi 4, 5 V/5 A USB-C con PD para la Pi 5. Un cargador de móvil genérico provoca caídas de tensión bajo carga, y la Pi responde reduciendo su frecuencia o reiniciándose en el peor momento, que siempre es durante una escritura.</p>
+</section>
+<section id="preparacion">
+<h2>Preparar el sistema y los discos</h2>
+<h3>Sistema operativo</h3>
+<p>Instala <strong>Raspberry Pi OS Lite (64 bits)</strong> con Raspberry Pi Imager. La versión Lite no trae escritorio, que es exactamente lo que quieres en un servidor: menos software, menos consumo, menos superficie de ataque. En el propio Imager, con el icono del engranaje, configura de antemano el nombre del equipo, el usuario, la contraseña y habilita SSH.</p>
+<pre><code># Primer arranque: conectar por SSH y actualizar
+ssh usuario@raspberrypi.local
+sudo apt update &amp;&amp; sudo apt full-upgrade -y
+sudo reboot</code></pre>
+<h3>Identificar los discos</h3>
+<pre><code>lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,MODEL
+# Ejemplo de salida:
+# sda      3,6T             Seagate Expansion
+# └─sda1   3,6T  ntfs
+# sdb      3,6T             Seagate Expansion</code></pre>
+<h3>Particionar y formatear</h3>
+<div class="warning">Los comandos siguientes <strong>borran todo el contenido del disco</strong>. Verifica tres veces que <code>/dev/sda</code> es el disco que crees. Confundir el dispositivo destruye datos de forma irreversible.</div>
+<pre><code># Crear tabla GPT y una partición que ocupe todo el disco
+sudo parted /dev/sda --script mklabel gpt
+sudo parted /dev/sda --script mkpart primary ext4 0% 100%
+
+# Formatear en ext4 con etiqueta identificable
+sudo mkfs.ext4 -L datos1 /dev/sda1
+
+# Reducir el espacio reservado para root del 5 % al 1 %
+# (en un disco de 4 TB esto libera unos 160 GB)
+sudo tune2fs -m 1 /dev/sda1</code></pre>
+<h3>Por qué ext4 y no otro sistema de archivos</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Sistema</th><th>Ventaja</th><th>Inconveniente</th><th>Uso recomendado</th></tr></thead>
+<tbody>
+<tr><td>ext4</td><td>Maduro, rápido, permisos POSIX completos</td><td>No se lee de forma nativa en Windows</td><td>Predeterminado para el NAS</td></tr>
+<tr><td>Btrfs</td><td>Instantáneas, sumas de verificación, compresión</td><td>Más complejo, algo más lento en la Pi</td><td>Usuarios avanzados</td></tr>
+<tr><td>XFS</td><td>Excelente con archivos grandes</td><td>No se puede reducir el tamaño</td><td>Volúmenes de video</td></tr>
+<tr><td>exFAT</td><td>Se lee en Windows, macOS y Linux</td><td>Sin permisos ni journaling: frágil</td><td>Solo discos portátiles, nunca el NAS</td></tr>
+<tr><td>NTFS</td><td>Compatible con Windows</td><td>Controlador lento en Linux, alto uso de CPU</td><td>Evitar</td></tr>
+</tbody>
+</table>
+</div>
+<p>Como el acceso será por red mediante Samba, el sistema de archivos del disco es irrelevante para los clientes Windows: ellos ven un recurso compartido, no el sistema subyacente. Por eso ext4 es la elección correcta.</p>
+<h3>Montaje automático por UUID</h3>
+<p>Nunca montes por <code>/dev/sda1</code>: si desconectas y reconectas los discos, el orden puede cambiar y montarías el disco equivocado. Usa siempre el UUID, que es único y permanente.</p>
+<pre><code># Obtener los UUID
+sudo blkid
+
+# Crear los puntos de montaje
+sudo mkdir -p /srv/nas/datos1 /srv/nas/datos2
+
+# Editar /etc/fstab y añadir (una línea por disco):
+UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /srv/nas/datos1 ext4 defaults,noatime,nofail,x-systemd.device-timeout=30 0 2
+
+# Probar sin reiniciar
+sudo systemctl daemon-reload
+sudo mount -a
+df -h /srv/nas/datos1</code></pre>
+<p>Las opciones importan: <code>noatime</code> evita escribir la marca de último acceso en cada lectura (menos desgaste y más velocidad), y <strong><code>nofail</code> es imprescindible</strong>: sin ella, si un disco no está presente al arrancar, el sistema se queda esperando indefinidamente y pierdes el acceso por SSH.</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="samba">
+<h2>Samba: compartir con Windows, macOS y Linux</h2>
+<p><strong>Samba</strong> implementa el protocolo SMB, el mismo que usa Windows para sus carpetas compartidas. Es la opción universal: funciona en Windows, macOS, Linux, Android y iOS sin instalar nada en el cliente.</p>
+<pre><code>sudo apt install samba samba-common-bin -y</code></pre>
+<h3>Crear el usuario de red</h3>
+<pre><code># Usuario del sistema sin shell de acceso, solo para archivos
+sudo useradd -M -s /usr/sbin/nologin nasuser
+sudo groupadd nasgroup
+sudo usermod -aG nasgroup nasuser
+
+# Contraseña específica de Samba (independiente de la del sistema)
+sudo smbpasswd -a nasuser
+sudo smbpasswd -e nasuser
+
+# Permisos sobre los datos
+sudo chown -R nasuser:nasgroup /srv/nas
+sudo chmod -R 2770 /srv/nas</code></pre>
+<p>El bit <code>2</code> inicial en <code>2770</code> es el <em>setgid</em>: hace que todo archivo creado dentro herede el grupo del directorio, lo que evita los problemas de permisos más comunes cuando varios usuarios escriben en la misma carpeta.</p>
+<h3>Configuración de Samba</h3>
+<pre><code>sudo nano /etc/samba/smb.conf</code></pre>
+<pre><code>[global]
+   workgroup = WORKGROUP
+   server string = NAS Raspberry Pi
+   security = user
+   map to guest = never
+   # Forzar SMB3: SMB1 es inseguro y está obsoleto
+   server min protocol = SMB3
+   client min protocol = SMB3
+   # Rendimiento
+   socket options = TCP_NODELAY IPTOS_LOWDELAY
+   use sendfile = yes
+   read raw = yes
+   write raw = yes
+   # Evitar archivos basura de macOS
+   veto files = /._*/.DS_Store/
+   delete veto files = yes
+
+[Datos]
+   path = /srv/nas/datos1
+   browseable = yes
+   read only = no
+   valid users = @nasgroup
+   create mask = 0660
+   directory mask = 2770
+   force group = nasgroup
+
+[Respaldos]
+   path = /srv/nas/datos2
+   browseable = yes
+   read only = no
+   valid users = @nasgroup
+   create mask = 0660
+   directory mask = 2770
+   force group = nasgroup</code></pre>
+<pre><code># Verificar la sintaxis antes de reiniciar
+testparm
+
+sudo systemctl restart smbd nmbd
+sudo systemctl enable smbd nmbd</code></pre>
+<h3>Conectarse desde los clientes</h3>
+<ul>
+<li><strong>Windows:</strong> en el explorador, escribe <code>\\raspberrypi\Datos</code> o <code>\\192.168.1.50\Datos</code>. Marca "conectar con otras credenciales" y usa <code>nasuser</code>.</li>
+<li><strong>macOS:</strong> Finder → Ir → Conectarse al servidor → <code>smb://raspberrypi/Datos</code>.</li>
+<li><strong>Linux:</strong> en el gestor de archivos, <code>smb://raspberrypi/Datos</code>, o montarlo permanentemente con <code>cifs-utils</code>.</li>
+</ul>
+<div class="note"><strong>Asigna una IP fija a tu NAS,</strong> preferiblemente como reserva DHCP en el router asociada a la MAC de la Pi. Así la dirección nunca cambia y todos los accesos guardados en los clientes siguen funcionando tras un corte de luz.</div>
+</section>
+<section id="nfs">
+<h2>NFS para clientes Linux</h2>
+<p>Si todos tus clientes son Linux, <strong>NFS</strong> es más rápido que Samba y conserva los permisos POSIX de forma nativa. Nada impide exportar los mismos directorios por ambos protocolos.</p>
+<pre><code>sudo apt install nfs-kernel-server -y
+sudo nano /etc/exports</code></pre>
+<pre><code># Exportar solo a la red local, nunca a 0.0.0.0/0
+/srv/nas/datos1  192.168.1.0/24(rw,sync,no_subtree_check,root_squash)</code></pre>
+<pre><code>sudo exportfs -ra
+sudo systemctl restart nfs-kernel-server
+
+# Desde el cliente Linux:
+sudo mount -t nfs 192.168.1.50:/srv/nas/datos1 /mnt/nas</code></pre>
+<p>La opción <code>root_squash</code> es de seguridad: convierte al usuario root del cliente en un usuario sin privilegios en el servidor, evitando que cualquiera con root en su máquina pueda hacer lo que quiera con tus archivos.</p>
+</section>
+<section id="raid">
+<h2>RAID con mdadm: qué protege y qué no</h2>
+<p>Si tienes dos discos iguales, puedes crear un espejo (RAID 1) por software. Cada archivo se escribe en ambos discos; si uno falla, el sistema sigue funcionando con el otro.</p>
+<pre><code>sudo apt install mdadm -y
+
+# Crear un espejo RAID 1 con dos discos
+sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sda1 /dev/sdb1
+
+# Vigilar la sincronización inicial (puede tardar horas)
+cat /proc/mdstat
+
+# Formatear y guardar la configuración
+sudo mkfs.ext4 -L nasraid /dev/md0
+sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
+sudo update-initramfs -u</code></pre>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Nivel</th><th>Discos mínimos</th><th>Capacidad útil</th><th>Tolerancia a fallos</th><th>Comentario</th></tr></thead>
+<tbody>
+<tr><td>RAID 0</td><td>2</td><td>100 %</td><td>Ninguna</td><td>Un disco muere y pierdes todo. Evitar.</td></tr>
+<tr><td>RAID 1</td><td>2</td><td>50 %</td><td>1 disco</td><td>La opción sensata en una Pi</td></tr>
+<tr><td>RAID 5</td><td>3</td><td>~67 %</td><td>1 disco</td><td>Reconstrucción muy lenta por USB</td></tr>
+<tr><td>Sin RAID + rsync</td><td>2</td><td>50 %</td><td>1 disco, con retraso</td><td>Protege también del borrado accidental</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>RAID no es una copia de seguridad.</strong> Un espejo replica <em>instantáneamente</em> todo lo que ocurre, incluidos los errores: si borras una carpeta por accidente, se borra en ambos discos a la vez. Si un ransomware cifra tus archivos, los cifra en los dos. RAID protege solo contra un fallo físico de disco, y nada más.</div>
+<p>Para un NAS doméstico suele ser más útil <strong>no usar RAID</strong> y en su lugar programar una sincronización nocturna del disco 1 al disco 2 con <code>rsync</code>. Pierdes la disponibilidad inmediata ante un fallo, pero ganas una ventana de recuperación de 24 horas ante borrados accidentales, que es un accidente mucho más frecuente que la muerte de un disco.</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="respaldos">
+<h2>Copias de seguridad: la regla 3-2-1</h2>
+<p>La regla clásica: <strong>3</strong> copias de tus datos, en <strong>2</strong> medios distintos, con <strong>1</strong> fuera de casa. Tu NAS es una de esas copias, no la única.</p>
+<pre><code># Sincronización local nocturna disco1 → disco2
+sudo nano /usr/local/bin/nas-backup.sh</code></pre>
+<pre><code>#!/bin/bash
+set -euo pipefail
+ORIGEN="/srv/nas/datos1/"
+DESTINO="/srv/nas/datos2/respaldo/"
+LOG="/var/log/nas-backup.log"
+
+if ! mountpoint -q /srv/nas/datos2; then
+  echo "$(date -Is) ERROR: destino no montado" >> "$LOG"
+  exit 1
+fi
+
+rsync -aAX --delete \
+  --backup --backup-dir="/srv/nas/datos2/borrados/$(date +%F)" \
+  --log-file="$LOG" \
+  "$ORIGEN" "$DESTINO"
+
+echo "$(date -Is) Respaldo completado" >> "$LOG"</code></pre>
+<pre><code>sudo chmod +x /usr/local/bin/nas-backup.sh
+
+# Programar a las 03:00 con systemd timer o cron
+sudo crontab -e
+# Añadir:
+0 3 * * * /usr/local/bin/nas-backup.sh</code></pre>
+<p>Fíjate en la opción <code>--backup-dir</code>: en lugar de borrar los archivos que desaparecieron del origen, los mueve a una carpeta fechada. Eso convierte una sincronización destructiva en una con papelera, y te salva del error humano.</p>
+<h3>La copia fuera de casa</h3>
+<p>Para la tercera copia tienes dos rutas razonables: un disco externo que rotes físicamente cada mes y guardes en otro lugar, o una sincronización cifrada a almacenamiento en la nube con <code>rclone</code> o <code>restic</code>. Cifra siempre antes de subir: la nube es el ordenador de otra persona.</p>
+<pre><code># Ejemplo con restic hacia un destino remoto, con cifrado y deduplicación
+restic -r sftp:usuario@servidor:/respaldos/nas backup /srv/nas/datos1
+restic -r sftp:usuario@servidor:/respaldos/nas forget --keep-daily 7 --keep-weekly 4 --keep-monthly 12 --prune</code></pre>
+</section>
+<section id="omv">
+<h2>OpenMediaVault: la alternativa con interfaz web</h2>
+<p>Si prefieres administrar el NAS desde el navegador en lugar de por línea de comandos, <strong>OpenMediaVault</strong> (OMV) es una distribución basada en Debian que instala una interfaz web completa sobre tu Raspberry Pi OS existente.</p>
+<pre><code>wget -O - https://github.com/OpenMediaVault-Plugin-Developers/installScript/raw/master/install | sudo bash</code></pre>
+<div class="warning">El instalador reconfigura la red y <strong>desactiva el WiFi</strong> por diseño. Ejecútalo solo con el cable Ethernet conectado, o perderás el acceso al equipo. El proceso tarda entre 15 y 30 minutos e incluye varios reinicios.</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Aspecto</th><th>Samba manual</th><th>OpenMediaVault</th></tr></thead>
+<tbody>
+<tr><td>Curva de aprendizaje</td><td>Media: hay que editar archivos</td><td>Baja: todo por interfaz web</td></tr>
+<tr><td>Consumo de recursos</td><td>Mínimo (~60 MB RAM)</td><td>Moderado (~400 MB RAM)</td></tr>
+<tr><td>Gestión de discos y RAID</td><td>Comandos</td><td>Interfaz gráfica</td></tr>
+<tr><td>Usuarios y permisos</td><td>Manual</td><td>Formulario web</td></tr>
+<tr><td>Docker y extras</td><td>Instalación manual</td><td>Plugin integrado</td></tr>
+<tr><td>Control y transparencia</td><td>Total</td><td>Menor: abstrae la configuración</td></tr>
+<tr><td>Valor didáctico</td><td>Alto</td><td>Bajo</td></tr>
+</tbody>
+</table>
+</div>
+<p>Recomendación práctica: si el NAS es para ti y quieres aprender, hazlo a mano; entenderás cada pieza y podrás reparar cualquier cosa. Si es para la familia y quieres olvidarte, instala OMV.</p>
+</section>
+<section id="rendimiento">
+<h2>Rendimiento real y resolución de problemas</h2>
+<h3>Medir antes de opinar</h3>
+<pre><code># Velocidad del disco local, sin red de por medio
+sudo dd if=/dev/zero of=/srv/nas/datos1/test.bin bs=1M count=2048 oflag=direct
+sudo dd if=/srv/nas/datos1/test.bin of=/dev/null bs=1M iflag=direct
+sudo rm /srv/nas/datos1/test.bin
+
+# Velocidad de red pura entre cliente y NAS
+# En la Pi:      iperf3 -s
+# En el cliente: iperf3 -c 192.168.1.50</code></pre>
+<p>Este par de pruebas separa los dos posibles culpables. Si <code>dd</code> da 130 MB/s y <code>iperf3</code> da 940 Mb/s pero Samba solo alcanza 40 MB/s, el problema está en la configuración de Samba o en el cliente, no en el hardware.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Síntoma</th><th>Causa habitual</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>El disco se desconecta solo</td><td>Alimentación insuficiente</td><td>Fuente externa para el disco o hub alimentado</td></tr>
+<tr><td>Velocidad de 10-20 MB/s</td><td>Negociación a 100 Mb/s o WiFi</td><td>Verificar con <code>ethtool eth0</code>; usar cable Cat 5e o superior</td></tr>
+<tr><td>La Pi no arranca con los discos conectados</td><td>Pico de consumo al arrancar</td><td>Añadir <code>nofail</code> en fstab; encender discos antes que la Pi</td></tr>
+<tr><td>Permiso denegado desde Windows</td><td>Permisos POSIX o usuario Samba</td><td>Revisar <code>chown</code>, <code>valid users</code> y <code>smbpasswd -e</code></td></tr>
+<tr><td>Muy lento con archivos pequeños</td><td>Latencia por operación, normal en SMB</td><td>Comprimir en un archivo antes de transferir</td></tr>
+<tr><td>El sistema de archivos se corrompe</td><td>Cortes de energía o USB inestable</td><td>SAI, cable USB corto y de calidad, <code>fsck</code> periódico</td></tr>
+<tr><td>Se calienta y baja el rendimiento</td><td>Limitación térmica</td><td>Disipador o caja con ventilador</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Vigilar la salud de los discos</h3>
+<pre><code>sudo apt install smartmontools -y
+sudo smartctl -a -d sat /dev/sda | grep -E "Reallocated|Pending|Uncorrectable|Temperature"
+
+# Prueba corta (unos 2 minutos)
+sudo smartctl -t short -d sat /dev/sda</code></pre>
+<p>Los atributos <em>Reallocated_Sector_Ct</em> y <em>Current_Pending_Sector</em> son los que anticipan un fallo. Si empiezan a crecer, reemplaza el disco: los discos avisan, pero solo si miras.</p>
+<div class="note"><strong>Protege el NAS con un SAI.</strong> Los cortes de energía durante una escritura son la principal causa de corrupción de datos en sistemas de archivos con journaling. Un SAI pequeño que aguante cinco minutos basta para completar las escrituras pendientes y apagar ordenadamente. El mismo criterio aplica a otros equipos sensibles, como se explica en la guía de <a href="/blog/mejores-ups-sistemas-de-alimentacion-para-impresoras-3d">sistemas de alimentación ininterrumpida</a>.</div>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Un NAS con Raspberry Pi es uno de los proyectos con mejor relación entre esfuerzo y utilidad diaria. Por el precio de la placa, una fuente decente y los discos, obtienes almacenamiento en red que funciona igual de bien que el de un equipo comercial para uso doméstico, con la ventaja de que entiendes exactamente cómo está construido.</p>
+<p>Los tres puntos que separan un NAS fiable de uno que da problemas son siempre los mismos: <strong>alimentación adecuada</strong> para los discos, <strong>montaje por UUID con la opción nofail</strong>, y una <strong>estrategia de copias de seguridad real</strong> que no confunda RAID con respaldo. Resuelve esos tres y el resto es configuración.</p>
+<p>Empieza sencillo: un disco, un recurso compartido de Samba, un script de rsync nocturno. Cuando eso lleve un mes funcionando sin sobresaltos, añade el segundo disco, la copia externa y los extras que necesites. Un NAS que funciona siempre vale más que uno con todas las funciones que falla cada quince días.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuánta velocidad real alcanza un NAS con Raspberry Pi?</summary><p>Con Raspberry Pi 4 o 5, cable Ethernet Gigabit y discos mecánicos en buen estado, entre 90 y 112 MB/s en transferencias de archivos grandes por Samba, que es prácticamente el techo de una red Gigabit. Con muchos archivos pequeños la velocidad cae a 10-30 MB/s por la latencia de cada operación del protocolo, algo que le ocurre igual a cualquier NAS comercial. Por WiFi la cifra depende de la calidad del enlace y raramente supera los 40 MB/s.</p></details>
+<details><summary>¿Puedo conectar discos de 3,5 pulgadas directamente a la Raspberry Pi?</summary><p>No con alimentación desde el puerto USB. Un disco de 3,5" consume hasta 12 W durante el arranque del motor y los puertos USB de la Pi entregan como máximo unos 6 W repartidos entre todos. Necesitas una carcasa con fuente propia o un hub USB 3.0 con alimentación externa. Intentarlo sin alimentación adecuada provoca desconexiones aleatorias y corrupción del sistema de archivos. Los discos de 2,5 pulgadas sí funcionan directamente porque consumen unos 5 W.</p></details>
+<details><summary>¿Es mejor Samba o NFS para mi NAS?</summary><p>Depende de los clientes. Samba (SMB) funciona en Windows, macOS, Linux, Android e iOS sin instalar nada, y es la opción correcta en una red doméstica mixta. NFS es más rápido y conserva los permisos POSIX de forma nativa, pero está pensado para clientes Linux o Unix. Nada impide exportar los mismos directorios por ambos protocolos: usa NFS entre máquinas Linux y Samba para todo lo demás.</p></details>
+<details><summary>¿Necesito RAID en un NAS casero?</summary><p>Casi nunca. RAID 1 mantiene el servicio funcionando si un disco falla físicamente, pero no protege contra borrados accidentales, ransomware ni corrupción de archivos, porque replica esos errores al instante en ambos discos. Para un uso doméstico suele ser más útil dedicar el segundo disco a una copia diaria con rsync y la opción --backup-dir, que te da una ventana de recuperación de 24 horas frente al error humano, que es mucho más frecuente que la muerte de un disco.</p></details>
+<details><summary>¿Qué Raspberry Pi conviene más para un NAS?</summary><p>La Raspberry Pi 5 es la mejor opción porque su conector PCIe permite arrancar desde un SSD NVMe, evitando el desgaste de la microSD, y su controlador USB gestiona mejor las transferencias simultáneas. La Raspberry Pi 4 con 4 GB de RAM sigue siendo una elección válida y más económica. Evita la Pi 3B+ y modelos anteriores: su Ethernet comparte bus con el USB 2.0 y el rendimiento se limita a unos 300 Mb/s. Para un NAS puro con Samba, 4 GB de RAM bastan; sube a 8 GB solo si vas a ejecutar Docker o Nextcloud.</p></details>
+<details><summary>¿Puedo usar el NAS como servidor multimedia con Plex o Jellyfin?</summary><p>Sí, siempre que se limite a reproducción directa, es decir, cuando el cliente puede leer el formato original sin conversión. La Raspberry Pi no tiene potencia para transcodificar video 1080p o 4K en tiempo real para varios usuarios simultáneos, y menos aún con codificación por software. Si tu biblioteca está en formatos que tus dispositivos reproducen de forma nativa, funcionará bien; si necesitas transcodificación habitual, necesitas hardware con aceleración por GPU.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Para proteger el NAS de cortes de energía revisa la guía de <a href="/blog/mejores-ups-sistemas-de-alimentacion-para-impresoras-3d">sistemas de alimentación ininterrumpida</a>, y si buscas más potencia en el mismo formato compara con el <a href="/blog/orange-pi-5-plus-el-sbc-mas-potente-para-edge-computing">Orange Pi 5 Plus</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/domotica-local-al-alcance-de-todos-la-revolucion-de-home-assistant-green">← Anterior: Domótica Local con Home Assistant Green</a>
+  <a href="/blog/orange-pi-5-plus-el-sbc-mas-potente-para-edge-computing">Siguiente: Orange Pi 5 Plus: el SBC más Potente para Edge Computing →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación oficial de los proyectos empleados. Verifica siempre las opciones de configuración con la versión que tengas instalada, ya que cambian entre versiones mayores.</p>
+<ul>
+<li><a href="https://www.raspberrypi.com/documentation/" target="_blank" rel="noopener noreferrer">Raspberry Pi — Documentación oficial de hardware y sistema operativo</a></li>
+<li><a href="https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html" target="_blank" rel="noopener noreferrer">Samba — Manual de referencia de smb.conf</a></li>
+<li><a href="https://raid.wiki.kernel.org/index.php/Linux_Raid" target="_blank" rel="noopener noreferrer">Linux RAID Wiki — Guía de mdadm y niveles RAID</a></li>
+<li><a href="https://docs.openmediavault.org/" target="_blank" rel="noopener noreferrer">OpenMediaVault — Documentación oficial</a></li>
+<li><a href="https://download.samba.org/pub/rsync/rsync.1" target="_blank" rel="noopener noreferrer">rsync — Página de manual oficial</a></li>
+<li><a href="https://restic.readthedocs.io/" target="_blank" rel="noopener noreferrer">restic — Documentación de copias de seguridad cifradas</a></li>
+<li><a href="https://www.smartmontools.org/wiki/TocDoc" target="_blank" rel="noopener noreferrer">smartmontools — Interpretación de atributos SMART</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

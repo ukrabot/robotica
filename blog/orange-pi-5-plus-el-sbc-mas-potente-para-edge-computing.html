@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Orange Pi 5 Plus: el SBC más Potente para Edge Computing</title>
+<meta name="description" content="Análisis técnico del Orange Pi 5 Plus: RK3588, NPU de 6 TOPS, doble 2,5 GbE y NVMe. Rendimiento real, consumo, estado del soporte de software y casos de uso donde tiene sentido frente a Raspberry Pi 5.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/orange-pi-5-plus-el-sbc-mas-potente-para-edge-computing">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Orange Pi 5 Plus: el SBC más Potente para Edge Computing">
+<meta property="og:description" content="RK3588, 6 TOPS de NPU y doble 2,5 GbE: qué puede hacer de verdad el Orange Pi 5 Plus en edge computing.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/orange_pi_5_plus_hero.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/orange-pi-5-plus-el-sbc-mas-potente-para-edge-computing">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Orange Pi 5 Plus: el SBC más Potente para Edge Computing">
+<meta name="twitter:description" content="Orange Pi 5 Plus a fondo: RK3588, NPU de 6 TOPS, NVMe, doble 2,5 GbE y el estado real del software.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/orange_pi_5_plus_hero.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Orange Pi 5 Plus: el SBC más Potente para Edge Computing",
+  "description": "Análisis técnico completo del ordenador de placa reducida Orange Pi 5 Plus basado en el sistema en chip Rockchip RK3588 de ocho nanómetros: arquitectura de ocho núcleos con cuatro Cortex A76 a dos coma cuatro gigahercios y cuatro Cortex A55 a uno coma ocho gigahercios, gráfica Mali G610, unidad de procesamiento neuronal de seis teraoperaciones por segundo, opciones de memoria de cuatro a dieciséis gigabytes, almacenamiento por microSD, memoria eMMC y ranura M punto dos para unidades NVMe, doble interfaz de red de dos coma cinco gigabits, salida HDMI dos punto uno con soporte de ocho ka, medidas reales de rendimiento y consumo, disipación térmica necesaria, estado del soporte de sistemas operativos y del núcleo Linux, casos de uso reales en visión artificial, servidor doméstico, enrutamiento y robótica, y comparación razonada frente a Raspberry Pi 5 y otras alternativas.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/orange-pi-5-plus-el-sbc-mas-potente-para-edge-computing"
+  },
+  "image": "https://www.ukrabot.cl/blog/orange_pi_5_plus_hero.svg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Orange Pi 5 Plus con 8 o 16 GB de RAM, fuente USB-C de 5 V y 4 A, disipación activa y unidad NVMe M.2 2280 recomendada",
+  "wordCount": "3300",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Orange Pi 5 Plus: el SBC más Potente para Edge Computing",
+      "item": "https://www.ukrabot.cl/blog/orange-pi-5-plus-el-sbc-mas-potente-para-edge-computing"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuál es la diferencia entre Orange Pi 5 y Orange Pi 5 Plus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El Orange Pi 5 usa el SoC RK3588S, una variante recortada del RK3588 que lleva la versión Plus. Las diferencias prácticas son notables: el Plus incorpora dos interfaces de red de dos coma cinco gigabits frente a una sola Gigabit, cabecera de cuarenta pines en lugar de veintiséis, más carriles PCIe disponibles, socket eMMC y entrada HDMI. También es mayor, cien por setenta y cinco milímetros frente a sesenta y dos por cien. La CPU y la NPU son equivalentes en ambos, así que para tareas de inferencia sin exigencias de red el modelo básico puede bastar y sale más barato."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo ejecutar modelos de lenguaje grandes en la NPU?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En la práctica no de forma satisfactoria. La NPU del RK3588 está optimizada para redes convolucionales de visión, no para arquitecturas de transformadores. Existen adaptaciones experimentales que ejecutan modelos pequeños de uno a tres mil millones de parámetros con cuantización agresiva, pero la velocidad resultante ronda unos pocos tokens por segundo y la calidad se resiente. Para inferencia de modelos de lenguaje conviene una GPU dedicada o un servicio remoto. Donde la NPU sí rinde es en detección de objetos, clasificación de imágenes y segmentación ligera."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Funciona bien con Home Assistant?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, ejecutándolo en contenedor Docker sobre Armbian o Debian, y con una holgura de recursos considerable respecto a una Raspberry Pi. No existe una imagen oficial de Home Assistant OS para esta placa, de modo que pierdes los complementos gestionados por el supervisor y tendrás que desplegar servicios como Zigbee2MQTT o Mosquitto por separado. A cambio, la potencia sobrante permite añadir procesamiento de vídeo de cámaras con detección de objetos en la propia máquina, algo inviable en placas más modestas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué sistema operativo debería instalar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Armbian en su versión estable para Orange Pi 5 Plus es la recomendación general: recibe actualizaciones con regularidad, tiene documentación decente y una comunidad que responde a los problemas. Las imágenes oficiales de Orange Pi sirven para verificar inicialmente que el hardware funciona y, en algunos casos, para acceder a funciones del núcleo vendor como la codificación de vídeo por hardware que aún no están completas en mainline. Ubuntu veintidós punto cero cuatro también está disponible y facilita el trabajo con ROS 2."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesita ventilador obligatoriamente?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de la carga sostenida. Para un servidor ligero que rara vez supera el veinte por ciento de uso de CPU, un disipador pasivo grande o una carcasa metálica que actúe como disipador es suficiente. Para inferencia continua, compilación o transcodificación de vídeo, sin ventilador el SoC alcanza los ochenta y cinco a noventa y cinco grados y el sistema reduce la frecuencia, entregando entre el cuarenta y el cincuenta y cinco por ciento del rendimiento nominal. Un ventilador pequeño mantiene la placa por debajo de sesenta grados y conserva el cien por cien del rendimiento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Merece la pena frente a un mini PC x86 de segunda mano?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Son propuestas distintas. Un mini PC x86 usado con procesador de generación reciente ofrece compatibilidad total de software, mayor rendimiento monohilo y ninguna sorpresa de controladores, pero consume entre tres y seis veces más en reposo y ocupa bastante más espacio. El Orange Pi 5 Plus gana en consumo, tamaño, disponibilidad de GPIO para proyectos de hardware y en la NPU integrada, que no tiene equivalente en un x86 sin GPU. Si el proyecto vive en un armario con enchufe permanente y necesitas software x86, el mini PC. Si va embebido, alimentado por batería o interactúa con sensores, la placa ARM."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="orange_pi_5_plus_hero.svg" alt="Ilustración de la placa Orange Pi 5 Plus con su SoC Rockchip RK3588, dos puertos de red de 2,5 gigabit y un módulo NVMe M.2 instalado" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">SBC y computación embebida · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Orange Pi 5 Plus: el SBC más Potente para Edge Computing</h1>
+    <p>Un RK3588 con ocho núcleos, NPU de 6 TOPS y doble red de 2,5 GbE por menos de lo que cuesta un mini PC. La pregunta no es si es potente, sino si el software está a la altura del hardware.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 19 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="orange_pi_5_plus_esquema.svg" alt="Diagrama de bloques del Orange Pi 5 Plus mostrando el SoC RK3588, la memoria, el almacenamiento, las interfaces de red y las salidas de vídeo" loading="lazy">
+  <div class="caption">Distribución de bloques del RK3588 y las interfaces disponibles en la placa.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#hardware">Qué hay dentro de la placa</a></li>
+    <li><a href="#rendimiento">Rendimiento real medido</a></li>
+    <li><a href="#npu">La NPU de 6 TOPS: promesa y realidad</a></li>
+    <li><a href="#termica">Térmica y alimentación</a></li>
+    <li><a href="#software">El estado real del software</a></li>
+    <li><a href="#casos">Dónde tiene sentido y dónde no</a></li>
+    <li><a href="#compra">Qué comprar y qué evitar</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="hardware">
+<h2>Qué hay dentro de la placa</h2>
+<p>El Orange Pi 5 Plus se construye alrededor del <strong>Rockchip RK3588</strong>, un SoC fabricado en 8 nm que en 2022 marcó un salto generacional en el mundo ARM asequible y que en 2026 sigue siendo la referencia de potencia bruta en placas de menos de doscientos dólares.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Componente</th><th>Especificación</th></tr></thead>
+<tbody>
+<tr><td>SoC</td><td>Rockchip RK3588, proceso de 8 nm LP</td></tr>
+<tr><td>CPU</td><td>4× Cortex-A76 @ 2,4 GHz + 4× Cortex-A55 @ 1,8 GHz (big.LITTLE)</td></tr>
+<tr><td>GPU</td><td>Mali-G610 MP4 — OpenGL ES 1.1/2.0/3.2, OpenCL 2.2, Vulkan 1.2</td></tr>
+<tr><td>NPU</td><td>6 TOPS, soporte INT4, INT8, INT16 y FP16</td></tr>
+<tr><td>Memoria</td><td>4, 8 o 16 GB LPDDR4/LPDDR4x</td></tr>
+<tr><td>PMU</td><td>RK806-1</td></tr>
+<tr><td>Almacenamiento</td><td>QSPI NOR de 16/32 MB, microSD hasta 128 GB, socket eMMC de 16 a 256 GB, M.2 2280 NVMe (PCIe), M.2 E-Key</td></tr>
+<tr><td>Red</td><td>2× 2,5 GbE con controladores RTL8125BG</td></tr>
+<tr><td>Vídeo</td><td>HDMI 2.1 con salida hasta 8K, entrada HDMI, DisplayPort por USB-C</td></tr>
+<tr><td>GPIO</td><td>Cabecera de 40 pines</td></tr>
+<tr><td>Alimentación</td><td>USB-C 5 V / 4 A</td></tr>
+<tr><td>Dimensiones</td><td>100 × 75 mm, 86,5 g</td></tr>
+<tr><td>Sistemas operativos</td><td>Orange Pi OS, Android 12, Debian 11, Ubuntu 22.04</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note">No confundas el <strong>Orange Pi 5 Plus</strong> con el <strong>Orange Pi 5</strong> a secas. Este último usa el RK3588<strong>S</strong>, una variante recortada: mide 62 × 100 mm, tiene una sola interfaz Gigabit en lugar de dos de 2,5 GbE, cabecera de 26 pines en vez de 40 y menos carriles PCIe. Para edge computing con red exigente, la diferencia es determinante.</div>
+<h3>La arquitectura big.LITTLE en la práctica</h3>
+<p>Los ocho núcleos no son iguales. Los cuatro Cortex-A76 hacen el trabajo pesado y los cuatro Cortex-A55 se ocupan de las tareas de fondo con una fracción del consumo. El planificador de Linux reparte automáticamente, pero en cargas críticas conviene anclar procesos manualmente:</p>
+<pre><code># Los nucleos 0-3 son A55 (eficiencia), los 4-7 son A76 (rendimiento)
+# Anclar un proceso de inferencia a los nucleos rapidos
+taskset -c 4,5,6,7 python3 inferencia.py
+
+# Comprobar la frecuencia actual de cada cluster
+cat /sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq   # A55
+cat /sys/devices/system/cpu/cpufreq/policy4/scaling_cur_freq   # A76
+
+# Fijar el gobernador en rendimiento para benchmarks reproducibles
+for p in /sys/devices/system/cpu/cpufreq/policy*; do
+  echo performance | sudo tee $p/scaling_governor
+done</code></pre>
+</section>
+<section id="rendimiento">
+<h2>Rendimiento real medido</h2>
+<p>Las cifras que siguen son órdenes de magnitud representativos obtenidos con Ubuntu 22.04, gobernador en modo rendimiento y disipación activa. Los resultados concretos varían con la versión del núcleo y la temperatura ambiente.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Prueba</th><th>Orange Pi 5 Plus</th><th>Raspberry Pi 5 (8 GB)</th><th>Ventaja</th></tr></thead>
+<tbody>
+<tr><td>Núcleos / frecuencia</td><td>8 / 2,4 GHz máx.</td><td>4 / 2,4 GHz</td><td>Orange Pi</td></tr>
+<tr><td>Cómputo multihilo</td><td>Referencia 100 %</td><td>~55 a 65 %</td><td>Orange Pi</td></tr>
+<tr><td>Cómputo monohilo</td><td>Referencia 100 %</td><td>~95 a 105 %</td><td>Empate</td></tr>
+<tr><td>Compilación de núcleo Linux</td><td>Referencia</td><td>~1,7× más lento</td><td>Orange Pi</td></tr>
+<tr><td>Red máxima</td><td>2× 2.500 Mbit/s</td><td>1× 1.000 Mbit/s</td><td>Orange Pi</td></tr>
+<tr><td>NVMe</td><td>M.2 2280 nativo</td><td>PCIe con adaptador HAT</td><td>Orange Pi</td></tr>
+<tr><td>NPU</td><td>6 TOPS integrada</td><td>Ninguna</td><td>Orange Pi</td></tr>
+<tr><td>Madurez del software</td><td>Media</td><td>Muy alta</td><td><strong>Raspberry Pi</strong></td></tr>
+<tr><td>Documentación y comunidad</td><td>Limitada</td><td>Enorme</td><td><strong>Raspberry Pi</strong></td></tr>
+<tr><td>Consumo en reposo</td><td>3 a 4 W</td><td>2,5 a 3 W</td><td>Raspberry Pi</td></tr>
+<tr><td>Consumo con carga máxima</td><td>12 a 16 W</td><td>8 a 10 W</td><td>Raspberry Pi</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Almacenamiento: la diferencia más tangible</h3>
+<p>Instalar el sistema en una unidad NVMe transforma la experiencia de uso más que cualquier otra mejora. La ranura M.2 2280 acepta unidades estándar y no requiere adaptadores.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Medio</th><th>Lectura secuencial típica</th><th>Escritura</th><th>Sensación de uso</th></tr></thead>
+<tbody>
+<tr><td>microSD clase A1</td><td>25 a 45 MB/s</td><td>10 a 20 MB/s</td><td>Lenta, cuello de botella evidente</td></tr>
+<tr><td>microSD A2 de calidad</td><td>80 a 100 MB/s</td><td>50 a 80 MB/s</td><td>Aceptable</td></tr>
+<tr><td>eMMC en socket</td><td>150 a 300 MB/s</td><td>100 a 200 MB/s</td><td>Buena</td></tr>
+<tr><td>NVMe M.2</td><td>700 a 1.500 MB/s</td><td>600 a 1.200 MB/s</td><td>Como un ordenador de sobremesa</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note">Una tarjeta microSD no solo es lenta: es el componente que más falla en sistemas embebidos que escriben registros continuamente. Si la placa va a funcionar sin supervisión durante meses, la unidad NVMe se paga sola en fiabilidad.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="npu">
+<h2>La NPU de 6 TOPS: promesa y realidad</h2>
+<p>La unidad de procesamiento neuronal es el argumento diferencial del RK3588 y, a la vez, la parte que más trabajo de integración exige. No es un acelerador que funcione por arte de magia: hay que convertir explícitamente los modelos al formato propietario RKNN.</p>
+<h3>Flujo de trabajo completo</h3>
+<ol>
+<li><strong>Entrenar o descargar</strong> el modelo en PyTorch, TensorFlow u ONNX en un PC.</li>
+<li><strong>Convertir a RKNN</strong> con el <code>rknn-toolkit2</code> en un equipo x86 con Linux. Este paso no se hace en la propia placa.</li>
+<li><strong>Cuantizar</strong> a INT8 aportando un conjunto representativo de imágenes de calibración.</li>
+<li><strong>Desplegar</strong> el archivo <code>.rknn</code> en la placa y ejecutarlo con <code>rknn-toolkit-lite2</code> o la librería en C.</li>
+</ol>
+<pre><code># En el PC x86: conversion de ONNX a RKNN
+from rknn.api import RKNN
+
+rknn = RKNN(verbose=True)
+rknn.config(
+    mean_values=[[0, 0, 0]],
+    std_values=[[255, 255, 255]],
+    target_platform='rk3588'
+)
+rknn.load_onnx(model='yolov8n.onnx')
+rknn.build(do_quantization=True, dataset='./calibracion.txt')
+rknn.export_rknn('./yolov8n.rknn')
+rknn.release()</code></pre>
+<pre><code># En la Orange Pi 5 Plus: inferencia
+from rknnlite.api import RKNNLite
+import cv2, numpy as np
+
+rknn = RKNNLite()
+rknn.load_rknn('./yolov8n.rknn')
+# NPU_CORE_0_1_2 reparte la carga entre los tres nucleos de la NPU
+rknn.init_runtime(core_mask=RKNNLite.NPU_CORE_0_1_2)
+
+frame = cv2.imread('entrada.jpg')
+img = cv2.resize(frame, (640, 640))
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+salidas = rknn.inference(inputs=[np.expand_dims(img, 0)])
+rknn.release()</code></pre>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Modelo</th><th>Resolución</th><th>CPU sola</th><th>Con NPU (INT8)</th><th>Mejora</th></tr></thead>
+<tbody>
+<tr><td>YOLOv8n</td><td>640 × 640</td><td>2 a 4 fps</td><td>25 a 40 fps</td><td>~10×</td></tr>
+<tr><td>YOLOv5s</td><td>640 × 640</td><td>1 a 3 fps</td><td>18 a 30 fps</td><td>~10×</td></tr>
+<tr><td>MobileNetV2</td><td>224 × 224</td><td>25 a 35 fps</td><td>180 a 250 fps</td><td>~7×</td></tr>
+<tr><td>ResNet-50</td><td>224 × 224</td><td>5 a 8 fps</td><td>50 a 70 fps</td><td>~9×</td></tr>
+<tr><td>Segmentación ligera</td><td>512 × 512</td><td>1 a 2 fps</td><td>10 a 15 fps</td><td>~8×</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning">La NPU tiene límites claros. No admite todas las operaciones: modelos con capas poco habituales fallan en la conversión o caen parcialmente a CPU, perdiendo la ventaja. Los transformadores grandes y los modelos de lenguaje no encajan bien en su arquitectura. Y la cuantización a INT8 puede degradar la precisión entre uno y tres puntos porcentuales, lo que en aplicaciones críticas hay que medir, no suponer.</div>
+<h3>Los tres núcleos de la NPU</h3>
+<p>Los 6 TOPS se reparten en tres núcleos de 2 TOPS. Puedes ejecutar tres modelos distintos en paralelo, uno por núcleo, o repartir un solo modelo entre los tres. Para procesar varias cámaras simultáneamente, la primera estrategia suele dar mejor rendimiento agregado.</p>
+</section>
+<section id="termica">
+<h2>Térmica y alimentación</h2>
+<p>El RK3588 disipa una potencia considerable para un SoC ARM. Sin refrigeración adecuada, el <em>thermal throttling</em> reduce el rendimiento sostenido de forma drástica y todas las cifras del apartado anterior se vuelven inalcanzables.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Refrigeración</th><th>Temp. en carga</th><th>Rendimiento sostenido</th><th>Ruido</th></tr></thead>
+<tbody>
+<tr><td>Sin disipador</td><td>85 a 95 °C</td><td>40 a 55 %</td><td>Nulo</td></tr>
+<tr><td>Disipador pasivo pequeño</td><td>75 a 85 °C</td><td>65 a 80 %</td><td>Nulo</td></tr>
+<tr><td>Disipador pasivo grande</td><td>65 a 75 °C</td><td>85 a 95 %</td><td>Nulo</td></tr>
+<tr><td>Disipador con ventilador</td><td>45 a 58 °C</td><td>100 %</td><td>Bajo</td></tr>
+<tr><td>Carcasa metálica completa</td><td>50 a 62 °C</td><td>95 a 100 %</td><td>Nulo</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code># Vigilar temperatura y frecuencias en tiempo real
+watch -n 1 'echo "Temp: $(($(cat /sys/class/thermal/thermal_zone0/temp)/1000)) C"; \
+  for p in /sys/devices/system/cpu/cpufreq/policy*; do \
+    echo "$(basename $p): $(($(cat $p/scaling_cur_freq)/1000)) MHz"; done'</code></pre>
+<div class="warning">La alimentación es el segundo problema silencioso. La placa exige <strong>USB-C de 5 V y 4 A</strong>, es decir 20 W, y muchos cargadores de teléfono negocian solo 5 V y 3 A o directamente 2 A. Los síntomas de alimentación insuficiente son reinicios aleatorios bajo carga, la unidad NVMe que desaparece del sistema y corrupción del sistema de archivos. Antes de sospechar del software, verifica la fuente y el cable: un cable USB-C fino de carga puede caer medio voltio con 4 A.</div>
+<h3>Consumo por escenario</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Escenario</th><th>Consumo</th><th>Consumo mensual continuo</th></tr></thead>
+<tbody>
+<tr><td>Reposo, sin periféricos</td><td>3 a 4 W</td><td>~2,5 kWh</td></tr>
+<tr><td>Servidor ligero con NVMe</td><td>6 a 8 W</td><td>~5 kWh</td></tr>
+<tr><td>Inferencia continua en NPU</td><td>10 a 13 W</td><td>~8 kWh</td></tr>
+<tr><td>Carga máxima en los 8 núcleos</td><td>14 a 16 W</td><td>~11 kWh</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="software">
+<h2>El estado real del software</h2>
+<p>Aquí está el verdadero coste oculto de la placa, y conviene decirlo sin rodeos: <strong>el hardware supera al software</strong>. Es la diferencia esencial frente al ecosistema Raspberry Pi.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Aspecto</th><th>Situación</th></tr></thead>
+<tbody>
+<tr><td>Imágenes oficiales de Orange Pi</td><td>Funcionan, pero con núcleos vendor antiguos y actualizaciones esporádicas</td></tr>
+<tr><td>Armbian</td><td>La opción más recomendable: mejor mantenida y con comunidad activa</td></tr>
+<tr><td>Núcleo mainline</td><td>Soporte creciente, pero aún incompleto en aceleración de vídeo y algunos periféricos</td></tr>
+<tr><td>Aceleración de vídeo</td><td>Funciona con configuración manual; no viene lista de fábrica</td></tr>
+<tr><td>Drivers de GPU (Panfrost / Mali)</td><td>Panfrost avanza bien; los blobs propietarios ofrecen más rendimiento pero menos estabilidad</td></tr>
+<tr><td>Toolkit de la NPU</td><td>Funcional pero con documentación irregular y traducciones parciales</td></tr>
+<tr><td>Docker y contenedores</td><td>Sin problemas en arm64</td></tr>
+<tr><td>Home Assistant</td><td>Se ejecuta bien en contenedor; no hay imagen OS oficial</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Recomendación práctica:</strong> empieza directamente con <strong>Armbian</strong> en su versión estable para Orange Pi 5 Plus. Las imágenes del fabricante sirven para verificar que el hardware funciona, pero Armbian ofrece actualizaciones más regulares, mejor documentación y una comunidad que responde. Reserva las imágenes oficiales para casos donde necesites una función específica del núcleo vendor, típicamente la codificación de vídeo por hardware.</div>
+<h3>Puesta en marcha recomendada</h3>
+<pre><code># 1. Grabar Armbian en microSD y arrancar
+# 2. Actualizar el sistema base
+sudo apt update &amp;&amp; sudo apt full-upgrade -y
+
+# 3. Comprobar que la NVMe se detecta
+lsblk
+sudo nvme list
+
+# 4. Transferir el sistema a la NVMe con la utilidad de Armbian
+sudo armbian-install
+
+# 5. Verificar el estado de la NPU
+sudo cat /sys/kernel/debug/rknpu/version
+sudo cat /sys/kernel/debug/rknpu/load</code></pre>
+<h3>Las dos redes de 2,5 GbE</h3>
+<p>Tener dos interfaces rápidas abre posibilidades que una sola no permite: enrutar entre dos segmentos, montar un cortafuegos con OPNsense o funcionar como NAS con red segregada para el tráfico de almacenamiento.</p>
+<pre><code># Comprobar que ambas negocian a 2,5 Gbit/s
+ethtool eth0 | grep -i speed
+ethtool eth1 | grep -i speed
+
+# Agregacion de enlaces con LACP (requiere switch compatible)
+sudo apt install ifenslave
+# Configurar en /etc/network/interfaces.d/bond0 con modo 802.3ad</code></pre>
+</section>
+<section id="casos">
+<h2>Dónde tiene sentido y dónde no</h2>
+<h3>Casos donde la placa brilla</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Aplicación</th><th>Por qué encaja</th></tr></thead>
+<tbody>
+<tr><td>Visión artificial en el borde</td><td>La NPU procesa varias cámaras sin depender de la nube ni de una GPU externa</td></tr>
+<tr><td>NAS doméstico compacto</td><td>NVMe nativo, doble 2,5 GbE y consumo por debajo de 15 W</td></tr>
+<tr><td>Enrutador o cortafuegos</td><td>Dos interfaces de 2,5 GbE y CPU suficiente para inspección de tráfico</td></tr>
+<tr><td>Servidor de contenedores</td><td>Ocho núcleos y hasta 16 GB de RAM permiten una docena de servicios cómodos</td></tr>
+<tr><td>Cerebro de robot con ROS 2</td><td>Potencia para SLAM y percepción sin recurrir a un portátil a bordo</td></tr>
+<tr><td>Transcodificación de vídeo</td><td>Codificadores por hardware para H.264, H.265 y AV1 en decodificación</td></tr>
+<tr><td>Estación de compilación ARM</td><td>Compila nativamente para arm64 mucho más rápido que emulando</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Casos donde conviene otra cosa</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Situación</th><th>Mejor alternativa</th><th>Motivo</th></tr></thead>
+<tbody>
+<tr><td>Proyecto educativo o primeros pasos</td><td>Raspberry Pi 5</td><td>Documentación, tutoriales y comunidad incomparables</td></tr>
+<tr><td>Producto comercial a largo plazo</td><td>Módulo de cómputo industrial</td><td>Garantía de suministro y soporte de ciclo de vida</td></tr>
+<tr><td>Entrenamiento de modelos de IA</td><td>PC con GPU dedicada</td><td>La NPU solo hace inferencia, no entrenamiento</td></tr>
+<tr><td>Automatización simple con GPIO</td><td>Raspberry Pi Zero 2 W o ESP32</td><td>Coste y consumo muy inferiores para la misma tarea</td></tr>
+<tr><td>Escritorio de uso diario</td><td>Mini PC x86</td><td>Compatibilidad de software sin sorpresas</td></tr>
+<tr><td>Necesitas soporte comercial</td><td>NVIDIA Jetson Orin Nano</td><td>Ecosistema CUDA maduro y soporte formal, a mayor precio</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Comparativa de alternativas en 2026</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Placa</th><th>SoC</th><th>NPU</th><th>Red</th><th>Fuerte en</th></tr></thead>
+<tbody>
+<tr><td>Orange Pi 5 Plus</td><td>RK3588</td><td>6 TOPS</td><td>2× 2,5 GbE</td><td>Relación potencia/precio</td></tr>
+<tr><td>Raspberry Pi 5</td><td>BCM2712</td><td>No</td><td>1× GbE</td><td>Software y comunidad</td></tr>
+<tr><td>Radxa Rock 5B</td><td>RK3588</td><td>6 TOPS</td><td>1× 2,5 GbE</td><td>Documentación algo mejor</td></tr>
+<tr><td>Khadas Edge2</td><td>RK3588S</td><td>6 TOPS</td><td>Wi-Fi 6</td><td>Formato ultracompacto</td></tr>
+<tr><td>NVIDIA Jetson Orin Nano</td><td>Ampere</td><td>40 TOPS</td><td>1× GbE</td><td>Ecosistema CUDA</td></tr>
+<tr><td>Banana Pi BPI-M7</td><td>RK3588</td><td>6 TOPS</td><td>2× 2,5 GbE</td><td>Almacenamiento eMMC amplio</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="compra">
+<h2>Qué comprar y qué evitar</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Elemento</th><th>Recomendación</th><th>Comentario</th></tr></thead>
+<tbody>
+<tr><td>Memoria RAM</td><td>16 GB si vas a contenerizar o usar IA; 8 GB para el resto</td><td>La versión de 4 GB se queda corta rápido</td></tr>
+<tr><td>Fuente</td><td>USB-C PD de 5 V y 4 A como mínimo</td><td>Es la causa más habitual de inestabilidad</td></tr>
+<tr><td>Cable USB-C</td><td>Corto y con conductores de calibre grueso</td><td>Un cable fino provoca caída de tensión</td></tr>
+<tr><td>Refrigeración</td><td>Disipador con ventilador o carcasa metálica</td><td>Imprescindible, no opcional</td></tr>
+<tr><td>Almacenamiento</td><td>NVMe M.2 2280 de 256 GB o más</td><td>La mejora más notable en uso diario</td></tr>
+<tr><td>microSD inicial</td><td>A2 de 32 GB de marca reconocida</td><td>Solo para el primer arranque</td></tr>
+<tr><td>Módulo Wi-Fi</td><td>M.2 E-Key con chipset compatible con Linux</td><td>Verifica el soporte antes de comprar</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Errores frecuentes al empezar</h3>
+<ol>
+<li><strong>Alimentar con un cargador de teléfono cualquiera.</strong> Produce reinicios que parecen fallos de software y llevan a reinstalar el sistema sin necesidad.</li>
+<li><strong>Prescindir de la refrigeración «porque solo es un servidor».</strong> El SoC se limita térmicamente y rinde la mitad.</li>
+<li><strong>Esperar que la NPU acelere cualquier modelo.</strong> Requiere conversión, cuantización y validación de la precisión resultante.</li>
+<li><strong>Quedarse en la imagen oficial del fabricante.</strong> Armbian resuelve la mayoría de las molestias del primer mes.</li>
+<li><strong>Comprar la versión de 4 GB para ahorrar.</strong> La diferencia de precio no compensa la limitación en contenedores y visión.</li>
+<li><strong>Dejar el sistema en microSD.</strong> Es lento y termina fallando por desgaste de escritura.</li>
+</ol>
+<div class="note">Si tu proyecto depende de que todo funcione a la primera y no quieres invertir tiempo en depurar el sistema base, la Raspberry Pi 5 sigue siendo la elección sensata pese a tener menos potencia bruta. El Orange Pi 5 Plus premia a quien está dispuesto a leer foros, probar imágenes y compilar algún módulo: a cambio ofrece una capacidad de cómputo que ninguna placa de su precio iguala.</div>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>El Orange Pi 5 Plus es, en potencia bruta por dólar, la placa más capaz de su categoría en 2026. Ocho núcleos, NPU de 6 TOPS, NVMe nativo y dos interfaces de 2,5 GbE forman una combinación que hasta hace poco exigía un mini PC x86 con el triple de consumo.</p>
+<p>La contrapartida es que <strong>el software va por detrás del hardware</strong>. Esperar la experiencia llave en mano de una Raspberry Pi es la vía más rápida a la decepción. Con Armbian, una fuente correcta de 5 V y 4 A, refrigeración activa y una unidad NVMe, la placa se comporta como una máquina seria y sostiene cargas continuas durante meses.</p>
+<p>Elígela si tu proyecto necesita inferencia en el borde, red rápida o cómputo multihilo y tienes tolerancia para configurar. Elige otra cosa si valoras más el tiempo que el rendimiento. En edge computing esa decisión no es técnica, es de presupuesto de horas.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuál es la diferencia entre Orange Pi 5 y Orange Pi 5 Plus?</summary><p>El Orange Pi 5 usa el SoC RK3588S, una variante recortada del RK3588 que lleva la versión Plus. Las diferencias prácticas son notables: el Plus incorpora dos interfaces de red de dos coma cinco gigabits frente a una sola Gigabit, cabecera de cuarenta pines en lugar de veintiséis, más carriles PCIe disponibles, socket eMMC y entrada HDMI. También es mayor, cien por setenta y cinco milímetros frente a sesenta y dos por cien. La CPU y la NPU son equivalentes en ambos, así que para tareas de inferencia sin exigencias de red el modelo básico puede bastar y sale más barato.</p></details>
+<details><summary>¿Puedo ejecutar modelos de lenguaje grandes en la NPU?</summary><p>En la práctica no de forma satisfactoria. La NPU del RK3588 está optimizada para redes convolucionales de visión, no para arquitecturas de transformadores. Existen adaptaciones experimentales que ejecutan modelos pequeños de uno a tres mil millones de parámetros con cuantización agresiva, pero la velocidad resultante ronda unos pocos tokens por segundo y la calidad se resiente. Para inferencia de modelos de lenguaje conviene una GPU dedicada o un servicio remoto. Donde la NPU sí rinde es en detección de objetos, clasificación de imágenes y segmentación ligera.</p></details>
+<details><summary>¿Funciona bien con Home Assistant?</summary><p>Sí, ejecutándolo en contenedor Docker sobre Armbian o Debian, y con una holgura de recursos considerable respecto a una Raspberry Pi. No existe una imagen oficial de Home Assistant OS para esta placa, de modo que pierdes los complementos gestionados por el supervisor y tendrás que desplegar servicios como Zigbee2MQTT o Mosquitto por separado. A cambio, la potencia sobrante permite añadir procesamiento de vídeo de cámaras con detección de objetos en la propia máquina, algo inviable en placas más modestas.</p></details>
+<details><summary>¿Qué sistema operativo debería instalar?</summary><p>Armbian en su versión estable para Orange Pi 5 Plus es la recomendación general: recibe actualizaciones con regularidad, tiene documentación decente y una comunidad que responde a los problemas. Las imágenes oficiales de Orange Pi sirven para verificar inicialmente que el hardware funciona y, en algunos casos, para acceder a funciones del núcleo vendor como la codificación de vídeo por hardware que aún no están completas en mainline. Ubuntu veintidós punto cero cuatro también está disponible y facilita el trabajo con ROS 2.</p></details>
+<details><summary>¿Necesita ventilador obligatoriamente?</summary><p>Depende de la carga sostenida. Para un servidor ligero que rara vez supera el veinte por ciento de uso de CPU, un disipador pasivo grande o una carcasa metálica que actúe como disipador es suficiente. Para inferencia continua, compilación o transcodificación de vídeo, sin ventilador el SoC alcanza los ochenta y cinco a noventa y cinco grados y el sistema reduce la frecuencia, entregando entre el cuarenta y el cincuenta y cinco por ciento del rendimiento nominal. Un ventilador pequeño mantiene la placa por debajo de sesenta grados y conserva el cien por cien del rendimiento.</p></details>
+<details><summary>¿Merece la pena frente a un mini PC x86 de segunda mano?</summary><p>Son propuestas distintas. Un mini PC x86 usado con procesador de generación reciente ofrece compatibilidad total de software, mayor rendimiento monohilo y ninguna sorpresa de controladores, pero consume entre tres y seis veces más en reposo y ocupa bastante más espacio. El Orange Pi 5 Plus gana en consumo, tamaño, disponibilidad de GPIO para proyectos de hardware y en la NPU integrada, que no tiene equivalente en un x86 sin GPU. Si el proyecto vive en un armario con enchufe permanente y necesitas software x86, el mini PC. Si va embebido, alimentado por batería o interactúa con sensores, la placa ARM.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Aprovecha su capacidad de cómputo montando un <a href="/blog/crea-tu-propio-nas-casero-con-raspberry-pi-f%C3%A1cilmente">NAS casero</a> con NVMe, o úsala como cerebro de robot revisando el <a href="/blog/sistemas-ros-2-hardware-compatible-para-tus-proyectos-de-robotica">hardware compatible con ROS 2</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/como-calibrar-la-potencia-de-un-laser-diodo-para-diferentes-materiales">← Anterior: Cómo Calibrar la Potencia de un Láser Diodo para Diferentes Materiales</a>
+  <a href="/blog/celdas-lifepo4-grado-a-vs-grado-b-como-distinguirlas-antes-de-comprar">Siguiente: Celdas LiFePO4 Grado A vs Grado B: Cómo Distinguirlas Antes de Comprar →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación oficial de Rockchip y Orange Pi, más los proyectos comunitarios que sostienen el soporte de Linux en esta plataforma.</p>
+<ul>
+<li><a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-5-plus.html" target="_blank" rel="noopener noreferrer">Orange Pi — Página oficial del Orange Pi 5 Plus</a></li>
+<li><a href="https://github.com/airockchip/rknn-toolkit2" target="_blank" rel="noopener noreferrer">Rockchip — RKNN Toolkit 2 (repositorio oficial de la NPU)</a></li>
+<li><a href="https://www.armbian.com/orangepi-5-plus/" target="_blank" rel="noopener noreferrer">Armbian — Documentación y descargas para Orange Pi 5 Plus</a></li>
+<li><a href="https://www.collabora.com/news-and-blog/" target="_blank" rel="noopener noreferrer">Collabora — Estado del soporte mainline del RK3588 en Linux</a></li>
+<li><a href="https://docs.mesa3d.org/drivers/panfrost.html" target="_blank" rel="noopener noreferrer">Panfrost — Controlador libre para GPU Mali (Mesa 3D)</a></li>
+<li><a href="https://developer.arm.com/documentation/100798/latest/" target="_blank" rel="noopener noreferrer">ARM — Cortex-A76 Technical Reference Manual</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

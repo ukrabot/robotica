@@ -1,1 +1,767 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Baterías Li-Ion 21700 Samsung 40T: Potencia Real para tu Proyecto Maker</title>
+<meta name="description" content="Guía técnica de la celda Samsung INR21700-40T: 4000 mAh, 35 A continuos, 12 mΩ. Cálculo de packs, curvas de descarga, soldadura por puntos, BMS y cómo detectar falsificaciones.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/baterias-li-ion-21700-samsung-40t-potencia-para-maker">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Baterías Li-Ion 21700 Samsung 40T: Potencia Real para tu Proyecto Maker">
+<meta property="og:description" content="35 A continuos, 4000 mAh y 12 mΩ: cómo dimensionar, soldar y proteger un pack de celdas Samsung 40T sin quemarlo en el primer intento.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/samsung_40t_21700_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/baterias-li-ion-21700-samsung-40t-potencia-para-maker">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Baterías Li-Ion 21700 Samsung 40T: Potencia Real para tu Proyecto Maker">
+<meta name="twitter:description" content="La celda 21700 de alta descarga explicada con datos de datasheet: dimensionamiento de packs, IR, BMS y falsificaciones.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/samsung_40t_21700_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Baterías Li-Ion 21700 Samsung 40T: Potencia Real para tu Proyecto Maker",
+  "description": "Guía técnica completa sobre la celda de litio Samsung INR21700-40T para proyectos maker: especificaciones oficiales del datasheet (4000 mAh estándar, 3900 mAh nominal, 35 A de descarga continua sin corte térmico y 45 A con corte a 80 °C, impedancia AC de 12 mΩ a 1 kHz, 70 g, 21,22 × 70,30 mm), diferencia entre capacidad estándar y capacidad nominal, comparativa con 18650 y con otras 21700 de alta descarga, cálculo de configuraciones serie-paralelo (voltaje, capacidad, corriente y energía), caída de tensión bajo carga y su efecto en el dimensionamiento, criterios de elección de BMS y fusibles, soldadura por puntos con cinta de níquel y cálculo de la sección necesaria, gestión térmica, y protocolo de verificación para detectar celdas falsificadas o recicladas mediante peso, resistencia interna y prueba de capacidad.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/baterias-li-ion-21700-samsung-40t-potencia-para-maker"
+  },
+  "image": "https://www.ukrabot.cl/blog/samsung_40t_21700_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Celdas Samsung INR21700-40T, soldador por puntos, níquel 0,15 mm, BMS, multímetro, medidor de resistencia interna, fusibles",
+  "wordCount": "3100",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Baterías Li-Ion 21700 Samsung 40T: Potencia Real para tu Proyecto Maker",
+      "item": "https://www.ukrabot.cl/blog/baterias-li-ion-21700-samsung-40t-potencia-para-maker"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuántos amperios puede entregar realmente una Samsung 40T?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El datasheet especifica 35 A de descarga continua sin corte térmico y 45 A con corte a 80 °C de temperatura superficial. En la práctica, para un pack que debe durar cientos de ciclos, se recomienda diseñar entre 10 y 17 A por celda (30–50 % del máximo). A 35 A la celda disipa casi 15 W de calor y su vida útil cae a unos 250 ciclos hasta el 60 % de capacidad, según el propio fabricante."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo soldar celdas 21700 con un soldador de estaño?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No es recomendable. El calor sostenido en el terminal daña el separador interno y compromete el sellado de la celda, y el daño puede no ser visible hasta meses después. La herramienta correcta es un soldador por puntos, que aplica un pulso de milisegundos sin transmitir calor al interior. Si no tienes acceso a uno, la alternativa segura son los portaceldas con contactos por resorte o las celdas con lengüetas ya soldadas de fábrica."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo sé si mi celda 40T es original?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tres verificaciones en orden de rapidez. Primero el peso: una 40T genuina pesa 66–70 g; las falsificaciones suelen quedar en 55–62 g. Segundo, la resistencia interna: 10–14 mΩ a 1 kHz en una celda nueva; más de 20 mΩ es señal de alarma. Tercero, la prueba de capacidad con un analizador de baterías: debe entregar 3.900–4.100 mAh descargando a 1 A hasta 2,5 V. Una falsificación típica entrega entre 1.800 y 2.800 mAh."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia hay entre la 40T, la 40T3 y la 40T5?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Son revisiones sucesivas de la misma celda con especificaciones eléctricas prácticamente idénticas: 4.000 mAh y 35 A continuos. Las diferencias están en el proceso de fabricación y en ajustes menores de la química interna, que se traducen en variaciones pequeñas de resistencia interna y comportamiento térmico. Para efectos de diseño de un pack maker son intercambiables, pero no mezcles revisiones distintas dentro de un mismo grupo paralelo: usa celdas del mismo modelo y lote."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es mejor la Samsung 40T o la Molicel P42A?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende del régimen de trabajo. La Molicel P42A entrega 4.200 mAh y 45 A continuos, con menor resistencia interna, así que es superior en aplicaciones de descarga muy alta como patinetes de alto rendimiento. La Samsung 40T suele ser más económica, más fácil de conseguir y perfectamente suficiente si tu diseño mantiene cada celda por debajo de los 20 A. Si tu corriente por celda no supera los 15 A, la diferencia práctica entre ambas es marginal y conviene decidir por precio y disponibilidad."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo mezclar celdas nuevas con celdas usadas en el mismo pack?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. En un grupo paralelo, la celda con menor resistencia interna asume la mayor parte de la corriente y se degrada más rápido; en serie, la celda de menor capacidad limita todo el pack y es la primera en sobredescargarse. Todas las celdas de un pack deben ser del mismo modelo, idealmente del mismo lote, y deben tener capacidad y resistencia interna medidas dentro de un margen del 5 % entre sí antes de soldarlas."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="samsung_40t_21700_hero.jpg" alt="Cuatro celdas Samsung INR21700-40T de pie sobre un banco de trabajo junto a un multímetro y un medidor de resistencia interna" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Baterías y electrónica de potencia · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Baterías Li-Ion 21700 Samsung 40T: Potencia Real para tu Proyecto Maker</h1>
+    <p>4.000 mAh y 35 A continuos en 70 gramos. Qué significan esos números en la práctica, cómo dimensionar un pack real y cómo no comprar una falsificación.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="samsung_40t_pack_esquema.svg" alt="Diagrama de un pack 4S3P de celdas 21700 mostrando configuración serie-paralelo, cintas de níquel, BMS y fusible principal" loading="lazy">
+  <div class="caption">Un pack no es un montón de celdas: es una topología serie-paralelo con caminos de corriente, protección y disipación calculados.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es la 21700 y por qué reemplaza a la 18650</a></li>
+    <li><a href="#especificaciones">Las especificaciones reales del datasheet</a></li>
+    <li><a href="#energia-potencia">Energía vs. potencia: el cálculo que evita sorpresas</a></li>
+    <li><a href="#comparativa">40T frente a las otras 21700 de alta descarga</a></li>
+    <li><a href="#dimensionar">Cómo dimensionar tu pack serie-paralelo</a></li>
+    <li><a href="#soldadura">Soldadura por puntos y cálculo de la cinta de níquel</a></li>
+    <li><a href="#bms">BMS, fusibles y protección del pack</a></li>
+    <li><a href="#falsificaciones">Cómo detectar celdas falsificadas o recicladas</a></li>
+    <li><a href="#termica">Gestión térmica y montaje del pack</a></li>
+    <li><a href="#aplicaciones">Cuándo la 40T es la elección correcta (y cuándo no)</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="que-es">
+<h2>Qué es la 21700 y por qué reemplaza a la 18650</h2>
+<p>El nombre <strong>21700</strong> no es un modelo comercial: es una descripción dimensional. Significa <strong>21 mm de diámetro y 70,0 mm de largo</strong>, en formato cilíndrico. Del mismo modo, la clásica 18650 mide 18 mm × 65 mm. El salto de formato parece menor, pero la geometría manda: el volumen de un cilindro crece con el cuadrado del radio, de modo que una 21700 encierra aproximadamente un <strong>40 % más de volumen activo</strong> que una 18650 con solo 3 mm más de diámetro.</p>
+<p>Ese volumen extra se traduce en dos ventajas simultáneas que normalmente están en conflicto: <strong>más energía</strong> (más material activo por celda) y <strong>más potencia</strong> (mayor superficie de electrodo, por lo tanto menor densidad de corriente y menor resistencia interna). Por eso el formato 21700 se impuso en herramientas eléctricas, patinetes, bicicletas eléctricas, packs de vehículos y proyectos maker de alta demanda.</p>
+<p>La <strong>Samsung INR21700-40T</strong> es la celda que popularizó el formato en el mundo DIY. Las siglas cuentan la historia: <em>INR</em> indica química de níquel-manganeso-cobalto (NMC) con cátodo de óxido; <em>40</em> viene de los 4.000 mAh de capacidad estándar; y la <em>T</em> designa la familia de alta descarga ("Tool", pensada para herramientas eléctricas). Existen variantes posteriores —40T3, 40T5— con especificaciones prácticamente equivalentes y diferencias de proceso de fabricación.</p>
+<div class="note"><strong>Nomenclatura útil:</strong> en Samsung SDI, la letra final indica el perfil de uso: <strong>T</strong> = alta descarga (tool), <strong>E</strong> = alta energía, <strong>G</strong>/<strong>P</strong> = perfiles intermedios. Una 50E de 5.000 mAh guarda más energía pero solo tolera ~9,8 A; una 40T guarda menos pero entrega 35 A. No son intercambiables.</div>
+</section>
+<section id="especificaciones">
+<h2>Las especificaciones reales del datasheet</h2>
+<p>Antes de diseñar nada, los números oficiales de la hoja de datos de Samsung SDI. Cualquier cifra que un vendedor te dé por encima de estas es marketing:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Parámetro</th><th>Valor oficial</th><th>Qué significa en la práctica</th></tr></thead>
+<tbody>
+<tr><td>Capacidad estándar</td><td>Mín. 4.000 mAh</td><td>Medida descargando a 0,2C (800 mA) hasta 2,5 V. Es el "mejor caso".</td></tr>
+<tr><td>Capacidad nominal</td><td>Mín. 3.900 mAh</td><td>Medida a 10 A. Es la cifra que debes usar para dimensionar autonomía real.</td></tr>
+<tr><td>Voltaje nominal</td><td>3,6 V</td><td>Voltaje promedio ponderado en la descarga. Usarlo para calcular Wh.</td></tr>
+<tr><td>Voltaje de carga</td><td>4,20 V</td><td>Límite absoluto. Cargar por encima degrada y es peligroso.</td></tr>
+<tr><td>Corte de descarga</td><td>2,5 V</td><td>Por debajo hay daño permanente al ánodo de cobre.</td></tr>
+<tr><td>Descarga continua máx.</td><td>35 A (sin corte térmico)<br>45 A (con corte a 80 °C)</td><td>35 A es el límite de diseño seguro. Los 45 A exigen monitoreo de temperatura.</td></tr>
+<tr><td>Carga estándar / rápida</td><td>2 A / 6 A</td><td>2 A = 0,5C, ~3 h. 6 A = 1,5C, ~70 min con más desgaste.</td></tr>
+<tr><td>Impedancia AC (1 kHz)</td><td>≤ 12 mΩ</td><td>El dato clave para calcular caída de tensión y calor.</td></tr>
+<tr><td>Peso</td><td>Máx. 70 g</td><td>Herramienta de detección de falsificaciones (ver más abajo).</td></tr>
+<tr><td>Dimensiones</td><td>Máx. 21,22 × 70,30 mm</td><td>Sin PCB de protección. Con protección puede llegar a ~72 mm.</td></tr>
+<tr><td>Vida útil</td><td>≥ 2.400 mAh tras 250 ciclos a 35 A</td><td>Descargar al máximo cuesta caro: 60 % de capacidad en 250 ciclos.</td></tr>
+<tr><td>Temperatura de operación</td><td>Carga 0–45 °C · Descarga −20 a 60 °C</td><td>Cargar bajo 0 °C provoca <em>lithium plating</em> irreversible.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Hay dos líneas que casi nadie lee y que cambian el diseño por completo. La primera es la <strong>diferencia entre capacidad estándar (4.000 mAh) y nominal (3.900 mAh)</strong>: la primera se mide a 800 mA, un régimen que jamás verá tu proyecto. Si tu carga es de 10 A o más, el número honesto es 3.900 mAh, y a 30 A caerá aún más. Dimensiona con 3,8 Ah y dormirás tranquilo.</p>
+<p>La segunda es la <strong>vida útil</strong>: 250 ciclos hasta el 60 % de capacidad <em>descargando a 35 A</em>. Ese es el precio de exprimir la celda a su máximo. A regímenes moderados (5–10 A) esa misma celda supera holgadamente los 500 ciclos útiles. La corriente que le exiges determina la vida del pack más que cualquier otro factor.</p>
+</section>
+<section id="energia-potencia">
+<h2>Energía vs. potencia: el cálculo que evita sorpresas</h2>
+<p>Dos magnitudes distintas se confunden todo el tiempo. La <strong>energía</strong> (Wh) determina cuánto dura tu proyecto; la <strong>potencia</strong> (W) determina cuánto puede exigirle en un instante dado.</p>
+<p>Para una celda 40T individual:</p>
+<pre><code>Energía  = 3,6 V (nominal) × 3,9 Ah = 14,04 Wh
+Potencia = 3,6 V × 35 A            = 126 W continuos
+Relación C de descarga = 35 A / 4,0 Ah = 8,75C</code></pre>
+<p>8,75C es una cifra notable para una celda de alta capacidad: significa que puede vaciarse por completo en unos 7 minutos. Pero <strong>potencia sostenida no es lo mismo que potencia sin consecuencias</strong>. A 35 A, la disipación interna por efecto Joule es:</p>
+<pre><code>P_perdida = I² × R = 35² × 0,012 Ω = 14,7 W</code></pre>
+<p>Casi 15 vatios de calor dentro de un cilindro de 70 gramos. Sin flujo de aire, esa celda alcanza los 80 °C en menos de dos minutos y entra en la zona donde la degradación se acelera. Es por eso que el datasheet distingue entre 35 A "sin corte térmico" y 45 A "con corte a 80 °C": la limitación real no es eléctrica, es térmica.</p>
+<div class="note"><strong>Regla práctica de diseño:</strong> dimensiona el pack para que cada celda trabaje entre el <strong>30 % y el 50 % de su corriente máxima</strong> en régimen continuo. Con 40T, eso significa 10–17 A por celda. Reservas los 35 A para picos de arranque de pocos segundos. El resultado: menos calor, menos caída de tensión y de tres a cinco veces más ciclos de vida.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="comparativa">
+<h2>40T frente a las otras 21700 de alta descarga</h2>
+<p>La 40T no es la única celda 21700 de alto rendimiento del mercado. La elección depende de si tu proyecto necesita energía, potencia o equilibrio:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Celda</th><th>Capacidad</th><th>Descarga continua</th><th>Perfil</th><th>Uso ideal</th></tr></thead>
+<tbody>
+<tr><td>Samsung INR21700-40T</td><td>4.000 mAh</td><td>35 A</td><td>Equilibrio potencia/energía</td><td>Herramientas, e-bikes, drones grandes, robots</td></tr>
+<tr><td>Molicel INR21700-P42A</td><td>4.200 mAh</td><td>45 A</td><td>Máxima potencia</td><td>Patinetes de alto rendimiento, vapeo, RC</td></tr>
+<tr><td>Samsung INR21700-50E</td><td>5.000 mAh</td><td>9,8 A</td><td>Máxima energía</td><td>Powerbanks, luminarias, almacenamiento</td></tr>
+<tr><td>LG INR21700-M50LT</td><td>5.000 mAh</td><td>~14,6 A</td><td>Energía con algo de potencia</td><td>Packs de e-bike de largo alcance</td></tr>
+<tr><td>Samsung INR21700-30T</td><td>3.000 mAh</td><td>35 A</td><td>Predecesora de la 40T</td><td>Sustituida por la 40T en casi todo</td></tr>
+</tbody>
+</table>
+</div>
+<p>El criterio de decisión es directo: calcula tu <strong>corriente máxima real</strong>, divídela por el número de ramas en paralelo y compara. Si el resultado supera el 50 % de la corriente continua de la celda, necesitas más ramas en paralelo o una celda de mayor potencia. Si tu corriente por celda es de 5 A o menos, estás pagando por una capacidad de potencia que jamás usarás: una 50E te dará un 28 % más de autonomía por el mismo espacio y peso.</p>
+<p>El mismo razonamiento aplica a las químicas alternativas. Si tu aplicación es estacionaria y prioriza los ciclos sobre la densidad, el LiFePO4 es mejor opción — la comparativa de <a href="/blog/baterias-lfp-vs-nmc-para-conversiones-electricas">baterías LFP vs NMC</a> desarrolla ese análisis con números, y la guía de <a href="/blog/celdas-lifepo4-grado-a-vs-grado-b-como-distinguirlas-antes-de-comprar">celdas LiFePO4 grado A vs grado B</a> explica cómo verificarlas al comprar.</p>
+</section>
+<section id="dimensionar">
+<h2>Cómo dimensionar tu pack serie-paralelo</h2>
+<p>La notación <strong>NSMP</strong> lo describe todo: <em>N</em> celdas en serie (suman voltaje) y <em>M</em> ramas en paralelo (suman capacidad y corriente). Un pack 4S3P tiene 12 celdas: cuatro grupos en serie, cada grupo con tres celdas en paralelo.</p>
+<pre><code>Voltaje nominal  = N × 3,6 V
+Voltaje máximo   = N × 4,2 V   (a plena carga)
+Voltaje mínimo   = N × 2,5 V   (corte del BMS; usa 3,0 V para más vida)
+Capacidad        = M × 3,9 Ah
+Corriente máx.   = M × 35 A    (nunca la uses completa)
+Energía          = N × M × 14,04 Wh</code></pre>
+<h3>Ejemplo trabajado: pack para un robot móvil de 500 W</h3>
+<p>Supongamos un robot con dos motores de 250 W que operan a 24 V nominales y consumen picos de 30 A durante el arranque.</p>
+<ol>
+<li><strong>Serie:</strong> 24 V nominales ÷ 3,6 V = 6,67 → usamos <strong>7S</strong> (25,2 V nominal, 29,4 V a plena carga). Verifica que el controlador tolere 29,4 V.</li>
+<li><strong>Paralelo por corriente:</strong> pico de 30 A. Aplicando la regla del 50 %, cada celda debe aportar como máximo 17 A → 30 / 17 = 1,76 → mínimo <strong>2P</strong>. Con 3P cada celda ve 10 A: más margen térmico.</li>
+<li><strong>Paralelo por autonomía:</strong> si necesitas 1 hora a un consumo promedio de 8 A, requieres 8 Ah → 8 / 3,9 = 2,05 → <strong>3P</strong> confirma la elección (11,7 Ah).</li>
+<li><strong>Resultado: 7S3P</strong>, 21 celdas, 25,2 V, 11,7 Ah, <strong>295 Wh</strong>, ~1,5 kg solo de celdas.</li>
+</ol>
+<h3>Caída de tensión: el error que arruina los cálculos</h3>
+<p>La resistencia interna del pack es la suma en serie de las resistencias de cada grupo paralelo:</p>
+<pre><code>R_grupo = 12 mΩ / 3 celdas = 4 mΩ
+R_pack  = 7 grupos × 4 mΩ  = 28 mΩ  (solo celdas)
++ soldaduras, cintas de níquel, cableado y BMS ≈ 15–25 mΩ adicionales
+R_total ≈ 50 mΩ
+
+Caída a 30 A = 30 A × 0,050 Ω = 1,5 V
+Calor a 30 A = 30² × 0,050    = 45 W en todo el pack</code></pre>
+<p>Ese 1,5 V de caída significa que, con el pack medio descargado (24,5 V en reposo), el motor solo verá 23 V bajo carga. Si tu electrónica tiene un corte por bajo voltaje mal calibrado, se apagará antes de tiempo. <strong>Siempre calcula la caída bajo la corriente máxima real, no bajo la promedio.</strong></p>
+<div class="warning"><strong>Nunca conectes en paralelo celdas con voltajes distintos.</strong> Dos celdas con 0,3 V de diferencia y 12 mΩ cada una generan una corriente de ecualización de 0,3 / 0,024 = 12,5 A que circula instantáneamente entre ellas, sin fusible ni control. Antes de unir un grupo paralelo, carga todas las celdas al mismo voltaje (4,10–4,15 V) y verifica con el multímetro que la diferencia sea menor a 0,01 V.</div>
+</section>
+<section id="soldadura">
+<h2>Soldadura por puntos y cálculo de la cinta de níquel</h2>
+<p><strong>Nunca sueldes celdas de litio con soldador de estaño.</strong> El calor sostenido en el terminal daña el separador interno y arruina el sellado, y el daño no siempre es visible: la celda parece funcionar y falla meses después. La herramienta correcta es un <strong>soldador por puntos (spot welder)</strong>, que aplica un pulso de miles de amperios durante 5–20 milisegundos, fundiendo localmente sin transmitir calor al interior.</p>
+<h3>Dimensionar la cinta de níquel</h3>
+<p>La cinta de níquel puro tiene una resistividad de aproximadamente 7 × 10⁻⁸ Ω·m. Las capacidades de corriente típicas para cinta de níquel puro:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Cinta de níquel</th><th>Sección</th><th>Corriente continua recomendada</th><th>Aplicación</th></tr></thead>
+<tbody>
+<tr><td>0,10 × 6 mm</td><td>0,60 mm²</td><td>~4–5 A</td><td>Packs pequeños, balanceo</td></tr>
+<tr><td>0,15 × 8 mm</td><td>1,20 mm²</td><td>~8–10 A</td><td>Uso general en 18650/21700</td></tr>
+<tr><td>0,20 × 10 mm</td><td>2,00 mm²</td><td>~14–18 A</td><td>Packs de alta descarga</td></tr>
+<tr><td>0,30 × 12 mm</td><td>3,60 mm²</td><td>~25–30 A</td><td>Solo con soldador potente (&gt;800 J)</td></tr>
+<tr><td>2 capas de 0,15 × 8 mm</td><td>2,40 mm²</td><td>~16–20 A</td><td>Alternativa práctica al níquel grueso</td></tr>
+</tbody>
+</table>
+</div>
+<p>Regla práctica: <strong>la cinta debe soportar la corriente máxima que atraviesa esa conexión concreta</strong>, no la del pack completo. En un grupo paralelo la cinta reparte corriente entre celdas; en las interconexiones serie circula la corriente total. Si tu pack entrega 30 A, las conexiones serie necesitan al menos 2 mm² de sección — con 0,15 mm, eso significa dos tiras paralelas o una capa doble.</p>
+<h3>Buenas prácticas de soldadura</h3>
+<ul>
+<li><strong>Níquel puro, no acero niquelado.</strong> El "níquel" barato de marketplace suele ser acero con baño de níquel: se suelda igual de fácil pero tiene entre 5 y 7 veces más resistividad, y se calienta. Prueba con un imán: el níquel puro es solo débilmente magnético; el acero niquelado se pega con fuerza.</li>
+<li><strong>Dos puntos por terminal como mínimo</strong>, separados 3–4 mm. Uno solo se despega con la vibración.</li>
+<li><strong>Prueba de tirón:</strong> una soldadura correcta rasga la cinta antes de despegarse. Si se despega limpiamente, sube la energía.</li>
+<li><strong>Anillos aislantes</strong> de fibra en el polo positivo de cada celda: evitan que un borde de la cinta cortocircuite contra la carcasa (que es el negativo).</li>
+<li><strong>Nunca sueldes con el pack ya cerrado</strong> ni con el BMS conectado.</li>
+</ul>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="bms">
+<h2>BMS, fusibles y protección del pack</h2>
+<p>Un pack de litio sin BMS es una bomba en cuenta regresiva. El <strong>Battery Management System</strong> cumple tres funciones que ninguna otra pieza cubre:</p>
+<ol>
+<li><strong>Corte por sobrecarga:</strong> desconecta cuando cualquier grupo alcanza 4,25 V. Una sola celda sobrecargada puede iniciar fuga térmica.</li>
+<li><strong>Corte por sobredescarga:</strong> desconecta bajo los 2,5 V (configurable). Bajo ese umbral el ánodo se degrada de forma irreversible.</li>
+<li><strong>Balanceo:</strong> iguala el voltaje de los grupos en serie. Sin balanceo, las diferencias se acumulan ciclo a ciclo hasta que el pack pierde capacidad útil.</li>
+</ol>
+<h3>Cómo elegir el BMS correcto</h3>
+<ul>
+<li><strong>Número de celdas en serie:</strong> debe coincidir exactamente. Un BMS 7S no sirve para un pack 6S ni 8S.</li>
+<li><strong>Corriente continua:</strong> al menos 1,25× la corriente máxima real. Para 30 A, un BMS de 40–60 A.</li>
+<li><strong>Corriente de pico y tiempo de corte:</strong> revisa que tolere tu pico de arranque sin disparar.</li>
+<li><strong>Puertos común o separados:</strong> los BMS de puerto común (<em>common port</em>) usan los mismos terminales para carga y descarga; los de puerto separado (<em>separate port</em>) tienen terminales distintos y suelen limitar la corriente de carga. Elige según tu cargador.</li>
+<li><strong>Corriente de balanceo:</strong> los BMS pasivos económicos balancean a 30–60 mA, lo que puede tardar horas. Un BMS con balanceo de 100 mA o más, o con balanceo activo, corrige desviaciones mucho más rápido.</li>
+</ul>
+<h3>Fusibles: la protección que el BMS no da</h3>
+<p>El BMS protege contra sobrecarga y sobredescarga, pero un cortocircuito franco puede destruir sus MOSFET antes de que actúe. Añade:</p>
+<ul>
+<li><strong>Fusible principal DC</strong> en el positivo del pack, dimensionado al 125–150 % de la corriente máxima continua (para 30 A: fusible de 40 A). Debe ser un fusible apto para corriente continua — los fusibles AC no extinguen bien el arco en DC.</li>
+<li><strong>Fusibles por celda</strong> (opcional pero recomendable en packs grandes): un tramo de cinta de níquel de sección reducida o un fusible de alambre en cada celda del grupo paralelo. Si una celda entra en cortocircuito interno, el resto del grupo no la alimenta.</li>
+<li><strong>Conector de precarga o resistencia de precarga</strong> si alimentas un controlador con condensadores grandes: evita la chispa y el pico de corriente al conectar.</li>
+</ul>
+<div class="warning"><strong>Protocolo de seguridad no negociable.</strong> Trabaja con herramientas de mango aislado (envuelve el mango del alicate con termorretráctil), sobre superficie no conductora, sin anillos ni pulseras metálicas. Ten a mano un recipiente con arena seca o un extintor de clase D. Nunca dejes un pack cargando desatendido ni durante la noche, y almacena las celdas sueltas en portaceldas plásticos, jamás sueltas en una caja metálica o en un bolsillo con llaves.</div>
+</section>
+<section id="falsificaciones">
+<h2>Cómo detectar celdas falsificadas o recicladas</h2>
+<p>El mercado está lleno de 21700 con envolturas impresas que dicen "Samsung 40T" y celdas que en realidad son de segunda mano, de grado B o directamente de otro fabricante. La verificación tiene tres niveles, del más rápido al más concluyente:</p>
+<h3>Nivel 1 — Inspección física (2 minutos)</h3>
+<ul>
+<li><strong>Peso:</strong> una 40T genuina pesa entre 66 y 70 g. Una báscula de cocina con resolución de 1 g detecta la mayoría de falsificaciones, que suelen pesar 55–62 g porque tienen menos material activo.</li>
+<li><strong>Dimensiones:</strong> 21,2 mm de diámetro × 70,3 mm de largo, medidos con calibre. Consulta la guía sobre <a href="/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones">calibres digitales y cómo detectar falsificaciones</a> si dudas de tu instrumento.</li>
+<li><strong>Envoltura:</strong> el wrap original de Samsung es de un gris muy específico con impresión nítida y sin desalineaciones. Un wrap con texto borroso, colores saturados o arrugas en los bordes es señal de reenvoltura.</li>
+<li><strong>Terminales:</strong> marcas de soldadura por puntos, restos de níquel o rayaduras en el polo positivo indican una celda extraída de un pack usado.</li>
+</ul>
+<h3>Nivel 2 — Resistencia interna (1 minuto)</h3>
+<p>Con un medidor de IR (tipo YR1035+ o similar), una 40T nueva mide <strong>10–14 mΩ</strong> a 1 kHz. Valores de 20 mΩ o más indican celda envejecida, falsificada o de baja calidad. Es la prueba con mejor relación información/tiempo, y la que más falsificaciones descarta.</p>
+<h3>Nivel 3 — Prueba de capacidad (3–4 horas)</h3>
+<p>La prueba definitiva. Con un analizador de baterías (Opus BT-C3100, ZKETECH EBC-A20 o similar): carga completa a 4,20 V, descarga a 1 A hasta 2,5 V y registra los mAh. Una celda genuina entrega 3.900–4.100 mAh. Una falsificación típica entrega 1.800–2.800 mAh, aunque su envoltura prometa 4.000.</p>
+<div class="note"><strong>Dónde comprar con menos riesgo:</strong> distribuidores especializados en celdas que publican los resultados de sus pruebas, tiendas locales de electrónica con factura, o vendedores que aceptan devolución si la celda no pasa tu prueba de capacidad. Samsung SDI <strong>no vende celdas sueltas al público</strong>: toda 40T "suelta" proviene del canal industrial o del desarmado de packs, así que la trazabilidad del vendedor lo es todo. Desconfía de precios muy inferiores al mercado y de lotes "nuevos" con voltajes de llegada dispares.</div>
+</section>
+<section id="termica">
+<h2>Gestión térmica y montaje del pack</h2>
+<p>El calor es el enemigo silencioso. Por cada 10 °C sostenidos por encima de 25 °C, la velocidad de degradación química de una celda de litio aproximadamente se duplica. Un pack que trabaja a 50 °C envejece mucho más rápido que uno a 30 °C, aunque haga exactamente el mismo trabajo.</p>
+<ul>
+<li><strong>Portaceldas con separación:</strong> los portaceldas plásticos de 21700 dejan 2–3 mm entre cilindros. Esa separación no es estética: permite convección y evita la propagación térmica de una celda a su vecina.</li>
+<li><strong>No encierres el pack herméticamente.</strong> Prevé entradas y salidas de aire, aunque sean rejillas pasivas. En packs de alta descarga, un ventilador de 40 mm hace una diferencia enorme.</li>
+<li><strong>Monta un termistor NTC de 10 kΩ</strong> pegado al centro del pack y conéctalo a tu controlador o al BMS si lo admite. Programa una reducción de corriente al llegar a 55 °C y un corte a 70 °C.</li>
+<li><strong>Cinta de fibra de vidrio o Kapton</strong> sobre las conexiones expuestas, y placas de aislante entre el paquete de celdas y la carcasa.</li>
+<li><strong>Fija mecánicamente el pack.</strong> La vibración rompe soldaduras por fatiga; una soldadura fracturada crea resistencia, la resistencia crea calor y el calor crea un problema mayor.</li>
+</ul>
+<p>Si tu proyecto es un robot móvil o un brazo, aplican los mismos principios de disipación que en los <a href="/blog/sistemas-de-refrigeracion-para-motores-de-brazos-roboticos">sistemas de refrigeración para motores</a>: aire en movimiento, caminos térmicos cortos y sensores donde realmente está el punto caliente.</p>
+</section>
+<section id="aplicaciones">
+<h2>Cuándo la 40T es la elección correcta (y cuándo no)</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Proyecto</th><th>¿40T?</th><th>Razón</th></tr></thead>
+<tbody>
+<tr><td>Robot móvil con motores DC de 200–800 W</td><td>Sí</td><td>Picos de arranque altos; la baja IR mantiene el voltaje estable</td></tr>
+<tr><td>Bicicleta o patinete eléctrico</td><td>Sí</td><td>Equilibrio potencia/autonomía; formato compacto</td></tr>
+<tr><td>Reparación de batería de herramienta eléctrica</td><td>Sí</td><td>Es exactamente su aplicación de diseño</td></tr>
+<tr><td>Brazo robótico con servos de alto torque</td><td>Sí</td><td>Los picos simultáneos de varios servos exigen baja IR</td></tr>
+<tr><td>Powerbank o luminaria portátil</td><td>No</td><td>Una 50E da 25 % más energía por el mismo volumen</td></tr>
+<tr><td>Almacenamiento solar estacionario</td><td>No</td><td>LiFePO4 ofrece 5–10× más ciclos y mayor seguridad</td></tr>
+<tr><td>Proyecto Arduino de bajo consumo</td><td>No</td><td>Sobredimensionado; una 18650 estándar sobra</td></tr>
+<tr><td>Dron de carreras pequeño</td><td>No</td><td>El LiPo tiene mejor relación potencia/peso en ese rango</td></tr>
+</tbody>
+</table>
+</div>
+<p>Si estás reacondicionando un pack existente en lugar de construir uno desde cero, el flujo de trabajo cambia: hay que diagnosticar qué falló primero. La guía de <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">reparación de baterías de taladros inalámbricos</a> cubre ese proceso paso a paso.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La Samsung INR21700-40T se ganó su reputación con números verificables: 4.000 mAh de capacidad estándar, 3.900 mAh reales bajo carga, 35 A continuos y 12 mΩ de impedancia en 70 gramos. Es una celda extraordinariamente equilibrada, y por eso aparece en tantos proyectos maker de potencia.</p>
+<p>Pero esos números son el punto de partida, no el diseño. El pack real lo definen tres decisiones: <strong>cuánta corriente le exiges a cada celda</strong> (mantente entre el 30 % y el 50 % del máximo si quieres que dure), <strong>cómo evacúas el calor</strong> (14,7 W por celda a plena descarga no desaparecen solos) y <strong>qué protección instalas</strong> (BMS dimensionado, fusible DC y celdas verificadas antes de soldar).</p>
+<p>Y antes de todo eso: pesa las celdas, mide su resistencia interna y, si el proyecto lo justifica, hazles una prueba de capacidad completa. Cuatro minutos de verificación por celda son mucho más baratos que un pack desbalanceado — o que un incendio.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuántos amperios puede entregar realmente una Samsung 40T?</summary><p>El datasheet especifica 35 A de descarga continua sin corte térmico y 45 A con corte a 80 °C de temperatura superficial. En la práctica, para un pack que debe durar cientos de ciclos, se recomienda diseñar entre 10 y 17 A por celda (30–50 % del máximo). A 35 A la celda disipa casi 15 W de calor y su vida útil cae a unos 250 ciclos hasta el 60 % de capacidad, según el propio fabricante.</p></details>
+<details><summary>¿Puedo soldar celdas 21700 con un soldador de estaño?</summary><p>No es recomendable. El calor sostenido en el terminal daña el separador interno y compromete el sellado de la celda, y el daño puede no ser visible hasta meses después. La herramienta correcta es un soldador por puntos, que aplica un pulso de milisegundos sin transmitir calor al interior. Si no tienes acceso a uno, la alternativa segura son los portaceldas con contactos por resorte o las celdas con lengüetas ya soldadas de fábrica.</p></details>
+<details><summary>¿Cómo sé si mi celda 40T es original?</summary><p>Tres verificaciones en orden de rapidez. Primero el peso: una 40T genuina pesa 66–70 g; las falsificaciones suelen quedar en 55–62 g. Segundo, la resistencia interna: 10–14 mΩ a 1 kHz en una celda nueva; más de 20 mΩ es señal de alarma. Tercero, la prueba de capacidad con un analizador de baterías: debe entregar 3.900–4.100 mAh descargando a 1 A hasta 2,5 V. Una falsificación típica entrega entre 1.800 y 2.800 mAh.</p></details>
+<details><summary>¿Qué diferencia hay entre la 40T, la 40T3 y la 40T5?</summary><p>Son revisiones sucesivas de la misma celda con especificaciones eléctricas prácticamente idénticas: 4.000 mAh y 35 A continuos. Las diferencias están en el proceso de fabricación y en ajustes menores de la química interna, que se traducen en variaciones pequeñas de resistencia interna y comportamiento térmico. Para efectos de diseño de un pack maker son intercambiables, pero no mezcles revisiones distintas dentro de un mismo grupo paralelo: usa celdas del mismo modelo y lote.</p></details>
+<details><summary>¿Es mejor la Samsung 40T o la Molicel P42A?</summary><p>Depende del régimen de trabajo. La Molicel P42A entrega 4.200 mAh y 45 A continuos, con menor resistencia interna, así que es superior en aplicaciones de descarga muy alta como patinetes de alto rendimiento. La Samsung 40T suele ser más económica, más fácil de conseguir y perfectamente suficiente si tu diseño mantiene cada celda por debajo de los 20 A. Si tu corriente por celda no supera los 15 A, la diferencia práctica entre ambas es marginal y conviene decidir por precio y disponibilidad.</p></details>
+<details><summary>¿Puedo mezclar celdas nuevas con celdas usadas en el mismo pack?</summary><p>No. En un grupo paralelo, la celda con menor resistencia interna asume la mayor parte de la corriente y se degrada más rápido; en serie, la celda de menor capacidad limita todo el pack y es la primera en sobredescargarse. Todas las celdas de un pack deben ser del mismo modelo, idealmente del mismo lote, y deben tener capacidad y resistencia interna medidas dentro de un margen del 5 % entre sí antes de soldarlas.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si vas a armar un pack completo, revisa la <a href="/blog/celdas-lifepo4-grado-a-vs-grado-b-como-distinguirlas-antes-de-comprar">verificación de celdas antes de comprar</a> y la <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">guía completa de BMS y celdas</a>, donde se detalla el diagnóstico y la protección paso a paso.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/celdas-lifepo4-grado-a-vs-grado-b-como-distinguirlas-antes-de-comprar">← Anterior: Celdas LiFePO4 Grado A vs Grado B</a>
+  <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">Siguiente: Reparar Baterías de Taladros Inalámbricos →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Especificaciones tomadas de la hoja de datos oficial de Samsung SDI para la celda INR21700-40T. Los valores de resistencia interna y capacidad medida varían con la temperatura, el régimen de descarga y la antigüedad de la celda.</p>
+<ul>
+<li><a href="https://www.master-instruments.com.au/file/65531/1/Samsung-INR21700-40T.pdf" target="_blank" rel="noopener noreferrer">Samsung SDI — Hoja de datos oficial INR21700-40T (PDF)</a></li>
+<li><a href="https://batteryuniversity.com/article/bu-205-types-of-lithium-ion" target="_blank" rel="noopener noreferrer">Battery University — BU-205: Tipos de baterías de litio y sus perfiles</a></li>
+<li><a href="https://batteryuniversity.com/article/bu-907-how-to-measure-internal-resistance" target="_blank" rel="noopener noreferrer">Battery University — BU-907: Cómo medir la resistencia interna</a></li>
+<li><a href="https://batteryuniversity.com/article/bu-808-how-to-prolong-lithium-based-batteries" target="_blank" rel="noopener noreferrer">Battery University — BU-808: Cómo prolongar la vida de las baterías de litio</a></li>
+<li><a href="https://www.samsungsdi.com/lithium-ion-battery/overview.html" target="_blank" rel="noopener noreferrer">Samsung SDI — Sitio oficial de celdas cilíndricas</a></li>
+<li><a href="https://webstore.iec.ch/publication/62735" target="_blank" rel="noopener noreferrer">IEC 61960 — Norma de ensayo de capacidad para celdas de litio secundarias</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 

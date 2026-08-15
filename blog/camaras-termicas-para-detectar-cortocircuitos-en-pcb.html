@@ -1,1 +1,774 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cámaras Térmicas para Detectar Cortocircuitos en PCB</title>
+<meta name="description" content="Cómo usar cámaras térmicas para localizar cortocircuitos en placas electrónicas: elección de cámara y resolución, técnica de inyección de corriente limitada, emisividad, alternativas de bajo coste y errores de interpretación.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/camaras-termicas-para-detectar-cortocircuitos-en-pcb">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cámaras Térmicas para Detectar Cortocircuitos en PCB">
+<meta property="og:description" content="Inyección de corriente limitada más imagen térmica: la técnica que localiza un corto en segundos en lugar de horas.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/camara_termica_pcb_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/camaras-termicas-para-detectar-cortocircuitos-en-pcb">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cámaras Térmicas para Detectar Cortocircuitos en PCB">
+<meta name="twitter:description" content="Localiza cortocircuitos en PCB con cámara térmica: técnica paso a paso, elección de equipo y errores de interpretación.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/camara_termica_pcb_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Cámaras Térmicas para Detectar Cortocircuitos en PCB",
+  "description": "Guía técnica sobre el uso de cámaras termográficas para el diagnóstico y la localización de cortocircuitos en placas de circuito impreso: fundamento físico de la disipación de potencia en el punto de fallo, criterios de elección de cámara según resolución del sensor, sensibilidad térmica NETD, distancia mínima de enfoque y campo de visión, comparación entre cámaras dedicadas y módulos para teléfono móvil, técnica correcta de inyección de corriente con fuente de laboratorio limitada, cálculo de la tensión y corriente seguras según el riel afectado, efecto de la emisividad de los distintos materiales de la placa y cómo corregirlo, alternativas de bajo coste como el alcohol isopropílico y la cámara de infrarrojos puntual, procedimiento sistemático de diagnóstico, interpretación de falsos positivos y limitaciones del método en fallos de alta impedancia.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/camaras-termicas-para-detectar-cortocircuitos-en-pcb"
+  },
+  "image": "https://www.ukrabot.cl/blog/camara_termica_pcb_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Cámara térmica o módulo para móvil, fuente de alimentación de laboratorio con limitación de corriente, alcohol isopropílico, flux, multímetro con resolución de microvoltios",
+  "wordCount": "3100",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Cámaras Térmicas para Detectar Cortocircuitos en PCB",
+      "item": "https://www.ukrabot.cl/blog/camaras-termicas-para-detectar-cortocircuitos-en-pcb"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué resolución de cámara térmica necesito para reparar electrónica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para componentes SMD de tamaño 0603 o mayor, una cámara de 160 × 120 píxeles con buen enfoque cercano es suficiente. Para trabajar con 0402, 0201 o encapsulados BGA, conviene 256 × 192 con lente macro. Sin embargo, la distancia mínima de enfoque es más determinante que la resolución: una cámara de 256 × 192 que no enfoque por debajo de 30 cm será menos útil que una de 160 × 120 capaz de acercarse a 5 cm."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo dañar la placa al inyectar corriente para el diagnóstico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, si no limitas correctamente la corriente o si superas la tensión nominal del riel. La regla es ajustar el límite de corriente con las puntas cortocircuitadas antes de conectar, empezar con valores bajos del orden de 0,3 A e ir subiendo en pasos. Nunca apliques una tensión superior a la nominal del riel: inyectar 5 V en un riel de núcleo de 1,2 V destruye todos los circuitos integrados conectados, aunque la corriente esté limitada."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve un módulo térmico para móvil o necesito una cámara profesional?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los módulos que se conectan al teléfono por USB-C con sensores de 256 × 192 ofrecen hoy una capacidad más que suficiente para reparación de electrónica, a una fracción del precio de una cámara de banco. Sus limitaciones son la dependencia del software del fabricante y una ergonomía menos cómoda para trabajo prolongado. Para uso profesional intensivo, una cámara dedicada con lente macro y trípode resulta más productiva, pero la diferencia de capacidad diagnóstica es menor de lo que sugiere la diferencia de precio."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué no veo ningún punto caliente si el multímetro indica corto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Las causas más probables son cuatro. Primera: la corriente inyectada es insuficiente, prueba subiendo el límite en pasos. Segunda: el corto está en una capa interna o bajo un componente grande que actúa como disipador y difunde el calor. Tercera: la superficie que observas es metálica brillante y su baja emisividad oculta el calor real, cúbrela con cinta mate. Cuarta: no es un corto franco sino una fuga de alta impedancia que disipa muy poca potencia; en ese caso recurre a la medida de caída de tensión en microvoltios."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿La emisividad afecta a la localización de un cortocircuito?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Afecta al valor de temperatura que muestra la cámara, pero para localizar un corto lo que importa es el patrón relativo, no la cifra absoluta. El problema real aparece cuando la zona bajo estudio combina materiales de emisividad muy distinta: una junta de soldadura brillante puede verse fría aunque esté a 80 °C, mientras el plástico del componente contiguo se ve caliente. La solución práctica es cubrir las superficies metálicas con cinta mate o aplicar una capa fina de flux para uniformar la emisividad antes de inspeccionar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El método del alcohol isopropílico es realmente comparable a una cámara térmica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para cortos que generan calor suficiente, la resolución espacial del método del alcohol es excelente: la mancha que se seca primero identifica el componente con precisión submilimétrica, mejor incluso que muchas cámaras económicas. Sus desventajas son que requiere observar en el instante exacto de la evaporación, que no funciona si el punto no supera unos 40 grados, y que no permite documentar el hallazgo. Es un complemento excelente y un sustituto razonable si no dispones de cámara."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="camara_termica_pcb_hero.jpg" alt="Cámara térmica apuntando a una placa de circuito impreso en un banco de reparación, mostrando un punto caliente en la pantalla" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Instrumentación y reparación · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Cámaras Térmicas para Detectar Cortocircuitos en PCB</h1>
+    <p>Un corto no se ve, pero se siente. Con una cámara térmica y una fuente limitada en corriente, el componente culpable se delata en menos de treinta segundos.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="camara_termica_procedimiento.svg" alt="Diagrama del procedimiento de localización de cortocircuitos: fuente limitada en corriente conectada al riel afectado, la placa vista por la cámara térmica y el punto caliente identificado" loading="lazy">
+  <div class="caption">La clave del método: limitar la corriente para que el punto caliente aparezca sin destruir nada más.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#fisica">Por qué funciona: la física del punto caliente</a></li>
+    <li><a href="#elegir">Qué cámara necesitas realmente</a></li>
+    <li><a href="#procedimiento">El procedimiento paso a paso</a></li>
+    <li><a href="#emisividad">Emisividad: la trampa que falsea las lecturas</a></li>
+    <li><a href="#alternativas">Alternativas cuando no tienes cámara térmica</a></li>
+    <li><a href="#casos">Casos típicos y su firma térmica</a></li>
+    <li><a href="#seguridad">Seguridad y buenas prácticas</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="fisica">
+<h2>Por qué funciona: la física del punto caliente</h2>
+<p>Un cortocircuito es un camino de baja resistencia por donde la corriente circula sin hacer trabajo útil. Toda esa energía se convierte en calor, y se concentra exactamente donde está la resistencia: en el componente o en la unión defectuosa.</p>
+<pre><code>P = I² × R
+
+Ejemplo: condensador de desacoplo en corto con 0,5 Ω residual
+Corriente inyectada: 1 A
+P = 1² × 0,5 = 0,5 W disipados en un encapsulado 0402
+
+Un componente 0402 tiene una superficie de apenas 0,5 mm².
+Medio vatio en esa superficie eleva su temperatura decenas
+de grados en pocos segundos.</code></pre>
+<p>La cámara térmica no detecta el corto: detecta <strong>dónde se está convirtiendo la energía en calor</strong>. Y como la disipación se concentra en el punto de menor sección y mayor resistencia relativa, ese punto destaca sobre el resto de la placa con una claridad que ninguna inspección visual consigue.</p>
+<div class="note"><strong>Comparación con el método tradicional.</strong> Localizar un corto midiendo resistencia con el multímetro exige desoldar componentes uno a uno o hacer medidas de caída de tensión en microvoltios para triangular la posición. En una placa con cincuenta condensadores en el mismo riel, eso son horas. Con cámara térmica, el candidato aparece en el primer minuto.</div>
+</section>
+<section id="elegir">
+<h2>Qué cámara necesitas realmente</h2>
+<p>Las especificaciones que importan para electrónica son distintas de las que se anuncian para termografía de edificios.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Especificación</th><th>Qué significa</th><th>Mínimo útil en PCB</th></tr></thead>
+<tbody>
+<tr><td>Resolución del sensor</td><td>Píxeles térmicos reales</td><td>160 × 120; ideal 256 × 192</td></tr>
+<tr><td>NETD (sensibilidad térmica)</td><td>Menor diferencia de temperatura detectable</td><td>&lt; 50 mK</td></tr>
+<tr><td>Distancia mínima de enfoque</td><td>Cuán cerca puede estar del objeto</td><td><strong>Crítico:</strong> &lt; 10 cm o con macro</td></tr>
+<tr><td>Campo de visión</td><td>Ángulo abarcado</td><td>Estrecho es mejor para detalle</td></tr>
+<tr><td>Frecuencia de imagen</td><td>Cuadros por segundo</td><td>9 Hz basta; 25 Hz es más cómodo</td></tr>
+<tr><td>Rango de temperatura</td><td>Mínima y máxima medibles</td><td>−20 a 400 °C sobra</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning"><strong>El error de compra más común es ignorar la distancia mínima de enfoque.</strong> Muchas cámaras térmicas económicas están diseñadas para inspección de instalaciones y no enfocan por debajo de 30 cm. A esa distancia, cada píxel del sensor cubre un área mayor que un componente 0402, y el punto caliente se promedia con su entorno hasta desaparecer. Para electrónica necesitas enfoque cercano o una lente macro.</div>
+<h3>La resolución en términos prácticos</h3>
+<pre><code>Cámara de 160 × 120 a 10 cm de distancia, campo de visión de 50°:
+  Área cubierta ≈ 9,3 × 7,0 cm
+  Tamaño de cada píxel ≈ 0,58 mm
+
+  Un componente 0402 (1,0 × 0,5 mm) ocupa menos de 2 píxeles.
+  Detectable, pero sin poder distinguirlo del vecino.
+
+Cámara de 256 × 192 con lente macro a 5 cm:
+  Área cubierta ≈ 4,6 × 3,5 cm
+  Tamaño de cada píxel ≈ 0,18 mm
+
+  El mismo componente ocupa unos 15 píxeles: identificación inequívoca.</code></pre>
+<h3>Categorías de equipo</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Tipo</th><th>Resolución típica</th><th>Ventaja</th><th>Inconveniente</th></tr></thead>
+<tbody>
+<tr><td>Módulo para móvil (USB-C)</td><td>256 × 192</td><td>Excelente relación precio-prestaciones</td><td>Depende del teléfono y su software</td></tr>
+<tr><td>Cámara compacta dedicada</td><td>192 × 144 a 256 × 192</td><td>Autónoma, con pantalla propia</td><td>Más cara a igual resolución</td></tr>
+<tr><td>Cámara de banco con macro</td><td>384 × 288 o superior</td><td>Precisión de nivel profesional</td><td>Coste elevado</td></tr>
+<tr><td>Sensor MLX90640 con microcontrolador</td><td>32 × 24</td><td>Muy barato, proyecto propio</td><td>Resolución insuficiente para SMD pequeño</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para un taller de reparación o un aficionado serio, un <strong>módulo de 256 × 192 conectado al teléfono</strong> ofrece hoy la mejor relación entre capacidad y precio. La diferencia frente a un equipo de banco existe, pero no justifica el salto de precio salvo en uso profesional intensivo.</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="procedimiento">
+<h2>El procedimiento paso a paso</h2>
+<h3>1. Identificar el riel en corto</h3>
+<pre><code>Con la placa desconectada, en modo resistencia o continuidad:
+  Medir entre el riel sospechoso y masa.
+
+Interpretación orientativa:
+  0 a 5 Ω      → corto franco, muy localizable por calor
+  5 a 50 Ω     → corto parcial, localizable con paciencia
+  50 a 500 Ω   → fuga; el calor puede ser insuficiente
+  > 1 kΩ       → probablemente normal según el riel</code></pre>
+<p>Ten presente que muchos rieles muestran resistencias bajas de forma legítima por la cantidad de condensadores de desacoplo y por las cargas conectadas. Compara con una placa sana del mismo modelo cuando sea posible.</p>
+<h3>2. Preparar la fuente de alimentación</h3>
+<p>Este es el paso que distingue un diagnóstico limpio de una placa destruida. Necesitas una <strong>fuente de laboratorio con limitación de corriente ajustable</strong>.</p>
+<pre><code>Configuración inicial recomendada:
+  Tensión: la nominal del riel (3,3 V, 5 V, 12 V...) o menos
+  Corriente: empezar en 0,3 A
+
+Procedimiento:
+  1. Ajustar el límite de corriente con las puntas cortocircuitadas
+  2. Conectar al riel afectado respetando la polaridad
+  3. La fuente entrará en modo de corriente constante (CC)
+  4. Observar la tensión resultante: será muy baja si el corto es franco
+  5. Subir la corriente gradualmente solo si no aparece calor</code></pre>
+<div class="warning"><strong>Nunca superes la tensión nominal del riel.</strong> Inyectar 12 V en un riel de 1,2 V destruye todos los circuitos integrados conectados. En rieles de núcleo de procesador (0,8 a 1,2 V), trabaja incluso por debajo: con 1 V y un límite de 2 A ya se genera calor suficiente en el punto de fallo. La limitación de corriente es tu red de seguridad, pero la tensión también debe ser segura.</div>
+<h3>3. Observar con la cámara</h3>
+<ol>
+<li>Enfoca la zona del riel <strong>antes</strong> de aplicar corriente y captura una imagen de referencia con la placa fría.</li>
+<li>Aplica la corriente y observa en directo. El punto caliente suele aparecer en <strong>5 a 30 segundos</strong>.</li>
+<li>Usa una paleta de color con buen contraste (arcoíris o hierro) y activa el ajuste automático de escala.</li>
+<li>Si nada aparece en un minuto, sube el límite de corriente en pasos pequeños y vuelve a esperar.</li>
+<li>Cuando localices el punto, <strong>corta la alimentación</strong> y captura la imagen para documentar.</li>
+</ol>
+<h3>4. Confirmar antes de desoldar</h3>
+<p>Un punto caliente es un candidato, no una sentencia. Antes de retirar el componente:</p>
+<ul>
+<li>Verifica que el componente caliente pertenece efectivamente al riel en corto.</li>
+<li>Comprueba que no se trata de un regulador o un componente que se calienta por diseño.</li>
+<li>Mide la caída de tensión en microvoltios entre ese punto y otros del mismo riel: el mínimo confirma la ubicación.</li>
+<li>Retira el componente y vuelve a medir la resistencia del riel. Si el corto desapareció, era ese.</li>
+</ul>
+</section>
+<section id="emisividad">
+<h2>Emisividad: la trampa que falsea las lecturas</h2>
+<p>Una cámara térmica no mide temperatura: mide <strong>radiación infrarroja emitida</strong>, y la convierte a temperatura asumiendo un valor de emisividad. La emisividad es la eficiencia con la que un material emite radiación, entre 0 y 1. Materiales distintos a la misma temperatura se ven diferentes.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Material en una PCB</th><th>Emisividad aproximada</th><th>Efecto en la imagen</th></tr></thead>
+<tbody>
+<tr><td>Máscara de soldadura (verde, mate)</td><td>0,90 - 0,95</td><td>Lectura fiable</td></tr>
+<tr><td>Encapsulado plástico negro de un CI</td><td>0,90 - 0,95</td><td>Lectura fiable</td></tr>
+<tr><td>Cerámica de condensadores MLCC</td><td>0,85 - 0,92</td><td>Lectura aceptable</td></tr>
+<tr><td>Estaño de soldadura brillante</td><td>0,05 - 0,10</td><td><strong>Aparece mucho más frío de lo que está</strong></td></tr>
+<tr><td>Cobre pulido o plano de masa expuesto</td><td>0,03 - 0,10</td><td><strong>Muy engañoso</strong></td></tr>
+<tr><td>Blindaje metálico</td><td>0,05 - 0,20</td><td>Refleja el entorno, incluido tu propio calor</td></tr>
+</tbody>
+</table>
+</div>
+<p>Consecuencia práctica: <strong>una junta de soldadura en corto puede parecer fría en la cámara</strong> mientras el plástico del componente a su lado se ve caliente. Y una superficie metálica pulida puede mostrar tu propio reflejo térmico como si fuera un punto caliente.</p>
+<h3>Cómo corregirlo</h3>
+<ul>
+<li><strong>Cinta de aislar mate</strong> sobre las zonas metálicas grandes: uniforma la emisividad a ~0,95.</li>
+<li><strong>Una capa muy fina de flux</strong> sobre la zona bajo estudio: además de uniformar la emisividad, ayuda con el siguiente truco.</li>
+<li><strong>Observa desde varios ángulos</strong>: un reflejo cambia de posición al mover la cámara, un punto caliente real no.</li>
+<li><strong>Confía en el patrón, no en el valor absoluto</strong>: para localizar un corto te interesa <em>dónde</em> está el máximo, no cuántos grados marca.</li>
+</ul>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="alternativas">
+<h2>Alternativas cuando no tienes cámara térmica</h2>
+<h3>Alcohol isopropílico: el método clásico</h3>
+<p>Funciona sorprendentemente bien y cuesta prácticamente nada. Aplica una capa fina de alcohol isopropílico sobre la zona sospechosa e inyecta corriente: <strong>el alcohol se evapora primero justo encima del punto caliente</strong>, dejando una mancha seca que delata la posición.</p>
+<pre><code>Procedimiento:
+  1. Aplicar IPA con un pincel sobre toda la zona del riel
+  2. Inyectar corriente con la fuente limitada
+  3. Observar con lupa y buena luz rasante
+  4. El primer punto en secarse es el candidato
+
+Ventaja:  coste casi nulo, resolución excelente
+Límite:   requiere que el punto supere unos 40 °C
+          y hay que observar en el momento exacto</code></pre>
+<h3>El dedo: menos ridículo de lo que parece</h3>
+<p>Con la placa alimentada a baja corriente, pasar el dedo por los componentes localiza puntos calientes con una sensibilidad razonable. Es la técnica más antigua del banco de reparación. Sus límites: no sirve por encima de 60 °C sin quemarte, y no distingue entre componentes contiguos.</p>
+<h3>Medida de caída de tensión en microvoltios</h3>
+<p>Un multímetro con resolución de microvoltios permite triangular el corto sin calor. Inyectas corriente por el riel y mides la tensión entre distintos puntos del plano: la corriente circula hacia el corto, y la caída disminuye conforme te acercas a él.</p>
+<pre><code>Con 1 A inyectado por un plano de cobre:
+  Punto A: 480 µV
+  Punto B: 310 µV
+  Punto C:  90 µV   ← el corto está cerca de aquí
+  Punto D: 250 µV
+
+Se avanza siempre hacia el valor menor, como un mapa de gradientes.</code></pre>
+<p>Es un método lento pero muy preciso, y funciona con cortos de resistencia tan baja que apenas generan calor. Se complementa bien con la cámara térmica: la cámara acota la zona, los microvoltios confirman el punto exacto.</p>
+<div class="note">Para trabajar con estos niveles de tensión necesitas un multímetro con resolución real de microvoltios y puntas de buena calidad. Los criterios para distinguir instrumentos fiables de copias con especificaciones infladas siguen la misma lógica que en la guía de <a href="/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones">calibres digitales y cómo detectar falsificaciones</a>.</div>
+</section>
+<section id="casos">
+<h2>Casos típicos y su firma térmica</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Fallo</th><th>Firma térmica</th><th>Tiempo de aparición</th><th>Nota</th></tr></thead>
+<tbody>
+<tr><td>MLCC de desacoplo en corto</td><td>Punto muy localizado e intenso</td><td>5 a 15 s</td><td>El caso más frecuente y el más fácil</td></tr>
+<tr><td>MOSFET de potencia perforado</td><td>Zona amplia y caliente</td><td>3 a 10 s</td><td>Suele verse también daño físico</td></tr>
+<tr><td>Circuito integrado con entrada dañada</td><td>Calor difuso en todo el encapsulado</td><td>10 a 40 s</td><td>Difícil de distinguir del consumo normal</td></tr>
+<tr><td>Puente de estaño entre pistas</td><td>Línea caliente estrecha</td><td>5 a 20 s</td><td>Muy visible; revisa bajo el CI si no aparece</td></tr>
+<tr><td>Diodo TVS disparado</td><td>Punto caliente en el borde de la placa</td><td>3 a 10 s</td><td>Suele indicar una sobretensión previa</td></tr>
+<tr><td>Corrosión por líquido bajo un componente</td><td>Área caliente irregular y extensa</td><td>15 a 60 s</td><td>Limpiar con IPA y reevaluar</td></tr>
+<tr><td>Vía o pista dañada en capa interna</td><td>Calor en un punto sin componente</td><td>20 a 60 s</td><td>El caso más difícil de reparar</td></tr>
+<tr><td>Fuga de alta impedancia (&gt; 500 Ω)</td><td>Ninguna o casi ninguna</td><td>—</td><td>El método no aplica; usar microvoltios</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Falsos positivos que debes reconocer</h3>
+<ul>
+<li><strong>Reguladores lineales y de conmutación:</strong> se calientan porque están trabajando, no porque estén averiados.</li>
+<li><strong>Resistencias de potencia y shunts de medida:</strong> disipan por diseño.</li>
+<li><strong>Reflejos en superficies metálicas:</strong> cambian al mover la cámara.</li>
+<li><strong>Calor conducido por el plano de cobre:</strong> el cobre distribuye el calor y puede hacer que un componente cercano al culpable parezca ser el origen. Busca siempre el <em>máximo</em> del gradiente.</li>
+<li><strong>Tu propio aliento o la lámpara del banco:</strong> apaga las fuentes de calor cercanas antes de medir.</li>
+</ul>
+</section>
+<section id="seguridad">
+<h2>Seguridad y buenas prácticas</h2>
+<div class="warning"><strong>Nunca trabajes con la placa conectada a la red eléctrica.</strong> El diagnóstico térmico se hace con la placa desconectada de su alimentación original y alimentada exclusivamente desde la fuente de laboratorio, en el riel de baja tensión que estás investigando. Las fuentes conmutadas contienen condensadores que conservan carga peligrosa durante minutos tras la desconexión: descárgalos con una resistencia adecuada antes de manipular.</div>
+<ul>
+<li><strong>Protección antiestática:</strong> pulsera conectada a tierra y tapete disipativo. Los circuitos integrados modernos se dañan con descargas que ni siquiera notas.</li>
+<li><strong>Empieza siempre con el límite de corriente bajo</strong> y súbelo en pasos. Es más rápido esperar treinta segundos que reemplazar un componente que destruiste al inyectar de golpe 5 A.</li>
+<li><strong>Ventilación:</strong> los componentes en fallo pueden liberar humos tóxicos. Un extractor sobre el banco es una inversión sensata.</li>
+<li><strong>Documenta con imágenes:</strong> captura la térmica y la visible del mismo encuadre. Al reparar placas del mismo modelo, ese archivo se convierte en una base de datos de fallos recurrentes.</li>
+<li><strong>Limpia la placa con IPA antes de inspeccionar:</strong> los residuos de flux y la suciedad alteran la emisividad y pueden crear fugas superficiales que confunden el diagnóstico.</li>
+</ul>
+<h3>Flujo de trabajo recomendado</h3>
+<ol>
+<li>Inspección visual con lupa y luz rasante. Muchos fallos se ven a simple vista.</li>
+<li>Medida de resistencia de todos los rieles contra masa. Anotar valores.</li>
+<li>Comparar con una placa sana o con la documentación si existe.</li>
+<li>Inyección de corriente limitada en el riel sospechoso.</li>
+<li>Localización térmica del punto caliente.</li>
+<li>Confirmación por caída de tensión en microvoltios.</li>
+<li>Retirada del componente y verificación de que el corto desapareció.</li>
+<li>Reemplazo, limpieza y prueba funcional completa.</li>
+</ol>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La cámara térmica no es un instrumento mágico: es un acelerador. Convierte un proceso de búsqueda que podía llevar horas de desoldadura sistemática en una inspección de un minuto, y lo hace sin dañar la placa. Pero solo funciona si la usas junto con una fuente limitada en corriente y entendiendo qué estás viendo.</p>
+<p>Los tres puntos que determinan el éxito del método son: <strong>una cámara que enfoque de cerca</strong> —la resolución importa menos que la distancia mínima de enfoque—, <strong>limitación de corriente correctamente ajustada</strong> antes de conectar nada, y <strong>conciencia de la emisividad</strong> para no perseguir reflejos en el estaño.</p>
+<p>Y recuerda su límite real: los fallos de alta impedancia, por encima de unos 500 ohmios, no generan calor suficiente para verse. En esos casos, el multímetro con resolución de microvoltios sigue siendo la herramienta correcta. Las dos técnicas no compiten; se complementan.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué resolución de cámara térmica necesito para reparar electrónica?</summary><p>Para componentes SMD de tamaño 0603 o mayor, una cámara de 160 × 120 píxeles con buen enfoque cercano es suficiente. Para trabajar con 0402, 0201 o encapsulados BGA, conviene 256 × 192 con lente macro. Sin embargo, la distancia mínima de enfoque es más determinante que la resolución: una cámara de 256 × 192 que no enfoque por debajo de 30 cm será menos útil que una de 160 × 120 capaz de acercarse a 5 cm.</p></details>
+<details><summary>¿Puedo dañar la placa al inyectar corriente para el diagnóstico?</summary><p>Sí, si no limitas correctamente la corriente o si superas la tensión nominal del riel. La regla es ajustar el límite de corriente con las puntas cortocircuitadas antes de conectar, empezar con valores bajos del orden de 0,3 A e ir subiendo en pasos. Nunca apliques una tensión superior a la nominal del riel: inyectar 5 V en un riel de núcleo de 1,2 V destruye todos los circuitos integrados conectados, aunque la corriente esté limitada.</p></details>
+<details><summary>¿Sirve un módulo térmico para móvil o necesito una cámara profesional?</summary><p>Los módulos que se conectan al teléfono por USB-C con sensores de 256 × 192 ofrecen hoy una capacidad más que suficiente para reparación de electrónica, a una fracción del precio de una cámara de banco. Sus limitaciones son la dependencia del software del fabricante y una ergonomía menos cómoda para trabajo prolongado. Para uso profesional intensivo, una cámara dedicada con lente macro y trípode resulta más productiva, pero la diferencia de capacidad diagnóstica es menor de lo que sugiere la diferencia de precio.</p></details>
+<details><summary>¿Por qué no veo ningún punto caliente si el multímetro indica corto?</summary><p>Las causas más probables son cuatro. Primera: la corriente inyectada es insuficiente, prueba subiendo el límite en pasos. Segunda: el corto está en una capa interna o bajo un componente grande que actúa como disipador y difunde el calor. Tercera: la superficie que observas es metálica brillante y su baja emisividad oculta el calor real, cúbrela con cinta mate. Cuarta: no es un corto franco sino una fuga de alta impedancia que disipa muy poca potencia; en ese caso recurre a la medida de caída de tensión en microvoltios.</p></details>
+<details><summary>¿La emisividad afecta a la localización de un cortocircuito?</summary><p>Afecta al valor de temperatura que muestra la cámara, pero para localizar un corto lo que importa es el patrón relativo, no la cifra absoluta. El problema real aparece cuando la zona bajo estudio combina materiales de emisividad muy distinta: una junta de soldadura brillante puede verse fría aunque esté a 80 °C, mientras el plástico del componente contiguo se ve caliente. La solución práctica es cubrir las superficies metálicas con cinta mate o aplicar una capa fina de flux para uniformar la emisividad antes de inspeccionar.</p></details>
+<details><summary>¿El método del alcohol isopropílico es realmente comparable a una cámara térmica?</summary><p>Para cortos que generan calor suficiente, la resolución espacial del método del alcohol es excelente: la mancha que se seca primero identifica el componente con precisión submilimétrica, mejor incluso que muchas cámaras económicas. Sus desventajas son que requiere observar en el instante exacto de la evaporación, que no funciona si el punto no supera unos 40 grados, y que no permite documentar el hallazgo. Es un complemento excelente y un sustituto razonable si no dispones de cámara.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Para completar tu banco de diagnóstico revisa cómo identificar instrumentos fiables en la guía de <a href="/blog/calibres-digitales-mitutoyo-como-detectar-falsificaciones">calibres digitales y falsificaciones</a>, y la selección de <a href="/blog/los-mejores-programadores-universales-de-eeprom-y-bios">programadores universales de EEPROM y BIOS</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/los-mejores-programadores-universales-de-eeprom-y-bios">← Anterior: Los Mejores Programadores Universales de EEPROM y BIOS</a>
+  <a href="/blog/modulo-de-carga-tp4056-cargar-baterias-lipo-de-forma-segura">Siguiente: Módulo de Carga TP4056: Cargar Baterías LiPo con Seguridad →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias sobre termografía y sus fundamentos físicos. Los valores de emisividad son orientativos y varían con el acabado superficial concreto de cada material.</p>
+<ul>
+<li><a href="https://www.flir.com/discover/rd-science/how-does-emissivity-affect-thermal-imaging/" target="_blank" rel="noopener noreferrer">FLIR — Guía de emisividad de materiales para termografía</a></li>
+<li><a href="https://www.flir.com/discover/professional-tools/what-is-thermal-imaging/" target="_blank" rel="noopener noreferrer">Teledyne FLIR — Fundamentos de termografía infrarroja</a></li>
+<li><a href="https://www.ipc.org/ipc-standards" target="_blank" rel="noopener noreferrer">IPC — Estándares de fabricación e inspección de placas de circuito impreso</a></li>
+<li><a href="https://www.melexis.com/en/product/MLX90640/Far-Infrared-Thermal-Sensor-Array" target="_blank" rel="noopener noreferrer">Melexis — Hoja de datos del sensor de matriz térmica MLX90640</a></li>
+<li><a href="https://www.nist.gov/programs-projects/radiation-thermometry" target="_blank" rel="noopener noreferrer">NIST — Guía de termometría por radiación</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 

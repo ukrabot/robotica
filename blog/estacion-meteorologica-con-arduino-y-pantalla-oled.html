@@ -384,7 +384,7 @@ Arduino A5 (SCL) -----------------+---> BME280 SCL
 <section id="escaner-i2c">
 <h2>Sketch escáner I2C: verificar direcciones antes de programar</h2>
 <p>Antes de escribir la lógica completa de la estación meteorológica, es una práctica muy recomendable ejecutar un pequeño sketch "escáner" que recorra todas las direcciones I2C posibles y reporte cuáles dispositivos responden. Esto confirma que el cableado es correcto y evita perder tiempo depurando código cuando el problema real es una dirección incorrecta o un dispositivo mal conectado.</p>
-<pre><code>#include <Wire.h>
+<pre><code>#include &lt;Wire.h&gt;
 
 void setup() {
   Wire.begin();
@@ -420,11 +420,11 @@ void loop() {
 <section id="codigo-basico">
 <h2>Código Arduino: lectura básica y despliegue en OLED</h2>
 <p>Este primer ejemplo lee temperatura, humedad y presión del BME280, y los muestra en la pantalla OLED usando las librerías <code>Adafruit_BME280</code>, <code>Adafruit_SSD1306</code> y <code>Adafruit_GFX</code>, todas instalables desde el Gestor de Librerías del IDE de Arduino.</p>
-<pre><code>#include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BME280.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+<pre><code>#include &lt;Wire.h&gt;
+#include &lt;Adafruit_Sensor.h&gt;
+#include &lt;Adafruit_BME280.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
 
 #define ANCHO_PANTALLA 128
 #define ALTO_PANTALLA  64
@@ -497,12 +497,12 @@ void loop() {
 <section id="codigo-avanzado">
 <h2>Código Arduino: pantallas rotativas y registro de extremos</h2>
 <p>El siguiente ejemplo amplía el proyecto con dos capacidades adicionales que transforman la estación de un simple visor a un instrumento más completo: <strong>pantallas rotativas</strong> que alternan cada pocos segundos entre distintas vistas de información, y <strong>registro de valores mínimos y máximos</strong> guardados en la EEPROM interna de Arduino, de modo que persisten incluso si el dispositivo se apaga y se vuelve a encender.</p>
-<pre><code>#include <Wire.h>
-#include <EEPROM.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BME280.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+<pre><code>#include &lt;Wire.h&gt;
+#include &lt;EEPROM.h&gt;
+#include &lt;Adafruit_Sensor.h&gt;
+#include &lt;Adafruit_BME280.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
 
 #define ANCHO_PANTALLA 128
 #define ALTO_PANTALLA  64
@@ -619,7 +619,7 @@ void loop() {
 <h2>Cálculo de altitud barométrica</h2>
 <p>Una de las capacidades más interesantes del BME280 frente a sensores más simples es el cálculo de altitud a partir de la presión atmosférica. El principio físico es que la presión del aire disminuye de forma predecible con la altura, siguiendo la fórmula barométrica internacional. La librería Adafruit implementa esto en la función <code>readAltitude(presionReferenciaHPa)</code>, que necesita como parámetro la presión atmosférica al nivel del mar en el momento y lugar de la medición.</p>
 <p>El valor estándar internacional de 1013.25 hPa es una aproximación razonable para uso general, pero introduce un margen de error real: la presión atmosférica al nivel del mar varía día a día según las condiciones meteorológicas, típicamente entre 990 y 1030 hPa. Para mayor precisión en un lugar fijo, puedes calibrar tu propia constante de referencia comparando la altitud calculada contra la altitud real conocida de tu ubicación (consultable en servicios de mapas), y ajustando la presión de referencia hasta que el cálculo coincida.</p>
-<div class="note"><strong>Aplicación práctica más allá de la altitud:</strong> incluso sin buscar precisión de altímetro, registrar la tendencia de la presión atmosférica en el tiempo (¿está subiendo o bajando en las últimas horas?) es uno de los indicadores más clásicos y confiables para anticipar cambios de tiempo a corto plazo — una caída sostenida de presión suele preceder la llegada de un frente de mal tiempo.</p>
+<div class="note"><strong>Aplicación práctica más allá de la altitud:</strong> incluso sin buscar precisión de altímetro, registrar la tendencia de la presión atmosférica en el tiempo (¿está subiendo o bajando en las últimas horas?) es uno de los indicadores más clásicos y confiables para anticipar cambios de tiempo a corto plazo — una caída sostenida de presión suele preceder la llegada de un frente de mal tiempo.
 </div>
 </section>
 

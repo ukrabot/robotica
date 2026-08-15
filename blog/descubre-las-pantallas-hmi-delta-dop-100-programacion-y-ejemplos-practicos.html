@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos</title>
+<meta name="description" content="Guía práctica de las pantallas HMI Delta DOP-100: modelos y diferencias, instalación de DOPSoft, configuración de comunicación Modbus con PLC, creación de pantallas, macros, alarmas, recetas y ejemplos reales de proyecto.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos">
+<meta property="og:description" content="DOPSoft paso a paso: comunicación Modbus, pantallas, macros, alarmas y recetas en la HMI Delta DOP-100.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/delta_dop100_hmi_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos">
+<meta name="twitter:description" content="Programa una HMI Delta DOP-100 desde cero: DOPSoft, Modbus, macros, alarmas y recetas con ejemplos.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/delta_dop100_hmi_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos",
+  "description": "Guía técnica completa sobre las pantallas de interfaz hombre-máquina Delta de la serie DOP-100: comparativa de los modelos DOP-103BQ, DOP-107 y DOP-110 con sus resoluciones y puertos de comunicación, requisitos de alimentación y cableado en tablero, instalación y configuración del entorno DOPSoft 4, definición del enlace de comunicación con controladores lógicos programables mediante Modbus RTU sobre RS-485 y Modbus TCP sobre Ethernet, mapeo de direcciones y tipos de registro, diseño de pantallas con elementos gráficos, botones, indicadores numéricos y gráficos de tendencia, programación de macros en el lenguaje propio de DOPSoft, configuración del sistema de alarmas con histórico, implementación de recetas para cambio rápido de parámetros de producción, gestión de niveles de contraseña y ejemplos prácticos de proyectos completos.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos"
+  },
+  "image": "https://www.ukrabot.cl/blog/delta_dop100_hmi_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "HMI Delta serie DOP-100, DOPSoft 4.x, PLC con Modbus RTU o TCP, fuente de 24 V CC, cable de programación USB o Ethernet",
+  "wordCount": "3200",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos",
+      "item": "https://www.ukrabot.cl/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿DOPSoft es gratuito y dónde se descarga?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, DOPSoft es gratuito y se descarga desde el centro de descargas del sitio oficial de Delta Electronics, sin licencia ni activación. Es importante elegir la versión correcta: DOPSoft 4.x para la serie DOP-100 y DOPSoft 2.x para la serie DOP-B anterior. Ambas funcionan en Windows y no son compatibles entre sí, aunque existe una utilidad de conversión de proyectos cuyos resultados requieren revisión manual."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo conectar una HMI Delta a un PLC de otra marca?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. DOPSoft incluye controladores para una amplia lista de fabricantes, entre ellos Siemens, Mitsubishi, Omron, Allen-Bradley y Schneider, además del protocolo Modbus genérico en sus variantes RTU, ASCII y TCP. Con Modbus estándar puedes comunicar prácticamente con cualquier dispositivo industrial. Lo que debes verificar es que los parámetros de comunicación coincidan exactamente y que conozcas el mapa de registros del dispositivo remoto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia hay entre la serie DOP-B y la DOP-100?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La DOP-100 es la generación posterior: procesadores más rápidos, pantallas de mayor resolución y mejor ángulo de visión, más memoria de proyecto, y soporte de Ethernet en más modelos de la gama. También cambia el software de programación, que pasa de DOPSoft 2 a DOPSoft 4 con una interfaz renovada. Los proyectos de DOP-B no se transfieren directamente y las cotas de recorte de panel son distintas, por lo que sustituir una unidad antigua suele exigir modificar el tablero."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi HMI no comunica con el PLC aunque los parámetros coinciden?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Las causas más frecuentes, en orden de probabilidad, son: cables D+ y D− intercambiados en el bus RS-485, ausencia de resistencias terminadoras de 120 ohmios en los extremos del bus, falta de una referencia de masa común entre los equipos, dirección de esclavo del PLC distinta de la configurada en la HMI, y comunicación no habilitada en el propio programa del PLC, ya que en muchos modelos hay que activarla escribiendo en registros especiales. Aislar el problema con un cliente Modbus desde un PC ahorra mucho tiempo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puede la HMI sustituir al PLC en aplicaciones sencillas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No es recomendable, aunque técnicamente las macros permitan implementar cierta lógica. La HMI no tiene entradas y salidas digitales industriales, su tiempo de ciclo no es determinista, y una pérdida de comunicación o un bloqueo de la interfaz dejaría el proceso sin control. Además, ninguna función de seguridad puede residir en una HMI. Para aplicaciones muy simples existen alternativas más apropiadas, como los relés programables o los PLC compactos de gama baja."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué tarjeta SD conviene usar para el registro de datos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Una tarjeta de grado industrial con memoria de tipo SLC o pSLC, de capacidad modesta, entre 4 y 16 gigabytes. Las tarjetas de consumo están optimizadas para escrituras esporádicas de archivos grandes y fallan prematuramente con el patrón de escritura continua de pequeños bloques que genera un registrador. Conviene además configurar la rotación diaria de archivos y descargar periódicamente los datos, en lugar de acumular meses de registro en la tarjeta."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="delta_dop100_hmi_hero.jpg" alt="Pantalla HMI Delta DOP-100 montada en un tablero eléctrico industrial mostrando una pantalla de proceso con indicadores y botones táctiles" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización industrial · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos</h1>
+    <p>Una HMI industrial por el precio de una tablet de gama media. La serie DOP-100 de Delta es la puerta de entrada más razonable a la interfaz de operador profesional.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 18 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="delta_dop100_arquitectura.svg" alt="Diagrama de conexión de una HMI Delta DOP-100 con un PLC por RS-485 y Ethernet, alimentación de 24 V y PC de programación con DOPSoft" loading="lazy">
+  <div class="caption">Arquitectura típica: la HMI como maestro Modbus sobre el PLC, y el PC solo presente durante la programación.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#gama">La serie DOP-100: qué modelo elegir</a></li>
+    <li><a href="#instalacion">Montaje, alimentación y primer arranque</a></li>
+    <li><a href="#dopsoft">DOPSoft: el entorno de programación</a></li>
+    <li><a href="#comunicacion">Comunicación con el PLC: Modbus paso a paso</a></li>
+    <li><a href="#pantallas">Diseño de pantallas eficaces</a></li>
+    <li><a href="#macros">Macros: lógica dentro de la HMI</a></li>
+    <li><a href="#alarmas">Alarmas, recetas y registro de datos</a></li>
+    <li><a href="#proyecto">Ejemplo completo: control de un horno</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="gama">
+<h2>La serie DOP-100: qué modelo elegir</h2>
+<p>Delta Electronics reemplazó la veterana serie DOP-B por la <strong>DOP-100</strong>, con procesadores más rápidos, pantallas de mejor calidad y un entorno de programación renovado. La lógica de nomenclatura es sencilla una vez que se entiende.</p>
+<pre><code>DOP - 1 07 W V
+       │  │  │ └── Variante (V = estándar, otras según opciones)
+       │  │  └──── Formato: W = panorámico (widescreen)
+       │  └─────── Tamaño de pantalla en pulgadas
+       └────────── Serie 100</code></pre>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Modelo</th><th>Tamaño</th><th>Resolución</th><th>Puertos serie</th><th>Ethernet</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td>DOP-103BQ</td><td>4,3"</td><td>480 × 272</td><td>2 (COM1, COM2)</td><td>No</td><td>Máquina simple, pocos parámetros</td></tr>
+<tr><td>DOP-107BV</td><td>7"</td><td>800 × 480</td><td>3</td><td>No</td><td>El más vendido; buen equilibrio</td></tr>
+<tr><td>DOP-107EG</td><td>7"</td><td>800 × 480</td><td>3</td><td><strong>Sí</strong></td><td>Integración con SCADA o varios PLC</td></tr>
+<tr><td>DOP-110CS</td><td>10,1"</td><td>1024 × 600</td><td>3</td><td>Sí</td><td>Líneas con muchas pantallas de proceso</td></tr>
+<tr><td>DOP-112MX</td><td>12"</td><td>1280 × 800</td><td>3</td><td>Sí</td><td>Supervisión de planta</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Recomendación práctica.</strong> Si tu aplicación va a comunicarse con más de un dispositivo o pretendes leer datos desde un sistema superior, elige desde el principio un modelo con <strong>Ethernet</strong>. La diferencia de precio es modesta y evita quedarte encerrado en enlaces serie punto a punto. El DOP-107EG es el punto dulce de la gama para la mayoría de proyectos.</div>
+<h3>Características comunes de la serie</h3>
+<ul>
+<li>Alimentación 24 V CC (rango típico 20,4 a 28,8 V), consumo del orden de 5 a 12 W según modelo.</li>
+<li>Pantalla táctil resistiva: funciona con guantes, algo importante en entorno industrial.</li>
+<li>Ranura para tarjeta SD y puerto USB anfitrión para registro de datos y transferencia de proyectos.</li>
+<li>Grado de protección IP65 en el frontal cuando se monta correctamente con su junta.</li>
+<li>Reloj de tiempo real con batería para sellado temporal de alarmas y registros.</li>
+</ul>
+</section>
+<section id="instalacion">
+<h2>Montaje, alimentación y primer arranque</h2>
+<h3>Recorte de panel y montaje</h3>
+<p>Cada modelo tiene una cota de recorte específica que debe respetarse con tolerancia de décimas de milímetro. Un recorte generoso arruina el sellado IP65 del frontal.</p>
+<pre><code>Cotas orientativas de recorte (verificar siempre en el manual del modelo):
+  DOP-103BQ  →  119,0 × 93,0 mm
+  DOP-107BV  →  192,0 × 138,0 mm
+  DOP-110CS  →  259,0 × 179,0 mm
+
+Montaje:
+  1. Colocar la junta de goma en el marco de la HMI
+  2. Insertar desde el frente del tablero
+  3. Fijar con las grapas suministradas, apretando en cruz
+  4. No sobreapretar: deforma el marco y rompe el sellado</code></pre>
+<h3>Alimentación</h3>
+<div class="warning">La HMI se alimenta con <strong>24 V CC, nunca con tensión de red</strong>. Verifica la polaridad antes de energizar: aunque los modelos recientes incorporan protección contra inversión, no todos la tienen y una inversión puede destruir la unidad. Usa una fuente de 24 V con margen: si la HMI consume 12 W, no la alimentes desde una fuente de 15 W ya cargada con otros elementos.</div>
+<ul>
+<li>Conecta el borne de tierra funcional (FG) al chasis del tablero con cable corto y de sección adecuada. Sin esta conexión, el táctil puede comportarse de forma errática con variadores cerca.</li>
+<li>Alimenta la HMI desde la misma fuente de 24 V que el PLC cuando sea posible, para evitar bucles de masa en la comunicación serie.</li>
+<li>Si el tablero contiene variadores de frecuencia, separa físicamente el cableado de 24 V y de comunicación del cableado de potencia. Los criterios generales están en la guía de <a href="/blog/gestion-de-cables-para-brazos-roboticos">gestión de cables en tableros y brazos</a>.</li>
+</ul>
+<h3>Primer arranque y configuración del sistema</h3>
+<p>Al energizar por primera vez, la HMI arranca con un proyecto vacío. Para acceder al menú del sistema se mantiene pulsada una esquina de la pantalla durante el arranque, o se pulsa el área de configuración según el modelo. Desde ahí se ajustan:</p>
+<ul>
+<li>Idioma de la interfaz del sistema.</li>
+<li>Dirección IP si el modelo tiene Ethernet (fija, nunca DHCP en un entorno industrial).</li>
+<li>Brillo, tiempo de apagado de retroiluminación y calibración del táctil.</li>
+<li>Fecha y hora del reloj interno.</li>
+</ul>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="dopsoft">
+<h2>DOPSoft: el entorno de programación</h2>
+<p><strong>DOPSoft</strong> es el software gratuito de Delta para programar la serie DOP. Se descarga desde el portal de descargas del fabricante y funciona en Windows.</p>
+<div class="note"><strong>Atención con las versiones.</strong> DOPSoft 2.x corresponde a la serie DOP-B antigua y <strong>DOPSoft 4.x a la serie DOP-100</strong>. No son compatibles entre sí ni pueden abrir los proyectos del otro directamente, aunque existe una utilidad de conversión con resultados desiguales. Asegúrate de descargar la versión correcta para tu hardware antes de empezar a diseñar.</div>
+<h3>Estructura de un proyecto</h3>
+<pre><code>Proyecto DOPSoft
+├── Configuración de HMI      → modelo, orientación, resolución
+├── Enlaces de comunicación   → Link 1, Link 2... (uno por dispositivo)
+├── Pantallas (Screens)       → numeradas; la 1 es la de arranque
+│   ├── Elementos gráficos
+│   ├── Botones y entradas
+│   └── Macros de pantalla
+├── Macros globales           → inicial, de fondo, de reloj
+├── Alarmas                   → tabla de condiciones y mensajes
+├── Recetas                   → grupos de parámetros
+└── Configuración de seguridad → niveles y contraseñas</code></pre>
+<h3>Flujo de trabajo recomendado</h3>
+<ol>
+<li><strong>Definir el enlace de comunicación primero.</strong> Todo lo demás depende de las direcciones que puedas referenciar.</li>
+<li><strong>Diseñar la navegación</strong> antes que las pantallas concretas: cuántas hay y cómo se pasa de una a otra.</li>
+<li><strong>Construir una pantalla plantilla</strong> con la barra superior, el pie y los botones de navegación, y copiarla para las demás. Mantiene la coherencia visual.</li>
+<li><strong>Simular en el PC</strong> (modo offline) antes de descargar a la HMI: ahorra muchísimo tiempo.</li>
+<li><strong>Descargar y probar contra el PLC real.</strong></li>
+</ol>
+</section>
+<section id="comunicacion">
+<h2>Comunicación con el PLC: Modbus paso a paso</h2>
+<p>La HMI actúa normalmente como <strong>maestro Modbus</strong> y el PLC como esclavo. La configuración se hace en el apartado de enlaces del proyecto.</p>
+<h3>Modbus RTU sobre RS-485</h3>
+<pre><code>Parámetros que deben coincidir EXACTAMENTE en ambos extremos:
+
+  Velocidad (baudios) : 9600, 19200, 38400, 115200
+  Bits de datos       : 8 (o 7 en algunos equipos antiguos)
+  Paridad             : Ninguna / Par / Impar
+  Bits de parada      : 1 o 2
+  Dirección de esclavo: 1 a 247
+  Formato             : RTU (binario) o ASCII
+
+Configuración de partida habitual con PLC Delta:
+  9600, 7, Par, 1, ASCII      ← valor de fábrica de muchos DVP
+  115200, 8, Ninguna, 2, RTU  ← configuración de mayor rendimiento</code></pre>
+<div class="warning">El error de comunicación más frecuente no es de parámetros sino de <strong>cableado RS-485</strong>. El bus necesita: par trenzado con malla, conexión correcta de D+ y D− (invertirlos impide toda comunicación), resistencias terminadoras de 120 Ω en los dos extremos físicos del bus, y una referencia de masa común entre dispositivos. Sin terminación, el enlace puede funcionar en el banco y fallar de forma intermitente en la máquina.</div>
+<h3>Mapeo de direcciones</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Tipo Modbus</th><th>Rango clásico</th><th>Equivalente en PLC Delta DVP</th><th>Acceso</th></tr></thead>
+<tbody>
+<tr><td>Coil (bobina)</td><td>0xxxx</td><td>M0 - M1535, Y0 - Y377</td><td>Lectura y escritura de bit</td></tr>
+<tr><td>Discrete input</td><td>1xxxx</td><td>X0 - X377</td><td>Solo lectura de bit</td></tr>
+<tr><td>Input register</td><td>3xxxx</td><td>Registros de solo lectura</td><td>Solo lectura de palabra</td></tr>
+<tr><td>Holding register</td><td>4xxxx</td><td>D0 - D11999</td><td>Lectura y escritura de palabra</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code>Ejemplo de mapa de una máquina sencilla:
+
+  D100  →  Consigna de temperatura (× 10, en décimas de grado)
+  D101  →  Temperatura medida (× 10)
+  D102  →  Contador de piezas producidas
+  D110  →  Palabra de estado (bits de máquina)
+  M100  →  Orden de marcha desde HMI
+  M101  →  Orden de paro desde HMI
+  M102  →  Reconocimiento de alarma
+  M200  →  Bit de máquina en marcha (PLC → HMI)
+  M201  →  Bit de alarma activa (PLC → HMI)</code></pre>
+<h3>Modbus TCP sobre Ethernet</h3>
+<p>Más simple de cablear y considerablemente más rápido. En los modelos con Ethernet:</p>
+<ul>
+<li>Asigna IP fija a HMI y PLC en la misma subred (por ejemplo 192.168.1.10 y 192.168.1.20).</li>
+<li>Puerto 502, el estándar de Modbus TCP.</li>
+<li>Unit ID normalmente 1, aunque algunos gateways requieren otro valor.</li>
+<li>Verifica la conectividad con un ping desde el PC antes de culpar a la configuración de la HMI.</li>
+</ul>
+<h3>Diagnóstico cuando no comunica</h3>
+<ol>
+<li>¿Aparece un mensaje de error de comunicación en pantalla? Anota el código exacto.</li>
+<li>Verifica que los parámetros serie coinciden dígito a dígito en ambos extremos.</li>
+<li>Prueba a intercambiar D+ y D−: es el fallo más común y es inofensivo probarlo.</li>
+<li>Confirma la dirección de esclavo del PLC. Muchos vienen con dirección 1 pero no todos.</li>
+<li>Usa un PC con un cliente Modbus para hablar directamente con el PLC y aislar dónde está el problema.</li>
+<li>Comprueba que el PLC tenga habilitada la comunicación en ese puerto: en muchos modelos hay que configurarla en registros especiales del programa.</li>
+</ol>
+</section>
+<section id="pantallas">
+<h2>Diseño de pantallas eficaces</h2>
+<p>Una HMI mal diseñada es peor que no tener HMI: induce errores de operación. Estos criterios provienen de la práctica industrial y de las recomendaciones de la norma ISA-101.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Principio</th><th>Aplicación concreta</th></tr></thead>
+<tbody>
+<tr><td>Fondo neutro</td><td>Gris claro, no negro ni blanco puro. El color debe reservarse para el significado</td></tr>
+<tr><td>El color comunica estado</td><td>Rojo solo para alarma, amarillo para advertencia, verde para condición normal</td></tr>
+<tr><td>Jerarquía de pantallas</td><td>Vista general → área → detalle. Nunca más de tres niveles de profundidad</td></tr>
+<tr><td>Tamaño de los botones</td><td>Mínimo 15 × 15 mm reales para uso con guantes</td></tr>
+<tr><td>Confirmación de acciones críticas</td><td>Diálogo de confirmación en cualquier acción que mueva la máquina</td></tr>
+<tr><td>Unidades siempre visibles</td><td>Junto a todo valor numérico, sin excepción</td></tr>
+<tr><td>Realimentación inmediata</td><td>Todo botón debe cambiar de aspecto al pulsarse</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Elementos más usados en DOPSoft</h3>
+<ul>
+<li><strong>Set Bit / Momentary / Toggle:</strong> botones que escriben un bit. El tipo <em>momentary</em> es el que debes usar para órdenes de marcha, porque se libera solo al soltar.</li>
+<li><strong>Numeric Entry y Numeric Display:</strong> entrada y visualización de valores con escalado, límites y número de decimales configurables.</li>
+<li><strong>Multi-State Indicator:</strong> muestra un gráfico distinto según el valor de un registro. Ideal para estados de máquina.</li>
+<li><strong>Bar Graph y Meter:</strong> representación analógica de una variable. Mucho más legible de un vistazo que un número.</li>
+<li><strong>Trend Graph:</strong> gráfico de tendencia histórica, imprescindible en procesos térmicos o de presión.</li>
+<li><strong>Alarm Display:</strong> lista de alarmas activas e histórico con marca de tiempo.</li>
+</ul>
+<div class="note"><strong>Escalado de valores enteros.</strong> Los PLC trabajan con enteros. Para mostrar 23,5 °C se transmite el entero 235 y se configura en la HMI un decimal de visualización. Documenta este factor en el mapa de direcciones: es una fuente clásica de confusión cuando otra persona retoma el proyecto.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="macros">
+<h2>Macros: lógica dentro de la HMI</h2>
+<p>DOPSoft permite ejecutar pequeños programas llamados <strong>macros</strong>, en un lenguaje propio de sintaxis parecida a C simplificado. Hay varios tipos según cuándo se ejecutan:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Tipo de macro</th><th>Cuándo se ejecuta</th><th>Uso típico</th></tr></thead>
+<tbody>
+<tr><td>Initial macro</td><td>Una vez al arrancar la HMI</td><td>Inicializar variables internas</td></tr>
+<tr><td>Background macro</td><td>Cíclicamente, siempre</td><td>Cálculos permanentes, vigilancia</td></tr>
+<tr><td>Clock macro</td><td>Cada intervalo configurado</td><td>Tareas periódicas de baja frecuencia</td></tr>
+<tr><td>Screen open macro</td><td>Al entrar en una pantalla</td><td>Preparar datos de esa vista</td></tr>
+<tr><td>Screen close macro</td><td>Al salir de una pantalla</td><td>Guardar cambios pendientes</td></tr>
+<tr><td>On-element macro</td><td>Al pulsar un elemento</td><td>Lógica asociada a un botón</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code>// Macro de fondo: cálculo de rendimiento y control de límites
+
+// Registros internos de la HMI: $0, $1, $2...
+// Registros del PLC vía enlace 1: se referencian por su dirección
+
+$10 = D102          // piezas producidas
+$11 = D103          // piezas rechazadas
+
+if ($10 > 0)
+then
+    // Rendimiento en tanto por mil para conservar un decimal
+    $12 = ($10 - $11) * 1000 / $10
+else
+    $12 = 0
+endif
+
+// Aviso si el rendimiento cae por debajo del 95,0 %
+if ($12 &lt; 950)
+then
+    $20 = 1         // bit interno que enciende un indicador
+else
+    $20 = 0
+endif</code></pre>
+<pre><code>// Macro de botón: consigna con validación de límites
+
+$30 = D100          // consigna actual
+
+if ($30 &gt; 850)      // máximo 85,0 grados
+then
+    $30 = 850
+    $31 = 1         // marca de valor recortado
+endif
+
+if ($30 &lt; 150)      // mínimo 15,0 grados
+then
+    $30 = 150
+    $31 = 1
+endif
+
+D100 = $30          // escribe la consigna validada en el PLC</code></pre>
+<div class="warning"><strong>No traslades la lógica de seguridad a la HMI.</strong> Las macros son cómodas para cálculos de presentación, validaciones de entrada y automatismos de interfaz. Los enclavamientos, las paradas de emergencia y cualquier condición que proteja a personas o a la máquina deben residir en el PLC —y las funciones de seguridad, en circuitos certificados independientes—. Una HMI puede bloquearse, perder la comunicación o ser desconectada sin que la máquina se entere.</div>
+</section>
+<section id="alarmas">
+<h2>Alarmas, recetas y registro de datos</h2>
+<h3>Sistema de alarmas</h3>
+<p>DOPSoft gestiona las alarmas mediante una tabla donde cada fila asocia una condición (normalmente un bit del PLC) con un mensaje, un nivel de prioridad y opcionalmente una pantalla a la que saltar.</p>
+<pre><code>Estructura recomendada del bloque de alarmas en el PLC:
+
+  M300  Emergencia pulsada              Prioridad 1  Crítica
+  M301  Falla térmica del motor         Prioridad 1  Crítica
+  M302  Presión fuera de rango          Prioridad 2  Alta
+  M303  Temperatura sobre el límite     Prioridad 2  Alta
+  M304  Nivel de material bajo          Prioridad 3  Advertencia
+  M305  Mantenimiento programado        Prioridad 4  Informativa
+
+Buenas prácticas:
+  · Un mensaje debe decir QUÉ pasa y DÓNDE, no un código críptico
+  · Cada alarma debe tener una acción posible por parte del operador
+  · Evita la avalancha: si un fallo dispara diez alarmas, agrúpalas
+  · Guarda el histórico en tarjeta SD para el análisis posterior</code></pre>
+<h3>Recetas</h3>
+<p>Una receta es un conjunto de valores de parámetros que se cargan al PLC de una sola vez. Es la función que convierte una máquina en flexible: cambiar de producto pasa de ajustar quince valores a mano a pulsar un botón.</p>
+<pre><code>Ejemplo: máquina de sellado térmico
+
+Receta          Temp.   Tiempo   Presión   Velocidad
+                (°C)     (ms)     (bar)     (m/min)
+─────────────────────────────────────────────────────
+Bolsa PE 50 µm   145      800      2,5        12
+Bolsa PE 80 µm   160     1200      3,0         9
+Laminado PET     185     1000      3,5        10
+Papel encerado   120      600      2,0        15
+
+En DOPSoft:
+  · Se define un grupo de receta con 4 elementos (los parámetros)
+  · Cada fila es una receta con su nombre
+  · Un botón "Cargar receta" escribe el bloque completo en el PLC
+  · Los datos se guardan en la memoria no volátil de la HMI</code></pre>
+<h3>Registro de datos</h3>
+<p>La serie DOP-100 puede registrar valores periódicamente en tarjeta SD o memoria USB, en formato CSV legible desde cualquier hoja de cálculo. Configuración típica:</p>
+<ul>
+<li>Definir el bloque de registros a muestrear (por ejemplo D200 a D210).</li>
+<li>Fijar el intervalo de muestreo: cada segundo para procesos rápidos, cada minuto para térmicos.</li>
+<li>Elegir el destino y la política de rotación de archivos, normalmente uno por día.</li>
+<li>Verificar que la tarjeta SD sea de calidad industrial: las tarjetas de consumo fallan con escritura continua.</li>
+</ul>
+<div class="note">Para variables que exigen trazabilidad regulatoria, el registro en la HMI es un complemento, no un sustituto de un historizador con base de datos. La HMI puede perder datos si se corta la alimentación en mitad de una escritura.</div>
+</section>
+<section id="proyecto">
+<h2>Ejemplo completo: control de un horno</h2>
+<p>Un proyecto pequeño pero completo, con todos los elementos vistos.</p>
+<h3>Definición del mapa de datos</h3>
+<pre><code>PLC → HMI (lectura)
+  D200  Temperatura medida (× 10)
+  D201  Potencia de salida en %
+  D202  Tiempo restante de ciclo en segundos
+  D203  Estado: 0=parado 1=calentando 2=estable 3=enfriando 4=fallo
+  M200  Horno en marcha
+  M201  Temperatura alcanzada
+  M202  Alarma de sobretemperatura
+  M203  Alarma de sonda desconectada
+
+HMI → PLC (escritura)
+  D100  Consigna de temperatura (× 10)
+  D101  Tiempo de ciclo en minutos
+  M100  Marcha
+  M101  Paro
+  M102  Reconocer alarma</code></pre>
+<h3>Estructura de pantallas</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Nº</th><th>Pantalla</th><th>Contenido</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Principal</td><td>Temperatura grande, estado, barra de potencia, marcha y paro</td></tr>
+<tr><td>2</td><td>Parámetros</td><td>Entrada de consigna y tiempo, protegida por contraseña</td></tr>
+<tr><td>3</td><td>Tendencia</td><td>Gráfico de temperatura de las últimas dos horas</td></tr>
+<tr><td>4</td><td>Recetas</td><td>Selección y carga de perfiles de cocción</td></tr>
+<tr><td>5</td><td>Alarmas</td><td>Activas e histórico con marca de tiempo</td></tr>
+<tr><td>6</td><td>Diagnóstico</td><td>Estado de comunicación, horas de servicio, versión</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Macro de la pantalla principal</h3>
+<pre><code>// Screen open macro de la pantalla 1
+// Prepara los textos e indicadores de estado
+
+$50 = D203                  // estado numérico del horno
+
+if ($50 == 0) then $51 = 0 endif    // gris: parado
+if ($50 == 1) then $51 = 1 endif    // naranja: calentando
+if ($50 == 2) then $51 = 2 endif    // verde: estable
+if ($50 == 3) then $51 = 3 endif    // azul: enfriando
+if ($50 == 4) then $51 = 4 endif    // rojo: fallo
+
+// Desviación respecto de la consigna, para el indicador de precisión
+$52 = D200 - D100
+if ($52 &lt; 0) then $52 = 0 - $52 endif   // valor absoluto
+
+if ($52 &lt;= 20) then $53 = 1 else $53 = 0 endif  // dentro de ±2,0 °C</code></pre>
+<h3>Niveles de seguridad</h3>
+<pre><code>Nivel 0  Operador       Ver pantallas, marcha y paro, reconocer alarmas
+Nivel 1  Supervisor     Cambiar consignas dentro de rango, cargar recetas
+Nivel 2  Mantenimiento  Editar recetas, ver diagnóstico, ajustar límites
+Nivel 3  Ingeniería     Acceso completo, configuración del sistema
+
+En DOPSoft se asigna un nivel mínimo a cada elemento y a cada pantalla.
+Cambia las contraseñas por defecto antes de poner la máquina en servicio.</code></pre>
+<p>Si en tu instalación conviven autómatas antiguos con hardware moderno, la guía sobre <a href="/blog/maximiza-el-potencial-de-tus-plcs-antiguos-con-maquinas-virtuales">virtualizar estaciones de programación de PLC antiguos</a> resuelve el problema de mantener el software heredado accesible.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La serie DOP-100 ofrece una relación entre capacidad y precio difícil de igualar en interfaz industrial. Con un DOP-107 y un PLC modesto se construyen máquinas que hace una década habrían requerido un presupuesto varias veces mayor, y DOPSoft, con todas sus rarezas, es un entorno gratuito y suficientemente capaz.</p>
+<p>Tres decisiones marcan la diferencia entre un proyecto que envejece bien y uno que se vuelve inmantenible. Primera: <strong>documenta el mapa de direcciones</strong> antes de dibujar la primera pantalla, incluyendo los factores de escala. Segunda: <strong>mantén toda la lógica de proceso en el PLC</strong> y usa las macros solo para presentación y validación de entradas. Tercera: <strong>diseña la navegación pensando en el operador</strong>, no en la comodidad del programador.</p>
+<p>Y la advertencia que conviene repetir: la HMI es una ventana al proceso, nunca un elemento de seguridad. Los enclavamientos viven en el autómata y las funciones de seguridad en circuitos certificados independientes. Una pantalla que se cuelga no debe poder dejar una máquina en estado peligroso.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿DOPSoft es gratuito y dónde se descarga?</summary><p>Sí, DOPSoft es gratuito y se descarga desde el centro de descargas del sitio oficial de Delta Electronics, sin licencia ni activación. Es importante elegir la versión correcta: DOPSoft 4.x para la serie DOP-100 y DOPSoft 2.x para la serie DOP-B anterior. Ambas funcionan en Windows y no son compatibles entre sí, aunque existe una utilidad de conversión de proyectos cuyos resultados requieren revisión manual.</p></details>
+<details><summary>¿Puedo conectar una HMI Delta a un PLC de otra marca?</summary><p>Sí. DOPSoft incluye controladores para una amplia lista de fabricantes, entre ellos Siemens, Mitsubishi, Omron, Allen-Bradley y Schneider, además del protocolo Modbus genérico en sus variantes RTU, ASCII y TCP. Con Modbus estándar puedes comunicar prácticamente con cualquier dispositivo industrial. Lo que debes verificar es que los parámetros de comunicación coincidan exactamente y que conozcas el mapa de registros del dispositivo remoto.</p></details>
+<details><summary>¿Qué diferencia hay entre la serie DOP-B y la DOP-100?</summary><p>La DOP-100 es la generación posterior: procesadores más rápidos, pantallas de mayor resolución y mejor ángulo de visión, más memoria de proyecto, y soporte de Ethernet en más modelos de la gama. También cambia el software de programación, que pasa de DOPSoft 2 a DOPSoft 4 con una interfaz renovada. Los proyectos de DOP-B no se transfieren directamente y las cotas de recorte de panel son distintas, por lo que sustituir una unidad antigua suele exigir modificar el tablero.</p></details>
+<details><summary>¿Por qué mi HMI no comunica con el PLC aunque los parámetros coinciden?</summary><p>Las causas más frecuentes, en orden de probabilidad, son: cables D+ y D− intercambiados en el bus RS-485, ausencia de resistencias terminadoras de 120 ohmios en los extremos del bus, falta de una referencia de masa común entre los equipos, dirección de esclavo del PLC distinta de la configurada en la HMI, y comunicación no habilitada en el propio programa del PLC, ya que en muchos modelos hay que activarla escribiendo en registros especiales. Aislar el problema con un cliente Modbus desde un PC ahorra mucho tiempo.</p></details>
+<details><summary>¿Puede la HMI sustituir al PLC en aplicaciones sencillas?</summary><p>No es recomendable, aunque técnicamente las macros permitan implementar cierta lógica. La HMI no tiene entradas y salidas digitales industriales, su tiempo de ciclo no es determinista, y una pérdida de comunicación o un bloqueo de la interfaz dejaría el proceso sin control. Además, ninguna función de seguridad puede residir en una HMI. Para aplicaciones muy simples existen alternativas más apropiadas, como los relés programables o los PLC compactos de gama baja.</p></details>
+<details><summary>¿Qué tarjeta SD conviene usar para el registro de datos?</summary><p>Una tarjeta de grado industrial con memoria de tipo SLC o pSLC, de capacidad modesta, entre 4 y 16 gigabytes. Las tarjetas de consumo están optimizadas para escrituras esporádicas de archivos grandes y fallan prematuramente con el patrón de escritura continua de pequeños bloques que genera un registrador. Conviene además configurar la rotación diaria de archivos y descargar periódicamente los datos, en lugar de acumular meses de registro en la tarjeta.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Completa la instalación con los criterios de <a href="/blog/integrando-brazos-roboticos-con-plc">integración de brazos robóticos con PLC</a> y con la guía de <a href="/blog/programacion-de-plc-para-robotica">programación de PLC aplicada a robótica</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/cinematica-directa-e-inversa-en-brazos-rob%C3%B3ticos">← Anterior: Cinemática Directa e Inversa en Brazos Robóticos</a>
+  <a href="/blog/modulo-de-carga-tp4056-cargar-baterias-lipo-de-forma-segura">Siguiente: Módulo de Carga TP4056: Cargar Baterías LiPo con Seguridad →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación del fabricante y normativa de referencia en diseño de interfaces de operador. Verifica siempre las cotas y parámetros en el manual de tu modelo concreto.</p>
+<ul>
+<li><a href="https://downloadcenter.deltaww.com/" target="_blank" rel="noopener noreferrer">Delta Electronics — Centro de descargas de software y manuales</a></li>
+<li><a href="https://www.deltaww.com/en-US/products/Human-Machine-Interfaces-HMI/ALL" target="_blank" rel="noopener noreferrer">Delta Electronics — Serie de HMI DOP-100</a></li>
+<li><a href="https://www.modbus.org/specs.php" target="_blank" rel="noopener noreferrer">Modbus Organization — Especificación del protocolo Modbus</a></li>
+<li><a href="https://www.isa.org/standards-and-publications/isa-standards/isa-standards-committees/isa101" target="_blank" rel="noopener noreferrer">ISA — Norma ISA-101 sobre interfaces hombre-máquina</a></li>
+<li><a href="https://www.ti.com/lit/an/slla070d/slla070d.pdf" target="_blank" rel="noopener noreferrer">TIA/EIA-485 — Norma de la capa física RS-485</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

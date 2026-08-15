@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Mejores UPS: Sistemas de Alimentación para Impresoras 3D</title>
+<meta name="description" content="Guía para elegir un UPS para impresoras 3D: cálculo real de consumo, topologías, onda senoidal frente a escalonada, autonomía necesaria, estrategia de proteger solo la electrónica y modelos recomendados.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/mejores-ups-sistemas-de-alimentacion-para-impresoras-3d">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mejores UPS: Sistemas de Alimentación para Impresoras 3D">
+<meta property="og:description" content="Cuánto UPS necesitas realmente para una impresora 3D y por qué proteger solo la electrónica es la mejor estrategia.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/ups_impresoras_hero.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/mejores-ups-sistemas-de-alimentacion-para-impresoras-3d">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mejores UPS: Sistemas de Alimentación para Impresoras 3D">
+<meta name="twitter:description" content="UPS para impresoras 3D: consumo real, topologías, onda senoidal y la estrategia que ahorra dinero de verdad.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/ups_impresoras_hero.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Mejores UPS: Sistemas de Alimentación para Impresoras 3D",
+  "description": "Guía técnica para seleccionar un sistema de alimentación ininterrumpida destinado a proteger impresoras tridimensionales: medición del consumo real de la máquina distinguiendo la potencia de calentamiento inicial de la potencia de régimen, diferencias entre las topologías de reserva, interactiva de línea y doble conversión, importancia de la forma de onda senoidal pura frente a la escalonada en fuentes conmutadas con corrección del factor de potencia, cálculo de autonomía a partir de la capacidad de las baterías y del rendimiento del inversor, estrategia recomendada de proteger únicamente la electrónica de control en lugar de la máquina completa, configuración de la función de reanudación tras corte de energía en los firmwares habituales, criterios de mantenimiento y sustitución de las baterías de plomo y modelos disponibles en el mercado con sus especificaciones.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/mejores-ups-sistemas-de-alimentacion-para-impresoras-3d"
+  },
+  "image": "https://www.ukrabot.cl/blog/ups_impresoras_hero.svg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Impresora 3D en funcionamiento, un multímetro o medidor de consumo enchufable y nociones básicas de electricidad domiciliaria",
+  "wordCount": "3100",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Mejores UPS: Sistemas de Alimentación para Impresoras 3D",
+      "item": "https://www.ukrabot.cl/blog/mejores-ups-sistemas-de-alimentacion-para-impresoras-3d"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Necesito de verdad un UPS para mi impresora 3D?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de la duración de tus impresiones y de la estabilidad de tu red eléctrica. Para trabajos de dos o tres horas con red estable, probablemente no compense. Para impresiones de veinte horas o más, o si vives en una zona con microcortes frecuentes, un UPS de cien dólares protegiendo solo la electrónica se paga con una sola impresión salvada. Considera además que muchas máquinas modernas tienen recuperación tras corte, pero esa función deja siempre una cicatriz visible y falla si la pieza se despega mientras la cama se enfría."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar un UPS de onda senoidal modificada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No es recomendable. Las fuentes conmutadas con corrección activa del factor de potencia, que llevan prácticamente todas las impresoras modernas, esperan una onda senoidal para conformar la corriente de entrada. Con onda escalonada aparecen zumbidos, calentamiento anómalo de los condensadores y, en algunos casos, apagados por protección o daño progresivo del circuito de corrección. Lo peor es que el daño suele ser silencioso durante semanas o meses. Busca en la ficha técnica la mención explícita a onda senoidal pura; si no aparece, asume que el equipo es escalonado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánta autonomía necesito realmente?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mucha menos de la que parece si proteges solo la electrónica. Con la cama y el hotend fuera del UPS, el consumo baja a entre veinticinco y noventa vatios, y un equipo de seiscientos voltamperios entrega de dos a cinco horas, suficiente para casi cualquier corte real. Si en cambio conectas la impresora completa, el mismo equipo dará entre veinte y cuarenta minutos con PLA y menos de quince con ABS. La estrategia de proteger solo la electrónica multiplica la autonomía por cinco y divide el precio por tres."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve una estación de energía portátil en lugar de un UPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Solo si especifica funcionamiento en modo de alimentación ininterrumpida con un tiempo de transferencia inferior a diez milisegundos, y muchas no lo hacen. Buena parte de las estaciones portátiles del mercado tardan entre veinte y treinta milisegundos en conmutar, o directamente carecen de conmutación automática, lo que hace que la impresora se reinicie igualmente. Si el fabricante no publica el tiempo de transferencia, asume que no sirve. Su ventaja es la capacidad, con cientos de vatios hora frente a los cien escasos de un UPS pequeño, pero sin conmutación rápida esa capacidad es inútil para este uso."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cada cuánto hay que cambiar las baterías del UPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Entre tres y cinco años en condiciones normales, y bastante menos si el equipo trabaja caliente. La regla es que cada diez grados por encima de veinticinco reducen a la mitad la vida útil: un UPS a treinta y cinco grados durará la mitad, y a cuarenta y cinco, la cuarta parte. Haz una prueba de descarga cada tres meses cronometrando la autonomía con una carga conocida, y sustituye las baterías cuando bajen del sesenta por ciento del valor original. Son baterías estándar de plomo AGM y se compran sueltas por una fracción del precio del equipo completo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es mejor un UPS o la función de recuperación tras corte del firmware?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Son complementarios y conviene tener ambos. La recuperación por firmware es gratuita pero deja una cicatriz visible en la capa donde se detuvo, puede fallar si la cama se enfría y la pieza se despega, y en algunas implementaciones el eje Z choca contra la pieza al volver a buscar el origen. El UPS evita la interrupción en primer lugar, que siempre es preferible. La configuración óptima combina las tres capas: unidad de alimentación ininterrumpida para la electrónica, pausa automática con enfriamiento controlado al detectar el corte, y recuperación por firmware como último recurso."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="ups_impresoras_hero.svg" alt="Ilustración de una unidad de alimentación ininterrumpida conectada a una impresora 3D con un gráfico de forma de onda senoidal y un indicador de autonomía" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Impresión 3D · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Mejores UPS: Sistemas de Alimentación para Impresoras 3D</h1>
+    <p>Un UPS que aguante una impresora entera durante una hora cuesta más que la impresora. Uno que salve el trabajo cuesta la décima parte, y hace falta entender la diferencia antes de comprar.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="ups_impresora_esquema.svg" alt="Diagrama comparativo de dos estrategias de protección: UPS alimentando la impresora completa frente a UPS alimentando solo la electrónica con la cama en la red" loading="lazy">
+  <div class="caption">La estrategia que cambia la ecuación económica: proteger la electrónica y aceptar que la cama se enfríe.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#consumo">Cuánto consume realmente una impresora 3D</a></li>
+    <li><a href="#topologias">Topologías de UPS y cuál necesitas</a></li>
+    <li><a href="#onda">Onda senoidal pura: no es opcional</a></li>
+    <li><a href="#autonomia">Calcular la autonomía real</a></li>
+    <li><a href="#estrategia">La estrategia que cambia todo</a></li>
+    <li><a href="#modelos">Modelos recomendados</a></li>
+    <li><a href="#reanudacion">Reanudación tras corte en el firmware</a></li>
+    <li><a href="#mantenimiento">Mantenimiento y vida útil de las baterías</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="consumo">
+<h2>Cuánto consume realmente una impresora 3D</h2>
+<p>Todo empieza aquí, y casi todo el mundo se equivoca por el mismo motivo: mira la potencia de la fuente en lugar de medir el consumo real.</p>
+<p>Una impresora tiene <strong>dos regímenes de consumo radicalmente distintos</strong>. Durante el calentamiento inicial, la cama y el hotend tiran a plena potencia simultáneamente. Una vez en régimen, los calentadores trabajan en ciclos cortos manteniendo temperatura y el consumo medio cae a un tercio o menos.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Impresora</th><th>Pico de calentamiento</th><th>Régimen con PLA</th><th>Régimen con ABS</th><th>Solo electrónica y motores</th></tr></thead>
+<tbody>
+<tr><td>Ender 3 / V3</td><td>250 a 300 W</td><td>70 a 110 W</td><td>140 a 190 W</td><td>25 a 35 W</td></tr>
+<tr><td>Prusa MK4S</td><td>230 a 280 W</td><td>80 a 120 W</td><td>150 a 200 W</td><td>30 a 40 W</td></tr>
+<tr><td>Bambu Lab X1C</td><td>350 a 400 W</td><td>110 a 160 W</td><td>200 a 280 W</td><td>40 a 60 W</td></tr>
+<tr><td>Voron 2.4 (350 mm)</td><td>600 a 900 W</td><td>150 a 250 W</td><td>300 a 450 W</td><td>50 a 70 W</td></tr>
+<tr><td>Gran formato 500 mm</td><td>1.000 a 1.600 W</td><td>250 a 400 W</td><td>500 a 800 W</td><td>60 a 90 W</td></tr>
+<tr><td>Resina LCD (mSLA)</td><td>80 a 150 W</td><td>40 a 70 W</td><td>—</td><td>15 a 25 W</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Mide, no estimes.</strong> Un medidor de consumo enchufable cuesta menos de veinte dólares y te dará el dato exacto de tu máquina con tu perfil de impresión. Anota tres valores: pico durante el calentamiento, media durante la primera hora y media en régimen estable. Esos tres números determinan todo lo que viene después.</div>
+<h3>La columna que realmente importa</h3>
+<p>Fíjate en la última columna. <strong>La electrónica, los motores y los ventiladores consumen entre 25 y 90 W</strong>, un orden de magnitud menos que la máquina completa. Esa diferencia es la clave de toda la estrategia de protección, y volveremos sobre ella.</p>
+</section>
+<section id="topologias">
+<h2>Topologías de UPS y cuál necesitas</h2>
+<p>Los tres tipos de USP del mercado no son gamas de un mismo producto: son arquitecturas distintas con comportamientos muy diferentes ante un corte.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Topología</th><th>Tiempo de transferencia</th><th>Regula tensión</th><th>Precio relativo</th><th>Rendimiento</th></tr></thead>
+<tbody>
+<tr><td><strong>Reserva (offline / standby)</strong></td><td>5 a 12 ms</td><td>No</td><td>×1</td><td>95 a 98 %</td></tr>
+<tr><td><strong>Interactiva de línea (line-interactive)</strong></td><td>2 a 6 ms</td><td>Sí, mediante autotransformador</td><td>×1,5 a ×2</td><td>93 a 97 %</td></tr>
+<tr><td><strong>Doble conversión (online)</strong></td><td>0 ms</td><td>Sí, siempre regenerada</td><td>×3 a ×6</td><td>88 a 94 %</td></tr>
+</tbody>
+</table>
+</div>
+<h3>¿Importan los milisegundos de transferencia?</h3>
+<p>Menos de lo que parece, y esta es una de las confusiones más extendidas. La fuente conmutada de una impresora tiene condensadores en el bus primario que <strong>sostienen la salida durante 10 a 25 ms</strong> tras perder la entrada. Un UPS de reserva que transfiere en 8 ms queda dentro de ese margen con holgura.</p>
+<p>El escenario donde sí importa es distinto: cuando la red no cae del todo sino que sufre <strong>caídas de tensión repetidas</strong>. Ahí un UPS de reserva conmuta a batería una y otra vez, gastando ciclos, mientras que uno interactivo de línea corrige la tensión con su autotransformador sin tocar la batería. En zonas con red inestable, esa diferencia justifica el sobreprecio.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Situación de tu red eléctrica</th><th>Topología recomendada</th></tr></thead>
+<tbody>
+<tr><td>Estable, cortes ocasionales completos</td><td>Reserva con onda senoidal pura</td></tr>
+<tr><td>Caídas de tensión frecuentes, luces que parpadean</td><td>Interactiva de línea</td></tr>
+<tr><td>Zona rural, generador, red muy sucia</td><td>Interactiva de línea de gama alta o doble conversión</td></tr>
+<tr><td>Producción continua con valor comercial</td><td>Doble conversión</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="onda">
+<h2>Onda senoidal pura: no es opcional</h2>
+<p>Si hay que quedarse con un solo criterio de compra, es este. Un UPS económico genera una <strong>onda escalonada</strong> (a menudo llamada «senoidal modificada»): una aproximación cuadrada de tres niveles que se parece muy poco a la senoide de la red.</p>
+<h3>Por qué le molesta a una fuente conmutada</h3>
+<p>Las fuentes con <strong>corrección activa del factor de potencia</strong>, presentes en prácticamente todas las impresoras modernas y en todas las fuentes de calidad, incluyen un circuito que mide la forma de onda de entrada para conformar la corriente. Ante una onda escalonada, ese circuito recibe transiciones bruscas que no espera. Los efectos observados van de leves a destructivos:</p>
+<ul>
+<li><strong>Zumbido audible</strong> en la fuente o en el transformador.</li>
+<li><strong>Calentamiento anómalo</strong> de los condensadores de entrada, que reduce su vida útil.</li>
+<li><strong>Rizado excesivo</strong> en la salida de 24 V, que se traduce en ruido en los sensores de temperatura.</li>
+<li><strong>Apagado por protección</strong> de la propia fuente, que interpreta la entrada como fallo.</li>
+<li><strong>Fallo prematuro</strong> del circuito de corrección de factor de potencia tras semanas de uso.</li>
+</ul>
+<div class="warning">Un UPS de onda escalonada puede funcionar durante meses sin síntomas evidentes y dañar la fuente a medio plazo. Es la peor clase de incompatibilidad: la que no se manifiesta hasta que el daño ya está hecho. En la ficha técnica busca literalmente <strong>«onda senoidal pura»</strong> o <em>pure sine wave</em>; si el fabricante no lo menciona de forma explícita, asume que es escalonada.</div>
+<h3>Cómo verificarlo si ya tienes el UPS</h3>
+<ol>
+<li><strong>Escucha.</strong> Desconecta la red con la impresora encendida en reposo. Un zumbido nuevo en la fuente es mala señal.</li>
+<li><strong>Osciloscopio con sonda diferencial</strong> si tienes acceso a uno. Es la comprobación definitiva, pero exige el equipo adecuado y precauciones de seguridad con tensiones de red.</li>
+<li><strong>Prueba del ventilador de escritorio.</strong> Un ventilador con motor de inducción zumba de forma notoria con onda escalonada y funciona en silencio con senoidal pura. Es un indicio rápido, no una medición.</li>
+</ol>
+</section>
+<section id="autonomia">
+<h2>Calcular la autonomía real</h2>
+<p>Los fabricantes especifican sus equipos en <strong>voltamperios (VA)</strong>, no en vatios, y esa distinción confunde a mucha gente. La relación es el factor de potencia del UPS, normalmente entre 0,6 y 0,9.</p>
+<pre><code>Potencia real (W) = VA × factor de potencia
+
+1.000 VA × 0,6 = 600 W    (UPS económico)
+1.000 VA × 0,9 = 900 W    (UPS de calidad)</code></pre>
+<h3>La fórmula de autonomía</h3>
+<p>Un UPS típico de 1.000 VA lleva dos baterías de plomo de 12 V y 9 Ah en serie, es decir 24 V:</p>
+<pre><code>Energía almacenada = 24 V × 9 Ah = 216 Wh
+
+Energía utilizable = 216 Wh × 0,5 (profundidad de descarga segura)
+                   × 0,85 (rendimiento del inversor)
+                   ≈ 92 Wh
+
+Autonomía = 92 Wh / consumo (W)</code></pre>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Carga conectada</th><th>Consumo</th><th>Autonomía con 92 Wh útiles</th></tr></thead>
+<tbody>
+<tr><td>Impresora completa imprimiendo PLA</td><td>110 W</td><td><strong>50 minutos</strong></td></tr>
+<tr><td>Impresora completa imprimiendo ABS</td><td>190 W</td><td><strong>29 minutos</strong></td></tr>
+<tr><td>Impresora de gran formato con ABS</td><td>650 W</td><td><strong>8 minutos</strong></td></tr>
+<tr><td>Solo electrónica, motores y ventiladores</td><td>35 W</td><td><strong>2 h 38 min</strong></td></tr>
+<tr><td>Solo electrónica de gran formato</td><td>75 W</td><td><strong>1 h 13 min</strong></td></tr>
+<tr><td>Impresora de resina completa</td><td>60 W</td><td><strong>1 h 32 min</strong></td></tr>
+</tbody>
+</table>
+</div>
+<div class="note">El factor 0,5 de profundidad de descarga no es conservadurismo excesivo. Las baterías de plomo-ácido selladas AGM que montan los UPS pierden vida útil de forma acelerada con descargas profundas: a un 50 % de descarga soportan unos 400 a 600 ciclos, mientras que a un 80 % apenas llegan a 200. Descargarlas al 100 % de forma habitual las destruye en pocos meses.</div>
+<h3>Qué autonomía necesitas de verdad</h3>
+<p>La respuesta depende de qué quieras conseguir, y hay tres objetivos distintos que suelen confundirse:</p>
+<ol>
+<li><strong>Sobrevivir a microcortes</strong> de uno a treinta segundos, que son la inmensa mayoría. Basta con 5 minutos de autonomía.</li>
+<li><strong>Sobrevivir a cortes de 5 a 20 minutos</strong>, típicos de maniobras de la distribuidora. Necesitas 20 a 30 minutos.</li>
+<li><strong>Terminar la impresión pase lo que pase.</strong> Inviable económicamente salvo en piezas cortas.</li>
+</ol>
+<p>El objetivo realista para la mayoría es el segundo, y aun así hay una opción mucho mejor que veremos a continuación.</p>
+</section>
+<section id="estrategia">
+<h2>La estrategia que cambia todo</h2>
+<p>Aquí está el planteamiento que convierte un problema caro en uno barato: <strong>no protejas la impresora entera, protege solo la electrónica de control</strong>.</p>
+<p>La cama caliente y el hotend son el 80 a 90 % del consumo. Si aceptas que se enfríen durante el corte, un UPS pequeño mantiene viva la placa base, los motores y los ventiladores durante horas. Cuando vuelve la red, los calentadores recuperan temperatura y la impresión continúa.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Enfoque</th><th>UPS necesario</th><th>Precio</th><th>Autonomía</th><th>¿Sigue imprimiendo?</th></tr></thead>
+<tbody>
+<tr><td>Impresora completa, ABS</td><td>1.500 VA senoidal</td><td>350 a 550 USD</td><td>15 a 20 min</td><td>Sí, mientras dure</td></tr>
+<tr><td>Impresora completa, PLA</td><td>800 VA senoidal</td><td>180 a 280 USD</td><td>35 a 50 min</td><td>Sí, mientras dure</td></tr>
+<tr><td><strong>Solo electrónica</strong></td><td><strong>400 a 600 VA senoidal</strong></td><td><strong>90 a 160 USD</strong></td><td><strong>2 a 5 h</strong></td><td>Pausa y reanuda</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Cómo se implementa</h3>
+<p>En una impresora con cama de 220 V y relé de estado sólido, la separación es directa: la fuente de 24 V que alimenta la electrónica va al UPS, y la cama va a la red sin protección. En una máquina con todo a 24 V desde una única fuente, hay dos caminos:</p>
+<ul>
+<li><strong>Fuente auxiliar dedicada</strong> para la placa base, alimentada desde el UPS, con la fuente principal en la red. Es la solución limpia y la que usan los talleres.</li>
+<li><strong>Reducir la potencia por firmware</strong> al detectar el corte, limitando la cama a un porcentaje mínimo. Funciona, pero requiere señal de estado del UPS y configuración en el firmware.</li>
+</ul>
+<h3>Detectar el corte y reaccionar</h3>
+<p>La mayoría de los UPS con puerto USB exponen su estado mediante el protocolo estándar de dispositivos de alimentación. En un host con Klipper o con OctoPrint sobre Linux, el demonio <code>apcupsd</code> o <code>nut</code> permite lanzar un script al detectar el paso a batería:</p>
+<pre><code># /etc/apcupsd/onbattery  (ejecutado al pasar a batería)
+#!/bin/bash
+curl -s -X POST http://localhost:7125/printer/gcode/script \
+     -H "Content-Type: application/json" \
+     -d '{"script":"M117 CORTE - pausando\nPAUSE\nM140 S0\nM104 S150"}'</code></pre>
+<p>Ese script pausa la impresión, apaga la cama y baja el hotend a temperatura de espera, reduciendo el consumo a unos pocos vatios y multiplicando la autonomía. Al volver la red, otro script reanuda.</p>
+<div class="warning">Prueba la secuencia completa <strong>antes</strong> de confiar en ella. Lanza una impresión de prueba, desenchufa el UPS de la pared y observa qué ocurre: si la pausa funciona, si la reanudación recupera la posición y si la pieza sigue adherida. Un sistema de protección no probado es una falsa sensación de seguridad.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="modelos">
+<h2>Modelos recomendados</h2>
+<p>Precios orientativos en dólares, referidos al mercado chileno de 2026 y sujetos a variación por distribuidor.</p>
+<h3>Para proteger solo la electrónica (la opción recomendada)</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Modelo</th><th>Potencia</th><th>Onda</th><th>Topología</th><th>Precio</th></tr></thead>
+<tbody>
+<tr><td>APC Back-UPS Pro BR650MI</td><td>650 VA / 390 W</td><td>Senoidal pura</td><td>Interactiva</td><td>110 a 150 USD</td></tr>
+<tr><td>CyberPower CP600EPFCLCD</td><td>600 VA / 360 W</td><td>Senoidal pura</td><td>Interactiva</td><td>100 a 140 USD</td></tr>
+<tr><td>Eaton 5E Gen2 700</td><td>700 VA / 360 W</td><td>Senoidal pura</td><td>Interactiva</td><td>95 a 135 USD</td></tr>
+<tr><td>Tripp Lite SMART500RT1U</td><td>500 VA / 300 W</td><td>Senoidal pura</td><td>Interactiva</td><td>150 a 200 USD</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Para impresora completa</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Modelo</th><th>Potencia</th><th>Onda</th><th>Batería ampliable</th><th>Precio</th></tr></thead>
+<tbody>
+<tr><td>APC Back-UPS Pro BR1500MI</td><td>1.500 VA / 865 W</td><td>Senoidal pura</td><td>No</td><td>320 a 450 USD</td></tr>
+<tr><td>CyberPower PR1500ELCD</td><td>1.500 VA / 1.500 W</td><td>Senoidal pura</td><td>Sí</td><td>500 a 700 USD</td></tr>
+<tr><td>Eaton 9SX 1000i</td><td>1.000 VA / 900 W</td><td>Doble conversión</td><td>Sí</td><td>600 a 850 USD</td></tr>
+<tr><td>Vertiv Liebert GXT5 1000</td><td>1.000 VA / 1.000 W</td><td>Doble conversión</td><td>Sí</td><td>700 a 1.000 USD</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Lo que hay que evitar</h3>
+<ul>
+<li><strong>UPS genéricos sin marca</strong> que no especifican la forma de onda. Casi siempre son escalonados.</li>
+<li><strong>Equipos anunciados solo en VA</strong> sin indicar vatios ni factor de potencia: opacidad deliberada.</li>
+<li><strong>Estaciones de energía portátiles</strong> como sustituto: muchas tienen tiempo de transferencia superior a 20 ms o directamente no hacen conmutación automática.</li>
+<li><strong>Inversores de coche con batería de automóvil.</strong> Sin conmutación automática, sin cargador adecuado y con onda escalonada en la mayoría de los casos.</li>
+</ul>
+</section>
+<section id="reanudacion">
+<h2>Reanudación tras corte en el firmware</h2>
+<p>Un UPS y la función de reanudación del firmware se complementan: el primero da tiempo, la segunda salva el trabajo cuando el tiempo se acaba. Conviene tener las dos.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Firmware</th><th>Función</th><th>Fiabilidad</th><th>Requisitos</th></tr></thead>
+<tbody>
+<tr><td>Marlin 2.x</td><td><code>POWER_LOSS_RECOVERY</code></td><td>Media a buena</td><td>Escribe estado en la tarjeta SD; conviene un detector de corte</td></tr>
+<tr><td>Klipper</td><td>No nativa; macros o complementos</td><td>Variable</td><td>Requiere configuración manual cuidadosa</td></tr>
+<tr><td>Prusa Firmware</td><td>Recuperación con detección por hardware</td><td>Muy buena</td><td>Solo en máquinas Prusa compatibles</td></tr>
+<tr><td>Bambu Lab</td><td>Recuperación integrada</td><td>Buena</td><td>Automática</td></tr>
+<tr><td>RepRapFirmware</td><td><code>M916</code> tras reinicio</td><td>Buena</td><td>Requiere respaldo de la configuración</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Los límites de la reanudación</h3>
+<p>Ninguna implementación es perfecta y conviene conocer sus fallos típicos antes de confiar en ella:</p>
+<ul>
+<li><strong>Cicatriz en la capa de reanudación.</strong> Siempre queda una marca visible donde se detuvo la impresión, porque la capa se enfría y la nueva no funde igual.</li>
+<li><strong>Pérdida de adherencia.</strong> Si la cama se enfría del todo, la pieza puede despegarse antes de que vuelva la energía. Es el fallo más común en ABS.</li>
+<li><strong>Pérdida de referencia en Z.</strong> Algunas implementaciones vuelven a hacer <em>homing</em> y el eje Z choca contra la pieza si no está bien configurado.</li>
+<li><strong>Escrituras en la tarjeta SD.</strong> Marlin guarda el estado periódicamente, lo que desgasta la tarjeta. Con intervalos muy cortos, la tarjeta falla en meses.</li>
+</ul>
+<div class="note">La combinación óptima para impresiones largas es: <strong>UPS que alimente la electrónica durante horas + pausa automática al detectar el corte + reanudación por firmware como red de seguridad final</strong>. Con las tres capas, la probabilidad de perder una impresión de tres días por un problema eléctrico se vuelve despreciable.</div>
+</section>
+<section id="mantenimiento">
+<h2>Mantenimiento y vida útil de las baterías</h2>
+<p>Un UPS con baterías agotadas es un enchufe caro. Y las baterías se agotan siempre, con o sin cortes.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Factor</th><th>Efecto sobre la vida útil</th></tr></thead>
+<tbody>
+<tr><td>Temperatura ambiente de 25 °C</td><td>Referencia: 3 a 5 años</td></tr>
+<tr><td>Temperatura ambiente de 35 °C</td><td>La vida se reduce a la mitad</td></tr>
+<tr><td>Temperatura ambiente de 45 °C</td><td>La vida se reduce a la cuarta parte</td></tr>
+<tr><td>Descargas al 50 %</td><td>400 a 600 ciclos</td></tr>
+<tr><td>Descargas al 80 %</td><td>150 a 250 ciclos</td></tr>
+<tr><td>Almacenado descargado</td><td>Sulfatación irreversible en semanas</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning">La regla de la temperatura es implacable: <strong>cada 10 °C por encima de 25 °C reduce a la mitad la vida de una batería de plomo</strong>. No coloques el UPS dentro del cerramiento de la impresora, ni pegado a la fuente de alimentación, ni en un rincón sin ventilación. Un UPS a 40 °C durará año y medio en lugar de cuatro años.</div>
+<h3>Rutina mínima</h3>
+<ol>
+<li><strong>Prueba de descarga cada tres meses:</strong> desconecta la red con una carga conocida y cronometra. Si la autonomía cayó por debajo del 60 % de la original, cambia las baterías.</li>
+<li><strong>Revisa el registro de eventos</strong> si el modelo lo ofrece: un aumento de transferencias a batería indica que la red se está degradando.</li>
+<li><strong>Limpia los ventiladores y las rejillas</strong> cada seis meses. El polvo eleva la temperatura interna.</li>
+<li><strong>Sustituye las baterías a los tres años</strong> aunque parezcan funcionar. Son baterías estándar de plomo AGM y se consiguen sueltas por una fracción del precio del equipo.</li>
+</ol>
+<h3>¿Convertir a litio?</h3>
+<p>Sustituir las baterías de plomo por LiFePO4 es tentador: más ciclos, menos peso y mayor profundidad de descarga. Pero el cargador del UPS está diseñado para el perfil de carga del plomo, con tensión de flotación en torno a 27,2 V para un sistema de 24 V. Un pack LiFePO4 de 8 celdas quiere 27,2 a 28,0 V, así que el ajuste es posible, pero <strong>exige un BMS robusto que corte ante sobretensión y una verificación cuidadosa de la tensión de flotación real</strong> del cargador. No es una modificación para hacer a ciegas, y anula cualquier garantía.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La conclusión práctica cabe en una frase: <strong>compra un UPS pequeño de onda senoidal pura y conecta solo la electrónica</strong>. Por 100 a 160 dólares obtienes entre dos y cinco horas de autonomía para la placa base, los motores y los ventiladores, que es exactamente lo que hace falta para que la impresión sobreviva a un corte.</p>
+<p>Intentar mantener la cama caliente durante un apagón es una batalla perdida por termodinámica y por economía: multiplica por cinco el coste del equipo para conseguir una fracción de la autonomía. Acepta que la cama se enfríe, configura una pausa automática al detectar el corte y deja que la reanudación del firmware actúe como última red de seguridad.</p>
+<p>Y no olvides las dos reglas que más equipos arruinan: <strong>onda senoidal pura, siempre</strong>, porque las fuentes con corrección de factor de potencia no toleran la onda escalonada; y <strong>UPS ventilado y fuera del cerramiento</strong>, porque cada 10 °C de más le quitan la mitad de vida a las baterías.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Necesito de verdad un UPS para mi impresora 3D?</summary><p>Depende de la duración de tus impresiones y de la estabilidad de tu red eléctrica. Para trabajos de dos o tres horas con red estable, probablemente no compense. Para impresiones de veinte horas o más, o si vives en una zona con microcortes frecuentes, un UPS de cien dólares protegiendo solo la electrónica se paga con una sola impresión salvada. Considera además que muchas máquinas modernas tienen recuperación tras corte, pero esa función deja siempre una cicatriz visible y falla si la pieza se despega mientras la cama se enfría.</p></details>
+<details><summary>¿Puedo usar un UPS de onda senoidal modificada?</summary><p>No es recomendable. Las fuentes conmutadas con corrección activa del factor de potencia, que llevan prácticamente todas las impresoras modernas, esperan una onda senoidal para conformar la corriente de entrada. Con onda escalonada aparecen zumbidos, calentamiento anómalo de los condensadores y, en algunos casos, apagados por protección o daño progresivo del circuito de corrección. Lo peor es que el daño suele ser silencioso durante semanas o meses. Busca en la ficha técnica la mención explícita a onda senoidal pura; si no aparece, asume que el equipo es escalonado.</p></details>
+<details><summary>¿Cuánta autonomía necesito realmente?</summary><p>Mucha menos de la que parece si proteges solo la electrónica. Con la cama y el hotend fuera del UPS, el consumo baja a entre veinticinco y noventa vatios, y un equipo de seiscientos voltamperios entrega de dos a cinco horas, suficiente para casi cualquier corte real. Si en cambio conectas la impresora completa, el mismo equipo dará entre veinte y cuarenta minutos con PLA y menos de quince con ABS. La estrategia de proteger solo la electrónica multiplica la autonomía por cinco y divide el precio por tres.</p></details>
+<details><summary>¿Sirve una estación de energía portátil en lugar de un UPS?</summary><p>Solo si especifica funcionamiento en modo de alimentación ininterrumpida con un tiempo de transferencia inferior a diez milisegundos, y muchas no lo hacen. Buena parte de las estaciones portátiles del mercado tardan entre veinte y treinta milisegundos en conmutar, o directamente carecen de conmutación automática, lo que hace que la impresora se reinicie igualmente. Si el fabricante no publica el tiempo de transferencia, asume que no sirve. Su ventaja es la capacidad, con cientos de vatios hora frente a los cien escasos de un UPS pequeño, pero sin conmutación rápida esa capacidad es inútil para este uso.</p></details>
+<details><summary>¿Cada cuánto hay que cambiar las baterías del UPS?</summary><p>Entre tres y cinco años en condiciones normales, y bastante menos si el equipo trabaja caliente. La regla es que cada diez grados por encima de veinticinco reducen a la mitad la vida útil: un UPS a treinta y cinco grados durará la mitad, y a cuarenta y cinco, la cuarta parte. Haz una prueba de descarga cada tres meses cronometrando la autonomía con una carga conocida, y sustituye las baterías cuando bajen del sesenta por ciento del valor original. Son baterías estándar de plomo AGM y se compran sueltas por una fracción del precio del equipo completo.</p></details>
+<details><summary>¿Es mejor un UPS o la función de recuperación tras corte del firmware?</summary><p>Son complementarios y conviene tener ambos. La recuperación por firmware es gratuita pero deja una cicatriz visible en la capa donde se detuvo, puede fallar si la cama se enfría y la pieza se despega, y en algunas implementaciones el eje Z choca contra la pieza al volver a buscar el origen. El UPS evita la interrupción en primer lugar, que siempre es preferible. La configuración óptima combina las tres capas: unidad de alimentación ininterrumpida para la electrónica, pausa automática con enfriamiento controlado al detectar el corte, y recuperación por firmware como último recurso.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si imprimes piezas de gran tamaño, revisa qué exige realmente el formato grande en la guía de <a href="/blog/las-mejores-impresoras-3d-de-gran-formato-500mm-para-makers">impresoras 3D de 500 mm</a>, y aprende a detectar puntos calientes en la electrónica con <a href="/blog/camaras-termicas-para-detectar-cortocircuitos-en-pcb">cámaras térmicas</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/las-mejores-impresoras-3d-de-gran-formato-500mm-para-makers">← Anterior: Las Mejores Impresoras 3D de Gran Formato (500 mm)</a>
+  <a href="/blog/como-calibrar-la-potencia-de-un-laser-diodo-para-diferentes-materiales">Siguiente: Cómo Calibrar la Potencia de un Láser Diodo →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación técnica de fabricantes de sistemas de alimentación y de firmware de impresión. Precios orientativos sujetos a variación.</p>
+<ul>
+<li><a href="https://www.apc.com/us/en/faqs/FA158852/" target="_blank" rel="noopener noreferrer">APC by Schneider Electric — Guía técnica de topologías de UPS</a></li>
+<li><a href="https://www.eaton.com/us/en-us/products/backup-power-ups-surge-it-power-distribution.html" target="_blank" rel="noopener noreferrer">Eaton — Documentación técnica sobre topologías y formas de onda</a></li>
+<li><a href="https://marlinfw.org/docs/configuration/configuration.html" target="_blank" rel="noopener noreferrer">Marlin Firmware — Configuración de Power Loss Recovery</a></li>
+<li><a href="https://www.klipper3d.org/Config_Reference.html" target="_blank" rel="noopener noreferrer">Klipper — Documentación oficial de configuración</a></li>
+<li><a href="https://networkupstools.org/documentation.html" target="_blank" rel="noopener noreferrer">Network UPS Tools (NUT) — Documentación del proyecto</a></li>
+<li><a href="https://batteryuniversity.com/article/bu-201-how-does-the-lead-acid-battery-work" target="_blank" rel="noopener noreferrer">Battery University — BU-201: How does the Lead Acid Battery Work?</a></li>
+<li><a href="https://standards.ieee.org/ieee/1184/4144/" target="_blank" rel="noopener noreferrer">IEEE Std 1184 — Guía para baterías en sistemas de alimentación ininterrumpida</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

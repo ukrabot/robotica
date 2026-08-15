@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-label="Comparación de arquitecturas: Mach3 sobre Windows con driver de kernel y puerto paralelo, frente a LinuxCNC sobre kernel de tiempo real, y la variante con placa de movimiento externa">
+  <rect width="1200" height="820" fill="#f6f4ee"/>
+  <text x="600" y="52" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="34">¿Quién genera los pulsos de paso?</text>
+  <text x="600" y="84" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="18">Tres arquitecturas de control y su garantía temporal</text>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <!-- Columna Mach3 -->
+    <g transform="translate(50 120)">
+      <rect x="0" y="0" width="340" height="470" rx="16" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+      <text x="170" y="40" text-anchor="middle" fill="#1e1b15" font-size="24" font-weight="700">Mach3 · Windows</text>
+
+      <rect x="30" y="64" width="280" height="60" rx="10" fill="#faf7f0" stroke="#c9c4b8" stroke-width="2"/>
+      <text x="170" y="92" text-anchor="middle" fill="#1e1b15" font-size="17">Interfaz y planificador</text>
+      <text x="170" y="112" text-anchor="middle" fill="#8b8577" font-size="14">prioridad normal</text>
+
+      <rect x="30" y="146" width="280" height="70" rx="10" fill="#23201b"/>
+      <text x="170" y="176" text-anchor="middle" fill="#e4c07a" font-size="17" font-weight="600">Driver de kernel</text>
+      <text x="170" y="200" text-anchor="middle" fill="#c9b48a" font-size="14">se apropia del temporizador</text>
+
+      <rect x="30" y="238" width="280" height="56" rx="10" fill="#faf7f0" stroke="#c9c4b8" stroke-width="2"/>
+      <text x="170" y="272" text-anchor="middle" fill="#1e1b15" font-size="17">Puerto paralelo (LPT)</text>
+
+      <path d="M170 300 L170 336" stroke="#3a3a3a" stroke-width="4" marker-end="url(#ar)"/>
+      <rect x="30" y="342" width="280" height="56" rx="10" fill="#ffffff" stroke="#2f6fb0" stroke-width="3"/>
+      <text x="170" y="376" text-anchor="middle" fill="#2f6fb0" font-size="17" font-weight="600">Drivers de motor</text>
+
+      <rect x="30" y="416" width="280" height="38" rx="8" fill="#fdf1ef" stroke="#b2281e" stroke-width="2"/>
+      <text x="170" y="441" text-anchor="middle" fill="#7a1c14" font-size="15" font-weight="600">Sin garantía de determinismo</text>
+    </g>
+
+    <!-- Columna LinuxCNC -->
+    <g transform="translate(430 120)">
+      <rect x="0" y="0" width="340" height="470" rx="16" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+      <text x="170" y="40" text-anchor="middle" fill="#1e1b15" font-size="24" font-weight="700">LinuxCNC · PREEMPT_RT</text>
+
+      <rect x="30" y="64" width="280" height="60" rx="10" fill="#faf7f0" stroke="#c9c4b8" stroke-width="2"/>
+      <text x="170" y="92" text-anchor="middle" fill="#1e1b15" font-size="17">Interfaz AXIS / GMOCCAPY</text>
+      <text x="170" y="112" text-anchor="middle" fill="#8b8577" font-size="14">espacio de usuario</text>
+
+      <rect x="30" y="146" width="280" height="70" rx="10" fill="#23201b"/>
+      <text x="170" y="176" text-anchor="middle" fill="#e4c07a" font-size="17" font-weight="600">Hilo base en tiempo real</text>
+      <text x="170" y="200" text-anchor="middle" fill="#c9b48a" font-size="14">prioridad absoluta · HAL</text>
+
+      <rect x="30" y="238" width="280" height="56" rx="10" fill="#faf7f0" stroke="#c9c4b8" stroke-width="2"/>
+      <text x="170" y="272" text-anchor="middle" fill="#1e1b15" font-size="17">Puerto paralelo o Mesa</text>
+
+      <path d="M170 300 L170 336" stroke="#3a3a3a" stroke-width="4" marker-end="url(#ar)"/>
+      <rect x="30" y="342" width="280" height="56" rx="10" fill="#ffffff" stroke="#2f6fb0" stroke-width="3"/>
+      <text x="170" y="376" text-anchor="middle" fill="#2f6fb0" font-size="17" font-weight="600">Drivers de motor</text>
+
+      <rect x="30" y="416" width="280" height="38" rx="8" fill="#f0f6ef" stroke="#3f7a2e" stroke-width="2"/>
+      <text x="170" y="441" text-anchor="middle" fill="#2f5c22" font-size="15" font-weight="600">Jitter medible y acotado</text>
+    </g>
+
+    <!-- Columna placa externa -->
+    <g transform="translate(810 120)">
+      <rect x="0" y="0" width="340" height="470" rx="16" fill="#ffffff" stroke="#a97b23" stroke-width="3"/>
+      <text x="170" y="40" text-anchor="middle" fill="#a97b23" font-size="24" font-weight="700">Placa de movimiento</text>
+
+      <rect x="30" y="64" width="280" height="60" rx="10" fill="#faf7f0" stroke="#c9c4b8" stroke-width="2"/>
+      <text x="170" y="92" text-anchor="middle" fill="#1e1b15" font-size="17">PC como consola</text>
+      <text x="170" y="112" text-anchor="middle" fill="#8b8577" font-size="14">el SO deja de importar</text>
+
+      <rect x="30" y="146" width="280" height="70" rx="10" fill="#faf7f0" stroke="#c9c4b8" stroke-width="2"/>
+      <text x="170" y="182" text-anchor="middle" fill="#1e1b15" font-size="17">USB / Ethernet · búfer</text>
+
+      <rect x="30" y="238" width="280" height="56" rx="10" fill="#23201b"/>
+      <text x="170" y="264" text-anchor="middle" fill="#e4c07a" font-size="17" font-weight="600">FPGA o MCU dedicado</text>
+      <text x="170" y="284" text-anchor="middle" fill="#c9b48a" font-size="14">reloj de hardware propio</text>
+
+      <path d="M170 300 L170 336" stroke="#3a3a3a" stroke-width="4" marker-end="url(#ar)"/>
+      <rect x="30" y="342" width="280" height="56" rx="10" fill="#ffffff" stroke="#2f6fb0" stroke-width="3"/>
+      <text x="170" y="376" text-anchor="middle" fill="#2f6fb0" font-size="17" font-weight="600">Drivers de motor</text>
+
+      <rect x="30" y="416" width="280" height="38" rx="8" fill="#f0f6ef" stroke="#3f7a2e" stroke-width="2"/>
+      <text x="170" y="441" text-anchor="middle" fill="#2f5c22" font-size="15" font-weight="600">Determinismo por hardware</text>
+    </g>
+
+    <!-- Pie -->
+    <rect x="50" y="622" width="1100" height="140" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <text x="600" y="658" text-anchor="middle" fill="#1e1b15" font-size="21" font-weight="600">Frecuencia de paso máxima segura</text>
+    <text x="600" y="692" text-anchor="middle" fill="#57534a" font-size="18">periodo base ≥ 2 × jitter máximo · f_max ≈ 1 / (2 × periodo base)</text>
+    <text x="600" y="722" text-anchor="middle" fill="#57534a" font-size="18">Jitter 20 µs → 10 kHz → 3.000 mm/min con 200 pasos/mm</text>
+    <text x="600" y="750" text-anchor="middle" fill="#a97b23" font-size="17" font-weight="600">Mide siempre con latency-test durante 30 minutos y el equipo bajo carga</text>
+  </g>
+
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3a3a3a"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,1 +1,764 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Maximiza tus PLC Antiguos con Máquinas Virtuales</title>
+<meta name="description" content="Cómo mantener operativos PLC antiguos usando máquinas virtuales: virtualizar Windows XP y DOS, pasar puertos serie y USB, adaptadores FTDI, licencias, respaldo de programas y aislamiento seguro de la red.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/maximiza-el-potencial-de-tus-plcs-antiguos-con-maquinas-virtuales">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maximiza tus PLC Antiguos con Máquinas Virtuales">
+<meta property="og:description" content="Virtualiza el software de programación heredado, resuelve el puerto serie y respalda los programas antes de que sea tarde.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/plc_antiguos_vm_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/maximiza-el-potencial-de-tus-plcs-antiguos-con-maquinas-virtuales">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Maximiza tus PLC Antiguos con Máquinas Virtuales">
+<meta name="twitter:description" content="PLC antiguos con software que solo corre en Windows XP: la guía práctica para virtualizarlo y mantenerlo vivo.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/plc_antiguos_vm_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Maximiza tus PLC Antiguos con Máquinas Virtuales",
+  "description": "Guía técnica sobre cómo prolongar la vida útil de autómatas programables antiguos mediante virtualización del entorno de programación: diagnóstico de qué componente del sistema es realmente obsoleto, elección entre VirtualBox, VMware Workstation, Hyper-V y QEMU, instalación de sistemas operativos heredados como Windows XP, Windows 98 y MS-DOS, gestión de licencias y aspectos legales, paso de puertos serie físicos y adaptadores USB a serie con chipset FTDI a la máquina invitada, configuración de parámetros de comunicación y solución de problemas de temporización, tarjetas propietarias ISA y PCI que no se pueden virtualizar, estrategia de respaldo de programas y de la propia máquina virtual, aislamiento de red y seguridad de sistemas sin soporte, y criterios objetivos para decidir cuándo virtualizar y cuándo migrar el autómata.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/maximiza-el-potencial-de-tus-plcs-antiguos-con-maquinas-virtuales"
+  },
+  "image": "https://www.ukrabot.cl/blog/plc_antiguos_vm_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "PC anfitrión con virtualización por hardware, VirtualBox o VMware Workstation, imagen de instalación del sistema operativo heredado, adaptador serie USB con chipset FTDI, licencias originales del software de programación",
+  "wordCount": "3100",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Maximiza tus PLC Antiguos con Máquinas Virtuales",
+      "item": "https://www.ukrabot.cl/blog/maximiza-el-potencial-de-tus-plcs-antiguos-con-maquinas-virtuales"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Puedo virtualizar el PLC en sí, sin el hardware físico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No en el sentido general. Algunos fabricantes ofrecen simuladores de sus propios autómatas para pruebas de lógica, pero solo ejecutan el programa: no tienen entradas ni salidas reales, ni cumplen los tiempos de ciclo del equipo físico. Sirven para depurar la lógica antes de bajarla al PLC, no para sustituirlo en producción. Lo que se virtualiza en esta guía es el entorno de programación, no el autómata."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi adaptador USB a serie no funciona con el software antiguo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Las causas más frecuentes, en orden: el número de COM asignado está fuera del rango que acepta el software (fuérzalo a COM1-COM4 desde el Administrador de dispositivos), el chipset es un clon poco fiable (usa un FTDI genuino), el adaptador se pasó a la máquina virtual como puerto COM del anfitrión en lugar de como dispositivo USB completo, o los parámetros de comunicación no coinciden con los del PLC. Prueba también puenteando RX y TX para confirmar que el adaptador y el cable están sanos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es legal usar Windows XP en una máquina virtual?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, siempre que poseas una licencia válida para esa instalación. Que Microsoft haya terminado el soporte no invalida las licencias existentes. Lo que no es legal es descargar imágenes o claves de sitios no autorizados. Conserva la documentación de la licencia original del equipo que estás reemplazando, y ten presente que un sistema sin parches debe operar aislado de la red por motivos de seguridad, no legales."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué hago si el PLC usa una tarjeta ISA propietaria?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La virtualización no resuelve este caso: no existe forma de pasar una tarjeta ISA física a una máquina virtual moderna. Las opciones reales son conservar un PC físico de época dedicado exclusivamente a esa tarea y tratarlo como repuesto crítico, buscar un convertidor de protocolo que exponga la misma comunicación por serie o Ethernet, usar un emulador de PC completo como 86Box si existe una versión de la tarjeta emulada, o planificar la migración del autómata."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto tiempo más puedo mantener un PLC antiguo en producción?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mientras haya repuestos disponibles, el programa esté respaldado y documentado, exista personal capaz de intervenirlo y no haya requisitos nuevos que el equipo no pueda cumplir. Muchas instalaciones industriales operan autómatas de treinta años sin incidentes. El riesgo no está en la edad del equipo sino en la dependencia de un conocimiento o de un repuesto único: si el programa está perdido o nadie entiende la lógica, el equipo es frágil aunque sea nuevo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿VirtualBox o VMware para este tipo de trabajo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "VirtualBox es gratuito, tiene muy buen soporte de sistemas antiguos y una configuración de puerto serie muy flexible: es la primera opción razonable. VMware Workstation Pro, gratuito hoy para uso personal, ofrece un paso de dispositivos USB algo más robusto, lo que puede marcar la diferencia con adaptadores problemáticos. Evita Hyper-V: no permite pasar puertos serie físicos y, si lo activas, degrada el rendimiento de los otros hipervisores en el mismo equipo."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="plc_antiguos_vm_hero.jpg" alt="Armario eléctrico industrial con un PLC antiguo conectado a un portátil que ejecuta una máquina virtual con software de programación heredado" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización industrial · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>PLC Antiguos y Máquinas Virtuales: Guía de Supervivencia</h1>
+    <p>El PLC funciona perfecto. Lo que murió fue el PC que lo programaba, el puerto serie y el sistema operativo. Eso sí tiene solución.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="plc_virtualizacion_esquema.svg" alt="Diagrama de la cadena de conexión desde la máquina virtual con software heredado hasta el PLC, pasando por el puerto COM virtual, el adaptador USB a serie y el cable de programación" loading="lazy">
+  <div class="caption">Cada eslabón de esta cadena puede romper la comunicación. Conviene entenderlos todos antes de culpar al PLC.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#diagnostico">Qué está realmente obsoleto en tu instalación</a></li>
+    <li><a href="#que-virtualizar">Qué se virtualiza y qué no</a></li>
+    <li><a href="#hipervisor">Elegir el hipervisor adecuado</a></li>
+    <li><a href="#instalacion">Instalar el sistema heredado paso a paso</a></li>
+    <li><a href="#licencias">Licencias: la parte que no se puede improvisar</a></li>
+    <li><a href="#serie">El puerto serie: el punto más delicado</a></li>
+    <li><a href="#respaldo">Respaldar los programas antes de que sea tarde</a></li>
+    <li><a href="#seguridad-red">Aislamiento y seguridad del entorno virtualizado</a></li>
+    <li><a href="#cuando-migrar">Cuándo dejar de parchear y migrar</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="diagnostico">
+<h2>Qué está realmente obsoleto en tu instalación</h2>
+<p>Antes de gastar un peso, conviene separar tres cosas que se suelen confundir bajo la etiqueta "el PLC es viejo":</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Componente</th><th>Vida útil típica</th><th>Estado habitual a los 25 años</th><th>¿Virtualizable?</th></tr></thead>
+<tbody>
+<tr><td>CPU del PLC</td><td>20 a 40 años</td><td>Funcionando sin problemas</td><td>No hace falta</td></tr>
+<tr><td>Módulos de E/S</td><td>20 a 30 años</td><td>Funcionando; fallos puntuales de canal</td><td>No hace falta</td></tr>
+<tr><td>Batería de memoria</td><td>3 a 5 años</td><td><strong>Agotada o a punto</strong></td><td>No: hay que reemplazarla</td></tr>
+<tr><td>PC de programación</td><td>5 a 8 años</td><td>Muerto o irreparable</td><td>Sí</td></tr>
+<tr><td>Sistema operativo</td><td>10 a 15 años de soporte</td><td>Sin soporte desde hace años</td><td>Sí</td></tr>
+<tr><td>Software de programación</td><td>Ligado al SO</td><td>No instala en sistemas modernos</td><td>Sí</td></tr>
+<tr><td>Puerto serie / paralelo</td><td>Obsoleto en hardware nuevo</td><td>Inexistente en PC actuales</td><td>Parcialmente, con adaptador</td></tr>
+<tr><td>Tarjeta propietaria ISA/PCI</td><td>Obsoleta</td><td>Sin repuesto</td><td><strong>No</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>La conclusión es casi siempre la misma: <strong>el autómata está bien; lo que se murió es todo lo que había alrededor para hablarle</strong>. Los PLC de gama industrial se diseñaron para décadas de servicio continuo y suelen cumplirlo. La informática de escritorio que los acompañaba no.</p>
+<div class="warning"><strong>Antes de cualquier otra cosa, revisa la batería.</strong> Muchos PLC antiguos guardan el programa en RAM respaldada por una pila de litio. Si esa pila se agota y el equipo pierde alimentación, <strong>el programa desaparece para siempre</strong>. Si no tienes una copia del programa, cambiar la batería con el equipo energizado y luego hacer el respaldo es la primera tarea, antes de virtualizar nada.</div>
+</section>
+<section id="que-virtualizar">
+<h2>Qué se virtualiza y qué no</h2>
+<p>Un error de concepto frecuente: no vas a virtualizar el PLC. El autómata sigue siendo hardware físico ejecutando su programa en la planta. Lo que virtualizas es el <strong>entorno de programación</strong>: el sistema operativo antiguo y el software del fabricante que necesita ese sistema para funcionar.</p>
+<h3>Casos que la virtualización resuelve bien</h3>
+<ul>
+<li>Software que exige Windows XP, 2000, 98 o MS-DOS y no instala en Windows 10 u 11.</li>
+<li>Programas que dependen de bibliotecas de 16 bits, eliminadas en Windows de 64 bits.</li>
+<li>Aplicaciones que fallan por comprobaciones de versión del sistema operativo.</li>
+<li>Entornos que necesitan estar congelados: una máquina virtual se puede clonar y restaurar a un estado conocido en minutos.</li>
+<li>Consolidar varios entornos de distintos fabricantes en un solo portátil de servicio.</li>
+</ul>
+<h3>Casos que la virtualización NO resuelve</h3>
+<ul>
+<li><strong>Tarjetas de interfaz propietarias ISA o PCI.</strong> No hay forma de pasar una tarjeta ISA a una máquina virtual moderna. Aquí necesitas conservar un PC físico de época o buscar un convertidor de protocolo.</li>
+<li><strong>Llaves de protección (dongles) en puerto paralelo.</strong> Las de USB suelen pasarse sin problema; las de paralelo, casi nunca.</li>
+<li><strong>Software con temporización crítica a nivel de microsegundos</strong> sobre el puerto. La capa de virtualización añade latencia variable.</li>
+<li><strong>Baterías agotadas, condensadores secos o módulos de E/S quemados.</strong> Son problemas físicos y requieren solución física.</li>
+</ul>
+</section>
+<section id="hipervisor">
+<h2>Elegir el hipervisor adecuado</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Hipervisor</th><th>Coste</th><th>Paso de puerto serie</th><th>Paso de USB</th><th>Soporte de SO antiguos</th><th>Recomendación</th></tr></thead>
+<tbody>
+<tr><td>VirtualBox</td><td>Gratuito (GPL)</td><td>Sí, muy configurable</td><td>Sí (con extensiones)</td><td>Muy bueno</td><td><strong>La mejor primera opción</strong></td></tr>
+<tr><td>VMware Workstation Pro</td><td>Gratuito para uso personal</td><td>Sí, muy robusto</td><td>Excelente</td><td>Excelente</td><td>Mejor estabilidad USB</td></tr>
+<tr><td>Hyper-V</td><td>Incluido en Windows Pro</td><td><strong>No</strong></td><td>Limitado</td><td>Regular</td><td>Descartar para este uso</td></tr>
+<tr><td>QEMU / KVM</td><td>Gratuito</td><td>Sí</td><td>Sí</td><td>Bueno</td><td>Para anfitriones Linux</td></tr>
+<tr><td>PCem / 86Box</td><td>Gratuito</td><td>Sí</td><td>Limitado</td><td>Emulación completa de PC de época</td><td>Para DOS y tarjetas ISA emuladas</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Hyper-V queda descartado</strong> por un motivo decisivo: no ofrece paso de puertos serie físicos a la máquina invitada, que es justamente lo que necesitas. Peor aún, si activas Hyper-V en Windows, este se apodera del hardware de virtualización y degrada el rendimiento de VirtualBox y VMware. Desactívalo si vas a usar otro hipervisor.</p>
+<p>Para MS-DOS y software realmente antiguo, <strong>86Box</strong> merece mención aparte: no es un hipervisor sino un emulador de PC completo que recrea placas base, chipsets y tarjetas de época, incluyendo ranuras ISA emuladas. Es más lento, pero resuelve casos que ningún hipervisor moderno puede.</p>
+<div class="note"><strong>Verifica la virtualización por hardware.</strong> En la BIOS del anfitrión debe estar habilitada la opción Intel VT-x o AMD-V. Sin ella, las máquinas virtuales funcionan por emulación pura y la diferencia de velocidad es de un orden de magnitud.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="instalacion">
+<h2>Instalar el sistema heredado paso a paso</h2>
+<h3>Recursos que conviene asignar</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Sistema invitado</th><th>RAM</th><th>Disco virtual</th><th>Núcleos</th><th>Nota</th></tr></thead>
+<tbody>
+<tr><td>MS-DOS 6.22</td><td>32 MB</td><td>2 GB</td><td>1</td><td>Más RAM no ayuda: DOS no la usa</td></tr>
+<tr><td>Windows 98 SE</td><td>256 MB</td><td>8 GB</td><td>1</td><td>Falla al arrancar con más de 512 MB</td></tr>
+<tr><td>Windows 2000</td><td>512 MB</td><td>20 GB</td><td>1</td><td>Muy estable virtualizado</td></tr>
+<tr><td>Windows XP SP3</td><td>1 a 2 GB</td><td>40 GB</td><td>1 o 2</td><td>El caso más habitual</td></tr>
+<tr><td>Windows 7 de 32 bits</td><td>2 GB</td><td>60 GB</td><td>2</td><td>Para software de los 2010</td></tr>
+</tbody>
+</table>
+</div>
+<p>Un detalle contraintuitivo: <strong>asignar demasiada memoria puede impedir el arranque</strong>. Windows 98 tiene un fallo conocido con más de 512 MB de RAM. Y asignar más de un núcleo a sistemas monoprocesador antiguos suele provocar inestabilidad. Menos es más.</p>
+<h3>Secuencia recomendada</h3>
+<ol>
+<li><strong>Crea la máquina virtual</strong> con disco de tamaño fijo, no dinámico: es más rápido y menos propenso a corrupción.</li>
+<li><strong>Instala el sistema operativo</strong> desde la imagen ISO original.</li>
+<li><strong>Instala las Guest Additions</strong> (VirtualBox) o VMware Tools. Mejoran el video, el ratón y las carpetas compartidas.</li>
+<li><strong>Desactiva las actualizaciones automáticas</strong> y cualquier servicio de red innecesario. Este sistema no debe tocar internet.</li>
+<li><strong>Toma una instantánea limpia</strong> y llámala "SO recién instalado". Este es tu punto de retorno.</li>
+<li><strong>Instala el software del fabricante</strong> del PLC y sus controladores.</li>
+<li><strong>Configura la comunicación</strong> y verifica que conecta con el autómata.</li>
+<li><strong>Toma una segunda instantánea</strong>: "Entorno funcionando". A partir de aquí, cualquier experimento es reversible.</li>
+<li><strong>Exporta la máquina completa</strong> a un archivo OVA y guárdalo en dos lugares distintos.</li>
+</ol>
+<div class="note">Ese archivo OVA es el activo más valioso de todo el proyecto. Contiene el sistema, el software, los controladores y la configuración, todo funcionando. Si el portátil de servicio se pierde o se rompe, restaurarlo en otro equipo toma quince minutos en lugar de dos días.</div>
+</section>
+<section id="licencias">
+<h2>Licencias: la parte que no se puede improvisar</h2>
+<p>Virtualizar no cambia las condiciones de licencia. Un sistema operativo instalado en una máquina virtual necesita su propia licencia válida, igual que en hardware físico.</p>
+<ul>
+<li><strong>Windows XP, 2000 y 98</strong> ya no se venden, pero las licencias OEM o retail que poseas legalmente siguen siendo válidas. Conserva la etiqueta con la clave del equipo original que estás reemplazando.</li>
+<li><strong>La activación telefónica de Windows XP</strong> dejó de operar. Las claves de volumen (VLK) no requieren activación, y son las que se usan habitualmente en entornos industriales con licenciamiento corporativo.</li>
+<li><strong>El software del fabricante del PLC</strong> suele estar ligado a una llave de hardware o a un identificador del equipo. Consulta al fabricante antes de mover la licencia: muchos ofrecen transferencia gratuita o programas específicos de continuidad para instalaciones antiguas.</li>
+<li><strong>Documenta todo:</strong> facturas, claves, números de serie y contratos. En una auditoría, la carga de la prueba es tuya.</li>
+</ul>
+<div class="warning">Descargar imágenes de sistemas operativos o software de programación desde sitios no oficiales es, además de ilegal, un riesgo de seguridad grave. Las imágenes modificadas que circulan en foros contienen con frecuencia software malicioso, y estarías conectándolas a la red de una planta industrial. Si necesitas medios de instalación, acude al fabricante o a un distribuidor autorizado.</div>
+</section>
+<section id="serie">
+<h2>El puerto serie: el punto más delicado</h2>
+<p>Aquí es donde fracasan la mayoría de los intentos. La cadena completa tiene cuatro eslabones y cualquiera puede romperla.</p>
+<h3>1. El adaptador USB a serie</h3>
+<p>No todos son iguales, y la diferencia es enorme. Los chipsets clonados que abundan en el comercio informal fallan de formas sutiles: pierden bytes bajo carga, no respetan los tiempos entre tramas y, en algunos casos, los propios controladores oficiales los deshabilitan al detectar que son falsificaciones.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Chipset</th><th>Fiabilidad</th><th>Comentario</th></tr></thead>
+<tbody>
+<tr><td>FTDI FT232R genuino</td><td>Excelente</td><td><strong>La opción recomendada</strong>; controladores maduros en todos los sistemas</td></tr>
+<tr><td>Prolific PL2303 genuino</td><td>Buena</td><td>Funciona, pero los modelos antiguos carecen de controlador para Windows moderno</td></tr>
+<tr><td>Silicon Labs CP2102</td><td>Buena</td><td>Correcto para la mayoría de usos</td></tr>
+<tr><td>CH340 / CH341</td><td>Aceptable</td><td>Válido para Arduino; poco fiable para protocolos industriales</td></tr>
+<tr><td>Clones de FTDI</td><td>Mala</td><td>Fallos intermitentes; evitar por completo</td></tr>
+</tbody>
+</table>
+</div>
+<h3>2. El paso a la máquina virtual</h3>
+<p>Existen dos formas de que el sistema invitado vea el puerto, y elegir bien importa:</p>
+<ul>
+<li><strong>Paso del dispositivo USB completo</strong> (recomendado): el hipervisor entrega el adaptador USB entero a la máquina virtual, que instala su propio controlador y crea su COM. Es la opción más transparente y la que menos problemas de temporización da.</li>
+<li><strong>Paso del puerto COM del anfitrión:</strong> el anfitrión instala el adaptador y expone su COM a la máquina virtual. Añade una capa intermedia y suele ser el origen de los problemas de tiempo.</li>
+</ul>
+<pre><code>Configuración en VirtualBox (paso de USB completo):
+1. Instalar el Extension Pack de VirtualBox
+2. Máquina apagada → Configuración → USB
+3. Habilitar controlador USB 2.0 (EHCI)
+4. Añadir filtro con el adaptador conectado
+5. Arrancar la máquina virtual
+6. Dentro del invitado, instalar el controlador del fabricante del chipset</code></pre>
+<h3>3. La configuración de comunicación</h3>
+<p>El número de COM que el software espera puede no coincidir con el que el sistema asignó. En Windows, el Administrador de dispositivos permite cambiarlo: Propiedades del puerto → Configuración de puerto → Opciones avanzadas → Número de puerto COM. Muchos programas antiguos <strong>solo aceptan COM1 a COM4</strong>, así que fuerza uno de esos.</p>
+<p>Los parámetros deben coincidir exactamente con los del PLC. Los más habituales en autómatas clásicos:</p>
+<pre><code>Ejemplos de configuración típica (consulta siempre el manual):
+  9600 baudios, 7 bits de datos, paridad par, 1 bit de parada
+  19200 baudios, 8 bits de datos, sin paridad, 1 bit de parada
+  Control de flujo: normalmente ninguno o RTS/CTS
+
+Diagnóstico de conexión física:
+  Puentea RX y TX en el conector del cable.
+  Si un terminal serie muestra en pantalla lo que escribes,
+  el adaptador y el cable funcionan; el problema está más allá.</code></pre>
+<h3>4. El cable de programación</h3>
+<p>Muchos PLC no usan RS-232 estándar sino niveles TTL, RS-485 o protocolos propietarios con conversión activa dentro del propio cable. Un cable genérico "compatible" que no incluya esa electrónica no funcionará jamás, por muy bien configurado que esté todo lo demás. Verifica qué convierte exactamente el cable original.</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="respaldo">
+<h2>Respaldar los programas antes de que sea tarde</h2>
+<p>Una vez que consigues comunicarte con el autómata, la prioridad absoluta es extraer y conservar el programa. Este es el momento del proyecto que realmente reduce el riesgo del negocio.</p>
+<ol>
+<li><strong>Sube el programa completo desde el PLC</strong> al software, incluyendo la configuración de hardware y los parámetros de los módulos.</li>
+<li><strong>Guárdalo en el formato nativo</strong> del fabricante, con nombre y fecha claros.</li>
+<li><strong>Expórtalo además en formato legible</strong> (texto, PDF o listado impreso de la lógica escalera). Los formatos nativos dependen de un software que quizás no puedas ejecutar dentro de veinte años; un PDF con el diagrama de contactos lo leerá cualquiera.</li>
+<li><strong>Documenta la tabla de E/S:</strong> qué hace cada entrada y cada salida en la máquina real. Esta información casi nunca está en el programa y es la más difícil de reconstruir.</li>
+<li><strong>Guarda tres copias</strong> en lugares distintos: el portátil de servicio, un servidor de la empresa y un medio externo fuera de la planta.</li>
+<li><strong>Verifica la copia</strong> restaurándola en la máquina virtual y comparándola con la original. Una copia que nunca se ha probado no es una copia.</li>
+</ol>
+<div class="warning">Algunos PLC permiten proteger el programa con contraseña, y en ciertos modelos antiguos esa protección impide la lectura. Si el equipo está protegido y nadie conoce la clave, el programa es irrecuperable sin la intervención del fabricante. Averigua esto <strong>hoy</strong>, no el día que el equipo falle.</div>
+</section>
+<section id="seguridad-red">
+<h2>Aislamiento y seguridad del entorno virtualizado</h2>
+<p>Estás ejecutando un sistema operativo que lleva más de una década sin parches de seguridad. Tratarlo como un equipo normal sería temerario.</p>
+<ul>
+<li><strong>Red desconectada por defecto.</strong> En la configuración de la máquina virtual, deja el adaptador de red desconectado o en modo "solo anfitrión". El sistema invitado no necesita internet para programar un PLC.</li>
+<li><strong>Intercambio de archivos por carpeta compartida</strong> del hipervisor, no por red. Y analiza con un antivirus del anfitrión todo lo que pase a esa carpeta.</li>
+<li><strong>El anfitrión sí debe estar actualizado</strong> y protegido. Es la barrera real.</li>
+<li><strong>Nada de navegar ni leer correo</strong> desde el sistema invitado. Nunca.</li>
+<li><strong>Segmenta la red industrial.</strong> Si el PLC está en una red Ethernet, debe estar en un segmento separado de la red ofimática, con un cortafuegos entre ambas. Este principio es el mismo que rige la <a href="/blog/integrando-brazos-roboticos-con-plc">integración de brazos robóticos con PLC</a> en celdas modernas.</li>
+<li><strong>Instantáneas frecuentes.</strong> Ante cualquier comportamiento raro, restaura y sigue trabajando. Es la ventaja fundamental de tener el entorno virtualizado.</li>
+</ul>
+</section>
+<section id="cuando-migrar">
+<h2>Cuándo dejar de parchear y migrar</h2>
+<p>La virtualización compra tiempo, y a veces mucho. Pero llega un punto en que sostener el sistema antiguo cuesta más que reemplazarlo. Señales objetivas de que ese momento llegó:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Señal</th><th>Gravedad</th><th>Acción</th></tr></thead>
+<tbody>
+<tr><td>No se consiguen repuestos ni en el mercado de segunda mano</td><td>Alta</td><td>Planificar reemplazo con presupuesto</td></tr>
+<tr><td>El programa no se puede leer (protegido o batería muerta)</td><td>Crítica</td><td>Ingeniería inversa o migración inmediata</td></tr>
+<tr><td>Nadie en la empresa sabe cómo funciona la lógica</td><td>Alta</td><td>Documentar ahora; migrar después</td></tr>
+<tr><td>Fallos intermitentes de E/S cada vez más frecuentes</td><td>Alta</td><td>El hardware está llegando al final</td></tr>
+<tr><td>Se necesitan funciones nuevas que el PLC no soporta</td><td>Media</td><td>Evaluar migración con nuevas prestaciones</td></tr>
+<tr><td>Requisito normativo de trazabilidad o conectividad</td><td>Media</td><td>Migrar o añadir pasarela de datos</td></tr>
+<tr><td>Solo funciona, pero funciona bien</td><td>Baja</td><td>Virtualizar, respaldar y seguir operando</td></tr>
+</tbody>
+</table>
+</div>
+<p>Una estrategia intermedia muy razonable es <strong>mantener el PLC y añadir una pasarela</strong>: un pequeño equipo que lea el estado del autómata por su puerto serie y lo publique por MQTT o Modbus TCP hacia sistemas modernos de supervisión. Consigues visibilidad y datos sin tocar la lógica probada durante décadas. Quien quiera profundizar en la lógica de programación de estos equipos encontrará útil la guía de <a href="/blog/programacion-de-plc-para-robotica">programación de PLC para robótica</a>.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>Un PLC de veinticinco años que sigue funcionando no es un problema: es una inversión amortizada que continúa produciendo. El problema es la infraestructura informática que lo rodea, y esa sí se puede reconstruir con virtualización a un coste ridículo comparado con una migración completa.</p>
+<p>El orden correcto de las tareas es innegociable: <strong>primero la batería, después el respaldo del programa, luego la documentación de las entradas y salidas, y solo entonces la máquina virtual</strong>. Muchos proyectos empiezan por lo divertido —montar la VM— y descubren tarde que el programa se perdió porque la pila llevaba tres años agotada.</p>
+<p>Cuando tengas el entorno funcionando, exporta la máquina virtual completa y guárdala como el activo crítico que es. Ese único archivo puede ser la diferencia entre una parada de dos horas y una de dos semanas el día que algo falle.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo virtualizar el PLC en sí, sin el hardware físico?</summary><p>No en el sentido general. Algunos fabricantes ofrecen simuladores de sus propios autómatas para pruebas de lógica, pero solo ejecutan el programa: no tienen entradas ni salidas reales, ni cumplen los tiempos de ciclo del equipo físico. Sirven para depurar la lógica antes de bajarla al PLC, no para sustituirlo en producción. Lo que se virtualiza en esta guía es el entorno de programación, no el autómata.</p></details>
+<details><summary>¿Por qué mi adaptador USB a serie no funciona con el software antiguo?</summary><p>Las causas más frecuentes, en orden: el número de COM asignado está fuera del rango que acepta el software (fuérzalo a COM1-COM4 desde el Administrador de dispositivos), el chipset es un clon poco fiable (usa un FTDI genuino), el adaptador se pasó a la máquina virtual como puerto COM del anfitrión en lugar de como dispositivo USB completo, o los parámetros de comunicación no coinciden con los del PLC. Prueba también puenteando RX y TX para confirmar que el adaptador y el cable están sanos.</p></details>
+<details><summary>¿Es legal usar Windows XP en una máquina virtual?</summary><p>Sí, siempre que poseas una licencia válida para esa instalación. Que Microsoft haya terminado el soporte no invalida las licencias existentes. Lo que no es legal es descargar imágenes o claves de sitios no autorizados. Conserva la documentación de la licencia original del equipo que estás reemplazando, y ten presente que un sistema sin parches debe operar aislado de la red por motivos de seguridad, no legales.</p></details>
+<details><summary>¿Qué hago si el PLC usa una tarjeta ISA propietaria?</summary><p>La virtualización no resuelve este caso: no existe forma de pasar una tarjeta ISA física a una máquina virtual moderna. Las opciones reales son conservar un PC físico de época dedicado exclusivamente a esa tarea y tratarlo como repuesto crítico, buscar un convertidor de protocolo que exponga la misma comunicación por serie o Ethernet, usar un emulador de PC completo como 86Box si existe una versión de la tarjeta emulada, o planificar la migración del autómata.</p></details>
+<details><summary>¿Cuánto tiempo más puedo mantener un PLC antiguo en producción?</summary><p>Mientras haya repuestos disponibles, el programa esté respaldado y documentado, exista personal capaz de intervenirlo y no haya requisitos nuevos que el equipo no pueda cumplir. Muchas instalaciones industriales operan autómatas de treinta años sin incidentes. El riesgo no está en la edad del equipo sino en la dependencia de un conocimiento o de un repuesto único: si el programa está perdido o nadie entiende la lógica, el equipo es frágil aunque sea nuevo.</p></details>
+<details><summary>¿VirtualBox o VMware para este tipo de trabajo?</summary><p>VirtualBox es gratuito, tiene muy buen soporte de sistemas antiguos y una configuración de puerto serie muy flexible: es la primera opción razonable. VMware Workstation Pro, gratuito hoy para uso personal, ofrece un paso de dispositivos USB algo más robusto, lo que puede marcar la diferencia con adaptadores problemáticos. Evita Hyper-V: no permite pasar puertos serie físicos y, si lo activas, degrada el rendimiento de los otros hipervisores en el mismo equipo.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Para profundizar en la lógica de estos equipos revisa la <a href="/blog/programacion-de-plc-para-robotica">programación de PLC para robótica</a>, y para conectarlos con automatización moderna, la <a href="/blog/integrando-brazos-roboticos-con-plc">integración de brazos robóticos con PLC</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/integrando-brazos-roboticos-con-plc">← Anterior: Integrando Brazos Robóticos con PLC</a>
+  <a href="/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos">Siguiente: Pantallas HMI Delta DOP-100: Programación y Ejemplos →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación de los hipervisores citados y referencias técnicas de comunicación serie. Consulta siempre la documentación específica del fabricante de tu autómata para parámetros y cables de programación.</p>
+<ul>
+<li><a href="https://www.virtualbox.org/manual/" target="_blank" rel="noopener noreferrer">Oracle VM VirtualBox — Manual de usuario oficial</a></li>
+<li><a href="https://techdocs.broadcom.com/us/en/vmware-cis/desktop-hypervisors/workstation-pro.html" target="_blank" rel="noopener noreferrer">VMware Workstation Pro — Documentación oficial</a></li>
+<li><a href="https://ftdichip.com/drivers/" target="_blank" rel="noopener noreferrer">FTDI Chip — Controladores y notas de aplicación</a></li>
+<li><a href="https://86box.readthedocs.io/" target="_blank" rel="noopener noreferrer">86Box — Emulador de PC de época, documentación</a></li>
+<li><a href="https://www.cisa.gov/topics/industrial-control-systems" target="_blank" rel="noopener noreferrer">CISA — Recomendaciones de seguridad para sistemas de control industrial</a></li>
+<li><a href="https://webstore.iec.ch/publication/4552" target="_blank" rel="noopener noreferrer">IEC 61131-3 — Estándar de lenguajes de programación para autómatas</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
 
