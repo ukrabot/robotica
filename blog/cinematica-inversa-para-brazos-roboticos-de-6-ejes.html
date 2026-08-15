@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cinemática Inversa para Brazos Robóticos de 6 Ejes</title>
+<meta name="description" content="Guía matemática de cinemática inversa analítica para brazos robóticos antropomórficos de 6 ejes: método de Pieper, matriz de rotación y singularidades.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/cinematica-inversa-para-brazos-roboticos-de-6-ejes">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cinemática Inversa para Brazos Robóticos de 6 Ejes">
+<meta property="og:description" content="Guía matemática de cinemática inversa analítica para brazos robóticos antropomórficos de 6 ejes: método de Pieper, matriz de rotación y singularidades.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/cinematica_inversa_6ejes_esquema.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/cinematica-inversa-para-brazos-roboticos-de-6-ejes">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cinemática Inversa para Brazos Robóticos de 6 Ejes">
+<meta name="twitter:description" content="Guía matemática de cinemática inversa analítica para brazos robóticos antropomórficos de 6 ejes: método de Pieper, matriz de rotación y singularidades.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/cinematica_inversa_6ejes_esquema.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Cinemática Inversa para Brazos Robóticos de 6 Ejes",
+  "description": "Guía matemática de cinemática inversa analítica para brazos robóticos antropomórficos de 6 ejes: método de Pieper, matriz de rotación y singularidades.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/cinematica-inversa-para-brazos-roboticos-de-6-ejes"
+  },
+  "image": "https://www.ukrabot.cl/blog/cinematica_inversa_6ejes_esquema.svg",
+  "proficiencyLevel": "Avanzado",
+  "dependencies": "Álgebra lineal, matrices de transformación homogénea 4x4, trigonometría esférica, Python con NumPy o C++ con Eigen",
+  "wordCount": "3600",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Cinemática Inversa para Brazos Robóticos de 6 Ejes",
+      "item": "https://www.ukrabot.cl/blog/cinematica-inversa-para-brazos-roboticos-de-6-ejes"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Por qué la solución analítica es superior a los métodos numéricos cuando existe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La solución analítica es determinista, exacta (sin errores de aproximación) y computacionalmente ultra-rápida (menos de 5 microsegundos en C++). Además, entrega simultáneamente las 8 soluciones posibles, permitiendo que el planificador elija la configuración óptima sin peligro de quedar atrapado en mínimos locales."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué robot no admite solución analítica por desacoplo de Pieper?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cualquier robot de 6 ejes donde la muñeca no sea esférica (por ejemplo, brazos donde los ejes 4 y 5 están desplazados con un offset no nulo) o robots redundantes de 7 grados de libertad (como KUKA LBR iiwa o Franka Emika Panda). Estos robots requieren solvers numéricos iterativos basados en la matriz jacobiana."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo elige el controlador cuál de las 8 soluciones ejecutar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El criterio estándar es el de menor distancia euclidiana en el espacio articular respecto a la pose actual: $\\min \\sum_{i=1}^6 w_i (\\theta_i^{nueva} - \\theta_i^{actual})^2$, descartando aquellas soluciones que violen los límites mecánicos de carrera o que provoquen colisiones con obstáculos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué ocurre si un punto objetivo está fuera del alcance del robot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La ecuación del coseno $\\cos(\\theta_3)$ resultará en un valor mayor que 1.0 o menor que -1.0. Al intentar calcular la raíz cuadrada $\\sqrt{1 - \\cos^2(\\theta_3)}$, el programa generará un número complejo o error de dominio matemático (NaN), indicando que el punto es inalcanzable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo evitar que el robot haga movimientos bruscos cerca de una singularidad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mediante algoritmos de escalado de velocidad cartesiana o transicionando a un control por mínimos cuadrados amortiguados (DLS), limitando la velocidad máxima permitida en cada articulación para evitar disparos de sobrecorriente en los servomotores."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:50vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:90px 24px 60px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(1.9rem,5.5vw,3.8rem);line-height:1.15;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:1.9rem;font-weight:400;line-height:1.2;margin:54px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:70px 20px 40px}
+  .article-body h2{font-size:1.55rem;margin:40px 0 14px}
+  .article-body{padding-top:44px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:55vh}
+  .hero-inner{padding:60px 16px 35px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="cinematica_inversa_6ejes_esquema.svg" alt="Cinemática Inversa para Brazos Robóticos de 6 Ejes" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">ROS 2, Cinemática y Software · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Cinemática Inversa para Brazos Robóticos de 6 Ejes</h1>
+    <p>Derivación matemática completa paso a paso: criterio de desacoplo de Pieper, cálculo geométrico del centro de muñeca (Ejes 1-3), resolución de orientación Z-Y-Z (Ejes 4-6) y gestión de las 8 configuraciones y singularidades.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 22 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="cinematica_inversa_6ejes_esquema.svg" alt="Desacoplo cinemático de Pieper: separación geométrica entre la posición del centro de muñeca y la orientación esférica Z-Y-Z." loading="lazy">
+  <div class="caption">Desacoplo cinemático de Pieper: separación geométrica entre la posición del centro de muñeca y la orientación esférica Z-Y-Z.</div>
+</div>
+
+<nav class="toc" aria-label="Índice del contenido">
+  <h2>Contenido de la guía</h2>
+  <ol>
+    <li><a href="#el-problema-cinematico-6gdl">El desafío de la cinemática inversa en 6 grados de libertad</a></li>
+<li><a href="#criterio-pieper-desacoplo">Criterio de Pieper y desacoplo cinemático posición/orientación</a></li>
+<li><a href="#calculo-ejes-1-2-3">Paso 1: Cálculo analítico de los primeros 3 ejes articulares (Base, Hombro, Codo)</a></li>
+<li><a href="#calculo-muneca-4-5-6">Paso 2: Solución de orientación de muñeca esférica (Ejes 4, 5 y 6)</a></li>
+<li><a href="#singularidades-criterio-seleccion">Las 8 soluciones cinemáticas y tratamiento de singularidades</a></li>
+<li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+
+<section id="el-problema-cinematico-6gdl">
+<h2>El desafío de la cinemática inversa en 6 grados de libertad</h2>
+
+<p>La cinemática directa de un brazo robótico consiste en calcular la pose del efector final (posición $[x, y, z]^T$ y orientación expresada como matriz de rotación $R_{3\times 3}$) a partir de un vector de ángulos articulares $\mathbf{q} = [\theta_1, \theta_2, \theta_3, \theta_4, \theta_5, \theta_6]^T$. Este cálculo es trivial y unívoco mediante la multiplicación sucesiva de matrices de transformación homogénea de Denavit-Hartenberg.</p>
+<p>La <strong>cinemática inversa (IK)</strong> resuelve el problema opuesto: dada una pose objetivo deseada $T_{target} \in SE(3)$ en el espacio cartesiano, encontrar todos los vectores articulares $\mathbf{q}$ que sitúan la herramienta exactamente en esa pose. A diferencia de la directa, la cinemática inversa es <strong>altamente no lineal</strong>, puede tener múltiples soluciones (hasta 8 para un robot estándar de 6 ejes) o carecer totalmente de solución si el punto está fuera del espacio de trabajo.</p>
+
+</section>
+<section id="criterio-pieper-desacoplo">
+<h2>Criterio de Pieper y desacoplo cinemático posición/orientación</h2>
+
+<p>En 1968, Donald Pieper demostró que un manipulador de 6 grados de libertad admite una <strong>solución analítica cerrada (Closed-Form Analytical Solution)</strong> si y solo si cumple una de estas dos condiciones geométricas:</p>
+<ol>
+  <li>Tres ejes articulares consecutivos se intersectan en un único punto común.</li>
+  <li>Tres ejes articulares consecutivos son paralelos entre sí.</li>
+</ol>
+<p>El 95% de los brazos robóticos industriales (como KUKA KR6, ABB IRB 120, Fanuc LR Mate 200, Universal Robots UR5) incorporan una <strong>muñeca esférica (Spherical Wrist)</strong> donde los ejes de giro 4, 5 y 6 se cruzan en un único punto espacial llamado <strong>Centro de Muñeca ($O_c$ o $p_c$)</strong>.</p>
+<div class="note"><strong>La ventaja del desacoplo:</strong> La posición del centro de muñeca $p_c$ es completamente independiente de los ángulos de la muñeca ($\theta_4, \theta_5, \theta_6$). Por tanto, el problema de 6 incógnitas acopladas se desacopla en dos subproblemas independientes de 3 incógnitas cada uno:
+<ol>
+  <li><strong>Subproblema de Posición:</strong> Hallar $\theta_1, \theta_2, \theta_3$ para situar el centro de muñeca en $p_c$.</li>
+  <li><strong>Subproblema de Orientación:</strong> Hallar $\theta_4, \theta_5, \theta_6$ a partir de la matriz de rotación residual.</li>
+</ol>
+</div>
+
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="calculo-ejes-1-2-3">
+<h2>Paso 1: Cálculo analítico de los primeros 3 ejes articulares (Base, Hombro, Codo)</h2>
+
+<p>Dada la pose objetivo $T_{target} = \begin{bmatrix} R & p_{tcp} \\ 0 & 1 \end{bmatrix}$, donde $R = [\mathbf{n}, \mathbf{s}, \mathbf{a}]$ y $\mathbf{a} = [a_x, a_y, a_z]^T$ es el vector director de aproximación (eje Z de la herramienta), la posición del centro de muñeca $p_c$ se calcula retrocediendo una distancia $d_6$ a lo largo de $\mathbf{a}$:</p>
+$$p_c = p_{tcp} - d_6 \cdot \mathbf{a} = \begin{bmatrix} x_c \\ y_c \\ z_c \end{bmatrix} = \begin{bmatrix} x_{tcp} - d_6 a_x \\ y_{tcp} - d_6 a_y \\ z_{tcp} - d_6 a_z \end{bmatrix}$$
+
+<h3>1. Ángulo de la Base ($\theta_1$):</h3>
+<p>Proyectando el centro de muñeca sobre el plano horizontal $XY$:</p>
+$$\theta_1 = \text{atan2}(y_c, x_c) \quad \text{ó} \quad \theta_1 = \text{atan2}(-y_c, -x_c) = \theta_1 + \pi \text{ (Configuración Base Invertida)}$$
+
+<h3>2. Ángulos de Hombro y Codo ($\theta_2$ y $\theta_3$):</h3>
+<p>Considerando el plano vertical del brazo definido por el radio horizontal $r = \sqrt{x_c^2 + y_c^2} - a_1$ y la altura vertical $s = z_c - d_1$. La distancia al centro de muñeca es $D = \sqrt{r^2 + s^2}$. Aplicando la Ley del Coseno en el triángulo formado por los eslabones $a_2$ y $d_4$:</p>
+$$D^2 = a_2^2 + d_4^2 - 2 a_2 d_4 \cos(180^\circ - \theta_3) = a_2^2 + d_4^2 + 2 a_2 d_4 \cos(\theta_3)$$
+$$\cos(\theta_3) = \frac{r^2 + s^2 - a_2^2 - d_4^2}{2 a_2 d_4}$$
+$$\theta_3 = \text{atan2}(\pm \sqrt{1 - \cos^2(\theta_3)}, \cos(\theta_3))$$
+<p>El signo $\pm$ entrega las dos ramas cinemáticas: <strong>Codo Arriba (Elbow Up)</strong> y <strong>Codo Abajo (Elbow Down)</strong>.</p>
+<p>Una vez conocido $\theta_3$, el ángulo del hombro $\theta_2$ se obtiene por descomposición trigonométrica:</p>
+$$\theta_2 = \text{atan2}(s, r) - \text{atan2}(d_4 \sin(\theta_3), a_2 + d_4 \cos(\theta_3))$$
+
+</section>
+<section id="calculo-muneca-4-5-6">
+<h2>Paso 2: Solución de orientación de muñeca esférica (Ejes 4, 5 y 6)</h2>
+
+<p>Conocidos $\theta_1, \theta_2, \theta_3$, calculamos la matriz de rotación de la base a la articulación 3, denotada $R_{03}(\theta_1, \theta_2, \theta_3)$. La rotación requerida en la muñeca esférica $R_{36}$ satisface:</p>
+$$R_{target} = R_{03} \cdot R_{36} \implies R_{36} = R_{03}^T \cdot R_{target} = \begin{bmatrix} r_{11} & r_{12} & r_{13} \\ r_{21} & r_{22} & r_{23} \\ r_{31} & r_{32} & r_{33} \end{bmatrix}$$
+<p>Dado que los ejes 4, 5 y 6 corresponden a una secuencia de rotaciones de ángulos de Euler tipo $Z-Y-Z$ (o $X-Y-X$ según la convención DH):</p>
+$$\theta_5 = \text{atan2}\left(\pm \sqrt{r_{13}^2 + r_{23}^2}, r_{33}\right)$$
+<p>Para $\sin(\theta_5) \neq 0$:</p>
+$$\theta_4 = \text{atan2}\left(\frac{r_{23}}{\sin(\theta_5)}, \frac{r_{13}}{\sin(\theta_5)}\right)$$
+$$\theta_6 = \text{atan2}\left(\frac{r_{32}}{\sin(\theta_5)}, \frac{-r_{31}}{\sin(\theta_5)}\right)$$
+<p>El signo $\pm$ en $\theta_5$ entrega las configuraciones de <strong>Muñeca Directa (Wrist Non-Flip)</strong> y <strong>Muñeca Invertida (Wrist Flip)</strong>.</p>
+
+</section>
+<section id="singularidades-criterio-seleccion">
+<h2>Las 8 soluciones cinemáticas y tratamiento de singularidades</h2>
+
+<p>Combinando todas las ramas trigonométricas, existen $2 \text{ (Base)} \times 2 \text{ (Codo)} \times 2 \text{ (Muñeca)} = \mathbf{8\text{ configuraciones posibles}}$ para una misma pose cartesiana.</p>
+
+<h3>Las 3 Singularidades Críticas:</h3>
+<ol>
+  <li><strong>Singularidad de Muñeca ($\theta_5 = 0^\circ$):</strong> Los ejes 4 y 6 quedan alineados colinealmente. Se pierde un grado de libertad instantáneo y existen infinitas combinaciones donde solo importa la suma $(\theta_4 + \theta_6)$. El solver debe fijar $\theta_4$ al ángulo previo y despejar $\theta_6$.</li>
+  <li><strong>Singularidad de Hombro:</strong> El centro de muñeca se alinea exactamente sobre el eje vertical de rotación de la base ($x_c = 0, y_c = 0$). El ángulo $\theta_1$ se vuelve indeterminado.</li>
+  <li><strong>Singularidad de Frontera (Extensión Máxima):</strong> El brazo está completamente estirado ($D = a_2 + d_4$). Cualquier vector de velocidad exterior requiere velocidades articulares infinitas.</li>
+</ol>
+
+</section>
+
+
+<section class="faq" id="faq" aria-label="Preguntas frecuentes">
+<h2>Preguntas Frecuentes</h2>
+<div class="faq">
+<details><summary>¿Por qué la solución analítica es superior a los métodos numéricos cuando existe?</summary><p>La solución analítica es determinista, exacta (sin errores de aproximación) y computacionalmente ultra-rápida (menos de 5 microsegundos en C++). Además, entrega simultáneamente las 8 soluciones posibles, permitiendo que el planificador elija la configuración óptima sin peligro de quedar atrapado en mínimos locales.</p></details>
+<details><summary>¿Qué robot no admite solución analítica por desacoplo de Pieper?</summary><p>Cualquier robot de 6 ejes donde la muñeca no sea esférica (por ejemplo, brazos donde los ejes 4 y 5 están desplazados con un offset no nulo) o robots redundantes de 7 grados de libertad (como KUKA LBR iiwa o Franka Emika Panda). Estos robots requieren solvers numéricos iterativos basados en la matriz jacobiana.</p></details>
+<details><summary>¿Cómo elige el controlador cuál de las 8 soluciones ejecutar?</summary><p>El criterio estándar es el de menor distancia euclidiana en el espacio articular respecto a la pose actual: $\min \sum_{i=1}^6 w_i (\theta_i^{nueva} - \theta_i^{actual})^2$, descartando aquellas soluciones que violen los límites mecánicos de carrera o que provoquen colisiones con obstáculos.</p></details>
+<details><summary>¿Qué ocurre si un punto objetivo está fuera del alcance del robot?</summary><p>La ecuación del coseno $\cos(\theta_3)$ resultará en un valor mayor que 1.0 o menor que -1.0. Al intentar calcular la raíz cuadrada $\sqrt{1 - \cos^2(\theta_3)}$, el programa generará un número complejo o error de dominio matemático (NaN), indicando que el punto es inalcanzable.</p></details>
+<details><summary>¿Cómo evitar que el robot haga movimientos bruscos cerca de una singularidad?</summary><p>Mediante algoritmos de escalado de velocidad cartesiana o transicionando a un control por mínimos cuadrados amortiguados (DLS), limitando la velocidad máxima permitida en cada articulación para evitar disparos de sobrecorriente en los servomotores.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
+
+<div class="cta">
+  <h3>Continúa explorando tutoriales técnicos</h3>
+  <p>Descarga e implementa el código del solver numérico en nuestra guía de código en Python.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/framework-ros-2-control-para-brazos-roboticos">← Framework ROS 2 Control para Brazos Robóticos</a>
+  <a href="/blog/codigo-de-un-solver-de-cinematica-inversa">Código de un Solver de Cinemática Inversa →</a>
+</div>
+
+</article>
+
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Hojas de datos oficiales, estándares internacionales de ingeniería y documentación técnica citada en este artículo.</p>
+<ul>
+<li><a href="https://web.stanford.edu/" target="_blank" rel="noopener noreferrer">Pieper, D. L. — The Kinematics of Manipulators Under Computer Control (Stanford University Memo)</a></li>
+<li><a href="https://www.wiley.com/" target="_blank" rel="noopener noreferrer">Spong, Hutchinson, Vidyasagar — Robot Modeling and Control (John Wiley & Sons)</a></li>
+<li><a href="https://www.pearson.com/" target="_blank" rel="noopener noreferrer">Craig, John J. — Introduction to Robotics: Mechanics and Control (Pearson)</a></li>
+<li><a href="https://link.springer.com/book/10.1007/978-1-84628-642-1" target="_blank" rel="noopener noreferrer">Siciliano, Sciavicco, Villani, Oriolo — Robotics: Modelling, Planning and Control (Springer)</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Arquitectura del framework ROS 2 Control para brazos robóticos">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Arquitectura del Framework ROS 2 Control (Humble / Iron / Jazzy)</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Capas de abstracción: MoveIt 2, Controller Manager, Plugins de Hardware y Bus en Tiempo Real</text>
+
+<g transform="translate(80, 110)">
+  <rect x="0" y="0" width="1040" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Layer 1: High Level / User Nodes -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="960" height="85" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="480" y="28" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#a97b23" font-weight="bold">Capa Superior: Planificación y Cinemática</text>
+    
+    <rect x="30" y="40" width="260" height="35" rx="6" fill="#ffffff" stroke="#8b8577"/>
+    <text x="160" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">MoveIt 2 / OMPL Motion Planner</text>
+    
+    <rect x="350" y="40" width="260" height="35" rx="6" fill="#ffffff" stroke="#8b8577"/>
+    <text x="480" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">moveit_servo (Teleoperación / Jogging)</text>
+    
+    <rect x="670" y="40" width="260" height="35" rx="6" fill="#ffffff" stroke="#8b8577"/>
+    <text x="800" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">Nodos de Aplicación / Comandos Acción</text>
+  </g>
+  
+  <!-- Down Arrow -->
+  <line x1="520" y1="120" x2="520" y2="150" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="515,150 520,160 525,150" fill="#1e1b15"/>
+  <text x="535" y="145" font-family="Inter, sans-serif" font-size="11" fill="#57534a">FollowJointTrajectory Action</text>
+  
+  <!-- Layer 2: Controller Manager & Active Controllers -->
+  <g transform="translate(40, 165)">
+    <rect x="0" y="0" width="960" height="140" rx="10" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="480" y="28" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#2f6fb0" font-weight="bold">Controller Manager (ros2_control)</text>
+    
+    <g transform="translate(30, 45)">
+      <rect x="0" y="0" width="270" height="75" rx="6" fill="#ffffff" stroke="#2f6fb0"/>
+      <text x="135" y="25" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">joint_trajectory_controller</text>
+      <text x="135" y="45" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Interpolación de curvas spline</text>
+      <text x="135" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Control de posición / velocidad</text>
+    </g>
+    
+    <g transform="translate(345, 45)">
+      <rect x="0" y="0" width="270" height="75" rx="6" fill="#ffffff" stroke="#2f6fb0"/>
+      <text x="135" y="25" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">joint_state_broadcaster</text>
+      <text x="135" y="45" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Publica sensor_msgs/JointState</text>
+      <text x="135" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Tasa: 100 - 1000 Hz</text>
+    </g>
+    
+    <g transform="translate(660, 45)">
+      <rect x="0" y="0" width="270" height="75" rx="6" fill="#ffffff" stroke="#2f6fb0"/>
+      <text x="135" y="25" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">forward_command_controller</text>
+      <text x="135" y="45" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Comandos directos de esfuerzo (Torque)</text>
+      <text x="135" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Control de pinza / efector</text>
+    </g>
+  </g>
+  
+  <!-- Down Arrow -->
+  <line x1="520" y1="310" x2="520" y2="340" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="515,340 520,350 525,340" fill="#1e1b15"/>
+  <text x="535" y="335" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Command &amp; State Interfaces</text>
+  
+  <!-- Layer 3: Hardware Interface Plugin -->
+  <g transform="translate(40, 355)">
+    <rect x="0" y="0" width="960" height="100" rx="10" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="480" y="28" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#1e1b15" font-weight="bold">Hardware Component (hardware_interface::SystemInterface)</text>
+    
+    <rect x="30" y="45" width="270" height="40" rx="6" fill="#ffffff" stroke="#8b8577"/>
+    <text x="165" y="70" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">Lifecycle: on_init() / on_activate()</text>
+    
+    <rect x="345" y="45" width="270" height="40" rx="6" fill="#ffffff" stroke="#2b8a3e"/>
+    <text x="480" y="70" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">read(): Lee Encoders (Pos/Vel)</text>
+    
+    <rect x="660" y="45" width="270" height="40" rx="6" fill="#ffffff" stroke="#c92a2a"/>
+    <text x="795" y="70" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a" font-weight="bold">write(): Envía Pulsos / Corrientes</text>
+  </g>
+  
+  <!-- Layer 4: Physical Hardware & Real-Time Bus -->
+  <g transform="translate(40, 485)">
+    <rect x="0" y="0" width="960" height="85" rx="10" fill="#151310"/>
+    <text x="480" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#e4c07a" font-weight="bold">Bus de Comunicación Físico (Kernel Linux PREEMPT_RT)</text>
+    
+    <text x="165" y="58" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#adb5bd">CANopen / SocketCAN (1 Mbps)</text>
+    <text x="480" y="58" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#adb5bd">EtherCAT (SOEM Master · 1 kHz)</text>
+    <text x="795" y="58" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#adb5bd">Serial RS-485 / Micro-ROS (ESP32)</text>
+  </g>
+</g>
+</svg>

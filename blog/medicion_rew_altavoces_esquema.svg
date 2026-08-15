@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Montaje de medición acústica con REW y ventana temporal para respuesta cuasi-anecoica">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Medición Acústica de Altavoces con REW y Micrófono USB</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Configuración cuasi-anecoica, cálculo de ventana temporal (Time-Gating) y calibración SPL</text>
+
+<g transform="translate(60, 110)">
+  <!-- Left Side: Physical Setup -->
+  <rect x="0" y="0" width="520" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  <text x="260" y="36" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#2f6fb0" font-weight="bold">Montaje Físico y Distancias de Medición</text>
+  
+  <!-- Room Boundaries -->
+  <line x1="40" y1="520" x2="480" y2="520" stroke="#8b8577" stroke-width="3"/>
+  <text x="260" y="545" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#8b8577">Piso de la Habitación (Primera Reflexión)</text>
+  
+  <!-- Speaker on Stand -->
+  <rect x="70" y="240" width="70" height="120" rx="4" fill="#241a06"/>
+  <circle cx="105" cy="275" r="14" fill="#d4af37"/>
+  <circle cx="105" cy="325" r="22" fill="#495057"/>
+  <!-- Stand pole -->
+  <line x1="105" y1="360" x2="105" y2="520" stroke="#1e1b15" stroke-width="6"/>
+  <text x="105" y="225" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Altavoz DUT</text>
+  <text x="105" y="440" font-family="Inter, sans-serif" font-size="11" fill="#57534a" transform="rotate(-90 105 440)">Altura h = 1.2 m</text>
+  
+  <!-- Microphone on Stand -->
+  <!-- Stand pole -->
+  <line x1="410" y1="275" x2="410" y2="520" stroke="#1e1b15" stroke-width="6"/>
+  <!-- Mic UMIK-1 -->
+  <rect x="380" y="270" width="30" height="10" rx="2" fill="#adb5bd"/>
+  <circle cx="375" cy="275" r="4" fill="#c92a2a"/>
+  <text x="410" y="250" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Micrófono USB (UMIK-1)</text>
+  
+  <!-- Direct Sound Ray -->
+  <line x1="105" y1="275" x2="375" y2="275" stroke="#2b8a3e" stroke-width="3"/>
+  <text x="240" y="265" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Sonido Directo (d = 1.0 m · t = 2.91 ms)</text>
+  
+  <!-- Reflected Sound Ray -->
+  <path d="M 105,275 L 240,520 L 375,275" fill="none" stroke="#c92a2a" stroke-width="2" stroke-dasharray="5"/>
+  <text x="240" y="490" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Reflexión de Piso (d_ref = 2.60 m · t = 7.58 ms)</text>
+  
+  <!-- Callout Info -->
+  <rect x="30" y="70" width="460" height="90" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1"/>
+  <text x="45" y="95" font-family="Inter, sans-serif" font-size="13" fill="#a97b23" font-weight="bold">Fórmula de Ventana Temporal (Time Gate):</text>
+  <text x="45" y="120" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">Δt = t_reflexión - t_directo = 7.58 ms - 2.91 ms = <strong>4.67 ms</strong></text>
+  <text x="45" y="142" font-family="Inter, sans-serif" font-size="12" fill="#57534a">Resolución mínima en frecuencia: <strong>F_min = 1 / Δt = 214 Hz</strong> (Sin ecos)</text>
+</g>
+
+<g transform="translate(620, 110)">
+  <!-- Right Side: REW Impulse Response & Frequency Response -->
+  <rect x="0" y="0" width="520" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  <text x="260" y="36" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#a97b23" font-weight="bold">Procesamiento FFT y Curva SPL</text>
+  
+  <!-- Impulse Response Plot -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="460" height="180" rx="8" fill="#151310"/>
+    <text x="15" y="25" font-family="Inter, sans-serif" font-size="12" fill="#e4c07a" font-weight="bold">Respuesta al Impulso (Time Domain)</text>
+    
+    <!-- Waveform -->
+    <line x1="20" y1="100" x2="440" y2="100" stroke="#343a40" stroke-width="1"/>
+    <path d="M 20,100 L 90,100 L 95,15 L 105,170 L 115,80 L 130,110 L 150,100 L 250,100 L 260,60 L 275,130 L 290,100 L 440,100" 
+          fill="none" stroke="#2f6fb0" stroke-width="2"/>
+          
+    <!-- Gating Window Overlay -->
+    <rect x="80" y="20" width="160" height="150" fill="#2b8a3e" opacity="0.18" stroke="#2b8a3e" stroke-width="1.5" stroke-dasharray="4"/>
+    <text x="160" y="45" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Ventana de Gating (4.6 ms)</text>
+    <text x="310" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Reflexión cortada</text>
+  </g>
+  
+  <!-- Frequency Response Plot -->
+  <g transform="translate(30, 260)">
+    <rect x="0" y="0" width="460" height="190" rx="8" fill="#151310"/>
+    <text x="15" y="25" font-family="Inter, sans-serif" font-size="12" fill="#e4c07a" font-weight="bold">Curva SPL Resultante (20 Hz - 20 kHz)</text>
+    
+    <!-- Grid -->
+    <line x1="20" y1="140" x2="440" y2="140" stroke="#343a40" stroke-width="1"/>
+    <line x1="20" y1="80" x2="440" y2="80" stroke="#343a40" stroke-width="1"/>
+    
+    <!-- Nearfield bass merged curve -->
+    <path d="M 30,120 Q 60,75 100,78" fill="none" stroke="#a97b23" stroke-width="2.5"/>
+    <text x="60" y="60" font-family="Inter, sans-serif" font-size="10" fill="#a97b23">Campo Cercano</text>
+    
+    <!-- Gated Farfield curve -->
+    <path d="M 100,78 Q 150,76 200,80 T 300,77 T 400,79 T 430,82" fill="none" stroke="#2b8a3e" stroke-width="2.5"/>
+    <text x="280" y="60" font-family="Inter, sans-serif" font-size="10" fill="#2b8a3e">Campo Lejano Ventaneado</text>
+    
+    <text x="240" y="170" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#8b8577">Frecuencia (Hz) · Escala Logarítmica</text>
+    <text x="25" y="135" font-family="Inter, sans-serif" font-size="10" fill="#8b8577">75 dB</text>
+    <text x="25" y="75" font-family="Inter, sans-serif" font-size="10" fill="#8b8577">85 dB</text>
+  </g>
+  
+  <rect x="30" y="470" width="460" height="105" rx="8" fill="#faf7f0" stroke="#c9c4b8" stroke-width="1"/>
+  <text x="45" y="495" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Exportación para Diseño de Crossover:</text>
+  <text x="45" y="520" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Exportar archivo .FRD (Amplitud + Fase acústica mínima)</text>
+  <text x="45" y="540" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Medir impedancia con DATS v3 y exportar archivo .ZMA</text>
+  <text x="45" y="560" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e">✓ Cargar en VituixCAD para simulación de filtro pasivo/DSP</text>
+</g>
+</svg>

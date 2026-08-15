@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Sistema de extracción y filtrado de humos multicapa y protección ocular para corte láser">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Extracción de Humos y Seguridad Ocular en Grabado Láser</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Filtración multicapa (G4 + HEPA H14 + Carbón Activado), cálculo de caudal CFM y gafas certificadas OD 6+</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Multistage Fume Filtration -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Cadena de Filtración Multicapa de Humos</text>
+    
+    <!-- Flow Stack -->
+    <!-- 1. Enclosure Input -->
+    <rect x="30" y="60" width="420" height="50" rx="6" fill="#1e1b15"/>
+    <text x="240" y="90" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff" font-weight="bold">1. Cabina Láser Cerrada (Presión Negativa · Humo Tóxico PM2.5 + COVs)</text>
+    
+    <!-- Down arrow -->
+    <line x1="240" y1="110" x2="240" y2="135" stroke="#1e1b15" stroke-width="3"/>
+    
+    <!-- 2. Pre-Filter G4/F7 -->
+    <rect x="30" y="135" width="420" height="65" rx="6" fill="#ffffff" stroke="#8b8577" stroke-width="1.5"/>
+    <text x="240" y="160" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">2. Prefiltro G4 / F7 (Retiene 90% partículas grandes &gt; 10 μm)</text>
+    <text x="240" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Fibras sintéticas · Protege el filtro HEPA contra hollín y cenizas de madera</text>
+    
+    <!-- Down arrow -->
+    <line x1="240" y1="200" x2="240" y2="225" stroke="#1e1b15" stroke-width="3"/>
+    
+    <!-- 3. True HEPA H13/H14 -->
+    <rect x="30" y="225" width="420" height="65" rx="6" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="250" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">3. Filtro True HEPA H14 (Eficiencia 99.995% en 0.3 μm)</text>
+    <text x="240" y="270" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Microfibra de vidrio plisada · Atrapa micropartículas cancerígenas de humo</text>
+    
+    <!-- Down arrow -->
+    <line x1="240" y1="290" x2="240" y2="315" stroke="#1e1b15" stroke-width="3"/>
+    
+    <!-- 4. Activated Carbon Bed -->
+    <rect x="30" y="315" width="420" height="65" rx="6" fill="#151310" stroke="#adb5bd" stroke-width="1.5"/>
+    <text x="240" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#e4c07a" font-weight="bold">4. Lecho Grueso de Carbón Activado (4 - 8 kg)</text>
+    <text x="240" y="360" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#adb5bd">Adsorción química de COVs: formaldehído, acrílico PMMA, benceno</text>
+    
+    <!-- Down arrow -->
+    <line x1="240" y1="380" x2="240" y2="405" stroke="#1e1b15" stroke-width="3"/>
+    
+    <!-- 5. Inline Extractor Fan -->
+    <rect x="30" y="405" width="420" height="65" rx="6" fill="#eefaf0" stroke="#2b8a3e" stroke-width="1.5"/>
+    <text x="240" y="430" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">5. Extractor Centrífugo / Mixto en Línea (AC Infinity S6 / T6)</text>
+    <text x="240" y="450" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Presión estática &gt; 400 Pa · Caudal: <strong>200 - 400 CFM (340 - 680 m³/h)</strong></text>
+    
+    <text x="240" y="505" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">⚠ ¡PROHIBIDO cortar PVC o Vinilo! Genera gas cloro tóxico y ácido clorhídrico.</text>
+  </g>
+  
+  <!-- Right Side: Eye Safety & Optical Density -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#c92a2a" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#c92a2a" font-weight="bold">Seguridad Ocular y Densidad Óptica (OD)</text>
+    
+    <!-- OD Formula Box -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="430" height="105" rx="6" fill="#ffffff" stroke="#c92a2a" stroke-width="1.5"/>
+      <text x="215" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#c92a2a" font-weight="bold">Definición de Densidad Óptica (Optical Density):</text>
+      <text x="215" y="58" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#1e1b15">OD = -log₁₀( T_transmisión )</text>
+      <text x="215" y="85" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">OD 4 = Deja pasar 0.01% · OD 6 = Deja pasar 0.0001% (1 parte en un millón)</text>
+    </g>
+    
+    <!-- Laser Types Table -->
+    <g transform="translate(25, 175)">
+      <rect x="0" y="0" width="430" height="220" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Requisitos de Gafas Certificadas (EN 207 / ANSI Z136):</text>
+      
+      <text x="15" y="55" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0" font-weight="bold">1. Láser Diodo Azul (445 - 455 nm):</text>
+      <text x="25" y="73" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Requiere gafas de tinte ámbar/rojo con <strong>OD 6+ @ 400-470nm</strong>.</text>
+      
+      <text x="15" y="105" font-family="Inter, sans-serif" font-size="11" fill="#a97b23" font-weight="bold">2. Láser Fibra / Infrarrojo (1064 nm):</text>
+      <text x="25" y="123" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Invisible al ojo humano (reflejos fatales). Gafas <strong>OD 7+ @ 1064nm</strong>.</text>
+      
+      <text x="15" y="155" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">3. Láser CO2 (10.600 nm / 10.6 μm):</text>
+      <text x="25" y="173" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Bloqueado por policarbonato o vidrio estándar con <strong>OD 5+ @ 10600nm</strong>.</text>
+      
+      <text x="15" y="205" font-family="Inter, sans-serif" font-size="10" fill="#c92a2a">⚠ Las gafas verdes genéricas chinas que vienen de regalo NO están certificadas.</text>
+    </g>
+    
+    <!-- Air Assist & Fire Safety -->
+    <g transform="translate(25, 410)">
+      <rect x="0" y="0" width="430" height="110" rx="8" fill="#eefaf0" stroke="#2b8a3e" stroke-width="1"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Prevención de Incendios y Asistencia de Aire (Air Assist):</text>
+      <text x="15" y="48" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• Bomba de aire electromagnética (30 - 60 L/min) apaga la llama de corte.</text>
+      <text x="15" y="68" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• Sensor de llama óptico conectado a pin E-Stop del controlador GRBL.</text>
+      <text x="15" y="92" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">✓ Extintor de CO2 siempre accesible junto a la máquina.</text>
+    </g>
+  </g>
+</g>
+</svg>

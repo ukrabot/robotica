@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Circuito y principios de la soldadura por puntos para packs de baterías de litio">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Soldadura por Puntos (Spot Welding) para Baterías de Litio</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Física del calentamiento Joule (Q = I²·R·t), perfil de doble pulso y circuito equivalente</text>
+
+<!-- Left Card: Electrical Circuit -->
+<g transform="translate(60, 120)">
+  <rect x="0" y="0" width="520" height="580" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  <text x="260" y="38" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#2f6fb0" font-weight="bold">Circuito de Descarga Capacitiva / Supercaps</text>
+  
+  <!-- Power Source / Supercap bank -->
+  <rect x="40" y="80" width="130" height="100" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="2"/>
+  <text x="105" y="125" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">Banco Supercaps</text>
+  <text x="105" y="145" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#57534a">5.4V · 600 - 3000F</text>
+  <text x="105" y="162" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Corriente: 800 - 1500 A</text>
+  
+  <!-- High Power MOSFET Array -->
+  <rect x="220" y="80" width="130" height="100" rx="8" fill="#faf7f0" stroke="#a97b23" stroke-width="2"/>
+  <text x="285" y="125" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">Banco MOSFETs</text>
+  <text x="285" y="145" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#57534a">4 - 8x N-Ch (Rds &lt; 1mΩ)</text>
+  <text x="285" y="162" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0">Gate Driver Rápido</text>
+  
+  <!-- MCU Controller -->
+  <rect x="380" y="80" width="100" height="100" rx="8" fill="#f8f9fa" stroke="#8b8577" stroke-width="1.5"/>
+  <text x="430" y="125" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">MCU</text>
+  <text x="430" y="145" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Temporizador</text>
+  <text x="430" y="160" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Pulsos en ms</text>
+  
+  <!-- Connection Lines -->
+  <line x1="170" y1="130" x2="220" y2="130" stroke="#1e1b15" stroke-width="4"/>
+  <line x1="380" y1="130" x2="350" y2="130" stroke="#a97b23" stroke-width="2" stroke-dasharray="3"/>
+  
+  <!-- Electrodes and Cell Area -->
+  <g transform="translate(40, 220)">
+    <rect x="0" y="0" width="440" height="320" rx="10" fill="#faf7f0" stroke="#e4c07a" stroke-width="1"/>
+    <text x="220" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" fill="#1e1b15" font-weight="bold">Punto de Contacto y Resistencia de Interfaz</text>
+    
+    <!-- Welding Electrodes (Copper-Alumina) -->
+    <polygon points="160,50 180,50 173,150 167,150" fill="#d4af37" stroke="#1e1b15" stroke-width="1.5"/>
+    <polygon points="260,50 280,50 273,150 267,150" fill="#d4af37" stroke="#1e1b15" stroke-width="1.5"/>
+    <text x="140" y="90" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Electrodo 1 (+)</text>
+    <text x="290" y="90" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Electrodo 2 (-)</text>
+    
+    <!-- Nickel Strip -->
+    <rect x="120" y="150" width="200" height="16" rx="2" fill="#adb5bd" stroke="#495057" stroke-width="1"/>
+    <text x="330" y="163" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Cinta de Níquel Puro (0.15 - 0.20 mm)</text>
+    
+    <!-- Weld Spots / Nuggets -->
+    <circle cx="170" cy="166" r="6" fill="#c92a2a"/>
+    <circle cx="270" cy="166" r="6" fill="#c92a2a"/>
+    <text x="220" y="195" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">Fusión Joule localizada (1200°C en 5 - 20 ms)</text>
+    
+    <!-- Battery Top Cap -->
+    <rect x="100" y="166" width="240" height="50" rx="4" fill="#dee2e6" stroke="#495057" stroke-width="1.5"/>
+    <text x="220" y="200" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Terminal de Celda 18650 / 21700</text>
+    
+    <!-- Current Flow Arrow -->
+    <path d="M 170,170 Q 220,185 270,170" fill="none" stroke="#e03131" stroke-width="3" stroke-dasharray="4"/>
+    <text x="220" y="240" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#57534a">Cero transferencia térmica al separador interno (&lt; 40°C en cátodo)</text>
+  </g>
+</g>
+
+<!-- Right Card: Pulse Waveform & Comparison -->
+<g transform="translate(620, 120)">
+  <rect x="0" y="0" width="520" height="580" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  <text x="260" y="38" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#a97b23" font-weight="bold">Perfil de Pulso Doble (Dual Pulse Welding)</text>
+  
+  <!-- Waveform Graph -->
+  <g transform="translate(40, 70)">
+    <rect x="0" y="0" width="440" height="190" rx="8" fill="#151310"/>
+    
+    <!-- Grid lines -->
+    <line x1="40" y1="150" x2="400" y2="150" stroke="#343a40" stroke-width="1"/>
+    <line x1="40" y1="100" x2="400" y2="100" stroke="#343a40" stroke-width="1"/>
+    <line x1="40" y1="50" x2="400" y2="50" stroke="#343a40" stroke-width="1"/>
+    
+    <!-- Waveform line -->
+    <!-- Pre-pulse -->
+    <path d="M 40,150 L 70,150 L 75,90 L 105,90 L 110,150 L 150,150 L 155,35 L 235,35 L 240,150 L 380,150" 
+          fill="none" stroke="#e4c07a" stroke-width="3"/>
+          
+    <text x="90" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#e4c07a">Pulso 1 (Limpieza)</text>
+    <text x="90" y="170" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#adb5bd">2 - 5 ms</text>
+    
+    <text x="130" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#8b8577">Pausa</text>
+    <text x="130" y="170" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#adb5bd">5 - 10 ms</text>
+    
+    <text x="195" y="25" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#e4c07a" font-weight="bold">Pulso 2 (Soldadura Principal)</text>
+    <text x="195" y="170" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#adb5bd">10 - 25 ms (800-1200 A)</text>
+    
+    <text x="25" y="40" font-family="Inter, sans-serif" font-size="11" fill="#8b8577">I (A)</text>
+    <text x="390" y="170" font-family="Inter, sans-serif" font-size="11" fill="#8b8577">t (ms)</text>
+  </g>
+  
+  <!-- Comparison Section -->
+  <g transform="translate(40, 285)">
+    <text x="0" y="20" font-family="Inter, sans-serif" font-size="16" fill="#1e1b15" font-weight="bold">Níquel Puro vs Acero Niquelado</text>
+    
+    <rect x="0" y="35" width="440" height="100" rx="8" fill="#faf7f0" stroke="#c9c4b8" stroke-width="1"/>
+    <text x="15" y="60" font-family="Inter, sans-serif" font-size="13" fill="#2b8a3e" font-weight="bold">✓ Níquel Puro (Pure Nickel 99.6%):</text>
+    <text x="15" y="80" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Resistividad: 0.068 Ω·mm²/m · Soporta hasta 15A por tira de 0.15x8mm</text>
+    <text x="15" y="98" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Prueba: No se oxida en agua salada / corte con tijera no revela acero</text>
+    <text x="15" y="118" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Cero chispas durante la soldadura correcta</text>
+    
+    <rect x="0" y="145" width="440" height="95" rx="8" fill="#fff5f5" stroke="#ffc9c9" stroke-width="1"/>
+    <text x="15" y="170" font-family="Inter, sans-serif" font-size="13" fill="#c92a2a" font-weight="bold">✗ Acero Niquelado (Nickel-Plated Steel):</text>
+    <text x="15" y="190" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Resistividad 4x mayor · Se calienta peligrosamente a >5A</text>
+    <text x="15" y="208" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Prueba: Se oxida en 24h sumergido en solución salina</text>
+    <text x="15" y="226" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a">• Genera chispas excesivas y agujerea el terminal</text>
+  </g>
+</g>
+</svg>

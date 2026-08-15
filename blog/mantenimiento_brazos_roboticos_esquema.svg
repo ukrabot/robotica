@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Programa de mantenimiento preventivo y purga de grasa en reductores para brazos robóticos">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Programa de Mantenimiento Preventivo para Brazos Robóticos</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Calendario de inspección, purga de grasa Harmonic Drive, tensión de correas y baterías de encoder</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- 4 Maintenance Interval Cards -->
+  <!-- Daily / Weekly -->
+  <g transform="translate(30, 30)">
+    <rect x="0" y="0" width="235" height="540" rx="10" fill="#faf7f0" stroke="#8b8577" stroke-width="1.5"/>
+    <rect x="0" y="0" width="235" height="40" rx="10" fill="#8b8577"/>
+    <text x="117" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Diario / Semanal (100h)</text>
+    
+    <text x="12" y="65" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Inspección Visual &amp; Audio:</text>
+    <text x="12" y="88" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Detección de ruidos extraños o chirridos en articulaciones.</text>
+    <text x="12" y="125" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Estado del paquete de cables (Dress pack): desgaste por fricción.</text>
+    <text x="12" y="165" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Prueba de pulsadores de parada de emergencia (E-Stop).</text>
+    <text x="12" y="205" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Limpieza de filtros de aire del armario de control.</text>
+    
+    <rect x="10" y="420" width="215" height="105" rx="6" fill="#ffffff" stroke="#8b8577"/>
+    <text x="107" y="445" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Tiempo estimado:</text>
+    <text x="107" y="465" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">10 - 15 minutos</text>
+    <text x="107" y="495" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Realizado por el operador</text>
+  </g>
+  
+  <!-- 500 Hours -->
+  <g transform="translate(280, 30)">
+    <rect x="0" y="0" width="235" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="235" height="40" rx="10" fill="#2f6fb0"/>
+    <text x="117" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Trimestral (500h - 1000h)</text>
+    
+    <text x="12" y="65" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Mecánica &amp; Ajustes:</text>
+    <text x="12" y="88" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Medición de tensión de correas sincrónicas con frecuencímetro sónico.</text>
+    <text x="12" y="135" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Torque de apriete en tornillos estructurales con llave dinamométrica.</text>
+    <text x="12" y="185" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Verificación de holgura angular (Backlash) con comparador de carátula.</text>
+    <text x="12" y="235" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Inspección de fugas de aceite o grasa en sellos de articulación.</text>
+    
+    <rect x="10" y="420" width="215" height="105" rx="6" fill="#ffffff" stroke="#2f6fb0"/>
+    <text x="107" y="445" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Tiempo estimado:</text>
+    <text x="107" y="465" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">1.5 - 2 horas</text>
+    <text x="107" y="495" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Técnico de mantenimiento</text>
+  </g>
+  
+  <!-- 5000 Hours (Annual) -->
+  <g transform="translate(530, 30)">
+    <rect x="0" y="0" width="245" height="540" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <rect x="0" y="0" width="245" height="40" rx="10" fill="#a97b23"/>
+    <text x="122" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Anual (5000h) · Crítico</text>
+    
+    <text x="12" y="65" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Engrase y Baterías:</text>
+    <text x="12" y="88" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">1. Purga de Grasa en Reductores:</text>
+    <text x="12" y="108" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Usar grasa original: Harmonic Grease SK-1A / 4B00 / Molywhite.</text>
+    <text x="12" y="145" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Inyectar grasa fresca mientras se mueve el eje a baja velocidad hasta expulsar grasa degradada.</text>
+    
+    <text x="12" y="200" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">2. Baterías de Respaldo Encoder:</text>
+    <text x="12" y="220" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">¡Reemplazar con el robot ENCENDIDO!</text>
+    <text x="12" y="240" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Si se cambian apagado, se pierde el cero y requiere remastering completo.</text>
+    
+    <rect x="10" y="420" width="225" height="105" rx="6" fill="#ffffff" stroke="#a97b23"/>
+    <text x="112" y="445" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Tiempo estimado:</text>
+    <text x="112" y="465" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#a97b23" font-weight="bold">4 - 6 horas</text>
+    <text x="112" y="495" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Especialista certificado</text>
+  </g>
+  
+  <!-- Overhaul (10,000h - 20,000h) -->
+  <g transform="translate(790, 30)">
+    <rect x="0" y="0" width="260" height="540" rx="10" fill="#faf7f0" stroke="#c92a2a" stroke-width="1.5"/>
+    <rect x="0" y="0" width="260" height="40" rx="10" fill="#c92a2a"/>
+    <text x="130" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#ffffff" font-weight="bold">Overhaul General (15.000h)</text>
+    
+    <text x="12" y="65" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Revisión Mayor:</text>
+    <text x="12" y="88" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Prueba Megger de aislamiento de devanados de motor (&gt; 50 MΩ a 500V).</text>
+    <text x="12" y="135" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Reemplazo de correas dentadas aunque no muestren rotura.</text>
+    <text x="12" y="175" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Inspección de capacitores electrolíticos del bus DC en servodrives.</text>
+    <text x="12" y="215" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Termografía infrarroja bajo carga para detectar puntos calientes.</text>
+    <text x="12" y="260" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Re-calibración cinemática completa ISO 9283.</text>
+    
+    <rect x="10" y="420" width="240" height="105" rx="6" fill="#ffffff" stroke="#c92a2a"/>
+    <text x="120" y="445" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Resultado:</text>
+    <text x="120" y="468" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Extiende vida útil a &gt; 15 años</text>
+    <text x="120" y="495" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Cero paradas imprevistas</text>
+  </g>
+</g>
+</svg>

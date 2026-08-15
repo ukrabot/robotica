@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Pipeline de procesamiento de video en tiempo real de Frigate NVR en un Mini-PC">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Pipeline de Visión por Computadora con Frigate NVR en Mini-PC</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Ingesta RTSP con go2rtc, decodificación por hardware (VA-API/NVDEC) e inferencia en Coral TPU / OpenVINO</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Flow diagram -->
+  <!-- Step 1: Cameras -->
+  <g transform="translate(30, 40)">
+    <rect x="0" y="0" width="180" height="220" rx="8" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="90" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#a97b23" font-weight="bold">Cámaras IP RTSP</text>
+    
+    <rect x="15" y="55" width="150" height="65" rx="5" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="25" y="75" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Sub-Stream (Detección)</text>
+    <text x="25" y="93" font-family="Inter, sans-serif" font-size="10" fill="#57534a">720p / 5-10 FPS</text>
+    <text x="25" y="108" font-family="Inter, sans-serif" font-size="10" fill="#2b8a3e">Bajo consumo de red</text>
+    
+    <rect x="15" y="135" width="150" height="65" rx="5" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="25" y="155" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Main-Stream (Grabación)</text>
+    <text x="25" y="173" font-family="Inter, sans-serif" font-size="10" fill="#57534a">4K / 1080p / 25 FPS</text>
+    <text x="25" y="188" font-family="Inter, sans-serif" font-size="10" fill="#2f6fb0">Alta calidad de video</text>
+  </g>
+  <line x1="210" y1="150" x2="250" y2="150" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="250,145 260,150 250,155" fill="#1e1b15"/>
+  
+  <!-- Step 2: go2rtc & Hardware Decode -->
+  <g transform="translate(260, 40)">
+    <rect x="0" y="0" width="220" height="220" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="110" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">go2rtc &amp; Hardware Decode</text>
+    
+    <rect x="15" y="55" width="190" height="70" rx="5" fill="#ffffff" stroke="#2f6fb0"/>
+    <text x="25" y="75" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Aceleración GPU / iGPU:</text>
+    <text x="25" y="93" font-family="Inter, sans-serif" font-size="10" fill="#57534a">• Intel QuickSync (VA-API / QSV)</text>
+    <text x="25" y="110" font-family="Inter, sans-serif" font-size="10" fill="#57534a">• NVIDIA NVDEC / RK3588 MPP</text>
+    
+    <text x="110" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Cero Carga en CPU (&lt; 5%)</text>
+    <text x="110" y="175" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Re-stream WebRTC sub-100ms</text>
+    <text x="110" y="195" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#57534a">H.264 / H.265 decodificado</text>
+  </g>
+  <line x1="480" y1="150" x2="520" y2="150" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="520,145 530,150 520,155" fill="#1e1b15"/>
+  
+  <!-- Step 3: Motion Detection (CPU) -->
+  <g transform="translate(530, 40)">
+    <rect x="0" y="0" width="220" height="220" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="110" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Detección de Movimiento</text>
+    
+    <text x="15" y="65" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Algoritmo de diferencia de cuadros</text>
+    <text x="15" y="85" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Máscaras de movimiento (Motion Masks)</text>
+    <text x="15" y="105" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Zonas poligonales activas</text>
+    
+    <rect x="15" y="130" width="190" height="75" rx="5" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="25" y="150" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0" font-weight="bold">Filtrado Inteligente:</text>
+    <text x="25" y="168" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Solo recorta la región con movimiento</text>
+    <text x="25" y="185" font-family="Inter, sans-serif" font-size="10" fill="#2b8a3e">Ahorra 90% de inferencias IA</text>
+  </g>
+  <line x1="750" y1="150" x2="790" y2="150" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="790,145 800,150 790,155" fill="#1e1b15"/>
+  
+  <!-- Step 4: AI Detector (Coral TPU / OpenVINO) -->
+  <g transform="translate(800, 40)">
+    <rect x="0" y="0" width="250" height="220" rx="8" fill="#eefaf0" stroke="#2b8a3e" stroke-width="1.5"/>
+    <text x="125" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#2b8a3e" font-weight="bold">Detector IA (Google Coral / NPU)</text>
+    
+    <rect x="15" y="55" width="220" height="70" rx="5" fill="#ffffff" stroke="#2b8a3e"/>
+    <text x="25" y="75" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Hardware Detector:</text>
+    <text x="25" y="93" font-family="Inter, sans-serif" font-size="10" fill="#57534a">• Coral TPU USB / M.2 PCIe (4 TOPS)</text>
+    <text x="25" y="110" font-family="Inter, sans-serif" font-size="10" fill="#57534a">• Intel OpenVINO (iGPU / NPU N100)</text>
+    
+    <text x="125" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Latencia de Inferencia: <strong>6 - 9 ms</strong></text>
+    <text x="125" y="175" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Clasificación de Objetos:</text>
+    <text x="125" y="195" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#2b8a3e">persona · vehículo · perro · bicicleta</text>
+  </g>
+  
+  <!-- Down Arrow to Events & Home Assistant -->
+  <line x1="925" y1="260" x2="925" y2="300" stroke="#1e1b15" stroke-width="3"/>
+  <polygon points="920,300 925,310 930,300" fill="#1e1b15"/>
+  
+  <!-- Bottom: Integration with Home Assistant & Storage -->
+  <g transform="translate(30, 310)">
+    <rect x="0" y="0" width="1020" height="250" rx="10" fill="#faf7f0" stroke="#c9c4b8" stroke-width="1.5"/>
+    <text x="510" y="30" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#1e1b15" font-weight="bold">Integración MQTT con Home Assistant y Grabación en NVMe</text>
+    
+    <g transform="translate(30, 50)">
+      <rect x="0" y="0" width="450" height="170" rx="8" fill="#ffffff" stroke="#2f6fb0"/>
+      <text x="20" y="25" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">Mensajes MQTT en Tiempo Real:</text>
+      <text x="20" y="55" font-family="ui-monospace, monospace" font-size="11" fill="#1e1b15">frigate/events → JSON con coordenadas y score</text>
+      <text x="20" y="80" font-family="ui-monospace, monospace" font-size="11" fill="#1e1b15">frigate/camera_1/person/snapshot → Imagen JPG</text>
+      <text x="20" y="110" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Dispara automatizaciones instantáneas (Luces / Alarmas)</text>
+      <text x="20" y="130" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Notificaciones push enriquecidas en smartphone con clip MP4</text>
+      <text x="20" y="150" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">✓ Cero falsas alarmas por lluvia, sombras o insectos</text>
+    </g>
+    
+    <g transform="translate(520, 50)">
+      <rect x="0" y="0" width="470" height="170" rx="8" fill="#ffffff" stroke="#2b8a3e"/>
+      <text x="20" y="25" font-family="Inter, sans-serif" font-size="13" fill="#2b8a3e" font-weight="bold">Hardware Recomendado para 4 - 8 Cámaras:</text>
+      <text x="20" y="55" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Mini-PC:</strong> Intel N100 / Core i3-1215U / Ryzen 5500U</text>
+      <text x="20" y="80" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>RAM:</strong> 16 GB DDR4/DDR5</text>
+      <text x="20" y="105" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Acelerador:</strong> Google Coral M.2 / Dual Edge TPU</text>
+      <text x="20" y="130" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Almacenamiento:</strong> SSD NVMe 1TB (Clips) + HDD Externo (Grabación 24/7)</text>
+      <text x="20" y="155" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Consumo eléctrico total: <strong>12 - 18 Watts</strong></text>
+    </g>
+  </g>
+</g>
+</svg>

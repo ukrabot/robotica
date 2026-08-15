@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cómo Elegir Celdas 18650 y 21700 sin Caer en Falsificaciones</title>
+<meta name="description" content="Aprende a elegir celdas 18650 y 21700 originales de alta descarga sin caer en estafas: marcas de terminales, pruebas de resistencia interna AC (YR1035+), capacidad real y códigos matriz.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/como-elegir-celdas-18650-y-21700-sin-caer-en-falsificaciones">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo Elegir Celdas 18650 y 21700 sin Caer en Falsificaciones">
+<meta property="og:description" content="Aprende a elegir celdas 18650 y 21700 originales de alta descarga sin caer en estafas: marcas de terminales, pruebas de resistencia interna AC (YR1035+), capacidad real y códigos matriz.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/celdas_18650_21700_esquema.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/como-elegir-celdas-18650-y-21700-sin-caer-en-falsificaciones">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cómo Elegir Celdas 18650 y 21700 sin Caer en Falsificaciones">
+<meta name="twitter:description" content="Aprende a elegir celdas 18650 y 21700 originales de alta descarga sin caer en estafas: marcas de terminales, pruebas de resistencia interna AC (YR1035+), capacidad real y códigos matriz.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/celdas_18650_21700_esquema.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Cómo Elegir Celdas 18650 y 21700 sin Caer en Falsificaciones",
+  "description": "Aprende a elegir celdas 18650 y 21700 originales de alta descarga sin caer en estafas: marcas de terminales, pruebas de resistencia interna AC (YR1035+), capacidad real y códigos matriz.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/como-elegir-celdas-18650-y-21700-sin-caer-en-falsificaciones"
+  },
+  "image": "https://www.ukrabot.cl/blog/celdas_18650_21700_esquema.svg",
+  "proficiencyLevel": "Intermedio - Avanzado",
+  "dependencies": "Medidor de resistencia interna AC (tipo YR1030/YR1035+), cargador analizador o carga electrónica (DL24/EBC-A20), calibre digital, balanza de precisión 0.1g",
+  "wordCount": "3350",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Cómo Elegir Celdas 18650 y 21700 sin Caer en Falsificaciones",
+      "item": "https://www.ukrabot.cl/blog/como-elegir-celdas-18650-y-21700-sin-caer-en-falsificaciones"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Existen celdas 18650 reales de 5000 mAh o 9000 mAh?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El límite físico y electroquímico actual para el volumen de una celda cilíndrica 18650 es de aproximadamente 3.500 a 3.600 mAh (logrado por celdas como la Sanyo NCR18650GA o LG MJ1). Cualquier celda 18650 que prometa 4.000, 6.000 o 9.900 mAh es una falsificación descarada que en pruebas de laboratorio suele tener menos de 800 mAh y alta resistencia interna."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo medir la resistencia interna de una celda con un multímetro normal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Los multímetros convencionales miden resistencia inyectando corriente continua sobre componentes pasivos. En una celda con voltaje activo, esto genera lecturas totalmente falsas. Se requiere un medidor de miliohmios AC a 1 kHz de cuatro hilos (método Kelvin), como el YR1030 o YR1035+."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué una celda falsificada se calienta tanto al usarla?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque las celdas falsas provienen de químicas de baja potencia o celdas degradadas con una resistencia interna muy alta (por ejemplo, 40-80 mΩ en lugar de 10-14 mΩ). Según la ley de Joule (Potencia térmica = I² · R), a una corriente de descarga de 15 A, una celda de 60 mΩ disipa 13.5 W de calor puro en su interior, provocando un rápido sobrecalentamiento y peligro de explosión."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué significa que una celda sea Grado A, B o C?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Las celdas Grado A cumplen 100% las especificaciones de capacidad, resistencia interna y aspecto cosmético del datasheet oficial. Las Grado B presentan pequeñas desviaciones de capacidad (90-95%) o mayor impedancia y son descartadas para autos eléctricos pero vendidas para almacenamiento solar. Las Grado C o recicladas son celdas con fallas severas que nunca deben usarse en vehículos ni herramientas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia hay entre química ICR, INR e IMR?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ICR utiliza óxido de cobalto y tiene alta capacidad pero baja tolerancia a corriente y menor estabilidad térmica. IMR utiliza óxido de manganeso, ofreciendo alta corriente y gran seguridad química. INR (la más usada hoy por Samsung y Molicel) combina níquel, manganeso y cobalto (NMC), logrando el balance ideal entre alta densidad energética, gran capacidad de descarga continua y excelente seguridad."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:50vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:90px 24px 60px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(1.9rem,5.5vw,3.8rem);line-height:1.15;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:1.9rem;font-weight:400;line-height:1.2;margin:54px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:70px 20px 40px}
+  .article-body h2{font-size:1.55rem;margin:40px 0 14px}
+  .article-body{padding-top:44px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:55vh}
+  .hero-inner{padding:60px 16px 35px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="celdas_18650_21700_esquema.svg" alt="Cómo Elegir Celdas 18650 y 21700 sin Caer en Falsificaciones" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Baterías y Reparación Electrónica · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Cómo Elegir Celdas 18650 y 21700 sin Caer en Falsificaciones</h1>
+    <p>Guía técnica definitiva para identificar celdas de litio auténticas (Samsung, LG, Sony/Murata, Molicel, Panasonic), inspección de válvula CID, medición de resistencia AC a 1 kHz con medidor de 4 hilos y pruebas de capacidad real.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 19 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="celdas_18650_21700_esquema.svg" alt="Puntos clave de inspección física y eléctrica en formatos 18650 y 21700 para descartar celdas falsas o recicladas." loading="lazy">
+  <div class="caption">Puntos clave de inspección física y eléctrica en formatos 18650 y 21700 para descartar celdas falsas o recicladas.</div>
+</div>
+
+<nav class="toc" aria-label="Índice del contenido">
+  <h2>Contenido de la guía</h2>
+  <ol>
+    <li><a href="#panorama-falsificaciones">El mercado de celdas de litio y la epidemia de clones</a></li>
+<li><a href="#marcas-modelos-referencia">Modelos Tier 1 auténticos y sus especificaciones reales</a></li>
+<li><a href="#inspeccion-visual">Protocolo de inspección visual: terminales, CID y matriz</a></li>
+<li><a href="#medicion-resistencia-ac">Prueba reina: medición de resistencia interna AC a 1 kHz</a></li>
+<li><a href="#prueba-capacidad-coulomb">Prueba de ciclado y capacidad real bajo carga electrónica</a></li>
+<li><a href="#donde-comprar-seguro">Proveedores confiables y reglas de compra seguras</a></li>
+<li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+
+<section id="panorama-falsificaciones">
+<h2>El mercado de celdas de litio y la epidemia de clones</h2>
+
+<p>El mercado de celdas de iones de litio en formatos cilíndricos <strong>18650</strong> (18 mm × 65 mm) y <strong>21700</strong> (21 mm × 70 mm) es uno de los terrenos más propensos al fraude en la electrónica de potencia. La razón es puramente económica: los fabricantes de primer nivel (Tier 1) —como <strong>Samsung SDI, LG Energy Solution, Murata/Sony, Panasonic/Sanyo y Molicel</strong>— no venden sus celdas directamente al consumidor final en empaques minoristas; su modelo de negocio está orientado exclusivamente a fabricantes OEM (automoción, herramientas industriales de DeWalt, Milwaukee, Bosch, y dispositivos médicos).</p>
+<p>Esto genera un mercado secundario donde distribuidores no autorizados compran lotes descartados de líneas de producción (Grado B o C), celdas recuperadas de packs usados de scooters o servidores, o directamente celdas genéricas chinas de bajísimo costo (con químicas de baja corriente como ICR) a las que les retiran el termorretráctil (re-wrapping) y les imprimen logotipos falsificados de modelos codiciados como la <em>Samsung 30Q, Sony VTC6, Samsung 40T o Molicel P42A</em>.</p>
+<div class="warning"><strong>Peligro térmico y de seguridad:</strong> Usar una celda falsificada de baja descarga (capaz de entregar solo 3 A a 5 A) en una herramienta eléctrica o vehículo ligero que demanda 20 A a 30 A provocará una caída severa de voltaje (voltage sag), sobrecalentamiento extremo por encima de 80 °C y, en el peor de los casos, la apertura violenta de la válvula de ventilación o una <strong>fuga térmica incontrolada (thermal runaway)</strong> con emisión de llamas y gases tóxicos.</div>
+
+</section>
+<section id="marcas-modelos-referencia">
+<h2>Modelos Tier 1 auténticos y sus especificaciones reales</h2>
+
+<p>Para no ser víctima de una estafa, el primer paso es conocer los límites físicos de la tecnología de iones de litio. Cualquier celda 18650 que declare una capacidad superior a <strong>3.600 mAh</strong> es 100% falsa (como las míticas celdas "Ultrafire 9900mAh"). En el formato 21700, el límite físico actual de la química NMC/NCA en producción masiva ronda los <strong>5.000 a 5.800 mAh</strong>.</p>
+<p>A continuación se detallan los modelos genuinos más populares y sus parámetros de hoja de datos oficial:</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Formato</th>
+<th>Fabricante / Modelo</th>
+<th>Química</th>
+<th>Capacidad Nominal</th>
+<th>Descarga Continua (CDR)</th>
+<th>Resistencia AC (1 kHz)</th>
+<th>Peso Típico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>18650</td>
+<td>Samsung INR18650-30Q</td>
+<td>INR (NMC)</td>
+<td>3.000 mAh</td>
+<td>15 A (20 A con corte 80°C)</td>
+<td>11 - 14 mΩ</td>
+<td>45.6 ± 0.5 g</td>
+</tr>
+<tr>
+<td>18650</td>
+<td>Sony / Murata US18650VTC6</td>
+<td>NMC</td>
+<td>3.000 mAh</td>
+<td>15 A (30 A con corte 80°C)</td>
+<td>10 - 13 mΩ</td>
+<td>46.8 ± 0.5 g</td>
+</tr>
+<tr>
+<td>18650</td>
+<td>Molicel INR-18650-P28A</td>
+<td>NMC</td>
+<td>2.800 mAh</td>
+<td>35 A continuos</td>
+<td>11 - 13 mΩ</td>
+<td>46.0 ± 0.5 g</td>
+</tr>
+<tr>
+<td>18650</td>
+<td>Sanyo/Panasonic NCR18650GA</td>
+<td>NCA (Energía)</td>
+<td>3.500 mAh</td>
+<td>10 A continuos</td>
+<td>20 - 24 mΩ</td>
+<td>47.5 ± 0.5 g</td>
+</tr>
+<tr>
+<td>21700</td>
+<td>Samsung INR21700-40T</td>
+<td>NMC</td>
+<td>4.000 mAh</td>
+<td>35 A (45 A con corte 80°C)</td>
+<td>9 - 12 mΩ</td>
+<td>70.0 ± 1.0 g</td>
+</tr>
+<tr>
+<td>21700</td>
+<td>Molicel INR-21700-P42A</td>
+<td>NMC</td>
+<td>4.200 mAh</td>
+<td>45 A continuos</td>
+<td>8 - 11 mΩ</td>
+<td>68.0 ± 1.0 g</td>
+</tr>
+<tr>
+<td>21700</td>
+<td>Molicel INR-21700-P45B</td>
+<td>NMC Ultrapower</td>
+<td>4.500 mAh</td>
+<td>50 A continuos</td>
+<td>6.5 - 8.5 mΩ</td>
+<td>70.0 ± 0.5 g</td>
+</tr>
+<tr>
+<td>21700</td>
+<td>Samsung INR21700-50S</td>
+<td>NMC Alta Pot/Cap</td>
+<td>5.000 mAh</td>
+<td>25 A continuos</td>
+<td>11 - 14 mΩ</td>
+<td>71.5 ± 0.5 g</td>
+</tr>
+<tr>
+<td>21700</td>
+<td>LG INR21700-M50LT</td>
+<td>NMC (Energía)</td>
+<td>5.000 mAh</td>
+<td>14.4 A continuos</td>
+<td>22 - 26 mΩ</td>
+<td>69.0 ± 1.0 g</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>Regla clave de diseño:</strong> No existe una celda que combine simultáneamente la máxima capacidad energética y la máxima corriente de descarga. Una celda optimizada para alta descarga (como Molicel P45B o Samsung 40T) utiliza láminas de electrodo más delgadas y mayor superficie activa, lo que reduce la resistencia interna a expensas de la capacidad volumétrica total.</div>
+
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="inspeccion-visual">
+<h2>Protocolo de inspección visual: terminales, CID y matriz</h2>
+
+<p>Antes de aplicar cualquier instrumento de medición eléctrica, una inspección óptica minuciosa bajo lupa o microscopio revela el 80% de las falsificaciones comunes:</p>
+<h3>1. Diseño del terminal positivo (Top Cap) y válvula CID</h3>
+<p>El polo positivo no es una simple tapa metálica: aloja el <strong>Current Interrupt Device (CID)</strong> y el respiradero de seguridad (PTC / Vent). Cada fabricante industrial utiliza un troquelado característico imposible de replicar por falsificadores de bajo presupuesto:</p>
+<ul>
+  <li><strong>Samsung SDI:</strong> Posee 3 o 4 patas de soporte redondeadas y una válvula de tres aperturas simétricas. La superficie superior es mate y ligeramente cóncava.</li>
+  <li><strong>Sony / Murata (Serie VTC):</strong> Presenta 4 patas planas y simétricas en forma de cruz con respiraderos amplios y un anillo aislante verde o negro característico debajo de la tapa.</li>
+  <li><strong>Panasonic / Sanyo:</strong> Presenta 3 aperturas alargadas y un domo positivo plano con borde biselado muy marcado.</li>
+  <li><strong>Falsificaciones comunes:</strong> Tienen 5 patas genéricas de ferretería, aperturas mal cortadas con rebabas de troquelado o tapas completamente lisas sin válvula de sobrepresión interna.</li>
+</ul>
+
+<h3>2. Grabado láser original en el tubo metálico vs. termoimpresión exterior</h3>
+<p>Los fabricantes legítimos graban códigos de trazabilidad mediante láser directamente sobre el <strong>acero de la carcasa cilíndrica interna</strong>, los cuales se traslucen débilmente a través del plástico termoencogible exterior. Las fábricas de re-envoltorio colocan impresiones de inyección de tinta borrosas en el plástico externo para tapar las marcas de celdas chinas recicladas de marcas como BAK, Lishen o EVE.</p>
+
+<h3>3. Detección de celdas recicladas (Reclaimed / Salvaged)</h3>
+<p>Muchas celdas vendidas como "nuevas grado A" provienen en realidad de paquetes de baterías desechados de monopatines o vehículos de prueba. Para identificarlas:</p>
+<ul>
+  <li><strong>Marcas de desoldadura:</strong> Puntos de soldadura por puntos lijados en los polos positivo y negativo. Si el metal presenta rayaduras circulares de amolado o restos microscópicos de cinta de níquel, la celda es usada.</li>
+  <li><strong>Anillo aislante PET deteriorado:</strong> El anillo blanco o negro que rodea el polo positivo debe estar impecable, sin deformaciones térmicas ni manchas de pegamento oxidado.</li>
+  <li><strong>Óxido en la ranura de engarce:</strong> La junta tórica que sella el cátodo contra el cuerpo del ánodo no debe presentar ningún residuo de electrolito cristalizado ni puntos de óxido marrón.</li>
+</ul>
+
+</section>
+<section id="medicion-resistencia-ac">
+<h2>Prueba reina: medición de resistencia interna AC a 1 kHz</h2>
+
+<p>La resistencia interna es la huella digital indiscutible de una celda de litio. Un multímetro convencional en escala de ohmios <strong>NO puede medir la resistencia interna de una batería</strong> porque aplica una corriente DC que se superpone al voltaje de la propia celda, dañando el multímetro o entregando lecturas disparatadas.</p>
+<p>El método estándar industrial (definido en IEC 61960) exige medir la <strong>impedancia AC a 1 kHz mediante una conexión Kelvin de 4 hilos</strong> (dos hilos inyectan una corriente alterna sinusoidal de 1 kHz de baja amplitud y otros dos hilos miden la caída de tensión en microvoltios sin verse afectados por la resistencia de los cables de prueba).</p>
+<div class="note"><strong>Instrumento recomendado:</strong> El comprobador <strong>YR1030 o YR1035+</strong> (o un analizador de impedancia de banco como Hioki 3561) es la herramienta fundamental del taller de baterías. Cuesta entre $35 y $55 USD y mide simultáneamente voltaje con 4 dígitos y resistencia interna en miliohmios (mΩ) con resolución de 0.01 mΩ.</div>
+<h3>Criterio de evaluación inmediata:</h3>
+<ul>
+  <li>Si compraste una supuesta <strong>Sony VTC6 (15-30A)</strong> y tu medidor YR1035+ marca <strong>32.5 mΩ</strong> en lugar de los <strong>11.5 mΩ ± 1.5 mΩ</strong> de la hoja de datos, te han vendido una celda barata de laptop (capacidad de solo 5 A de descarga).</li>
+  <li>Si compraste una <strong>Samsung 40T 21700</strong> y mide <strong>28 mΩ</strong> en lugar de <strong>10.5 mΩ</strong>, colapsará instantáneamente si le exiges potencia en tu bicicleta o taladro.</li>
+</ul>
+
+</section>
+<section id="prueba-capacidad-coulomb">
+<h2>Prueba de ciclado y capacidad real bajo carga electrónica</h2>
+
+<p>Una vez verificada la resistencia interna, el paso final del protocolo de homologación es una prueba de descarga a corriente constante (CC) mediante una carga electrónica programable (como la <em>ZKETECH EBC-A20 o Atorch DL24</em>):</p>
+<ol>
+  <li><strong>Carga completa CC/CV:</strong> Cargar la celda a 0.5C hasta 4.20 V con corriente de corte a 0.05C (temperatura ambiente de 23 °C ± 2 °C).</li>
+  <li><strong>Período de reposo (Resting):</strong> Dejar reposar la celda durante 60 minutos para que el voltaje electroquímico se estabilice en circuito abierto (OCV).</li>
+  <li><strong>Descarga estándar a 0.2C (0.6 A para 3000 mAh):</strong> Descargar hasta el voltaje de corte oficial del fabricante (típicamente 2.50 V para Samsung/LG/Sony). El contador de culombios integrado debe registrar entre el <strong>97% y el 102%</strong> de la capacidad nominal declarada.</li>
+  <li><strong>Prueba de potencia a alta corriente (10 A a 20 A):</strong> Monitorear la temperatura con termopar o cámara térmica. La temperatura superficial no debe exceder los 65 °C durante una descarga continua a 15 A.</li>
+</ol>
+<pre><code># Cálculo de energía real entregada y eficiencia energética en Python:
+def calcular_eficiencia_celda(v_nominal, capacidad_mah, wh_medidos):
+    energia_teorica_wh = (v_nominal * capacidad_mah) / 1000.0
+    eficiencia = (wh_medidos / energia_teorica_wh) * 100.0
+    return energia_teorica_wh, eficiencia
+
+# Ejemplo Samsung 30Q (3.6V nominal, 3000 mAh, descarga 10A -> 9.85 Wh medidos)
+e_teorica, ef = calcular_eficiencia_celda(3.6, 3000, 9.85)
+print(f"Energía Teórica: {e_teorica:.2f} Wh | Eficiencia Real: {ef:.1f}%")
+# Salida: Energía Teórica: 10.80 Wh | Eficiencia Real: 91.2% (Caída por efecto Joule R*I^2)
+</code></pre>
+
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="donde-comprar-seguro">
+<h2>Proveedores confiables y reglas de compra seguras</h2>
+
+<p>Para evitar dolores de cabeza y riesgos de incendio, sigue estas tres reglas de adquisición:</p>
+<ul>
+  <li><strong>Desconfía de Marketplaces no especializados:</strong> Comprar celdas 18650 o 21700 en AliExpress, Wish, eBay o vendedores genéricos de MercadoLibre sin certificación técnica garantiza en un 90% recibir celdas re-etiquetadas o recicladas.</li>
+  <li><strong>Compra en distribuidores autorizados con reportes de lote:</strong> En Europa y América existen distribuidores de prestigio que publican pruebas de laboratorio independientes de cada lote recibido, como <em>NKON (Países Bajos), 18650BatteryStore, Liion Wholesale e IMRBatteries (EE.UU.)</em>.</li>
+  <li><strong>Exige factura con número de lote (Batch Code):</strong> Los vendedores industriales serios pueden facilitarte la fecha de fabricación decodificada en el código matriz (las celdas no deben tener más de 12 a 18 meses de almacenamiento previo).</li>
+</ul>
+
+</section>
+
+
+<section class="faq" id="faq" aria-label="Preguntas frecuentes">
+<h2>Preguntas Frecuentes</h2>
+<div class="faq">
+<details><summary>¿Existen celdas 18650 reales de 5000 mAh o 9000 mAh?</summary><p>No. El límite físico y electroquímico actual para el volumen de una celda cilíndrica 18650 es de aproximadamente 3.500 a 3.600 mAh (logrado por celdas como la Sanyo NCR18650GA o LG MJ1). Cualquier celda 18650 que prometa 4.000, 6.000 o 9.900 mAh es una falsificación descarada que en pruebas de laboratorio suele tener menos de 800 mAh y alta resistencia interna.</p></details>
+<details><summary>¿Puedo medir la resistencia interna de una celda con un multímetro normal?</summary><p>No. Los multímetros convencionales miden resistencia inyectando corriente continua sobre componentes pasivos. En una celda con voltaje activo, esto genera lecturas totalmente falsas. Se requiere un medidor de miliohmios AC a 1 kHz de cuatro hilos (método Kelvin), como el YR1030 o YR1035+.</p></details>
+<details><summary>¿Por qué una celda falsificada se calienta tanto al usarla?</summary><p>Porque las celdas falsas provienen de químicas de baja potencia o celdas degradadas con una resistencia interna muy alta (por ejemplo, 40-80 mΩ en lugar de 10-14 mΩ). Según la ley de Joule (Potencia térmica = I² · R), a una corriente de descarga de 15 A, una celda de 60 mΩ disipa 13.5 W de calor puro en su interior, provocando un rápido sobrecalentamiento y peligro de explosión.</p></details>
+<details><summary>¿Qué significa que una celda sea Grado A, B o C?</summary><p>Las celdas Grado A cumplen 100% las especificaciones de capacidad, resistencia interna y aspecto cosmético del datasheet oficial. Las Grado B presentan pequeñas desviaciones de capacidad (90-95%) o mayor impedancia y son descartadas para autos eléctricos pero vendidas para almacenamiento solar. Las Grado C o recicladas son celdas con fallas severas que nunca deben usarse en vehículos ni herramientas.</p></details>
+<details><summary>¿Qué diferencia hay entre química ICR, INR e IMR?</summary><p>ICR utiliza óxido de cobalto y tiene alta capacidad pero baja tolerancia a corriente y menor estabilidad térmica. IMR utiliza óxido de manganeso, ofreciendo alta corriente y gran seguridad química. INR (la más usada hoy por Samsung y Molicel) combina níquel, manganeso y cobalto (NMC), logrando el balance ideal entre alta densidad energética, gran capacidad de descarga continua y excelente seguridad.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
+
+<div class="cta">
+  <h3>Continúa explorando tutoriales técnicos</h3>
+  <p>Aprende también cómo soldar tus celdas de forma segura en nuestra guía de soldadura por puntos con spot welder.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/baterias-li-ion-21700-samsung-40t-potencia-para-maker">← Baterías Li-Ion 21700 Samsung 40T</a>
+  <a href="/blog/soldadura-por-puntos-guia-de-compra-y-uso-del-spot-welder">Soldadura por Puntos: Guía de Compra y Uso del Spot Welder →</a>
+</div>
+
+</article>
+
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Hojas de datos oficiales, estándares internacionales de ingeniería y documentación técnica citada en este artículo.</p>
+<ul>
+<li><a href="https://www.samsungsdi.com/" target="_blank" rel="noopener noreferrer">Samsung SDI — Official Technical Datasheet INR18650-30Q & INR21700-40T</a></li>
+<li><a href="https://www.murata.com/" target="_blank" rel="noopener noreferrer">Murata Manufacturing — Technical Specification US18650VTC6 Lithium-Ion Secondary Battery</a></li>
+<li><a href="https://www.molicel.com/" target="_blank" rel="noopener noreferrer">E-One Moli Energy (Molicel) — Ultra-High Power Cell Series P42A/P45B Data</a></li>
+<li><a href="https://webstore.iec.ch/publication/60555" target="_blank" rel="noopener noreferrer">IEC 61960-3 — Secondary cells and batteries containing alkaline or other non-acid electrolytes</a></li>
+<li><a href="https://batteryuniversity.com/" target="_blank" rel="noopener noreferrer">Battery University — BU-302: Series and Parallel Battery Configurations & Internal Resistance</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

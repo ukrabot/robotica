@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Framework ROS 2 Control para Brazos Robóticos</title>
+<meta name="description" content="Aprende a implementar ros2_control en brazos robóticos: arquitectura HardwareInterface en C++, integración con MoveIt 2, buses CAN/EtherCAT y RTOS.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/framework-ros-2-control-para-brazos-roboticos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Framework ROS 2 Control para Brazos Robóticos">
+<meta property="og:description" content="Aprende a implementar ros2_control en brazos robóticos: arquitectura HardwareInterface en C++, integración con MoveIt 2, buses CAN/EtherCAT y RTOS.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/ros2_control_brazo_esquema.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/framework-ros-2-control-para-brazos-roboticos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Framework ROS 2 Control para Brazos Robóticos">
+<meta name="twitter:description" content="Aprende a implementar ros2_control en brazos robóticos: arquitectura HardwareInterface en C++, integración con MoveIt 2, buses CAN/EtherCAT y RTOS.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/ros2_control_brazo_esquema.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Framework ROS 2 Control para Brazos Robóticos",
+  "description": "Aprende a implementar ros2_control en brazos robóticos: arquitectura HardwareInterface en C++, integración con MoveIt 2, buses CAN/EtherCAT y RTOS.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/framework-ros-2-control-para-brazos-roboticos"
+  },
+  "image": "https://www.ukrabot.cl/blog/ros2_control_brazo_esquema.svg",
+  "proficiencyLevel": "Avanzado",
+  "dependencies": "ROS 2 Humble / Iron / Jazzy en Ubuntu 22.04 / 24.04 LTS, entorno de compilación colcon, conocimientos sólidos de C++ moderno (C++17)",
+  "wordCount": "3550",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Framework ROS 2 Control para Brazos Robóticos",
+      "item": "https://www.ukrabot.cl/blog/framework-ros-2-control-para-brazos-roboticos"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuál es la diferencia entre SystemInterface y ActuatorInterface en ros2_control?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SystemInterface se utiliza para sistemas multieje acoplados (como un brazo robótico de 6 ejes completo) donde múltiples articulaciones se leen y escriben a través de un único bus de comunicación. ActuatorInterface se usa para un motor modular individual independiente (por ejemplo, una rueda de tracción o una pinza monocanal)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar ros2_control con microcontroladores Arduino o ESP32?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, a través de dos métodos: implementando un protocolo de comunicación serie binario rápido en C++ dentro de tu HardwareInterface personalizado, o utilizando micro-ROS ejecutándose en el ESP32 para exportar directamente las interfaces de hardware a través de la red WiFi o USB."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué el comando ros2 control list_hardware_interfaces muestra interfaces no disponibles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Generalmente ocurre porque el componente de hardware no ha sido activado por el Controller Manager o falló durante el método `on_activate()`. Verifica que el nodo `ros2_control_node` esté ejecutándose y que no existan errores de comunicación en el log de la terminal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué función cumple joint_state_broadcaster?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es un controlador de lectura pasiva que toma las `state_interfaces` (posición, velocidad y esfuerzo) de todos los actuadores registrados y las publica periódicamente como un mensaje `sensor_msgs/msg/JointState` en el tópico `/joint_states`, permitiendo que `robot_state_publisher` calcule las transformaciones TF3D del robot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo simular mi brazo en Gazebo usando ros2_control?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Solo necesitas sustituir el tag `<plugin>` de tu hardware real por el plugin oficial `gz_ros2_control/GazeboSimSystem` en el URDF. De este modo, los mismos controladores de trayectoria funcionarán en el simulador sin cambiar ni una sola línea de código de tu aplicación."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:50vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:90px 24px 60px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(1.9rem,5.5vw,3.8rem);line-height:1.15;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:1.9rem;font-weight:400;line-height:1.2;margin:54px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:70px 20px 40px}
+  .article-body h2{font-size:1.55rem;margin:40px 0 14px}
+  .article-body{padding-top:44px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:55vh}
+  .hero-inner{padding:60px 16px 35px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="ros2_control_brazo_esquema.svg" alt="Framework ROS 2 Control para Brazos Robóticos" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">ROS 2, Cinemática y Software · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Framework ROS 2 Control para Brazos Robóticos</h1>
+    <p>Arquitectura modular de ros2_control (Humble / Iron / Jazzy): Controller Manager, desarrollo de plugins de HardwareInterface en C++, configuración de joint_trajectory_controller y control en tiempo real con Linux PREEMPT_RT.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 21 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="ros2_control_brazo_esquema.svg" alt="Capas del framework ros2_control: desde MoveIt 2 y el Controller Manager hasta los plugins de hardware en C++ y buses de comunicación física." loading="lazy">
+  <div class="caption">Capas del framework ros2_control: desde MoveIt 2 y el Controller Manager hasta los plugins de hardware en C++ y buses de comunicación física.</div>
+</div>
+
+<nav class="toc" aria-label="Índice del contenido">
+  <h2>Contenido de la guía</h2>
+  <ol>
+    <li><a href="#que-es-ros2-control">Qué es ros2_control y por qué reemplazó a la arquitectura clásica de ROS 1</a></li>
+<li><a href="#arquitectura-bloques">Arquitectura interna: Resource Manager, Controllers e Interfaces</a></li>
+<li><a href="#desarrollo-hardware-interface-cpp">Desarrollo de un plugin HardwareInterface personalizado en C++</a></li>
+<li><a href="#configuracion-yaml-urdf">Integración en URDF/xacro y archivo de controladores YAML</a></li>
+<li><a href="#tiempo-real-moveit">Kernel PREEMPT_RT y conexión con MoveIt 2</a></li>
+<li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+
+<section id="que-es-ros2-control">
+<h2>Qué es ros2_control y por qué reemplazó a la arquitectura clásica de ROS 1</h2>
+
+<p>En la primera generación de ROS, el control de actuadores se realizaba a menudo mediante nodos ad-hoc que se suscribían a tópicos de mensajes estándar. Este enfoque sufría de graves problemas en brazos robóticos industriales: latencias no deterministas debidas a la serialización de middleware, riesgo de inversión de prioridades y falta de interfaces estandarizadas entre el hardware físico y los planificadores de movimiento como MoveIt.</p>
+<p>El framework <strong>ros2_control</strong> es una completa reingeniería diseñada para cumplir los requisitos más estrictos de <strong>control en tiempo real determinista (Hard Real-Time)</strong> a frecuencias de 100 Hz a 1.000 Hz. Sus objetivos de diseño son:</p>
+<ul>
+  <li><strong>Desacoplamiento total entre algoritmos y hardware:</strong> El mismo controlador de trayectoria funciona de forma idéntica en un simulador Gazebo, en un hardware real con servomotores EtherCAT o en un microcontrolador ESP32 mediante micro-ROS.</li>
+  <li><strong>Gestión de ciclo de vida (Lifecycle Nodes):</strong> Controladores y componentes de hardware implementan estados de máquina estrictos (<em>Unconfigured, Inactive, Active, Finalized</em>) para evitar movimientos no deseados durante el arranque.</li>
+  <li><strong>Acceso directo a memoria compartida sin copia (Zero-Copy):</strong> El Controller Manager intercambia comandos y estados mediante buffers de memoria directa sin serialización DDS en el bucle crítico.</li>
+</ul>
+
+</section>
+<section id="arquitectura-bloques">
+<h2>Arquitectura interna: Resource Manager, Controllers e Interfaces</h2>
+
+<p>El sistema se organiza en cuatro capas claramente diferenciadas:</p>
+<ol>
+  <li><strong>Hardware Component (hardware_interface):</strong> Plugin dinámico en C++ que encapsula el protocolo de comunicación física (CANopen, EtherCAT, Modbus, Serial UART). Exporta <em>State Interfaces</em> (lecturas de posición, velocidad, esfuerzo) y <em>Command Interfaces</em> (consignas enviadas a los actuadores).</li>
+  <li><strong>Resource Manager:</strong> Administra el hardware registrado en el archivo URDF/xacro y garantiza que múltiples controladores no intenten escribir simultáneamente sobre la misma interfaz de comando.</li>
+  <li><strong>Controller Manager:</strong> El orquestador que ejecuta el bucle de control en tiempo real (llamando secuencialmente a <code>read()</code>, <code>update()</code> de controladores y <code>write()</code>).</li>
+  <li><strong>Controladores Activos (Controllers):</strong>
+    <ul>
+      <li><code>joint_state_broadcaster</code>: Publica el estado articular en el tópico <code>/joint_states</code> para RViz y MoveIt.</li>
+      <li><code>joint_trajectory_controller</code>: Recibe trayectorias complejas con curvas spline cúbicas/quínticas y calcula la interpolación en milisegundos.</li>
+      <li><code>forward_command_controller</code>: Envía comandos directos de posición, velocidad o torque.</li>
+    </ul>
+  </li>
+</ol>
+
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="desarrollo-hardware-interface-cpp">
+<h2>Desarrollo de un plugin HardwareInterface personalizado en C++</h2>
+
+<p>Para controlar un brazo robótico DIY o industrial, se debe heredar de la clase base <code>hardware_interface::SystemInterface</code>. A continuación se presenta la estructura mínima de un plugin funcional:</p>
+<pre><code>#include "hardware_interface/system_interface.hpp"
+#include "hardware_interface/types/hardware_interface_type_values.hpp"
+#include "rclcpp/rclcpp.hpp"
+
+namespace mi_robot_hardware
+{
+class BrazoHardwareInterface : public hardware_interface::SystemInterface
+{
+public:
+  CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override
+  {
+    if (hardware_interface::SystemInterface::on_init(info) != CallbackReturn::SUCCESS) {
+      return CallbackReturn::ERROR;
+    }
+    // Inicializar vectores de estado y comando para los 6 ejes
+    hw_positions_.resize(info_.joints.size(), 0.0);
+    hw_commands_.resize(info_.joints.size(), 0.0);
+    return CallbackReturn::SUCCESS;
+  }
+
+  std::vector&lt;hardware_interface::StateInterface&gt; export_state_interfaces() override
+  {
+    std::vector&lt;hardware_interface::StateInterface&gt; state_interfaces;
+    for (size_t i = 0; i &lt; info_.joints.size(); ++i) {
+      state_interfaces.emplace_back(hardware_interface::StateInterface(
+        info_.joints[i].name, hardware_interface::HW_IF_POSITION, &amp;hw_positions_[i]));
+    }
+    return state_interfaces;
+  }
+
+  std::vector&lt;hardware_interface::CommandInterface&gt; export_command_interfaces() override
+  {
+    std::vector&lt;hardware_interface::CommandInterface&gt; command_interfaces;
+    for (size_t i = 0; i &lt; info_.joints.size(); ++i) {
+      command_interfaces.emplace_back(hardware_interface::CommandInterface(
+        info_.joints[i].name, hardware_interface::HW_IF_POSITION, &amp;hw_commands_[i]));
+    }
+    return command_interfaces;
+  }
+
+  hardware_interface::return_type read(const rclcpp::Time &amp; time, const rclcpp::Duration &amp; period) override
+  {
+    // Leer encoders vía bus CAN o puerto serie
+    // driver_can_.leer_posiciones(hw_positions_);
+    return hardware_interface::return_type::OK;
+  }
+
+  hardware_interface::return_type write(const rclcpp::Time &amp; time, const rclcpp::Duration &amp; period) override
+  {
+    // Enviar consignas de ángulo a los servodrives
+    // driver_can_.enviar_comandos(hw_commands_);
+    return hardware_interface::return_type::OK;
+  }
+
+private:
+  std::vector&lt;double&gt; hw_positions_;
+  std::vector&lt;double&gt; hw_commands_;
+};
+} // namespace mi_robot_hardware
+
+#include "pluginlib/class_list_macros.hpp"
+PLUGINLIB_EXPORT_CLASS(mi_robot_hardware::BrazoHardwareInterface, hardware_interface::SystemInterface)
+</code></pre>
+
+</section>
+<section id="configuracion-yaml-urdf">
+<h2>Integración en URDF/xacro y archivo de controladores YAML</h2>
+
+<p>Para registrar el hardware en el árbol de descripción del robot, se añade la etiqueta <code>&lt;ros2_control&gt;</code> en el archivo URDF:</p>
+<pre><code>&lt;ros2_control name="BrazoRobótico6Ejes" type="system"&gt;
+  &lt;hardware&gt;
+    &lt;plugin&gt;mi_robot_hardware/BrazoHardwareInterface&lt;/plugin&gt;
+    &lt;param name="puerto_serie"&gt;/dev/ttyUSB0&lt;/param&gt;
+    &lt;param name="baudrate"&gt;1000000&lt;/param&gt;
+  &lt;/hardware&gt;
+  &lt;joint name="joint1"&gt;
+    &lt;command_interface name="position"/&gt;
+    &lt;state_interface name="position"/&gt;
+    &lt;state_interface name="velocity"/&gt;
+  &lt;/joint&gt;
+  &lt;!-- Repetir para joint2 hasta joint6 --&gt;
+&lt;/ros2_control&gt;
+</code></pre>
+
+<h3>Archivo de configuración <code>controllers.yaml</code>:</h3>
+<pre><code>controller_manager:
+  ros__parameters:
+    update_rate: 500  # 500 Hz (2 ms por ciclo)
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+arm_controller:
+  ros__parameters:
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    open_loop_control: false
+    allow_nonzero_velocity_at_trajectory_end: false
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.5
+</code></pre>
+
+</section>
+<section id="tiempo-real-moveit">
+<h2>Kernel PREEMPT_RT y conexión con MoveIt 2</h2>
+
+<p>Para evitar fluctuaciones de latencia (Jitter) en frecuencias de 500 Hz o 1 kHz, el sistema operativo Ubuntu debe correr sobre un <strong>kernel con parche Linux PREEMPT_RT</strong>. Sin tiempo real, interrupciones de disco o procesos de fondo pueden demorar el hilo de control por más de 15 ms, provocando sacudidas mecánicas bruscas en el brazo robótico.</p>
+<p>Para conectar <strong>MoveIt 2</strong> con ros2_control, se utiliza el plugin <code>moveit_simple_controller_manager</code> configurado en <code>moveit_controllers.yaml</code>, el cual envía las trayectorias calculadas por el planificador cinemático directamente a la acción <code>/arm_controller/follow_joint_trajectory</code>.</p>
+
+</section>
+
+
+<section class="faq" id="faq" aria-label="Preguntas frecuentes">
+<h2>Preguntas Frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuál es la diferencia entre SystemInterface y ActuatorInterface en ros2_control?</summary><p>SystemInterface se utiliza para sistemas multieje acoplados (como un brazo robótico de 6 ejes completo) donde múltiples articulaciones se leen y escriben a través de un único bus de comunicación. ActuatorInterface se usa para un motor modular individual independiente (por ejemplo, una rueda de tracción o una pinza monocanal).</p></details>
+<details><summary>¿Puedo usar ros2_control con microcontroladores Arduino o ESP32?</summary><p>Sí, a través de dos métodos: implementando un protocolo de comunicación serie binario rápido en C++ dentro de tu HardwareInterface personalizado, o utilizando micro-ROS ejecutándose en el ESP32 para exportar directamente las interfaces de hardware a través de la red WiFi o USB.</p></details>
+<details><summary>¿Por qué el comando ros2 control list_hardware_interfaces muestra interfaces no disponibles?</summary><p>Generalmente ocurre porque el componente de hardware no ha sido activado por el Controller Manager o falló durante el método `on_activate()`. Verifica que el nodo `ros2_control_node` esté ejecutándose y que no existan errores de comunicación en el log de la terminal.</p></details>
+<details><summary>¿Qué función cumple joint_state_broadcaster?</summary><p>Es un controlador de lectura pasiva que toma las `state_interfaces` (posición, velocidad y esfuerzo) de todos los actuadores registrados y las publica periódicamente como un mensaje `sensor_msgs/msg/JointState` en el tópico `/joint_states`, permitiendo que `robot_state_publisher` calcule las transformaciones TF3D del robot.</p></details>
+<details><summary>¿Cómo simular mi brazo en Gazebo usando ros2_control?</summary><p>Solo necesitas sustituir el tag `<plugin>` de tu hardware real por el plugin oficial `gz_ros2_control/GazeboSimSystem` en el URDF. De este modo, los mismos controladores de trayectoria funcionarán en el simulador sin cambiar ni una sola línea de código de tu aplicación.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
+
+<div class="cta">
+  <h3>Continúa explorando tutoriales técnicos</h3>
+  <p>Profundiza en la matemática de trayectorias en nuestra guía de cinemática inversa analítica para 6 ejes.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/medicion-de-altavoces-con-rew-y-microfono-usb">← Medición de Altavoces con REW y Micrófono USB</a>
+  <a href="/blog/cinematica-inversa-para-brazos-roboticos-de-6-ejes">Cinemática Inversa para Brazos Robóticos de 6 Ejes →</a>
+</div>
+
+</article>
+
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Hojas de datos oficiales, estándares internacionales de ingeniería y documentación técnica citada en este artículo.</p>
+<ul>
+<li><a href="https://control.ros.org/" target="_blank" rel="noopener noreferrer">ROS 2 Control Documentation — Official Architecture and Design Principles</a></li>
+<li><a href="https://moveit.picknik.ai/" target="_blank" rel="noopener noreferrer">MoveIt 2 Documentation — Integrating MoveIt with ros2_control</a></li>
+<li><a href="https://wiki.linuxfoundation.org/realtime/start" target="_blank" rel="noopener noreferrer">Linux Foundation — PREEMPT_RT Real-Time Linux Collaborative Project</a></li>
+<li><a href="https://www.science.org/doi/10.1126/scirobotics.abm6074" target="_blank" rel="noopener noreferrer">Macenski et al. — Robot Operating System 2: Design, architecture, and uses in the wild (Science Robotics)</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

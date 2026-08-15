@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Anatomía y puntos de inspección para identificar celdas 18650 y 21700 originales versus falsificadas">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Anatomía y Verificación: Celdas 18650 vs 21700 Auténticas</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Puntos críticos de inspección física y eléctrica para descartar celdas falsificadas</text>
+
+<!-- 18650 Cell -->
+<g transform="translate(80, 120)">
+  <rect x="0" y="0" width="480" height="580" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  <text x="240" y="38" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#a97b23" font-weight="bold">Formato 18650 (18 × 65 mm)</text>
+  
+  <!-- Cell Drawing -->
+  <rect x="50" y="80" width="100" height="380" rx="12" fill="#2f6fb0" opacity="0.9"/>
+  <!-- Positive Cap -->
+  <rect x="80" y="65" width="40" height="15" rx="3" fill="#d4af37" stroke="#1e1b15" stroke-width="1.5"/>
+  <!-- Negative Base -->
+  <rect x="55" y="455" width="90" height="8" rx="2" fill="#adb5bd"/>
+  
+  <!-- Dimension lines -->
+  <line x1="30" y1="65" x2="30" y2="460" stroke="#8b8577" stroke-dasharray="4"/>
+  <text x="20" y="270" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#8b8577" transform="rotate(-90 20 270)">65.0 ± 0.2 mm</text>
+  
+  <line x1="50" y1="480" x2="150" y2="480" stroke="#8b8577" stroke-dasharray="4"/>
+  <text x="100" y="500" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#8b8577">Ø 18.2 mm</text>
+  
+  <!-- Inspection details -->
+  <g transform="translate(180, 80)">
+    <rect x="0" y="0" width="270" height="80" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="12" y="24" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">1. Polo Positivo (Top Cap)</text>
+    <text x="12" y="44" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Samsung: 3 o 4 brazos con CID</text>
+    <text x="12" y="62" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Sony/Murata: 4 patas simétricas</text>
+    <text x="12" y="76" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">⚠ Falsas: 5 patas genéricas o soldadura plana</text>
+  </g>
+  
+  <g transform="translate(180, 180)">
+    <rect x="0" y="0" width="270" height="85" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="12" y="24" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">2. Grabado y Código Matriz</text>
+    <text x="12" y="44" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Marcado láser bajo el termorretráctil</text>
+    <text x="12" y="62" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Matriz DataMatrix legible en cátodo</text>
+    <text x="12" y="78" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">⚠ Falsas: Tinta borrosa o ausente</text>
+  </g>
+  
+  <g transform="translate(180, 285)">
+    <rect x="0" y="0" width="270" height="75" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="12" y="24" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">3. Masa y Dimensiones</text>
+    <text x="12" y="44" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Samsung 30Q: 45.6 ± 0.5 g</text>
+    <text x="12" y="62" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Sony VTC6: 46.8 ± 0.5 g</text>
+  </g>
+  
+  <g transform="translate(180, 380)">
+    <rect x="0" y="0" width="270" height="80" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="12" y="24" font-family="Inter, sans-serif" font-size="14" fill="#2f6fb0" font-weight="bold">4. Resistencia AC (1 kHz)</text>
+    <text x="12" y="44" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Alta descarga: 11 - 15 mΩ (YR1035+)</text>
+    <text x="12" y="64" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">⚠ Falsas: >35 mΩ (celdas de baja potencia)</text>
+  </g>
+  
+  <text x="240" y="540" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#2b8a3e" font-weight="bold">Capacidad máx real en 18650: 3500 mAh (Sanyo NCR18650GA)</text>
+</g>
+
+<!-- 21700 Cell -->
+<g transform="translate(640, 120)">
+  <rect x="0" y="0" width="480" height="580" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  <text x="240" y="38" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#2f6fb0" font-weight="bold">Formato 21700 (21 × 70 mm)</text>
+  
+  <!-- Cell Drawing -->
+  <rect x="50" y="70" width="115" height="400" rx="14" fill="#a97b23" opacity="0.9"/>
+  <!-- Positive Cap -->
+  <rect x="85" y="55" width="45" height="15" rx="4" fill="#d4af37" stroke="#1e1b15" stroke-width="1.5"/>
+  <!-- Negative Base -->
+  <rect x="55" y="465" width="105" height="8" rx="2" fill="#adb5bd"/>
+  
+  <!-- Dimension lines -->
+  <line x1="30" y1="55" x2="30" y2="470" stroke="#8b8577" stroke-dasharray="4"/>
+  <text x="20" y="270" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#8b8577" transform="rotate(-90 20 270)">70.3 ± 0.3 mm</text>
+  
+  <line x1="50" y1="495" x2="165" y2="495" stroke="#8b8577" stroke-dasharray="4"/>
+  <text x="108" y="515" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#8b8577">Ø 21.2 mm</text>
+  
+  <!-- Inspection details -->
+  <g transform="translate(185, 80)">
+    <rect x="0" y="0" width="265" height="80" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="12" y="24" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">1. Diseño de Válvula CID</text>
+    <text x="12" y="44" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Samsung 40T/50S: 3 aperturas curvas</text>
+    <text x="12" y="62" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Molicel P42A/P45B: 4 ranuras radiales</text>
+    <text x="12" y="76" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">⚠ Falsas: Tapa plana con agujeros taladrados</text>
+  </g>
+  
+  <g transform="translate(185, 180)">
+    <rect x="0" y="0" width="265" height="85" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="12" y="24" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">2. Envoltorio (Wrapper) y Anillo</text>
+    <text x="12" y="44" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Anillo aislante superior rígido (PET blanco)</text>
+    <text x="12" y="62" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Costura termosellada recta y uniforme</text>
+    <text x="12" y="78" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">⚠ Falsas: Re-envoltorio sobre celda usada</text>
+  </g>
+  
+  <g transform="translate(185, 285)">
+    <rect x="0" y="0" width="265" height="75" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="12" y="24" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">3. Masa Nominal Verificada</text>
+    <text x="12" y="44" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Samsung 40T: 70.0 ± 1.0 g</text>
+    <text x="12" y="62" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Molicel P45B: 70.0 ± 0.5 g</text>
+  </g>
+  
+  <g transform="translate(185, 380)">
+    <rect x="0" y="0" width="265" height="80" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="12" y="24" font-family="Inter, sans-serif" font-size="14" fill="#2f6fb0" font-weight="bold">4. Resistencia AC Ultrabaja</text>
+    <text x="12" y="44" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Samsung 40T: 9 - 12 mΩ</text>
+    <text x="12" y="62" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Molicel P45B: 7 - 9 mΩ</text>
+  </g>
+  
+  <text x="240" y="540" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#2b8a3e" font-weight="bold">Capacidad máx real en 21700: 5000 - 5800 mAh</text>
+</g>
+</svg>

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Arquitectura interna y puntos de diagnóstico de un sistema de gestión de baterías BMS">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Arquitectura Interna y Diagnóstico de Fallas en Placas BMS</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Bloques funcionales: AFE, balanceadores pasivos, banco MOSFET de potencia y sensores NTC</text>
+
+<!-- Main Diagram Container -->
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="16" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Cell Tap Interface (JST-XH Balance Header) -->
+  <g transform="translate(30, 40)">
+    <rect x="0" y="0" width="220" height="520" rx="10" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="110" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#a97b23" font-weight="bold">Conector de Balance</text>
+    <text x="110" y="52" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#57534a">Toma de Celdas (B- a B13+)</text>
+    
+    <!-- Balance Pins -->
+    <rect x="25" y="75" width="170" height="35" rx="5" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="35" y="98" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">B13+ (48.1V)</text>
+    <circle cx="180" cy="92" r="6" fill="#2b8a3e"/>
+    
+    <rect x="25" y="120" width="170" height="35" rx="5" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="35" y="143" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">B12+ (44.4V)</text>
+    <circle cx="180" cy="137" r="6" fill="#2b8a3e"/>
+    
+    <text x="110" y="195" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" fill="#8b8577">⋮</text>
+    
+    <rect x="25" y="220" width="170" height="35" rx="5" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="35" y="243" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">B2+ (7.4V)</text>
+    <circle cx="180" cy="237" r="6" fill="#2b8a3e"/>
+    
+    <rect x="25" y="265" width="170" height="35" rx="5" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="35" y="288" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">B1+ (3.7V)</text>
+    <circle cx="180" cy="282" r="6" fill="#2b8a3e"/>
+    
+    <rect x="25" y="310" width="170" height="35" rx="5" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="35" y="333" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">B- (GND / 0.0V)</text>
+    <circle cx="180" cy="327" r="6" fill="#1e1b15"/>
+    
+    <rect x="15" y="370" width="190" height="130" rx="6" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1"/>
+    <text x="25" y="392" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Puntos de Prueba:</text>
+    <text x="25" y="412" font-family="Inter, sans-serif" font-size="11" fill="#57534a">1. Medir voltajes relativos</text>
+    <text x="25" y="428" font-family="Inter, sans-serif" font-size="11" fill="#57534a">2. Desbalance admisible &lt; 30mV</text>
+    <text x="25" y="444" font-family="Inter, sans-serif" font-size="11" fill="#57534a">3. Resistencia de pista &lt; 1Ω</text>
+    <text x="25" y="465" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">⚠ Si V &lt; 2.5V: BMS bloquea</text>
+  </g>
+  
+  <!-- Center: Analog Front End (AFE) + Bleeders + MCU -->
+  <g transform="translate(280, 40)">
+    <!-- Bleeder Resistors -->
+    <rect x="0" y="0" width="220" height="240" rx="10" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="110" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">Red de Balance Pasivo</text>
+    <text x="110" y="46" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Resistencias 47 - 100Ω (35 - 80mA)</text>
+    
+    <!-- Resistor symbols -->
+    <g transform="translate(20, 65)">
+      <rect x="0" y="0" width="180" height="32" rx="4" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="22" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">R_bleeder + Transistor NPN</text>
+    </g>
+    <g transform="translate(20, 110)">
+      <rect x="0" y="0" width="180" height="32" rx="4" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="22" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">R_bleeder + Transistor NPN</text>
+    </g>
+    <text x="110" y="165" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#8b8577">⋮</text>
+    <text x="110" y="200" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Falla común: Transistor en corto drena celda a 0V</text>
+    
+    <!-- AFE IC (Texas Instruments BQ769x0 / SH367309) -->
+    <rect x="0" y="260" width="220" height="260" rx="10" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="110" y="290" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#2f6fb0" font-weight="bold">AFE / MCU de Control</text>
+    <text x="110" y="310" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Conversor ADC 16-bit + Lógica</text>
+    
+    <rect x="20" y="330" width="180" height="70" rx="6" fill="#ffffff" stroke="#2f6fb0"/>
+    <text x="30" y="355" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Funciones de Protección:</text>
+    <text x="30" y="373" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• OVP (&gt;4.25V) / UVP (&lt;2.70V)</text>
+    <text x="30" y="389" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• OCP (Sobrecorriente) / SCP (Corto)</text>
+    
+    <g transform="translate(20, 420)">
+      <rect x="0" y="0" width="180" height="40" rx="4" fill="#faf7f0" stroke="#e4c07a"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">Sensor NTC Temp (OTP &gt;65°C)</text>
+    </g>
+    <text x="110" y="500" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Salida: Señales Gate Charge / Discharge</text>
+  </g>
+  
+  <!-- Right Side: Power Switching Block (MOSFET Bank & Shunt) -->
+  <g transform="translate(530, 40)">
+    <rect x="0" y="0" width="510" height="520" rx="10" fill="#faf7f0" stroke="#c9c4b8" stroke-width="1.5"/>
+    <text x="255" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#1e1b15" font-weight="bold">Etapa de Potencia: MOSFETs de Conmutación</text>
+    
+    <!-- High Side or Low Side Switch Matrix -->
+    <g transform="translate(30, 60)">
+      <!-- Discharge MOSFETs -->
+      <rect x="0" y="0" width="200" height="130" rx="8" fill="#ffffff" stroke="#2f6fb0" stroke-width="1.5"/>
+      <text x="100" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">MOSFETs Descarga (DSG)</text>
+      <text x="100" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">3 a 8 en Paralelo (TO-263 / DFN)</text>
+      <text x="100" y="70" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">Vgs: 10 - 12V (Activo)</text>
+      <text x="100" y="90" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Vds en ON: &lt; 50 mV</text>
+      <text x="100" y="115" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Test: Vds = V_pack → Cortado</text>
+      
+      <!-- Charge MOSFETs -->
+      <rect x="240" y="0" width="200" height="130" rx="8" fill="#ffffff" stroke="#2b8a3e" stroke-width="1.5"/>
+      <text x="340" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="#2b8a3e" font-weight="bold">MOSFETs Carga (CHG)</text>
+      <text x="340" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Diodos de cuerpo espalda con espalda</text>
+      <text x="340" y="70" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">Evita retorno de corriente</text>
+      <text x="340" y="90" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Control independiente</text>
+      <text x="340" y="115" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Falla: Quemado por sobrevoltaje</text>
+    </g>
+    
+    <!-- Shunt Resistor & Power Terminals -->
+    <g transform="translate(30, 210)">
+      <rect x="0" y="0" width="440" height="80" rx="8" fill="#ffffff" stroke="#8b8577" stroke-width="1.5"/>
+      <text x="220" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">Shunt de Corriente de Manganina (0.5 - 2 mΩ)</text>
+      <text x="220" y="52" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#57534a">Mide caída diferencial ΔV para cálculo de amperios e integración Coulomb</text>
+    </g>
+    
+    <!-- Diagnostic Decision Matrix Box -->
+    <g transform="translate(30, 310)">
+      <rect x="0" y="0" width="440" height="180" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1"/>
+      <text x="20" y="26" font-family="Inter, sans-serif" font-size="14" fill="#2f6fb0" font-weight="bold">Algoritmo Diagnóstico: ¿Reparar o Reemplazar?</text>
+      <text x="20" y="50" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>BMS bloqueado sin salida (P- = 0V):</strong> Medir V_celdas. Si todas &gt; 3.0V, resetear cargador.</text>
+      <text x="20" y="75" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>MOSFET en corto permanente:</strong> Desoldar y reemplazar chip individual (Reparable).</text>
+      <text x="20" y="100" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>Pistas quemadas / Delaminación PCB:</strong> Reemplazar BMS completo (Riesgo de arco).</text>
+      <text x="20" y="125" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>AFE / Microcontrolador con fuga térmica:</strong> Reemplazar BMS por modelo Smart BT.</text>
+      <text x="20" y="155" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Costo BMS nuevo standard: $15 - $35 USD · Smart BMS: $45 - $80 USD</text>
+    </g>
+  </g>
+</g>
+</svg>

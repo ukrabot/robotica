@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Protocolo técnico para reacondicionar packs de baterías de scooters y bicicletas eléctricas">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Reacondicionamiento de Baterías de Scooters y E-Bikes (10S / 13S / 14S)</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Protocolo paso a paso: triaje de celdas, desensamble seguro, aislamiento y prueba de ciclo</text>
+
+<!-- 4 Step Process Cards -->
+<g transform="translate(60, 110)">
+  <!-- Step 1 -->
+  <g transform="translate(0, 0)">
+    <rect x="0" y="0" width="250" height="580" rx="12" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+    <rect x="0" y="0" width="250" height="46" rx="12" fill="#faf7f0" stroke="#c9c4b8" stroke-width="1"/>
+    <text x="125" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" fill="#a97b23" font-weight="bold">1. Apertura y Triaje</text>
+    
+    <text x="16" y="75" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Inspección Inicial:</text>
+    <text x="16" y="98" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Retirar termorretráctil azul</text>
+    <text x="16" y="118" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Buscar corrosión por agua</text>
+    <text x="16" y="138" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Revisar fusible térmico</text>
+    
+    <text x="16" y="175" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Mapeo de Grupos:</text>
+    <text x="16" y="198" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Medir voltaje en cada serie (S1 a S10/S13)</text>
+    <text x="16" y="225" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e">✓ Grupo sano: 3.6 - 4.1V</text>
+    <text x="16" y="248" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a">✗ Desbalance: ΔV &gt; 150mV</text>
+    <text x="16" y="270" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a">⚠ Grupo muerto: &lt; 2.0V</text>
+    
+    <rect x="14" y="320" width="222" height="230" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1"/>
+    <text x="24" y="345" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Regla de Oro del Litio:</text>
+    <text x="24" y="370" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Si una celda estuvo bajo 1.5V por más de una semana, ha formado dendritas de cobre internas.</text>
+    <text x="24" y="425" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">¡NUNCA recargar celdas en 0V con pulsos agresivos! Riesgo de fuga térmica.</text>
+  </g>
+  
+  <!-- Step 2 -->
+  <g transform="translate(275, 0)">
+    <rect x="0" y="0" width="250" height="580" rx="12" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+    <rect x="0" y="0" width="250" height="46" rx="12" fill="#faf7f0" stroke="#c9c4b8" stroke-width="1"/>
+    <text x="125" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" fill="#2f6fb0" font-weight="bold">2. Testeo Individual</text>
+    
+    <text x="16" y="75" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Separación de Celdas:</text>
+    <text x="16" y="98" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Cortar tiras de níquel con alicate de corte fino</text>
+    <text x="16" y="130" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Pulir restos con Dremel</text>
+    
+    <text x="16" y="175" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Pruebas en Banco:</text>
+    <text x="16" y="198" font-family="Inter, sans-serif" font-size="12" fill="#57534a">1. Medición de IR (YR1035+):</text>
+    <text x="26" y="218" font-family="Inter, sans-serif" font-size="11" fill="#57534a">IR &lt; 25mΩ → Apta</text>
+    <text x="26" y="234" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">IR &gt; 45mΩ → Descarte</text>
+    
+    <text x="16" y="260" font-family="Inter, sans-serif" font-size="12" fill="#57534a">2. Capacidad en Carga Electrónica:</text>
+    <text x="26" y="280" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Descarga a 1C (ej: 2.5A)</text>
+    <text x="26" y="296" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Capacidad &gt; 80% nominal</text>
+    
+    <rect x="14" y="320" width="222" height="230" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1"/>
+    <text x="24" y="345" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Agrupación por Capacidad:</text>
+    <text x="24" y="370" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Armar grupos paralelos cuya suma de mAh sea idéntica (±1%).</text>
+    <text x="24" y="420" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Ejemplo: P1=7800mAh, P2=7810mAh, P3=7790mAh.</text>
+  </g>
+  
+  <!-- Step 3 -->
+  <g transform="translate(550, 0)">
+    <rect x="0" y="0" width="250" height="580" rx="12" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+    <rect x="0" y="0" width="250" height="46" rx="12" fill="#faf7f0" stroke="#c9c4b8" stroke-width="1"/>
+    <text x="125" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" fill="#a97b23" font-weight="bold">3. Reensamblaje y Soldadura</text>
+    
+    <text x="16" y="75" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Aislamiento Crítico:</text>
+    <text x="16" y="98" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Anillos de papel de cebada (Barley / Fish Paper) en polos (+)</text>
+    <text x="16" y="135" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Cinta Kapton entre series</text>
+    <text x="16" y="155" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Espaciadores plásticos 18650</text>
+    
+    <text x="16" y="195" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Soldadura por Puntos:</text>
+    <text x="16" y="218" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Tiras de níquel puro 0.15mm</text>
+    <text x="16" y="238" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Mínimo 4 a 6 puntos por celda</text>
+    <text x="16" y="258" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Soldar cable BMS con estaño ANTES de puntear sobre celda</text>
+    
+    <rect x="14" y="320" width="222" height="230" rx="8" fill="#faf7f0" stroke="#e4c07a" stroke-width="1"/>
+    <text x="24" y="345" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Conexión de Arnés BMS:</text>
+    <text x="24" y="370" font-family="Inter, sans-serif" font-size="11" fill="#57534a">1. Medir conector con multímetro antes de enchufar a BMS.</text>
+    <text x="24" y="415" font-family="Inter, sans-serif" font-size="11" fill="#57534a">2. Secuencia estricta de voltajes crecientes: 3.7V, 7.4V, 11.1V...</text>
+    <text x="24" y="465" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">Un cable invertido quema el chip AFE en microsegundos.</text>
+  </g>
+  
+  <!-- Step 4 -->
+  <g transform="translate(825, 0)">
+    <rect x="0" y="0" width="250" height="580" rx="12" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+    <rect x="0" y="0" width="250" height="46" rx="12" fill="#faf7f0" stroke="#c9c4b8" stroke-width="1"/>
+    <text x="125" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" fill="#2b8a3e" font-weight="bold">4. Ciclado y Validación</text>
+    
+    <text x="16" y="75" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Control de Calidad Final:</text>
+    <text x="16" y="98" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Ciclo completo 0.5C de carga</text>
+    <text x="16" y="118" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Monitoreo con cámara térmica (Ninguna celda &gt; 45°C)</text>
+    <text x="16" y="150" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Prueba de descarga a potencia de motor (15A - 25A)</text>
+    
+    <text x="16" y="195" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Sellado y Protección:</text>
+    <text x="16" y="218" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Envoltura termorretráctil PVC</text>
+    <text x="16" y="238" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Sellador de silicona neutra</text>
+    <text x="16" y="258" font-family="Inter, sans-serif" font-size="12" fill="#57534a">• Acolchado EVA anti-vibración</text>
+    
+    <rect x="14" y="320" width="222" height="230" rx="8" fill="#eefaf0" stroke="#2b8a3e" stroke-width="1"/>
+    <text x="24" y="345" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Cálculo de Ahorro:</text>
+    <text x="24" y="370" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Batería nueva Xiaomi M365: $160 - $220 USD</text>
+    <text x="24" y="410" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Reemplazo de 6 celdas dañadas + BMS: $35 - $50 USD</text>
+    <text x="24" y="460" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">Ahorro real: 70 - 75% con especificaciones OEM.</text>
+  </g>
+</g>
+</svg>

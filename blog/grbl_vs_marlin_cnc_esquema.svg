@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Comparativa técnica entre firmware GRBL y Marlin para máquinas CNC caseras">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">GRBL vs Marlin: Comparativa Técnica para Máquinas CNC</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Planificador de movimiento, soporte de sistemas de coordenadas G54-G59, control de husillo y láser</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: GRBL / FluidNC -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="2"/>
+    <rect x="0" y="0" width="480" height="45" rx="10" fill="#2f6fb0"/>
+    <text x="240" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" fill="#ffffff" font-weight="bold">GRBL / grblHAL / FluidNC (100% CNC)</text>
+    
+    <g transform="translate(20, 60)">
+      <rect x="0" y="0" width="440" height="90" rx="6" fill="#ffffff" stroke="#2f6fb0"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Arquitectura de Control:</text>
+      <text x="15" y="45" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Diseñado exclusivamente para fresado, corte y grabado CNC.</text>
+      <text x="15" y="65" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Cero sobrecarga de código de extrusión 3D o termistores.</text>
+      <text x="15" y="82" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Tiempos de respuesta sub-milisegundo a comandos en tiempo real.</text>
+    </g>
+    
+    <g transform="translate(20, 165)">
+      <rect x="0" y="0" width="440" height="160" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Funciones Nativas CNC Industriales:</text>
+      <text x="15" y="48" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">✓ <strong>Coordenadas de Trabajo:</strong> G54 a G59 + G28/G30 sin hacks.</text>
+      <text x="15" y="72" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">✓ <strong>Sondeo de Herramienta:</strong> G38.2, G38.3, G43.1 (Tool Length Offset).</text>
+      <text x="15" y="96" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">✓ <strong>Modo Láser $32=1:</strong> Modulación PWM instantánea proporcional a velocidad.</text>
+      <text x="15" y="120" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">✓ <strong>Control Spindle:</strong> 0-10V analógico, Modbus RS485 a VFD y M3/M4/M5.</text>
+      <text x="15" y="145" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">✓ <strong>Overrides en Tiempo Real:</strong> Feedrate / Spindle (±10%, ±1%).</text>
+    </g>
+    
+    <g transform="translate(20, 340)">
+      <rect x="0" y="0" width="440" height="175" rx="8" fill="#eef6fc" stroke="#2f6fb0"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Software y Hardware Recomendado:</text>
+      <text x="15" y="48" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Senders:</strong> Candle, Universal Gcode Sender (UGS), CNCjs, LightBurn.</text>
+      <text x="15" y="72" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• <strong>Hardware:</strong> ESP32 (FluidNC WiFi/BT), Teensy 4.1, RP2040, STM32.</text>
+      <text x="15" y="96" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• Frecuencia de pulsos step: <strong>Hasta 250 kHz</strong> (Movimiento ultra-suave).</text>
+      <text x="15" y="125" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Veredicto: La opción número 1 para fresadoras CNC y láser.</text>
+    </g>
+  </g>
+  
+  <!-- Right Side: Marlin CNC -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="2"/>
+    <rect x="0" y="0" width="480" height="45" rx="10" fill="#a97b23"/>
+    <text x="240" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" fill="#ffffff" font-weight="bold">Marlin 2.x (Optimizado para Impresión 3D)</text>
+    
+    <g transform="translate(20, 60)">
+      <rect x="0" y="0" width="440" height="90" rx="6" fill="#ffffff" stroke="#a97b23"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#a97b23" font-weight="bold">Arquitectura de Control:</text>
+      <text x="15" y="45" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Creado para impresoras FDM 3D (Extrusión, control PID de camas calientes).</text>
+      <text x="15" y="65" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Soporte CNC añadido como módulo secundario (#define CNC_COORDINATE_SYSTEMS).</text>
+      <text x="15" y="82" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">G-code dialect no estándar para algunas operaciones CNC.</text>
+    </g>
+    
+    <g transform="translate(20, 165)">
+      <rect x="0" y="0" width="440" height="160" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Ventajas y Limitaciones en CNC:</text>
+      <text x="15" y="48" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">✓ Pantallas táctiles a color independientes (TFT / LCD con tarjeta SD).</text>
+      <text x="15" y="72" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">✓ Autonivelación de malla avanzada (Bilinear / UBL Bed Leveling).</text>
+      <text x="15" y="96" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">✗ Overrides en tiempo real lentos (espera a vaciar el buffer planner).</text>
+      <text x="15" y="120" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">✗ Retardo al pausar corte (Dwell) provoca marcas de quemado en madera.</text>
+      <text x="15" y="145" font-family="Inter, sans-serif" font-size="11" fill="#57534a">✗ Configuración compleja que requiere recompilar firmware en PlatformIO.</text>
+    </g>
+    
+    <g transform="translate(20, 340)">
+      <rect x="0" y="0" width="440" height="175" rx="8" fill="#faf7f0" stroke="#a97b23"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#a97b23" font-weight="bold">Cuándo Conviene Usar Marlin:</text>
+      <text x="15" y="48" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• Máquinas híbridas 2 en 1 (Impresora 3D con cabezal intercambiable CNC/Láser).</text>
+      <text x="15" y="72" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• Operación autónoma desde tarjeta SD sin computadora conectada.</text>
+      <text x="15" y="96" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">• Placas comerciales baratas de impresora 3D (BTT SKR, MKS Robin).</text>
+      <text x="15" y="125" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Veredicto: Excelente para híbridas; inferior a GRBL para CNC puro.</text>
+    </g>
+  </g>
+</g>
+</svg>

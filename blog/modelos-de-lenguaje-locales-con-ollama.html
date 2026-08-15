@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Modelos de Lenguaje Locales con Ollama</title>
+<meta name="description" content="Guía completa de Ollama para ejecutar LLMs locales: Llama 3, cuantización GGUF, Modelfile, API local y privacidad total sin enviar datos a la nube.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/modelos-de-lenguaje-locales-con-ollama">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Modelos de Lenguaje Locales con Ollama">
+<meta property="og:description" content="Guía completa de Ollama para ejecutar LLMs locales: Llama 3, cuantización GGUF, Modelfile, API local y privacidad total sin enviar datos a la nube.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/ollama_modelos_locales_esquema.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/modelos-de-lenguaje-locales-con-ollama">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modelos de Lenguaje Locales con Ollama">
+<meta name="twitter:description" content="Guía completa de Ollama para ejecutar LLMs locales: Llama 3, cuantización GGUF, Modelfile, API local y privacidad total sin enviar datos a la nube.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/ollama_modelos_locales_esquema.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Modelos de Lenguaje Locales con Ollama",
+  "description": "Guía completa de Ollama para ejecutar LLMs locales: Llama 3, cuantización GGUF, Modelfile, API local y privacidad total sin enviar datos a la nube.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/modelos-de-lenguaje-locales-con-ollama"
+  },
+  "image": "https://www.ukrabot.cl/blog/ollama_modelos_locales_esquema.svg",
+  "proficiencyLevel": "Intermedio - Avanzado",
+  "dependencies": "Linux / macOS / Windows con Ollama instalado, mínimo 16 GB de RAM del sistema (GPU NVIDIA o Apple Silicon recomendada)",
+  "wordCount": "3400",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Modelos de Lenguaje Locales con Ollama",
+      "item": "https://www.ukrabot.cl/blog/modelos-de-lenguaje-locales-con-ollama"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué hardware mínimo necesito para correr Llama 3.1 8B a buena velocidad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El mínimo recomendado es una CPU de 6 núcleos con 16 GB de RAM del sistema (rendimiento de ~10-15 tokens/segundo). Con una GPU dedicada NVIDIA RTX 3060 de 12GB o una Mac con chip Apple Silicon M1/M2/M3 (16GB de memoria unificada), la velocidad salta a <strong>60 a 90 tokens/segundo</strong>, superando con creces la velocidad de lectura humana."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué sucede si un modelo no cabe completamente en la VRAM de mi GPU?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ollama y llama.cpp implementan <strong>offloading automático por capas (Layer Offloading)</strong>: si tu GPU solo tiene 6 GB de VRAM y el modelo requiere 8 GB, cargará 22 capas en la GPU y las 10 capas restantes en la memoria RAM del sistema, funcionando sin crasheos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mis datos se envían a servidores de Ollama al usar este software?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Ollama corre 100% de forma local en tu máquina. La única comunicación externa ocurre cuando descargas un modelo nuevo desde la biblioteca pública (similar a un `docker pull`). Una vez descargado, puedes desconectar el cable de red y el modelo seguirá respondiendo con total normalidad."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es la ventana de contexto (Context Window / num_ctx)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es la cantidad máxima de texto (tokens de conversación previa + documentos + respuesta) que el modelo puede recordar simultáneamente. Por defecto, Ollama utiliza 2.048 tokens; puedes aumentarlo hasta 32.768 o 128.000 tokens en el Modelfile mediante el parámetro `num_ctx 32768` (aumenta el consumo de memoria RAM/VRAM)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar Ollama para hacer Function Calling (Llamadas a herramientas externas)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Modelos modernos como Llama 3.1 y Qwen 2.5 soportan nativamente Function Calling y salida estructurada en formato JSON estricto mediante la API de Ollama, permitiendo que el LLM ejecute comandos de bash o interactúe con sensores de Arduino y PLC."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:50vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:90px 24px 60px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(1.9rem,5.5vw,3.8rem);line-height:1.15;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:1.9rem;font-weight:400;line-height:1.2;margin:54px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:70px 20px 40px}
+  .article-body h2{font-size:1.55rem;margin:40px 0 14px}
+  .article-body{padding-top:44px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:55vh}
+  .hero-inner{padding:60px 16px 35px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="ollama_modelos_locales_esquema.svg" alt="Modelos de Lenguaje Locales con Ollama" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Inteligencia Artificial y Hardware Local · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Modelos de Lenguaje Locales con Ollama</h1>
+    <p>Ejecuta LLMs avanzados en tu hardware: cuantización GGUF (llama.cpp), despliegue de Llama 3.1, Qwen 2.5 y DeepSeek, creación de modelos personalizados con Modelfile, API REST e integración con Open WebUI.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 19 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="ollama_modelos_locales_esquema.svg" alt="Arquitectura de inferencia local con Ollama: asignación dinámica entre VRAM GPU y memoria RAM, servidor API y personalización con Modelfile." loading="lazy">
+  <div class="caption">Arquitectura de inferencia local con Ollama: asignación dinámica entre VRAM GPU y memoria RAM, servidor API y personalización con Modelfile.</div>
+</div>
+
+<nav class="toc" aria-label="Índice del contenido">
+  <h2>Contenido de la guía</h2>
+  <ol>
+    <li><a href="#por-que-llms-locales">La revolución de los modelos locales y la soberanía de datos</a></li>
+<li><a href="#cuantizacion-gguf">Física de la cuantización GGUF: 4-bit, 5-bit y 8-bit</a></li>
+<li><a href="#instalacion-uso-ollama">Instalación, comandos esenciales y catálogo de modelos</a></li>
+<li><a href="#personalizacion-modelfile">Creación de agentes y modelos especializados con Modelfile</a></li>
+<li><a href="#integracion-api-webui">API REST local e interfaz web con Open WebUI</a></li>
+<li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+
+<section id="por-que-llms-locales">
+<h2>La revolución de los modelos locales y la soberanía de datos</h2>
+
+<p>Depender exclusivamente de APIs comerciales en la nube (como OpenAI ChatGPT o Anthropic Claude) presenta tres problemas críticos para ingenieros, empresas y desarrolladores:</p>
+<ol>
+  <li><strong>Privacidad y Confidencialidad:</strong> Enviar código fuente propietario, esquemas de circuitos o registros médicos a servidores de terceros viola normativas de protección de datos (como GDPR o normativas industriales internas).</li>
+  <li><strong>Costo recurrente acumulativo:</strong> Facturas mensuales impredecibles basadas en consumo de tokens por millón en aplicaciones de análisis continuo.</li>
+  <li><strong>Latencia y dependencia de Internet:</strong> Si la conexión a la red falla, los sistemas robóticos o de automatización local quedan completamente inoperativos.</li>
+</ol>
+<p><strong>Ollama</strong> es un entorno de ejecución de código abierto que encapsula el motor en C++ <strong>llama.cpp</strong> en un servicio en segundo plano sumamente sencillo, permitiendo descargar y ejecutar modelos con miles de millones de parámetros con una sola línea de comandos y con <strong>cero telemetría exterior</strong>.</p>
+
+</section>
+<section id="cuantizacion-gguf">
+<h2>Física de la cuantización GGUF: 4-bit, 5-bit y 8-bit</h2>
+
+<p>Los modelos de lenguaje se entrenan originalmente en precisión flotante de 16 bits (FP16 o BF16). En este formato, un modelo de 8.000 millones de parámetros (8B) ocupa aproximadamente <strong>16 GB de memoria de video</strong>, quedando fuera del alcance de la mayoría de computadoras de escritorio.</p>
+<p>La <strong>cuantización en formato GGUF (K-Quants)</strong> reduce la precisión de los pesos de la red a números enteros de 4 o 5 bits mediante algoritmos de cuantización por bloques:</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Tipo de Cuantización</th>
+<th>Bits / Peso</th>
+<th>VRAM Requerida (Modelo 8B)</th>
+<th>Pérdida de Perplejidad / Calidad</th>
+<th>Recomendación de Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FP16 / BF16</strong></td>
+<td>16.0 bits</td>
+<td>~16.5 GB VRAM</td>
+<td>0.00 % (Línea base)</td>
+<td>Solo para investigación en GPUs de 24 GB (RTX 4090 / A5000).</td>
+</tr>
+<tr>
+<td><strong>Q8_0</strong></td>
+<td>8.5 bits</td>
+<td>~8.5 GB VRAM</td>
+<td>&lt; 0.01 % (Prácticamente idéntica)</td>
+<td>Ideal para workstations con GPUs de 12 GB o 16 GB.</td>
+</tr>
+<tr>
+<td><strong>Q5_K_M</strong></td>
+<td>5.5 bits</td>
+<td>~5.6 GB VRAM</td>
+<td>&lt; 0.15 % (Excelente razonamiento)</td>
+<td><strong>El balance óptimo calidad/memoria.</strong></td>
+</tr>
+<tr>
+<td><strong>Q4_K_M</strong></td>
+<td>4.5 bits</td>
+<td>~4.7 GB VRAM</td>
+<td>&lt; 0.50 % (Inapreciable en uso general)</td>
+<td><strong>El estándar recomendado:</strong> Corre en GPUs de 6 GB a 8 GB o en RAM.</td>
+</tr>
+<tr>
+<td><strong>Q2_K / IQ2</strong></td>
+<td>2.5 bits</td>
+<td>~3.1 GB VRAM</td>
+<td>&gt; 5.0 % (Degradación notable)</td>
+<td>Solo para dispositivos embebidos con muy poca RAM.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="instalacion-uso-ollama">
+<h2>Instalación, comandos esenciales y catálogo de modelos</h2>
+
+<p>La instalación en Linux o macOS requiere un único comando en terminal:</p>
+<pre><code>curl -fsSL https://ollama.com/install.sh | sh
+</code></pre>
+<h3>Modelos líderes recomendados en 2026:</h3>
+<ul>
+  <li><code>ollama run llama3.1:8b</code> — El modelo de propósito general más balanceado del mundo (Meta), con ventana de contexto de 128k tokens y excelente razonamiento en español.</li>
+  <li><code>ollama run qwen2.5-coder:7b</code> — Especializado en desarrollo de software, generación de código en C++, Python y depuración de errores.</li>
+  <li><code>ollama run deepseek-r1:8b</code> — Modelo de razonamiento profundo con cadena de pensamiento (Chain of Thought) abierta para problemas matemáticos y de ingeniería.</li>
+  <li><code>ollama run phi3.5:3.8b</code> — Modelo ultra-compacto de Microsoft optimizado para laptops modestas y dispositivos Edge (Raspberry Pi 5 / Orange Pi 5).</li>
+</ul>
+
+</section>
+<section id="personalizacion-modelfile">
+<h2>Creación de agentes y modelos especializados con Modelfile</h2>
+
+<p>Al igual que Dockerfile permite crear contenedores personalizados, el <strong>Modelfile</strong> de Ollama permite congelar instrucciones del sistema (System Prompts), parámetros de temperatura y documentos de referencia dentro de un nuevo modelo ejecutable:</p>
+<pre><code># Crear archivo "Modelfile":
+FROM llama3.1:8b-instruct-q8_0
+
+# Configurar hiperparámetros de inferencia
+PARAMETER temperature 0.2
+PARAMETER top_p 0.9
+PARAMETER top_k 40
+PARAMETER num_ctx 16384
+PARAMETER stop "<|eot_id|>"
+
+# Asignar personalidad y restricciones de ingeniería
+SYSTEM \"\"\"
+Eres un asistente de ingeniería robótica especializado en ROS 2, cinemática y control embebido.
+Tus respuestas deben ser rigurosas, incluir código funcional bien comentado en C++17 o Python,
+y respetar siempre las normativas de seguridad funcional industrial (ISO 13849-1).
+\"\"\"
+
+</code></pre>
+<p>Para compilar y registrar el modelo localmente:</p>
+<pre><code>ollama create robotico-gpt -f ./Modelfile
+ollama run robotico-gpt
+</code></pre>
+
+</section>
+<section id="integracion-api-webui">
+<h2>API REST local e interfaz web con Open WebUI</h2>
+
+<p>Ollama expone un servidor HTTP local en el puerto <code>11434</code> totalmente compatible con el SDK oficial de OpenAI:</p>
+<pre><code>from openai import OpenAI
+
+# Cliente apuntando al servidor Ollama local (¡Cero costos de API!)
+client = OpenAI(
+    base_url="http://localhost:11434/v1",
+    api_key="ollama",  # Requerido por sintaxis pero ignorado
+)
+
+response = client.chat.completions.create(
+    model="llama3.1:8b",
+    messages=[
+        {"role": "system", "content": "Eres un experto en electrónica."},
+        {"role": "user", "content": "Explica la diferencia entre un MOSFET canal N y canal P."},
+    ],
+    temperature=0.3,
+)
+
+print(response.choices[0].message.content)
+</code></pre>
+
+<h3>Interfaz gráfica con Open WebUI en Docker:</h3>
+<p>Para tener una experiencia idéntica a ChatGPT con soporte de carga de PDFs (RAG), gestión de usuarios y búsqueda web local:</p>
+<pre><code>docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway \
+  -v open-webui:/app/backend/data --name open-webui --restart always \
+  ghcr.io/open-webui/open-webui:main
+</code></pre>
+
+</section>
+
+
+<section class="faq" id="faq" aria-label="Preguntas frecuentes">
+<h2>Preguntas Frecuentes</h2>
+<div class="faq">
+<details><summary>¿Qué hardware mínimo necesito para correr Llama 3.1 8B a buena velocidad?</summary><p>El mínimo recomendado es una CPU de 6 núcleos con 16 GB de RAM del sistema (rendimiento de ~10-15 tokens/segundo). Con una GPU dedicada NVIDIA RTX 3060 de 12GB o una Mac con chip Apple Silicon M1/M2/M3 (16GB de memoria unificada), la velocidad salta a <strong>60 a 90 tokens/segundo</strong>, superando con creces la velocidad de lectura humana.</p></details>
+<details><summary>¿Qué sucede si un modelo no cabe completamente en la VRAM de mi GPU?</summary><p>Ollama y llama.cpp implementan <strong>offloading automático por capas (Layer Offloading)</strong>: si tu GPU solo tiene 6 GB de VRAM y el modelo requiere 8 GB, cargará 22 capas en la GPU y las 10 capas restantes en la memoria RAM del sistema, funcionando sin crasheos.</p></details>
+<details><summary>¿Mis datos se envían a servidores de Ollama al usar este software?</summary><p>No. Ollama corre 100% de forma local en tu máquina. La única comunicación externa ocurre cuando descargas un modelo nuevo desde la biblioteca pública (similar a un `docker pull`). Una vez descargado, puedes desconectar el cable de red y el modelo seguirá respondiendo con total normalidad.</p></details>
+<details><summary>¿Qué es la ventana de contexto (Context Window / num_ctx)?</summary><p>Es la cantidad máxima de texto (tokens de conversación previa + documentos + respuesta) que el modelo puede recordar simultáneamente. Por defecto, Ollama utiliza 2.048 tokens; puedes aumentarlo hasta 32.768 o 128.000 tokens en el Modelfile mediante el parámetro `num_ctx 32768` (aumenta el consumo de memoria RAM/VRAM).</p></details>
+<details><summary>¿Puedo usar Ollama para hacer Function Calling (Llamadas a herramientas externas)?</summary><p>Sí. Modelos modernos como Llama 3.1 y Qwen 2.5 soportan nativamente Function Calling y salida estructurada en formato JSON estricto mediante la API de Ollama, permitiendo que el LLM ejecute comandos de bash o interactúe con sensores de Arduino y PLC.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
+
+<div class="cta">
+  <h3>Continúa explorando tutoriales técnicos</h3>
+  <p>Descubre cómo integrar visión artificial inteligente en tu hogar en nuestra guía de Frigate NVR.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/fine-tuning-de-modelos-de-imagen-con-lora-en-hardware-local">← Fine-Tuning de Modelos de Imagen con LoRA en Hardware Local</a>
+  <a href="/blog/vision-por-computadora-con-frigate-en-un-mini-pc">Visión por Computadora con Frigate en un Mini-PC →</a>
+</div>
+
+</article>
+
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Hojas de datos oficiales, estándares internacionales de ingeniería y documentación técnica citada en este artículo.</p>
+<ul>
+<li><a href="https://ollama.com/" target="_blank" rel="noopener noreferrer">Ollama Official Documentation & Open-Source Repository</a></li>
+<li><a href="https://github.com/ggerganov/llama.cpp" target="_blank" rel="noopener noreferrer">Gerganov, Georgi — llama.cpp: Port of Facebook's LLaMA model in pure C/C++</a></li>
+<li><a href="https://ai.meta.com/research/publications/the-llama-3-herd-of-models/" target="_blank" rel="noopener noreferrer">Meta AI — The Llama 3 Herd of Models Technical Report</a></li>
+<li><a href="https://openwebui.com/" target="_blank" rel="noopener noreferrer">Open WebUI Project Documentation — Self-Hosted AI Interface</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

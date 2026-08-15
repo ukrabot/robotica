@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Circuito neumático y cálculo de ventosas de vacío para manipulación robótica">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Sistemas de Agarre por Vacío en Brazos Robóticos</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Generadores Venturi, bombas eléctricas descentralizadas, tipos de ventosas y cálculo de succión</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Pneumatic System Schematic -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Circuito Neumático Venturi con Soplado Rápido</text>
+    
+    <!-- Air Supply -->
+    <rect x="30" y="60" width="120" height="70" rx="6" fill="#ffffff" stroke="#8b8577"/>
+    <text x="90" y="90" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Aire Comprimido</text>
+    <text x="90" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">6.0 bar (0.6 MPa)</text>
+    
+    <!-- Solenoid Valve -->
+    <rect x="190" y="60" width="120" height="70" rx="6" fill="#eef6fc" stroke="#2f6fb0"/>
+    <text x="250" y="90" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Válvula 3/2</text>
+    <text x="250" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Control 24V DC</text>
+    
+    <!-- Venturi Ejector -->
+    <rect x="340" y="60" width="110" height="70" rx="6" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="395" y="90" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#a97b23" font-weight="bold">Eyector Venturi</text>
+    <text x="395" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#c92a2a">Vacío: -85 kPa</text>
+    
+    <!-- Vacuum Line Down -->
+    <line x1="395" y1="130" x2="395" y2="200" stroke="#1e1b15" stroke-width="4"/>
+    
+    <!-- Digital Vacuum Switch -->
+    <g transform="translate(190, 170)">
+      <rect x="0" y="0" width="180" height="70" rx="6" fill="#eefaf0" stroke="#2b8a3e"/>
+      <text x="90" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Vacuostato Digital</text>
+      <text x="90" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#57534a">Señal PNP a PLC/Robot</text>
+      <text x="90" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1e1b15">Detección de Pieza Tomada</text>
+    </g>
+    
+    <!-- Suction Cup Drawing -->
+    <g transform="translate(325, 250)">
+      <!-- Bellows Suction Cup -->
+      <path d="M 40,0 L 100,0 L 120,40 L 20,40 L 130,80 L 10,80 L 140,110 L 0,110 Z" fill="#d4af37" stroke="#1e1b15" stroke-width="1.5"/>
+      <text x="70" y="60" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15" font-weight="bold">Ventosa de Fuelle (1.5 / 2.5 pliegues)</text>
+      
+      <!-- Workpiece -->
+      <rect x="-30" y="110" width="200" height="25" rx="2" fill="#495057"/>
+      <text x="70" y="128" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#ffffff">Superficie de la Pieza</text>
+    </g>
+    
+    <!-- Formula Box -->
+    <rect x="25" y="435" width="430" height="85" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="215" y="460" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#2f6fb0" font-weight="bold">Fuerza Teórica de Succión: F_th = A · Δp = π·r² · (P_atm - P_vacío)</text>
+    <text x="215" y="485" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Para ventosa Ø40mm a -80 kPa: <strong>F_th = 100.5 N (~10.2 kg)</strong></text>
+    <text x="215" y="505" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Factor de seguridad dinámico: S = 2.0 (horizontal) / S = 4.0 (vertical)</text>
+  </g>
+  
+  <!-- Right Side: Suction Cup Types & Comparison -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">Selección de Ventosas y Bombas Eléctricas</text>
+    
+    <!-- Venturi vs Electric Decentralized Pump -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="430" height="230" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Comparativa: Eyector Venturi vs Bomba Eléctrica On-Robot</text>
+      
+      <text x="15" y="55" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Eyector Venturi (Aire Comprimido):</text>
+      <text x="25" y="75" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Sin piezas móviles · Ultra-rápido (evacuación &lt; 50 ms)</text>
+      <text x="25" y="92" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Alto consumo de aire comprimido si se mantiene activo</text>
+      
+      <text x="15" y="125" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Bomba Eléctrica Integrada (ej: OnRobot VGC10 / Schmalz):</text>
+      <text x="25" y="145" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Cero mangueras de aire externas · Conexión directa a brida</text>
+      <text x="25" y="162" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Flujo de vacío configurable por canales independientes</text>
+      <text x="25" y="180" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• Ideal para celdas robóticas móviles (AMR / AGV)</text>
+      
+      <text x="15" y="212" font-family="Inter, sans-serif" font-size="11" fill="#a97b23" font-weight="bold">Materiales: NBR (aceites), Silicona (alimentos), Poliuretano (antidesgaste)</text>
+    </g>
+    
+    <!-- Geometries Table -->
+    <g transform="translate(25, 305)">
+      <rect x="0" y="0" width="430" height="215" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">Geometrías de Ventosa según la Aplicación:</text>
+      
+      <text x="15" y="55" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>Planas (Flat):</strong> Máxima rigidez y estabilidad para chapas y vidrio liso.</text>
+      <text x="15" y="90" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>Fuelle 1.5 / 2.5:</strong> Compensación de altura y adaptación a piezas curvas.</text>
+      <text x="15" y="125" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>Ovaladas:</strong> Piezas alargadas, perfiles estrechos y tubos.</text>
+      <text x="15" y="160" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">• <strong>Especiales para Cartón/Bolsas:</strong> Labio extra-flexible para porosidad.</text>
+      
+      <text x="15" y="195" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Tiempo de liberación con pulso de soplado (Blow-off): <strong>&lt; 20 ms</strong></text>
+    </g>
+  </g>
+</g>
+</svg>

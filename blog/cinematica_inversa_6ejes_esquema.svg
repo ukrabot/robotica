@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Desacoplo cinemático de Pieper para brazos antropomórficos de 6 grados de libertad">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Cinemática Inversa Analítica: Desacoplo de Pieper en 6 Ejes</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Separación del problema en Posición del Centro de Muñeca (Ejes 1-3) y Orientación Z-Y-Z (Ejes 4-6)</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Position Decoupling (Joints 1, 2, 3) -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#e4c07a" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">Fase 1: Posición del Centro de Muñeca (p_c)</text>
+    
+    <!-- Math formula box -->
+    <rect x="25" y="55" width="430" height="85" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="40" y="85" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">Ecuación de Desacoplo:</text>
+    <text x="40" y="115" font-family="Georgia, serif" font-size="16" fill="#2f6fb0">p_c = p_tcp - d₆ · R · [0, 0, 1]ᵀ</text>
+    
+    <!-- Geometry Drawing -->
+    <g transform="translate(50, 160)">
+      <!-- Base Axis -->
+      <line x1="60" y1="260" x2="60" y2="180" stroke="#1e1b15" stroke-width="8"/>
+      <circle cx="60" cy="260" r="14" fill="#241a06"/>
+      <text x="60" y="295" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">θ₁ = atan2(y_c, x_c)</text>
+      
+      <!-- Shoulder link a1 / d1 -->
+      <line x1="60" y1="180" x2="160" y2="70" stroke="#a97b23" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="60" cy="180" r="10" fill="#d4af37"/>
+      <text x="90" y="120" font-family="Inter, sans-serif" font-size="13" fill="#a97b23" font-weight="bold">a₂</text>
+      
+      <!-- Elbow link a2 -->
+      <line x1="160" y1="70" x2="280" y2="120" stroke="#2f6fb0" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="160" cy="70" r="10" fill="#2f6fb0"/>
+      <text x="225" y="85" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">a₃ + d₄</text>
+      
+      <!-- Wrist Center Oc -->
+      <circle cx="280" cy="120" r="12" fill="#c92a2a"/>
+      <text x="300" y="115" font-family="Inter, sans-serif" font-size="13" fill="#c92a2a" font-weight="bold">O_c (Centro Muñeca)</text>
+      
+      <!-- TCP extension -->
+      <line x1="280" y1="120" x2="350" y2="150" stroke="#8b8577" stroke-width="4" stroke-dasharray="3"/>
+      <circle cx="350" cy="150" r="6" fill="#1e1b15"/>
+      <text x="360" y="170" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">TCP (Herramienta)</text>
+    </g>
+    
+    <!-- Solutions summary -->
+    <rect x="25" y="440" width="430" height="75" rx="6" fill="#eefaf0" stroke="#2b8a3e" stroke-width="1"/>
+    <text x="40" y="465" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">Ley del Coseno en el Plano del Brazo:</text>
+    <text x="40" y="485" font-family="Inter, sans-serif" font-size="11" fill="#57534a">• cos(θ₃) = (r² + s² - a₂² - d₄²) / (2 · a₂ · d₄)</text>
+    <text x="40" y="502" font-family="Inter, sans-serif" font-size="11" fill="#1e1b15">4 combinaciones: Base Adelante/Atrás × Codo Arriba/Abajo</text>
+  </g>
+  
+  <!-- Right Side: Orientation Decoupling (Wrist Joints 4, 5, 6) -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Fase 2: Orientación de Muñeca Esférica (θ₄, θ₅, θ₆)</text>
+    
+    <!-- Rotation Matrix formula -->
+    <rect x="25" y="55" width="430" height="85" rx="6" fill="#ffffff" stroke="#adb5bd"/>
+    <text x="40" y="85" font-family="Inter, sans-serif" font-size="14" fill="#1e1b15" font-weight="bold">Matriz de Rotación Relativa:</text>
+    <text x="40" y="115" font-family="Georgia, serif" font-size="16" fill="#a97b23">R₃₆ = (R₀₃)ᵀ · R_objetivo</text>
+    
+    <g transform="translate(25, 160)">
+      <rect x="0" y="0" width="430" height="150" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="20" y="28" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">Extracción de Ángulos de Euler Z-Y-Z:</text>
+      
+      <text x="20" y="58" font-family="Georgia, serif" font-size="14" fill="#2f6fb0">θ₅ = atan2( ±√(R₃₁² + R₃₂²), R₃₃ )</text>
+      <text x="20" y="88" font-family="Georgia, serif" font-size="14" fill="#2f6fb0">θ₄ = atan2( R₂₃ / sin(θ₅), R₁₃ / sin(θ₅) )</text>
+      <text x="20" y="118" font-family="Georgia, serif" font-size="14" fill="#2f6fb0">θ₆ = atan2( R₃₂ / sin(θ₅), -R₃₁ / sin(θ₅) )</text>
+    </g>
+    
+    <!-- 8 Solutions & Singularities -->
+    <g transform="translate(25, 330)">
+      <rect x="0" y="0" width="430" height="95" rx="6" fill="#fff5f5" stroke="#ffc9c9" stroke-width="1"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#c92a2a" font-weight="bold">⚠ Singularidad de Muñeca (θ₅ = 0°):</text>
+      <text x="15" y="44" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Los ejes 4 y 6 quedan alineados (se pierde 1 GDL).</text>
+      <text x="15" y="60" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Solo se puede determinar la suma (θ₄ + θ₆).</text>
+      <text x="15" y="78" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a">Solución: Fijar θ₄ al valor previo y calcular θ₆.</text>
+    </g>
+    
+    <rect x="25" y="440" width="430" height="75" rx="6" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1"/>
+    <text x="40" y="465" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Total: 8 Soluciones Cinemáticas Posibles</text>
+    <text x="40" y="485" font-family="Inter, sans-serif" font-size="11" fill="#57534a">2 (Hombro) × 2 (Codo) × 2 (Muñeca Flip / Non-Flip) = <strong>8 poses</strong></text>
+    <text x="40" y="502" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">El planificador elige la más cercana sin colisión.</text>
+  </g>
+</g>
+</svg>

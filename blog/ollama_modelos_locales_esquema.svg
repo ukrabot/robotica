@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Arquitectura de inferencia de modelos de lenguaje locales con Ollama y GGUF">
+<rect width="1200" height="750" fill="#f6f4ee"/>
+<text x="600" y="48" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#1e1b15" font-weight="bold">Arquitectura de Inferencia Local con Ollama y llama.cpp</text>
+<text x="600" y="78" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">Cuantización GGUF, asignación dinámica GPU/RAM, Modelfile y servidor de API REST</text>
+
+<g transform="translate(60, 110)">
+  <rect x="0" y="0" width="1080" height="600" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="2"/>
+  
+  <!-- Left Side: Ollama Server Architecture -->
+  <g transform="translate(40, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#a97b23" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#a97b23" font-weight="bold">Servidor Ollama &amp; Backend llama.cpp</text>
+    
+    <!-- REST API Endpoints -->
+    <rect x="25" y="55" width="430" height="90" rx="6" fill="#ffffff" stroke="#8b8577"/>
+    <text x="40" y="80" font-family="Inter, sans-serif" font-size="13" fill="#1e1b15" font-weight="bold">API REST Local (Puerto 11434):</text>
+    <text x="40" y="105" font-family="ui-monospace, monospace" font-size="12" fill="#2f6fb0">POST /api/generate · POST /api/chat</text>
+    <text x="40" y="125" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Compatible con OpenAI SDK (base_url: localhost:11434/v1)</text>
+    
+    <!-- Memory Allocation & GPU Layers -->
+    <g transform="translate(25, 160)">
+      <rect x="0" y="0" width="430" height="190" rx="8" fill="#151310"/>
+      <text x="20" y="28" font-family="Inter, sans-serif" font-size="13" fill="#e4c07a" font-weight="bold">Gestión de Memoria y Offloading por Capas:</text>
+      
+      <!-- GPU VRAM block -->
+      <rect x="20" y="45" width="230" height="70" rx="6" fill="#76b900" opacity="0.85"/>
+      <text x="135" y="72" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff" font-weight="bold">VRAM GPU (CUDA/ROCm)</text>
+      <text x="135" y="92" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#ffffff">Capas 1 a 32 (Inferencia Rápida)</text>
+      <text x="135" y="106" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#ffffff">&gt; 80 tokens/s (Llama 3.1 8B)</text>
+      
+      <!-- System RAM block -->
+      <rect x="265" y="45" width="145" height="70" rx="6" fill="#495057"/>
+      <text x="337" y="72" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#ffffff" font-weight="bold">RAM del Sistema</text>
+      <text x="337" y="92" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#adb5bd">CPU AVX-512</text>
+      <text x="337" y="106" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#adb5bd">~12 tokens/s</text>
+      
+      <text x="215" y="145" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#adb5bd">Ollama calcula automáticamente cuántas capas caben en VRAM</text>
+      <text x="215" y="168" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#e4c07a">Soporte nativo para Memoria Unificada en Apple Silicon (M1/M2/M3/M4)</text>
+    </g>
+    
+    <!-- Modelfile Box -->
+    <g transform="translate(25, 365)">
+      <rect x="0" y="0" width="430" height="150" rx="6" fill="#ffffff" stroke="#2f6fb0" stroke-width="1"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="12" fill="#2f6fb0" font-weight="bold">Personalización con Modelfile:</text>
+      <text x="15" y="50" font-family="ui-monospace, monospace" font-size="11" fill="#1e1b15">FROM llama3.1:8b-instruct-q8_0</text>
+      <text x="15" y="70" font-family="ui-monospace, monospace" font-size="11" fill="#1e1b15">PARAMETER temperature 0.2</text>
+      <text x="15" y="90" font-family="ui-monospace, monospace" font-size="11" fill="#1e1b15">PARAMETER num_ctx 16384</text>
+      <text x="15" y="110" font-family="ui-monospace, monospace" font-size="11" fill="#1e1b15">SYSTEM "Eres un asistente experto en ingeniería robótica..."</text>
+      <text x="15" y="135" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e">Comando: ollama create robot-ai -f ./Modelfile</text>
+    </g>
+  </g>
+  
+  <!-- Right Side: Quantization Guide & Use Cases -->
+  <g transform="translate(560, 30)">
+    <rect x="0" y="0" width="480" height="540" rx="10" fill="#faf7f0" stroke="#2f6fb0" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#2f6fb0" font-weight="bold">Guía de Cuantización GGUF &amp; Modelos</text>
+    
+    <!-- Quantization Table -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="430" height="190" rx="6" fill="#ffffff" stroke="#8b8577"/>
+      <text x="15" y="24" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15" font-weight="bold">Niveles de Cuantización Recomendados:</text>
+      
+      <text x="15" y="55" font-family="Inter, sans-serif" font-size="11" fill="#2b8a3e" font-weight="bold">• Q4_K_M (4 bits):</text>
+      <text x="140" y="55" font-family="Inter, sans-serif" font-size="11" fill="#57534a">VRAM ~4.7 GB · Mínima pérdida de calidad</text>
+      
+      <text x="15" y="85" font-family="Inter, sans-serif" font-size="11" fill="#2f6fb0" font-weight="bold">• Q5_K_M (5 bits):</text>
+      <text x="140" y="85" font-family="Inter, sans-serif" font-size="11" fill="#57534a">VRAM ~5.6 GB · Excelente balance razonamiento</text>
+      
+      <text x="15" y="115" font-family="Inter, sans-serif" font-size="11" fill="#a97b23" font-weight="bold">• Q8_0 (8 bits):</text>
+      <text x="140" y="115" font-family="Inter, sans-serif" font-size="11" fill="#57534a">VRAM ~8.5 GB · Calidad idéntica a FP16</text>
+      
+      <text x="15" y="145" font-family="Inter, sans-serif" font-size="11" fill="#c92a2a" font-weight="bold">• FP16 (16 bits):</text>
+      <text x="140" y="145" font-family="Inter, sans-serif" font-size="11" fill="#57534a">VRAM ~16.0 GB · Sin comprimir</text>
+      
+      <text x="15" y="175" font-family="Inter, sans-serif" font-size="10" fill="#8b8577">Consejo: Q4_K_M es el sweet spot para GPUs de 8GB y 12GB.</text>
+    </g>
+    
+    <!-- Integration with UI & Tools -->
+    <g transform="translate(25, 260)">
+      <rect x="0" y="0" width="430" height="255" rx="8" fill="#eef6fc" stroke="#2f6fb0" stroke-width="1"/>
+      <text x="15" y="25" font-family="Inter, sans-serif" font-size="13" fill="#2f6fb0" font-weight="bold">Integraciones Locales y Privacidad:</text>
+      
+      <text x="15" y="55" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">1. <strong>Open WebUI (Docker):</strong> Interfaz idéntica a ChatGPT</text>
+      <text x="30" y="75" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Soporte RAG con documentos PDF, voz a texto y agentes</text>
+      
+      <text x="15" y="105" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">2. <strong>Programación &amp; IDEs:</strong> Continue.dev / Cursor</text>
+      <text x="30" y="125" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Autocompletado con DeepSeek-Coder-V2 / Qwen 2.5 Coder</text>
+      
+      <text x="15" y="155" font-family="Inter, sans-serif" font-size="12" fill="#1e1b15">3. <strong>Home Assistant &amp; Automatización:</strong></text>
+      <text x="30" y="175" font-family="Inter, sans-serif" font-size="11" fill="#57534a">Procesamiento de comandos de voz en lenguaje natural 100% offline</text>
+      
+      <text x="15" y="210" font-family="Inter, sans-serif" font-size="12" fill="#2b8a3e" font-weight="bold">✓ Cero telemetría · Cero costos de API · 100% Soberanía de Datos</text>
+    </g>
+  </g>
+</g>
+</svg>

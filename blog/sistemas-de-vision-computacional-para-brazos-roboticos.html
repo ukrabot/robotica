@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sistemas de Visión Computacional para Brazos Robóticos</title>
+<meta name="description" content="Guía de visión computacional para brazos robóticos: calibración Hand-Eye en OpenCV (AX=XB), cámaras RGB-D 3D, detección de pose 6D y visual servoing.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/sistemas-de-vision-computacional-para-brazos-roboticos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sistemas de Visión Computacional para Brazos Robóticos">
+<meta property="og:description" content="Guía de visión computacional para brazos robóticos: calibración Hand-Eye en OpenCV (AX=XB), cámaras RGB-D 3D, detección de pose 6D y visual servoing.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/vision_computacional_brazo_esquema.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/sistemas-de-vision-computacional-para-brazos-roboticos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sistemas de Visión Computacional para Brazos Robóticos">
+<meta name="twitter:description" content="Guía de visión computacional para brazos robóticos: calibración Hand-Eye en OpenCV (AX=XB), cámaras RGB-D 3D, detección de pose 6D y visual servoing.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/vision_computacional_brazo_esquema.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Sistemas de Visión Computacional para Brazos Robóticos",
+  "description": "Guía de visión computacional para brazos robóticos: calibración Hand-Eye en OpenCV (AX=XB), cámaras RGB-D 3D, detección de pose 6D y visual servoing.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/sistemas-de-vision-computacional-para-brazos-roboticos"
+  },
+  "image": "https://www.ukrabot.cl/blog/vision_computacional_brazo_esquema.svg",
+  "proficiencyLevel": "Avanzado",
+  "dependencies": "OpenCV, Python / C++, cámaras RGB-D (Intel RealSense D435i / Zivid / Orbbec), conceptos de geometría proyectiva epipolar",
+  "wordCount": "3450",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Sistemas de Visión Computacional para Brazos Robóticos",
+      "item": "https://www.ukrabot.cl/blog/sistemas-de-vision-computacional-para-brazos-roboticos"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuál es el mejor patrón de calibración: Tablero de ajedrez (Chessboard), Círculos o ChArUco?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El patrón <strong>ChArUco (tablero de ajedrez con marcadores ArUco integrados)</strong> es el más robusto de la industria. A diferencia del ajedrez tradicional, ChArUco permite calcular la pose con precisión incluso si parte del tablero está ocluida o fuera del campo de visión de la cámara."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el servocontrol visual (Visual Servoing / PBVS vs IBVS)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es una técnica de control en bucle cerrado donde el robot se mueve en tiempo real guiado por la señal de error visual: Position-Based Visual Servoing (PBVS) calcula el error en coordenadas 3D cartesianas; Image-Based Visual Servoing (IBVS) calcula el error directamente en coordenadas de píxeles 2D de la imagen, siendo más robusto ante errores de calibración de cámara."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo evitar reflejos molestos en piezas metálicas brillantes pulidas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Utilizando iluminación polarizada cruzada (polarizador lineal en el emisor de luz y polarizador a 90° en el lente de la cámara) o proyectores de luz azul / infrarroja difusa tipo domo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi robot no toma la pieza en el punto exacto a pesar de calibrar la cámara?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Generalmente se debe a un error no calibrado en el Tool Center Point (TCP) de la pinza, a flexiones mecánicas del soporte de la cámara o a que las poses de calibración Hand-Eye no tuvieron suficiente variación angular (rotaciones < 30° en los ejes)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se puede hacer bin picking con cámaras 2D convencionales?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Solo para piezas completamente planas apoyadas en una sola capa sobre un fondo de alto contraste. Para piezas apiladas en 3D con orientaciones aleatorias en un contenedor, es indispensable una cámara 3D de nube de puntos."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:50vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:90px 24px 60px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(1.9rem,5.5vw,3.8rem);line-height:1.15;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:1.9rem;font-weight:400;line-height:1.2;margin:54px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:70px 20px 40px}
+  .article-body h2{font-size:1.55rem;margin:40px 0 14px}
+  .article-body{padding-top:44px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:55vh}
+  .hero-inner{padding:60px 16px 35px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.35rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="vision_computacional_brazo_esquema.svg" alt="Sistemas de Visión Computacional para Brazos Robóticos" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Mantenimiento, Calibración y Visión · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Sistemas de Visión Computacional para Brazos Robóticos</h1>
+    <p>Integración de cámaras 2D y 3D en manipuladores: calibración Hand-Eye (Eye-in-Hand vs Eye-to-Hand con ecuación AX=XB), estimación de pose 6D (ArUco, Point Clouds) y servocontrol visual (Visual Servoing).</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 20 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="vision_computacional_brazo_esquema.svg" alt="Transformaciones de coordenadas en configuraciones Eye-in-Hand (cámara en muñeca) vs Eye-to-Hand (cámara fija cenital)." loading="lazy">
+  <div class="caption">Transformaciones de coordenadas en configuraciones Eye-in-Hand (cámara en muñeca) vs Eye-to-Hand (cámara fija cenital).</div>
+</div>
+
+<nav class="toc" aria-label="Índice del contenido">
+  <h2>Contenido de la guía</h2>
+  <ol>
+    <li><a href="#arquitecturas-camara">Arquitecturas de visión: Eye-in-Hand vs Eye-to-Hand</a></li>
+<li><a href="#calibracion-hand-eye-matematica">Matemática de la calibración Hand-Eye (Ecuación Matricial $AX = XB$)</a></li>
+<li><a href="#codigo-opencv-hand-eye">Implementación práctica en Python con OpenCV</a></li>
+<li><a href="#sensores-3d-pointclouds">Cámaras 3D RGB-D y estimación de pose 6D (Point Clouds)</a></li>
+<li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+
+<section id="arquitecturas-camara">
+<h2>Arquitecturas de visión: Eye-in-Hand vs Eye-to-Hand</h2>
+
+<p>Incorporar visión artificial a un brazo robótico le permite adaptarse a piezas desordenadas en cintas transportadoras o contenedores (Random Bin Picking). La primera decisión de ingeniería es la ubicación física de la cámara:</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Configuración de Cámara</th>
+<th>Ubicación Física</th>
+<th>Ventajas Principales</th>
+<th>Inconvenientes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Eye-in-Hand (Cámara en la Muñeca)</strong></td>
+<td>Montada rígidamente en la brida o efector final del robot.</td>
+<td>• Resolución adaptativa (puede acercarse a la pieza para inspección macro).<br>• Cero oclusiones generadas por el propio brazo del robot.<br>• Puede explorar el entorno desde múltiples ángulos.</td>
+<td>• Añade peso (0.3 a 1.2 kg) a la carga útil (Payload).<br>• Vulnerable a vibraciones mecánicas.<br>• Cables expuestos a flexión continua en el paquete de articulaciones.</td>
+</tr>
+<tr>
+<td><strong>Eye-to-Hand (Cámara Fija Externa)</strong></td>
+<td>Montada en un poste cenital o estructura rígida fija exterior.</td>
+<td>• Cero peso extra en el robot.<br>• Vista panorámica global de todo el espacio de trabajo en un solo cuadro.<br>• Permite usar cámaras industriales pesadas de alta resolución.</td>
+<td>• El propio brazo robótico puede tapar la pieza durante el acercamiento (auto-oclusión).<br>• Resolución fija por píxel en la mesa de trabajo.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+<section id="calibracion-hand-eye-matematica">
+<h2>Matemática de la calibración Hand-Eye (Ecuación Matricial $AX = XB$)</h2>
+
+<p>Para que el robot sepa dónde está la pieza en sus propias coordenadas de base ($\{Base\}$), se debe determinar la matriz de transformación rígida constante $X \in SE(3)$:</p>
+<ul>
+  <li>En <strong>Eye-in-Hand</strong>: $X = \,^F T_C$ (Transformación de la brida $\{Flange\}$ a la cámara $\{Camera\}$).</li>
+  <li>En <strong>Eye-to-Hand</strong>: $X = \,^B T_C$ (Transformación de la base $\{Base\}$ a la cámara $\{Camera\}$).</li>
+</ul>
+
+<div class="note"><strong>Ecuación Matricial Clásica de Calibración:</strong>
+Al mover el robot entre dos poses distintas $1$ y $2$, la relación geométrica cerrada impone:
+$$A \cdot X = X \cdot B$$
+Donde:
+<ul>
+  <li>$A = (\,^B T_{F2})^{-1} \cdot \,^B T_{F1}$ (Movimiento relativo de la brida registrado por los encoders del robot).</li>
+  <li>$B = \,^{C2} T_T \cdot (\,^{C1} T_T)^{-1}$ (Movimiento relativo del patrón de calibración detectado por la cámara).</li>
+</ul>
+</div>
+<p>Dado que cada movimiento genera una rotación y traslación en 3D, se requieren al menos <strong>3 movimientos independientes no coplanares</strong> (típicamente 10 a 15 poses para promediar errores) para resolver unívocamente $X$ mediante algoritmos como <em>Tsai-Lenz, Park-Martin, Daniilidis o Horaud</em>.</p>
+
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="codigo-opencv-hand-eye">
+<h2>Implementación práctica en Python con OpenCV</h2>
+
+<p>OpenCV incluye una función nativa altamente optimizada para calcular la calibración Hand-Eye:</p>
+<pre><code>import cv2
+import numpy as np
+
+# 1. Listas de rotaciones (R) y traslaciones (t) de la brida del robot (Base a Flange)
+R_base2gripper = []  # Lista de matrices 3x3
+t_base2gripper = []  # Lista de vectores 3x1
+
+# 2. Listas de rotaciones y traslaciones del patrón detectado por la cámara (Target a Camera)
+R_target2cam = []    # Lista de matrices 3x3
+t_target2cam = []    # Lista de vectores 3x1
+
+# Llenar las listas con N mediciones (ej: 12 poses diferentes alrededor del tablero ChArUco)
+# ... [Bucle de captura de imágenes y lectura de coordenadas del robot] ...
+
+# 3. Resolver la calibración Hand-Eye (Método Tsai-Lenz o Park-Martin)
+R_cam2gripper, t_cam2gripper = cv2.calibrateHandEye(
+    R_gripper2base=R_base2gripper,
+    t_gripper2base=t_base2gripper,
+    R_target2cam=R_target2cam,
+    t_target2cam=t_target2cam,
+    method=cv2.CALIB_HAND_EYE_TSAI
+)
+
+print("Matriz de Rotación Cámara a Brida (R):
+", R_cam2gripper)
+print("Vector de Traslación Cámara a Brida en metros (t):
+", t_cam2gripper.ravel())
+
+# 4. Transformar una coordenada detectada por la cámara al sistema de la base del robot
+def cam_to_base(p_cam, T_base2flange, T_cam2flange):
+    # p_base = T_base2flange * T_cam2flange * p_cam
+    T_base2cam = np.dot(T_base2flange, T_cam2flange)
+    p_cam_hom = np.append(p_cam, 1.0)
+    p_base_hom = np.dot(T_base2cam, p_cam_hom)
+    return p_base_hom[:3]
+</code></pre>
+
+</section>
+<section id="sensores-3d-pointclouds">
+<h2>Cámaras 3D RGB-D y estimación de pose 6D (Point Clouds)</h2>
+
+<p>Para piezas complejas o apiladas, la visión 2D es insuficiente. Se utilizan sensores 3D industriales basados en tres tecnologías:</p>
+<ol>
+  <li><strong>Luz Estructurada (Structured Light — ej: Photoneo PhoXi, Zivid Two):</strong> Proyecta patrones de franjas luminosas de alta frecuencia. Entrega nubes de puntos con precisión de <strong>menos de 20 micrómetros</strong>.</li>
+  <li><strong>Time-of-Flight (ToF — ej: Azure Kinect, Basler blaze):</strong> Mide el tiempo de vuelo de pulsos de luz láser infrarroja. Excelente para distancias medias (1 a 5 metros) a alta velocidad de cuadros.</li>
+  <li><strong>Stereo Activo por Infrarrojos (ej: Intel RealSense D435i / D455):</strong> Económico, ligero y compacto para montaje Eye-in-Hand.</li>
+</ol>
+<p>La estimación de pose 6D ($[X, Y, Z, Roll, Pitch, Yaw]$) se realiza mediante alineación de nubes de puntos con el modelo CAD original utilizando algoritmos <strong>Iterative Closest Point (ICP)</strong> o redes neuronales profundas (como <em>FoundationPose o DOPE</em>).</p>
+
+</section>
+
+
+<section class="faq" id="faq" aria-label="Preguntas frecuentes">
+<h2>Preguntas Frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuál es el mejor patrón de calibración: Tablero de ajedrez (Chessboard), Círculos o ChArUco?</summary><p>El patrón <strong>ChArUco (tablero de ajedrez con marcadores ArUco integrados)</strong> es el más robusto de la industria. A diferencia del ajedrez tradicional, ChArUco permite calcular la pose con precisión incluso si parte del tablero está ocluida o fuera del campo de visión de la cámara.</p></details>
+<details><summary>¿Qué es el servocontrol visual (Visual Servoing / PBVS vs IBVS)?</summary><p>Es una técnica de control en bucle cerrado donde el robot se mueve en tiempo real guiado por la señal de error visual: Position-Based Visual Servoing (PBVS) calcula el error en coordenadas 3D cartesianas; Image-Based Visual Servoing (IBVS) calcula el error directamente en coordenadas de píxeles 2D de la imagen, siendo más robusto ante errores de calibración de cámara.</p></details>
+<details><summary>¿Cómo evitar reflejos molestos en piezas metálicas brillantes pulidas?</summary><p>Utilizando iluminación polarizada cruzada (polarizador lineal en el emisor de luz y polarizador a 90° en el lente de la cámara) o proyectores de luz azul / infrarroja difusa tipo domo.</p></details>
+<details><summary>¿Por qué mi robot no toma la pieza en el punto exacto a pesar de calibrar la cámara?</summary><p>Generalmente se debe a un error no calibrado en el Tool Center Point (TCP) de la pinza, a flexiones mecánicas del soporte de la cámara o a que las poses de calibración Hand-Eye no tuvieron suficiente variación angular (rotaciones < 30° en los ejes).</p></details>
+<details><summary>¿Se puede hacer bin picking con cámaras 2D convencionales?</summary><p>Solo para piezas completamente planas apoyadas en una sola capa sobre un fondo de alto contraste. Para piezas apiladas en 3D con orientaciones aleatorias en un contenedor, es indispensable una cámara 3D de nube de puntos.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
+
+<div class="cta">
+  <h3>Continúa explorando tutoriales técnicos</h3>
+  <p>Aprende cómo proteger a los operadores humanos en celdas robóticas con nuestra guía de escáneres de área láser.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/programa-de-mantenimiento-para-brazos-roboticos">← Programa de Mantenimiento para Brazos Robóticos</a>
+  <a href="/blog/escaneres-de-area-para-seguridad-en-celdas-roboticas">Escáneres de Área para Seguridad en Celdas Robóticas →</a>
+</div>
+
+</article>
+
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Hojas de datos oficiales, estándares internacionales de ingeniería y documentación técnica citada en este artículo.</p>
+<ul>
+<li><a href="https://ieeexplore.ieee.org/document/34770" target="_blank" rel="noopener noreferrer">Tsai, R. Y., & Lenz, R. K. — A New Technique for Fully Autonomous and Efficient 3D Robotics Hand/Eye Calibration (IEEE Trans. Robotics)</a></li>
+<li><a href="https://docs.opencv.org/" target="_blank" rel="noopener noreferrer">OpenCV Documentation — Camera Calibration and 3D Reconstruction Module</a></li>
+<li><a href="https://www.zivid.com/" target="_blank" rel="noopener noreferrer">Zivid 3D Vision — Machine Vision Guide for Robotic Industrial Automation</a></li>
+<li><a href="https://www.intelrealsense.com/" target="_blank" rel="noopener noreferrer">Intel RealSense SDK 2.0 & Computer Vision Integration Manual</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
