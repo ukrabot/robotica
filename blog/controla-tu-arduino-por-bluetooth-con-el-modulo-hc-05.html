@@ -397,7 +397,7 @@ Arduino pin 3 (TX SoftwareSerial) --[R1 1kΩ]--+--[R2 2kΩ]--> GND
 </ol>
 <div class="note"><strong>Nota sobre velocidades:</strong> en modo AT, la mayoría de los módulos con firmware original responden a <strong>38400 baudios</strong> independientemente de la velocidad configurada para el modo de datos, mientras que algunos clones más nuevos usan la velocidad configurada actualmente. Si no obtienes respuesta al enviar <code>AT</code>, prueba primero a 38400 y luego a 9600 antes de asumir que el módulo está dañado.</div>
 <pre><code>// Sketch "puente" para enviar comandos AT desde el Monitor Serie
-#include <SoftwareSerial.h>
+#include &lt;SoftwareSerial.h&gt;
 SoftwareSerial BT(2, 3); // RX, TX
 
 void setup() {
@@ -433,7 +433,7 @@ void loop() {
 <section id="codigo-basico">
 <h2>Código Arduino: control básico de un LED por Bluetooth</h2>
 <p>Una vez configurado el módulo y verificado el hardware, el siguiente paso es un ejemplo mínimo: encender y apagar un LED enviando los caracteres <code>1</code> y <code>0</code> desde una app de terminal Bluetooth en el celular.</p>
-<pre><code>#include <SoftwareSerial.h>
+<pre><code>#include &lt;SoftwareSerial.h&gt;
 
 SoftwareSerial BT(2, 3); // RX, TX (Arduino) conectados a TXD, RXD del HC-05
 
@@ -484,7 +484,7 @@ void loop() {
 <section id="codigo-avanzado">
 <h2>Código Arduino: múltiples salidas y control PWM</h2>
 <p>El siguiente ejemplo escala el concepto anterior a un protocolo de comandos de texto más flexible, capaz de controlar el brillo de un LED por PWM y activar/desactivar un relé, todo desde comandos legibles enviados como línea de texto terminada en salto de línea.</p>
-<pre><code>#include <SoftwareSerial.h>
+<pre><code>#include &lt;SoftwareSerial.h&gt;
 SoftwareSerial BT(2, 3);
 
 const int PIN_LED_PWM = 9;  // salida PWM, controla brillo

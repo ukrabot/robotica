@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Mach3 vs LinuxCNC: Qué Control de CNC Elegir como Maker</title>
+<meta name="description" content="Comparativa técnica Mach3 vs LinuxCNC para CNC caseras: arquitectura de tiempo real, latencia, puerto paralelo vs placas de movimiento, cinemáticas, coste y cuál elegir según tu máquina.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/mach3-vs-linuxcnc-control-de-cnc-para-makers">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mach3 vs LinuxCNC: Qué Control de CNC Elegir como Maker">
+<meta property="og:description" content="Latencia, jitter, puerto paralelo y placas de movimiento: la comparativa técnica que define qué software debe controlar tu CNC.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/mach3_linuxcnc_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/mach3-vs-linuxcnc-control-de-cnc-para-makers">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mach3 vs LinuxCNC: Qué Control de CNC Elegir como Maker">
+<meta name="twitter:description" content="Mach3 o LinuxCNC: arquitectura de tiempo real, hardware compatible y criterios reales de decisión para tu CNC.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/mach3_linuxcnc_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Mach3 vs LinuxCNC: Qué Control de CNC Elegir como Maker",
+  "description": "Comparativa técnica exhaustiva entre Mach3 y LinuxCNC como software de control para máquinas CNC caseras y de taller: arquitectura interna de ambos sistemas, generación de pulsos de paso y dirección, requisitos de tiempo real y por qué Windows no es determinista, medición de latencia y jitter con la prueba de LinuxCNC, uso del puerto paralelo y su obsolescencia, placas de movimiento externas como Ethernet SmoothStepper, UC100 y Mesa, cálculo de la frecuencia máxima de paso y su efecto en la velocidad de avance, soporte de cinemáticas no cartesianas, roscado rígido y control de husillo, interfaz de usuario y personalización, coste de licencia y ecosistema, alternativas modernas como Mach4, GRBL, Masso y Centroid, y una guía de decisión según el tipo de máquina y la experiencia del usuario.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/mach3-vs-linuxcnc-control-de-cnc-para-makers"
+  },
+  "image": "https://www.ukrabot.cl/blog/mach3_linuxcnc_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "PC de control con puerto paralelo o placa de movimiento externa, drivers de motores paso a paso, fuente de alimentación, final de carrera, parada de emergencia",
+  "wordCount": "3200",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Mach3 vs LinuxCNC: Qué Control de CNC Elegir como Maker",
+      "item": "https://www.ukrabot.cl/blog/mach3-vs-linuxcnc-control-de-cnc-para-makers"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar Mach3 con un adaptador USB a puerto paralelo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Mach3 en modo nativo accede directamente a los registros de hardware del puerto paralelo, y un adaptador USB no expone ese acceso: presenta un dispositivo de impresora virtual. La única forma de usar Mach3 sin puerto paralelo físico es mediante una placa de movimiento externa como la Ethernet SmoothStepper o una UC100, que se conecta por USB o Ethernet y genera los pulsos con su propio hardware."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿LinuxCNC funciona en una Raspberry Pi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, con matices importantes. Existen imágenes oficiales de LinuxCNC para Raspberry Pi 4 y 5 con kernel de tiempo real. Sin embargo, la generación de pulsos por GPIO desde la propia Pi tiene un jitter demasiado alto para máquinas exigentes. La configuración recomendada es usar la Pi como interfaz junto a una placa de movimiento externa (Mesa por Ethernet o SPI), de modo que el hardware dedicado genere los pulsos y la Pi solo ejecute la interfaz y el planificador de trayectoria."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto jitter es aceptable para una CNC casera?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Menos de 25.000 nanosegundos (25 µs) de jitter máximo es un buen resultado y permite trabajar cómodamente con puerto paralelo en la mayoría de máquinas caseras. Entre 25.000 y 50.000 ns todavía es utilizable si reduces la frecuencia de paso, bajando el microstepping o los pasos por milímetro. Por encima de 100.000 ns el PC no sirve para generación directa de pulsos y debes recurrir a una placa de movimiento externa. Mide siempre durante al menos 30 minutos y con el equipo bajo carga real."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es difícil migrar de Mach3 a LinuxCNC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El G-code se transfiere casi sin cambios, porque ambos siguen el estándar RS-274. Lo que hay que rehacer es toda la configuración de la máquina: pasos por milímetro, aceleraciones, asignación de pines, polaridad de los finales de carrera y lógica de husillo. El asistente StepConf de LinuxCNC cubre las configuraciones de tres ejes con puerto paralelo en aproximadamente una hora. Las macros en VBScript de Mach3 no son portables y deben reescribirse como componentes HAL, subrutinas en G-code o scripts en Python."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mach4 vale la pena frente a Mach3?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mach4 tiene una arquitectura mucho más sólida: separa el núcleo de movimiento de la interfaz, es más estable en trabajos largos y usa Lua para scripting. Su desventaja es que exige obligatoriamente una placa de movimiento externa y que su ecosistema de plugins y pantallas es menor que el de Mach3. Si estás empezando desde cero y quieres quedarte en el mundo Windows, Mach4 o UCCNC son mejores apuestas de futuro que Mach3. Si ya tienes Mach3 configurado y funcionando bien, migrar rara vez se justifica."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué PC necesito para LinuxCNC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con placa de movimiento externa, cualquier equipo moderno razonable sirve, incluida una Raspberry Pi 4 o 5. Para generación de pulsos por puerto paralelo, un PC de escritorio antiguo (Core 2 Duo o similar) con gráficos integrados, sin WiFi y con las opciones de ahorro de energía desactivadas en la BIOS suele dar mejor latencia que un portátil moderno. La razón es que los portátiles usan intensivamente interrupciones SMI para gestión térmica y de energía, y esas interrupciones son invisibles para el sistema operativo pero destruyen el determinismo."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="mach3_linuxcnc_hero.jpg" alt="Fresadora CNC de banco en un taller con un PC de control mostrando la trayectoria de un programa G-code en pantalla" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">CNC y control de máquinas · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Mach3 vs LinuxCNC: Control de CNC para Makers</h1>
+    <p>Uno cuesta 175 dólares y corre sobre Windows; el otro es libre y necesita un kernel de tiempo real. La decisión no es de precio: es de arquitectura.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 18 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="cnc_control_arquitectura.svg" alt="Diagrama comparativo de la arquitectura de Mach3 sobre Windows y LinuxCNC sobre kernel de tiempo real, mostrando la generación de pulsos y la ruta hacia los drivers" loading="lazy">
+  <div class="caption">La diferencia esencial no está en la interfaz: está en quién genera los pulsos y con qué garantía temporal.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#problema">El problema real: generar pulsos con precisión</a></li>
+    <li><a href="#mach3">Mach3: el veterano de Windows</a></li>
+    <li><a href="#linuxcnc">LinuxCNC: tiempo real de verdad</a></li>
+    <li><a href="#latencia">Latencia y jitter: cómo medirlo antes de comprometerte</a></li>
+    <li><a href="#placas">Placas de movimiento externas: la solución moderna</a></li>
+    <li><a href="#comparativa">Comparativa punto por punto</a></li>
+    <li><a href="#alternativas">Las alternativas que también deberías considerar</a></li>
+    <li><a href="#decision">Cómo decidir según tu máquina</a></li>
+    <li><a href="#seguridad">Seguridad: lo que ningún software resuelve solo</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="problema">
+<h2>El problema real: generar pulsos con precisión</h2>
+<p>Antes de comparar dos programas conviene entender qué hace exactamente un controlador CNC. Su trabajo no es dibujar trayectorias bonitas en pantalla: es <strong>generar trenes de pulsos eléctricos con una precisión temporal de microsegundos</strong>.</p>
+<p>Cada motor paso a paso de tu máquina recibe dos señales: <em>STEP</em> (un pulso = un paso) y <em>DIR</em> (nivel alto o bajo = sentido de giro). Para mover el eje X a 2.000 mm/min en una máquina con 200 pasos/mm, el controlador debe emitir:</p>
+<pre><code>2.000 mm/min ÷ 60 = 33,3 mm/s
+33,3 mm/s × 200 pasos/mm = 6.666 pulsos por segundo, solo en X</code></pre>
+<p>Con tres ejes moviéndose en interpolación coordinada, hablamos de 20.000 pulsos por segundo que deben mantener una relación temporal exacta entre sí. Si un pulso de X llega 200 microsegundos tarde mientras Y sigue su ritmo, la herramienta se desvía de la trayectoria. Si el retraso es mayor, el motor <strong>pierde pasos</strong>: la máquina cree estar en una posición y la herramienta está en otra, y todo lo que venga después de ese punto está mal cortado.</p>
+<div class="note"><strong>El concepto clave es el determinismo,</strong> no la velocidad. Un procesador moderno tiene potencia de sobra para calcular estas trayectorias. Lo que importa es la <strong>garantía</strong> de que el pulso saldrá en el instante previsto, siempre, sin excepciones. Un sistema operativo de escritorio no ofrece esa garantía: en cualquier momento puede interrumpir tu programa para atender una actualización, mover el ratón o vaciar un búfer de disco.</div>
+<p>Aquí es donde Mach3 y LinuxCNC toman caminos radicalmente distintos.</p>
+</section>
+<section id="mach3">
+<h2>Mach3: el veterano de Windows</h2>
+<p><strong>Mach3</strong>, desarrollado por ArtSoft (Newfangled Solutions), apareció a comienzos de los 2000 y se convirtió en el estándar de facto del CNC casero durante más de una década. Corre sobre Windows y su enfoque original fue ingenioso: instalar un <strong>controlador de kernel</strong> que se apropia del temporizador del sistema para generar pulsos por el puerto paralelo a hasta 100 kHz.</p>
+<h3>Fortalezas</h3>
+<ul>
+<li><strong>Curva de aprendizaje suave.</strong> Se instala como cualquier programa de Windows y su configuración se hace con diálogos gráficos claros.</li>
+<li><strong>Ecosistema enorme.</strong> Veinte años de foros, videos, plugins, pantallas personalizadas y macros en VBScript. Casi cualquier problema que tengas ya lo resolvió alguien.</li>
+<li><strong>Compatibilidad comercial.</strong> Muchas máquinas chinas de bajo coste (routers 6040, 3040, grabadoras) vienen con placas de ruptura diseñadas específicamente para Mach3.</li>
+<li><strong>Personalización de la interfaz</strong> mediante el editor de pantallas, con macros accesibles para quien no programa en profundidad.</li>
+</ul>
+<h3>Limitaciones</h3>
+<ul>
+<li><strong>Windows no es determinista.</strong> Aunque el driver de Mach3 tenga alta prioridad, otros controladores del sistema pueden bloquear las interrupciones el tiempo suficiente para provocar jitter. Antivirus, tarjetas de red y gestión de energía son causas clásicas.</li>
+<li><strong>Requiere puerto paralelo físico</strong> para el modo nativo. Los adaptadores USB a paralelo <strong>no funcionan</strong>: no ofrecen el acceso directo a registros que el driver necesita. Y los PC con puerto paralelo real son cada vez más escasos.</li>
+<li><strong>Soporte limitado en Windows moderno.</strong> El driver de puerto paralelo está diseñado para sistemas de 32 bits; en Windows de 64 bits hace falta usar una placa de movimiento externa.</li>
+<li><strong>Desarrollo detenido.</strong> Mach3 ya no recibe nuevas funciones; ArtSoft dirige su desarrollo a Mach4.</li>
+<li><strong>Licencia de pago:</strong> alrededor de 175 dólares por licencia, con versión de demostración limitada a 500 líneas de G-code.</li>
+</ul>
+</section>
+<section id="linuxcnc">
+<h2>LinuxCNC: tiempo real de verdad</h2>
+<p><strong>LinuxCNC</strong> (originalmente EMC, <em>Enhanced Machine Controller</em>) nació en el <strong>NIST</strong>, el instituto nacional de estándares de Estados Unidos, como plataforma abierta de control de máquinas herramienta. Hoy es un proyecto de software libre bajo licencia GPL, y su arquitectura resuelve el problema del determinismo en la raíz: en lugar de pelear con el sistema operativo, <strong>usa un kernel con parches de tiempo real</strong> (PREEMPT_RT o RTAI).</p>
+<p>En ese kernel, la tarea que genera los pulsos tiene prioridad absoluta sobre todo lo demás. Ni la interfaz gráfica, ni la red, ni el disco pueden interrumpirla. El resultado es un jitter medido en pocos microsegundos, de forma verificable y repetible.</p>
+<h3>Fortalezas</h3>
+<ul>
+<li><strong>Determinismo real y medible.</strong> LinuxCNC incluye una herramienta de prueba de latencia que reporta el jitter máximo de tu hardware antes de que conectes un solo motor.</li>
+<li><strong>Arquitectura HAL.</strong> La <em>Hardware Abstraction Layer</em> es un sistema de bloques que se interconectan mediante señales. Puedes construir prácticamente cualquier lógica de control —desde una bomba de refrigerante hasta un cambiador automático de herramienta— conectando componentes sin recompilar nada.</li>
+<li><strong>Cinemáticas no cartesianas nativas.</strong> Soporta máquinas delta, robots SCARA, hexápodos, tornos con eje C y configuraciones de 5 ejes reales. Mach3 es esencialmente cartesiano.</li>
+<li><strong>Roscado rígido y sincronización de husillo</strong> con encoder, funcionando de forma robusta.</li>
+<li><strong>Gratuito y libre,</strong> sin límite de líneas, sin licencia por máquina, con código auditable.</li>
+<li><strong>Desarrollo activo</strong> con lanzamientos periódicos y soporte para hardware moderno.</li>
+</ul>
+<h3>Limitaciones</h3>
+<ul>
+<li><strong>Curva de aprendizaje pronunciada.</strong> Aunque el asistente StepConf resuelve las configuraciones sencillas, cualquier cosa a medida exige entender HAL y editar archivos de configuración.</li>
+<li><strong>Sensibilidad al hardware.</strong> No todos los PC alcanzan buena latencia; hay placas base con SMI (interrupciones de gestión del sistema) que arruinan el determinismo y no siempre se pueden desactivar.</li>
+<li><strong>Sistema operativo dedicado.</strong> Necesitas una máquina exclusiva con Linux. No es práctico compartirla con tu PC de diseño.</li>
+<li><strong>Menos plug-and-play</strong> con las placas de ruptura chinas genéricas, que están pensadas para Mach3.</li>
+</ul>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="latencia">
+<h2>Latencia y jitter: cómo medirlo antes de comprometerte</h2>
+<p>La <strong>latencia</strong> es el retraso entre el momento en que una tarea debía ejecutarse y el momento en que realmente se ejecutó. El <strong>jitter</strong> es la variación de esa latencia. Para un controlador CNC, el jitter máximo es la cifra que manda, porque determina la frecuencia de paso segura.</p>
+<p>LinuxCNC trae una utilidad de prueba que se ejecuta antes de conectar nada:</p>
+<pre><code># Ejecutar durante al menos 30 minutos, con carga de trabajo:
+# navegador abierto, copiando archivos, moviendo ventanas
+latency-test
+
+# Interpretación del jitter máximo del hilo base:
+#   &lt; 10.000 ns  → excelente, puerto paralelo a alta frecuencia
+#   &lt; 25.000 ns  → bueno, funciona bien en la mayoría de máquinas
+#   &lt; 50.000 ns  → aceptable con frecuencias de paso moderadas
+#   &gt; 100.000 ns → usa una placa de movimiento externa</code></pre>
+<p>El jitter limita directamente la frecuencia máxima de paso utilizable. Una aproximación práctica: el periodo del hilo base debe ser al menos el doble del jitter máximo, y cada pulso necesita dos ciclos (alto y bajo).</p>
+<pre><code>Con jitter de 20.000 ns (20 µs):
+periodo base seguro ≈ 50.000 ns
+frecuencia de paso máxima ≈ 1 / (2 × 50 µs) = 10 kHz
+
+Velocidad máxima en un eje de 200 pasos/mm:
+10.000 pulsos/s ÷ 200 pasos/mm = 50 mm/s = 3.000 mm/min</code></pre>
+<p>Ese número decide si tu PC sirve. Si tu máquina necesita avances rápidos de 5.000 mm/min y tu jitter solo permite 3.000, tienes tres opciones: mejorar el hardware, reducir la microstepping (menos pasos/mm) o pasar a una placa de movimiento externa.</p>
+<div class="note"><strong>Trucos que reducen el jitter:</strong> desactiva en la BIOS el modo de ahorro de energía (C-states, SpeedStep), la gestión térmica agresiva y el USB legacy support. Desconecta el WiFi. Usa gráficos integrados sin controladores propietarios. Un PC de escritorio antiguo con estas opciones bien ajustadas suele dar mejor latencia que un portátil moderno, porque los portátiles usan SMI intensivamente para gestión de energía.</div>
+</section>
+<section id="placas">
+<h2>Placas de movimiento externas: la solución moderna</h2>
+<p>Existe una tercera vía que resuelve el problema de raíz: <strong>sacar la generación de pulsos del PC</strong>. Una placa de movimiento externa incorpora su propio microcontrolador o FPGA que recibe el búfer de trayectoria por USB o Ethernet y genera los pulsos con su propio reloj de hardware. El PC pasa a ser una simple consola, y el determinismo del sistema operativo deja de importar.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Placa</th><th>Interfaz</th><th>Compatible con</th><th>Frecuencia de paso</th><th>Rango de precio</th></tr></thead>
+<tbody>
+<tr><td>Ethernet SmoothStepper</td><td>Ethernet</td><td>Mach3, Mach4</td><td>~4 MHz</td><td>Medio-alto</td></tr>
+<tr><td>UC100 / UC300ETH</td><td>USB / Ethernet</td><td>Mach3, Mach4, UCCNC</td><td>~100 kHz – 1 MHz</td><td>Medio</td></tr>
+<tr><td>Mesa 7i76E / 7i92</td><td>Ethernet</td><td>LinuxCNC</td><td>Muy alta (FPGA)</td><td>Medio</td></tr>
+<tr><td>Mesa 5i25 + 7i76</td><td>PCI Express</td><td>LinuxCNC</td><td>Muy alta (FPGA)</td><td>Medio</td></tr>
+<tr><td>Placa BOB paralelo genérica</td><td>Puerto paralelo</td><td>Mach3, LinuxCNC</td><td>Limitada por el PC</td><td>Muy bajo</td></tr>
+</tbody>
+</table>
+</div>
+<p>Con una placa Mesa, LinuxCNC deja de depender del jitter del PC para la generación de pulsos: la FPGA los produce y el software solo actualiza objetivos de posición a intervalos de milisegundos. Es la configuración que usan la mayoría de las máquinas serias con LinuxCNC, y permite correr el sistema en hardware moderno o incluso en una Raspberry Pi.</p>
+<p>Del lado de Mach3, la Ethernet SmoothStepper cumple la misma función y además elimina el requisito del puerto paralelo, permitiendo usar Windows de 64 bits. El precio de la placa suele acercarse al de la licencia de Mach3, así que conviene sumar ambos costes al comparar.</p>
+</section>
+<section id="comparativa">
+<h2>Comparativa punto por punto</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Criterio</th><th>Mach3</th><th>LinuxCNC</th></tr></thead>
+<tbody>
+<tr><td>Coste de licencia</td><td>~175 USD</td><td>Gratuito (GPL)</td></tr>
+<tr><td>Sistema operativo</td><td>Windows (32 bits para puerto paralelo)</td><td>Debian con kernel de tiempo real</td></tr>
+<tr><td>Determinismo</td><td>Dependiente del sistema; sin garantía</td><td>Real, medible y verificable</td></tr>
+<tr><td>Instalación</td><td>Muy sencilla</td><td>Media: imagen ISO lista, pero requiere configurar</td></tr>
+<tr><td>Configuración inicial</td><td>Asistente gráfico completo</td><td>StepConf o PnCConf; HAL para lo avanzado</td></tr>
+<tr><td>Cinemáticas soportadas</td><td>Cartesiana (3–6 ejes)</td><td>Cartesiana, delta, SCARA, hexápodo, 5 ejes reales</td></tr>
+<tr><td>Roscado rígido</td><td>Limitado</td><td>Sí, con encoder de husillo</td></tr>
+<tr><td>Personalización lógica</td><td>Macros VBScript, Brains</td><td>HAL, componentes en C o Python, ClassicLadder</td></tr>
+<tr><td>Interfaz gráfica</td><td>Pantallas personalizables</td><td>AXIS, Touchy, GMOCCAPY, QtDragon</td></tr>
+<tr><td>Documentación oficial</td><td>Manual clásico, algo desactualizado</td><td>Extensa y mantenida al día</td></tr>
+<tr><td>Comunidad</td><td>Muy grande, especialmente hispanohablante</td><td>Grande y muy técnica</td></tr>
+<tr><td>Estado del desarrollo</td><td>Detenido (sucedido por Mach4)</td><td>Activo</td></tr>
+<tr><td>Hardware chino genérico</td><td>Excelente compatibilidad</td><td>Compatible, con más configuración</td></tr>
+<tr><td>Comportamiento con fallo de PC</td><td>Puede perder pasos silenciosamente</td><td>Detiene la máquina ante error de tiempo real</td></tr>
+</tbody>
+</table>
+</div>
+<p>Un detalle de esa tabla merece atención especial: <strong>qué hace cada sistema cuando algo va mal</strong>. Si LinuxCNC detecta que no pudo cumplir un plazo de tiempo real, aborta y avisa. Mach3 sencillamente emite el pulso tarde, y la máquina sigue cortando con un error de posición que solo descubrirás al medir la pieza. Para trabajos largos en material caro, esa diferencia de filosofía vale más que cualquier función de la lista.</p>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="alternativas">
+<h2>Las alternativas que también deberías considerar</h2>
+<p>El debate Mach3 contra LinuxCNC arrastra veinte años de historia, pero el panorama actual tiene más opciones:</p>
+<ul>
+<li><strong>Mach4</strong> — El sucesor oficial de Mach3, con una arquitectura reescrita que separa el núcleo de movimiento de la interfaz y usa scripting en Lua. Requiere obligatoriamente una placa de movimiento externa. Es más estable que Mach3, pero heredó un ecosistema de plugins más pequeño.</li>
+<li><strong>UCCNC</strong> — Software del fabricante de las placas UC100/UC300. Ligero, estable y con licencia económica, muy bien valorado por quienes migraron desde Mach3. Solo funciona con hardware de la misma marca.</li>
+<li><strong>GRBL</strong> — Firmware libre que corre directamente en un Arduino o en microcontroladores ARM. Es la opción por defecto en routers pequeños, grabadoras láser y máquinas de tres ejes. No maneja cinemáticas complejas ni cambio de herramienta sofisticado, pero para una CNC de escritorio es difícil de superar en simplicidad y fiabilidad. Si tu proyecto es de esa escala, la <a href="/blog/como-calibrar-la-potencia-de-un-laser-diodo-para-diferentes-materiales">calibración de potencia de láser diodo</a> muestra cómo se integra con este tipo de control.</li>
+<li><strong>Masso G3 / Centroid Acorn</strong> — Controladores independientes con pantalla propia, sin PC. Más caros, pero son la opción "electrodoméstico": se instalan y funcionan.</li>
+<li><strong>FluidNC</strong> — Evolución de GRBL sobre ESP32, con configuración por archivos YAML, WiFi y soporte de más ejes. Interesante punto medio entre GRBL y los sistemas grandes.</li>
+</ul>
+</section>
+<section id="decision">
+<h2>Cómo decidir según tu máquina</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Tu situación</th><th>Recomendación</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>Router 3040/6040 chino recién comprado</td><td>Mach3 o UCCNC</td><td>La placa incluida ya está diseñada para ello</td></tr>
+<tr><td>CNC de escritorio de 3 ejes, hecha en casa</td><td>GRBL o FluidNC</td><td>Coste mínimo, configuración en minutos</td></tr>
+<tr><td>Conversión de fresadora o torno de metal</td><td>LinuxCNC + Mesa</td><td>Roscado rígido, control de husillo, fiabilidad</td></tr>
+<tr><td>Máquina de 4 o 5 ejes</td><td>LinuxCNC</td><td>Cinemáticas avanzadas nativas</td></tr>
+<tr><td>Robot, delta o cinemática no cartesiana</td><td>LinuxCNC</td><td>Único de los dos que las soporta</td></tr>
+<tr><td>Uso productivo con operarios</td><td>Masso, Centroid o Mach4</td><td>Interfaz cerrada, menos que configurar mal</td></tr>
+<tr><td>Ya tienes Mach3 funcionando bien</td><td>Quédate con Mach3</td><td>Migrar cuesta tiempo; si funciona, funciona</td></tr>
+<tr><td>Quieres aprender control de máquinas a fondo</td><td>LinuxCNC</td><td>HAL enseña cómo funciona todo por dentro</td></tr>
+</tbody>
+</table>
+</div>
+<p>Un criterio adicional que rara vez se menciona: <strong>tu tiempo tiene precio</strong>. Si vas a usar la máquina para producir y no para aprender, la configuración que arranca en dos horas puede valer más que la que es técnicamente superior pero exige un fin de semana de lectura. Si en cambio la máquina es también tu proyecto de aprendizaje, LinuxCNC te enseñará muchísimo más sobre control de movimiento, y ese conocimiento se traslada a la automatización industrial y a la <a href="/blog/programacion-de-plc-para-robotica">programación de PLC</a>.</p>
+</section>
+<section id="seguridad">
+<h2>Seguridad: lo que ningún software resuelve solo</h2>
+<p>Da igual qué controlador elijas: una CNC es una máquina con un husillo que gira a miles de revoluciones por minuto y ejes capaces de aplastar una mano. La seguridad se implementa en <strong>hardware</strong>, porque el software puede colgarse.</p>
+<ul>
+<li><strong>Parada de emergencia cableada:</strong> un pulsador tipo hongo con enclavamiento que corte la alimentación de los drivers y del husillo <em>físicamente</em>, no por software. El controlador debe además recibir esa señal como entrada para detener el programa. El artículo sobre <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">sistemas de parada de emergencia</a> detalla el criterio de diseño.</li>
+<li><strong>Finales de carrera en ambos extremos de cada eje,</strong> cableados en serie y en modo normalmente cerrado: si un cable se corta, el circuito se abre y la máquina se detiene. Nunca uses normalmente abierto para seguridad.</li>
+<li><strong>Límites de software (soft limits)</strong> configurados además de los físicos, para que el controlador rechace movimientos fuera del volumen de trabajo antes de intentarlos.</li>
+<li><strong>Referenciado (homing) obligatorio</strong> al encender, para que el sistema de coordenadas sea el mismo en cada sesión.</li>
+<li><strong>Cableado apantallado y con tierra</strong> para las señales de paso y dirección. El ruido eléctrico de un variador de frecuencia genera pulsos fantasma, y un pulso fantasma es un paso perdido. Separa físicamente los cables de potencia de los de señal.</li>
+</ul>
+<div class="warning"><strong>La prueba del aire.</strong> Antes de cortar cualquier programa nuevo, ejecútalo con la herramienta elevada muy por encima de la pieza y a velocidad reducida. Verifica visualmente que la trayectoria es la esperada y que ningún eje intenta salirse del recorrido. Este hábito, que cuesta dos minutos, evita la enorme mayoría de las colisiones y de las piezas arruinadas.</div>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La pregunta "¿Mach3 o LinuxCNC?" está mal planteada si se responde solo por precio. Ambos generan pulsos de paso y dirección; la diferencia está en <strong>qué garantía temporal ofrecen y cuánto control te dan a cambio de cuánta complejidad</strong>.</p>
+<p><strong>Mach3</strong> sigue siendo una elección razonable si tienes una máquina comercial con placa compatible, un PC con puerto paralelo y quieres estar cortando esta misma tarde. Su ecosistema es insuperable y su curva de aprendizaje es la más suave del sector. Pero es software detenido, atado a hardware obsolescente y sin determinismo garantizado.</p>
+<p><strong>LinuxCNC</strong> es la opción técnicamente superior en casi todos los ejes de comparación: tiempo real real, cinemáticas avanzadas, HAL, roscado rígido, desarrollo activo y coste cero. El precio lo pagas en horas de aprendizaje y en la necesidad de un PC dedicado.</p>
+<p>Y hay una tercera respuesta que a menudo es la correcta: si tu máquina es una CNC de escritorio de tres ejes, <strong>ninguno de los dos</strong>. GRBL o FluidNC en un microcontrolador resuelven ese caso con menos hardware, menos configuración y más fiabilidad. Elige el controlador que corresponde a la máquina que realmente tienes, no a la que te gustaría tener.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo usar Mach3 con un adaptador USB a puerto paralelo?</summary><p>No. Mach3 en modo nativo accede directamente a los registros de hardware del puerto paralelo, y un adaptador USB no expone ese acceso: presenta un dispositivo de impresora virtual. La única forma de usar Mach3 sin puerto paralelo físico es mediante una placa de movimiento externa como la Ethernet SmoothStepper o una UC100, que se conecta por USB o Ethernet y genera los pulsos con su propio hardware.</p></details>
+<details><summary>¿LinuxCNC funciona en una Raspberry Pi?</summary><p>Sí, con matices importantes. Existen imágenes oficiales de LinuxCNC para Raspberry Pi 4 y 5 con kernel de tiempo real. Sin embargo, la generación de pulsos por GPIO desde la propia Pi tiene un jitter demasiado alto para máquinas exigentes. La configuración recomendada es usar la Pi como interfaz junto a una placa de movimiento externa (Mesa por Ethernet o SPI), de modo que el hardware dedicado genere los pulsos y la Pi solo ejecute la interfaz y el planificador de trayectoria.</p></details>
+<details><summary>¿Cuánto jitter es aceptable para una CNC casera?</summary><p>Menos de 25.000 nanosegundos (25 µs) de jitter máximo es un buen resultado y permite trabajar cómodamente con puerto paralelo en la mayoría de máquinas caseras. Entre 25.000 y 50.000 ns todavía es utilizable si reduces la frecuencia de paso, bajando el microstepping o los pasos por milímetro. Por encima de 100.000 ns el PC no sirve para generación directa de pulsos y debes recurrir a una placa de movimiento externa. Mide siempre durante al menos 30 minutos y con el equipo bajo carga real.</p></details>
+<details><summary>¿Es difícil migrar de Mach3 a LinuxCNC?</summary><p>El G-code se transfiere casi sin cambios, porque ambos siguen el estándar RS-274. Lo que hay que rehacer es toda la configuración de la máquina: pasos por milímetro, aceleraciones, asignación de pines, polaridad de los finales de carrera y lógica de husillo. El asistente StepConf de LinuxCNC cubre las configuraciones de tres ejes con puerto paralelo en aproximadamente una hora. Las macros en VBScript de Mach3 no son portables y deben reescribirse como componentes HAL, subrutinas en G-code o scripts en Python.</p></details>
+<details><summary>¿Mach4 vale la pena frente a Mach3?</summary><p>Mach4 tiene una arquitectura mucho más sólida: separa el núcleo de movimiento de la interfaz, es más estable en trabajos largos y usa Lua para scripting. Su desventaja es que exige obligatoriamente una placa de movimiento externa y que su ecosistema de plugins y pantallas es menor que el de Mach3. Si estás empezando desde cero y quieres quedarte en el mundo Windows, Mach4 o UCCNC son mejores apuestas de futuro que Mach3. Si ya tienes Mach3 configurado y funcionando bien, migrar rara vez se justifica.</p></details>
+<details><summary>¿Qué PC necesito para LinuxCNC?</summary><p>Con placa de movimiento externa, cualquier equipo moderno razonable sirve, incluida una Raspberry Pi 4 o 5. Para generación de pulsos por puerto paralelo, un PC de escritorio antiguo (Core 2 Duo o similar) con gráficos integrados, sin WiFi y con las opciones de ahorro de energía desactivadas en la BIOS suele dar mejor latencia que un portátil moderno. La razón es que los portátiles usan intensivamente interrupciones SMI para gestión térmica y de energía, y esas interrupciones son invisibles para el sistema operativo pero destruyen el determinismo.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si vas a montar la parte eléctrica de la máquina, revisa la <a href="/blog/programacion-de-plc-para-robotica">programación de PLC para robótica</a> para la lógica auxiliar y los <a href="/blog/sistemas-de-parada-de-emergencia-para-brazos-roboticos">sistemas de parada de emergencia</a> para el circuito de seguridad.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/programacion-de-plc-para-robotica">← Anterior: Programación de PLC para Robótica</a>
+  <a href="/blog/como-calibrar-la-potencia-de-un-laser-diodo-para-diferentes-materiales">Siguiente: Calibrar la Potencia de un Láser Diodo →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación oficial de ambos proyectos y referencias de hardware de control de movimiento. Las cifras de latencia dependen por completo del equipo concreto y deben medirse en tu propia máquina.</p>
+<ul>
+<li><a href="https://linuxcnc.org/docs/stable/html/" target="_blank" rel="noopener noreferrer">LinuxCNC — Documentación oficial y manual de integración</a></li>
+<li><a href="https://linuxcnc.org/docs/stable/html/install/latency-test.html" target="_blank" rel="noopener noreferrer">LinuxCNC — Prueba de latencia y ajuste del sistema</a></li>
+<li><a href="https://linuxcnc.org/docs/stable/html/hal/intro.html" target="_blank" rel="noopener noreferrer">LinuxCNC — Manual de la capa de abstracción de hardware (HAL)</a></li>
+<li><a href="https://www.machsupport.com/" target="_blank" rel="noopener noreferrer">Newfangled Solutions — Sitio oficial de Mach3 y Mach4</a></li>
+<li><a href="http://store.mesanet.com/" target="_blank" rel="noopener noreferrer">Mesa Electronics — Tarjetas de control de movimiento para LinuxCNC</a></li>
+<li><a href="https://github.com/gnea/grbl/wiki" target="_blank" rel="noopener noreferrer">GRBL — Repositorio y documentación del firmware</a></li>
+<li><a href="https://www.nist.gov/publications/nist-rs274ngc-interpreter-version-3" target="_blank" rel="noopener noreferrer">NIST — Enhanced Machine Controller, origen del proyecto</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

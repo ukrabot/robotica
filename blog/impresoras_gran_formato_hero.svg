@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Ilustración de una impresora 3D de gran formato imprimiendo una pieza alta sobre una cama caliente de quinientos milímetros">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141210"/>
+      <stop offset="1" stop-color="#211b14"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e4c07a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#e4c07a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4a4438"/>
+      <stop offset="1" stop-color="#2c2823"/>
+    </linearGradient>
+    <linearGradient id="heat" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b2281e"/>
+      <stop offset="0.5" stop-color="#e4c07a"/>
+      <stop offset="1" stop-color="#b2281e"/>
+    </linearGradient>
+    <linearGradient id="part" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f6fb0"/>
+      <stop offset="1" stop-color="#1f4e7f"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="600" cy="350" r="290" fill="url(#glow)"/>
+
+  <text x="600" y="55" text-anchor="middle" fill="#e4c07a" font-family="Georgia, serif" font-size="34">Impresoras 3D de Gran Formato</text>
+
+  <!-- Estructura -->
+  <g>
+    <rect x="290" y="120" width="30" height="410" rx="6" fill="url(#frame)" stroke="#1a1712" stroke-width="3"/>
+    <rect x="880" y="120" width="30" height="410" rx="6" fill="url(#frame)" stroke="#1a1712" stroke-width="3"/>
+    <rect x="290" y="120" width="620" height="26" rx="6" fill="url(#frame)" stroke="#1a1712" stroke-width="3"/>
+    <rect x="270" y="530" width="660" height="26" rx="6" fill="url(#frame)" stroke="#1a1712" stroke-width="3"/>
+  </g>
+
+  <!-- Portico X con carro -->
+  <rect x="300" y="200" width="600" height="18" rx="5" fill="#57534a" stroke="#22201b" stroke-width="2"/>
+  <g transform="translate(600 218)">
+    <rect x="-52" y="-14" width="104" height="72" rx="8" fill="#2c2823" stroke="#0f0d0a" stroke-width="3"/>
+    <rect x="-30" y="-4" width="60" height="26" rx="4" fill="#8b8577"/>
+    <path d="M -14 58 L 14 58 L 6 88 L -6 88 Z" fill="#c9c4b8" stroke="#8b8577" stroke-width="2"/>
+    <circle cx="0" cy="94" r="5" fill="#e4c07a"/>
+  </g>
+
+  <!-- Pieza alta -->
+  <g transform="translate(600 480)">
+    <rect x="-92" y="-172" width="184" height="172" rx="6" fill="url(#part)" stroke="#16354f" stroke-width="3"/>
+    <g stroke="#4d8ac9" stroke-width="2" opacity="0.6">
+      <line x1="-92" y1="-150" x2="92" y2="-150"/>
+      <line x1="-92" y1="-124" x2="92" y2="-124"/>
+      <line x1="-92" y1="-98" x2="92" y2="-98"/>
+      <line x1="-92" y1="-72" x2="92" y2="-72"/>
+      <line x1="-92" y1="-46" x2="92" y2="-46"/>
+      <line x1="-92" y1="-20" x2="92" y2="-20"/>
+    </g>
+  </g>
+
+  <!-- Cama caliente -->
+  <rect x="330" y="480" width="540" height="22" rx="5" fill="url(#heat)" stroke="#7a1c14" stroke-width="3"/>
+  <rect x="330" y="502" width="540" height="16" rx="4" fill="#2c2823" stroke="#0f0d0a" stroke-width="2"/>
+
+  <!-- Cota de 500 mm -->
+  <g stroke="#e4c07a" stroke-width="3" fill="none">
+    <line x1="330" y1="560" x2="870" y2="560"/>
+    <line x1="330" y1="548" x2="330" y2="572"/>
+    <line x1="870" y1="548" x2="870" y2="572"/>
+  </g>
+  <rect x="540" y="544" width="120" height="32" rx="6" fill="#141210"/>
+  <text x="600" y="567" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="600">500 mm</text>
+
+  <!-- Cota vertical -->
+  <g stroke="#8b8577" stroke-width="3" fill="none">
+    <line x1="960" y1="200" x2="960" y2="480"/>
+    <line x1="948" y1="200" x2="972" y2="200"/>
+    <line x1="948" y1="480" x2="972" y2="480"/>
+  </g>
+  <text x="1010" y="348" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="20">Z 500</text>
+
+  <text x="600" y="608" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="19">Volumen util, rigidez del bastidor y control termico</text>
+</svg>

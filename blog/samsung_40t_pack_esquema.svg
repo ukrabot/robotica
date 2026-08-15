@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-label="Diagrama de un pack 4S3P de celdas 21700 mostrando configuración serie-paralelo, cintas de níquel, BMS y fusible principal">
+  <rect width="1200" height="820" fill="#f6f4ee"/>
+  <text x="600" y="58" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="34">Pack 4S3P con celdas Samsung INR21700-40T</text>
+  <text x="600" y="92" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">14,4 V nominal · 11,7 Ah · 168 Wh · 12 celdas</text>
+
+  <!-- Grupos paralelos -->
+  <g font-family="Inter, Arial, sans-serif">
+    <g transform="translate(90 140)">
+      <rect x="0" y="0" width="1020" height="330" rx="16" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+      <text x="510" y="36" text-anchor="middle" fill="#1e1b15" font-size="22" font-weight="600">Cuatro grupos en serie (4S) · cada grupo con tres celdas en paralelo (3P)</text>
+
+      <!-- Grupo 1 -->
+      <g transform="translate(40 60)">
+        <rect x="0" y="0" width="210" height="240" rx="12" fill="#faf7f0" stroke="#a97b23" stroke-width="3"/>
+        <text x="105" y="30" text-anchor="middle" fill="#a97b23" font-size="18" font-weight="700">Grupo 1</text>
+        <g>
+          <rect x="26" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+          <rect x="83" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+          <rect x="140" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+          <rect x="38" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+          <rect x="95" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+          <rect x="152" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        </g>
+        <text x="105" y="212" text-anchor="middle" fill="#57534a" font-size="15">3,6 V · 11,7 Ah</text>
+        <text x="105" y="232" text-anchor="middle" fill="#8b8577" font-size="13">R ≈ 4 mΩ</text>
+      </g>
+
+      <!-- Grupo 2 -->
+      <g transform="translate(280 60)">
+        <rect x="0" y="0" width="210" height="240" rx="12" fill="#faf7f0" stroke="#a97b23" stroke-width="3"/>
+        <text x="105" y="30" text-anchor="middle" fill="#a97b23" font-size="18" font-weight="700">Grupo 2</text>
+        <rect x="26" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+        <rect x="83" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+        <rect x="140" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+        <rect x="38" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        <rect x="95" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        <rect x="152" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        <text x="105" y="212" text-anchor="middle" fill="#57534a" font-size="15">3,6 V · 11,7 Ah</text>
+        <text x="105" y="232" text-anchor="middle" fill="#8b8577" font-size="13">R ≈ 4 mΩ</text>
+      </g>
+
+      <!-- Grupo 3 -->
+      <g transform="translate(520 60)">
+        <rect x="0" y="0" width="210" height="240" rx="12" fill="#faf7f0" stroke="#a97b23" stroke-width="3"/>
+        <text x="105" y="30" text-anchor="middle" fill="#a97b23" font-size="18" font-weight="700">Grupo 3</text>
+        <rect x="26" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+        <rect x="83" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+        <rect x="140" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+        <rect x="38" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        <rect x="95" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        <rect x="152" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        <text x="105" y="212" text-anchor="middle" fill="#57534a" font-size="15">3,6 V · 11,7 Ah</text>
+        <text x="105" y="232" text-anchor="middle" fill="#8b8577" font-size="13">R ≈ 4 mΩ</text>
+      </g>
+
+      <!-- Grupo 4 -->
+      <g transform="translate(760 60)">
+        <rect x="0" y="0" width="210" height="240" rx="12" fill="#faf7f0" stroke="#a97b23" stroke-width="3"/>
+        <text x="105" y="30" text-anchor="middle" fill="#a97b23" font-size="18" font-weight="700">Grupo 4</text>
+        <rect x="26" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+        <rect x="83" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+        <rect x="140" y="48" width="44" height="140" rx="20" fill="#23201b"/>
+        <rect x="38" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        <rect x="95" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        <rect x="152" y="40" width="20" height="12" rx="4" fill="#e4c07a"/>
+        <text x="105" y="212" text-anchor="middle" fill="#57534a" font-size="15">3,6 V · 11,7 Ah</text>
+        <text x="105" y="232" text-anchor="middle" fill="#8b8577" font-size="13">R ≈ 4 mΩ</text>
+      </g>
+
+      <!-- Interconexiones serie -->
+      <g stroke="#2f6fb0" stroke-width="6" stroke-linecap="round">
+        <line x1="250" y1="180" x2="320" y2="180"/>
+        <line x1="490" y1="180" x2="560" y2="180"/>
+        <line x1="730" y1="180" x2="800" y2="180"/>
+      </g>
+      <text x="285" y="168" text-anchor="middle" fill="#2f6fb0" font-size="13">níquel 0,2 mm</text>
+      <text x="525" y="168" text-anchor="middle" fill="#2f6fb0" font-size="13">níquel 0,2 mm</text>
+      <text x="765" y="168" text-anchor="middle" fill="#2f6fb0" font-size="13">níquel 0,2 mm</text>
+    </g>
+
+    <!-- BMS -->
+    <g transform="translate(90 510)">
+      <rect x="0" y="0" width="470" height="150" rx="14" fill="#ffffff" stroke="#2f6fb0" stroke-width="3"/>
+      <text x="235" y="38" text-anchor="middle" fill="#1e1b15" font-size="22" font-weight="600">BMS 4S · 60 A</text>
+      <text x="235" y="70" text-anchor="middle" fill="#57534a" font-size="17">Corte sobrecarga 4,25 V · sobredescarga 2,5 V</text>
+      <text x="235" y="98" text-anchor="middle" fill="#57534a" font-size="17">Balanceo pasivo · 5 cables de sensado</text>
+      <text x="235" y="126" text-anchor="middle" fill="#8b8577" font-size="15">Dimensionado a 1,25 × la corriente máxima</text>
+    </g>
+
+    <!-- Fusible y salida -->
+    <g transform="translate(620 510)">
+      <rect x="0" y="0" width="490" height="150" rx="14" fill="#ffffff" stroke="#b2281e" stroke-width="3"/>
+      <text x="245" y="38" text-anchor="middle" fill="#7a1c14" font-size="22" font-weight="600">Fusible DC 40 A + precarga</text>
+      <text x="245" y="70" text-anchor="middle" fill="#57534a" font-size="17">En el positivo, antes de la salida</text>
+      <text x="245" y="98" text-anchor="middle" fill="#57534a" font-size="17">Apto para corriente continua, no AC</text>
+      <text x="245" y="126" text-anchor="middle" fill="#8b8577" font-size="15">Resistencia de precarga si hay condensadores</text>
+    </g>
+
+    <!-- Nota inferior -->
+    <text x="600" y="712" text-anchor="middle" fill="#57534a" font-size="18">Caída total estimada a 30 A: R_pack ≈ 16 mΩ (celdas) + 20 mΩ (níquel, cableado y BMS) ≈ 1,1 V</text>
+    <text x="600" y="748" text-anchor="middle" fill="#a97b23" font-size="18" font-weight="600">Regla de diseño: cada celda entre el 30 % y el 50 % de sus 35 A máximos</text>
+    <text x="600" y="784" text-anchor="middle" fill="#8b8577" font-size="15">Esquema referencial: verifica siempre las conexiones y la polaridad antes de energizar el pack</text>
+  </g>
+</svg>

@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sistemas ROS 2: Hardware Compatible para tus Proyectos de Robótica</title>
+<meta name="description" content="Guía de selección de hardware compatible con ROS 2: computadoras embebidas, LiDAR, cámaras de profundidad, unidades inerciales, controladores de motor y microcontroladores con micro-ROS, con criterios de compatibilidad reales.">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/sistemas-ros-2-hardware-compatible-para-tus-proyectos-de-robotica">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sistemas ROS 2: Hardware Compatible para tus Proyectos de Robótica">
+<meta property="og:description" content="Qué placa, qué LiDAR y qué controlador elegir para ROS 2 sin quedarte atascado escribiendo drivers.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/ros2_hardware_hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/sistemas-ros-2-hardware-compatible-para-tus-proyectos-de-robotica">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sistemas ROS 2: Hardware Compatible para tus Proyectos de Robótica">
+<meta name="twitter:description" content="Hardware compatible con ROS 2: SBC, LiDAR, cámaras, IMU, controladores de motor y micro-ROS comparados.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/ros2_hardware_hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Sistemas ROS 2: Hardware Compatible para tus Proyectos de Robótica",
+  "description": "Guía técnica de selección de hardware para proyectos con ROS 2: criterios reales de compatibilidad basados en la existencia de un paquete mantenido y no en las especificaciones del fabricante, comparativa de computadoras de placa única y sistemas embebidos con sus prestaciones de cómputo y consumo, requisitos de la distribución del sistema operativo según la versión de ROS 2, sensores LiDAR bidimensionales y tridimensionales con sus controladores disponibles, cámaras de profundidad estéreo y de tiempo de vuelo, unidades de medición inercial y su integración con los paquetes de fusión de sensores, controladores de motor compatibles con la capa de control de ROS 2, uso de microcontroladores mediante micro-ROS con el agente correspondiente, aceleración de inferencia para percepción y arquitecturas de red recomendadas para robots distribuidos.",
+  "author": {
+    "@type": "Person",
+    "name": "Alberto Gallardo",
+    "jobTitle": "Analista Programador Computacional",
+    "url": "https://www.ukrabot.cl/about",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Blog de Ingeniería Robótica"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog de Ingeniería Robótica",
+    "url": "https://www.ukrabot.cl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.ukrabot.cl/logo.png"
+    }
+  },
+  "datePublished": "2026-08-15",
+  "dateModified": "2026-08-15",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.ukrabot.cl/blog/sistemas-ros-2-hardware-compatible-para-tus-proyectos-de-robotica"
+  },
+  "image": "https://www.ukrabot.cl/blog/ros2_hardware_hero.jpg",
+  "proficiencyLevel": "Intermedio",
+  "dependencies": "Computadora con Ubuntu 22.04 o 24.04, ROS 2 Humble o Jazzy, conocimientos básicos de Linux y redes",
+  "wordCount": "3300",
+  "inLanguage": "es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://www.ukrabot.cl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://www.ukrabot.cl/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Sistemas ROS 2: Hardware Compatible para tus Proyectos de Robótica",
+      "item": "https://www.ukrabot.cl/blog/sistemas-ros-2-hardware-compatible-para-tus-proyectos-de-robotica"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar ROS 2 en una Raspberry Pi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, y es una plataforma perfectamente válida para robots de interior con navegación bidimensional. Una Raspberry Pi 4 con 4 gigabytes ejecuta Nav2 con un LiDAR 2D sin dificultad, y la Pi 5 amplía el margen de forma notable. Los límites aparecen con la percepción tridimensional, el SLAM visual y la inferencia de redes neuronales, donde la falta de aceleración por hardware se nota. Para esos casos conviene una Jetson o un mini PC x86. Instala Ubuntu Server de 64 bits, no Raspberry Pi OS, para tener paquetes binarios de ROS 2 disponibles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué distribución de ROS 2 debo elegir en 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Jazzy Jalisco sobre Ubuntu 24.04 si empiezas un proyecto nuevo, porque tiene soporte hasta mayo de 2029. Humble Hawksbill sobre Ubuntu 22.04 sigue siendo una elección sólida si dependes de paquetes de terceros que aún no han migrado, ya que su ecosistema es el más amplio y su soporte se extiende hasta 2027. Evita las distribuciones no LTS como Iron o Kilted salvo que necesites una característica concreta: su ciclo de vida de un año obliga a migraciones constantes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito un microcontrolador además de la computadora principal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para cualquier robot con motores, sí es muy recomendable. Linux no ofrece garantías de tiempo real sin un núcleo con parche PREEMPT_RT y configuración cuidadosa, por lo que un bucle de control a un kilohercio ejecutado como nodo normal sufrirá variaciones de latencia impredecibles. Delegar el control de bajo nivel a un microcontrolador con micro-ROS proporciona determinismo, libera a la computadora principal y añade una capa de seguridad, ya que el microcontrolador puede detener los motores si pierde comunicación con la computadora."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Merece la pena una Jetson frente a un mini PC x86?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de si vas a ejecutar inferencia de redes neuronales. Si tu robot necesita detección de objetos, segmentación semántica o SLAM visual denso, la GPU de la Jetson marca una diferencia enorme y justifica su precio. Si tu percepción se limita a LiDAR bidimensional y odometría, un mini PC con procesador N100 cuesta menos, consume una potencia comparable, ofrece mayor compatibilidad de paquetes binarios y no te ata al ecosistema de JetPack, que condiciona la versión de Ubuntu que puedes usar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo verifico que un sensor es realmente compatible antes de comprarlo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Busca el paquete en index.ros.org filtrando por tu distribución concreta. Si no aparece, localiza el repositorio en GitHub y comprueba la fecha del último commit, los issues abiertos sin respuesta y si el package.xml declara realmente ROS 2. Consulta también Robotics Stack Exchange y el foro ROS Discourse buscando el modelo exacto: si nadie ha publicado nada sobre él, asume que serás quien descubra los problemas. Un repositorio sin actividad en más de un año debe considerarse abandonado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo mezclar dispositivos de ROS 1 con ROS 2?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, mediante el paquete puente ros1_bridge, que traduce mensajes entre ambas versiones para los tipos estándar. Funciona razonablemente bien pero añade latencia, exige mantener las dos instalaciones conviviendo y no cubre los tipos de mensaje personalizados sin trabajo adicional de compilación. Es una solución de transición aceptable mientras migras, no una arquitectura para mantener a largo plazo, sobre todo considerando que ROS 1 Noetic ya alcanzó el final de su soporte."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="ros2_hardware_hero.jpg" alt="Mesa de laboratorio con placas de computación embebida, sensor LiDAR y controladores de motor conectados para un proyecto de robótica con ROS 2" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Robótica y ROS · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <h1>Sistemas ROS 2: Hardware Compatible para tus Proyectos de Robótica</h1>
+    <p>ROS 2 no exige hardware caro, exige hardware con controlador mantenido. Esa distinción decide si el proyecto avanza o se atasca en la capa de drivers.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 19 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="ros2_arquitectura_hardware.svg" alt="Diagrama de arquitectura de hardware de un robot con ROS 2: computadora principal con nodos de navegación, microcontrolador con micro-ROS para control de bajo nivel, sensores y actuadores" loading="lazy">
+  <div class="caption">La división que funciona: cómputo en la SBC, tiempo real duro en el microcontrolador, y micro-ROS como puente.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#criterio">Qué significa realmente "compatible con ROS 2"</a></li>
+    <li><a href="#computadora">La computadora principal</a></li>
+    <li><a href="#lidar">LiDAR: el sensor que define la navegación</a></li>
+    <li><a href="#camaras">Cámaras y percepción visual</a></li>
+    <li><a href="#imu">Unidades inerciales y odometría</a></li>
+    <li><a href="#actuadores">Control de motores y ros2_control</a></li>
+    <li><a href="#microros">micro-ROS: microcontroladores dentro del grafo</a></li>
+    <li><a href="#configuraciones">Tres configuraciones completas y probadas</a></li>
+    <li><a href="#red">Red y DDS: el problema que nadie anticipa</a></li>
+    <li><a href="#conclusion">Conclusión</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="criterio">
+<h2>Qué significa realmente "compatible con ROS 2"</h2>
+<p>Un fabricante puede anunciar su sensor como compatible con ROS 2 porque alguien publicó un paquete en GitHub hace tres años. Eso no es compatibilidad; es una promesa incumplida esperando a que la descubras.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Nivel</th><th>Qué encuentras</th><th>Trabajo que te espera</th></tr></thead>
+<tbody>
+<tr><td><strong>Oficial en la distribución</strong></td><td>Paquete instalable con apt desde los repositorios de ROS</td><td>Ninguno: instalar y configurar</td></tr>
+<tr><td><strong>Mantenido por el fabricante</strong></td><td>Repositorio activo con soporte de la versión actual</td><td>Compilar desde fuentes</td></tr>
+<tr><td><strong>Comunidad activa</strong></td><td>Repositorio con commits recientes e issues respondidos</td><td>Compilar y posiblemente adaptar</td></tr>
+<tr><td><strong>Puerto abandonado</strong></td><td>Código para ROS 1 o para una distribución antigua</td><td>Migración completa: días o semanas</td></tr>
+<tr><td><strong>Solo SDK</strong></td><td>Biblioteca en C++ o Python sin envoltorio ROS</td><td>Escribir el nodo tú mismo</td></tr>
+<tr><td><strong>Nada</strong></td><td>Protocolo propietario sin documentar</td><td>Ingeniería inversa; evítalo</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Verificación antes de comprar</h3>
+<ol>
+<li>Busca el paquete en <strong>index.ros.org</strong> y comprueba si aparece para tu distribución concreta.</li>
+<li>Si no está, busca el repositorio en GitHub y mira la <strong>fecha del último commit</strong>. Más de un año sin actividad es señal de alarma.</li>
+<li>Revisa los <em>issues</em> abiertos: si hay varios reportando que no compila en la distribución actual y nadie responde, el paquete está muerto.</li>
+<li>Comprueba que el <code>package.xml</code> declare la versión de ROS 2 y no sea un paquete de ROS 1 renombrado.</li>
+<li>Busca en <strong>Robotics Stack Exchange</strong> y en el foro de ROS Discourse el nombre del dispositivo: si nadie lo ha usado, serás el primero en encontrar los problemas.</li>
+</ol>
+<div class="note"><strong>Regla práctica.</strong> Un sensor mediocre con un controlador excelente produce mejores resultados en menos tiempo que un sensor excelente con un controlador dudoso. En la fase de aprendizaje y prototipado, prioriza el ecosistema sobre las especificaciones.</div>
+</section>
+<section id="computadora">
+<h2>La computadora principal</h2>
+<p>ROS 2 se ejecuta oficialmente sobre Ubuntu, y cada distribución de ROS está atada a una versión concreta del sistema operativo.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Distribución ROS 2</th><th>Ubuntu</th><th>Tipo</th><th>Fin de soporte</th></tr></thead>
+<tbody>
+<tr><td>Humble Hawksbill</td><td>22.04 LTS</td><td>LTS</td><td>Mayo de 2027</td></tr>
+<tr><td>Iron Irwini</td><td>22.04 LTS</td><td>No LTS</td><td>Finalizado</td></tr>
+<tr><td>Jazzy Jalisco</td><td>24.04 LTS</td><td>LTS</td><td>Mayo de 2029</td></tr>
+<tr><td>Kilted Kaiju</td><td>24.04 LTS</td><td>No LTS</td><td>Ciclo corto</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning">Usa siempre una distribución <strong>LTS</strong> en proyectos que pretendas mantener. Las no LTS tienen un año de soporte y te obligan a migrar constantemente. Y no intentes instalar una distribución de ROS 2 sobre una versión de Ubuntu distinta de la oficial: técnicamente se puede compilar desde fuentes, pero acabarás resolviendo conflictos de dependencias en lugar de programar tu robot.</div>
+<h3>Opciones de hardware</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Plataforma</th><th>CPU</th><th>RAM</th><th>Consumo</th><th>Adecuada para</th></tr></thead>
+<tbody>
+<tr><td>Raspberry Pi 4 (4-8 GB)</td><td>4× Cortex-A72 1,8 GHz</td><td>4-8 GB</td><td>3-7 W</td><td>Robots simples, LiDAR 2D, teleoperación</td></tr>
+<tr><td>Raspberry Pi 5</td><td>4× Cortex-A76 2,4 GHz</td><td>4-16 GB</td><td>5-12 W</td><td>Navegación 2D con SLAM, buen punto de partida</td></tr>
+<tr><td>Orange Pi 5 Plus</td><td>4× A76 + 4× A55</td><td>4-16 GB</td><td>7-15 W</td><td>Percepción moderada, NPU de 6 TOPS</td></tr>
+<tr><td>Jetson Orin Nano</td><td>6× Cortex-A78AE</td><td>4-8 GB</td><td>7-15 W</td><td>Visión con redes neuronales, SLAM visual</td></tr>
+<tr><td>Jetson Orin NX</td><td>8× Cortex-A78AE</td><td>8-16 GB</td><td>10-25 W</td><td>Percepción 3D exigente, varias cámaras</td></tr>
+<tr><td>Mini PC x86 (N100 o similar)</td><td>4 núcleos Intel</td><td>8-32 GB</td><td>6-20 W</td><td><strong>Máxima compatibilidad de paquetes</strong></td></tr>
+<tr><td>Portátil de desarrollo</td><td>x86-64</td><td>16 GB o más</td><td>—</td><td>Estación base, simulación, Gazebo</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>El argumento a favor de x86.</strong> Muchos paquetes de ROS 2 se distribuyen en binario solo para amd64 y arm64, pero algunas herramientas —simuladores, bibliotecas de percepción de terceros, controladores propietarios— solo existen para x86. Un mini PC con procesador N100 consume poco, cuesta poco y elimina de golpe una categoría entera de problemas. Para un robot de interior que no tenga restricción severa de peso, es una opción muy sensata y frecuentemente subestimada.</div>
+<p>Si te inclinas por una placa ARM potente, la comparativa de la <a href="/blog/orange-pi-5-plus-el-sbc-mas-potente-para-edge-computing">Orange Pi 5 Plus para edge computing</a> detalla las prestaciones de la plataforma RK3588.</p>
+</section>
+<section id="lidar">
+<h2>LiDAR: el sensor que define la navegación</h2>
+<h3>LiDAR 2D</h3>
+<p>Es el punto de entrada a la navegación autónoma y sigue siendo suficiente para la mayoría de los robots de interior.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Modelo</th><th>Alcance</th><th>Frecuencia</th><th>Puntos/s</th><th>Estado del controlador</th></tr></thead>
+<tbody>
+<tr><td>RPLIDAR A1</td><td>12 m</td><td>5,5 Hz</td><td>8.000</td><td>Oficial y maduro</td></tr>
+<tr><td>RPLIDAR A2M12</td><td>12 m</td><td>10 Hz</td><td>16.000</td><td>Oficial y maduro</td></tr>
+<tr><td>RPLIDAR A3</td><td>25 m</td><td>10-15 Hz</td><td>16.000</td><td>Oficial y maduro</td></tr>
+<tr><td>RPLIDAR S2</td><td>30 m</td><td>10 Hz</td><td>32.000</td><td>Oficial</td></tr>
+<tr><td>YDLIDAR X4 / G4</td><td>10-16 m</td><td>7-12 Hz</td><td>5.000-9.000</td><td>Mantenido por el fabricante</td></tr>
+<tr><td>LDROBOT LD19 / STL-19P</td><td>12 m</td><td>10 Hz</td><td>4.500</td><td>Comunidad; muy económico</td></tr>
+<tr><td>Hokuyo UST-10LX</td><td>10 m</td><td>40 Hz</td><td>43.000</td><td>Oficial; grado industrial</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para empezar, un <strong>RPLIDAR A1 o un LD19</strong> cuestan poco, funcionan sin sorpresas y son suficientes para SLAM 2D con <code>slam_toolbox</code> y navegación con Nav2. La diferencia frente a modelos superiores se nota en espacios grandes y a velocidades altas, no en un robot de interior a medio metro por segundo.</p>
+<h3>LiDAR 3D</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Modelo</th><th>Canales</th><th>Alcance</th><th>Campo vertical</th><th>Controlador</th></tr></thead>
+<tbody>
+<tr><td>Livox Mid-360</td><td>Patrón no repetitivo</td><td>40-70 m</td><td>−7° a 52°</td><td>Oficial (livox_ros_driver2)</td></tr>
+<tr><td>Unitree 4D L1</td><td>Rotatorio</td><td>30 m</td><td>360° × 90°</td><td>Fabricante</td></tr>
+<tr><td>Ouster OS1</td><td>32-128</td><td>120 m</td><td>45°</td><td>Oficial y excelente</td></tr>
+<tr><td>Velodyne VLP-16</td><td>16</td><td>100 m</td><td>30°</td><td>Oficial y maduro</td></tr>
+<tr><td>RoboSense Helios</td><td>16-32</td><td>150 m</td><td>31-70°</td><td>Fabricante</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning">Un LiDAR 3D genera del orden de cientos de miles de puntos por segundo. Procesarlos en tiempo real exige una computadora con capacidad real y, sobre todo, <strong>ancho de banda</strong>: la mayoría se conectan por Ethernet Gigabit y saturarán un enlace de 100 Mbit. Verifica que tu placa tenga puerto Gigabit real, no un adaptador USB compartiendo bus con el resto de periféricos.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="camaras">
+<h2>Cámaras y percepción visual</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Cámara</th><th>Tecnología</th><th>Alcance útil</th><th>IMU</th><th>Soporte ROS 2</th></tr></thead>
+<tbody>
+<tr><td>Intel RealSense D435i</td><td>Estéreo activo</td><td>0,3 - 3 m</td><td>Sí</td><td>Oficial, muy usado</td></tr>
+<tr><td>Intel RealSense D455</td><td>Estéreo activo</td><td>0,6 - 6 m</td><td>Sí</td><td>Oficial</td></tr>
+<tr><td>Luxonis OAK-D</td><td>Estéreo + VPU</td><td>0,4 - 12 m</td><td>Según modelo</td><td>Oficial (depthai-ros)</td></tr>
+<tr><td>Stereolabs ZED 2i</td><td>Estéreo pasivo</td><td>0,3 - 20 m</td><td>Sí</td><td>Oficial; requiere GPU NVIDIA</td></tr>
+<tr><td>Orbbec Astra / Gemini</td><td>Estéreo o luz estructurada</td><td>0,6 - 8 m</td><td>Según modelo</td><td>Fabricante</td></tr>
+<tr><td>Cámara USB genérica UVC</td><td>RGB monocular</td><td>—</td><td>No</td><td>Oficial (usb_cam, v4l2_camera)</td></tr>
+<tr><td>Cámara Raspberry Pi CSI</td><td>RGB monocular</td><td>—</td><td>No</td><td>Comunidad (camera_ros con libcamera)</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>La OAK-D merece una mención aparte.</strong> Incorpora una unidad de procesamiento visual que ejecuta la inferencia de redes neuronales dentro de la propia cámara. Eso descarga por completo a la computadora principal: el robot puede detectar objetos sin que la SBC haga nada más que recibir los resultados ya procesados. Para plataformas modestas es una diferencia arquitectónica importante, no una mejora incremental.</div>
+<h3>Consideraciones prácticas</h3>
+<ul>
+<li><strong>Ancho de banda USB:</strong> una RealSense a resolución completa satura un puerto USB 3.0. Dos cámaras en el mismo controlador USB compiten por el bus y producen pérdida de fotogramas. Verifica la topología con <code>lsusb -t</code>.</li>
+<li><strong>Las cámaras de profundidad no ven cristal</strong> ni superficies muy reflectantes o completamente negras. En entornos con esos elementos, complementa con LiDAR o con sensores de ultrasonidos.</li>
+<li><strong>Luz solar directa</strong> anula las cámaras de estéreo activo por infrarrojos. Para exterior, estéreo pasivo o LiDAR.</li>
+<li><strong>Sincronización temporal:</strong> si fusionas cámara e IMU, las marcas de tiempo deben ser coherentes. Las cámaras con IMU integrada y sincronización por hardware evitan un problema difícil de depurar.</li>
+</ul>
+</section>
+<section id="imu">
+<h2>Unidades inerciales y odometría</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Sensor</th><th>Ejes</th><th>Interfaz</th><th>Fusión interna</th><th>Nota</th></tr></thead>
+<tbody>
+<tr><td>MPU-6050</td><td>6</td><td>I²C</td><td>DMP limitado</td><td>Barato; deriva notable</td></tr>
+<tr><td>MPU-9250</td><td>9</td><td>I²C / SPI</td><td>DMP</td><td>Descatalogado, aún común</td></tr>
+<tr><td>ICM-20948</td><td>9</td><td>I²C / SPI</td><td>DMP</td><td>Sucesor del MPU-9250</td></tr>
+<tr><td>BNO055</td><td>9</td><td>I²C / UART</td><td><strong>Sí, cuaternión listo</strong></td><td>Ideal para empezar</td></tr>
+<tr><td>BNO085 / BNO086</td><td>9</td><td>I²C / SPI / UART</td><td>Sí, muy buena</td><td>Recomendado actualmente</td></tr>
+<tr><td>BMI088</td><td>6</td><td>SPI</td><td>No</td><td>Baja deriva; usado en drones</td></tr>
+<tr><td>Xsens MTi series</td><td>9</td><td>USB / serie</td><td>Sí, grado industrial</td><td>Coste elevado</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para un robot terrestre, un <strong>BNO085</strong> resuelve el problema con elegancia: entrega orientación en cuaterniones ya fusionada y calibrada, sin que tengas que implementar un filtro de Madgwick ni pelearte con la calibración del magnetómetro.</p>
+<div class="warning">El magnetómetro de una IMU de nueve ejes es <strong>inútil dentro de un robot</strong> si está cerca de motores, cables de potencia o estructuras de acero. El campo magnético que generan supera con facilidad al terrestre. Monta la IMU lo más lejos posible de esas fuentes, o desactiva la componente magnética y confía en la fusión de giróscopo con odometría de ruedas.</div>
+<h3>Odometría de ruedas</h3>
+<p>La fuente de odometría más fiable en interiores sigue siendo el encoder en las ruedas, fusionado con la IMU mediante <code>robot_localization</code>.</p>
+<pre><code>Cálculo de resolución de odometría:
+
+  Encoder de 1000 pulsos por vuelta, en cuadratura → 4000 cuentas
+  Reductora 30:1 → 120.000 cuentas por vuelta de rueda
+  Rueda de 100 mm de diámetro → perímetro 314,16 mm
+
+  Resolución lineal = 314,16 / 120.000 = 0,0026 mm por cuenta
+
+  Sobra con enorme margen. El error real no viene de la
+  resolución sino del deslizamiento de las ruedas, de la
+  imprecisión del diámetro y de la distancia entre ejes.</code></pre>
+<p>La selección de encoders y su montaje se trata en detalle en la guía de <a href="/blog/encoders-de-articulacion-para-retroalimentacion-en-brazos-roboticos">encoders para retroalimentación de posición</a>.</p>
+</section>
+<section id="actuadores">
+<h2>Control de motores y ros2_control</h2>
+<p><code>ros2_control</code> es el marco estándar para la capa de actuación. Su valor está en separar la lógica de control del hardware concreto: escribes una interfaz de hardware una vez y puedes cambiar de controlador sin tocar la navegación.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Controlador</th><th>Motores</th><th>Interfaz</th><th>Integración con ROS 2</th></tr></thead>
+<tbody>
+<tr><td>ODrive</td><td>BLDC, 2 ejes</td><td>USB / CAN / UART</td><td>Paquete de la comunidad, activo</td></tr>
+<tr><td>Roboteq</td><td>CC con escobillas</td><td>USB / CAN / serie</td><td>Paquete del fabricante</td></tr>
+<tr><td>RoboClaw</td><td>CC con escobillas</td><td>USB / serie</td><td>Comunidad</td></tr>
+<tr><td>Dynamixel</td><td>Servos inteligentes</td><td>TTL / RS-485</td><td><strong>Oficial y excelente</strong></td></tr>
+<tr><td>VESC</td><td>BLDC</td><td>USB / CAN</td><td>Comunidad; usado en F1TENTH</td></tr>
+<tr><td>Puente H genérico (TB6612, BTS7960)</td><td>CC</td><td>PWM</td><td>Vía microcontrolador con micro-ROS</td></tr>
+<tr><td>Servoaccionamiento industrial</td><td>Servo CA</td><td>EtherCAT</td><td>ethercat_driver_ros2</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code>Estructura mínima de una interfaz de hardware en ros2_control:
+
+  class MiRobotHardware : public hardware_interface::SystemInterface
+  {
+    on_init()        → leer parámetros del URDF
+    export_state_interfaces()    → posición y velocidad leídas
+    export_command_interfaces()  → velocidad o esfuerzo a escribir
+    read()           → obtener datos del hardware cada ciclo
+    write()          → enviar comandos al hardware cada ciclo
+  };
+
+  El controlador (diff_drive_controller, joint_trajectory_controller...)
+  se apoya en esas interfaces sin conocer el hardware concreto.</code></pre>
+<div class="note">Para un robot diferencial, la combinación <code>diff_drive_controller</code> más una interfaz de hardware propia es el camino estándar. El controlador se encarga de la cinemática, la publicación de odometría y la transformada correspondiente; tú solo escribes la lectura de encoders y la escritura de velocidades.</div>
+</section>
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<section id="microros">
+<h2>micro-ROS: microcontroladores dentro del grafo</h2>
+<p>Ninguna computadora con Linux puede garantizar tiempo real duro sin configuración especializada. La arquitectura que funciona reparte responsabilidades: la SBC hace percepción y planificación, y un microcontrolador se encarga del bucle de control con determinismo. <strong>micro-ROS</strong> conecta ambos mundos haciendo que el microcontrolador aparezca como un nodo más del grafo.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Microcontrolador</th><th>Núcleo</th><th>RAM</th><th>Soporte micro-ROS</th><th>Nota</th></tr></thead>
+<tbody>
+<tr><td>ESP32 / ESP32-S3</td><td>Xtensa LX6/LX7</td><td>320-512 KB</td><td>Oficial</td><td>Wi-Fi integrado; la opción más accesible</td></tr>
+<tr><td>Teensy 4.1</td><td>Cortex-M7 600 MHz</td><td>1 MB</td><td>Comunidad</td><td>Muy rápido; Ethernet opcional</td></tr>
+<tr><td>STM32 F4/F7/H7</td><td>Cortex-M4/M7</td><td>192 KB - 1 MB</td><td>Oficial</td><td>Estándar en la industria</td></tr>
+<tr><td>Raspberry Pi Pico / Pico 2</td><td>Cortex-M0+/M33</td><td>264-520 KB</td><td>Comunidad</td><td>Barato; PIO muy útil para encoders</td></tr>
+<tr><td>Arduino Portenta H7</td><td>Cortex-M7 + M4</td><td>1 MB</td><td>Oficial</td><td>Doble núcleo</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code>Arquitectura completa:
+
+  ┌─────────────────────────────┐
+  │  SBC con Ubuntu + ROS 2     │
+  │  · Nav2 · SLAM · percepción │
+  │  · micro_ros_agent          │
+  └───────────┬─────────────────┘
+              │ serie / UDP / CAN
+  ┌───────────┴─────────────────┐
+  │  MCU con micro-ROS          │
+  │  · Bucle PID a 1 kHz        │
+  │  · Lectura de encoders      │
+  │  · Generación de PWM        │
+  │  · Parada de emergencia     │
+  └─────────────────────────────┘
+
+El agente (micro_ros_agent) traduce entre el protocolo
+XRCE-DDS del microcontrolador y el DDS completo de ROS 2.
+Sin el agente en marcha, el MCU no aparece en el grafo.</code></pre>
+<div class="warning"><strong>La parada de emergencia nunca debe depender del software.</strong> Ni de ROS 2, ni de micro-ROS, ni del microcontrolador. Debe ser un circuito cableado que corte la alimentación de potencia de los motores de forma independiente. El software puede añadir una parada suave adicional, pero jamás sustituir al circuito de seguridad.</div>
+<p>Si eliges ESP32 como microcontrolador de control, el reparto de tareas entre sus dos núcleos es directamente aplicable: la guía sobre <a href="/blog/como-usar-los-2-nucleos-del-esp32-simultaneamente">usar los dos núcleos del ESP32</a> explica cómo aislar el bucle de control de la pila de red.</p>
+</section>
+<section id="configuraciones">
+<h2>Tres configuraciones completas y probadas</h2>
+<h3>Configuración de aprendizaje</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Elemento</th><th>Elección</th><th>Razón</th></tr></thead>
+<tbody>
+<tr><td>Computadora</td><td>Raspberry Pi 5 de 8 GB</td><td>Ecosistema enorme, documentación abundante</td></tr>
+<tr><td>LiDAR</td><td>RPLIDAR A1 o LD19</td><td>Controlador oficial, coste mínimo</td></tr>
+<tr><td>IMU</td><td>BNO085</td><td>Fusión interna, sin filtros que implementar</td></tr>
+<tr><td>Control de motores</td><td>ESP32 con micro-ROS y TB6612</td><td>Determinismo a bajo coste</td></tr>
+<tr><td>Base</td><td>Chasis diferencial con encoders</td><td>Cinemática simple y bien soportada</td></tr>
+<tr><td>Software</td><td>Humble + Nav2 + slam_toolbox</td><td>Combinación con más tutoriales disponibles</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Configuración de desarrollo serio</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Elemento</th><th>Elección</th><th>Razón</th></tr></thead>
+<tbody>
+<tr><td>Computadora</td><td>Mini PC N100 o Jetson Orin Nano</td><td>Compatibilidad total o aceleración de inferencia</td></tr>
+<tr><td>LiDAR</td><td>RPLIDAR S2 o Livox Mid-360</td><td>Alcance y densidad para espacios grandes</td></tr>
+<tr><td>Cámara</td><td>RealSense D435i u OAK-D</td><td>Percepción de obstáculos bajos y detección</td></tr>
+<tr><td>IMU</td><td>La de la cámara o BMI088 dedicada</td><td>Sincronización por hardware</td></tr>
+<tr><td>Control de motores</td><td>ODrive o VESC</td><td>Control de par de calidad sobre BLDC</td></tr>
+<tr><td>Software</td><td>Jazzy + Nav2 + RTAB-Map</td><td>Soporte largo y SLAM tridimensional</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Configuración de brazo manipulador</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Elemento</th><th>Elección</th><th>Razón</th></tr></thead>
+<tbody>
+<tr><td>Computadora</td><td>Mini PC x86 con 16 GB</td><td>MoveIt consume memoria y CPU</td></tr>
+<tr><td>Actuadores</td><td>Dynamixel serie X</td><td>Integración oficial impecable con ros2_control</td></tr>
+<tr><td>Cámara</td><td>RealSense D405 montada en muñeca</td><td>Diseñada para distancias cortas</td></tr>
+<tr><td>Sensor de fuerza</td><td>Celda de carga con HX711 o sensor 6 ejes</td><td>Control de contacto</td></tr>
+<tr><td>Software</td><td>Jazzy + MoveIt 2</td><td>Planificación con evitación de colisiones</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note">La planificación de MoveIt 2 se apoya en la cinemática del manipulador; comprender qué ocurre bajo el capó ayuda a diagnosticar por qué a veces no encuentra solución. La guía sobre <a href="/blog/cinematica-directa-e-inversa-en-brazos-roboticos">cinemática directa e inversa</a> cubre esa base.</div>
+</section>
+<section id="red">
+<h2>Red y DDS: el problema que nadie anticipa</h2>
+<p>ROS 2 usa DDS para la comunicación, y su comportamiento por defecto descubre automáticamente todos los nodos de la red local. Eso es cómodo en el escritorio y problemático en un laboratorio compartido.</p>
+<pre><code># Aislar tu robot del resto de la red
+export ROS_DOMAIN_ID=42     # entre 0 y 101; mismo valor en todos los equipos
+
+# Limitar el descubrimiento al propio equipo (útil para pruebas)
+export ROS_LOCALHOST_ONLY=1
+
+# Elegir implementación de DDS
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp   # o rmw_fastrtps_cpp</code></pre>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Problema</th><th>Síntoma</th><th>Solución</th></tr></thead>
+<tbody>
+<tr><td>Wi-Fi con tráfico multicast</td><td>Descubrimiento lento o intermitente</td><td>Configurar DDS en modo unicast con lista de pares</td></tr>
+<tr><td>Muchos nodos en la misma red</td><td>Consumo alto de CPU sin hacer nada</td><td>Separar por ROS_DOMAIN_ID</td></tr>
+<tr><td>Imágenes por Wi-Fi</td><td>Saturación del enlace</td><td>Comprimir con image_transport; procesar a bordo</td></tr>
+<tr><td>Cortafuegos activo</td><td>Los nodos no se ven entre equipos</td><td>Abrir los puertos UDP de DDS</td></tr>
+<tr><td>Relojes desincronizados</td><td>Errores de transformada por marcas de tiempo</td><td>Sincronizar con chrony o PTP</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning">No transmitas nubes de puntos ni imágenes sin comprimir por Wi-Fi. Un LiDAR 3D genera decenas de megabytes por segundo: saturará el enlace y provocará pérdidas que se manifiestan como fallos aparentemente aleatorios en la navegación. Procesa a bordo y transmite solo el resultado.</div>
+</section>
+<section id="conclusion">
+<h2>Conclusión</h2>
+<p>La pregunta correcta al elegir hardware para ROS 2 no es cuánto rinde el dispositivo, sino <strong>quién mantiene su controlador y cuándo fue el último commit</strong>. Un LiDAR de gama media con paquete oficial te permitirá tener un robot navegando este fin de semana; uno excelente con un puerto abandonado te tendrá dos meses escribiendo código de driver.</p>
+<p>La arquitectura que funciona en la práctica reparte el trabajo según lo que cada componente hace bien: <strong>una computadora con Linux para percepción y planificación</strong>, donde el determinismo no es crítico, y <strong>un microcontrolador con micro-ROS para el bucle de control</strong>, donde sí lo es. Intentar cerrar un lazo de control a un kilohercio desde un nodo de Python sobre Ubuntu es una fuente inagotable de comportamientos extraños.</p>
+<p>Y un consejo que ahorra semanas: <strong>empieza con la configuración más aburrida y mejor documentada que puedas</strong>. Raspberry Pi, RPLIDAR A1, chasis diferencial y Humble. Cuando ese robot navegue de forma fiable habrás aprendido dónde están los problemas reales, y estarás en condiciones de justificar cada componente más caro que añadas después.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo usar ROS 2 en una Raspberry Pi?</summary><p>Sí, y es una plataforma perfectamente válida para robots de interior con navegación bidimensional. Una Raspberry Pi 4 con 4 gigabytes ejecuta Nav2 con un LiDAR 2D sin dificultad, y la Pi 5 amplía el margen de forma notable. Los límites aparecen con la percepción tridimensional, el SLAM visual y la inferencia de redes neuronales, donde la falta de aceleración por hardware se nota. Para esos casos conviene una Jetson o un mini PC x86. Instala Ubuntu Server de 64 bits, no Raspberry Pi OS, para tener paquetes binarios de ROS 2 disponibles.</p></details>
+<details><summary>¿Qué distribución de ROS 2 debo elegir en 2026?</summary><p>Jazzy Jalisco sobre Ubuntu 24.04 si empiezas un proyecto nuevo, porque tiene soporte hasta mayo de 2029. Humble Hawksbill sobre Ubuntu 22.04 sigue siendo una elección sólida si dependes de paquetes de terceros que aún no han migrado, ya que su ecosistema es el más amplio y su soporte se extiende hasta 2027. Evita las distribuciones no LTS como Iron o Kilted salvo que necesites una característica concreta: su ciclo de vida de un año obliga a migraciones constantes.</p></details>
+<details><summary>¿Necesito un microcontrolador además de la computadora principal?</summary><p>Para cualquier robot con motores, sí es muy recomendable. Linux no ofrece garantías de tiempo real sin un núcleo con parche PREEMPT_RT y configuración cuidadosa, por lo que un bucle de control a un kilohercio ejecutado como nodo normal sufrirá variaciones de latencia impredecibles. Delegar el control de bajo nivel a un microcontrolador con micro-ROS proporciona determinismo, libera a la computadora principal y añade una capa de seguridad, ya que el microcontrolador puede detener los motores si pierde comunicación con la computadora.</p></details>
+<details><summary>¿Merece la pena una Jetson frente a un mini PC x86?</summary><p>Depende de si vas a ejecutar inferencia de redes neuronales. Si tu robot necesita detección de objetos, segmentación semántica o SLAM visual denso, la GPU de la Jetson marca una diferencia enorme y justifica su precio. Si tu percepción se limita a LiDAR bidimensional y odometría, un mini PC con procesador N100 cuesta menos, consume una potencia comparable, ofrece mayor compatibilidad de paquetes binarios y no te ata al ecosistema de JetPack, que condiciona la versión de Ubuntu que puedes usar.</p></details>
+<details><summary>¿Cómo verifico que un sensor es realmente compatible antes de comprarlo?</summary><p>Busca el paquete en index.ros.org filtrando por tu distribución concreta. Si no aparece, localiza el repositorio en GitHub y comprueba la fecha del último commit, los issues abiertos sin respuesta y si el package.xml declara realmente ROS 2. Consulta también Robotics Stack Exchange y el foro ROS Discourse buscando el modelo exacto: si nadie ha publicado nada sobre él, asume que serás quien descubra los problemas. Un repositorio sin actividad en más de un año debe considerarse abandonado.</p></details>
+<details><summary>¿Puedo mezclar dispositivos de ROS 1 con ROS 2?</summary><p>Sí, mediante el paquete puente ros1_bridge, que traduce mensajes entre ambas versiones para los tipos estándar. Funciona razonablemente bien pero añade latencia, exige mantener las dos instalaciones conviviendo y no cubre los tipos de mensaje personalizados sin trabajo adicional de compilación. Es una solución de transición aceptable mientras migras, no una arquitectura para mantener a largo plazo, sobre todo considerando que ROS 1 Noetic ya alcanzó el final de su soporte.</p></details>
+</div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Profundiza en la parte de cómputo con la comparativa de la <a href="/blog/orange-pi-5-plus-el-sbc-mas-potente-para-edge-computing">Orange Pi 5 Plus</a>, y en el control de bajo nivel con la guía de <a href="/blog/como-usar-los-2-nucleos-del-esp32-simultaneamente">los dos núcleos del ESP32</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/modulo-de-carga-tp4056-cargar-baterias-lipo-de-forma-segura">← Anterior: Módulo de Carga TP4056: Cargar Baterías LiPo con Seguridad</a>
+  <a href="/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos">Siguiente: ESP32 como Analizador WiFi: Detección de Redes →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Documentación oficial de ROS 2 y de los paquetes de controlador citados. Verifica siempre el soporte para tu distribución concreta antes de comprar hardware.</p>
+<ul>
+<li><a href="https://docs.ros.org/en/rolling/Releases.html" target="_blank" rel="noopener noreferrer">ROS 2 — Documentación oficial y lista de distribuciones</a></li>
+<li><a href="https://index.ros.org/" target="_blank" rel="noopener noreferrer">ROS Index — Buscador de paquetes por distribución</a></li>
+<li><a href="https://control.ros.org/" target="_blank" rel="noopener noreferrer">ros2_control — Documentación del marco de control</a></li>
+<li><a href="https://micro.ros.org/" target="_blank" rel="noopener noreferrer">micro-ROS — Documentación oficial y plataformas soportadas</a></li>
+<li><a href="https://docs.nav2.org/" target="_blank" rel="noopener noreferrer">Nav2 — Pila de navegación para ROS 2</a></li>
+<li><a href="https://moveit.picknik.ai/main/index.html" target="_blank" rel="noopener noreferrer">MoveIt 2 — Marco de planificación de movimiento</a></li>
+<li><a href="https://discourse.ros.org/" target="_blank" rel="noopener noreferrer">ROS Discourse — Foro oficial de la comunidad</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

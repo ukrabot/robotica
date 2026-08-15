@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-label="Arquitectura de conexión de una HMI Delta DOP-100 con PLC mediante RS-485 y Ethernet, alimentación de 24 voltios y PC de programación con DOPSoft">
+<rect width="1200" height="820" fill="#f6f4ee"/>
+<text x="600" y="55" text-anchor="middle" font-family="Georgia, serif" font-size="35" fill="#1e1b15">Arquitectura de una instalación con HMI Delta DOP-100</text>
+<text x="600" y="88" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">La HMI actúa como maestro Modbus; el PC solo está presente durante la programación</text>
+
+<rect x="60" y="130" width="300" height="230" rx="14" fill="#ffffff" stroke="#8b8577" stroke-width="3" stroke-dasharray="10 6"/>
+<text x="210" y="168" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#1e1b15" font-weight="bold">PC de programación</text>
+<rect x="95" y="188" width="230" height="110" rx="8" fill="#23201b" stroke="#8b8577" stroke-width="2"/>
+<text x="210" y="228" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="19" fill="#e4c07a" font-weight="bold">DOPSoft 4.x</text>
+<text x="210" y="256" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#c9c4b8">Diseño de pantallas y macros</text>
+<text x="210" y="278" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#c9c4b8">Simulación offline</text>
+<text x="210" y="330" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#8b8577">Se retira tras la puesta en marcha</text>
+
+<rect x="450" y="130" width="330" height="330" rx="16" fill="#ffffff" stroke="#a97b23" stroke-width="4"/>
+<text x="615" y="170" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" fill="#1e1b15" font-weight="bold">HMI DOP-107EG</text>
+<rect x="485" y="190" width="260" height="150" rx="8" fill="#dfe4e8" stroke="#57534a" stroke-width="3"/>
+<rect x="500" y="203" width="230" height="30" rx="4" fill="#3a6ea5"/>
+<text x="615" y="224" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#ffffff">HORNO 1 — En marcha</text>
+<text x="560" y="272" text-anchor="middle" font-family="monospace, monospace" font-size="30" fill="#1e1b15">182.4</text>
+<text x="560" y="292" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#57534a">°C medidos</text>
+<rect x="640" y="248" width="80" height="30" rx="5" fill="#3f7a2e"/>
+<text x="680" y="269" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#ffffff">MARCHA</text>
+<rect x="640" y="288" width="80" height="30" rx="5" fill="#b2281e"/>
+<text x="680" y="309" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#ffffff">PARO</text>
+<text x="615" y="372" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#57534a">7" · 800 × 480 · táctil resistivo</text>
+<text x="615" y="396" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#57534a">3 puertos serie + Ethernet · IP65 frontal</text>
+<text x="615" y="428" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#a97b23" font-weight="bold">Maestro Modbus</text>
+
+<rect x="870" y="130" width="270" height="330" rx="14" fill="#ffffff" stroke="#2f6fb0" stroke-width="3"/>
+<text x="1005" y="168" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="21" fill="#1e1b15" font-weight="bold">PLC (esclavo)</text>
+<rect x="900" y="190" width="210" height="130" rx="8" fill="#f6f4ee" stroke="#8b8577" stroke-width="2"/>
+<text x="1005" y="218" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#1e1b15" font-weight="bold">Delta DVP / otro</text>
+<text x="1005" y="246" text-anchor="middle" font-family="monospace, monospace" font-size="14" fill="#57534a">D100  consigna</text>
+<text x="1005" y="268" text-anchor="middle" font-family="monospace, monospace" font-size="14" fill="#57534a">D200  temperatura</text>
+<text x="1005" y="290" text-anchor="middle" font-family="monospace, monospace" font-size="14" fill="#57534a">M100  marcha</text>
+<text x="1005" y="312" text-anchor="middle" font-family="monospace, monospace" font-size="14" fill="#57534a">M202  alarma</text>
+<rect x="900" y="336" width="210" height="90" rx="8" fill="#f0f6ef" stroke="#3f7a2e" stroke-width="2"/>
+<text x="1005" y="362" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#2f5c22" font-weight="bold">Toda la lógica de proceso</text>
+<text x="1005" y="386" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#3f7a2e">y los enclavamientos</text>
+<text x="1005" y="408" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#3f7a2e">residen aquí, no en la HMI</text>
+
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#3a3a3a"/>
+</marker>
+</defs>
+<line x1="360" y1="245" x2="450" y2="245" stroke="#8b8577" stroke-width="4" stroke-dasharray="9 6" marker-end="url(#ar)"/>
+<text x="405" y="232" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#8b8577">USB</text>
+<line x1="780" y1="230" x2="870" y2="230" stroke="#2f6fb0" stroke-width="4" marker-end="url(#ar)"/>
+<text x="825" y="218" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#2f6fb0">RS-485</text>
+<line x1="780" y1="300" x2="870" y2="300" stroke="#2f6fb0" stroke-width="4" marker-end="url(#ar)"/>
+<text x="825" y="288" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#2f6fb0">Modbus TCP</text>
+
+<rect x="450" y="510" width="330" height="120" rx="12" fill="#ffffff" stroke="#b2281e" stroke-width="3"/>
+<text x="615" y="546" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="19" fill="#1e1b15" font-weight="bold">Fuente 24 V CC</text>
+<text x="615" y="576" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#57534a">Común para HMI y PLC</text>
+<text x="615" y="602" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#b2281e">Evita bucles de masa en el bus serie</text>
+<line x1="615" y1="460" x2="615" y2="510" stroke="#b2281e" stroke-width="4" marker-end="url(#ar)"/>
+<line x1="780" y1="570" x2="960" y2="570" stroke="#b2281e" stroke-width="4"/>
+<line x1="960" y1="570" x2="960" y2="460" stroke="#b2281e" stroke-width="4" marker-end="url(#ar)"/>
+
+<rect x="60" y="510" width="330" height="120" rx="12" fill="#fdf1ef" stroke="#b2281e" stroke-width="3"/>
+<text x="225" y="546" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#7a1c14" font-weight="bold">Circuito de seguridad</text>
+<text x="225" y="576" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#b2281e">Setas de emergencia cableadas</text>
+<text x="225" y="602" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#b2281e">Independiente de HMI y PLC</text>
+
+<text x="600" y="690" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#57534a">Bus RS-485: par trenzado apantallado, 120 Ω en cada extremo, masa de referencia común</text>
+<text x="600" y="718" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#57534a">y separación física respecto del cableado de potencia de variadores.</text>
+<text x="600" y="758" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#a97b23" font-weight="bold">La HMI es una ventana al proceso, nunca un elemento de seguridad.</text>
+<text x="600" y="795" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#8b8577">ukrabot.cl · Blog de Ingeniería Robótica</text>
+</svg>

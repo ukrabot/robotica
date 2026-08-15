@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-label="Procedimiento de calibración de un láser de diodo: enfoque por matriz de altura, matriz de potencia contra velocidad, lectura de resultados y registro de parámetros">
+  <defs>
+    <marker id="ar" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#3a3a3a"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="820" fill="#f6f4ee"/>
+
+  <text x="600" y="55" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="35">Ciclo de calibracion por material</text>
+  <text x="600" y="88" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Cuatro pasos que convierten el ensayo y error en un procedimiento repetible</text>
+
+  <!-- PASO 1 -->
+  <g>
+    <rect x="50" y="125" width="255" height="300" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <circle cx="88" cy="163" r="22" fill="#a97b23"/>
+    <text x="88" y="171" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">1</text>
+    <text x="122" y="171" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="600">Enfocar</text>
+
+    <g transform="translate(78 200)">
+      <rect x="0" y="0" width="200" height="120" rx="6" fill="#f6f4ee" stroke="#8b8577" stroke-width="3"/>
+      <g fill="#3a2c18">
+        <rect x="16" y="22" width="26" height="26" rx="3" opacity="0.35"/>
+        <rect x="50" y="22" width="26" height="26" rx="3" opacity="0.55"/>
+        <rect x="84" y="22" width="26" height="26" rx="3" opacity="1"/>
+        <rect x="118" y="22" width="26" height="26" rx="3" opacity="0.6"/>
+        <rect x="152" y="22" width="26" height="26" rx="3" opacity="0.35"/>
+      </g>
+      <rect x="82" y="18" width="30" height="34" rx="4" fill="none" stroke="#b2281e" stroke-width="3"/>
+      <text x="100" y="76" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">Z de 10,0 a 12,0 mm</text>
+      <text x="100" y="100" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">pasos de 0,25 mm</text>
+    </g>
+    <text x="177" y="352" text-anchor="middle" fill="#7a1c14" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600">El punto mas oscuro y fino</text>
+    <text x="177" y="374" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">marca la altura correcta</text>
+    <text x="177" y="402" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="14">Repetir con cada grosor</text>
+  </g>
+
+  <!-- PASO 2 -->
+  <g>
+    <rect x="345" y="125" width="255" height="300" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <circle cx="383" cy="163" r="22" fill="#a97b23"/>
+    <text x="383" y="171" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">2</text>
+    <text x="417" y="171" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="600">Ejecutar matriz</text>
+
+    <g transform="translate(392 198)">
+      <rect x="0" y="0" width="160" height="160" rx="6" fill="#f6f4ee" stroke="#8b8577" stroke-width="3"/>
+      <g fill="#3a2c18">
+        <rect x="14" y="14" width="24" height="24" rx="3" opacity="1"/>
+        <rect x="44" y="14" width="24" height="24" rx="3" opacity="0.9"/>
+        <rect x="74" y="14" width="24" height="24" rx="3" opacity="0.75"/>
+        <rect x="104" y="14" width="24" height="24" rx="3" opacity="0.6"/>
+        <rect x="14" y="44" width="24" height="24" rx="3" opacity="0.85"/>
+        <rect x="44" y="44" width="24" height="24" rx="3" opacity="0.7"/>
+        <rect x="74" y="44" width="24" height="24" rx="3" opacity="0.55"/>
+        <rect x="104" y="44" width="24" height="24" rx="3" opacity="0.4"/>
+        <rect x="14" y="74" width="24" height="24" rx="3" opacity="0.6"/>
+        <rect x="44" y="74" width="24" height="24" rx="3" opacity="0.48"/>
+        <rect x="74" y="74" width="24" height="24" rx="3" opacity="0.36"/>
+        <rect x="104" y="74" width="24" height="24" rx="3" opacity="0.24"/>
+        <rect x="14" y="104" width="24" height="24" rx="3" opacity="0.4"/>
+        <rect x="44" y="104" width="24" height="24" rx="3" opacity="0.3"/>
+        <rect x="74" y="104" width="24" height="24" rx="3" opacity="0.2"/>
+        <rect x="104" y="104" width="24" height="24" rx="3" opacity="0.12"/>
+      </g>
+      <text x="80" y="150" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="14">velocidad</text>
+      <text x="-14" y="70" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="14" transform="rotate(-90 -14 70)">potencia</text>
+    </g>
+    <text x="472" y="390" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">Celdas de 10 mm separadas 4 mm</text>
+    <text x="472" y="412" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="14">Etiqueta siempre los margenes</text>
+  </g>
+
+  <!-- PASO 3 -->
+  <g>
+    <rect x="640" y="125" width="255" height="300" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <circle cx="678" cy="163" r="22" fill="#a97b23"/>
+    <text x="678" y="171" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">3</text>
+    <text x="712" y="171" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="600">Leer resultados</text>
+
+    <g font-family="Inter, Arial, sans-serif" font-size="15">
+      <rect x="668" y="196" width="200" height="38" rx="6" fill="#f6f4ee" stroke="#8b8577" stroke-width="2"/>
+      <text x="682" y="220" fill="#57534a">Apenas visible: subir energia</text>
+
+      <rect x="668" y="242" width="200" height="38" rx="6" fill="#f0f6ef" stroke="#3f7a2e" stroke-width="2"/>
+      <text x="682" y="266" fill="#2f5c22" font-weight="600">Limpia y uniforme: zona util</text>
+
+      <rect x="668" y="288" width="200" height="38" rx="6" fill="#fdf9ef" stroke="#a97b23" stroke-width="2"/>
+      <text x="682" y="312" fill="#7a5715">Borde amarillo: falta aire</text>
+
+      <rect x="668" y="334" width="200" height="38" rx="6" fill="#fdf1ef" stroke="#b2281e" stroke-width="2"/>
+      <text x="682" y="358" fill="#7a1c14">Carbonizada: bajar a la mitad</text>
+    </g>
+    <text x="768" y="400" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="14">Bandas periodicas: reducir separacion</text>
+  </g>
+
+  <!-- PASO 4 -->
+  <g>
+    <rect x="935" y="125" width="215" height="300" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <circle cx="973" cy="163" r="22" fill="#a97b23"/>
+    <text x="973" y="171" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">4</text>
+    <text x="1007" y="171" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="600">Registrar</text>
+
+    <rect x="960" y="200" width="165" height="150" rx="8" fill="#23201b" stroke="#0f0d0a" stroke-width="3"/>
+    <g fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="14">
+      <text x="976" y="228">Material: DM 3 mm</text>
+      <text x="976" y="252">Lote: 2026-07</text>
+      <text x="976" y="276">Potencia: 100 %</text>
+      <text x="976" y="300">Vel: 180 mm/min</text>
+      <text x="976" y="324">Pasadas: 3  Z: 11,25</text>
+    </g>
+    <text x="1042" y="378" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="15">Guarda la muestra fisica</text>
+    <text x="1042" y="400" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="14">con la ficha al dorso</text>
+  </g>
+
+  <g stroke="#3a3a3a" stroke-width="4" fill="none" marker-end="url(#ar)">
+    <path d="M 305 275 L 338 275"/>
+    <path d="M 600 275 L 633 275"/>
+    <path d="M 895 275 L 928 275"/>
+  </g>
+
+  <!-- Panel de formulas -->
+  <rect x="50" y="465" width="540" height="290" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+  <text x="320" y="505" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="25">La magnitud transferible</text>
+
+  <rect x="82" y="528" width="476" height="46" rx="8" fill="#23201b"/>
+  <text x="320" y="558" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="20">E lineal (J/mm) = P optica (W) / v (mm/s)</text>
+
+  <rect x="82" y="586" width="476" height="46" rx="8" fill="#23201b"/>
+  <text x="320" y="616" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="19">E superficie (J/mm2) = P / (v x separacion)</text>
+
+  <g font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">
+    <text x="82" y="666">Los porcentajes de potencia no viajan entre maquinas; los julios</text>
+    <text x="82" y="692">por milimetro si. Convierte antes de copiar parametros ajenos.</text>
+    <text x="82" y="726" fill="#7a1c14" font-weight="600">Recuerda: 40 W anunciados suelen ser 5 W opticos reales.</text>
+  </g>
+
+  <!-- Panel de irradiancia -->
+  <rect x="620" y="465" width="530" height="290" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+  <text x="885" y="505" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="25">Por que el enfoque manda</text>
+
+  <g transform="translate(660 528)">
+    <rect x="0" y="0" width="200" height="150" rx="8" fill="#f0f6ef" stroke="#3f7a2e" stroke-width="3"/>
+    <text x="100" y="32" text-anchor="middle" fill="#2f5c22" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">Enfocado</text>
+    <circle cx="100" cy="76" r="9" fill="#2f5c22"/>
+    <text x="100" y="112" text-anchor="middle" fill="#3f7a2e" font-family="Inter, Arial, sans-serif" font-size="15">punto 0,08 mm</text>
+    <text x="100" y="136" text-anchor="middle" fill="#2f5c22" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">781 W/mm2</text>
+  </g>
+
+  <g transform="translate(895 528)">
+    <rect x="0" y="0" width="200" height="150" rx="8" fill="#fdf1ef" stroke="#b2281e" stroke-width="3"/>
+    <text x="100" y="32" text-anchor="middle" fill="#7a1c14" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">Desenfocado</text>
+    <circle cx="100" cy="76" r="22" fill="#b2281e" opacity="0.5"/>
+    <text x="100" y="112" text-anchor="middle" fill="#b2281e" font-family="Inter, Arial, sans-serif" font-size="15">punto 0,20 mm</text>
+    <text x="100" y="136" text-anchor="middle" fill="#7a1c14" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">125 W/mm2</text>
+  </g>
+
+  <text x="885" y="712" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="16">Duplicar el diametro del punto divide la irradiancia por cuatro:</text>
+  <text x="885" y="738" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="16">es la causa numero uno de resultados irregulares.</text>
+
+  <text x="600" y="792" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="16">Gafas EN 207, extraccion de humos y extintor accesible antes de encender el haz.</text>
+</svg>

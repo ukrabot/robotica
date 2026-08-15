@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-label="Diagrama de los tres modos de trabajo del ESP32 como analizador Wi-Fi: escaneo estandar, modo promiscuo y salida por pantalla OLED">
+  <defs>
+    <marker id="ar" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#3a3a3a"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="820" fill="#f6f4ee"/>
+
+  <text x="600" y="55" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="35">Modos de analisis Wi-Fi con el ESP32</text>
+  <text x="600" y="88" text-anchor="middle" fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="19">Del escaneo pasivo de redes a la captura de tramas en modo promiscuo</text>
+
+  <!-- Bloque 1: escaneo estandar -->
+  <g>
+    <rect x="60" y="130" width="330" height="290" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="60" y="130" width="330" height="46" rx="14" fill="#2f6fb0"/>
+    <rect x="60" y="162" width="330" height="14" fill="#2f6fb0"/>
+    <text x="225" y="161" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="600">1. Escaneo estandar</text>
+    <text x="86" y="212" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">WiFi.scanNetworks()</text>
+    <g fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="16">
+      <text x="86" y="246">SSID de cada red</text>
+      <text x="86" y="274">RSSI en dBm</text>
+      <text x="86" y="302">Canal 1 a 13</text>
+      <text x="86" y="330">Tipo de cifrado</text>
+      <text x="86" y="358">BSSID del punto de acceso</text>
+    </g>
+    <text x="86" y="394" fill="#3f7a2e" font-family="Inter, Arial, sans-serif" font-size="15">Sin requisitos legales especiales</text>
+  </g>
+
+  <!-- Bloque 2: promiscuo -->
+  <g>
+    <rect x="435" y="130" width="330" height="290" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="435" y="130" width="330" height="46" rx="14" fill="#a97b23"/>
+    <rect x="435" y="162" width="330" height="14" fill="#a97b23"/>
+    <text x="600" y="161" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="600">2. Modo promiscuo</text>
+    <text x="461" y="212" fill="#1e1b15" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="600">esp_wifi_set_promiscuous()</text>
+    <g fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="16">
+      <text x="461" y="246">Tramas de gestion</text>
+      <text x="461" y="274">Beacons y probe requests</text>
+      <text x="461" y="302">Cabeceras de control</text>
+      <text x="461" y="330">Salto de canal por software</text>
+      <text x="461" y="358">Conteo de dispositivos</text>
+    </g>
+    <text x="461" y="394" fill="#b2281e" font-family="Inter, Arial, sans-serif" font-size="15">Solo en redes propias o autorizadas</text>
+  </g>
+
+  <!-- Bloque 3: salida -->
+  <g>
+    <rect x="810" y="130" width="330" height="290" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+    <rect x="810" y="130" width="330" height="46" rx="14" fill="#3f7a2e"/>
+    <rect x="810" y="162" width="330" height="14" fill="#3f7a2e"/>
+    <text x="975" y="161" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="600">3. Presentacion</text>
+    <rect x="850" y="200" width="250" height="120" rx="8" fill="#23201b" stroke="#0f0d0a" stroke-width="3"/>
+    <g fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="15">
+      <text x="870" y="230">CH  REDES  MAX RSSI</text>
+      <text x="870" y="256">01     7      -42 dBm</text>
+      <text x="870" y="282">06    11      -38 dBm</text>
+      <text x="870" y="308">11     5      -55 dBm</text>
+    </g>
+    <g fill="#57534a" font-family="Inter, Arial, sans-serif" font-size="16">
+      <text x="850" y="352">OLED SSD1306 por I2C</text>
+      <text x="850" y="380">o consola serie a 115200 bps</text>
+    </g>
+  </g>
+
+  <!-- Flechas -->
+  <g stroke="#3a3a3a" stroke-width="4" fill="none" marker-end="url(#ar)">
+    <path d="M 390 275 L 428 275"/>
+    <path d="M 765 275 L 803 275"/>
+  </g>
+
+  <!-- Panel inferior: cadena de procesamiento -->
+  <rect x="60" y="470" width="1080" height="290" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+  <text x="600" y="512" text-anchor="middle" fill="#1e1b15" font-family="Georgia, serif" font-size="26">Interpretacion del RSSI y eleccion de canal</text>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="100" y="545" width="230" height="80" rx="10" fill="#f0f6ef" stroke="#3f7a2e" stroke-width="3"/>
+    <text x="215" y="577" text-anchor="middle" fill="#2f5c22" font-size="19" font-weight="600">-30 a -60 dBm</text>
+    <text x="215" y="604" text-anchor="middle" fill="#3f7a2e" font-size="16">Excelente a buena</text>
+
+    <rect x="360" y="545" width="230" height="80" rx="10" fill="#fdf9ef" stroke="#a97b23" stroke-width="3"/>
+    <text x="475" y="577" text-anchor="middle" fill="#7a5715" font-size="19" font-weight="600">-60 a -70 dBm</text>
+    <text x="475" y="604" text-anchor="middle" fill="#a97b23" font-size="16">Aceptable, algo de perdida</text>
+
+    <rect x="620" y="545" width="230" height="80" rx="10" fill="#fdf1ef" stroke="#b2281e" stroke-width="3"/>
+    <text x="735" y="577" text-anchor="middle" fill="#7a1c14" font-size="19" font-weight="600">-70 a -85 dBm</text>
+    <text x="735" y="604" text-anchor="middle" fill="#b2281e" font-size="16">Marginal, reconexiones</text>
+
+    <rect x="880" y="545" width="220" height="80" rx="10" fill="#23201b" stroke="#0f0d0a" stroke-width="3"/>
+    <text x="990" y="577" text-anchor="middle" fill="#e4c07a" font-size="19" font-weight="600">bajo -85 dBm</text>
+    <text x="990" y="604" text-anchor="middle" fill="#c9c4b8" font-size="16">Inservible</text>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif" fill="#57534a" font-size="17">
+    <text x="100" y="675">Los canales 1, 6 y 11 son los unicos que no se solapan en 2,4 GHz: cada uno ocupa 22 MHz de los 83,5 MHz disponibles.</text>
+    <text x="100" y="705">Elige el canal con menor suma de potencias vecinas, no el que tenga menos redes: una red fuerte estorba mas que cinco debiles.</text>
+    <text x="100" y="735">Un solape parcial, por ejemplo usar el canal 3, genera mas interferencia que compartir limpiamente el canal 1 con otro punto de acceso.</text>
+  </g>
+</svg>

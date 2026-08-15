@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-label="Esquema de los dos núcleos del ESP32: núcleo cero dedicado a la pila de radio y núcleo uno a la aplicación, con tareas de FreeRTOS, cola de comunicación y mutex de protección">
+<rect width="1200" height="820" fill="#f6f4ee"/>
+<text x="600" y="55" text-anchor="middle" font-family="Georgia, serif" font-size="35" fill="#1e1b15">Los dos núcleos del ESP32 bajo FreeRTOS</text>
+<text x="600" y="88" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">Reparto de tareas, comunicación por cola y protección de recursos compartidos</text>
+
+<rect x="55" y="120" width="520" height="470" rx="16" fill="#ffffff" stroke="#2f6fb0" stroke-width="3"/>
+<text x="315" y="158" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="23" fill="#2f6fb0" font-weight="bold">Núcleo 0 — PRO_CPU</text>
+<text x="315" y="184" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#8b8577">Protocolo · reservado por el sistema</text>
+
+<rect x="85" y="205" width="460" height="66" rx="10" fill="#eef3f9" stroke="#2f6fb0" stroke-width="2"/>
+<text x="315" y="232" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#1e1b15" font-weight="bold">Pila Wi-Fi y Bluetooth</text>
+<text x="315" y="256" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#57534a">Prioridad alta · no se debe bloquear</text>
+
+<rect x="85" y="288" width="460" height="60" rx="10" fill="#eef3f9" stroke="#2f6fb0" stroke-width="2"/>
+<text x="315" y="313" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#1e1b15" font-weight="bold">Pila TCP/IP (lwIP)</text>
+<text x="315" y="336" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#57534a">MQTT · HTTP · sockets</text>
+
+<rect x="85" y="365" width="460" height="60" rx="10" fill="#f6f4ee" stroke="#8b8577" stroke-width="2"/>
+<text x="315" y="390" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#1e1b15">Tarea de red del usuario</text>
+<text x="315" y="413" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#57534a">xTaskCreatePinnedToCore(..., 0)</text>
+
+<rect x="85" y="442" width="460" height="52" rx="10" fill="#f6f4ee" stroke="#8b8577" stroke-width="2"/>
+<text x="315" y="474" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">IDLE0 · alimenta el watchdog del núcleo 0</text>
+
+<rect x="85" y="510" width="460" height="58" rx="10" fill="#fdf1ef" stroke="#b2281e" stroke-width="2"/>
+<text x="315" y="535" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#7a1c14" font-weight="bold">Nunca uses delay() largo ni bucles cerrados aquí</text>
+<text x="315" y="557" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#b2281e">se pierde la conexión Wi-Fi y salta el watchdog</text>
+
+<rect x="625" y="120" width="520" height="470" rx="16" fill="#ffffff" stroke="#a97b23" stroke-width="3"/>
+<text x="885" y="158" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="23" fill="#a97b23" font-weight="bold">Núcleo 1 — APP_CPU</text>
+<text x="885" y="184" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#8b8577">Aplicación · donde corre loop() de Arduino</text>
+
+<rect x="655" y="205" width="460" height="66" rx="10" fill="#faf5ea" stroke="#a97b23" stroke-width="2"/>
+<text x="885" y="232" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#1e1b15" font-weight="bold">loopTask (setup y loop)</text>
+<text x="885" y="256" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#57534a">Prioridad 1 por defecto</text>
+
+<rect x="655" y="288" width="460" height="60" rx="10" fill="#faf5ea" stroke="#a97b23" stroke-width="2"/>
+<text x="885" y="313" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#1e1b15" font-weight="bold">Tarea de sensores</text>
+<text x="885" y="336" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#57534a">vTaskDelayUntil · periodo fijo de 10 ms</text>
+
+<rect x="655" y="365" width="460" height="60" rx="10" fill="#faf5ea" stroke="#a97b23" stroke-width="2"/>
+<text x="885" y="390" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#1e1b15" font-weight="bold">Tarea de control de motores</text>
+<text x="885" y="413" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#57534a">Prioridad 3 · determinismo garantizado</text>
+
+<rect x="655" y="442" width="460" height="52" rx="10" fill="#f6f4ee" stroke="#8b8577" stroke-width="2"/>
+<text x="885" y="474" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#57534a">IDLE1 · alimenta el watchdog del núcleo 1</text>
+
+<rect x="655" y="510" width="460" height="58" rx="10" fill="#f0f6ef" stroke="#3f7a2e" stroke-width="2"/>
+<text x="885" y="535" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#2f5c22" font-weight="bold">Aquí sí puedes bloquear con seguridad</text>
+<text x="885" y="557" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#3f7a2e">siempre cediendo con vTaskDelay(1) como mínimo</text>
+
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#3a3a3a"/>
+</marker>
+</defs>
+
+<rect x="330" y="625" width="540" height="86" rx="14" fill="#23201b" stroke="#a97b23" stroke-width="3"/>
+<text x="600" y="658" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="19" fill="#e4c07a" font-weight="bold">Cola de FreeRTOS + mutex</text>
+<text x="600" y="683" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#f6f4ee">xQueueSend / xQueueReceive para pasar datos entre núcleos</text>
+<text x="600" y="703" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#c9c4b8">xSemaphoreTake para proteger I2C, SPI y variables compartidas</text>
+
+<line x1="330" y1="668" x2="230" y2="668" stroke="#3a3a3a" stroke-width="4" marker-end="url(#ar)"/>
+<line x1="230" y1="668" x2="230" y2="590" stroke="#3a3a3a" stroke-width="4" marker-end="url(#ar)"/>
+<line x1="870" y1="668" x2="970" y2="668" stroke="#3a3a3a" stroke-width="4" marker-end="url(#ar)"/>
+<line x1="970" y1="668" x2="970" y2="590" stroke="#3a3a3a" stroke-width="4" marker-end="url(#ar)"/>
+
+<text x="600" y="758" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#57534a">Memoria RAM y periféricos son compartidos: todo acceso concurrente necesita protección explícita.</text>
+<text x="600" y="795" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#8b8577">ukrabot.cl · Blog de Ingeniería Robótica</text>
+</svg>

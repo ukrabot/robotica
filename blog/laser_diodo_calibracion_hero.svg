@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Ilustración de un módulo láser de diodo azul grabando una matriz de prueba de potencia y velocidad sobre una tabla de madera">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141210"/>
+      <stop offset="1" stop-color="#211b14"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e4c07a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#e4c07a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="spot" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#9ecbff" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#2f6fb0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fb2ff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#2f6fb0" stop-opacity="0.35"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8a6636"/>
+      <stop offset="1" stop-color="#6d4f28"/>
+    </linearGradient>
+    <linearGradient id="mod" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a352c"/>
+      <stop offset="1" stop-color="#23201b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="420" cy="330" r="260" fill="url(#glow)"/>
+
+  <text x="600" y="55" text-anchor="middle" fill="#e4c07a" font-family="Georgia, serif" font-size="34">Calibracion de Potencia en Laser de Diodo</text>
+
+  <!-- Modulo laser -->
+  <g transform="translate(330 120)">
+    <rect x="0" y="0" width="180" height="150" rx="10" fill="url(#mod)" stroke="#0f0d0a" stroke-width="4"/>
+    <rect x="22" y="20" width="136" height="44" rx="6" fill="#141210" stroke="#57534a" stroke-width="2"/>
+    <text x="90" y="50" text-anchor="middle" fill="#7fb2ff" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="600">450 nm</text>
+    <g fill="#8b8577">
+      <rect x="24" y="80" width="132" height="8" rx="2"/>
+      <rect x="24" y="96" width="132" height="8" rx="2"/>
+    </g>
+    <rect x="62" y="150" width="56" height="34" rx="4" fill="#2c2823" stroke="#0f0d0a" stroke-width="3"/>
+    <circle cx="90" cy="184" r="14" fill="#1b2c3d" stroke="#57534a" stroke-width="3"/>
+    <!-- ventilador -->
+    <circle cx="152" cy="128" r="14" fill="none" stroke="#57534a" stroke-width="3"/>
+  </g>
+
+  <!-- Haz -->
+  <path d="M 408 304 L 432 304 L 424 452 L 416 452 Z" fill="url(#beam)"/>
+  <circle cx="420" cy="452" r="46" fill="url(#spot)"/>
+  <circle cx="420" cy="452" r="7" fill="#dff0ff"/>
+
+  <!-- Cota de foco -->
+  <g stroke="#8b8577" stroke-width="3" fill="none">
+    <line x1="290" y1="304" x2="290" y2="452"/>
+    <line x1="278" y1="304" x2="302" y2="304"/>
+    <line x1="278" y1="452" x2="302" y2="452"/>
+  </g>
+  <text x="250" y="384" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="19">foco</text>
+
+  <!-- Tabla de madera -->
+  <rect x="150" y="452" width="920" height="90" rx="8" fill="url(#wood)" stroke="#4a3419" stroke-width="4"/>
+  <g stroke="#5c421f" stroke-width="3" opacity="0.6">
+    <path d="M 160 476 C 380 468 700 486 1060 474"/>
+    <path d="M 160 506 C 420 500 720 514 1060 502"/>
+    <path d="M 160 528 C 350 522 760 534 1060 526"/>
+  </g>
+
+  <!-- Matriz de prueba grabada -->
+  <g transform="translate(620 130)">
+    <rect x="0" y="0" width="440" height="300" rx="12" fill="#1b1813" stroke="#3d3629" stroke-width="3"/>
+    <text x="220" y="40" text-anchor="middle" fill="#e4c07a" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="600">Matriz potencia / velocidad</text>
+
+    <g>
+      <rect x="70" y="60" width="46" height="46" rx="4" fill="#3a2c18"/>
+      <rect x="126" y="60" width="46" height="46" rx="4" fill="#4b3a1f"/>
+      <rect x="182" y="60" width="46" height="46" rx="4" fill="#63492329"/>
+      <rect x="182" y="60" width="46" height="46" rx="4" fill="#634923"/>
+      <rect x="238" y="60" width="46" height="46" rx="4" fill="#7b5a2a"/>
+      <rect x="294" y="60" width="46" height="46" rx="4" fill="#946c31"/>
+
+      <rect x="70" y="116" width="46" height="46" rx="4" fill="#2a2013"/>
+      <rect x="126" y="116" width="46" height="46" rx="4" fill="#3a2c18"/>
+      <rect x="182" y="116" width="46" height="46" rx="4" fill="#4b3a1f"/>
+      <rect x="238" y="116" width="46" height="46" rx="4" fill="#634923"/>
+      <rect x="294" y="116" width="46" height="46" rx="4" fill="#7b5a2a"/>
+
+      <rect x="70" y="172" width="46" height="46" rx="4" fill="#1f1810"/>
+      <rect x="126" y="172" width="46" height="46" rx="4" fill="#2a2013"/>
+      <rect x="182" y="172" width="46" height="46" rx="4" fill="#3a2c18"/>
+      <rect x="238" y="172" width="46" height="46" rx="4" fill="#4b3a1f"/>
+      <rect x="294" y="172" width="46" height="46" rx="4" fill="#634923"/>
+
+      <rect x="70" y="228" width="46" height="46" rx="4" fill="#181310"/>
+      <rect x="126" y="228" width="46" height="46" rx="4" fill="#1f1810"/>
+      <rect x="182" y="228" width="46" height="46" rx="4" fill="#2a2013"/>
+      <rect x="238" y="228" width="46" height="46" rx="4" fill="#3a2c18"/>
+      <rect x="294" y="228" width="46" height="46" rx="4" fill="#4b3a1f"/>
+    </g>
+
+    <g fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="15">
+      <text x="58" y="90" text-anchor="end">100 %</text>
+      <text x="58" y="146" text-anchor="end">75 %</text>
+      <text x="58" y="202" text-anchor="end">50 %</text>
+      <text x="58" y="258" text-anchor="end">25 %</text>
+    </g>
+    <text x="220" y="294" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="16">velocidad creciente</text>
+  </g>
+
+  <text x="600" y="596" text-anchor="middle" fill="#8b8577" font-family="Inter, Arial, sans-serif" font-size="19">Densidad de energia, enfoque y matrices de prueba por material</text>
+</svg>

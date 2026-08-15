@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-label="Procedimiento de localización de cortocircuitos: fuente de laboratorio limitada en corriente conectada al riel de la placa, cámara térmica observando la superficie y punto caliente identificado sobre el componente defectuoso">
+<rect width="1200" height="820" fill="#f6f4ee"/>
+<text x="600" y="55" text-anchor="middle" font-family="Georgia, serif" font-size="35" fill="#1e1b15">Localización térmica de un cortocircuito en PCB</text>
+<text x="600" y="88" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="19" fill="#57534a">Inyección de corriente limitada y lectura del punto caliente</text>
+
+<rect x="55" y="130" width="330" height="300" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+<text x="220" y="170" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="21" fill="#1e1b15" font-weight="bold">Fuente de laboratorio</text>
+<rect x="90" y="192" width="260" height="86" rx="10" fill="#23201b" stroke="#8b8577" stroke-width="2"/>
+<text x="220" y="228" text-anchor="middle" font-family="monospace, monospace" font-size="26" fill="#e4c07a">1.20 V</text>
+<text x="220" y="262" text-anchor="middle" font-family="monospace, monospace" font-size="26" fill="#e4c07a">0.500 A</text>
+<rect x="90" y="292" width="260" height="46" rx="8" fill="#f0f6ef" stroke="#3f7a2e" stroke-width="2"/>
+<text x="220" y="321" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#2f5c22" font-weight="bold">Modo CC activo</text>
+<text x="220" y="365" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#57534a">Ajustar el límite de corriente</text>
+<text x="220" y="388" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#57534a">con las puntas en corto,</text>
+<text x="220" y="411" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#57534a">antes de conectar la placa.</text>
+
+<rect x="440" y="130" width="440" height="300" rx="14" fill="#ffffff" stroke="#c9c4b8" stroke-width="3"/>
+<text x="660" y="170" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="21" fill="#1e1b15" font-weight="bold">Placa bajo prueba</text>
+<rect x="475" y="192" width="370" height="200" rx="8" fill="#e8eee4" stroke="#3f7a2e" stroke-width="3"/>
+<rect x="505" y="222" width="60" height="34" rx="4" fill="#3a352c"/>
+<rect x="595" y="222" width="60" height="34" rx="4" fill="#3a352c"/>
+<rect x="685" y="222" width="60" height="34" rx="4" fill="#3a352c"/>
+<rect x="775" y="222" width="40" height="34" rx="4" fill="#3a352c"/>
+<rect x="505" y="290" width="90" height="60" rx="5" fill="#3a352c"/>
+<rect x="625" y="290" width="50" height="26" rx="4" fill="#3a352c"/>
+<rect x="705" y="290" width="50" height="26" rx="4" fill="#3a352c"/>
+<circle cx="650" cy="335" r="26" fill="#fdf1ef" opacity="0.95"/>
+<circle cx="650" cy="335" r="17" fill="#e2a24a"/>
+<circle cx="650" cy="335" r="9" fill="#b2281e"/>
+<text x="770" y="342" font-family="Inter, Arial, sans-serif" font-size="16" fill="#b2281e" font-weight="bold">86 °C</text>
+<line x1="676" y1="335" x2="762" y2="337" stroke="#b2281e" stroke-width="3"/>
+<text x="660" y="418" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#8b8577">MLCC de desacoplo en corto en el riel de 1,2 V</text>
+
+<rect x="930" y="130" width="215" height="300" rx="14" fill="#ffffff" stroke="#2f6fb0" stroke-width="3"/>
+<text x="1037" y="170" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#2f6fb0" font-weight="bold">Cámara térmica</text>
+<rect x="965" y="192" width="145" height="110" rx="10" fill="#23201b" stroke="#8b8577" stroke-width="2"/>
+<circle cx="1037" cy="247" r="30" fill="#3a352c" stroke="#a97b23" stroke-width="3"/>
+<circle cx="1037" cy="247" r="15" fill="#1e1b15"/>
+<text x="1037" y="330" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#57534a">256 × 192 px</text>
+<text x="1037" y="354" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#57534a">NETD &lt; 50 mK</text>
+<text x="1037" y="378" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#57534a">Enfoque a 5 cm</text>
+<text x="1037" y="410" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" fill="#a97b23" font-weight="bold">Paleta hierro</text>
+
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#3a3a3a"/>
+</marker>
+</defs>
+<line x1="385" y1="240" x2="475" y2="240" stroke="#b2281e" stroke-width="4" marker-end="url(#ar)"/>
+<text x="430" y="228" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#b2281e">+ riel</text>
+<line x1="385" y1="300" x2="475" y2="300" stroke="#3a3a3a" stroke-width="4" marker-end="url(#ar)"/>
+<text x="430" y="290" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#57534a">− masa</text>
+<line x1="930" y1="290" x2="866" y2="315" stroke="#2f6fb0" stroke-width="4" marker-end="url(#ar)"/>
+
+<rect x="55" y="470" width="1090" height="230" rx="14" fill="#ffffff" stroke="#a97b23" stroke-width="3"/>
+<text x="600" y="510" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" fill="#1e1b15" font-weight="bold">Secuencia de trabajo</text>
+<line x1="90" y1="528" x2="1110" y2="528" stroke="#c9c4b8" stroke-width="2"/>
+<text x="95" y="565" font-family="Inter, Arial, sans-serif" font-size="16" fill="#1e1b15">1 · Medir resistencia del riel contra masa con la placa sin alimentar</text>
+<text x="95" y="597" font-family="Inter, Arial, sans-serif" font-size="16" fill="#1e1b15">2 · Ajustar el límite de corriente en 0,3 A y la tensión igual o inferior a la nominal del riel</text>
+<text x="95" y="629" font-family="Inter, Arial, sans-serif" font-size="16" fill="#1e1b15">3 · Capturar una imagen de referencia con la placa fría, antes de aplicar corriente</text>
+<text x="95" y="661" font-family="Inter, Arial, sans-serif" font-size="16" fill="#1e1b15">4 · Aplicar corriente y observar entre 5 y 30 segundos; subir el límite en pasos si no aparece nada</text>
+<text x="95" y="689" font-family="Inter, Arial, sans-serif" font-size="16" fill="#b2281e">5 · Confirmar por caída de tensión en microvoltios antes de desoldar ningún componente</text>
+
+<text x="600" y="745" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="17" fill="#57534a">Cubre las superficies metálicas brillantes con cinta mate: su baja emisividad las hace parecer frías.</text>
+<text x="600" y="788" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" fill="#8b8577">ukrabot.cl · Blog de Ingeniería Robótica</text>
+</svg>
