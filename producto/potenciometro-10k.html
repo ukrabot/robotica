@@ -220,10 +220,6 @@ try{var c=document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);if(c&&c[1]==='g
       </tbody>
     </table></div>
     <div class="warning"><p><strong>No apliques 5 V al pin ADC del ESP32 ni del ESP8266.</strong> Sus entradas analógicas toleran típicamente hasta 3,3 V. Alimenta el potenciómetro desde el pin 3V3 del controlador y el cursor irá directo al ADC sin dañarlo.</p></div>
-    <figure class="article-fig">
-      <img src="/producto/potenciometro-10k-aplicacion.jpg" alt="Potenciómetro de 10K montado en protoboard conectado con cables a una placa Arduino junto a un LED" width="1536" height="1024" loading="lazy" decoding="async">
-      <figcaption>Montaje típico: el potenciómetro actúa como divisor de tensión y su cursor alimenta una entrada analógica del microcontrolador.</figcaption>
-    </figure>
     <p>En Raspberry Pi, el potenciómetro tampoco se conecta directo: montas un divisor de tensión con el 10K y lees el cursor a través de un ADC externo (por ejemplo MCP3008 por SPI) o de un convertidor I²C. Es la forma estándar de llevar una entrada analógica al Pi.</p>
   </section>
 
