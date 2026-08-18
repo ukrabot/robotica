@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.ukrabot.cl/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -753,6 +753,66 @@
   <url>
     <loc>https://www.ukrabot.cl/blog/fuentes-de-laboratorio-programables-guia-de-compra</loc>
     <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/impresoras-3d-de-pasta-ceramica-proyectos-y-materiales</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/grabado-laser-en-acero-inoxidable-con-marcador-ceramico</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/nordic-nrf52840-vs-esp32-ble-de-ultra-bajo-consumo-comparado</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/actualizaciones-ota-over-the-air-updates-en-esp32-con-arduino-ide</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/drones-fumigadores-dji-agras-todo-sobre-regulacion-en-chile</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/freertos-en-esp32-multitarea-real-en-microcontroladores</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/simuladores-de-circuitos-online-falstad-vs-tinkercad</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/motores-bldc-con-control-de-campo-foc-para-robotica-potencia-y-precision</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/motores-paso-a-paso-nema-17-vs-nema-23-diferencias</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/robotica-educativa-guia-tecnica-completa-plataformas-y-proyectos-para-aprender</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
