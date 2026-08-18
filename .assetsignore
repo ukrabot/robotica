@@ -1,0 +1,21 @@
+# Archivos que NO deben publicarse como assets estáticos del sitio.
+# Sintaxis de .gitignore. Docs:
+# https://developers.cloudflare.com/workers/static-assets/binding/#ignoring-assets
+#
+# Cloudflare Pages excluía .git y node_modules automáticamente; Workers NO lo
+# hace. Como assets.directory es la raíz del repositorio, estas exclusiones son
+# obligatorias: sin ellas el historial completo de Git quedaría accesible
+# públicamente en https://www.ukrabot.cl/.git/...
+
+**/.git
+**/.git/**
+**/node_modules
+**/.DS_Store
+**/.wrangler
+**/Thumbs.db
+
+# Configuración del propio despliegue: no es contenido del sitio
+.assetsignore
+wrangler.jsonc
+wrangler.toml
+.gitignore

@@ -1,0 +1,26 @@
+{
+  // Configuración de Cloudflare Workers para el sitio estático de ukrabot.cl
+  // Docs: https://developers.cloudflare.com/workers/static-assets/
+  //
+  // El sitio no tiene paso de compilación: son archivos HTML, SVG e imágenes
+  // servidos tal cual. Al declarar "assets" sin "main", el Worker actúa como
+  // servidor de archivos estáticos y no requiere código JavaScript.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "robotica",
+  "compatibility_date": "2024-11-01",
+
+  "assets": {
+    // La raíz del repositorio es la raíz del sitio.
+    // Las exclusiones están en .assetsignore
+    "directory": "./",
+
+    // El sitio enlaza sin extensión (/about, /blog/mi-articulo).
+    // "auto-trailing-slash" resuelve /blog/mi-articulo -> /blog/mi-articulo.html
+    // y evita redirecciones 301 innecesarias que diluyen el SEO.
+    "html_handling": "auto-trailing-slash",
+
+    // Sirve 404.html con estado 404 real (evita soft 404, que perjudica
+    // la indexación y las políticas de AdSense).
+    "not_found_handling": "404-page"
+  }
+}

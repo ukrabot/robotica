@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="es-CL"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reductores Planetarios vs Cicloidales para Robots: Juego y Rigidez</title><meta name="description" content="Comparativa técnica de reductores para robótica: planetarios, cicloidales y harmonic drive. Juego angular, rigidez torsional, rendimiento, inercia reflejada y criterios de selección."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez"><meta property="og:type" content="article"><meta property="og:title" content="Reductores Planetarios vs Cicloidales para Robots: Juego y Rigidez"><meta property="og:description" content="El reductor define la precisión del robot más que el motor. Backlash en arcmin, rigidez en Nm/arcmin, inercia reflejada y las fórmulas para elegir sin sobredimensionar."><meta property="og:image" content="https://www.ukrabot.cl/blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez-hero.svg"><meta property="og:url" content="https://www.ukrabot.cl/blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Reductores Planetarios vs Cicloidales para Robots: Juego y Rigidez"><meta name="twitter:description" content="Comparativa técnica de reductores para robótica: planetarios, cicloidales y harmonic drive. Juego angular, rigidez torsional, rendimiento, inercia reflejada y criterios de selección."><meta name="twitter:image" content="https://www.ukrabot.cl/blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez-hero.svg"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Reductores Planetarios vs Cicloidales para Robots: Juego y Rigidez", "description": "Comparativa técnica de reductores para robótica: planetarios, cicloidales y harmonic drive. Juego angular, rigidez torsional, rendimiento, inercia reflejada y criterios de selección.", "author": {"@type": "Person", "name": "Alberto Gallardo", "jobTitle": "Analista Programador Computacional", "url": "https://www.ukrabot.cl/about"}, "publisher": {"@type": "Organization", "name": "Blog de Ingeniería Robótica", "url": "https://www.ukrabot.cl", "logo": {"@type": "ImageObject", "url": "https://www.ukrabot.cl/logo.png"}}, "datePublished": "2026-08-18", "dateModified": "2026-08-18", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.ukrabot.cl/blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez"}, "image": "https://www.ukrabot.cl/blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez-hero.svg", "wordCount": "2393", "inLanguage": "es-CL"}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.ukrabot.cl/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.ukrabot.cl/blog/"}, {"@type": "ListItem", "position": 3, "name": "Reductores Planetarios vs Cicloidales para Robots: Juego y Rigidez", "item": "https://www.ukrabot.cl/blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Qué juego angular es aceptable para un brazo robótico?", "acceptedAnswer": {"@type": "Answer", "text": "Depende del alcance y de la tolerancia buscada. Como referencia, para 0,5 mm de error en punta con un brazo de 600 mm necesitas menos de 3 arcmin; para 2 mm bastan 10 arcmin. Calcula siempre con la longitud real del eslabón."}}, {"@type": "Question", "name": "¿Un reductor cicloidal impreso en 3D sirve para algo serio?", "acceptedAnswer": {"@type": "Answer", "text": "Para brazos ligeros de hasta unos pocos Nm, sí: con PETG o nylon con fibra, rodamientos comerciales y buena tolerancia se obtienen 20:1 a 40:1 utilizables. No sustituye a un reductor metálico en par, rigidez ni vida útil."}}, {"@type": "Question", "name": "¿Por qué el harmonic drive es tan caro?", "acceptedAnswer": {"@type": "Answer", "text": "Por el flexspline: una copa de acero de pared delgada que debe deformarse millones de ciclos sin fatigarse, con dientes rectificados con tolerancias de micrones. Es una pieza de fabricación exigente y de vida limitada."}}, {"@type": "Question", "name": "¿Puedo eliminar el juego por software?", "acceptedAnswer": {"@type": "Answer", "text": "Solo parcialmente. Compensar el backlash sumando un offset al invertir el sentido funciona en movimientos punto a punto lentos, pero falla en trayectorias continuas y con carga variable, porque el juego real cambia con el desgaste y la temperatura."}}, {"@type": "Question", "name": "¿Cuánta reducción necesito en una articulación?", "acceptedAnswer": {"@type": "Answer", "text": "La que lleve la inercia reflejada a un rango de 1 a 10 veces la inercia del motor y entregue el par requerido dentro del régimen eficiente del motor. Típicamente 50:1 a 160:1 en articulaciones principales de brazos pequeños."}}]}</script><style>
+:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}img{max-width:100%;height:auto}a{color:var(--blue);text-underline-offset:3px}.container{max-width:1050px;margin:auto;padding:0 24px}.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:20px;font-size:.86rem}.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--line);border-radius:8px}.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:auto}.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300}.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08)}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.3),rgba(18,15,11,.9))}.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.2rem);line-height:1.08;font-weight:400;max-width:930px;margin:18px 0;color:#fff}.hero p{color:rgba(245,243,238,.8);max-width:760px;font-size:1.05rem}.byline{font-size:.85rem!important;color:rgba(245,243,238,.58)!important}.byline a{color:var(--gold-bright)}.article-body{padding-top:64px;padding-bottom:90px}.article-body section{scroll-margin-top:80px}.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px}.article-body p,.article-body li{color:var(--muted)}.article-body p{margin:0 0 20px}.article-body li{margin:8px 0}.article-body strong{color:var(--text)}.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}.toc a{color:var(--muted);text-decoration:none}.note{border-left:4px solid var(--gold)}.warning{background:rgba(178,40,30,.06);border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0;color:var(--muted)}.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.article-img img{width:100%;display:block}.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow-x:auto;background:#14121a;border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.sources{margin:48px 0 24px;padding:22px 24px;background:#fff;border:1px solid var(--line);border-radius:12px}.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}.ad-slot{margin:34px 0;min-height:280px;text-align:center}.site-footer{border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem}@media(max-width:760px){.nav-toggle{display:flex}.nav-links{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;background:var(--ink);padding:12px 24px}.nav-links.open{display:flex}.hero-inner{padding:80px 20px 50px}.article-body h2{font-size:1.6rem}.container{padding:0 16px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500});try{if(document.cookie.match(/(?:^|;\s*)rel_consent=granted/))gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'})}catch(e){}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-1ZVHF8X35Q');</script></head><body><div class="progress-bar" id="progress-bar"></div><nav class="site-nav" aria-label="Navegación del sitio"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span><span></span></button><div class="nav-links" id="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre Nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><img src="reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez-hero.svg" alt="Ilustración de engranajes planetarios y un reductor cicloidal en corte con su excéntrica" fetchpriority="high"><div class="hero-inner"><div class="eyebrow">Diseño Mecánico · Transmisión · Actualizado el <time datetime="2026-08-18">18 de agosto de 2026</time></div><h1>Reductores Planetarios vs Cicloidales para Robots: Juego y Rigidez</h1><p>En un brazo robótico el motor aporta potencia, pero es el reductor quien decide si la punta se posiciona con 0,05 mm o con 2 mm de error. Juego angular, rigidez torsional e inercia reflejada son las tres cifras que separan una articulación que repite de una que baila, y casi nunca aparecen en la publicidad del kit.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p></div></header><main class="container article-body"><article><div class="article-img"><img src="reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez-hero.svg" alt="Diagrama editorial de Reductores Planetarios vs Cicloidales para Robots: Juego y Rigidez" loading="lazy"><div class="caption">Guía técnica basada en documentación primaria, criterios medibles y procedimientos reproducibles.</div></div><div class="toc" aria-label="Tabla de contenidos"><h2>Qué cubre esta guía</h2><ol><li><a href="#porque">Por qué el reductor define la precisión</a></li><li><a href="#planetario">Reductor planetario: cómo funciona y sus límites</a></li><li><a href="#cicloidal">Reductor cicloidal: excéntrica y contacto múltiple</a></li><li><a href="#harmonic">Harmonic drive: el tercero en discordia</a></li><li><a href="#comparativa">Comparativa numérica de las tres tecnologías</a></li><li><a href="#calculos">Los cálculos que debes hacer antes de comprar</a></li><li><a href="#backlash">Medir el juego angular en tu banco</a></li><li><a href="#seleccion">Selección por articulación y errores caros</a></li></ol></div><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="porque"><h2>Por qué el reductor define la precisión</h2>
+<p>Un motor paso a paso NEMA 23 con microstepping declara 0,018° por paso. Suena excelente hasta que se acopla un reductor planetario económico con 1° de juego: el error de la articulación es 55 veces mayor que la resolución del motor. Y ese error se amplifica linealmente con el brazo de palanca:</p>
+<pre><code>Error en la punta = L × tan(θ_juego)
+
+Brazo de 600 mm con 1° de juego:  600 × tan(1°) = 10,5 mm
+Brazo de 600 mm con 10 arcmin:    600 × tan(0,167°) = 1,7 mm
+Brazo de 600 mm con 1 arcmin:     600 × tan(0,0167°) = 0,17 mm
+
+1 grado = 60 arcmin = 3.600 arcsec</code></pre>
+<p>Tres parámetros describen un reductor para robótica, y hay que exigirlos siempre:</p>
+<div class="table-wrap"><table><thead><tr><th>Parámetro</th><th>Unidad</th><th>Qué describe</th><th>Efecto en el robot</th></tr></thead><tbody>
+<tr><td>Juego angular (backlash)</td><td>arcmin</td><td>Movimiento libre al invertir el sentido</td><td>Error de repetibilidad bidireccional</td></tr>
+<tr><td>Rigidez torsional</td><td>Nm/arcmin</td><td>Deflexión elástica bajo carga</td><td>Error que cambia con el peso; vibración</td></tr>
+<tr><td>Error de transmisión</td><td>arcsec</td><td>Ondulación cíclica dentro de una vuelta</td><td>Ondulaciones en trayectorias continuas</td></tr>
+</tbody></table></div>
+<div class="note"><p><strong>Juego y rigidez no son lo mismo.</strong> El juego es una zona muerta: la salida no se mueve hasta que los dientes hacen contacto. La rigidez es elástica: la salida sí se mueve, pero se deforma proporcionalmente al par. Un reductor puede tener cero juego y ser blando, y entonces la punta cae varios milímetros al tomar una carga.</p></div>
+</section><section id="planetario"><h2>Reductor planetario: cómo funciona y sus límites</h2>
+<p>Un tren planetario tiene un solar central (entrada), tres o más satélites montados en un portasatélites (salida) y una corona fija. La relación depende solo de dos números de dientes:</p>
+<pre><code>i = 1 + (Z_corona / Z_solar)
+
+Corona de 72 dientes, solar de 18:  i = 1 + 72/18 = 5:1
+
+Etapas en serie multiplican:
+2 etapas de 5:1  → 25:1
+3 etapas de 5:1  → 125:1
+
+Límite práctico por etapa: 3:1 a 10:1
+Más de 3 etapas: el rendimiento y el juego se degradan rápido</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Ventaja</th><th>Limitación</th></tr></thead><tbody>
+<tr><td>Coaxial: entrada y salida alineadas</td><td>El juego se acumula por etapa</td></tr>
+<tr><td>Rendimiento alto (94–97 % por etapa)</td><td>Relaciones altas requieren muchas etapas</td></tr>
+<tr><td>Reparto de carga entre satélites</td><td>Capacidad de choque limitada</td></tr>
+<tr><td>Costo moderado y amplia oferta</td><td>Los económicos no publican backlash</td></tr>
+<tr><td>Muy compacto en diámetro</td><td>Ruidoso a alta velocidad si es de dientes rectos</td></tr>
+</tbody></table></div>
+<p>Los planetarios se clasifican comercialmente por grado de precisión, y ahí está toda la diferencia de precio:</p>
+<div class="table-wrap"><table><thead><tr><th>Grado</th><th>Juego típico</th><th>Precio relativo</th><th>Uso</th></tr></thead><tbody>
+<tr><td>Económico (kit chino genérico)</td><td>30 – 90 arcmin</td><td>1×</td><td>Impresoras 3D, proyectos didácticos</td></tr>
+<tr><td>Estándar industrial</td><td>10 – 20 arcmin</td><td>4×</td><td>Transporte, ejes no críticos</td></tr>
+<tr><td>Precisión</td><td>3 – 8 arcmin</td><td>10×</td><td>Robótica, CNC de avance</td></tr>
+<tr><td>Alta precisión</td><td>1 – 3 arcmin</td><td>25×</td><td>Articulaciones principales de robots</td></tr>
+<tr><td>Precargado sin juego</td><td>&lt; 1 arcmin</td><td>40×</td><td>Metrología, posicionamiento óptico</td></tr>
+</tbody></table></div>
+<p>La técnica para eliminar juego en planetarios es la <strong>precarga por división de engranaje</strong>: dos coronas ligeramente desfasadas y presionadas con resorte, de modo que siempre hay contacto en ambos flancos. Elimina el juego a costa de rendimiento (unos 5 puntos porcentuales) y de desgaste acelerado.</p>
+</section><section id="cicloidal"><h2>Reductor cicloidal: excéntrica y contacto múltiple</h2>
+<p>Un reductor cicloidal no usa dientes de involuta. Un eje excéntrico hace que uno o dos discos con perfil cicloidal rueden dentro de una corona de rodillos; el disco tiene un lóbulo menos que rodillos hay, y esa diferencia produce la reducción.</p>
+<pre><code>i = N_rodillos / (N_rodillos − N_lobulos_disco)
+
+Con 21 rodillos y disco de 20 lóbulos:  i = 20 / 1 = 20:1
+Con 41 rodillos y disco de 40 lóbulos:  i = 40:1
+
+Relaciones típicas de una sola etapa: 10:1 a 119:1</code></pre>
+<p>Sus dos virtudes estructurales:</p>
+<ul>
+<li><strong>Contacto simultáneo múltiple.</strong> En cualquier instante, cerca del 60 % de los lóbulos está transmitiendo carga. En un engranaje de involuta transmiten uno o dos dientes. De ahí la enorme capacidad de par y de choque —típicamente 500 % del nominal sin daño—.</li>
+<li><strong>Juego muy bajo.</strong> Con rodillos rectificados y ajuste de precarga, 1 arcmin o menos es alcanzable a un costo mucho menor que un planetario equivalente.</li>
+</ul>
+<div class="table-wrap"><table><thead><tr><th>Ventaja</th><th>Limitación</th></tr></thead><tbody>
+<tr><td>Resistencia a impactos excepcional</td><td>Vibración por la masa excéntrica</td></tr>
+<tr><td>Juego bajo con relaciones altas en una etapa</td><td>Requiere disco doble a 180° para equilibrar</td></tr>
+<tr><td>Vida útil larga (rodadura, no deslizamiento)</td><td>Mecanizado exigente: perfiles cicloidales</td></tr>
+<tr><td>Rendimiento 85–93 %</td><td>Menor que un planetario de una etapa</td></tr>
+<tr><td>Muy rígido torsionalmente</td><td>Más pesado y de mayor diámetro</td></tr>
+</tbody></table></div>
+<div class="note"><p><strong>Impresos en 3D:</strong> el cicloidal es el reductor favorito de la comunidad maker porque su geometría se genera paramétricamente y tolera bien la manufactura aditiva. Con PETG o nylon relleno de fibra, rodamientos comerciales en los pernos de salida y buena tolerancia, se logran reducciones de 20:1 a 40:1 útiles para brazos ligeros. Ver <a href="/blog/piezas-impresas-en-3d-para-brazos-roboticos">piezas impresas en 3D para brazos robóticos</a>.</p></div>
+</section><section id="harmonic"><h2>Harmonic drive: el tercero en discordia</h2>
+<p>El harmonic drive (o reductor de onda) tiene tres piezas: un generador de onda elíptico, una copa flexible dentada (<em>flexspline</em>) y una corona rígida con dos dientes más. La copa se deforma elásticamente y engrana en dos zonas opuestas; por cada vuelta del generador, la copa retrocede dos dientes.</p>
+<pre><code>i = Z_flexspline / (Z_circular − Z_flexspline)
+
+Flexspline 200 dientes, circular 202:  i = 200 / 2 = 100:1
+
+Relaciones típicas: 30:1 a 320:1 en una sola etapa</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Ventaja</th><th>Limitación</th></tr></thead><tbody>
+<tr><td>Juego prácticamente nulo (&lt; 1 arcmin)</td><td>Costo muy alto</td></tr>
+<tr><td>Relaciones enormes en una etapa</td><td>Rendimiento 70–85 %, cae mucho en frío</td></tr>
+<tr><td>Muy compacto y liviano</td><td>Capacidad de choque limitada por el flexspline</td></tr>
+<tr><td>Hueco central para pasar cables</td><td>Rigidez no lineal (más blando cerca de cero par)</td></tr>
+<tr><td>Repetibilidad excelente</td><td>El flexspline es un consumible con vida finita</td></tr>
+</tbody></table></div>
+<p>La no linealidad de rigidez es un detalle poco discutido y muy relevante para control: el harmonic drive es notablemente más blando en los primeros newton-metro, lo que introduce una zona de comportamiento distinto alrededor del cero. Los controladores industriales lo compensan con modelos específicos. Si quieres profundizar, la guía de <a href="/blog/reductores-harmonic-drive-para-articulaciones-roboticas">reductores harmonic drive</a> lo desarrolla en detalle.</p>
+</section><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="comparativa"><h2>Comparativa numérica de las tres tecnologías</h2>
+<div class="table-wrap"><table><thead><tr><th>Criterio</th><th>Planetario precisión</th><th>Cicloidal</th><th>Harmonic drive</th></tr></thead><tbody>
+<tr><td>Juego típico</td><td>3 – 8 arcmin</td><td>&lt; 1 – 3 arcmin</td><td>&lt; 1 arcmin</td></tr>
+<tr><td>Relación por etapa</td><td>3:1 – 10:1</td><td>10:1 – 119:1</td><td>30:1 – 320:1</td></tr>
+<tr><td>Rendimiento</td><td>94 – 97 %</td><td>85 – 93 %</td><td>70 – 85 %</td></tr>
+<tr><td>Rigidez torsional</td><td>Alta</td><td>Muy alta</td><td>Media, no lineal</td></tr>
+<tr><td>Capacidad de choque</td><td>200 % nominal</td><td>500 % nominal</td><td>150 – 300 %</td></tr>
+<tr><td>Inercia reflejada</td><td>Baja</td><td>Media (excéntrica)</td><td>Muy baja</td></tr>
+<tr><td>Peso relativo</td><td>1,0×</td><td>1,4×</td><td>0,7×</td></tr>
+<tr><td>Ruido</td><td>Medio-alto</td><td>Bajo</td><td>Muy bajo</td></tr>
+<tr><td>Eje hueco</td><td>Raro</td><td>Posible</td><td>Estándar</td></tr>
+<tr><td>Costo relativo</td><td>1,0×</td><td>1,5 – 2×</td><td>4 – 8×</td></tr>
+<tr><td>Imprimible en 3D</td><td>Regular</td><td>Sí, muy usado</td><td>No práctico</td></tr>
+<tr><td>Mantenimiento</td><td>Cambio de grasa</td><td>Cambio de grasa</td><td>Vida del flexspline</td></tr>
+</tbody></table></div>
+<p>Lectura resumida: el <strong>planetario</strong> gana en eficiencia y costo cuando la relación necesaria es moderada; el <strong>cicloidal</strong> gana cuando se necesita relación alta, robustez y bajo juego con presupuesto contenido; el <strong>harmonic</strong> gana cuando la precisión y el peso son innegociables y el presupuesto lo permite.</p>
+</section><section id="calculos"><h2>Los cálculos que debes hacer antes de comprar</h2>
+<p><strong>1. Par requerido en la articulación.</strong> Incluye siempre el par estático de gravedad, la aceleración y un factor de servicio.</p>
+<pre><code>T_gravedad   = m × g × L_cg
+T_aceleracion = J_total × α
+T_requerido  = (T_gravedad + T_aceleracion + T_friccion) × FS
+
+Ejemplo: eslabón de 3 kg con centro de masa a 0,35 m,
+carga útil de 1 kg a 0,7 m, aceleración 3 rad/s²
+
+T_gravedad = (3 × 9,81 × 0,35) + (1 × 9,81 × 0,7) = 10,3 + 6,9 = 17,2 Nm
+J ≈ 3×0,35² + 1×0,7² = 0,368 + 0,49 = 0,858 kg·m²
+T_acel = 0,858 × 3 = 2,6 Nm
+T_req = (17,2 + 2,6 + 2) × 1,5 = 32,7 Nm  ← el reductor debe darlo continuo</code></pre>
+<p><strong>2. Inercia reflejada y relación de acoplamiento.</strong> El reductor divide la inercia de la carga por el cuadrado de la relación, y ese es su beneficio menos comprendido:</p>
+<pre><code>J_reflejada = J_carga / i²
+
+J_carga = 0,858 kg·m², reductor 50:1
+J_reflejada = 0,858 / 2.500 = 0,00034 kg·m² = 0,34 g·m²
+
+Relación de inercias = J_reflejada / J_motor
+Objetivo para control estable:  1:1 a 5:1
+Aceptable con buen driver:      hasta 10:1
+Por encima de 10:1 el lazo se vuelve difícil de sintonizar.</code></pre>
+<p><strong>3. Deflexión bajo carga a partir de la rigidez.</strong></p>
+<pre><code>θ_deflexion = T_aplicado / K_torsional
+
+Reductor con K = 8 Nm/arcmin y par de 30 Nm
+θ = 30 / 8 = 3,75 arcmin = 0,0625°
+Error en punta con brazo de 0,7 m: 0,7 × tan(0,0625°) = 0,76 mm</code></pre>
+<p><strong>4. Error total acumulado.</strong> Los errores independientes se suman en cuadratura; los sistemáticos, linealmente:</p>
+<pre><code>e_total ≈ √(e_juego² + e_deflexion² + e_encoder² + e_estructura²)
+
+Juego 3 arcmin      → 0,61 mm en punta
+Deflexión 3,75'     → 0,76 mm
+Encoder 1.024 ppr   → 0,21 mm
+Flexión del eslabón → 0,40 mm
+
+e_total = √(0,61² + 0,76² + 0,21² + 0,40²) = 1,08 mm</code></pre>
+<div class="note"><p><strong>Conclusión de diseño:</strong> gastar en un reductor de 1 arcmin cuando el eslabón flexiona 0,4 mm no mejora nada. Equilibra el presupuesto de error: identifica el término dominante y ataca ese. Es el mismo criterio de la <a href="/blog/guia-de-calibracion-de-brazos-roboticos">calibración de brazos robóticos</a>.</p></div>
+</section><section id="backlash"><h2>Medir el juego angular en tu banco</h2>
+<p>No necesitas equipo de laboratorio. Con un comparador de carátula y una barra de brazo conocido se mide el juego con exactitud suficiente para decidir.</p>
+<pre><code>Montaje de medición
+
+  [Reductor fijo a la mesa]
+        │
+   eje de salida ── barra rígida de longitud L (200 mm)
+                          │
+                    punta de la barra
+                          ↕
+                  [comparador 0,01 mm]
+
+  Procedimiento:
+  1. Bloquea el eje de ENTRADA (motor energizado o mordaza).
+  2. Aplica par en un sentido hasta el tope; pon el comparador a cero.
+  3. Aplica par en el sentido opuesto hasta el tope; lee δ (mm).
+  4. Repite 5 veces y promedia.
+
+  θ_juego [arcmin] = (δ / L) × (10.800 / π) = (δ / L) × 3437,75</code></pre>
+<pre><code>Ejemplo: L = 200 mm, δ medido = 0,18 mm
+
+θ = (0,18 / 200) × 3437,75 = 3,09 arcmin
+
+Comparación:
+  planetario económico  →  δ típico 1,5-5 mm  (26-86 arcmin)
+  planetario precisión  →  δ típico 0,17-0,47 mm (3-8 arcmin)
+  cicloidal bien hecho  →  δ típico &lt; 0,17 mm (&lt; 3 arcmin)</code></pre>
+<p>Con el mismo montaje se mide la <strong>rigidez torsional</strong>: cuelga masas conocidas de la barra, registra la deflexión y calcula la pendiente.</p>
+<pre><code>T = m × g × L
+K = T / θ_deflexion   [Nm/arcmin]
+
+Masa de 2 kg a 200 mm:  T = 2 × 9,81 × 0,2 = 3,92 Nm
+Deflexión medida: 0,03 mm → θ = (0,03/200) × 3437,75 = 0,52 arcmin
+K = 3,92 / 0,52 = 7,6 Nm/arcmin</code></pre>
+<div class="warning"><p><strong>Distingue juego de deflexión al medir.</strong> El juego aparece a par bajo y se agota; la deflexión crece proporcionalmente. Si al aplicar más fuerza el comparador sigue moviéndose, ya no estás midiendo juego sino elasticidad. Aplica siempre el mismo par de referencia (por ejemplo, 5 % del nominal) en ambos sentidos.</p></div>
+</section><section id="seleccion"><h2>Selección por articulación y errores caros</h2>
+<div class="table-wrap"><table><thead><tr><th>Articulación</th><th>Par típico</th><th>Prioridad</th><th>Recomendación</th></tr></thead><tbody>
+<tr><td>Base (J1, giro)</td><td>Alto</td><td>Rigidez y capacidad de choque</td><td>Cicloidal o planetario de precisión</td></tr>
+<tr><td>Hombro (J2)</td><td>El más alto</td><td>Par continuo con gravedad permanente</td><td>Cicloidal; considerar contrapeso o resorte</td></tr>
+<tr><td>Codo (J3)</td><td>Medio</td><td>Relación peso/par</td><td>Planetario de precisión o cicloidal chico</td></tr>
+<tr><td>Muñeca (J4-J6)</td><td>Bajo</td><td>Peso y compacidad</td><td>Harmonic drive o planetario pequeño</td></tr>
+<tr><td>Robot educativo</td><td>Muy bajo</td><td>Costo</td><td>Cicloidal impreso o correa dentada</td></tr>
+<tr><td>Eje lineal / pórtico</td><td>Variable</td><td>Rendimiento</td><td>Planetario + husillo o piñón-cremallera</td></tr>
+</tbody></table></div>
+<p>Errores que se pagan caro y son evitables:</p>
+<ol>
+<li><strong>Comprar por relación y par, ignorando el juego.</strong> Un "reductor planetario 50:1 20 Nm" de venta masiva sin especificación de backlash tiene, casi con certeza, entre 30 y 90 arcmin. Para transportar sirve; para posicionar no.</li>
+<li><strong>Ignorar el par de entrada admisible.</strong> Si el motor puede entregar más par que el que la primera etapa soporta, un choque destruye el reductor. Verifica el <em>emergency stop torque</em> del catálogo.</li>
+<li><strong>Montaje que introduce cargas radiales.</strong> Un reductor no es un rodamiento. Poleas o piñones colgados directamente del eje de salida requieren un soporte de rodamientos adicional o un modelo con brida reforzada.</li>
+<li><strong>Olvidar el rendimiento en el cálculo térmico.</strong> Un cicloidal al 88 % con 200 W de entrada disipa 24 W en su carcasa. En un espacio cerrado eso lo lleva a temperaturas que degradan la grasa. Ver <a href="/blog/sistemas-de-refrigeracion-para-motores-de-brazos-roboticos">refrigeración de motores</a>.</li>
+<li><strong>No prever el mantenimiento.</strong> La grasa de un reductor de robot tiene vida finita (típicamente 20.000 h o 5 años). Diseña el acceso desde el principio; ver <a href="/blog/programa-de-mantenimiento-para-brazos-roboticos">programa de mantenimiento</a>.</li>
+</ol>
+<div class="note"><p><strong>Alternativa que se subestima:</strong> una transmisión por correa dentada con poleas de precisión ofrece 5:1 por etapa, juego prácticamente nulo, absorción de choques y costo bajísimo. Su desventaja es la rigidez —la correa se estira— y el espacio que ocupa. Para robots ligeros y de movimiento rápido, suele ser mejor decisión que un planetario barato. El análisis completo está en <a href="/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas">transmisión por correa vs engranajes</a>.</p></div>
+</section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Qué juego angular es aceptable para un brazo robótico?</summary><p>Depende del alcance y de la tolerancia buscada. Como referencia, para 0,5 mm de error en punta con un brazo de 600 mm necesitas menos de 3 arcmin; para 2 mm bastan 10 arcmin. Calcula siempre con la longitud real del eslabón.</p></details><details><summary>¿Un reductor cicloidal impreso en 3D sirve para algo serio?</summary><p>Para brazos ligeros de hasta unos pocos Nm, sí: con PETG o nylon con fibra, rodamientos comerciales y buena tolerancia se obtienen 20:1 a 40:1 utilizables. No sustituye a un reductor metálico en par, rigidez ni vida útil.</p></details><details><summary>¿Por qué el harmonic drive es tan caro?</summary><p>Por el flexspline: una copa de acero de pared delgada que debe deformarse millones de ciclos sin fatigarse, con dientes rectificados con tolerancias de micrones. Es una pieza de fabricación exigente y de vida limitada.</p></details><details><summary>¿Puedo eliminar el juego por software?</summary><p>Solo parcialmente. Compensar el backlash sumando un offset al invertir el sentido funciona en movimientos punto a punto lentos, pero falla en trayectorias continuas y con carga variable, porque el juego real cambia con el desgaste y la temperatura.</p></details><details><summary>¿Cuánta reducción necesito en una articulación?</summary><p>La que lleve la inercia reflejada a un rango de 1 a 10 veces la inercia del motor y entregue el par requerido dentro del régimen eficiente del motor. Típicamente 50:1 a 160:1 en articulaciones principales de brazos pequeños.</p></details></div></section><p class="disclosure">Contenido editorial independiente, sin ubicaciones patrocinadas ni enlaces de afiliado. Las especificaciones pueden cambiar; confirma siempre el manual y la normativa aplicable. Si detectas un error, <a href="/contact">avísanos</a>.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Profundiza con <a href="/blog/reductores-harmonic-drive-para-articulaciones-roboticas">reductores harmonic drive</a> y con <a href="/blog/transmision-por-correa-vs-por-engranajes-en-articulaciones-roboticas">transmisión por correa vs engranajes</a>.</p></div></article><section class="sources" aria-label="Fuentes primarias"><h2>Fuentes primarias y lecturas recomendadas</h2><p>Documentación oficial y material técnico usado para contrastar esta guía.</p><ul><li><a href="https://www.nabtesco.com/en/products/precision.html" target="_blank" rel="noopener noreferrer">Nabtesco — Reductores cicloidales de precisión RV</a></li><li><a href="https://www.harmonicdrive.net/technology" target="_blank" rel="noopener noreferrer">Harmonic Drive LLC — Principio de funcionamiento y datos técnicos</a></li><li><a href="https://www.wittenstein-alpha.de/en/" target="_blank" rel="noopener noreferrer">Wittenstein alpha — Catálogo técnico de reductores planetarios</a></li><li><a href="https://www.iso.org/standard/41571.html" target="_blank" rel="noopener noreferrer">ISO 9283 — Criterios de desempeño y ensayo de robots manipuladores</a></li></ul><p style="font-size:.75rem;color:var(--quiet)">Enlaces revisados: 18 de agosto de 2026.</p></section></main><footer class="container site-footer"><p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada.</p><p><a href="/about">Sobre Nosotros</a> · <a href="/contact">Contacto</a> · <a href="/privacy">Política de Privacidad</a> · <a href="/terms">Términos</a></p><p>© 2023–2026 Alberto Gallardo. Todos los derechos reservados.</p></footer><div id="rel-consent" role="dialog" aria-labelledby="consent-title" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#fff;border-top:1px solid rgba(30,25,15,.15);box-shadow:0 -8px 32px rgba(30,25,15,.18);padding:20px 24px"><div style="max-width:1050px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div style="flex:1;min-width:260px"><strong id="consent-title">Usamos cookies</strong><p style="margin:4px 0 0;color:#57534a;font-size:.85rem">Con tu permiso usamos cookies para analítica y anuncios personalizados. Puedes rechazar y seguir leyendo. <a href="/privacy">Política de Privacidad</a>.</p></div><div><button id="consent-no" type="button" style="padding:10px 18px;border:1px solid #aaa;border-radius:99px;background:#fff;margin-right:8px">Rechazar</button><button id="consent-yes" type="button" style="padding:11px 18px;border:0;border-radius:99px;background:#a97b23;color:#fff;font-weight:700">Aceptar todo</button></div></div></div><script>(function(){const b=document.getElementById('rel-consent');if(!document.cookie.match(/(?:^|;\s*)rel_consent=/))b.hidden=false;function set(v){document.cookie='rel_consent='+v+';max-age=15552000;path=/;SameSite=Lax';gtag('consent','update',{'ad_storage':v==='granted'?'granted':'denied','ad_user_data':v==='granted'?'granted':'denied','ad_personalization':v==='granted'?'granted':'denied','analytics_storage':v==='granted'?'granted':'denied'});b.hidden=true}document.getElementById('consent-yes').onclick=()=>set('granted');document.getElementById('consent-no').onclick=()=>set('denied')})();</script><script>const n=document.getElementById('nav-toggle'),l=document.getElementById('nav-links');n.addEventListener('click',()=>{let o=n.getAttribute('aria-expanded')==='true';n.setAttribute('aria-expanded',!o);l.classList.toggle('open',!o)});const b=document.getElementById('progress-bar');addEventListener('scroll',()=>{let d=document.documentElement,m=d.scrollHeight-d.clientHeight;b.style.width=(m?scrollY/m*100:0)+'%'},{passive:true});</script></body></html>

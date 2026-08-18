@@ -483,7 +483,7 @@
 
   <section class="stats" aria-label="Estadísticas del sitio">
     <div class="stats-inner">
-      <div class="stat"><h3>128</h3><p>Guías Publicadas</p></div>
+      <div class="stat"><h3>138</h3><p>Guías Publicadas</p></div>
       <div class="stat"><h3>20</h3><p>Categorías Editoriales</p></div>
       <div class="stat"><h3>2026</h3><p>Publicando Desde</p></div>
       <div class="stat"><h3>Chile · Latam</h3><p>Enfoque de Mercado</p></div>
@@ -495,7 +495,7 @@
   <section id="latest" aria-label="Últimos tutoriales">
     <span class="section-label">Empieza Aquí</span>
     <h2 class="section-title">Guías Publicadas</h2>
-    <p class="section-sub">Nuestras guías completas disponibles hoy: la serie sobre conversión de vehículos a eléctricos — costos en Chile, química de baterías, homologación y selección del motor —, la reparación de baterías de herramientas inalámbricas y la conversión de bicicletas, junto a los nuevos tutoriales de brazos robóticos impresos en 3D, audio DIY (altavoz Bluetooth y crossover), domótica local con Home Assistant Green, dosificación con Arduino, celdas LiFePO4, encoders, GPS e IA local. Se suman ahora guías de impresión cerámica, marcado láser en acero inoxidable, BLE de ultra bajo consumo (nRF52840 vs ESP32), OTA y FreeRTOS en ESP32, drones fumigadores y su regulación en Chile, simuladores de circuitos, motores BLDC con FOC, NEMA 17 vs NEMA 23 y una guía técnica completa de robótica educativa. Cada una es un artículo extenso, con tablas de datos, costos de referencia para Chile y fuentes primarias citadas.</p>
+    <p class="section-sub">Nuestras guías completas disponibles hoy: la serie sobre conversión de vehículos a eléctricos — costos en Chile, química de baterías, homologación y selección del motor —, la reparación de baterías de herramientas inalámbricas y la conversión de bicicletas, junto a los nuevos tutoriales de brazos robóticos impresos en 3D, audio DIY (altavoz Bluetooth y crossover), domótica local con Home Assistant Green, dosificación con Arduino, celdas LiFePO4, encoders, GPS e IA local. Se suman ahora guías de impresión cerámica, marcado láser en acero inoxidable, BLE de ultra bajo consumo (nRF52840 vs ESP32), OTA y FreeRTOS en ESP32, drones fumigadores y su regulación en Chile, simuladores de circuitos, motores BLDC con FOC, NEMA 17 vs NEMA 23 y una guía técnica completa de robótica educativa. La última tanda incorpora un bloque de robótica móvil e industrial: elección de LiDAR 2D (RPLIDAR A1 vs LD19), SLAM y navegación con Nav2, Jetson Orin Nano frente a Raspberry Pi 5 para IA en el borde, Modbus RTU sobre RS-485, bus CAN con MCP2515, variadores de frecuencia y su frenado, básculas con celdas de carga y HX711, reductores planetarios contra cicloidales, LoRa y LoRaWAN con la regulación chilena de 915 MHz, y servos closed-loop frente a motores paso a paso. Cada una es un artículo extenso, con tablas de datos, costos de referencia para Chile y fuentes primarias citadas.</p>
 
     <div class="editorial-note" aria-label="Enfoque editorial">
       <p><strong>Sobre este sitio:</strong> Blog de Ingeniería Robótica es un proyecto editorial pequeño e independiente, escrito y mantenido por una sola persona. Publicamos guías técnicas extensas sobre electrónica aplicada — movilidad eléctrica, baterías y sistemas BMS, Arduino, sensores y automatización — orientadas a makers, técnicos, docentes y estudiantes en Chile y Latinoamérica. Estamos comenzando: preferimos publicar pocas guías bien documentadas antes que llenar el sitio de contenido superficial, por lo que las secciones marcadas como <em>Próximamente</em> corresponden a temas en preparación y todavía no tienen artículo publicado.</p>
@@ -503,6 +503,106 @@
     </div>
 
     <div class="cards" aria-label="Tarjetas de tutoriales">
+      <a href="/blog/lidar-2d-para-robots-rplidar-a1-vs-ld19-guia-de-eleccion" class="card" aria-label="Ilustración de un escáner LiDAR 2D barriendo 360 grados con ecos de obstáculos alrededor">
+        <img src="blog/lidar-2d-para-robots-rplidar-a1-vs-ld19-guia-de-eleccion-hero.svg" alt="Ilustración de un escáner LiDAR 2D barriendo 360 grados con ecos de obstáculos alrededor" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Robótica Móvil</div>
+          <h3>LiDAR 2D para Robots: RPLIDAR A1 vs LD19 (Guía de Elección)</h3>
+          <p>Triangulación contra dToF: por qué el error del A1 crece con el cuadrado de la distancia, qué significa ±45 mm en tu mapa y cómo montarlo sin torcer el barrido.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>15 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/slam-y-navegacion-autonoma-con-nav2-en-ros-2" class="card" aria-label="Ilustración de un mapa de ocupación con la trayectoria planificada de un robot móvil">
+        <img src="blog/slam-y-navegacion-autonoma-con-nav2-en-ros-2-hero.svg" alt="Ilustración de un mapa de ocupación con la trayectoria planificada de un robot móvil" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">ROS 2</div>
+          <h3>SLAM y Navegación Autónoma con Nav2 en ROS 2</h3>
+          <p>Casi nunca falla Nav2: falla el árbol TF, la odometría o el costmap. Puesta en marcha por capas con una prueba de verificación en cada etapa y los siete fallos clásicos.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>17 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/jetson-orin-nano-vs-raspberry-pi-5-ia-en-el-borde-para-robotica" class="card" aria-label="Ilustración comparativa de dos placas de cómputo con curvas de rendimiento y consumo">
+        <img src="blog/jetson-orin-nano-vs-raspberry-pi-5-ia-en-el-borde-para-robotica-hero.svg" alt="Ilustración comparativa de dos placas de cómputo con curvas de rendimiento y consumo" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">IA y Hardware</div>
+          <h3>Jetson Orin Nano vs Raspberry Pi 5: IA en el Borde para Robótica</h3>
+          <p>67 TOPS contra ninguno, pero el ancho de banda de memoria manda. FPS reales por modelo, el comodín Hailo, watts por hora de batería y costo total con accesorios.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>16 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores" class="card" aria-label="Ilustración de un bus RS-485 conectando varios nodos industriales en cadena">
+        <img src="blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores-hero.svg" alt="Ilustración de un bus RS-485 conectando varios nodos industriales en cadena" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Automatización</div>
+          <h3>Modbus RTU con ESP32 y RS-485: Leer PLC y Variadores</h3>
+          <p>Terminación, polarización y silencio de 3,5 caracteres: las reglas que deciden si tu bus funciona. Código maestro y esclavo, órdenes de bytes en float y diagnóstico paso a paso.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>16 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica" class="card" aria-label="Ilustración de nodos conectados a un bus CAN con tramas de datos circulando">
+        <img src="blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica-hero.svg" alt="Ilustración de nodos conectados a un bus CAN con tramas de datos circulando" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Comunicaciones</div>
+          <h3>Bus CAN con MCP2515 y Arduino: de OBD-II a Robótica</h3>
+          <p>Arbitraje no destructivo, bit timing calculado con números reales, filtros de máscara que descargan la CPU y el código para leer los PID de tu auto sin romper nada.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>16 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/variadores-de-frecuencia-vfd-para-makers-parametros-y-frenado" class="card" aria-label="Ilustración de un motor trifásico accionado por un variador de frecuencia con formas de onda PWM">
+        <img src="blog/variadores-de-frecuencia-vfd-para-makers-parametros-y-frenado-hero.svg" alt="Ilustración de un motor trifásico accionado por un variador de frecuencia con formas de onda PWM" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Motores</div>
+          <h3>Variadores de Frecuencia (VFD) para Makers: Parámetros y Frenado</h3>
+          <p>V/f contra vectorial, los quince parámetros que sí importan, el cálculo completo de la resistencia de frenado y las reglas de EMC que evitan fallas fantasma en el taller.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>17 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino" class="card" aria-label="Ilustración de una celda de carga tipo viga con su amplificador y lectura digital de peso">
+        <img src="blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino-hero.svg" alt="Ilustración de una celda de carga tipo viga con su amplificador y lectura digital de peso" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Sensores</div>
+          <h3>Celdas de Carga y HX711: Básculas de Precisión con Arduino</h3>
+          <p>24 bits en la ficha, 13 útiles en la mesa. Dónde se pierde la resolución: montaje mecánico, ruido, deriva térmica y un procedimiento de calibración que sí repite.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>15 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez" class="card" aria-label="Ilustración de engranajes planetarios y un reductor cicloidal en corte con su excéntrica">
+        <img src="blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez-hero.svg" alt="Ilustración de engranajes planetarios y un reductor cicloidal en corte con su excéntrica" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Diseño Mecánico</div>
+          <h3>Reductores Planetarios vs Cicloidales para Robots: Juego y Rigidez</h3>
+          <p>El reductor define la precisión más que el motor. Backlash en arcmin, rigidez en Nm/arcmin, inercia reflejada y cómo medir el juego en tu banco con un comparador.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>16 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile" class="card" aria-label="Ilustración de una antena LoRa irradiando hacia nodos sensores distantes en el campo">
+        <img src="blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile-hero.svg" alt="Ilustración de una antena LoRa irradiando hacia nodos sensores distantes en el campo" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">IoT</div>
+          <h3>LoRa y LoRaWAN para Telemetría: Alcance Real y Regulación en Chile</h3>
+          <p>Spreading factor, presupuesto de enlace con números y la banda 915 MHz que SUBTEL autoriza. Cuándo LoRaWAN sobra y un enlace punto a punto resuelve mejor.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>16 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto" class="card" aria-label="Ilustración comparando un motor paso a paso con encoder y un servomotor con su driver">
+        <img src="blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto-hero.svg" alt="Ilustración comparando un motor paso a paso con encoder y un servomotor con su driver" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Motores</div>
+          <h3>Servomotores Closed-Loop vs Motores Paso a Paso: Cuándo Dar el Salto</h3>
+          <p>El stepper pierde pasos en silencio. Curvas par-velocidad comparadas, por qué subir a 48 V sí sirve, relación de inercias y el punto exacto donde migrar deja de ser capricho.</p>
+          <div class="card-footer"><time datetime="2026-08-18">18 ago 2026</time><span>·</span><span>16 min de lectura</span></div>
+        </div>
+      </a>
+
       <a href="/blog/impresoras-3d-de-pasta-ceramica-proyectos-y-materiales" class="card" aria-label="Ilustración de una boquilla extruyendo pasta cerámica en espiral sobre una vasija construida por capas">
         <img src="blog/impresoras-3d-de-pasta-ceramica-proyectos-y-materiales-hero.svg" alt="Ilustración de una boquilla extruyendo pasta cerámica en espiral sobre una vasija construida por capas" loading="lazy" width="640" height="210" />
         <div class="card-body">
@@ -1056,7 +1156,7 @@
 
       <div class="cat-block">
         <h3>Sensores y Electrónica</h3>
-        <span class="cat-count">8 publicados</span>
+        <span class="cat-count">9 publicados</span>
         <ul>
           <li><a href="/blog/guia-esencial-de-sensores-para-arduino">Guía Esencial de Sensores para Arduino</a></li>
           <li><a href="/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso">Sensor Ultrasónico HC-SR04: Medición de Distancias Paso a Paso</a></li>
@@ -1066,12 +1166,13 @@
           <li><a href="/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad">Sensor PIR de Movimiento para Proyectos de Seguridad</a></li>
           <li><a href="/blog/guia-definitiva-para-elegir-entre-encoder-rotativo-incremental-y-absoluto">Guía Definitiva: Encoder Rotativo Incremental vs. Absoluto</a></li>
         <li><a href="/blog/simuladores-de-circuitos-online-falstad-vs-tinkercad">Simuladores de Circuitos Online: Falstad vs Tinkercad</a></li>
+          <li><a href="/blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino">Celdas de Carga y HX711: Básculas de Precisión con Arduino</a></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Internet de las Cosas (IoT)</h3>
-        <span class="cat-count">7 publicados</span>
+        <span class="cat-count">8 publicados</span>
         <ul>
           <li><a href="/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos">ESP32 como Analizador WiFi: Detección de Redes y Dispositivos</a></li>
           <li><a href="/blog/domotica-local-al-alcance-de-todos-la-revolucion-de-home-assistant-green">Domótica Local al Alcance de Todos: La Revolución de Home Assistant Green</a></li>
@@ -1080,6 +1181,7 @@
           <li><a href="/blog/camara-de-vigilancia-con-esp32-cam">Cámara de Vigilancia con ESP32-CAM</a></li>
           <li><a href="/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">Sistema de Riego Automático con Sensor de Humedad de Suelo</a></li>
           <li><a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">Registra y Grafica Datos en la Nube con ThingSpeak</a></li>
+          <li><a href="/blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile">LoRa y LoRaWAN para Telemetría: Alcance Real y Regulación en Chile</a></li>
         </ul>
       </div>
 
@@ -1128,7 +1230,7 @@
 
       <div class="cat-block">
         <h3>ROS 2, Cinemática y Software</h3>
-        <span class="cat-count">7 publicados</span>
+        <span class="cat-count">9 publicados</span>
         <ul>
           <li><a href="/blog/cinematica-directa-e-inversa-en-brazos-roboticos">Cinemática Directa e Inversa en Brazos Robóticos</a></li>
           <li><a href="/blog/sistemas-ros-2-hardware-compatible-para-tus-proyectos-de-robotica">Sistemas ROS 2: Hardware Compatible para tus Proyectos de Robótica</a></li>
@@ -1137,23 +1239,26 @@
           <li><a href="/blog/codigo-de-un-solver-de-cinematica-inversa">Código de un Solver de Cinemática Inversa</a></li>
           <li><a href="/blog/comparativa-de-software-de-simulacion-de-brazos-roboticos">Comparativa de Software de Simulación de Brazos Robóticos</a></li>
           <li><a href="/blog/lenguajes-de-programacion-para-brazos-roboticos">Lenguajes de Programación para Brazos Robóticos</a></li>
+          <li><a href="/blog/lidar-2d-para-robots-rplidar-a1-vs-ld19-guia-de-eleccion">LiDAR 2D para Robots: RPLIDAR A1 vs LD19 (Guía de Elección)</a></li>
+          <li><a href="/blog/slam-y-navegacion-autonoma-con-nav2-en-ros-2">SLAM y Navegación Autónoma con Nav2 en ROS 2</a></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Inteligencia Artificial y Hardware Local</h3>
-        <span class="cat-count">4 publicados</span>
+        <span class="cat-count">5 publicados</span>
         <ul>
           <li><a href="/blog/requisitos-minimos-para-stable-diffusion-en-hardware-local">Requisitos Mínimos para Stable Diffusion en Hardware Local</a></li>
           <li><a href="/blog/fine-tuning-de-modelos-de-imagen-con-lora-en-hardware-local">Fine-Tuning de Modelos de Imagen con LoRA en Hardware Local</a></li>
           <li><a href="/blog/modelos-de-lenguaje-locales-con-ollama">Modelos de Lenguaje Locales con Ollama</a></li>
           <li><a href="/blog/vision-por-computadora-con-frigate-en-un-mini-pc">Visión por Computadora con Frigate en un Mini-PC</a></li>
+          <li><a href="/blog/jetson-orin-nano-vs-raspberry-pi-5-ia-en-el-borde-para-robotica">Jetson Orin Nano vs Raspberry Pi 5: IA en el Borde para Robótica</a></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Automatización Industrial y Seguridad</h3>
-        <span class="cat-count">10 publicados</span>
+        <span class="cat-count">12 publicados</span>
         <ul>
           <li><a href="/blog/maximiza-el-potencial-de-tus-plcs-antiguos-con-maquinas-virtuales">PLC Antiguos y Máquinas Virtuales: Guía de Supervivencia</a></li>
           <li><a href="/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos">Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos</a></li>
@@ -1165,12 +1270,14 @@
           <li><a href="/blog/normas-de-seguridad-para-brazos-roboticos-en-chile">Normas de Seguridad para Brazos Robóticos en Chile</a></li>
           <li><a href="/blog/brazos-roboticos-para-aplicaciones-de-soldadura">Brazos Robóticos para Aplicaciones de Soldadura</a></li>
           <li><a href="/blog/robots-colaborativos-para-lineas-de-ensamblaje">Robots Colaborativos para Líneas de Ensamblaje</a></li>
+          <li><a href="/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores">Modbus RTU con ESP32 y RS-485: Leer PLC y Variadores</a></li>
+          <li><a href="/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica">Bus CAN con MCP2515 y Arduino: de OBD-II a Robótica</a></li>
         </ul>
       </div>
 
       <div class="cat-block">
         <h3>Diseño Mecánico y Materiales</h3>
-        <span class="cat-count">10 publicados</span>
+        <span class="cat-count">11 publicados</span>
         <ul>
           <li><a href="/blog/piezas-impresas-en-3d-para-brazos-roboticos">Piezas Impresas en 3D para Brazos Robóticos</a></li>
           <li><a href="/blog/mejores-impresoras-3d-para-piezas-de-brazos-roboticos">Mejores Impresoras 3D para Piezas de Brazos Robóticos</a></li>
@@ -1182,6 +1289,7 @@
           <li><a href="/blog/sistemas-de-refrigeracion-para-motores-de-brazos-roboticos">Sistemas de Refrigeración para Motores de Brazos Robóticos</a></li>
           <li><a href="/blog/proteccion-contra-polvo-y-grado-ip-en-brazos-roboticos">Protección contra Polvo y Grado IP en Brazos Robóticos</a></li>
           <li><a href="/blog/reduccion-de-ruido-en-la-operacion-de-brazos-roboticos">Reducción de Ruido en la Operación de Brazos Robóticos</a></li>
+          <li><a href="/blog/reductores-planetarios-vs-cicloidales-para-robots-juego-y-rigidez">Reductores Planetarios vs Cicloidales para Robots: Juego y Rigidez</a></li>
         </ul>
       </div>
 
@@ -1261,10 +1369,12 @@
 
       <div class="cat-block">
         <h3>Motores y Actuadores</h3>
-        <span class="cat-count">2 publicados</span>
+        <span class="cat-count">4 publicados</span>
         <ul>
           <li><a href="/blog/motores-bldc-con-control-de-campo-foc-para-robotica-potencia-y-precision">Motores BLDC con Control de Campo (FOC) para Robótica</a></li>
           <li><a href="/blog/motores-paso-a-paso-nema-17-vs-nema-23-diferencias">Motores Paso a Paso NEMA 17 vs NEMA 23: Diferencias</a></li>
+          <li><a href="/blog/variadores-de-frecuencia-vfd-para-makers-parametros-y-frenado">Variadores de Frecuencia (VFD) para Makers: Parámetros y Frenado</a></li>
+          <li><a href="/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto">Servomotores Closed-Loop vs Motores Paso a Paso: Cuándo Dar el Salto</a></li>
         </ul>
       </div>
 
