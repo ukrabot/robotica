@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="es-CL"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Modbus RTU con ESP32 y RS-485: Leer PLC y Variadores</title><meta name="description" content="Guía práctica de Modbus RTU sobre RS-485 con ESP32: cableado, terminación, tabla de registros, código maestro y esclavo, timing de silencio y diagnóstico con analizador lógico."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores"><meta property="og:type" content="article"><meta property="og:title" content="Modbus RTU con ESP32 y RS-485: Leer PLC y Variadores"><meta property="og:description" content="Modbus es simple; RS-485 no perdona. Polarización, terminación, masa de referencia, silencio de 3,5 caracteres y el código que sí funciona en un tablero real."><meta property="og:image" content="https://www.ukrabot.cl/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores-hero.svg"><meta property="og:url" content="https://www.ukrabot.cl/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Modbus RTU con ESP32 y RS-485: Leer PLC y Variadores"><meta name="twitter:description" content="Guía práctica de Modbus RTU sobre RS-485 con ESP32: cableado, terminación, tabla de registros, código maestro y esclavo, timing de silencio y diagnóstico con analizador lógico."><meta name="twitter:image" content="https://www.ukrabot.cl/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores-hero.svg"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Modbus RTU con ESP32 y RS-485: Leer PLC y Variadores", "description": "Guía práctica de Modbus RTU sobre RS-485 con ESP32: cableado, terminación, tabla de registros, código maestro y esclavo, timing de silencio y diagnóstico con analizador lógico.", "author": {"@type": "Person", "name": "Alberto Gallardo", "jobTitle": "Analista Programador Computacional", "url": "https://www.ukrabot.cl/about"}, "publisher": {"@type": "Organization", "name": "Blog de Ingeniería Robótica", "url": "https://www.ukrabot.cl", "logo": {"@type": "ImageObject", "url": "https://www.ukrabot.cl/logo.png"}}, "datePublished": "2026-08-18", "dateModified": "2026-08-18", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.ukrabot.cl/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores"}, "image": "https://www.ukrabot.cl/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores-hero.svg", "wordCount": "2628", "inLanguage": "es-CL"}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.ukrabot.cl/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.ukrabot.cl/blog/"}, {"@type": "ListItem", "position": 3, "name": "Modbus RTU con ESP32 y RS-485: Leer PLC y Variadores", "item": "https://www.ukrabot.cl/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Puedo usar Modbus RTU sin RS-485?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, sobre RS-232 o incluso TTL para enlaces punto a punto muy cortos, pero pierdes la topología multipunto y la inmunidad al ruido. En un tablero industrial RS-485 es prácticamente obligatorio."}}, {"@type": "Question", "name": "¿Por qué mi esclavo responde con excepción 0x02?", "acceptedAnswer": {"@type": "Answer", "text": "Porque la dirección solicitada no existe en ese dispositivo. La causa casi universal es el desfase de uno entre la numeración del manual (40001) y la de la trama (0). Prueba restando 1."}}, {"@type": "Question", "name": "¿Cuántos dispositivos puedo poner en un bus?", "acceptedAnswer": {"@type": "Answer", "text": "El estándar clásico permite 32 cargas unitarias. Con transceptores de un octavo de carga se llega a 256, pero la longitud y la velocidad se degradan; en la práctica, más de 20 nodos conviene segmentarlos con repetidores."}}, {"@type": "Question", "name": "¿Necesito aislación galvánica?", "acceptedAnswer": {"@type": "Answer", "text": "Si el bus sale del tablero, cruza a otro cuadro eléctrico o conecta equipos con alimentaciones distintas, sí. Dentro de un mismo tablero con una única masa, un transceptor con buena protección ESD suele bastar."}}, {"@type": "Question", "name": "¿Modbus TCP es más fácil que RTU?", "acceptedAnswer": {"@type": "Answer", "text": "En cableado sí, porque usa Ethernet estándar y elimina los problemas de terminación y polarización. En protocolo es casi idéntico: mismos códigos de función y registros, sin CRC y con una cabecera MBAP."}}]}</script><style>
+:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}img{max-width:100%;height:auto}a{color:var(--blue);text-underline-offset:3px}.container{max-width:1050px;margin:auto;padding:0 24px}.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:20px;font-size:.86rem}.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--line);border-radius:8px}.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:auto}.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300}.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08)}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.3),rgba(18,15,11,.9))}.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.2rem);line-height:1.08;font-weight:400;max-width:930px;margin:18px 0;color:#fff}.hero p{color:rgba(245,243,238,.8);max-width:760px;font-size:1.05rem}.byline{font-size:.85rem!important;color:rgba(245,243,238,.58)!important}.byline a{color:var(--gold-bright)}.article-body{padding-top:64px;padding-bottom:90px}.article-body section{scroll-margin-top:80px}.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px}.article-body p,.article-body li{color:var(--muted)}.article-body p{margin:0 0 20px}.article-body li{margin:8px 0}.article-body strong{color:var(--text)}.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}.toc a{color:var(--muted);text-decoration:none}.note{border-left:4px solid var(--gold)}.warning{background:rgba(178,40,30,.06);border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0;color:var(--muted)}.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.article-img img{width:100%;display:block}.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow-x:auto;background:#14121a;border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.sources{margin:48px 0 24px;padding:22px 24px;background:#fff;border:1px solid var(--line);border-radius:12px}.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}.ad-slot{margin:34px 0;min-height:280px;text-align:center}.site-footer{border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem}@media(max-width:760px){.nav-toggle{display:flex}.nav-links{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;background:var(--ink);padding:12px 24px}.nav-links.open{display:flex}.hero-inner{padding:80px 20px 50px}.article-body h2{font-size:1.6rem}.container{padding:0 16px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500});try{if(document.cookie.match(/(?:^|;\s*)rel_consent=granted/))gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'})}catch(e){}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-1ZVHF8X35Q');</script></head><body><div class="progress-bar" id="progress-bar"></div><nav class="site-nav" aria-label="Navegación del sitio"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span><span></span></button><div class="nav-links" id="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre Nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><img src="modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores-hero.svg" alt="Ilustración de un bus RS-485 conectando varios nodos industriales en cadena" fetchpriority="high"><div class="hero-inner"><div class="eyebrow">Automatización Industrial · Comunicaciones · Actualizado el <time datetime="2026-08-18">18 de agosto de 2026</time></div><h1>Modbus RTU con ESP32 y RS-485: Leer PLC y Variadores</h1><p>Modbus RTU nació en 1979 y sigue siendo el idioma común de variadores, medidores de energía, controladores de temperatura y PLC de todas las marcas. Con un ESP32 y un transceptor de tres dólares tu proyecto entra en ese mundo — siempre que respetes las reglas eléctricas de RS-485, que es donde se caen casi todos los montajes de banco.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p></div></header><main class="container article-body"><article><div class="article-img"><img src="modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores-hero.svg" alt="Diagrama editorial de Modbus RTU con ESP32 y RS-485: Leer PLC y Variadores" loading="lazy"><div class="caption">Guía técnica basada en documentación primaria, criterios medibles y procedimientos reproducibles.</div></div><div class="toc" aria-label="Tabla de contenidos"><h2>Qué cubre esta guía</h2><ol><li><a href="#porque">Por qué Modbus sigue vigente</a></li><li><a href="#capafisica">RS-485: la capa física que hay que respetar</a></li><li><a href="#protocolo">Anatomía de una trama Modbus RTU</a></li><li><a href="#registros">Tipos de registro y el infierno del direccionamiento</a></li><li><a href="#hardware">Montaje con ESP32: transceptor y aislación</a></li><li><a href="#codigo">Código: maestro que lee un variador</a></li><li><a href="#esclavo">El ESP32 como esclavo de un PLC</a></li><li><a href="#diagnostico">Diagnóstico: cuando no responde nada</a></li></ol></div><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="porque"><h2>Por qué Modbus sigue vigente</h2>
+<p>Modbus tiene cuatro virtudes que ningún protocolo moderno ha logrado desplazar en el mundo industrial: es <strong>abierto y sin regalías</strong>, es <strong>trivial de implementar</strong> (un maestro cabe en 200 líneas de C), está <strong>documentado por cada fabricante</strong> en una tabla de registros que viene en el manual, y es <strong>determinista</strong> —el maestro pregunta, el esclavo responde, no hay sorpresas de arbitraje—.</p>
+<p>Sus tres variantes conviven:</p>
+<div class="table-wrap"><table><thead><tr><th>Variante</th><th>Capa física</th><th>Trama</th><th>Uso típico</th></tr></thead><tbody>
+<tr><td>Modbus RTU</td><td>RS-485 / RS-232</td><td>Binaria compacta con CRC-16</td><td>Variadores, medidores, tableros</td></tr>
+<tr><td>Modbus ASCII</td><td>RS-485 / RS-232</td><td>Texto hexadecimal con LRC</td><td>Legado, enlaces con mucho ruido</td></tr>
+<tr><td>Modbus TCP</td><td>Ethernet</td><td>RTU sin CRC dentro de TCP/502</td><td>SCADA, integración con IT</td></tr>
+</tbody></table></div>
+<p>Lo que Modbus <strong>no</strong> tiene, y conviene saberlo antes de diseñar: no hay autenticación, no hay cifrado, no hay descubrimiento automático de dispositivos y no hay reporte por excepción —el maestro debe encuestar (<em>polling</em>) permanentemente—. Es un protocolo de red confiable y físicamente aislada, no de red abierta.</p>
+<div class="warning"><p><strong>Seguridad:</strong> cualquiera con acceso al par trenzado puede escribir en los registros de un variador y arrancar un motor. Un bus Modbus jamás debe salir del tablero sin aislación galvánica ni conectarse a una red con salida a Internet sin una pasarela que filtre. Si expones datos hacia la nube, hazlo con un ESP32 como puente unidireccional que solo lea.</p></div>
+</section><section id="capafisica"><h2>RS-485: la capa física que hay que respetar</h2>
+<p>RS-485 es diferencial y semidúplex: dos hilos (A/D0/− y B/D1/+) transportan la señal como diferencia de tensión, lo que le da inmunidad al ruido y alcance de hasta 1.200 m a 9.600 bps. Cuatro reglas que no son opcionales:</p>
+<ol>
+<li><strong>Topología en cadena (daisy chain), nunca estrella.</strong> Cada nodo entra y sale del mismo par. Las derivaciones (<em>stubs</em>) deben ser menores a 30 cm; una estrella genera reflexiones que corrompen tramas de forma intermitente.</li>
+<li><strong>Terminación de 120 Ω en los dos extremos físicos del bus.</strong> Solo en los extremos: poner resistencias en cada nodo carga el bus hasta que el driver no puede excitarlo.</li>
+<li><strong>Polarización (fail-safe bias).</strong> Cuando ningún driver transmite, el bus queda flotante y el ruido genera bytes falsos. Un divisor de 560 Ω a 3,3 V en A y a GND en B fija el estado inactivo. Muchos transceptores modernos (MAX3485E, THVD1450) ya lo traen internamente.</li>
+<li><strong>Referencia de masa.</strong> RS-485 es diferencial pero no mágico: los nodos deben compartir una referencia dentro de −7 a +12 V. Usa cable de tres conductores (par trenzado + común) o aislación galvánica.</li>
+</ol>
+<pre><code>Topología correcta
+
+ [Maestro]───┬────────┬────────┬────────[Último nodo]
+   120Ω      │        │        │              120Ω
+             │        │        │
+          [VFD 1]  [VFD 2]  [Medidor]
+          stub<30cm
+
+ Cable: par trenzado apantallado 24 AWG (tipo Belden 3105A)
+ Malla: aterrizada en UN SOLO extremo</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Velocidad</th><th>Longitud máxima</th><th>Comentario</th></tr></thead><tbody>
+<tr><td>9.600 bps</td><td>1.200 m</td><td>El estándar de facto en tableros</td></tr>
+<tr><td>19.200 bps</td><td>1.200 m</td><td>Por defecto en muchos variadores</td></tr>
+<tr><td>38.400 bps</td><td>~700 m</td><td>Buen equilibrio en instalaciones medianas</td></tr>
+<tr><td>115.200 bps</td><td>~150 m</td><td>Solo dentro del mismo tablero</td></tr>
+<tr><td>&gt; 115.200 bps</td><td>&lt; 50 m</td><td>Fuera del espíritu del estándar</td></tr>
+</tbody></table></div>
+<p>La cantidad de nodos también tiene límite: 32 cargas unitarias clásicas, o hasta 128/256 con transceptores de ⅛ o ¼ de carga. Revisa la hoja de datos antes de encadenar veinte dispositivos.</p>
+</section><section id="protocolo"><h2>Anatomía de una trama Modbus RTU</h2>
+<p>Una trama RTU es una secuencia de bytes delimitada por silencios, no por caracteres especiales. Esa es su elegancia y su trampa.</p>
+<pre><code>┌──────────┬─────────┬─────────────┬─────────┐
+│ Dirección│ Función │    Datos    │ CRC-16  │
+│  1 byte  │ 1 byte  │  0-252 by.  │ 2 bytes │
+└──────────┴─────────┴─────────────┴─────────┘
+   1-247      p.ej 03    variable     LSB, MSB
+
+Delimitación: silencio ≥ 3,5 caracteres antes y después
+Silencio máximo dentro de la trama: 1,5 caracteres</code></pre>
+<p>El tiempo de silencio depende del baudrate y es la causa de la mitad de los fallos con microcontroladores:</p>
+<pre><code>t_caracter = 11 bits / baudrate      (1 start + 8 datos + paridad + stop)
+
+A 9.600 bps:   t_car = 1,146 ms → t3,5 = 4,01 ms → t1,5 = 1,72 ms
+A 19.200 bps:  t_car = 0,573 ms → t3,5 = 2,01 ms → t1,5 = 0,86 ms
+A 115.200 bps: por norma se fija t3,5 = 1,750 ms y t1,5 = 0,750 ms</code></pre>
+<p>Los códigos de función que cubren el 95 % de los casos:</p>
+<div class="table-wrap"><table><thead><tr><th>Código</th><th>Nombre</th><th>Objeto</th><th>Acceso</th></tr></thead><tbody>
+<tr><td>0x01</td><td>Read Coils</td><td>Salidas digitales</td><td>Lectura</td></tr>
+<tr><td>0x02</td><td>Read Discrete Inputs</td><td>Entradas digitales</td><td>Lectura</td></tr>
+<tr><td>0x03</td><td>Read Holding Registers</td><td>Registros 16 bit R/W</td><td>Lectura</td></tr>
+<tr><td>0x04</td><td>Read Input Registers</td><td>Registros 16 bit solo lectura</td><td>Lectura</td></tr>
+<tr><td>0x05</td><td>Write Single Coil</td><td>Una salida digital</td><td>Escritura</td></tr>
+<tr><td>0x06</td><td>Write Single Register</td><td>Un registro</td><td>Escritura</td></tr>
+<tr><td>0x0F</td><td>Write Multiple Coils</td><td>Varias salidas</td><td>Escritura</td></tr>
+<tr><td>0x10</td><td>Write Multiple Registers</td><td>Varios registros</td><td>Escritura</td></tr>
+</tbody></table></div>
+<p>Si el esclavo detecta un problema responde con el código de función más 0x80 y un byte de excepción:</p>
+<div class="table-wrap"><table><thead><tr><th>Excepción</th><th>Significado</th><th>Causa habitual</th></tr></thead><tbody>
+<tr><td>0x01</td><td>Función ilegal</td><td>El dispositivo no soporta ese código</td></tr>
+<tr><td>0x02</td><td>Dirección de dato ilegal</td><td>Offset por el mundo 1-based / 0-based</td></tr>
+<tr><td>0x03</td><td>Valor de dato ilegal</td><td>Fuera de rango o cantidad excesiva</td></tr>
+<tr><td>0x04</td><td>Fallo del dispositivo</td><td>El esclavo está en falla o bloqueado</td></tr>
+<tr><td>0x06</td><td>Ocupado</td><td>Reintentar tras un tiempo</td></tr>
+</tbody></table></div>
+</section><section id="registros"><h2>Tipos de registro y el infierno del direccionamiento</h2>
+<p>El error más común y más frustrante de Modbus no está en el código: está en <strong>qué número escribir</strong>. Conviven dos convenciones.</p>
+<div class="table-wrap"><table><thead><tr><th>Convención tradicional</th><th>Rango</th><th>Dirección en la trama</th><th>Función</th></tr></thead><tbody>
+<tr><td>Coils</td><td>00001 – 09999</td><td>0x0000 – 0x270E</td><td>01 / 05 / 0F</td></tr>
+<tr><td>Discrete Inputs</td><td>10001 – 19999</td><td>0x0000 – 0x270E</td><td>02</td></tr>
+<tr><td>Input Registers</td><td>30001 – 39999</td><td>0x0000 – 0x270E</td><td>04</td></tr>
+<tr><td>Holding Registers</td><td>40001 – 49999</td><td>0x0000 – 0x270E</td><td>03 / 06 / 10</td></tr>
+</tbody></table></div>
+<p>La regla de conversión: <strong>dirección de trama = número documentado − offset − 1</strong>. Si el manual dice "holding register 40108", en la trama va 107 (0x006B). Si el manual dice "registro 0x006B", va tal cual. Cuando obtienes la excepción 0x02, prueba ±1 antes de sospechar de cualquier otra cosa.</p>
+<p>El segundo escollo son los <strong>valores de 32 bits y flotantes</strong>, que ocupan dos registros consecutivos y se ordenan de cuatro maneras distintas según el fabricante:</p>
+<pre><code>Un float32 = 4 bytes = registros [R0][R1]
+
+Big-endian        (ABCD): R0=AB  R1=CD   ← más común
+Little-endian     (DCBA): R0=DC  R1=BA
+Big-endian swap   (CDAB): R0=CD  R1=AB   ← muy común en medidores
+Little-endian swap(BADC): R0=BA  R1=DC</code></pre>
+<pre><code>// Reconstrucción de float con orden configurable (ESP32/Arduino)
+float regsToFloat(uint16_t r0, uint16_t r1, uint8_t orden) {
+  uint32_t v;
+  switch (orden) {
+    case 0: v = ((uint32_t)r0 &lt;&lt; 16) | r1; break;              // ABCD
+    case 1: v = ((uint32_t)r1 &lt;&lt; 16) | r0; break;              // CDAB
+    case 2: v = ((uint32_t)__builtin_bswap16(r1) &lt;&lt; 16)
+               | __builtin_bswap16(r0); break;                  // DCBA
+    default: v = ((uint32_t)__builtin_bswap16(r0) &lt;&lt; 16)
+               | __builtin_bswap16(r1); break;                  // BADC
+  }
+  float f; memcpy(&amp;f, &amp;v, 4); return f;
+}</code></pre>
+<div class="note"><p><strong>Truco de campo:</strong> lee un registro cuyo valor conozcas —la tensión de línea de un medidor, típicamente 220 o 380— y prueba los cuatro órdenes. El que devuelva un número razonable es el correcto. Anótalo en el código como constante documentada.</p></div>
+</section><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="hardware"><h2>Montaje con ESP32: transceptor y aislación</h2>
+<p>El ESP32 habla UART a 3,3 V; RS-485 necesita un transceptor diferencial. Las opciones, de peor a mejor:</p>
+<div class="table-wrap"><table><thead><tr><th>Transceptor</th><th>Alimentación</th><th>Ventaja</th><th>Cuidado</th></tr></thead><tbody>
+<tr><td>MAX485 (módulo azul)</td><td>5 V</td><td>Barato y omnipresente</td><td>No es 3,3 V: nivel RO puede dañar el ESP32; sin fail-safe</td></tr>
+<tr><td>MAX3485</td><td>3,3 V</td><td>Compatible directo con ESP32</td><td>Sin protección ESD reforzada</td></tr>
+<tr><td>SP3485 / SN65HVD75</td><td>3,3 V</td><td>Fail-safe interno, ±15 kV ESD</td><td>—</td></tr>
+<tr><td>THVD1450</td><td>3,3 – 5 V</td><td>±18 kV ESD, tolerante a fallas de bus</td><td>Encapsulado SMD</td></tr>
+<tr><td>Módulo con ADM2483 / iso módulos</td><td>3,3 V + DC-DC aislado</td><td>Aislación galvánica real</td><td>Más caro y más grande</td></tr>
+</tbody></table></div>
+<p>Un detalle central: el transceptor semidúplex necesita una señal <strong>DE/RE</strong> para conmutar entre transmisión y recepción, y el <em>timing</em> de esa conmutación es crítico. Si liberas DE antes de que el último byte salga del registro de desplazamiento del UART, cortas la trama y el esclavo nunca responde.</p>
+<pre><code>Conexión ESP32 ↔ SP3485
+
+  ESP32 GPIO17 (TX) ──► DI
+  ESP32 GPIO16 (RX) ◄── RO
+  ESP32 GPIO4       ──► DE + /RE  (unidos)
+  3,3 V ────────────────► VCC        100 nF cerca del pin
+  GND  ────────────────► GND
+
+  A/B al bus, 120 Ω solo si este nodo es un extremo</code></pre>
+<pre><code>// Conmutación correcta usando el driver UART de ESP-IDF
+#include "driver/uart.h"
+#define UART_NUM UART_NUM_2
+#define PIN_DE   4
+
+void uart_485_init(int baud) {
+  uart_config_t cfg = { .baud_rate = baud, .data_bits = UART_DATA_8_BITS,
+    .parity = UART_PARITY_DISABLE, .stop_bits = UART_STOP_BITS_1,
+    .flow_ctrl = UART_HW_FLOWCTRL_DISABLE, .source_clk = UART_SCLK_APB };
+  uart_driver_install(UART_NUM, 512, 512, 0, NULL, 0);
+  uart_param_config(UART_NUM, &amp;cfg);
+  uart_set_pin(UART_NUM, 17, 16, PIN_DE, UART_PIN_NO_CHANGE);
+  // El hardware maneja DE automáticamente: sin jitter de software
+  uart_set_mode(UART_NUM, UART_MODE_RS485_HALF_DUPLEX);
+}</code></pre>
+<div class="note"><p><strong>Por qué usar <code>UART_MODE_RS485_HALF_DUPLEX</code>:</strong> el periférico del ESP32 controla la línea RTS/DE por hardware con precisión de bit. Hacerlo con <code>digitalWrite()</code> desde el loop, con FreeRTOS conmutando tareas en medio, produce fallos aleatorios que solo aparecen bajo carga —justo cuando el sistema está en producción—. Si necesitas repasar la multitarea, revisa <a href="/blog/freertos-en-esp32-multitarea-real-en-microcontroladores">FreeRTOS en ESP32</a>.</p></div>
+</section><section id="codigo"><h2>Código: maestro que lee un variador</h2>
+<p>Ejemplo completo con la librería <code>ModbusMaster</code>, leyendo frecuencia de salida, corriente y estado de un variador genérico y escribiendo una consigna de velocidad.</p>
+<pre><code>#include &lt;ModbusMaster.h&gt;
+
+#define RS485_TX 17
+#define RS485_RX 16
+#define RS485_DE  4
+#define SLAVE_ID  1
+
+ModbusMaster nodo;
+HardwareSerial bus(2);
+
+void preTx()  { digitalWrite(RS485_DE, HIGH); delayMicroseconds(50); }
+void postTx() { bus.flush(); delayMicroseconds(50); digitalWrite(RS485_DE, LOW); }
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(RS485_DE, OUTPUT); digitalWrite(RS485_DE, LOW);
+  bus.begin(9600, SERIAL_8E1, RS485_RX, RS485_TX);   // 8E1 es lo habitual
+  nodo.begin(SLAVE_ID, bus);
+  nodo.preTransmission(preTx);
+  nodo.postTransmission(postTx);
+}
+
+const char* errTexto(uint8_t e) {
+  switch (e) {
+    case nodo.ku8MBIllegalFunction:     return "funcion ilegal";
+    case nodo.ku8MBIllegalDataAddress:  return "direccion ilegal (prueba +-1)";
+    case nodo.ku8MBIllegalDataValue:    return "valor ilegal";
+    case nodo.ku8MBSlaveDeviceFailure:  return "fallo del esclavo";
+    case nodo.ku8MBResponseTimedOut:    return "sin respuesta: cableado/ID/baud";
+    case nodo.ku8MBInvalidCRC:          return "CRC malo: ruido o terminacion";
+    default:                            return "error desconocido";
+  }
+}
+
+void loop() {
+  // Lectura de 3 holding registers a partir de 0x1000
+  uint8_t r = nodo.readHoldingRegisters(0x1000, 3);
+  if (r == nodo.ku8MBSuccess) {
+    float hz = nodo.getResponseBuffer(0) / 100.0;   // escala 0,01 Hz
+    float a  = nodo.getResponseBuffer(1) / 10.0;    // escala 0,1 A
+    uint16_t estado = nodo.getResponseBuffer(2);
+    Serial.printf("f=%.2f Hz  I=%.1f A  estado=0x%04X\n", hz, a, estado);
+  } else {
+    Serial.printf("Error 0x%02X: %s\n", r, errTexto(r));
+  }
+
+  // Escritura de consigna: 45,00 Hz en registro 0x2001
+  r = nodo.writeSingleRegister(0x2001, 4500);
+  if (r != nodo.ku8MBSuccess) Serial.printf("Escritura fallo: %s\n", errTexto(r));
+
+  delay(500);   // no encuestes más rápido de lo que el esclavo tolera
+}</code></pre>
+<p>Tres decisiones de diseño que marcan la diferencia en un sistema real:</p>
+<ul>
+<li><strong>Agrupa lecturas.</strong> Un <code>readHoldingRegisters(0x1000, 10)</code> es diez veces más eficiente que diez lecturas de un registro; cada transacción tiene el sobrecosto del silencio de 3,5 caracteres.</li>
+<li><strong>Define un presupuesto de tiempo.</strong> Con 5 esclavos y 50 ms por transacción, el ciclo completo es de 250 ms. Si necesitas 100 ms de refresco, tendrás que subir el baudrate o reducir la encuesta.</li>
+<li><strong>Reintenta con criterio.</strong> Tres reintentos y luego marca el esclavo como caído; no bloquees el bus insistiendo con un dispositivo apagado.</li>
+</ul>
+</section><section id="esclavo"><h2>El ESP32 como esclavo de un PLC</h2>
+<p>El caso inverso —el PLC pregunta y el ESP32 responde con lecturas de sensores— es muy útil para integrar sensórica barata en tableros existentes sin tocar el programa del PLC más allá de agregar un nodo.</p>
+<pre><code>#include &lt;ModbusRTU.h&gt;      // libreria emelianov/modbus-esp8266
+
+ModbusRTU mb;
+#define SLAVE_ID 10
+#define HREG_TEMP  0     // 40001: temperatura ×10
+#define HREG_HUM   1     // 40002: humedad ×10
+#define HREG_LUX   2     // 40003: iluminancia
+#define COIL_RELE  0     // 00001: relé de salida
+
+void setup() {
+  Serial2.begin(19200, SERIAL_8E1, 16, 17);
+  mb.begin(&amp;Serial2, 4);            // pin 4 = DE/RE
+  mb.setBaudrate(19200);
+  mb.slave(SLAVE_ID);
+  mb.addHreg(HREG_TEMP, 0, 3);      // 3 registros consecutivos
+  mb.addCoil(COIL_RELE, false);
+  pinMode(26, OUTPUT);
+}
+
+void loop() {
+  mb.task();                        // atiende el bus, no bloquea
+  static uint32_t t = 0;
+  if (millis() - t &gt; 1000) {
+    t = millis();
+    mb.Hreg(HREG_TEMP, (uint16_t)(leerTemp() * 10));
+    mb.Hreg(HREG_HUM,  (uint16_t)(leerHum()  * 10));
+    mb.Hreg(HREG_LUX,  (uint16_t)leerLux());
+  }
+  digitalWrite(26, mb.Coil(COIL_RELE));   // el PLC manda el relé
+  yield();
+}</code></pre>
+<p>Convenciones que conviene documentar en un mapa de registros junto al tablero, porque en dos años nadie recordará las escalas:</p>
+<div class="table-wrap"><table><thead><tr><th>Registro</th><th>Descripción</th><th>Tipo</th><th>Escala</th><th>Rango</th></tr></thead><tbody>
+<tr><td>40001</td><td>Temperatura ambiente</td><td>int16</td><td>×10 (°C)</td><td>−400 a 850</td></tr>
+<tr><td>40002</td><td>Humedad relativa</td><td>uint16</td><td>×10 (%)</td><td>0 a 1000</td></tr>
+<tr><td>40003</td><td>Iluminancia</td><td>uint16</td><td>×1 (lux)</td><td>0 a 65535</td></tr>
+<tr><td>40010</td><td>Contador de fallas</td><td>uint16</td><td>×1</td><td>0 a 65535</td></tr>
+<tr><td>00001</td><td>Comando relé</td><td>bool</td><td>—</td><td>0/1</td></tr>
+</tbody></table></div>
+<p>Valores con signo: Modbus transporta 16 bits crudos, así que una temperatura de −5,0 °C viaja como 65486 (complemento a dos). Si el PLC muestra números absurdos alrededor de 65000, casi siempre falta declarar el registro como <code>INT</code> en lugar de <code>WORD</code>. Los conceptos de programación del lado PLC están en <a href="/blog/programacion-de-plc-para-robotica">programación de PLC para robótica</a>.</p>
+</section><section id="diagnostico"><h2>Diagnóstico: cuando no responde nada</h2>
+<p>Sigue este orden; cada paso descarta una capa completa.</p>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Verificación</th><th>Cómo</th><th>Si falla</th></tr></thead><tbody>
+<tr><td>1</td><td>Tensión de reposo en el bus</td><td>Multímetro entre A y B, sin tráfico</td><td>0 V ⇒ falta polarización; espera +0,2 a +1 V</td></tr>
+<tr><td>2</td><td>Resistencia del bus</td><td>Todo apagado, ohmímetro entre A y B</td><td>≈ 60 Ω correcto; 120 Ω falta una terminación; 40 Ω sobran</td></tr>
+<tr><td>3</td><td>Parámetros de línea</td><td>Manual del esclavo: 9600 8E1 es lo más común</td><td>8N1 vs 8E1 produce silencio total</td></tr>
+<tr><td>4</td><td>ID del esclavo</td><td>Escaneo de 1 a 247</td><td>Dos esclavos con el mismo ID chocan</td></tr>
+<tr><td>5</td><td>Polaridad A/B</td><td>Intercambiar los dos hilos</td><td>Invertidos = nunca responde; es gratis probar</td></tr>
+<tr><td>6</td><td>Trama en el aire</td><td>Analizador lógico en DI/RO</td><td>Ver si sale la pregunta y si vuelve algo</td></tr>
+<tr><td>7</td><td>Conmutación DE</td><td>Analizador: DE debe bajar tras el último bit</td><td>Si baja antes, la trama sale truncada</td></tr>
+</tbody></table></div>
+<pre><code># Escaneo de IDs desde un PC Linux con mbpoll (muy útil como referencia)
+for id in $(seq 1 20); do
+  mbpoll -m rtu -b 9600 -P even -a $id -r 1 -c 1 -t 4 /dev/ttyUSB0 \
+    &amp;&amp; echo "  ↑ responde el ID $id"
+done</code></pre>
+<p>Un analizador lógico de USD 10 conectado a DI y RO resuelve en cinco minutos lo que días de prueba y error no logran: verás si tu maestro está transmitiendo, con qué timing, y si el esclavo responde algo aunque sea basura. Es la misma filosofía de instrumentar antes de adivinar que aplica al elegir <a href="/blog/osciloscopios-de-entrada-que-ancho-de-banda-necesitas-de-verdad">un osciloscopio</a>.</p>
+<div class="warning"><p><strong>Ruido del variador:</strong> un VFD conmutando a 8 kHz es una fuente de interferencia electromagnética considerable. Separa el cable Modbus al menos 20 cm de los cables de motor, crúzalos siempre a 90°, y aterriza la malla en un solo extremo. Si aparecen errores de CRC solo cuando el motor gira, el problema es EMC, no software.</p></div>
+</section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Puedo usar Modbus RTU sin RS-485?</summary><p>Sí, sobre RS-232 o incluso TTL para enlaces punto a punto muy cortos, pero pierdes la topología multipunto y la inmunidad al ruido. En un tablero industrial RS-485 es prácticamente obligatorio.</p></details><details><summary>¿Por qué mi esclavo responde con excepción 0x02?</summary><p>Porque la dirección solicitada no existe en ese dispositivo. La causa casi universal es el desfase de uno entre la numeración del manual (40001) y la de la trama (0). Prueba restando 1.</p></details><details><summary>¿Cuántos dispositivos puedo poner en un bus?</summary><p>El estándar clásico permite 32 cargas unitarias. Con transceptores de un octavo de carga se llega a 256, pero la longitud y la velocidad se degradan; en la práctica, más de 20 nodos conviene segmentarlos con repetidores.</p></details><details><summary>¿Necesito aislación galvánica?</summary><p>Si el bus sale del tablero, cruza a otro cuadro eléctrico o conecta equipos con alimentaciones distintas, sí. Dentro de un mismo tablero con una única masa, un transceptor con buena protección ESD suele bastar.</p></details><details><summary>¿Modbus TCP es más fácil que RTU?</summary><p>En cableado sí, porque usa Ethernet estándar y elimina los problemas de terminación y polarización. En protocolo es casi idéntico: mismos códigos de función y registros, sin CRC y con una cabecera MBAP.</p></details></div></section><p class="disclosure">Contenido editorial independiente, sin ubicaciones patrocinadas ni enlaces de afiliado. Las especificaciones pueden cambiar; confirma siempre el manual y la normativa aplicable. Si detectas un error, <a href="/contact">avísanos</a>.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Continúa con <a href="/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica">el bus CAN con MCP2515</a> y con <a href="/blog/variadores-de-frecuencia-vfd-para-makers-parametros-y-frenado">variadores de frecuencia para makers</a>.</p></div></article><section class="sources" aria-label="Fuentes primarias"><h2>Fuentes primarias y lecturas recomendadas</h2><p>Documentación oficial y material técnico usado para contrastar esta guía.</p><ul><li><a href="https://www.modbus.org/specs.php" target="_blank" rel="noopener noreferrer">Modbus Organization — Especificaciones oficiales del protocolo</a></li><li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/uart.html" target="_blank" rel="noopener noreferrer">Espressif — Driver UART y modo RS-485 half duplex</a></li><li><a href="https://www.ti.com/lit/an/slla272d/slla272d.pdf" target="_blank" rel="noopener noreferrer">Texas Instruments — Guía de diseño de redes RS-485</a></li><li><a href="https://github.com/4-20ma/ModbusMaster" target="_blank" rel="noopener noreferrer">ModbusMaster — Librería Arduino para maestro Modbus RTU</a></li></ul><p style="font-size:.75rem;color:var(--quiet)">Enlaces revisados: 18 de agosto de 2026.</p></section></main><footer class="container site-footer"><p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada.</p><p><a href="/about">Sobre Nosotros</a> · <a href="/contact">Contacto</a> · <a href="/privacy">Política de Privacidad</a> · <a href="/terms">Términos</a></p><p>© 2023–2026 Alberto Gallardo. Todos los derechos reservados.</p></footer><div id="rel-consent" role="dialog" aria-labelledby="consent-title" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#fff;border-top:1px solid rgba(30,25,15,.15);box-shadow:0 -8px 32px rgba(30,25,15,.18);padding:20px 24px"><div style="max-width:1050px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div style="flex:1;min-width:260px"><strong id="consent-title">Usamos cookies</strong><p style="margin:4px 0 0;color:#57534a;font-size:.85rem">Con tu permiso usamos cookies para analítica y anuncios personalizados. Puedes rechazar y seguir leyendo. <a href="/privacy">Política de Privacidad</a>.</p></div><div><button id="consent-no" type="button" style="padding:10px 18px;border:1px solid #aaa;border-radius:99px;background:#fff;margin-right:8px">Rechazar</button><button id="consent-yes" type="button" style="padding:11px 18px;border:0;border-radius:99px;background:#a97b23;color:#fff;font-weight:700">Aceptar todo</button></div></div></div><script>(function(){const b=document.getElementById('rel-consent');if(!document.cookie.match(/(?:^|;\s*)rel_consent=/))b.hidden=false;function set(v){document.cookie='rel_consent='+v+';max-age=15552000;path=/;SameSite=Lax';gtag('consent','update',{'ad_storage':v==='granted'?'granted':'denied','ad_user_data':v==='granted'?'granted':'denied','ad_personalization':v==='granted'?'granted':'denied','analytics_storage':v==='granted'?'granted':'denied'});b.hidden=true}document.getElementById('consent-yes').onclick=()=>set('granted');document.getElementById('consent-no').onclick=()=>set('denied')})();</script><script>const n=document.getElementById('nav-toggle'),l=document.getElementById('nav-links');n.addEventListener('click',()=>{let o=n.getAttribute('aria-expanded')==='true';n.setAttribute('aria-expanded',!o);l.classList.toggle('open',!o)});const b=document.getElementById('progress-bar');addEventListener('scroll',()=>{let d=document.documentElement,m=d.scrollHeight-d.clientHeight;b.style.width=(m?scrollY/m*100:0)+'%'},{passive:true});</script></body></html>

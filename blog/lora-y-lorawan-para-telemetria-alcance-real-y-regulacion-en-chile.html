@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="es-CL"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LoRa y LoRaWAN para Telemetría: Alcance Real y Regulación en Chile</title><meta name="description" content="Guía técnica de LoRa y LoRaWAN: spreading factor, presupuesto de enlace, alcance real medido, consumo, LoRa punto a punto vs LoRaWAN y la banda 915 MHz autorizada en Chile."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile"><meta property="og:type" content="article"><meta property="og:title" content="LoRa y LoRaWAN para Telemetría: Alcance Real y Regulación en Chile"><meta property="og:description" content="Los 15 km del marketing existen, pero con línea de vista y SF12. Presupuesto de enlace con números, duty cycle, plan AU915 para Chile y cuándo NO usar LoRaWAN."><meta property="og:image" content="https://www.ukrabot.cl/blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile-hero.svg"><meta property="og:url" content="https://www.ukrabot.cl/blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="LoRa y LoRaWAN para Telemetría: Alcance Real y Regulación en Chile"><meta name="twitter:description" content="Guía técnica de LoRa y LoRaWAN: spreading factor, presupuesto de enlace, alcance real medido, consumo, LoRa punto a punto vs LoRaWAN y la banda 915 MHz autorizada en Chile."><meta name="twitter:image" content="https://www.ukrabot.cl/blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile-hero.svg"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "LoRa y LoRaWAN para Telemetría: Alcance Real y Regulación en Chile", "description": "Guía técnica de LoRa y LoRaWAN: spreading factor, presupuesto de enlace, alcance real medido, consumo, LoRa punto a punto vs LoRaWAN y la banda 915 MHz autorizada en Chile.", "author": {"@type": "Person", "name": "Alberto Gallardo", "jobTitle": "Analista Programador Computacional", "url": "https://www.ukrabot.cl/about"}, "publisher": {"@type": "Organization", "name": "Blog de Ingeniería Robótica", "url": "https://www.ukrabot.cl", "logo": {"@type": "ImageObject", "url": "https://www.ukrabot.cl/logo.png"}}, "datePublished": "2026-08-18", "dateModified": "2026-08-18", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.ukrabot.cl/blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile"}, "image": "https://www.ukrabot.cl/blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile-hero.svg", "wordCount": "2831", "inLanguage": "es-CL"}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.ukrabot.cl/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.ukrabot.cl/blog/"}, {"@type": "ListItem", "position": 3, "name": "LoRa y LoRaWAN para Telemetría: Alcance Real y Regulación en Chile", "item": "https://www.ukrabot.cl/blog/lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Qué frecuencia debo usar en Chile?", "acceptedAnswer": {"@type": "Answer", "text": "La banda de 915 a 928 MHz, autorizada bajo la norma de equipos de alcance reducido de SUBTEL con hasta 500 mW. Compra hardware de 915 MHz y configura el plan AU915 o US915; el plan europeo EU868 no es viable porque la ventana chilena en 868 MHz es de solo 200 kHz."}}, {"@type": "Question", "name": "¿Realmente alcanza 15 kilómetros?", "acceptedAnswer": {"@type": "Answer", "text": "Con línea de vista despejada, antenas elevadas y SF alto, sí, e incluso más. En ciudad con edificios, el alcance realista baja a 1 a 3 km. La altura de la antena influye más que la potencia de transmisión."}}, {"@type": "Question", "name": "¿Puedo enviar imágenes o audio por LoRa?", "acceptedAnswer": {"@type": "Answer", "text": "No. Con 250 a 5.470 bps y payloads de hasta 222 bytes, LoRa está pensado para telemetría de pocos bytes. Enviar una foto tomaría horas y saturaría el canal para todos los demás nodos."}}, {"@type": "Question", "name": "¿Necesito un gateway para usar LoRa?", "acceptedAnswer": {"@type": "Answer", "text": "Solo si usas LoRaWAN. Dos módulos LoRa se comunican directamente entre sí en modo punto a punto, sin gateway ni servidor, y para menos de diez nodos esa suele ser la mejor decisión."}}, {"@type": "Question", "name": "¿Cuánto dura la batería de un nodo LoRa?", "acceptedAnswer": {"@type": "Answer", "text": "Con deep sleep, un envío cada 15 minutos en SF9 y dos pilas AA de litio, entre 3 y 5 años en condiciones reales. El consumo en reposo del microcontrolador y del regulador suele importar más que la propia transmisión."}}]}</script><style>
+:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}img{max-width:100%;height:auto}a{color:var(--blue);text-underline-offset:3px}.container{max-width:1050px;margin:auto;padding:0 24px}.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:20px;font-size:.86rem}.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--line);border-radius:8px}.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:auto}.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300}.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08)}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.3),rgba(18,15,11,.9))}.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.2rem);line-height:1.08;font-weight:400;max-width:930px;margin:18px 0;color:#fff}.hero p{color:rgba(245,243,238,.8);max-width:760px;font-size:1.05rem}.byline{font-size:.85rem!important;color:rgba(245,243,238,.58)!important}.byline a{color:var(--gold-bright)}.article-body{padding-top:64px;padding-bottom:90px}.article-body section{scroll-margin-top:80px}.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px}.article-body p,.article-body li{color:var(--muted)}.article-body p{margin:0 0 20px}.article-body li{margin:8px 0}.article-body strong{color:var(--text)}.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}.toc a{color:var(--muted);text-decoration:none}.note{border-left:4px solid var(--gold)}.warning{background:rgba(178,40,30,.06);border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0;color:var(--muted)}.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.article-img img{width:100%;display:block}.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow-x:auto;background:#14121a;border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.sources{margin:48px 0 24px;padding:22px 24px;background:#fff;border:1px solid var(--line);border-radius:12px}.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}.ad-slot{margin:34px 0;min-height:280px;text-align:center}.site-footer{border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem}@media(max-width:760px){.nav-toggle{display:flex}.nav-links{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;background:var(--ink);padding:12px 24px}.nav-links.open{display:flex}.hero-inner{padding:80px 20px 50px}.article-body h2{font-size:1.6rem}.container{padding:0 16px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500});try{if(document.cookie.match(/(?:^|;\s*)rel_consent=granted/))gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'})}catch(e){}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-1ZVHF8X35Q');</script></head><body><div class="progress-bar" id="progress-bar"></div><nav class="site-nav" aria-label="Navegación del sitio"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span><span></span></button><div class="nav-links" id="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre Nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><img src="lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile-hero.svg" alt="Ilustración de una antena LoRa irradiando hacia nodos sensores distantes en el campo" fetchpriority="high"><div class="hero-inner"><div class="eyebrow">IoT · Redes LPWAN · Actualizado el <time datetime="2026-08-18">18 de agosto de 2026</time></div><h1>LoRa y LoRaWAN para Telemetría: Alcance Real y Regulación en Chile</h1><p>LoRa promete kilómetros de alcance con baterías que duran años, y cumple — dentro de un conjunto de compromisos que la publicidad omite. Cada duplicación de alcance cuesta velocidad, tiempo en el aire y consumo. Esta guía pone números a esos compromisos y aterriza qué banda y qué plan puedes usar legalmente en Chile.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p></div></header><main class="container article-body"><article><div class="article-img"><img src="lora-y-lorawan-para-telemetria-alcance-real-y-regulacion-en-chile-hero.svg" alt="Diagrama editorial de LoRa y LoRaWAN para Telemetría: Alcance Real y Regulación en Chile" loading="lazy"><div class="caption">Guía técnica basada en documentación primaria, criterios medibles y procedimientos reproducibles.</div></div><div class="toc" aria-label="Tabla de contenidos"><h2>Qué cubre esta guía</h2><ol><li><a href="#lora">LoRa no es LoRaWAN: dos cosas distintas</a></li><li><a href="#modulacion">Chirp spread spectrum y el spreading factor</a></li><li><a href="#presupuesto">Presupuesto de enlace: calcular el alcance</a></li><li><a href="#chile">Banda y regulación en Chile: 915 MHz y AU915</a></li><li><a href="#hardware">Hardware: SX1276, SX1262 y módulos habituales</a></li><li><a href="#p2p">LoRa punto a punto con dos ESP32</a></li><li><a href="#lorawan">LoRaWAN: cuándo vale la pena la complejidad</a></li><li><a href="#consumo">Consumo y diseño de un nodo a batería</a></li></ol></div><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="lora"><h2>LoRa no es LoRaWAN: dos cosas distintas</h2>
+<p>La confusión más costosa en proyectos LPWAN nace de mezclar dos capas:</p>
+<div class="table-wrap"><table><thead><tr><th>Aspecto</th><th>LoRa</th><th>LoRaWAN</th></tr></thead><tbody>
+<tr><td>Qué es</td><td>Modulación de capa física</td><td>Protocolo MAC y arquitectura de red</td></tr>
+<tr><td>Propietario</td><td>Semtech (patentado)</td><td>Especificación abierta de LoRa Alliance</td></tr>
+<tr><td>Necesita gateway</td><td>No</td><td>Sí</td></tr>
+<tr><td>Necesita servidor de red</td><td>No</td><td>Sí (TTN, ChirpStack, propio)</td></tr>
+<tr><td>Seguridad</td><td>La que implementes</td><td>AES-128 en dos niveles, obligatoria</td></tr>
+<tr><td>Escalabilidad</td><td>Decenas de nodos</td><td>Miles de nodos</td></tr>
+<tr><td>Complejidad</td><td>Baja: dos módulos y listo</td><td>Alta: claves, sesiones, ADR</td></tr>
+<tr><td>Caso ideal</td><td>Enlace fijo entre 2-10 puntos</td><td>Despliegue con muchos nodos móviles</td></tr>
+</tbody></table></div>
+<p>La decisión práctica es directa: si tienes menos de diez nodos, todos bajo tu control y en un radio conocido, <strong>LoRa punto a punto</strong> te ahorra semanas de trabajo. Si vas a desplegar sensores en un territorio, con nodos que aparecen y desaparecen y necesitas gestión de claves y roaming, <strong>LoRaWAN</strong> es la respuesta correcta pese a su curva de aprendizaje.</p>
+<div class="note"><p><strong>Un error frecuente:</strong> montar un gateway LoRaWAN completo para leer tres sensores de humedad en un fundo. El gateway cuesta más que los nodos, exige conectividad permanente y añade un punto de falla. Con dos módulos SX1262 y un ESP32 receptor con Wi-Fi resuelves lo mismo en una tarde.</p></div>
+</section><section id="modulacion"><h2>Chirp spread spectrum y el spreading factor</h2>
+<p>LoRa modula la información en <em>chirps</em>: barridos de frecuencia que recorren todo el ancho de banda del canal. Un receptor puede recuperar un chirp incluso por debajo del piso de ruido, porque conoce exactamente la forma de la señal que busca.</p>
+<p>El <strong>spreading factor</strong> (SF7 a SF12) controla cuántos chips componen cada símbolo, y de él dependen todos los compromisos:</p>
+<div class="table-wrap"><table><thead><tr><th>SF</th><th>Bitrate (BW 125 kHz)</th><th>Sensibilidad</th><th>Time on air (20 B)</th><th>Alcance relativo</th></tr></thead><tbody>
+<tr><td>SF7</td><td>5.470 bps</td><td>−123 dBm</td><td>≈ 56 ms</td><td>1,0×</td></tr>
+<tr><td>SF8</td><td>3.125 bps</td><td>−126 dBm</td><td>≈ 103 ms</td><td>1,4×</td></tr>
+<tr><td>SF9</td><td>1.760 bps</td><td>−129 dBm</td><td>≈ 185 ms</td><td>2,0×</td></tr>
+<tr><td>SF10</td><td>980 bps</td><td>−132 dBm</td><td>≈ 371 ms</td><td>2,8×</td></tr>
+<tr><td>SF11</td><td>440 bps</td><td>−134,5 dBm</td><td>≈ 741 ms</td><td>3,8×</td></tr>
+<tr><td>SF12</td><td>250 bps</td><td>−137 dBm</td><td>≈ 1.483 ms</td><td>5,3×</td></tr>
+</tbody></table></div>
+<p>Cada paso de SF <strong>duplica</strong> el tiempo en el aire y suma unos 2,5 dB de sensibilidad. Las consecuencias en cadena:</p>
+<ul>
+<li>Más tiempo en el aire = más consumo por mensaje (el transmisor está encendido el doble).</li>
+<li>Más tiempo en el aire = menos mensajes posibles antes de topar con límites regulatorios o de colisión.</li>
+<li>Más tiempo en el aire = mayor probabilidad de colisión con otros nodos.</li>
+</ul>
+<pre><code>Consumo por mensaje según SF (módulo a 20 dBm, ~120 mA en TX)
+
+SF7:  0,056 s × 120 mA = 6,7 mAs   = 0,0019 mAh
+SF12: 1,483 s × 120 mA = 178 mAs   = 0,049 mAh
+
+Con una pila de 2.400 mAh y un mensaje cada 15 minutos:
+SF7  → 35.000 días teóricos de TX (domina el consumo en reposo)
+SF12 → 1.360 días de TX; aquí el SF sí determina la vida útil</code></pre>
+<div class="warning"><p><strong>No uses SF12 "por si acaso".</strong> Es la configuración más lenta, más costosa energéticamente y la que más ocupa el canal. Empieza en SF7 y sube solo hasta donde el enlace sea confiable con margen. En LoRaWAN, el mecanismo ADR hace este ajuste automáticamente si el nodo está fijo.</p></div>
+</section><section id="presupuesto"><h2>Presupuesto de enlace: calcular el alcance</h2>
+<p>El alcance no se adivina: se calcula con un presupuesto de enlace y luego se verifica en terreno.</p>
+<pre><code>Margen = P_tx + G_tx − L_cables − L_trayecto + G_rx − S_rx
+
+P_tx      potencia transmitida (dBm)
+G_tx/G_rx ganancia de antenas (dBi)
+L_cables  pérdidas de cable y conectores (dB)
+L_trayecto pérdida de propagación (dB)
+S_rx      sensibilidad del receptor (dBm)
+
+Objetivo: margen ≥ 10 dB para un enlace confiable.</code></pre>
+<pre><code>Pérdida en espacio libre (FSPL) a 915 MHz
+
+FSPL(dB) = 20·log₁₀(d_km) + 20·log₁₀(f_MHz) + 32,44
+         = 20·log₁₀(d_km) + 91,7
+
+  1 km  →  91,7 dB
+  2 km  →  97,7 dB
+  5 km  → 105,7 dB
+ 10 km  → 111,7 dB
+ 20 km  → 117,7 dB</code></pre>
+<pre><code>Caso 1 — Rural con línea de vista, SF12
+
+P_tx = 20 dBm, antenas 3 dBi ambas, cables 1 dB, S_rx = −137 dBm
+Margen a 10 km = 20 + 3 − 1 − 111,7 + 3 + 137 = 50,3 dB
+Sobra muchísimo: el límite real será la curvatura terrestre
+y los obstáculos, no el presupuesto.
+
+Caso 2 — Urbano denso, SF9
+
+Pérdida urbana ≈ FSPL + 25 a 35 dB de penetración y obstáculos
+A 1 km: 91,7 + 30 = 121,7 dB
+Margen = 20 + 2 − 1 − 121,7 + 3 + 129 = 31,3 dB   ✓
+
+Caso 3 — Sensor en subterráneo, SF12
+
+Pérdida adicional por losa y muros: 40 a 60 dB
+A 500 m: 85,7 + 50 = 135,7 dB
+Margen = 20 + 0 − 1 − 135,7 + 3 + 137 = 23,3 dB   ✓ pero justo</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Escenario</th><th>Alcance típico observado</th><th>SF recomendado</th></tr></thead><tbody>
+<tr><td>Interior de edificio, mismo piso</td><td>50 – 150 m</td><td>SF7 – SF9</td></tr>
+<tr><td>Interior, entre pisos</td><td>30 – 80 m</td><td>SF9 – SF10</td></tr>
+<tr><td>Urbano denso</td><td>1 – 3 km</td><td>SF9 – SF11</td></tr>
+<tr><td>Suburbano</td><td>3 – 8 km</td><td>SF8 – SF10</td></tr>
+<tr><td>Rural con obstáculos</td><td>5 – 12 km</td><td>SF10 – SF12</td></tr>
+<tr><td>Línea de vista, antena elevada</td><td>15 – 40 km</td><td>SF10 – SF12</td></tr>
+<tr><td>Globo o dron a 1.000 m</td><td>&gt; 100 km</td><td>SF12</td></tr>
+</tbody></table></div>
+<div class="note"><p><strong>La altura de antena vale más que la potencia.</strong> Duplicar la potencia agrega 3 dB; subir la antena de 2 a 10 metros puede agregar 15 a 20 dB en terreno con obstáculos, porque despeja la primera zona de Fresnel. Antes de comprar un amplificador, sube la antena.</p></div>
+</section><section id="chile"><h2>Banda y regulación en Chile: 915 MHz y AU915</h2>
+<p>En Chile la banda de trabajo para LoRa es la ISM de <strong>915 a 928 MHz</strong>, regulada por la Norma Técnica de Equipos de Alcance Reducido de SUBTEL (Resolución Exenta 1985 y sus modificaciones).</p>
+<div class="table-wrap"><table><thead><tr><th>Banda</th><th>Potencia máxima</th><th>Viabilidad para LoRa</th></tr></thead><tbody>
+<tr><td>433,05 – 434,79 MHz</td><td>10 mW</td><td>Posible pero muy limitada en potencia</td></tr>
+<tr><td>868,175 – 868,375 MHz</td><td>25 mW</td><td>Ventana de solo 200 kHz: EU868 <strong>no</strong> es viable</td></tr>
+<tr><td>915 – 928 MHz</td><td>500 mW (1 W en subrangos)</td><td><strong>La opción correcta</strong></td></tr>
+</tbody></table></div>
+<p>Consecuencias prácticas para el diseño:</p>
+<ul>
+<li><strong>Compra hardware de 915 MHz</strong>, no de 868 MHz. Un módulo EU868 en Chile transmite fuera de la ventana autorizada y además rinde peor porque su filtro y antena están sintonizados en otra frecuencia.</li>
+<li><strong>Configura el plan AU915 o US915</strong> en LoRaWAN. AU915 es el más usado en Chile; ambos operan dentro de 915–928 MHz.</li>
+<li><strong>Evita el tramo 902–915 MHz.</strong> Aunque parte de la banda americana lo incluye, en Chile hay concesiones asignadas en ese rango. Usa subbandas que caigan sobre 915 MHz.</li>
+<li>El <strong>duty cycle</strong> no está limitado del mismo modo que en Europa, pero el sentido común y las buenas prácticas de red aconsejan mantenerse bajo el 1 % por nodo.</li>
+</ul>
+<pre><code>Configuración de subbanda para Chile (LoRaWAN AU915)
+
+AU915 tiene 72 canales; los gateways de 8 canales usan una subbanda.
+Subbanda 2 (canales 8-15) es la convención de TTN en la región:
+
+  Uplink   : 916,8 – 918,2 MHz (125 kHz, SF7-SF12)
+  Uplink   : 917,5 MHz (500 kHz, SF8)
+  Downlink : 923,3 – 927,5 MHz (500 kHz)
+
+En ChirpStack / TTN: seleccionar "AU915" + "sub-band 2"
+En el nodo (LMIC): #define CFG_au915 1</code></pre>
+<div class="warning"><p><strong>Certificación:</strong> los equipos de telecomunicaciones comercializados en Chile requieren certificación ante SUBTEL. Para un prototipo o proyecto personal esto no aplica, pero si vas a vender un producto con radio incorporada debes considerar el trámite y sus costos desde el diseño. Consulta siempre la normativa vigente, que se actualiza.</p></div>
+</section><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="hardware"><h2>Hardware: SX1276, SX1262 y módulos habituales</h2>
+<div class="table-wrap"><table><thead><tr><th>Chip / módulo</th><th>Generación</th><th>Consumo RX</th><th>TX máx.</th><th>Nota</th></tr></thead><tbody>
+<tr><td>SX1276 / RFM95W</td><td>1ª</td><td>≈ 12 mA</td><td>20 dBm</td><td>El más difundido; enorme soporte de librerías</td></tr>
+<tr><td>SX1262 / LLCC68</td><td>2ª</td><td>≈ 4,6 mA</td><td>22 dBm</td><td>Mejor sensibilidad y menor consumo; elección actual</td></tr>
+<tr><td>SX1268</td><td>2ª</td><td>≈ 4,6 mA</td><td>22 dBm</td><td>Variante para sub-500 MHz</td></tr>
+<tr><td>Heltec WiFi LoRa 32 V3</td><td>ESP32-S3 + SX1262</td><td>Depende del MCU</td><td>21 dBm</td><td>Placa integrada con OLED; ideal para prototipar</td></tr>
+<tr><td>LILYGO T-Beam</td><td>ESP32 + SX1276/1262 + GPS</td><td>—</td><td>20 dBm</td><td>Nodo móvil con GPS y portapilas</td></tr>
+<tr><td>RAK3172</td><td>STM32WLE5 (SoC integrado)</td><td>≈ 4 mA</td><td>22 dBm</td><td>MCU y radio en un chip: menor consumo total</td></tr>
+</tbody></table></div>
+<p>Sobre antenas, tres reglas que resuelven la mayoría de los problemas de alcance:</p>
+<ol>
+<li><strong>Nunca transmitas sin antena.</strong> El PA sin carga se daña. Es la primera causa de módulos LoRa muertos.</li>
+<li><strong>Sintonizada a 915 MHz.</strong> Una antena de 868 o de 433 MHz conectada a un módulo de 915 desperdicia gran parte de la potencia por desadaptación (ROE alta).</li>
+<li><strong>Plano de tierra y polarización.</strong> Un monopolo de λ/4 (unos 8,2 cm a 915 MHz) necesita plano de masa. Ambas antenas deben tener la misma polarización: dos antenas verticales, no una vertical y otra horizontal —el desalineamiento cuesta más de 20 dB—.</li>
+</ol>
+<pre><code>Longitud de antena a 915 MHz
+
+λ = c / f = 299.792.458 / 915.000.000 = 0,3277 m = 32,77 cm
+
+λ/2 dipolo   = 16,4 cm  (dos brazos de 8,2 cm)
+λ/4 monopolo =  8,2 cm  (con plano de tierra)
+Factor de velocidad del hilo (~0,95): usar 7,8 cm y recortar
+ajustando por ROE si tienes analizador.</code></pre>
+</section><section id="p2p"><h2>LoRa punto a punto con dos ESP32</h2>
+<p>La implementación mínima que funciona: un nodo sensor que duerme y transmite, y una puerta de enlace que recibe y publica por MQTT.</p>
+<pre><code>// NODO TRANSMISOR — ESP32 + SX1262 (libreria RadioLib)
+#include &lt;RadioLib.h&gt;
+#include &lt;esp_sleep.h&gt;
+
+SX1262 radio = new Module(8, 14, 12, 13);   // NSS, DIO1, RST, BUSY
+
+#define INTERVALO_US (15ULL * 60 * 1000000)  // 15 minutos
+
+RTC_DATA_ATTR uint32_t contador = 0;
+
+void setup() {
+  Serial.begin(115200);
+  // 915 MHz, BW 125 kHz, SF9, CR 4/5, sync 0x34, 17 dBm, preambulo 8
+  int st = radio.begin(915.0, 125.0, 9, 5, 0x34, 17, 8);
+  if (st != RADIOLIB_ERR_NONE) { Serial.printf("Radio err %d\n", st); }
+
+  float t = leerTemperatura();
+  float h = leerHumedad();
+  uint16_t vbat = leerBateriaMv();
+
+  // Trama binaria compacta: 9 bytes en vez de 60 de JSON
+  uint8_t buf[9];
+  buf[0] = 0x01;                             // ID de nodo
+  buf[1] = (uint8_t)(contador &amp; 0xFF);
+  int16_t ti = (int16_t)(t * 100);
+  int16_t hi = (int16_t)(h * 100);
+  memcpy(buf + 2, &amp;ti, 2);
+  memcpy(buf + 4, &amp;hi, 2);
+  memcpy(buf + 6, &amp;vbat, 2);
+  buf[8] = calcularCRC8(buf, 8);
+
+  radio.transmit(buf, sizeof(buf));
+  contador++;
+
+  radio.sleep();
+  esp_sleep_enable_timer_wakeup(INTERVALO_US);
+  esp_deep_sleep_start();                     // no vuelve: reinicia en setup()
+}
+
+void loop() {}</code></pre>
+<pre><code>// NODO RECEPTOR — misma configuracion de radio
+void setup() {
+  radio.begin(915.0, 125.0, 9, 5, 0x34, 17, 8);
+  radio.startReceive();
+}
+
+void loop() {
+  uint8_t buf[16];
+  int st = radio.readData(buf, 9);
+  if (st == RADIOLIB_ERR_NONE) {
+    if (buf[8] != calcularCRC8(buf, 8)) { radio.startReceive(); return; }
+    int16_t ti, hi; uint16_t vbat;
+    memcpy(&amp;ti, buf + 2, 2); memcpy(&amp;hi, buf + 4, 2);
+    memcpy(&amp;vbat, buf + 6, 2);
+    Serial.printf("nodo=%u seq=%u T=%.2f H=%.2f Vbat=%u mV RSSI=%.1f SNR=%.1f\n",
+      buf[0], buf[1], ti/100.0, hi/100.0, vbat,
+      radio.getRSSI(), radio.getSNR());
+    publicarMQTT(buf);
+    radio.startReceive();
+  }
+}</code></pre>
+<p>Dos detalles de ingeniería que marcan la diferencia entre una demo y un sistema desplegado:</p>
+<ul>
+<li><strong>Trama binaria, no JSON.</strong> Con 250 a 5.470 bps, cada byte cuesta tiempo en el aire y energía. Nueve bytes contra sesenta es una reducción de casi 7× en consumo de transmisión.</li>
+<li><strong>Registra RSSI y SNR siempre.</strong> Son tu único diagnóstico remoto. Un RSSI de −120 dBm con SNR de −15 dB indica que estás al límite y conviene subir el SF antes de que el enlace se caiga por completo.</li>
+</ul>
+<div class="note"><p><strong>Interpretación de SNR:</strong> LoRa puede demodular con SNR negativo, hasta −20 dB en SF12. Un SNR de +10 dB indica enlace holgado; entre 0 y −10 dB es normal; bajo −15 dB estás en el borde. Junto con el RSSI te dice si el problema es distancia (RSSI bajo) o interferencia (RSSI alto con SNR malo).</p></div>
+</section><section id="lorawan"><h2>LoRaWAN: cuándo vale la pena la complejidad</h2>
+<p>LoRaWAN añade una arquitectura completa sobre la modulación LoRa:</p>
+<pre><code>[Nodos] ──LoRa──► [Gateways] ──IP──► [Network Server] ──► [Application Server]
+                   (varios,             (ChirpStack,          (tu backend,
+                    sin config           TTN)                  MQTT, HTTP)
+                    por nodo)
+
+Los gateways son "tontos": reenvían todo lo que oyen.
+El servidor deduplica, descifra, gestiona ADR y decide downlinks.</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Clase</th><th>Recepción</th><th>Latencia downlink</th><th>Consumo</th><th>Uso</th></tr></thead><tbody>
+<tr><td>Clase A</td><td>Dos ventanas tras cada uplink</td><td>Hasta el próximo uplink</td><td>Mínimo</td><td>Sensores a batería (la mayoría)</td></tr>
+<tr><td>Clase B</td><td>Ventanas periódicas sincronizadas</td><td>Segundos</td><td>Medio</td><td>Actuadores con batería</td></tr>
+<tr><td>Clase C</td><td>Permanente salvo al transmitir</td><td>Inmediata</td><td>Alto</td><td>Equipos con alimentación de red</td></tr>
+</tbody></table></div>
+<p>Activación: <strong>OTAA</strong> (Over-The-Air Activation) es la forma correcta —el nodo negocia claves de sesión con un join— frente a <strong>ABP</strong>, donde las claves son fijas y el contador de tramas debe gestionarse a mano. Usa OTAA salvo que tengas una razón muy concreta.</p>
+<div class="table-wrap"><table><thead><tr><th>Elige LoRaWAN si...</th><th>Elige LoRa P2P si...</th></tr></thead><tbody>
+<tr><td>Tienes más de 20 nodos</td><td>Tienes menos de 10 nodos</td></tr>
+<tr><td>Los nodos son móviles o los instalan terceros</td><td>Todo está bajo tu control físico</td></tr>
+<tr><td>Necesitas cifrado y gestión de claves estándar</td><td>Puedes implementar tu propio AES</td></tr>
+<tr><td>Hay cobertura pública (TTN) en tu zona</td><td>Estás en zona sin cobertura</td></tr>
+<tr><td>Quieres ADR automático</td><td>El enlace es fijo y conocido</td></tr>
+<tr><td>El proyecto debe escalar</td><td>Es un proyecto acotado</td></tr>
+</tbody></table></div>
+<p>Si eliges LoRaWAN, <strong>ChirpStack</strong> autoalojado en un mini PC o Raspberry Pi te da control total sin depender de un servicio externo, y encaja bien con una infraestructura local tipo <a href="/blog/docker-en-raspberry-pi-contenedores-para-proyectos-caseros">contenedores en Raspberry Pi</a>. The Things Network es gratuito y excelente para empezar, con la contrapartida de la política de <em>fair use</em> (aproximadamente 30 s de tiempo en el aire por nodo y día).</p>
+</section><section id="consumo"><h2>Consumo y diseño de un nodo a batería</h2>
+<p>El objetivo típico es una pila que dure más que el ciclo agrícola o el año calendario. La cuenta se hace por ciclo, no por corriente instantánea.</p>
+<pre><code>Presupuesto energético de un ciclo (medición cada 15 min, SF9)
+
+Estado             Corriente   Tiempo     Carga
+─────────────────────────────────────────────────────
+Deep sleep ESP32      10 µA    899,5 s    8,995 mAs
+Despertar + init      40 mA      0,20 s   8,0 mAs
+Lectura de sensor      5 mA      0,10 s   0,5 mAs
+TX LoRa SF9 @17 dBm  100 mA      0,185 s 18,5 mAs
+Volver a dormir       20 mA      0,015 s  0,3 mAs
+─────────────────────────────────────────────────────
+Total por ciclo                          36,3 mAs = 0,0101 mAh
+
+Ciclos por día = 96
+Consumo diario = 0,968 mAh
+Con 2 pilas AA de litio (3.000 mAh útiles):
+Autonomía = 3.000 / 0,968 = 3.099 días ≈ 8,5 años (teórico)
+
+Con autodescarga y frío real: 3 a 5 años. Muy razonable.</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Decisión de diseño</th><th>Impacto</th><th>Recomendación</th></tr></thead><tbody>
+<tr><td>Deep sleep del MCU</td><td>×100 en autonomía</td><td>Obligatorio; verifica los µA con multímetro</td></tr>
+<tr><td>Regulador con baja Iq</td><td>Un LDO de 50 µA arruina el diseño</td><td>Usar LDO de &lt; 2 µA (TPS7A02, XC6206 no sirve)</td></tr>
+<tr><td>LED de encendido</td><td>2 mA permanentes = 48 mAh/día</td><td>Desoldar en todos los módulos</td></tr>
+<tr><td>Divisor de batería siempre conectado</td><td>Decenas de µA</td><td>Conmutar con MOSFET solo al medir</td></tr>
+<tr><td>SF más bajo posible</td><td>Hasta 8× en energía de TX</td><td>Fijar por medición de RSSI en sitio</td></tr>
+<tr><td>Química de batería</td><td>Litio AA rinde a −20 °C</td><td>Evitar alcalinas en exterior frío</td></tr>
+<tr><td>Payload compacto</td><td>Proporcional al tiempo en el aire</td><td>Binario, nunca JSON</td></tr>
+</tbody></table></div>
+<div class="warning"><p><strong>Mide el consumo real, no el calculado.</strong> Un módulo con LED soldado, un regulador de alta corriente de reposo o un periférico que no entra en sleep pueden multiplicar por cien tu consumo teórico. Un medidor de corriente de bajo rango o una resistencia shunt con osciloscopio revelan en minutos lo que la hoja de datos no dice. Para alimentar el prototipo con precisión, ver <a href="/blog/fuentes-de-laboratorio-programables-guia-de-compra">fuentes de laboratorio programables</a>.</p></div>
+<p>Si el nodo va a exterior, el panel solar cambia la ecuación: 1 W de panel con una celda LiFePO4 de 18650 elimina el reemplazo de pilas y tolera bien el ciclado. Las consideraciones de química están en <a href="/blog/celdas-lifepo4-grado-a-vs-grado-b-como-distinguirlas-antes-de-comprar">celdas LiFePO4</a>.</p>
+</section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Qué frecuencia debo usar en Chile?</summary><p>La banda de 915 a 928 MHz, autorizada bajo la norma de equipos de alcance reducido de SUBTEL con hasta 500 mW. Compra hardware de 915 MHz y configura el plan AU915 o US915; el plan europeo EU868 no es viable porque la ventana chilena en 868 MHz es de solo 200 kHz.</p></details><details><summary>¿Realmente alcanza 15 kilómetros?</summary><p>Con línea de vista despejada, antenas elevadas y SF alto, sí, e incluso más. En ciudad con edificios, el alcance realista baja a 1 a 3 km. La altura de la antena influye más que la potencia de transmisión.</p></details><details><summary>¿Puedo enviar imágenes o audio por LoRa?</summary><p>No. Con 250 a 5.470 bps y payloads de hasta 222 bytes, LoRa está pensado para telemetría de pocos bytes. Enviar una foto tomaría horas y saturaría el canal para todos los demás nodos.</p></details><details><summary>¿Necesito un gateway para usar LoRa?</summary><p>Solo si usas LoRaWAN. Dos módulos LoRa se comunican directamente entre sí en modo punto a punto, sin gateway ni servidor, y para menos de diez nodos esa suele ser la mejor decisión.</p></details><details><summary>¿Cuánto dura la batería de un nodo LoRa?</summary><p>Con deep sleep, un envío cada 15 minutos en SF9 y dos pilas AA de litio, entre 3 y 5 años en condiciones reales. El consumo en reposo del microcontrolador y del regulador suele importar más que la propia transmisión.</p></details></div></section><p class="disclosure">Contenido editorial independiente, sin ubicaciones patrocinadas ni enlaces de afiliado. Las especificaciones pueden cambiar; confirma siempre el manual y la normativa aplicable. Si detectas un error, <a href="/contact">avísanos</a>.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Complementa con <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">ESP32 y MQTT</a> y con <a href="/blog/registra-y-grafica-datos-en-la-nube-con-thingspeak">registro de datos en la nube</a>.</p></div></article><section class="sources" aria-label="Fuentes primarias"><h2>Fuentes primarias y lecturas recomendadas</h2><p>Documentación oficial y material técnico usado para contrastar esta guía.</p><ul><li><a href="https://www.subtel.gob.cl/wp-content/uploads/2019/10/Refundido_Res_1985_de_2017_2_855_2019.pdf" target="_blank" rel="noopener noreferrer">SUBTEL Chile — Norma Técnica de Equipos de Alcance Reducido</a></li><li><a href="https://lora-alliance.org/resource_hub/rp2-1-0-3-lorawan-regional-parameters/" target="_blank" rel="noopener noreferrer">LoRa Alliance — Parámetros regionales LoRaWAN (AU915/US915)</a></li><li><a href="https://www.semtech.com/products/wireless-rf/lora-connect/sx1262" target="_blank" rel="noopener noreferrer">Semtech — Hoja de datos del transceptor SX1262</a></li><li><a href="https://www.thethingsnetwork.org/docs/lorawan/" target="_blank" rel="noopener noreferrer">The Things Network — Documentación de LoRaWAN</a></li></ul><p style="font-size:.75rem;color:var(--quiet)">Enlaces revisados: 18 de agosto de 2026.</p></section></main><footer class="container site-footer"><p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada.</p><p><a href="/about">Sobre Nosotros</a> · <a href="/contact">Contacto</a> · <a href="/privacy">Política de Privacidad</a> · <a href="/terms">Términos</a></p><p>© 2023–2026 Alberto Gallardo. Todos los derechos reservados.</p></footer><div id="rel-consent" role="dialog" aria-labelledby="consent-title" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#fff;border-top:1px solid rgba(30,25,15,.15);box-shadow:0 -8px 32px rgba(30,25,15,.18);padding:20px 24px"><div style="max-width:1050px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div style="flex:1;min-width:260px"><strong id="consent-title">Usamos cookies</strong><p style="margin:4px 0 0;color:#57534a;font-size:.85rem">Con tu permiso usamos cookies para analítica y anuncios personalizados. Puedes rechazar y seguir leyendo. <a href="/privacy">Política de Privacidad</a>.</p></div><div><button id="consent-no" type="button" style="padding:10px 18px;border:1px solid #aaa;border-radius:99px;background:#fff;margin-right:8px">Rechazar</button><button id="consent-yes" type="button" style="padding:11px 18px;border:0;border-radius:99px;background:#a97b23;color:#fff;font-weight:700">Aceptar todo</button></div></div></div><script>(function(){const b=document.getElementById('rel-consent');if(!document.cookie.match(/(?:^|;\s*)rel_consent=/))b.hidden=false;function set(v){document.cookie='rel_consent='+v+';max-age=15552000;path=/;SameSite=Lax';gtag('consent','update',{'ad_storage':v==='granted'?'granted':'denied','ad_user_data':v==='granted'?'granted':'denied','ad_personalization':v==='granted'?'granted':'denied','analytics_storage':v==='granted'?'granted':'denied'});b.hidden=true}document.getElementById('consent-yes').onclick=()=>set('granted');document.getElementById('consent-no').onclick=()=>set('denied')})();</script><script>const n=document.getElementById('nav-toggle'),l=document.getElementById('nav-links');n.addEventListener('click',()=>{let o=n.getAttribute('aria-expanded')==='true';n.setAttribute('aria-expanded',!o);l.classList.toggle('open',!o)});const b=document.getElementById('progress-bar');addEventListener('scroll',()=>{let d=document.documentElement,m=d.scrollHeight-d.clientHeight;b.style.width=(m?scrollY/m*100:0)+'%'},{passive:true});</script></body></html>

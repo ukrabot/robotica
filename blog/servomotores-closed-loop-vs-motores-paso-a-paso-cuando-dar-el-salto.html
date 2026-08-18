@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="es-CL"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Servomotores Closed-Loop vs Motores Paso a Paso: Cuándo Dar el Salto</title><meta name="description" content="Comparativa técnica entre steppers en lazo abierto, steppers closed-loop y servos AC: curva par-velocidad, pérdida de pasos, calor, ruido, costo real y criterios de migración."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto"><meta property="og:type" content="article"><meta property="og:title" content="Servomotores Closed-Loop vs Motores Paso a Paso: Cuándo Dar el Salto"><meta property="og:description" content="El stepper pierde pasos en silencio; el servo se queja y sigue. Curvas de par, inercia, sintonía y el punto exacto donde cambiar de tecnología deja de ser un capricho."><meta property="og:image" content="https://www.ukrabot.cl/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto-hero.svg"><meta property="og:url" content="https://www.ukrabot.cl/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Servomotores Closed-Loop vs Motores Paso a Paso: Cuándo Dar el Salto"><meta name="twitter:description" content="Comparativa técnica entre steppers en lazo abierto, steppers closed-loop y servos AC: curva par-velocidad, pérdida de pasos, calor, ruido, costo real y criterios de migración."><meta name="twitter:image" content="https://www.ukrabot.cl/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto-hero.svg"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Servomotores Closed-Loop vs Motores Paso a Paso: Cuándo Dar el Salto", "description": "Comparativa técnica entre steppers en lazo abierto, steppers closed-loop y servos AC: curva par-velocidad, pérdida de pasos, calor, ruido, costo real y criterios de migración.", "author": {"@type": "Person", "name": "Alberto Gallardo", "jobTitle": "Analista Programador Computacional", "url": "https://www.ukrabot.cl/about"}, "publisher": {"@type": "Organization", "name": "Blog de Ingeniería Robótica", "url": "https://www.ukrabot.cl", "logo": {"@type": "ImageObject", "url": "https://www.ukrabot.cl/logo.png"}}, "datePublished": "2026-08-18", "dateModified": "2026-08-18", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.ukrabot.cl/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto"}, "image": "https://www.ukrabot.cl/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto-hero.svg", "wordCount": "2904", "inLanguage": "es-CL"}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.ukrabot.cl/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.ukrabot.cl/blog/"}, {"@type": "ListItem", "position": 3, "name": "Servomotores Closed-Loop vs Motores Paso a Paso: Cuándo Dar el Salto", "item": "https://www.ukrabot.cl/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Un stepper closed-loop es lo mismo que un servo?", "acceptedAnswer": {"@type": "Answer", "text": "No. Es un motor paso a paso con encoder que corrige errores; conserva la curva par-velocidad de un stepper, con par que cae fuerte al subir de vueltas. Un servo AC mantiene par constante hasta su velocidad nominal y tiene un ancho de banda de control muy superior."}}, {"@type": "Question", "name": "¿Subir la tensión del driver realmente aumenta el par?", "acceptedAnswer": {"@type": "Answer", "text": "Aumenta el par disponible a velocidad, no el par de retención. Con más tensión la corriente sube más rápido en la inductancia de la bobina, y la curva par-velocidad se desplaza a la derecha. Nunca superes la tensión máxima del driver."}}, {"@type": "Question", "name": "¿Cuándo conviene un stepper de 48 V frente a un closed-loop?", "acceptedAnswer": {"@type": "Answer", "text": "Si el problema es solo velocidad y la carga es predecible, subir a 48 V es mucho más barato. Si el problema es que pierdes pasos con carga variable o el error pasa inadvertido, el closed-loop es la respuesta correcta."}}, {"@type": "Question", "name": "¿Puedo usar mi controlador GRBL o Marlin con servos?", "acceptedAnswer": {"@type": "Answer", "text": "Sí: la mayoría de los drivers de servo aceptan STEP/DIR. Debes configurar el multiplicador electrónico de engranajes para que la frecuencia de pulsos requerida quede dentro de lo que el controlador puede generar, y cablear la señal de alarma."}}, {"@type": "Question", "name": "¿Por qué mi motor paso a paso se calienta tanto?", "acceptedAnswer": {"@type": "Answer", "text": "Porque en lazo abierto consume su corriente nominal permanentemente, esté o no cargado. Entre 70 y 80 °C de carcasa es normal en un stepper bien ajustado; sobre 90 °C hay que bajar la corriente, mejorar la disipación o pasar a closed-loop."}}]}</script><style>
+:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}img{max-width:100%;height:auto}a{color:var(--blue);text-underline-offset:3px}.container{max-width:1050px;margin:auto;padding:0 24px}.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:20px;font-size:.86rem}.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--line);border-radius:8px}.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:auto}.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300}.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08)}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.3),rgba(18,15,11,.9))}.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.2rem);line-height:1.08;font-weight:400;max-width:930px;margin:18px 0;color:#fff}.hero p{color:rgba(245,243,238,.8);max-width:760px;font-size:1.05rem}.byline{font-size:.85rem!important;color:rgba(245,243,238,.58)!important}.byline a{color:var(--gold-bright)}.article-body{padding-top:64px;padding-bottom:90px}.article-body section{scroll-margin-top:80px}.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px}.article-body p,.article-body li{color:var(--muted)}.article-body p{margin:0 0 20px}.article-body li{margin:8px 0}.article-body strong{color:var(--text)}.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}.toc a{color:var(--muted);text-decoration:none}.note{border-left:4px solid var(--gold)}.warning{background:rgba(178,40,30,.06);border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0;color:var(--muted)}.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.article-img img{width:100%;display:block}.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow-x:auto;background:#14121a;border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.sources{margin:48px 0 24px;padding:22px 24px;background:#fff;border:1px solid var(--line);border-radius:12px}.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}.ad-slot{margin:34px 0;min-height:280px;text-align:center}.site-footer{border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem}@media(max-width:760px){.nav-toggle{display:flex}.nav-links{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;background:var(--ink);padding:12px 24px}.nav-links.open{display:flex}.hero-inner{padding:80px 20px 50px}.article-body h2{font-size:1.6rem}.container{padding:0 16px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500});try{if(document.cookie.match(/(?:^|;\s*)rel_consent=granted/))gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'})}catch(e){}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-1ZVHF8X35Q');</script></head><body><div class="progress-bar" id="progress-bar"></div><nav class="site-nav" aria-label="Navegación del sitio"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span><span></span></button><div class="nav-links" id="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre Nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><img src="servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto-hero.svg" alt="Ilustración comparando un motor paso a paso con encoder y un servomotor con su driver" fetchpriority="high"><div class="hero-inner"><div class="eyebrow">Motores y Actuadores · Control · Actualizado el <time datetime="2026-08-18">18 de agosto de 2026</time></div><h1>Servomotores Closed-Loop vs Motores Paso a Paso: Cuándo Dar el Salto</h1><p>El motor paso a paso domina el mundo maker porque es barato y no necesita sintonía. Su defecto es silencioso y grave: cuando pierde pasos no avisa, y la máquina sigue creyendo que está donde no está. El closed-loop y el servo AC resuelven eso de maneras distintas, y con costos muy distintos.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p></div></header><main class="container article-body"><article><div class="article-img"><img src="servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto-hero.svg" alt="Diagrama editorial de Servomotores Closed-Loop vs Motores Paso a Paso: Cuándo Dar el Salto" loading="lazy"><div class="caption">Guía técnica basada en documentación primaria, criterios medibles y procedimientos reproducibles.</div></div><div class="toc" aria-label="Tabla de contenidos"><h2>Qué cubre esta guía</h2><ol><li><a href="#fundamentos">Tres tecnologías, tres filosofías de control</a></li><li><a href="#curva">La curva par-velocidad: el gráfico que decide todo</a></li><li><a href="#perdida">Pérdida de pasos: por qué ocurre y cómo detectarla</a></li><li><a href="#closedloop">Stepper closed-loop: qué es y qué no es</a></li><li><a href="#servo">Servo AC: lazo real y respuesta dinámica</a></li><li><a href="#comparativa">Comparativa completa con costos</a></li><li><a href="#dimensionar">Cómo dimensionar sin sobredimensionar</a></li><li><a href="#migrar">Cuándo migrar y cómo hacerlo bien</a></li></ol></div><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="fundamentos"><h2>Tres tecnologías, tres filosofías de control</h2>
+<div class="table-wrap"><table><thead><tr><th>Tecnología</th><th>Realimentación</th><th>Filosofía</th><th>Comportamiento en sobrecarga</th></tr></thead><tbody>
+<tr><td>Stepper lazo abierto</td><td>Ninguna</td><td>Confiar en que el rotor sigue al campo</td><td>Pierde pasos en silencio; error permanente</td></tr>
+<tr><td>Stepper closed-loop</td><td>Encoder en el eje del motor</td><td>Corregir cuando el error supera un umbral</td><td>Compensa; alarma si no puede</td></tr>
+<tr><td>Servo AC (PMSM)</td><td>Encoder de alta resolución</td><td>Lazo continuo de corriente, velocidad y posición</td><td>Aumenta corriente hasta 300 %; nunca pierde referencia</td></tr>
+</tbody></table></div>
+<p>Un motor paso a paso avanza porque su rotor de imanes permanentes persigue un campo magnético que rota a saltos. Mientras el par de carga sea menor que el par de retención disponible a esa velocidad, el rotor sigue al campo. Si se excede, el rotor se desincroniza y salta uno o varios polos: eso es <strong>perder pasos</strong>, y el controlador ni se entera porque no hay realimentación.</p>
+<p>Un servo AC funciona al revés: el encoder informa continuamente la posición real, y el driver calcula la corriente exacta en cada fase para llegar a la consigna con el control de campo orientado (FOC). Nunca hay salto: hay error de seguimiento que el lazo corrige.</p>
+<p>El <strong>stepper closed-loop</strong> está en medio, y es donde más marketing engañoso hay. La mayoría son steppers normales con un encoder de 1.000 a 4.000 pulsos que opera en modo corrección: mientras el error sea pequeño, el driver actúa como uno de lazo abierto; cuando el error crece, corrige. No es un servo, aunque muchos vendedores lo llamen así.</p>
+<div class="note"><p><strong>Terminología comercial:</strong> "servo motor" en el mercado maker suele significar tres cosas distintas: el servo RC de hobby (motor DC + potenciómetro + engranajes plásticos), el stepper closed-loop y el servo AC industrial (PMSM con encoder y driver dedicado). Son productos completamente distintos con órdenes de magnitud de diferencia en precio y desempeño.</p></div>
+</section><section id="curva"><h2>La curva par-velocidad: el gráfico que decide todo</h2>
+<p>Un NEMA 23 declara "3 Nm". Ese número es el <strong>par de retención</strong> (holding torque): el par que resiste con el rotor detenido y las bobinas energizadas. A partir de ahí, todo baja.</p>
+<pre><code>Par disponible de un stepper vs velocidad (típico, 24 V)
+
+ Par
+  │███
+  │████
+  │█████
+  │  █████
+  │     █████
+  │        ██████
+  │            ████████
+  └──────────────────────────► rpm
+  0    300   600   900   1200
+
+Con 24 V:  ~50 % del par a 600 rpm
+Con 48 V:  ~50 % del par a 1.200 rpm
+Con 80 V:  ~50 % del par a 2.000 rpm</code></pre>
+<p>La razón es eléctrica: la bobina tiene inductancia, y para que la corriente llegue a su valor nominal necesita tiempo. A mayor velocidad de conmutación, menos tiempo hay, y la corriente —y con ella el par— nunca alcanza su valor pleno.</p>
+<pre><code>Constante de tiempo eléctrica
+
+τ = L / R
+
+NEMA 23 típico: L = 2,5 mH, R = 1,2 Ω  →  τ = 2,08 ms
+A 600 rpm con 200 pasos/vuelta: 2.000 pasos/s = 0,5 ms por paso
+0,5 ms es solo 0,24 τ: la corriente llega al 21 % de su valor.
+
+Solución: subir la tensión del driver. El driver "chopea"
+la corriente, y con más tensión la sube más rápido.
+Regla práctica: V_bus ≈ 32 × √L(mH)  →  32 × √2,5 = 51 V</code></pre>
+<p>El servo AC tiene una curva completamente distinta: <strong>par constante</strong> hasta la velocidad nominal (típicamente 3.000 rpm) y luego par decreciente a potencia constante, con una zona de sobrecarga del 300 % durante segundos.</p>
+<div class="table-wrap"><table><thead><tr><th>Velocidad</th><th>Stepper 3 Nm @ 24 V</th><th>Stepper 3 Nm @ 48 V</th><th>Servo 400 W (1,27 Nm nom.)</th></tr></thead><tbody>
+<tr><td>0 rpm</td><td>3,0 Nm</td><td>3,0 Nm</td><td>1,27 Nm (3,8 Nm pico)</td></tr>
+<tr><td>300 rpm</td><td>2,1 Nm</td><td>2,7 Nm</td><td>1,27 Nm</td></tr>
+<tr><td>600 rpm</td><td>1,4 Nm</td><td>2,3 Nm</td><td>1,27 Nm</td></tr>
+<tr><td>1.200 rpm</td><td>0,6 Nm</td><td>1,5 Nm</td><td>1,27 Nm</td></tr>
+<tr><td>3.000 rpm</td><td>≈ 0,1 Nm</td><td>0,4 Nm</td><td>1,27 Nm</td></tr>
+<tr><td>5.000 rpm</td><td>—</td><td>—</td><td>0,76 Nm</td></tr>
+</tbody></table></div>
+<div class="note"><p><strong>Lectura clave:</strong> el stepper gana en par a baja velocidad y por poco dinero; el servo gana en cuanto necesitas velocidad. Un servo de 400 W entrega a 3.000 rpm más par útil que un NEMA 34 gigante, y pesa la cuarta parte.</p></div>
+</section><section id="perdida"><h2>Pérdida de pasos: por qué ocurre y cómo detectarla</h2>
+<div class="table-wrap"><table><thead><tr><th>Causa</th><th>Mecanismo</th><th>Síntoma</th><th>Corrección</th></tr></thead><tbody>
+<tr><td>Par insuficiente a esa velocidad</td><td>Carga supera la curva</td><td>Salto en un tramo rápido</td><td>Subir tensión, bajar velocidad, reducir</td></tr>
+<tr><td>Aceleración excesiva</td><td>Par inercial supera el disponible</td><td>Falla al arrancar o al cambiar de dirección</td><td>Bajar aceleración; rampa en S</td></tr>
+<tr><td>Resonancia (100–200 rpm)</td><td>Oscilación del rotor entre pasos</td><td>Zumbido y pérdida a una velocidad específica</td><td>Microstepping, amortiguador, cambiar zona</td></tr>
+<tr><td>Corriente mal ajustada</td><td>Vref del driver bajo</td><td>Pérdida general, motor frío</td><td>Ajustar Vref según hoja de datos</td></tr>
+<tr><td>Sobrecalentamiento</td><td>Los imanes pierden fuerza sobre 80 °C</td><td>Falla tras minutos de trabajo</td><td>Disipar; bajar corriente en reposo</td></tr>
+<tr><td>Choque mecánico</td><td>Obstáculo o atasco</td><td>Falla repetible en la misma posición</td><td>Revisar guías, tornillo, lubricación</td></tr>
+<tr><td>Ruido en el cable de STEP</td><td>Pulsos espurios o perdidos</td><td>Error errático y aleatorio</td><td>Cable apantallado, separar del motor</td></tr>
+</tbody></table></div>
+<p><strong>Cómo detectarlo objetivamente</strong> en lazo abierto, sin encoder:</p>
+<ol>
+<li><strong>Prueba de retorno al origen.</strong> Marca la posición con un rotulador, ejecuta un programa de 30 minutos y vuelve al origen. Si la marca no coincide, perdiste pasos.</li>
+<li><strong>Comparador de carátula.</strong> Ejecuta 100 ciclos de ida y vuelta a un tope y mide con comparador. Una deriva monótona indica pérdida sistemática; una dispersión aleatoria indica juego mecánico.</li>
+<li><strong>Prueba de temperatura.</strong> Ejecuta la misma pieza en frío y tras una hora. Si solo falla en caliente, es térmico.</li>
+<li><strong>Barrido de velocidad.</strong> Recorre de 60 a 1.200 rpm en incrementos y anota dónde aparece el zumbido de resonancia.</li>
+</ol>
+<pre><code>Ajuste de corriente en drivers comunes (medir Vref con multímetro)
+
+A4988:   I_max = Vref / (8 × R_sense)    R_sense típ. 0,1 Ω
+         Para 1,0 A: Vref = 1,0 × 8 × 0,1 = 0,80 V
+
+DRV8825: I_max = Vref / (5 × R_sense)    R_sense típ. 0,1 Ω
+         Para 1,5 A: Vref = 1,5 × 5 × 0,1 = 0,75 V
+
+TMC2209: I_RMS = (Vref × 1,77) / 2,5     (o por UART, mejor)
+
+Ajusta al 70-80 % de la corriente nominal del motor si no hay
+disipación activa; el par perdido es menos costoso que un motor
+recalentado.</code></pre>
+<div class="warning"><p><strong>El daño invisible:</strong> en una CNC o impresora 3D, perder pasos arruina la pieza y se nota. En un dosificador, un posicionador de cámara o un eje de robot, la pieza sigue "funcionando" con un error acumulado que nadie detecta hasta que causa un problema mayor. Cualquier eje cuya desviación no sea obvia a simple vista es candidato prioritario a closed-loop.</p></div>
+</section><section id="closedloop"><h2>Stepper closed-loop: qué es y qué no es</h2>
+<p>Un stepper closed-loop añade un encoder (típicamente magnético, de 1.000 a 4.000 ppr) al eje trasero del motor y un driver que compara consigna con posición real.</p>
+<div class="table-wrap"><table><thead><tr><th>Ventaja real</th><th>Limitación honesta</th></tr></thead><tbody>
+<tr><td>No pierde pasos: corrige o alarma</td><td>La corrección ocurre después del error, no lo previene</td></tr>
+<tr><td>Corriente proporcional a la carga</td><td>El par máximo sigue el de un stepper: cae con la velocidad</td></tr>
+<tr><td>Motor mucho más frío en reposo</td><td>No obtienes el ancho de banda de un servo</td></tr>
+<tr><td>Menos ruido y vibración</td><td>La sintonía, aunque simple, ya no es "conectar y listo"</td></tr>
+<tr><td>Sobrecarga instantánea del 200–300 %</td><td>Solo por breves instantes</td></tr>
+<tr><td>Salida de alarma para el controlador</td><td>Hay que cablearla y programarla para que sirva</td></tr>
+<tr><td>Costo apenas 1,5 a 2,5× el lazo abierto</td><td>—</td></tr>
+</tbody></table></div>
+<p>La ganancia menos publicitada y más valiosa en la práctica es <strong>térmica</strong>. Un stepper en lazo abierto consume su corriente nominal siempre, esté cargado o no, y disipa como una estufa. El closed-loop inyecta solo la corriente necesaria: en reposo puede bajar a un 10 % y el motor queda tibio. Eso extiende la vida de rodamientos, imanes y del propio driver.</p>
+<pre><code>Disipación típica de un NEMA 23 de 3 Nm
+
+Lazo abierto, 2,8 A/fase, R = 1,2 Ω:
+  P = 2 × I² × R = 2 × 2,8² × 1,2 = 18,8 W permanentes
+  Temperatura de carcasa: 70-90 °C
+
+Closed-loop, carga real al 30 %:
+  Corriente media ≈ 1,0 A → P = 2 × 1,0² × 1,2 = 2,4 W
+  Temperatura de carcasa: 35-45 °C</code></pre>
+<div class="note"><p><strong>Alternativa integrada:</strong> los drivers TMC2209 y TMC5160 incorporan StallGuard, que detecta el atasco midiendo la fuerza contraelectromotriz sin encoder, y CoolStep, que reduce corriente con carga baja. No es closed-loop de posición —no corrige pasos perdidos— pero da detección de choque y ahorro térmico a un costo mínimo. Es lo que usan las impresoras 3D con <em>sensorless homing</em>.</p></div>
+</section><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="servo"><h2>Servo AC: lazo real y respuesta dinámica</h2>
+<p>Un servo AC es un motor síncrono de imanes permanentes con encoder de alta resolución (17 a 23 bits) y un driver que ejecuta tres lazos anidados:</p>
+<pre><code>Consigna ──► [Lazo de POSICIÓN] ──► [Lazo de VELOCIDAD] ──► [Lazo de CORRIENTE] ──► Motor
+   ▲              ~200 Hz               ~1 kHz                ~4 kHz            │
+   └──────────────────── encoder ────────────────────────────────────────────────┘
+
+Cada lazo interior debe ser 4-10× más rápido que el exterior.</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Característica</th><th>Servo AC típico 400 W</th><th>Implicancia</th></tr></thead><tbody>
+<tr><td>Resolución del encoder</td><td>17 bits = 131.072 ppr</td><td>0,0027° de resolución</td></tr>
+<tr><td>Velocidad nominal</td><td>3.000 rpm</td><td>10× la zona útil de un stepper</td></tr>
+<tr><td>Velocidad máxima</td><td>5.000 – 6.000 rpm</td><td>Ciclos rápidos, menos tiempo muerto</td></tr>
+<tr><td>Sobrecarga</td><td>300 % por 3 s</td><td>Acelera sin sobredimensionar</td></tr>
+<tr><td>Ancho de banda de velocidad</td><td>500 – 2.000 Hz</td><td>Respuesta que un stepper no alcanza</td></tr>
+<tr><td>Relación de inercia admisible</td><td>Hasta 10:1 (30:1 con ajuste)</td><td>Restricción de diseño mecánico</td></tr>
+<tr><td>Frenado regenerativo</td><td>Sí, con resistencia</td><td>Requiere dimensionar la resistencia</td></tr>
+</tbody></table></div>
+<p>El precio de esa capacidad es la <strong>sintonía</strong>. Un servo mal sintonizado oscila, zumba o responde con retardo. Los drivers modernos tienen autotuning que funciona bien si la relación de inercias está dentro de rango; fuera de rango, ninguna ganancia salva el sistema y hay que corregir la mecánica.</p>
+<pre><code>Relación de inercias: el número que decide si funcionará
+
+J_carga_reflejada = J_carga / i²
+Relacion = J_carga_reflejada / J_motor
+
+  &lt; 3:1    Excelente, autotuning trivial
+  3 – 10:1  Bueno, sintonía estándar
+  10 – 20:1 Difícil, requiere ajuste manual y filtros
+  &gt; 20:1   Problemático: cambia la reducción o el motor
+
+Ejemplo: mesa de 40 kg, husillo de 10 mm de paso
+J_carga = m × (paso / 2π)² = 40 × (0,010 / 6,283)²
+        = 40 × 2,53e-6 = 1,01e-4 kg·m²
+J_motor 400 W ≈ 0,27e-4 kg·m²
+Relación = 1,01 / 0,27 = 3,7:1   ✓ excelente</code></pre>
+</section><section id="comparativa"><h2>Comparativa completa con costos</h2>
+<div class="table-wrap"><table><thead><tr><th>Criterio</th><th>Stepper lazo abierto</th><th>Stepper closed-loop</th><th>Servo AC</th></tr></thead><tbody>
+<tr><td>Costo motor + driver (ref. USD)</td><td>25 – 60</td><td>60 – 140</td><td>200 – 500</td></tr>
+<tr><td>Par a 0 rpm</td><td>Excelente</td><td>Excelente</td><td>Bueno (nominal)</td></tr>
+<tr><td>Par a 2.000 rpm</td><td>Muy pobre</td><td>Pobre</td><td>Excelente</td></tr>
+<tr><td>Pérdida de posición</td><td>Sí, silenciosa</td><td>No (corrige o alarma)</td><td>No</td></tr>
+<tr><td>Resolución típica</td><td>200 pasos × micropasos</td><td>1.000 – 4.000 ppr</td><td>131.072 ppr o más</td></tr>
+<tr><td>Temperatura en reposo</td><td>Muy caliente</td><td>Tibio</td><td>Frío</td></tr>
+<tr><td>Ruido acústico</td><td>Alto</td><td>Medio</td><td>Muy bajo</td></tr>
+<tr><td>Sintonía necesaria</td><td>Ninguna</td><td>Mínima</td><td>Sí (autotuning + ajuste)</td></tr>
+<tr><td>Interfaz</td><td>STEP/DIR</td><td>STEP/DIR + alarma</td><td>STEP/DIR, analógica, EtherCAT, CAN</td></tr>
+<tr><td>Eficiencia energética</td><td>Muy baja</td><td>Media</td><td>Alta</td></tr>
+<tr><td>Mantenimiento</td><td>Nulo</td><td>Nulo</td><td>Encoder y freno</td></tr>
+<tr><td>Disponibilidad de repuestos</td><td>Total</td><td>Buena</td><td>Depende de marca</td></tr>
+</tbody></table></div>
+<p>Traducido a decisiones concretas por aplicación:</p>
+<div class="table-wrap"><table><thead><tr><th>Aplicación</th><th>Elección</th><th>Razón</th></tr></thead><tbody>
+<tr><td>Impresora 3D FDM</td><td>Stepper lazo abierto</td><td>Baja velocidad, carga predecible, costo manda</td></tr>
+<tr><td>CNC router hobby en MDF</td><td>Stepper lazo abierto @ 48 V</td><td>Suficiente si la mecánica es rígida</td></tr>
+<tr><td>CNC router en aluminio</td><td>Stepper closed-loop</td><td>Cortes pesados; perder pasos rompe la fresa</td></tr>
+<tr><td>Cortadora láser de gran formato</td><td>Closed-loop o servo</td><td>Velocidades altas de posicionamiento</td></tr>
+<tr><td>Eje de brazo robótico</td><td>Servo AC o BLDC con FOC</td><td>Movimiento continuo y dinámico</td></tr>
+<tr><td>Pick and place</td><td>Servo AC</td><td>Ciclos rápidos; el tiempo es dinero</td></tr>
+<tr><td>Dosificador o bomba</td><td>Closed-loop</td><td>Error acumulado invisible</td></tr>
+<tr><td>Torno CNC</td><td>Servo AC</td><td>Par a velocidad y roscado sincronizado</td></tr>
+<tr><td>Mesa rotativa de indexado</td><td>Stepper closed-loop</td><td>Alta relación y baja velocidad</td></tr>
+</tbody></table></div>
+</section><section id="dimensionar"><h2>Cómo dimensionar sin sobredimensionar</h2>
+<p>El error más caro no es elegir la tecnología equivocada: es elegir el tamaño equivocado. Un motor sobredimensionado añade inercia, cuesta más y empeora la dinámica.</p>
+<pre><code>PASO 1 — Par de fricción y de proceso
+
+Husillo de bolas, 10 mm de paso, mesa de 40 kg, µ = 0,01
+F_friccion = µ × m × g = 0,01 × 40 × 9,81 = 3,9 N
+F_corte (fresado ligero en aluminio) = 150 N
+F_total = 154 N
+
+T_husillo = (F × paso) / (2π × η)     η ≈ 0,90 en husillo de bolas
+          = (154 × 0,010) / (6,283 × 0,90) = 0,272 Nm
+
+PASO 2 — Par de aceleración
+
+Objetivo: 0 a 20 m/min (0,333 m/s) en 0,15 s
+ω_final = (0,333 / 0,010) × 2π = 209 rad/s   (2.000 rpm)
+α = 209 / 0,15 = 1.395 rad/s²
+
+J_total = J_motor + J_husillo + J_carga_reflejada
+J_carga = 40 × (0,010/6,283)² = 1,01e-4 kg·m²
+J_husillo (Ø16 × 600 mm acero) ≈ 0,60e-4 kg·m²
+J_motor (servo 400 W) ≈ 0,27e-4 kg·m²
+J_total = 1,88e-4 kg·m²
+
+T_acel = J × α = 1,88e-4 × 1.395 = 0,262 Nm
+
+PASO 3 — Par total y margen
+
+T_pico = 0,272 + 0,262 = 0,534 Nm
+Con factor de seguridad 1,5 → 0,80 Nm de pico requerido
+
+Servo 400 W: nominal 1,27 Nm, pico 3,8 Nm  → sobra
+Servo 200 W: nominal 0,64 Nm, pico 1,9 Nm  → suficiente y más barato
+
+PASO 4 — Verificar par continuo (RMS del ciclo)
+
+T_rms = √( Σ(T_i² × t_i) / Σt_i )
+Debe ser menor que el par nominal del servo elegido.</code></pre>
+<div class="note"><p><strong>El error clásico:</strong> dimensionar solo con el par de proceso y olvidar la aceleración. En máquinas rápidas, el par de aceleración suele ser mayor que el de corte. Y a la inversa: en máquinas lentas con carga alta, sobredimensionar por aceleración es tirar dinero.</p></div>
+</section><section id="migrar"><h2>Cuándo migrar y cómo hacerlo bien</h2>
+<p>Señales objetivas de que tu sistema ya pide closed-loop o servo:</p>
+<ol>
+<li>Pierdes pasos más de una vez por semana pese a haber ajustado corriente y aceleración.</li>
+<li>Los motores superan los 80 °C en operación normal.</li>
+<li>Necesitas más del doble de velocidad de posicionamiento y ya estás a 48 V.</li>
+<li>Un error de posición no detectado tiene consecuencias caras (pieza arruinada, choque, dosis incorrecta).</li>
+<li>El ruido acústico es un problema en el entorno de trabajo.</li>
+<li>La máquina opera desatendida y nadie va a notar una falla a tiempo.</li>
+</ol>
+<p>Y las señales de que <strong>no</strong> debes migrar todavía —porque el problema es otro—:</p>
+<div class="table-wrap"><table><thead><tr><th>Síntoma</th><th>Puede parecer motor, pero es...</th><th>Verificación</th></tr></thead><tbody>
+<tr><td>Error de posición repetible</td><td>Juego mecánico o pasos/mm mal calibrados</td><td>Comparador y prueba bidireccional</td></tr>
+<tr><td>Piezas fuera de medida</td><td>Deflexión del pórtico bajo carga</td><td>Medir con la fresa apoyada</td></tr>
+<tr><td>Vibración en la superficie</td><td>Resonancia estructural o herramienta mellada</td><td>Cambiar velocidad de avance</td></tr>
+<tr><td>Fallo aleatorio del eje</td><td>Ruido eléctrico en STEP/DIR</td><td>Cable apantallado; separar del cable de motor</td></tr>
+<tr><td>Atascos en un tramo del recorrido</td><td>Guías sucias, husillo desalineado</td><td>Mover a mano sin motor acoplado</td></tr>
+</tbody></table></div>
+<p>Si decides migrar, la checklist de compatibilidad:</p>
+<ul>
+<li><strong>Brida y eje.</strong> NEMA 23 y NEMA 24 comparten brida de 57 mm, pero el diámetro y el largo del eje pueden diferir. Un servo de 400 W trae eje de 14 mm con chavetero, no 8 mm liso.</li>
+<li><strong>Tensión de alimentación.</strong> Los servos AC pequeños son de 220 V monofásicos; los closed-loop suelen ser de 24 a 80 V DC. Cambia toda la topología de tu tablero.</li>
+<li><strong>Señales de control.</strong> Verifica si tu controlador entrega STEP/DIR de 5 V y si el driver necesita optoacopladores o resistencias en serie.</li>
+<li><strong>Frecuencia máxima de pulsos.</strong> Con 131.072 ppr, un servo a 3.000 rpm en modo STEP/DIR exige millones de pulsos por segundo. Se resuelve con el multiplicador electrónico de engranajes del driver, que hay que configurar.</li>
+<li><strong>Señales de alarma y habilitación.</strong> Cablea la salida de alarma a una entrada del controlador y prográmala para detener el programa. Un closed-loop que alarma y nadie escucha equivale a un lazo abierto.</li>
+<li><strong>Frenado.</strong> Ejes verticales necesitan freno mecánico, no confiar en la retención del motor. Ver <a href="/blog/variadores-de-frecuencia-vfd-para-makers-parametros-y-frenado">frenado en accionamientos</a>.</li>
+</ul>
+<div class="warning"><p><strong>No migres un eje aislado.</strong> Si cambias solo el eje X a servo y dejas Y en stepper, la máquina hereda las limitaciones del más lento y añade complejidad de sintonía. Planifica la migración por máquina completa, o al menos por plano de movimiento coordinado.</p></div>
+</section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Un stepper closed-loop es lo mismo que un servo?</summary><p>No. Es un motor paso a paso con encoder que corrige errores; conserva la curva par-velocidad de un stepper, con par que cae fuerte al subir de vueltas. Un servo AC mantiene par constante hasta su velocidad nominal y tiene un ancho de banda de control muy superior.</p></details><details><summary>¿Subir la tensión del driver realmente aumenta el par?</summary><p>Aumenta el par disponible a velocidad, no el par de retención. Con más tensión la corriente sube más rápido en la inductancia de la bobina, y la curva par-velocidad se desplaza a la derecha. Nunca superes la tensión máxima del driver.</p></details><details><summary>¿Cuándo conviene un stepper de 48 V frente a un closed-loop?</summary><p>Si el problema es solo velocidad y la carga es predecible, subir a 48 V es mucho más barato. Si el problema es que pierdes pasos con carga variable o el error pasa inadvertido, el closed-loop es la respuesta correcta.</p></details><details><summary>¿Puedo usar mi controlador GRBL o Marlin con servos?</summary><p>Sí: la mayoría de los drivers de servo aceptan STEP/DIR. Debes configurar el multiplicador electrónico de engranajes para que la frecuencia de pulsos requerida quede dentro de lo que el controlador puede generar, y cablear la señal de alarma.</p></details><details><summary>¿Por qué mi motor paso a paso se calienta tanto?</summary><p>Porque en lazo abierto consume su corriente nominal permanentemente, esté o no cargado. Entre 70 y 80 °C de carcasa es normal en un stepper bien ajustado; sobre 90 °C hay que bajar la corriente, mejorar la disipación o pasar a closed-loop.</p></details></div></section><p class="disclosure">Contenido editorial independiente, sin ubicaciones patrocinadas ni enlaces de afiliado. Las especificaciones pueden cambiar; confirma siempre el manual y la normativa aplicable. Si detectas un error, <a href="/contact">avísanos</a>.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Continúa con <a href="/blog/motores-paso-a-paso-nema-17-vs-nema-23-diferencias">NEMA 17 vs NEMA 23</a> y con <a href="/blog/motores-bldc-con-control-de-campo-foc-para-robotica-potencia-y-precision">motores BLDC con control FOC</a>.</p></div></article><section class="sources" aria-label="Fuentes primarias"><h2>Fuentes primarias y lecturas recomendadas</h2><p>Documentación oficial y material técnico usado para contrastar esta guía.</p><ul><li><a href="https://www.orientalmotor.com/stepper-motors/technology/" target="_blank" rel="noopener noreferrer">Oriental Motor — Tecnología de motores paso a paso y curvas par-velocidad</a></li><li><a href="https://www.analog.com/en/product-category/stepper-motor-drivers.html" target="_blank" rel="noopener noreferrer">Analog Devices / Trinamic — Drivers TMC y control sensorless</a></li><li><a href="https://www.delta-electronics.info/" target="_blank" rel="noopener noreferrer">Delta Electronics — Manuales de servoaccionamientos ASDA</a></li><li><a href="https://www.pmdcorp.com/resources/type/articles" target="_blank" rel="noopener noreferrer">Performance Motion Devices — Artículos técnicos sobre control de movimiento</a></li></ul><p style="font-size:.75rem;color:var(--quiet)">Enlaces revisados: 18 de agosto de 2026.</p></section></main><footer class="container site-footer"><p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada.</p><p><a href="/about">Sobre Nosotros</a> · <a href="/contact">Contacto</a> · <a href="/privacy">Política de Privacidad</a> · <a href="/terms">Términos</a></p><p>© 2023–2026 Alberto Gallardo. Todos los derechos reservados.</p></footer><div id="rel-consent" role="dialog" aria-labelledby="consent-title" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#fff;border-top:1px solid rgba(30,25,15,.15);box-shadow:0 -8px 32px rgba(30,25,15,.18);padding:20px 24px"><div style="max-width:1050px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div style="flex:1;min-width:260px"><strong id="consent-title">Usamos cookies</strong><p style="margin:4px 0 0;color:#57534a;font-size:.85rem">Con tu permiso usamos cookies para analítica y anuncios personalizados. Puedes rechazar y seguir leyendo. <a href="/privacy">Política de Privacidad</a>.</p></div><div><button id="consent-no" type="button" style="padding:10px 18px;border:1px solid #aaa;border-radius:99px;background:#fff;margin-right:8px">Rechazar</button><button id="consent-yes" type="button" style="padding:11px 18px;border:0;border-radius:99px;background:#a97b23;color:#fff;font-weight:700">Aceptar todo</button></div></div></div><script>(function(){const b=document.getElementById('rel-consent');if(!document.cookie.match(/(?:^|;\s*)rel_consent=/))b.hidden=false;function set(v){document.cookie='rel_consent='+v+';max-age=15552000;path=/;SameSite=Lax';gtag('consent','update',{'ad_storage':v==='granted'?'granted':'denied','ad_user_data':v==='granted'?'granted':'denied','ad_personalization':v==='granted'?'granted':'denied','analytics_storage':v==='granted'?'granted':'denied'});b.hidden=true}document.getElementById('consent-yes').onclick=()=>set('granted');document.getElementById('consent-no').onclick=()=>set('denied')})();</script><script>const n=document.getElementById('nav-toggle'),l=document.getElementById('nav-links');n.addEventListener('click',()=>{let o=n.getAttribute('aria-expanded')==='true';n.setAttribute('aria-expanded',!o);l.classList.toggle('open',!o)});const b=document.getElementById('progress-bar');addEventListener('scroll',()=>{let d=document.documentElement,m=d.scrollHeight-d.clientHeight;b.style.width=(m?scrollY/m*100:0)+'%'},{passive:true});</script></body></html>

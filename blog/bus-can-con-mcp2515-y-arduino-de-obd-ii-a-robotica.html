@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="es-CL"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bus CAN con MCP2515 y Arduino: de OBD-II a Robótica</title><meta name="description" content="Cómo funciona CAN bus y cómo usarlo con MCP2515 y Arduino o ESP32: arbitraje por identificador, bit timing, terminación, filtros de máscara, OBD-II y aplicaciones en robótica."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica"><meta property="og:type" content="article"><meta property="og:title" content="Bus CAN con MCP2515 y Arduino: de OBD-II a Robótica"><meta property="og:description" content="Arbitraje no destructivo, tramas de 8 bytes y 1 Mbps sobre un par trenzado. Bit timing explicado con números, filtros que descargan la CPU y el código que lee tu auto."><meta property="og:image" content="https://www.ukrabot.cl/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica-hero.svg"><meta property="og:url" content="https://www.ukrabot.cl/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Bus CAN con MCP2515 y Arduino: de OBD-II a Robótica"><meta name="twitter:description" content="Cómo funciona CAN bus y cómo usarlo con MCP2515 y Arduino o ESP32: arbitraje por identificador, bit timing, terminación, filtros de máscara, OBD-II y aplicaciones en robótica."><meta name="twitter:image" content="https://www.ukrabot.cl/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica-hero.svg"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Bus CAN con MCP2515 y Arduino: de OBD-II a Robótica", "description": "Cómo funciona CAN bus y cómo usarlo con MCP2515 y Arduino o ESP32: arbitraje por identificador, bit timing, terminación, filtros de máscara, OBD-II y aplicaciones en robótica.", "author": {"@type": "Person", "name": "Alberto Gallardo", "jobTitle": "Analista Programador Computacional", "url": "https://www.ukrabot.cl/about"}, "publisher": {"@type": "Organization", "name": "Blog de Ingeniería Robótica", "url": "https://www.ukrabot.cl", "logo": {"@type": "ImageObject", "url": "https://www.ukrabot.cl/logo.png"}}, "datePublished": "2026-08-18", "dateModified": "2026-08-18", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.ukrabot.cl/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica"}, "image": "https://www.ukrabot.cl/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica-hero.svg", "wordCount": "2589", "inLanguage": "es-CL"}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.ukrabot.cl/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.ukrabot.cl/blog/"}, {"@type": "ListItem", "position": 3, "name": "Bus CAN con MCP2515 y Arduino: de OBD-II a Robótica", "item": "https://www.ukrabot.cl/blog/bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Puedo conectar dos MCP2515 directamente entre sí?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, es la mejor prueba de banco: une CAN_H con CAN_H, CAN_L con CAN_L, comparte masa y pon 120 ohmios en cada extremo. Si con esa configuración mínima no hay comunicación, el problema es de cristal o de bit timing."}}, {"@type": "Question", "name": "¿Por qué mi módulo MCP2515 no funciona a 500 kbps?", "acceptedAnswer": {"@type": "Answer", "text": "La causa más frecuente es declarar el cristal equivocado. Muchos módulos económicos traen 8 MHz aunque la documentación asuma 16 MHz; con el valor incorrecto el bitrate real se duplica o se reduce a la mitad."}}, {"@type": "Question", "name": "¿El ESP32 necesita MCP2515?", "acceptedAnswer": {"@type": "Answer", "text": "No. El ESP32 incluye el controlador TWAI, compatible con CAN 2.0. Solo necesita un transceptor externo de 3,3 V como el SN65HVD230, lo que elimina el SPI y simplifica el diseño."}}, {"@type": "Question", "name": "¿Es seguro conectarse al puerto OBD-II de mi auto?", "acceptedAnswer": {"@type": "Answer", "text": "Leer en modo listen-only es de bajo riesgo. Escribir no lo es: puedes generar códigos de falla o desactivar funciones. Nunca lo hagas con el vehículo en movimiento ni sin entender el mensaje que envías."}}, {"@type": "Question", "name": "¿Qué diferencia hay entre CAN y CAN FD?", "acceptedAnswer": {"@type": "Answer", "text": "CAN FD amplía la carga útil de 8 a 64 bytes y permite acelerar el bitrate durante la fase de datos, hasta unos 8 Mbps. La fase de arbitraje sigue siendo la misma, y requiere controladores y transceptores compatibles."}}]}</script><style>
+:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}img{max-width:100%;height:auto}a{color:var(--blue);text-underline-offset:3px}.container{max-width:1050px;margin:auto;padding:0 24px}.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:20px;font-size:.86rem}.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--line);border-radius:8px}.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:auto}.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300}.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08)}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.3),rgba(18,15,11,.9))}.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.2rem);line-height:1.08;font-weight:400;max-width:930px;margin:18px 0;color:#fff}.hero p{color:rgba(245,243,238,.8);max-width:760px;font-size:1.05rem}.byline{font-size:.85rem!important;color:rgba(245,243,238,.58)!important}.byline a{color:var(--gold-bright)}.article-body{padding-top:64px;padding-bottom:90px}.article-body section{scroll-margin-top:80px}.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px}.article-body p,.article-body li{color:var(--muted)}.article-body p{margin:0 0 20px}.article-body li{margin:8px 0}.article-body strong{color:var(--text)}.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}.toc a{color:var(--muted);text-decoration:none}.note{border-left:4px solid var(--gold)}.warning{background:rgba(178,40,30,.06);border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0;color:var(--muted)}.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.article-img img{width:100%;display:block}.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow-x:auto;background:#14121a;border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.sources{margin:48px 0 24px;padding:22px 24px;background:#fff;border:1px solid var(--line);border-radius:12px}.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}.ad-slot{margin:34px 0;min-height:280px;text-align:center}.site-footer{border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem}@media(max-width:760px){.nav-toggle{display:flex}.nav-links{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;background:var(--ink);padding:12px 24px}.nav-links.open{display:flex}.hero-inner{padding:80px 20px 50px}.article-body h2{font-size:1.6rem}.container{padding:0 16px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500});try{if(document.cookie.match(/(?:^|;\s*)rel_consent=granted/))gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'})}catch(e){}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-1ZVHF8X35Q');</script></head><body><div class="progress-bar" id="progress-bar"></div><nav class="site-nav" aria-label="Navegación del sitio"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span><span></span></button><div class="nav-links" id="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre Nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><img src="bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica-hero.svg" alt="Ilustración de nodos conectados a un bus CAN con tramas de datos circulando" fetchpriority="high"><div class="hero-inner"><div class="eyebrow">Comunicaciones · Bus CAN · Actualizado el <time datetime="2026-08-18">18 de agosto de 2026</time></div><h1>Bus CAN con MCP2515 y Arduino: de OBD-II a Robótica</h1><p>CAN es el bus que mantiene vivo a un automóvil moderno con setenta computadores dialogando sobre dos hilos, y es también lo que usan los servos industriales y muchos drivers BLDC de gama alta. Con un MCP2515 de cinco dólares puedes escuchar el bus de tu auto o construir una red robusta entre nodos de tu robot — si entiendes el arbitraje y el <em>bit timing</em>.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p></div></header><main class="container article-body"><article><div class="article-img"><img src="bus-can-con-mcp2515-y-arduino-de-obd-ii-a-robotica-hero.svg" alt="Diagrama editorial de Bus CAN con MCP2515 y Arduino: de OBD-II a Robótica" loading="lazy"><div class="caption">Guía técnica basada en documentación primaria, criterios medibles y procedimientos reproducibles.</div></div><div class="toc" aria-label="Tabla de contenidos"><h2>Qué cubre esta guía</h2><ol><li><a href="#concepto">Qué resuelve CAN que UART no puede</a></li><li><a href="#electrico">Capa física: dominante, recesivo y terminación</a></li><li><a href="#arbitraje">Arbitraje por identificador: la clave del determinismo</a></li><li><a href="#trama">Estructura de una trama y detección de errores</a></li><li><a href="#timing">Bit timing: el cálculo que casi nadie hace</a></li><li><a href="#hardware">MCP2515 con Arduino y ESP32</a></li><li><a href="#filtros">Filtros y máscaras: dejar de ahogar la CPU</a></li><li><a href="#aplicaciones">OBD-II y aplicaciones en robótica</a></li></ol></div><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="concepto"><h2>Qué resuelve CAN que UART no puede</h2>
+<p>Bosch diseñó CAN en 1986 para un problema concreto: un automóvil tenía kilómetros de arneses porque cada sensor iba cableado punto a punto a su controlador. CAN reemplazó eso por un bus compartido con propiedades que siguen siendo notables:</p>
+<div class="table-wrap"><table><thead><tr><th>Propiedad</th><th>CAN</th><th>UART / RS-485</th><th>I²C / SPI</th></tr></thead><tbody>
+<tr><td>Topología</td><td>Multi-maestro real</td><td>Maestro-esclavo</td><td>Maestro-esclavo</td></tr>
+<tr><td>Arbitraje</td><td>No destructivo por prioridad</td><td>No existe (colisiona)</td><td>Solo I²C, limitado</td></tr>
+<tr><td>Detección de errores</td><td>CRC-15 + 4 mecanismos más</td><td>CRC opcional</td><td>Ninguno</td></tr>
+<tr><td>Aislamiento de nodo fallado</td><td>Automático (bus-off)</td><td>No</td><td>No</td></tr>
+<tr><td>Direccionamiento</td><td>Por mensaje, no por nodo</td><td>Por nodo</td><td>Por nodo</td></tr>
+<tr><td>Velocidad máxima</td><td>1 Mbps (CAN FD: 8 Mbps)</td><td>10 Mbps teórico</td><td>Alta pero corta distancia</td></tr>
+<tr><td>Distancia a 500 kbps</td><td>100 m</td><td>Similar</td><td>&lt; 1 m</td></tr>
+</tbody></table></div>
+<p>El cambio conceptual más importante es que <strong>CAN direcciona mensajes, no nodos</strong>. Un mensaje con identificador 0x123 significa "velocidad de rueda delantera izquierda"; cualquier nodo que necesite ese dato lo filtra y lo usa. Añadir un nodo receptor no requiere tocar el transmisor: es publicación-suscripción implementada en silicio, treinta años antes de que MQTT lo pusiera de moda.</p>
+<div class="note"><p><strong>Para robótica:</strong> esa propiedad convierte a CAN en el bus natural de un robot modular. Cada articulación publica su posición y consume su consigna; agregar una articulación no rediseña la red. Es lo que usan los drivers <em>ODrive</em>, <em>moteus</em> y prácticamente todo servo industrial serio.</p></div>
+</section><section id="electrico"><h2>Capa física: dominante, recesivo y terminación</h2>
+<p>CAN usa dos hilos, CAN_H y CAN_L, con una lógica que suele confundir al principio:</p>
+<div class="table-wrap"><table><thead><tr><th>Estado</th><th>Bit</th><th>CAN_H</th><th>CAN_L</th><th>Diferencial</th></tr></thead><tbody>
+<tr><td>Recesivo</td><td>1</td><td>≈ 2,5 V</td><td>≈ 2,5 V</td><td>≈ 0 V</td></tr>
+<tr><td>Dominante</td><td>0</td><td>≈ 3,5 V</td><td>≈ 1,5 V</td><td>≈ 2 V</td></tr>
+</tbody></table></div>
+<p>La clave: <strong>el estado dominante siempre gana</strong>. Si un nodo transmite 0 y otro transmite 1 simultáneamente, el bus queda en 0. Es un AND cableado, y sobre esa propiedad física se construye todo el arbitraje.</p>
+<pre><code>Topología y terminación
+
+  [Nodo 1]──┬───┬───┬───[Nodo 4]
+   120Ω     │   │   │      120Ω
+         [N2] [N3] [transceptor]
+
+  Resistencia medida entre CAN_H y CAN_L con todo apagado: 60 Ω
+  Derivaciones (stubs): &lt; 30 cm a 500 kbps
+  Cable: par trenzado 120 Ω de impedancia característica</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Velocidad</th><th>Longitud máxima</th><th>Uso típico</th></tr></thead><tbody>
+<tr><td>1 Mbps</td><td>40 m</td><td>Dentro de una máquina, servos</td></tr>
+<tr><td>500 kbps</td><td>100 m</td><td>Automotriz (bus de motor), robótica</td></tr>
+<tr><td>250 kbps</td><td>250 m</td><td>Vehículos pesados (J1939)</td></tr>
+<tr><td>125 kbps</td><td>500 m</td><td>Bus de confort automotriz, CANopen lento</td></tr>
+<tr><td>50 kbps</td><td>1.000 m</td><td>Instalaciones distribuidas</td></tr>
+</tbody></table></div>
+<p>Estos límites no son arbitrarios: nacen de que <strong>durante el arbitraje la señal debe recorrer el bus completo y volver dentro de un tiempo de bit</strong>. A 1 Mbps un bit dura 1 µs y la señal viaja unos 200 m/µs en cobre; ida y vuelta más márgenes deja los 40 m.</p>
+<div class="warning"><p><strong>Los dos errores de terminación:</strong> sin terminación las reflexiones corrompen tramas de forma intermitente y aleatoria; con terminación en cada nodo la resistencia total baja tanto que el transceptor no logra imponer el nivel dominante. Mide siempre 60 Ω entre CAN_H y CAN_L con el bus sin energía antes de depurar cualquier otra cosa.</p></div>
+</section><section id="arbitraje"><h2>Arbitraje por identificador: la clave del determinismo</h2>
+<p>Cuando dos nodos empiezan a transmitir a la vez, ambos escuchan el bus mientras escriben. Al llegar a un bit donde uno transmite recesivo (1) y lee dominante (0), sabe que perdió y se calla inmediatamente. El ganador <strong>no se entera de nada</strong> y su trama continúa sin corromperse ni retransmitirse.</p>
+<pre><code>Nodo A envía ID 0x123 = 0 0100100011
+Nodo B envía ID 0x121 = 0 0100100001
+                                   ↑
+                     bit 1: A pone 1 (recesivo)
+                             B pone 0 (dominante)
+                             bus queda en 0 → A se retira
+
+Resultado: B transmite completo. A reintenta al liberarse el bus.
+Latencia de A: ninguna trama perdida, solo diferida.</code></pre>
+<p>La consecuencia de diseño es que <strong>el identificador es la prioridad</strong>: menor número, mayor prioridad. Al planificar un sistema, asigna los IDs con intención:</p>
+<div class="table-wrap"><table><thead><tr><th>Rango de ID</th><th>Uso sugerido en un robot</th><th>Periodo típico</th></tr></thead><tbody>
+<tr><td>0x000 – 0x0FF</td><td>Parada de emergencia y fallas críticas</td><td>Por evento</td></tr>
+<tr><td>0x100 – 0x1FF</td><td>Consignas de control de lazo cerrado</td><td>1 – 10 ms</td></tr>
+<tr><td>0x200 – 0x3FF</td><td>Realimentación de posición y corriente</td><td>10 ms</td></tr>
+<tr><td>0x400 – 0x5FF</td><td>Sensores de entorno</td><td>50 – 100 ms</td></tr>
+<tr><td>0x600 – 0x7FF</td><td>Telemetría, temperaturas, diagnóstico</td><td>1 s</td></tr>
+</tbody></table></div>
+<p>Y una advertencia de dimensionamiento: si el bus se satura, los mensajes de ID alto <strong>nunca</strong> se transmiten. Calcula la carga:</p>
+<pre><code>Bits por trama estándar ≈ 111 (con stuffing, 8 bytes de datos)
+
+Carga = Σ (bits_trama × frecuencia_Hz) / velocidad_bus
+
+Ejemplo: 10 mensajes a 100 Hz, 500 kbps
+Carga = (111 × 100 × 10) / 500.000 = 22 %   ← saludable
+
+Mantente bajo 40 % para conservar margen de latencia.</code></pre>
+</section><section id="trama"><h2>Estructura de una trama y detección de errores</h2>
+<pre><code>Trama de datos estándar (CAN 2.0A, ID de 11 bits)
+
+┌─┬───────────┬───┬────┬──────┬──────────┬─────┬───┬───┬──────┐
+│S│ Identifier│RTR│IDE │ DLC  │  Datos   │CRC  │ACK│EOF│ IFS  │
+│O│  11 bits  │   │ r0 │4 bits│ 0-8 bytes│15bit│   │7b │ 3bit │
+│F│           │   │    │      │          │     │   │   │      │
+└─┴───────────┴───┴────┴──────┴──────────┴─────┴───┴───┴──────┘
+
+CAN 2.0B extendido: 29 bits de identificador (11 + 18)
+CAN FD: hasta 64 bytes de datos y bitrate variable en la fase de datos</code></pre>
+<p>CAN incorpora cinco mecanismos de detección de error que actúan en conjunto, con una tasa de error residual estimada del orden de 10⁻¹¹:</p>
+<ol>
+<li><strong>CRC-15</strong> sobre toda la trama.</li>
+<li><strong>ACK slot</strong>: cualquier nodo que reciba correctamente pone un bit dominante. Si nadie lo hace, el transmisor sabe que nadie escuchó.</li>
+<li><strong>Monitoreo de bit</strong>: el transmisor compara lo que escribe con lo que lee.</li>
+<li><strong>Bit stuffing</strong>: tras cinco bits iguales se inserta uno opuesto; una violación indica error.</li>
+<li><strong>Verificación de formato</strong>: campos con valores fijos que deben respetarse.</li>
+</ol>
+<p>Además, cada nodo mantiene dos contadores —TEC (transmisión) y REC (recepción)— que lo llevan por tres estados:</p>
+<div class="table-wrap"><table><thead><tr><th>Estado</th><th>Condición</th><th>Comportamiento</th></tr></thead><tbody>
+<tr><td>Error activo</td><td>TEC y REC &lt; 128</td><td>Normal; señala errores con flag dominante</td></tr>
+<tr><td>Error pasivo</td><td>TEC o REC ≥ 128</td><td>Sigue operando pero no perturba el bus</td></tr>
+<tr><td>Bus-off</td><td>TEC ≥ 256</td><td>Se desconecta solo; requiere reinicio del controlador</td></tr>
+</tbody></table></div>
+<div class="note"><p><strong>Diagnóstico valioso:</strong> si tu MCP2515 entra en bus-off repetidamente, el problema es casi siempre físico —terminación, cable o velocidad mal configurada—, no de software. Leer el registro <code>EFLG</code> antes de reiniciar te dice si fue error de transmisión o de recepción, y eso reduce a la mitad el espacio de búsqueda.</p></div>
+</section><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="timing"><h2>Bit timing: el cálculo que casi nadie hace</h2>
+<p>Cada bit de CAN se divide en segmentos de tiempo (<em>time quanta</em>, TQ). El punto de muestreo debe caer donde la señal ya se estabilizó en todo el bus, y todos los nodos deben coincidir. Cuando dos MCP2515 "no se hablan" pese a tener el mismo bitrate nominal, casi siempre es esto.</p>
+<pre><code>Un bit se compone de:
+
+ |  SYNC_SEG  |    PROP_SEG + PHASE_SEG1    |   PHASE_SEG2  |
+ |    1 TQ    |         hasta 16 TQ         |  hasta 8 TQ   |
+                                            ↑
+                                    punto de muestreo
+
+TQ = (2 × BRP) / f_osc          BRP = preescalador
+Bits totales por bit CAN = 8 a 25 TQ
+Punto de muestreo recomendado: 75 % (automotriz: 87,5 %)</code></pre>
+<pre><code>Ejemplo con MCP2515 y cristal de 16 MHz a 500 kbps
+
+f_osc = 16 MHz, queremos 16 TQ por bit
+Bitrate = f_osc / (2 × BRP × TQ_por_bit)
+500.000 = 16.000.000 / (2 × BRP × 16)  →  BRP = 1
+
+Reparto: SYNC=1, PROP=2, PS1=9, PS2=4  → total 16 TQ
+Punto de muestreo = (1+2+9)/16 = 75 %  ✓
+SJW = 1 TQ (tolerancia de resincronización)</code></pre>
+<div class="warning"><p><strong>El cristal importa.</strong> Los módulos MCP2515 de venta masiva vienen con cristal de 8 MHz o de 16 MHz, y el silkscreen no siempre coincide con lo montado. Si inicializas la librería declarando 16 MHz y el módulo trae 8 MHz, tu bitrate real será la mitad y no habrá comunicación. Lee el cristal con lupa antes de depurar durante horas.</p></div>
+<p>Segundo detalle: la tolerancia de reloj de CAN es exigente. Un oscilador RC interno no sirve; se requiere cristal o resonador cerámico de precisión. Es la razón por la que el ESP32, que sí tiene controlador CAN nativo (TWAI), necesita igualmente que su reloj esté bien configurado para operar sobre 500 kbps.</p>
+</section><section id="hardware"><h2>MCP2515 con Arduino y ESP32</h2>
+<p>Distingamos dos chips que suelen confundirse: el <strong>MCP2515</strong> es el <em>controlador</em> CAN (implementa el protocolo, habla SPI con el micro) y el <strong>TJA1050/MCP2551/SN65HVD230</strong> es el <em>transceptor</em> (convierte a niveles diferenciales). El módulo típico trae ambos.</p>
+<div class="table-wrap"><table><thead><tr><th>Opción</th><th>Controlador</th><th>Transceptor</th><th>Nota</th></tr></thead><tbody>
+<tr><td>Módulo MCP2515 + TJA1050</td><td>Externo, SPI</td><td>5 V</td><td>El más común; requiere adaptar niveles con ESP32</td></tr>
+<tr><td>Módulo MCP2515 + MCP2551</td><td>Externo, SPI</td><td>5 V</td><td>Similar; tolerante a fallas</td></tr>
+<tr><td>ESP32 TWAI + SN65HVD230</td><td>Nativo del SoC</td><td>3,3 V</td><td>Mejor opción con ESP32: sin SPI de por medio</td></tr>
+<tr><td>Teensy 4.x FlexCAN</td><td>Nativo, 3 buses</td><td>Externo 3,3 V</td><td>Excelente para robótica de alto rendimiento</td></tr>
+<tr><td>Raspberry Pi + MCP2515</td><td>Externo, SPI</td><td>5 V</td><td>Aparece como interfaz de red <code>can0</code> con SocketCAN</td></tr>
+</tbody></table></div>
+<pre><code>// MCP2515 con Arduino (libreria coryjfowler/MCP_CAN_lib)
+#include &lt;mcp_can.h&gt;
+#include &lt;SPI.h&gt;
+
+#define CS_PIN  10
+#define INT_PIN  2
+MCP_CAN CAN(CS_PIN);
+
+void setup() {
+  Serial.begin(115200);
+  // OJO: MCP_16MHZ o MCP_8MHZ segun el cristal REAL del modulo
+  while (CAN.begin(MCP_ANY, CAN_500KBPS, MCP_16MHZ) != CAN_OK) {
+    Serial.println("MCP2515 no inicializa; revisa SPI y cristal");
+    delay(500);
+  }
+  CAN.setMode(MCP_NORMAL);      // MCP_LISTENONLY para espiar sin ACK
+  pinMode(INT_PIN, INPUT);
+  Serial.println("CAN listo");
+}
+
+void loop() {
+  if (!digitalRead(INT_PIN)) {          // hay trama pendiente
+    long unsigned int rxId; unsigned char len, buf[8];
+    CAN.readMsgBuf(&amp;rxId, &amp;len, buf);
+    Serial.printf("ID 0x%03lX  DLC %d  datos:", rxId &amp; 0x1FFFFFFF, len);
+    for (int i = 0; i &lt; len; i++) Serial.printf(" %02X", buf[i]);
+    Serial.println();
+  }
+
+  static uint32_t t = 0;
+  if (millis() - t &gt; 100) {             // transmite a 10 Hz
+    t = millis();
+    byte datos[8] = {0x01, 0x02, 0, 0, 0, 0, 0, 0};
+    if (CAN.sendMsgBuf(0x200, 0, 8, datos) != CAN_OK)
+      Serial.println("Fallo de envio: bus sin ACK?");
+  }
+}</code></pre>
+<pre><code>// ESP32 con controlador TWAI nativo (sin MCP2515)
+#include "driver/twai.h"
+
+void setup() {
+  twai_general_config_t g = TWAI_GENERAL_CONFIG_DEFAULT(
+      GPIO_NUM_21, GPIO_NUM_22, TWAI_MODE_NORMAL);   // TX, RX
+  twai_timing_config_t  t = TWAI_TIMING_CONFIG_500KBITS();
+  twai_filter_config_t  f = TWAI_FILTER_CONFIG_ACCEPT_ALL();
+  twai_driver_install(&amp;g, &amp;t, &amp;f);
+  twai_start();
+}
+
+void loop() {
+  twai_message_t msg;
+  if (twai_receive(&amp;msg, pdMS_TO_TICKS(10)) == ESP_OK) {
+    // procesar msg.identifier, msg.data_length_code, msg.data[]
+  }
+}</code></pre>
+<div class="note"><p><strong>Advertencia de niveles:</strong> el TJA1050 es de 5 V y su pin RXD entrega 5 V al ESP32, que tolera máximo 3,6 V. Usa un divisor resistivo (1 kΩ / 2 kΩ) en RXD, o mejor aún, un transceptor de 3,3 V como el SN65HVD230. El pin TXD desde el ESP32 sí es aceptado por el TJA1050 sin adaptación.</p></div>
+</section><section id="filtros"><h2>Filtros y máscaras: dejar de ahogar la CPU</h2>
+<p>Un bus automotriz a 500 kbps puede entregar más de 2.000 tramas por segundo. Si tu Arduino procesa todas por software, no le queda tiempo para nada más. El MCP2515 trae dos máscaras y seis filtros en hardware que descartan lo irrelevante antes de interrumpir al micro.</p>
+<pre><code>Lógica de aceptación, bit a bit:
+
+  máscara = 1  → ese bit DEBE coincidir con el filtro
+  máscara = 0  → ese bit se ignora (comodín)
+
+Ejemplo: aceptar solo 0x7E8 (respuesta OBD-II del ECU)
+  máscara = 0x7FF  (todos los bits importan)
+  filtro  = 0x7E8
+
+Ejemplo: aceptar todo el rango 0x7E8 – 0x7EF
+  máscara = 0x7F8  (ignora los 3 bits bajos)
+  filtro  = 0x7E8</code></pre>
+<pre><code>// Configuración de filtros en MCP2515
+CAN.init_Mask(0, 0, 0x7FF0000);     // máscara 0 → filtros 0 y 1
+CAN.init_Filt(0, 0, 0x7E80000);     // acepta 0x7E8
+CAN.init_Filt(1, 0, 0x7E90000);     // acepta 0x7E9
+
+CAN.init_Mask(1, 0, 0x7FF0000);     // máscara 1 → filtros 2 a 5
+CAN.init_Filt(2, 0, 0x1000000);     // acepta 0x100
+CAN.init_Filt(3, 0, 0x2000000);
+CAN.init_Filt(4, 0, 0x3000000);
+CAN.init_Filt(5, 0, 0x4000000);
+// La librería desplaza el ID 16 bits para tramas estándar</code></pre>
+<p>El ahorro es enorme: pasar de 2.000 interrupciones/s a 20 libera prácticamente toda la CPU. En un ESP32, además, permite que la tarea de CAN corra con prioridad alta sin robar ciclos al resto del sistema.</p>
+<div class="table-wrap"><table><thead><tr><th>Estrategia</th><th>Cuándo usarla</th><th>Carga de CPU</th></tr></thead><tbody>
+<tr><td>Aceptar todo + filtrar en software</td><td>Ingeniería inversa, sniffing</td><td>Muy alta</td></tr>
+<tr><td>Filtros por ID exacto</td><td>Pocos mensajes conocidos</td><td>Mínima</td></tr>
+<tr><td>Filtros por rango con máscara</td><td>Familias de mensajes (J1939, OBD)</td><td>Baja</td></tr>
+<tr><td>Modo listen-only</td><td>Espiar un bus ajeno sin perturbarlo</td><td>Baja y segura</td></tr>
+</tbody></table></div>
+</section><section id="aplicaciones"><h2>OBD-II y aplicaciones en robótica</h2>
+<p><strong>OBD-II</strong> es un protocolo de diagnóstico que corre sobre CAN en todo vehículo posterior a 2008. El patrón es pregunta-respuesta: envías un PID al ID 0x7DF y el ECU responde en 0x7E8.</p>
+<pre><code>// Consulta de RPM (modo 01, PID 0x0C)
+byte peticion[8] = {0x02, 0x01, 0x0C, 0, 0, 0, 0, 0};
+CAN.sendMsgBuf(0x7DF, 0, 8, peticion);
+
+// Respuesta en 0x7E8: [03][41][0C][A][B][..]
+// RPM = ((A × 256) + B) / 4</code></pre>
+<div class="table-wrap"><table><thead><tr><th>PID</th><th>Dato</th><th>Fórmula</th><th>Unidad</th></tr></thead><tbody>
+<tr><td>0x05</td><td>Temperatura refrigerante</td><td>A − 40</td><td>°C</td></tr>
+<tr><td>0x0C</td><td>Régimen del motor</td><td>(256A + B) / 4</td><td>rpm</td></tr>
+<tr><td>0x0D</td><td>Velocidad</td><td>A</td><td>km/h</td></tr>
+<tr><td>0x0F</td><td>Temperatura de admisión</td><td>A − 40</td><td>°C</td></tr>
+<tr><td>0x11</td><td>Posición del acelerador</td><td>100A / 255</td><td>%</td></tr>
+<tr><td>0x2F</td><td>Nivel de combustible</td><td>100A / 255</td><td>%</td></tr>
+<tr><td>0x42</td><td>Tensión del módulo</td><td>(256A + B) / 1000</td><td>V</td></tr>
+</tbody></table></div>
+<div class="warning"><p><strong>Antes de conectarte a un vehículo:</strong> usa <strong>modo listen-only</strong> mientras no sepas exactamente qué haces. Escribir tramas arbitrarias en el bus de un auto puede activar testigos, desactivar asistencias o dejar códigos de falla persistentes. Nunca experimentes con el vehículo en movimiento ni en la vía pública.</p></div>
+<p>En robótica, CAN brilla en tres escenarios concretos:</p>
+<ul>
+<li><strong>Robots modulares con muchas articulaciones.</strong> Cada driver es un nodo; el cableado se reduce a un par trenzado más alimentación recorriendo el brazo. Compara con la complejidad descrita en <a href="/blog/gestion-de-cables-para-brazos-roboticos">gestión de cables para brazos robóticos</a>.</li>
+<li><strong>Control de motores BLDC de alto rendimiento.</strong> ODrive, moteus y VESC exponen consignas de posición, velocidad y torque por CAN a frecuencias de 500 Hz a 1 kHz, imposibles de sostener por UART compartido. Ver <a href="/blog/motores-bldc-con-control-de-campo-foc-para-robotica-potencia-y-precision">motores BLDC con FOC</a>.</li>
+<li><strong>Redes con requisitos de seguridad.</strong> El aislamiento automático de nodos en bus-off evita que un nodo defectuoso tumbe la red completa, algo que un bus RS-485 no ofrece.</li>
+</ul>
+<p>Si vas a construir una red CAN propia, considera <strong>CANopen</strong> (perfil CiA 402 para servoaccionamientos) en lugar de inventar tu propio mapa de mensajes: te da diccionario de objetos, gestión de red y compatibilidad con equipos comerciales desde el primer día.</p>
+</section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Puedo conectar dos MCP2515 directamente entre sí?</summary><p>Sí, es la mejor prueba de banco: une CAN_H con CAN_H, CAN_L con CAN_L, comparte masa y pon 120 ohmios en cada extremo. Si con esa configuración mínima no hay comunicación, el problema es de cristal o de bit timing.</p></details><details><summary>¿Por qué mi módulo MCP2515 no funciona a 500 kbps?</summary><p>La causa más frecuente es declarar el cristal equivocado. Muchos módulos económicos traen 8 MHz aunque la documentación asuma 16 MHz; con el valor incorrecto el bitrate real se duplica o se reduce a la mitad.</p></details><details><summary>¿El ESP32 necesita MCP2515?</summary><p>No. El ESP32 incluye el controlador TWAI, compatible con CAN 2.0. Solo necesita un transceptor externo de 3,3 V como el SN65HVD230, lo que elimina el SPI y simplifica el diseño.</p></details><details><summary>¿Es seguro conectarse al puerto OBD-II de mi auto?</summary><p>Leer en modo listen-only es de bajo riesgo. Escribir no lo es: puedes generar códigos de falla o desactivar funciones. Nunca lo hagas con el vehículo en movimiento ni sin entender el mensaje que envías.</p></details><details><summary>¿Qué diferencia hay entre CAN y CAN FD?</summary><p>CAN FD amplía la carga útil de 8 a 64 bytes y permite acelerar el bitrate durante la fase de datos, hasta unos 8 Mbps. La fase de arbitraje sigue siendo la misma, y requiere controladores y transceptores compatibles.</p></details></div></section><p class="disclosure">Contenido editorial independiente, sin ubicaciones patrocinadas ni enlaces de afiliado. Las especificaciones pueden cambiar; confirma siempre el manual y la normativa aplicable. Si detectas un error, <a href="/contact">avísanos</a>.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Complementa con <a href="/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores">Modbus RTU con ESP32 y RS-485</a> y con <a href="/blog/motores-bldc-con-control-de-campo-foc-para-robotica-potencia-y-precision">control FOC de motores BLDC</a>.</p></div></article><section class="sources" aria-label="Fuentes primarias"><h2>Fuentes primarias y lecturas recomendadas</h2><p>Documentación oficial y material técnico usado para contrastar esta guía.</p><ul><li><a href="https://www.microchip.com/en-us/product/mcp2515" target="_blank" rel="noopener noreferrer">Microchip — Hoja de datos del controlador MCP2515</a></li><li><a href="https://www.bosch-semiconductors.com/ip-modules/can-protocols/" target="_blank" rel="noopener noreferrer">Bosch — Especificación del protocolo CAN</a></li><li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/twai.html" target="_blank" rel="noopener noreferrer">Espressif — Controlador TWAI (CAN) del ESP32</a></li><li><a href="https://www.can-cia.org/can-knowledge/" target="_blank" rel="noopener noreferrer">CAN in Automation (CiA) — Base de conocimiento CAN y CANopen</a></li></ul><p style="font-size:.75rem;color:var(--quiet)">Enlaces revisados: 18 de agosto de 2026.</p></section></main><footer class="container site-footer"><p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada.</p><p><a href="/about">Sobre Nosotros</a> · <a href="/contact">Contacto</a> · <a href="/privacy">Política de Privacidad</a> · <a href="/terms">Términos</a></p><p>© 2023–2026 Alberto Gallardo. Todos los derechos reservados.</p></footer><div id="rel-consent" role="dialog" aria-labelledby="consent-title" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#fff;border-top:1px solid rgba(30,25,15,.15);box-shadow:0 -8px 32px rgba(30,25,15,.18);padding:20px 24px"><div style="max-width:1050px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div style="flex:1;min-width:260px"><strong id="consent-title">Usamos cookies</strong><p style="margin:4px 0 0;color:#57534a;font-size:.85rem">Con tu permiso usamos cookies para analítica y anuncios personalizados. Puedes rechazar y seguir leyendo. <a href="/privacy">Política de Privacidad</a>.</p></div><div><button id="consent-no" type="button" style="padding:10px 18px;border:1px solid #aaa;border-radius:99px;background:#fff;margin-right:8px">Rechazar</button><button id="consent-yes" type="button" style="padding:11px 18px;border:0;border-radius:99px;background:#a97b23;color:#fff;font-weight:700">Aceptar todo</button></div></div></div><script>(function(){const b=document.getElementById('rel-consent');if(!document.cookie.match(/(?:^|;\s*)rel_consent=/))b.hidden=false;function set(v){document.cookie='rel_consent='+v+';max-age=15552000;path=/;SameSite=Lax';gtag('consent','update',{'ad_storage':v==='granted'?'granted':'denied','ad_user_data':v==='granted'?'granted':'denied','ad_personalization':v==='granted'?'granted':'denied','analytics_storage':v==='granted'?'granted':'denied'});b.hidden=true}document.getElementById('consent-yes').onclick=()=>set('granted');document.getElementById('consent-no').onclick=()=>set('denied')})();</script><script>const n=document.getElementById('nav-toggle'),l=document.getElementById('nav-links');n.addEventListener('click',()=>{let o=n.getAttribute('aria-expanded')==='true';n.setAttribute('aria-expanded',!o);l.classList.toggle('open',!o)});const b=document.getElementById('progress-bar');addEventListener('scroll',()=>{let d=document.documentElement,m=d.scrollHeight-d.clientHeight;b.style.width=(m?scrollY/m*100:0)+'%'},{passive:true});</script></body></html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="es-CL"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Celdas de Carga y HX711: Básculas de Precisión con Arduino</title><meta name="description" content="Guía técnica de celdas de carga y el HX711: puente de Wheatstone, montaje mecánico correcto, calibración con pesas patrón, filtrado, deriva térmica y errores que arruinan la medición."><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino"><meta property="og:type" content="article"><meta property="og:title" content="Celdas de Carga y HX711: Básculas de Precisión con Arduino"><meta property="og:description" content="El HX711 tiene 24 bits, pero tu báscula rara vez supera los 13 útiles. Dónde se pierde la resolución: montaje, ruido, deriva y calibración, con procedimientos medibles."><meta property="og:image" content="https://www.ukrabot.cl/blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino-hero.svg"><meta property="og:url" content="https://www.ukrabot.cl/blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Celdas de Carga y HX711: Básculas de Precisión con Arduino"><meta name="twitter:description" content="Guía técnica de celdas de carga y el HX711: puente de Wheatstone, montaje mecánico correcto, calibración con pesas patrón, filtrado, deriva térmica y errores que arruinan la medición."><meta name="twitter:image" content="https://www.ukrabot.cl/blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino-hero.svg"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Celdas de Carga y HX711: Básculas de Precisión con Arduino", "description": "Guía técnica de celdas de carga y el HX711: puente de Wheatstone, montaje mecánico correcto, calibración con pesas patrón, filtrado, deriva térmica y errores que arruinan la medición.", "author": {"@type": "Person", "name": "Alberto Gallardo", "jobTitle": "Analista Programador Computacional", "url": "https://www.ukrabot.cl/about"}, "publisher": {"@type": "Organization", "name": "Blog de Ingeniería Robótica", "url": "https://www.ukrabot.cl", "logo": {"@type": "ImageObject", "url": "https://www.ukrabot.cl/logo.png"}}, "datePublished": "2026-08-18", "dateModified": "2026-08-18", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.ukrabot.cl/blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino"}, "image": "https://www.ukrabot.cl/blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino-hero.svg", "wordCount": "2693", "inLanguage": "es-CL"}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.ukrabot.cl/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.ukrabot.cl/blog/"}, {"@type": "ListItem", "position": 3, "name": "Celdas de Carga y HX711: Básculas de Precisión con Arduino", "item": "https://www.ukrabot.cl/blog/celdas-de-carga-y-hx711-basculas-de-precision-con-arduino"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Por qué mi lectura del HX711 salta tanto?", "acceptedAnswer": {"@type": "Answer", "text": "Las tres causas más frecuentes son el módulo configurado a 80 SPS, la alimentación compartida con cargas ruidosas y el cable de la celda sin apantallar o demasiado largo. Cambiar a 10 SPS y usar un regulador dedicado suele reducir el ruido un orden de magnitud."}}, {"@type": "Question", "name": "¿Puedo conectar dos celdas de carga a un HX711?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, cableándolas en paralelo si son idénticas, lo que suma sus capacidades y promedia la señal. Para leerlas de forma independiente necesitas un HX711 por celda o un ADC multicanal como el NAU7802."}}, {"@type": "Question", "name": "¿Qué capacidad de celda debo elegir?", "acceptedAnswer": {"@type": "Answer", "text": "Aquella en la que tu peso habitual quede entre el 30 % y el 80 % del fondo de escala, incluyendo el peso muerto de la plataforma. Sobredimensionar destruye la resolución; subdimensionar arriesga deformación permanente."}}, {"@type": "Question", "name": "¿Cada cuánto hay que recalibrar?", "acceptedAnswer": {"@type": "Answer", "text": "Cada seis meses en uso normal, y siempre después de mover el equipo, cambiar la plataforma o exponerlo a un golpe. Una verificación mensual con una pesa conocida detecta la deriva antes de que sea un problema."}}, {"@type": "Question", "name": "¿Sirve el HX711 para medir fuerza dinámica?", "acceptedAnswer": {"@type": "Answer", "text": "No es su terreno: a 10 SPS solo captura fenómenos lentos y a 80 SPS el ruido crece mucho. Para impacto o vibración se requiere un acondicionador de mayor ancho de banda y un ADC rápido."}}]}</script><style>
+:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}img{max-width:100%;height:auto}a{color:var(--blue);text-underline-offset:3px}.container{max-width:1050px;margin:auto;padding:0 24px}.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:20px;font-size:.86rem}.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--line);border-radius:8px}.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:auto}.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300}.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08)}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.3),rgba(18,15,11,.9))}.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.2rem);line-height:1.08;font-weight:400;max-width:930px;margin:18px 0;color:#fff}.hero p{color:rgba(245,243,238,.8);max-width:760px;font-size:1.05rem}.byline{font-size:.85rem!important;color:rgba(245,243,238,.58)!important}.byline a{color:var(--gold-bright)}.article-body{padding-top:64px;padding-bottom:90px}.article-body section{scroll-margin-top:80px}.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px}.article-body p,.article-body li{color:var(--muted)}.article-body p{margin:0 0 20px}.article-body li{margin:8px 0}.article-body strong{color:var(--text)}.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}.toc a{color:var(--muted);text-decoration:none}.note{border-left:4px solid var(--gold)}.warning{background:rgba(178,40,30,.06);border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0;color:var(--muted)}.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.article-img img{width:100%;display:block}.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase}td:first-child{color:var(--text);font-weight:600}pre{overflow-x:auto;background:#14121a;border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq{border-bottom:1px solid var(--line)}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600}.sources{margin:48px 0 24px;padding:22px 24px;background:#fff;border:1px solid var(--line);border-radius:12px}.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}.ad-slot{margin:34px 0;min-height:280px;text-align:center}.site-footer{border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem}@media(max-width:760px){.nav-toggle{display:flex}.nav-links{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;background:var(--ink);padding:12px 24px}.nav-links.open{display:flex}.hero-inner{padding:80px 20px 50px}.article-body h2{font-size:1.6rem}.container{padding:0 16px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500});try{if(document.cookie.match(/(?:^|;\s*)rel_consent=granted/))gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'})}catch(e){}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-1ZVHF8X35Q');</script></head><body><div class="progress-bar" id="progress-bar"></div><nav class="site-nav" aria-label="Navegación del sitio"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span><span></span></button><div class="nav-links" id="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/about">Sobre Nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><img src="celdas-de-carga-y-hx711-basculas-de-precision-con-arduino-hero.svg" alt="Ilustración de una celda de carga tipo viga con su amplificador y lectura digital de peso" fetchpriority="high"><div class="hero-inner"><div class="eyebrow">Sensores · Instrumentación · Actualizado el <time datetime="2026-08-18">18 de agosto de 2026</time></div><h1>Celdas de Carga y HX711: Básculas de Precisión con Arduino</h1><p>Una celda de carga de 5 kg y un HX711 cuestan menos que un almuerzo, y prometen 24 bits de resolución. En la práctica casi nadie obtiene más de 13 bits útiles, y la culpa rara vez es del chip: está en cómo se monta la celda, en la fuente de alimentación y en un procedimiento de calibración hecho a ojo.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p></div></header><main class="container article-body"><article><div class="article-img"><img src="celdas-de-carga-y-hx711-basculas-de-precision-con-arduino-hero.svg" alt="Diagrama editorial de Celdas de Carga y HX711: Básculas de Precisión con Arduino" loading="lazy"><div class="caption">Guía técnica basada en documentación primaria, criterios medibles y procedimientos reproducibles.</div></div><div class="toc" aria-label="Tabla de contenidos"><h2>Qué cubre esta guía</h2><ol><li><a href="#puente">El puente de Wheatstone y la señal que produce</a></li><li><a href="#tipos">Tipos de celda y cuál usar</a></li><li><a href="#hx711">El HX711 por dentro: ganancia, tasa y ruido</a></li><li><a href="#montaje">Montaje mecánico: donde se pierde la exactitud</a></li><li><a href="#codigo">Código y calibración con pesas patrón</a></li><li><a href="#filtrado">Filtrado y estabilidad de la lectura</a></li><li><a href="#deriva">Deriva térmica, fluencia y compensación</a></li><li><a href="#industrial">Cuándo el HX711 ya no alcanza</a></li></ol></div><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="puente"><h2>El puente de Wheatstone y la señal que produce</h2>
+<p>Una celda de carga es un bloque de metal calculado para deformarse de manera elástica y predecible, con cuatro galgas extensométricas pegadas en las zonas de máxima deformación. Dos se estiran y dos se comprimen; conectadas en puente de Wheatstone, esa asimetría produce una tensión diferencial proporcional a la fuerza.</p>
+<pre><code>        E+ (excitación, típ. 5 V)
+         │
+      ┌──┴──┐
+     R1     R2        R1, R4 en tracción  (R aumenta)
+      │     │         R2, R3 en compresión (R disminuye)
+  S− ─┤     ├─ S+     Salida diferencial
+      │     │
+     R3     R4
+      └──┬──┘
+         │
+        E− (GND)</code></pre>
+<p>La especificación clave es la <strong>sensibilidad</strong>, expresada en mV/V. Una celda de 2 mV/V con 5 V de excitación entrega 10 mV a plena carga. Eso es todo. De ahí sale el requisito de amplificación:</p>
+<pre><code>V_salida_plena = sensibilidad × V_excitacion
+
+2 mV/V × 5 V = 10 mV a fondo de escala
+
+Celda de 5 kg  →  10 mV / 5.000 g = 2 µV por gramo
+Celda de 50 kg →  10 mV / 50.000 g = 0,2 µV por gramo
+
+Para resolver 1 g en la celda de 50 kg necesitas medir 200 nV
+sobre una señal que además tiene 2,5 V de modo común.</code></pre>
+<div class="note"><p><strong>De aquí nace todo lo demás:</strong> a nivel de microvolts, la termocupla parásita de una soldadura mal hecha, el ruido de una fuente conmutada o un cable cerca de un motor son perturbaciones del mismo orden que la señal. Instrumentación de precisión no es opcional; es el problema completo.</p></div>
+<p>Código de colores habitual (verifícalo siempre midiendo resistencias):</p>
+<div class="table-wrap"><table><thead><tr><th>Función</th><th>Color típico</th><th>Verificación con ohmímetro</th></tr></thead><tbody>
+<tr><td>E+ excitación</td><td>Rojo</td><td>E+ a E− = resistencia de entrada (≈ 1.000 Ω)</td></tr>
+<tr><td>E− excitación</td><td>Negro</td><td>—</td></tr>
+<tr><td>S+ señal</td><td>Verde o blanco</td><td>S+ a S− = resistencia de salida (≈ 1.000 Ω)</td></tr>
+<tr><td>S− señal</td><td>Blanco o verde</td><td>—</td></tr>
+<tr><td>Malla</td><td>Amarillo o desnudo</td><td>Sin continuidad con los otros; va a tierra</td></tr>
+</tbody></table></div>
+<p>Si al medir E+ a S+ obtienes un valor intermedio (≈ 750 Ω) y entre pares el mismo valor, tienes las cuatro esquinas del puente. Si un par mide infinito, hay un hilo cortado.</p>
+</section><section id="tipos"><h2>Tipos de celda y cuál usar</h2>
+<div class="table-wrap"><table><thead><tr><th>Tipo</th><th>Capacidad típica</th><th>Ventaja</th><th>Limitación</th><th>Aplicación</th></tr></thead><tbody>
+<tr><td>Barra de flexión (bending beam)</td><td>1 – 200 kg</td><td>Barata, fácil de montar</td><td>Sensible a la posición de la carga</td><td>Básculas de plataforma, dosificadores</td></tr>
+<tr><td>Punto único (single point)</td><td>3 – 300 kg</td><td>Compensada para excentricidad</td><td>Tamaño de plataforma limitado</td><td>Balanzas comerciales</td></tr>
+<tr><td>Tipo S</td><td>50 kg – 5 t</td><td>Tracción y compresión</td><td>Requiere rótulas para alinear</td><td>Grúas, ensayos de tracción</td></tr>
+<tr><td>Botón / compresión</td><td>5 kg – 50 t</td><td>Muy compacta</td><td>Solo compresión, exige superficie plana</td><td>Prensas, silos</td></tr>
+<tr><td>Barra de corte (shear beam)</td><td>100 kg – 20 t</td><td>Robusta y estable</td><td>Cara</td><td>Tolvas, camiones</td></tr>
+<tr><td>Celda de 4 hilos "de baño"</td><td>50 kg (×4)</td><td>Muy barata</td><td>Media celda: exige las 4 en puente</td><td>Básculas caseras de 4 apoyos</td></tr>
+</tbody></table></div>
+<p>Las celdas de báscula de baño merecen aclaración porque generan mucha confusión: cada una es <strong>media puente</strong> (dos galgas), y las cuatro se combinan para formar un puente completo. Conectar una sola a un HX711 no funciona; hay que cablearlas en el arreglo clásico o completar el puente con resistencias de precisión.</p>
+<pre><code>Cuatro celdas de media puente → un puente completo
+
+  E+ ──┬── celda A (blanco) ──┬── S+
+       │                       │
+       └── celda B (blanco) ───┘
+
+  Regla práctica: rojos de las 4 juntos = S+
+                  negros de las 4 juntos = S−
+                  blancos: 2 a E+ y 2 a E−
+  (varía según fabricante: verifica con multímetro y prueba)</code></pre>
+<p><strong>Dimensionamiento:</strong> elige la capacidad para que el peso normal caiga entre el 30 % y el 80 % del fondo de escala. Sobredimensionar arruina la resolución —una celda de 200 kg para pesar 2 kg te deja con ruido puro—, y subdimensionar destruye la celda: la sobrecarga permanente (típicamente 150 % del nominal) deforma plásticamente el metal y el cero nunca vuelve.</p>
+</section><section id="hx711"><h2>El HX711 por dentro: ganancia, tasa y ruido</h2>
+<p>El HX711 es un ADC sigma-delta de 24 bits con amplificador de ganancia programable y regulador para excitar el puente, diseñado específicamente para celdas de carga.</p>
+<div class="table-wrap"><table><thead><tr><th>Característica</th><th>Valor</th><th>Comentario</th></tr></thead><tbody>
+<tr><td>Resolución</td><td>24 bits</td><td>Útiles: 13 – 17 bits en la práctica</td></tr>
+<tr><td>Canal A, ganancia 128</td><td>±20 mV de entrada</td><td>El modo normal para celdas de 2 mV/V</td></tr>
+<tr><td>Canal A, ganancia 64</td><td>±40 mV</td><td>Celdas de mayor sensibilidad</td></tr>
+<tr><td>Canal B, ganancia 32</td><td>±80 mV</td><td>Segundo sensor o medición auxiliar</td></tr>
+<tr><td>Tasa de datos</td><td>10 o 80 SPS</td><td>Pin RATE: 10 SPS tiene mucho menos ruido</td></tr>
+<tr><td>Alimentación</td><td>2,6 – 5,5 V</td><td>La excitación sale del propio chip</td></tr>
+<tr><td>Interfaz</td><td>Serie de 2 hilos (no es SPI)</td><td>Bit-banging: DOUT y PD_SCK</td></tr>
+<tr><td>Consumo</td><td>&lt; 1,5 mA activo, &lt; 1 µA en power down</td><td>Apto para proyectos a batería</td></tr>
+</tbody></table></div>
+<pre><code>Resolución teórica vs real
+
+Celda 5 kg, 2 mV/V, excitación 4,3 V (HX711 típico)
+Señal a fondo de escala = 8,6 mV
+Rango del ADC con ganancia 128 = ±20 mV
+
+Fracción usada = 8,6 / 40 = 21,5 % del rango
+Cuentas útiles = 2²⁴ × 0,215 ≈ 3,6 millones
+
+Pero el ruido RMS del HX711 a 10 SPS ronda ±50 cuentas,
+y a 80 SPS puede superar ±400 cuentas.
+
+Resolución efectiva a 10 SPS ≈ 3.600.000 / (6 × 50) = 12.000 pasos
+                             ≈ 0,4 g en una celda de 5 kg</code></pre>
+<p>Ese resultado es honesto y suficiente para casi todo proyecto maker. Lo importante es no prometerse 0,01 g y descubrirlo después.</p>
+<div class="warning"><p><strong>El pin RATE.</strong> Muchos módulos rojos vienen con el pin 15 soldado a VCC (80 SPS) por un puente de fábrica. Para pesaje estático, cortar ese puente y llevarlo a GND (10 SPS) reduce el ruido de forma notable. Es la modificación de mayor impacto por menor costo que puedes hacerle al módulo.</p></div>
+</section><section id="montaje"><h2>Montaje mecánico: donde se pierde la exactitud</h2>
+<p>Una celda de carga mide la deformación de un metal. Cualquier fuerza que llegue por un camino distinto al previsto es un error que ningún software corrige.</p>
+<div class="table-wrap"><table><thead><tr><th>Error de montaje</th><th>Síntoma</th><th>Corrección</th></tr></thead><tbody>
+<tr><td>Celda apoyada sin voladizo</td><td>Lectura baja y no lineal</td><td>Un extremo fijo, el otro libre con separadores</td></tr>
+<tr><td>Tornillos flojos</td><td>Histéresis, el cero cambia</td><td>Apretar al par indicado; usar Loctite azul</td></tr>
+<tr><td>Superficie no plana</td><td>Precarga parásita</td><td>Rectificar apoyos; arandelas de precisión</td></tr>
+<tr><td>Cable haciendo fuerza</td><td>Deriva al mover el equipo</td><td>Fijar el cable con brida al chasis, con bucle libre</td></tr>
+<tr><td>Carga excéntrica</td><td>El peso cambia según dónde se ponga</td><td>Celda single point o cuatro celdas en paralelo</td></tr>
+<tr><td>Estructura que "puentea" la celda</td><td>Solo se mide una fracción</td><td>Verificar que todo el peso pase por la celda</td></tr>
+<tr><td>Vibración de motor cercano</td><td>Lectura inestable</td><td>Amortiguadores de silicona; filtro de media</td></tr>
+</tbody></table></div>
+<pre><code>Montaje correcto de una celda de barra
+
+   ┌────────────── plataforma ──────────────┐
+   │                                         │
+   └──┬──────────────────────────────────┬───┘
+      │ separador                        │
+   ═══╪══════[ CELDA DE CARGA ]══════════╪═══
+      │  extremo LIBRE       extremo FIJO │
+      └──────────────────────────────────┬┘
+                                    base rígida
+
+  La flecha grabada en la celda indica el sentido de la fuerza.
+  Debe haber espacio libre para la flexión (2-5 mm) arriba y abajo.</code></pre>
+<p>Reglas de cableado tan importantes como las mecánicas:</p>
+<ul>
+<li><strong>Cable apantallado</strong> desde la celda hasta el HX711, con la malla a tierra en el lado del circuito solamente.</li>
+<li><strong>Distancia mínima</strong> entre celda y HX711: idealmente el módulo va montado a menos de 10 cm. La señal amplificada viaja bien; la señal cruda de microvolts no.</li>
+<li><strong>Alimentación limpia.</strong> Nada de compartir el regulador con motores o relés. Un LDO dedicado con 10 µF y 100 nF marca una diferencia visible en el ruido.</li>
+<li><strong>Empalmes soldados y aislados</strong>, nunca borneras a presión en la línea de señal: el par termoeléctrico de dos metales distintos genera microvolts que derivan con la temperatura.</li>
+</ul>
+</section><div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div><section id="codigo"><h2>Código y calibración con pesas patrón</h2>
+<p>La calibración es una recta de dos puntos: el cero (tara) y un punto conocido. Todo lo demás es interpolación.</p>
+<pre><code>lectura_cruda = offset + peso × factor_escala
+
+factor_escala = (lectura_con_pesa − lectura_en_vacio) / masa_pesa</code></pre>
+<pre><code>#include "HX711.h"
+
+const int PIN_DT  = 4;
+const int PIN_SCK = 5;
+HX711 balanza;
+
+void setup() {
+  Serial.begin(115200);
+  balanza.begin(PIN_DT, PIN_SCK);
+  balanza.set_gain(128);              // canal A, maxima ganancia
+
+  Serial.println("Retira todo peso. Tarando en 3 s...");
+  delay(3000);
+  balanza.tare(30);                   // promedio de 30 lecturas
+  Serial.println("Cero fijado.");
+
+  Serial.println("Coloca la pesa patron y espera 5 s...");
+  delay(5000);
+  long lectura = balanza.get_value(30);
+  const float MASA_PATRON_G = 1000.0; // pesa de 1 kg certificada
+  float factor = lectura / MASA_PATRON_G;
+  balanza.set_scale(factor);
+  Serial.printf("Factor de escala = %.4f cuentas/g\n", factor);
+  // Guarda este numero: en produccion se carga desde EEPROM/NVS
+}
+
+void loop() {
+  if (balanza.is_ready()) {
+    float g = balanza.get_units(10);   // media de 10 lecturas
+    Serial.printf("%.1f g\n", g);
+  }
+  delay(200);
+}</code></pre>
+<p>Procedimiento de calibración que produce resultados repetibles:</p>
+<ol>
+<li><strong>Precalentamiento.</strong> Alimenta el sistema 15–30 minutos antes de calibrar. El HX711 y la celda derivan mientras alcanzan equilibrio térmico.</li>
+<li><strong>Ejercitar la celda.</strong> Carga y descarga tres veces el fondo de escala antes de medir; asienta el montaje y reduce la histéresis inicial.</li>
+<li><strong>Tara con la plataforma puesta.</strong> El cero debe incluir el peso muerto del recipiente o bandeja.</li>
+<li><strong>Pesa patrón cercana al uso real.</strong> Si vas a pesar 2 kg, calibra con 2 kg, no con 100 g. El error relativo del patrón se multiplica al extrapolar.</li>
+<li><strong>Verificación en tres puntos.</strong> Comprueba con 25 %, 50 % y 100 % del rango. Si el error crece hacia los extremos, tienes no linealidad de montaje.</li>
+<li><strong>Guarda el factor en memoria no volátil</strong> junto con la fecha; recalibra cada seis meses o al mover el equipo.</li>
+</ol>
+<div class="note"><p><strong>Patrones económicos:</strong> si no tienes pesas certificadas, un litro de agua destilada a 20 °C pesa 998,2 g, y las monedas chilenas tienen masa nominal conocida. Para un proyecto casero es suficiente; para cualquier uso comercial se requiere instrumento verificado por un organismo acreditado.</p></div>
+</section><section id="filtrado"><h2>Filtrado y estabilidad de la lectura</h2>
+<p>La lectura cruda salta. Hay tres familias de filtro y conviene combinarlas, no elegir una:</p>
+<div class="table-wrap"><table><thead><tr><th>Filtro</th><th>Bueno para</th><th>Costo</th><th>Efecto secundario</th></tr></thead><tbody>
+<tr><td>Media móvil (N muestras)</td><td>Ruido gaussiano</td><td>N × RAM</td><td>Retardo de N/2 muestras</td></tr>
+<tr><td>Mediana</td><td>Impulsos y picos aislados</td><td>Ordenamiento</td><td>Escalonado en rampas</td></tr>
+<tr><td>Exponencial (EMA)</td><td>Suavizado continuo</td><td>Mínimo</td><td>Nunca alcanza el valor exacto</td></tr>
+<tr><td>Banda muerta</td><td>Congelar el display</td><td>Mínimo</td><td>Oculta cambios pequeños reales</td></tr>
+<tr><td>Detección de estabilidad</td><td>Saber cuándo el peso es válido</td><td>Bajo</td><td>—</td></tr>
+</tbody></table></div>
+<pre><code>// Cadena recomendada: mediana de 5 → EMA → banda muerta
+float mediana5(float *v) {
+  float a[5]; memcpy(a, v, sizeof(a));
+  for (int i = 1; i &lt; 5; i++) {           // insercion
+    float k = a[i]; int j = i - 1;
+    while (j &gt;= 0 &amp;&amp; a[j] &gt; k) { a[j+1] = a[j]; j--; }
+    a[j+1] = k;
+  }
+  return a[2];
+}
+
+float ema = 0; const float ALFA = 0.2;    // 0,1 = mas suave
+float mostrado = 0; const float BANDA = 0.5;  // gramos
+
+void actualizar(float bruto[5]) {
+  float m = mediana5(bruto);
+  ema = ALFA * m + (1 - ALFA) * ema;
+  if (fabs(ema - mostrado) &gt; BANDA) mostrado = ema;   // solo cambia si supera la banda
+}</code></pre>
+<pre><code>// Deteccion de estabilidad: util para dosificacion automatica
+bool estable(float *ultimas, int n, float tolerancia_g) {
+  float mn = ultimas[0], mx = ultimas[0];
+  for (int i = 1; i &lt; n; i++) {
+    if (ultimas[i] &lt; mn) mn = ultimas[i];
+    if (ultimas[i] &gt; mx) mx = ultimas[i];
+  }
+  return (mx - mn) &lt; tolerancia_g;
+}
+// Con n = 10 a 10 SPS, exige 1 s de quietud dentro de la tolerancia</code></pre>
+<p>Para dosificación con realimentación de peso —llenar hasta un valor objetivo— la combinación clásica es aproximación rápida hasta el 85 % del objetivo, luego avance lento con verificación de estabilidad. El mismo principio de la <a href="/blog/bomba-peristaltica-controlada-por-arduino-dosificacion">bomba peristáltica dosificadora</a>, pero con lazo cerrado en masa en lugar de volumen.</p>
+</section><section id="deriva"><h2>Deriva térmica, fluencia y compensación</h2>
+<p>Tres fenómenos físicos limitan la exactitud a largo plazo, y conviene conocerlos para no perseguir fantasmas en el código.</p>
+<div class="table-wrap"><table><thead><tr><th>Fenómeno</th><th>Magnitud típica</th><th>Se manifiesta como</th><th>Mitigación</th></tr></thead><tbody>
+<tr><td>Deriva térmica del cero</td><td>±0,02 % FS por °C</td><td>El cero cambia durante el día</td><td>Autotara periódica en vacío</td></tr>
+<tr><td>Deriva térmica del span</td><td>±0,01 % de la lectura por °C</td><td>Error proporcional al peso</td><td>Compensar con sensor de temperatura</td></tr>
+<tr><td>Fluencia (creep)</td><td>±0,02 % FS en 30 min</td><td>El peso "sube" con carga estática</td><td>Leer en los primeros segundos</td></tr>
+<tr><td>Histéresis</td><td>±0,02 % FS</td><td>Difiere si se llega subiendo o bajando</td><td>Ejercitar la celda; montaje rígido</td></tr>
+<tr><td>No repetibilidad</td><td>±0,01 % FS</td><td>Dispersión entre pesadas iguales</td><td>Promediar; mejorar el montaje</td></tr>
+</tbody></table></div>
+<pre><code>// Compensacion de deriva de cero por temperatura (2 puntos)
+// Registra cero_frio a T_frio y cero_calor a T_calor con la balanza vacia
+float ceroCompensado(float t_actual) {
+  const float T1 = 15.0, C1 = -1250.0;    // cuentas de offset a 15 °C
+  const float T2 = 35.0, C2 = -1180.0;    // cuentas de offset a 35 °C
+  return C1 + (C2 - C1) * (t_actual - T1) / (T2 - T1);
+}</code></pre>
+<p>Una estrategia mucho más simple y efectiva que compensar por modelo: <strong>autotara oportunista</strong>. Si el sistema detecta 60 segundos de lectura estable dentro de ±0,5 % del fondo de escala alrededor de cero, actualiza la tara automáticamente. Es lo que hacen las balanzas comerciales y resuelve la deriva de cero sin sensores adicionales.</p>
+<div class="warning"><p><strong>No confundas resolución con exactitud.</strong> Un display puede mostrar 0,01 g mientras la exactitud real es de ±2 g. Mostrar más dígitos de los que el sistema puede sostener genera desconfianza y decisiones equivocadas. Redondea el display al escalón que puedas defender con una verificación en tres puntos.</p></div>
+</section><section id="industrial"><h2>Cuándo el HX711 ya no alcanza</h2>
+<div class="table-wrap"><table><thead><tr><th>Requisito</th><th>HX711</th><th>Alternativa</th></tr></thead><tbody>
+<tr><td>Pesaje estático doméstico</td><td>Suficiente</td><td>—</td></tr>
+<tr><td>Más de 20 muestras/s con precisión</td><td>No</td><td>ADS1232, ADS1220, NAU7802</td></tr>
+<tr><td>Medición dinámica (impacto, vibración)</td><td>No</td><td>ADC rápido + acondicionador dedicado</td></tr>
+<tr><td>Varias celdas independientes</td><td>Un HX711 por celda</td><td>NAU7802 (I²C, direccionable) o ADS1258</td></tr>
+<tr><td>Uso comercial / venta al público</td><td>No permitido</td><td>Instrumento con aprobación metrológica</td></tr>
+<tr><td>Ambiente con mucho ruido eléctrico</td><td>Marginal</td><td>Transmisor con salida 4-20 mA</td></tr>
+<tr><td>Compensación térmica integrada</td><td>No</td><td>ADS1220 con sensor interno</td></tr>
+<tr><td>Interfaz I²C limpia</td><td>No (protocolo propio)</td><td>NAU7802</td></tr>
+</tbody></table></div>
+<p>El <strong>NAU7802</strong> merece atención como sucesor natural: mismo precio, 24 bits, I²C real, regulador interno de bajo ruido para la excitación y compensación de offset programable. Migrar cuesta poco y resuelve el mayor defecto práctico del HX711, que es su protocolo de temporización estricta incompatible con interrupciones frecuentes.</p>
+<p>Para instalaciones industriales, el camino habitual es un <strong>transmisor de peso</strong> que entrega 4-20 mA o Modbus RTU: se monta junto a la celda, hace el acondicionamiento con instrumentación de calidad y envía una señal inmune al ruido hasta el tablero. Encaja directamente con lo descrito en <a href="/blog/modbus-rtu-con-esp32-y-rs485-leer-plc-y-variadores">Modbus RTU con ESP32 y RS-485</a>.</p>
+<div class="note"><p><strong>Nota legal:</strong> en Chile, cualquier instrumento de pesaje usado en transacciones comerciales debe cumplir la metrología legal correspondiente y estar verificado. Un proyecto con HX711 es perfectamente válido para uso interno, control de proceso o educación, pero no para vender por peso al público.</p></div>
+</section><section id="faq"><h2>Preguntas frecuentes</h2><div class="faq"><details><summary>¿Por qué mi lectura del HX711 salta tanto?</summary><p>Las tres causas más frecuentes son el módulo configurado a 80 SPS, la alimentación compartida con cargas ruidosas y el cable de la celda sin apantallar o demasiado largo. Cambiar a 10 SPS y usar un regulador dedicado suele reducir el ruido un orden de magnitud.</p></details><details><summary>¿Puedo conectar dos celdas de carga a un HX711?</summary><p>Sí, cableándolas en paralelo si son idénticas, lo que suma sus capacidades y promedia la señal. Para leerlas de forma independiente necesitas un HX711 por celda o un ADC multicanal como el NAU7802.</p></details><details><summary>¿Qué capacidad de celda debo elegir?</summary><p>Aquella en la que tu peso habitual quede entre el 30 % y el 80 % del fondo de escala, incluyendo el peso muerto de la plataforma. Sobredimensionar destruye la resolución; subdimensionar arriesga deformación permanente.</p></details><details><summary>¿Cada cuánto hay que recalibrar?</summary><p>Cada seis meses en uso normal, y siempre después de mover el equipo, cambiar la plataforma o exponerlo a un golpe. Una verificación mensual con una pesa conocida detecta la deriva antes de que sea un problema.</p></details><details><summary>¿Sirve el HX711 para medir fuerza dinámica?</summary><p>No es su terreno: a 10 SPS solo captura fenómenos lentos y a 80 SPS el ruido crece mucho. Para impacto o vibración se requiere un acondicionador de mayor ancho de banda y un ADC rápido.</p></details></div></section><p class="disclosure">Contenido editorial independiente, sin ubicaciones patrocinadas ni enlaces de afiliado. Las especificaciones pueden cambiar; confirma siempre el manual y la normativa aplicable. Si detectas un error, <a href="/contact">avísanos</a>.</p><div class="cta"><h3>Sigue aprendiendo</h3><p>Sigue con <a href="/blog/guia-esencial-de-sensores-para-arduino">la guía esencial de sensores para Arduino</a> y con <a href="/blog/sensores-de-fuerza-torque-para-brazos-roboticos">sensores de fuerza y torque para brazos robóticos</a>.</p></div></article><section class="sources" aria-label="Fuentes primarias"><h2>Fuentes primarias y lecturas recomendadas</h2><p>Documentación oficial y material técnico usado para contrastar esta guía.</p><ul><li><a href="https://www.digikey.com/htmldatasheets/production/1836471/0/0/1/hx711.html" target="_blank" rel="noopener noreferrer">Avia Semiconductor — Hoja de datos del HX711</a></li><li><a href="https://www.nvlap.nist.gov/" target="_blank" rel="noopener noreferrer">NIST — Referencias de metrología y patrones de masa</a></li><li><a href="https://github.com/bogde/HX711" target="_blank" rel="noopener noreferrer">HX711 — Librería Arduino de referencia</a></li><li><a href="https://www.ti.com/lit/ds/symlink/ads1220.pdf" target="_blank" rel="noopener noreferrer">Texas Instruments — ADS1220, alternativa de 24 bits para puentes</a></li></ul><p style="font-size:.75rem;color:var(--quiet)">Enlaces revisados: 18 de agosto de 2026.</p></section></main><footer class="container site-footer"><p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada.</p><p><a href="/about">Sobre Nosotros</a> · <a href="/contact">Contacto</a> · <a href="/privacy">Política de Privacidad</a> · <a href="/terms">Términos</a></p><p>© 2023–2026 Alberto Gallardo. Todos los derechos reservados.</p></footer><div id="rel-consent" role="dialog" aria-labelledby="consent-title" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#fff;border-top:1px solid rgba(30,25,15,.15);box-shadow:0 -8px 32px rgba(30,25,15,.18);padding:20px 24px"><div style="max-width:1050px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div style="flex:1;min-width:260px"><strong id="consent-title">Usamos cookies</strong><p style="margin:4px 0 0;color:#57534a;font-size:.85rem">Con tu permiso usamos cookies para analítica y anuncios personalizados. Puedes rechazar y seguir leyendo. <a href="/privacy">Política de Privacidad</a>.</p></div><div><button id="consent-no" type="button" style="padding:10px 18px;border:1px solid #aaa;border-radius:99px;background:#fff;margin-right:8px">Rechazar</button><button id="consent-yes" type="button" style="padding:11px 18px;border:0;border-radius:99px;background:#a97b23;color:#fff;font-weight:700">Aceptar todo</button></div></div></div><script>(function(){const b=document.getElementById('rel-consent');if(!document.cookie.match(/(?:^|;\s*)rel_consent=/))b.hidden=false;function set(v){document.cookie='rel_consent='+v+';max-age=15552000;path=/;SameSite=Lax';gtag('consent','update',{'ad_storage':v==='granted'?'granted':'denied','ad_user_data':v==='granted'?'granted':'denied','ad_personalization':v==='granted'?'granted':'denied','analytics_storage':v==='granted'?'granted':'denied'});b.hidden=true}document.getElementById('consent-yes').onclick=()=>set('granted');document.getElementById('consent-no').onclick=()=>set('denied')})();</script><script>const n=document.getElementById('nav-toggle'),l=document.getElementById('nav-links');n.addEventListener('click',()=>{let o=n.getAttribute('aria-expanded')==='true';n.setAttribute('aria-expanded',!o);l.classList.toggle('open',!o)});const b=document.getElementById('progress-bar');addEventListener('scroll',()=>{let d=document.documentElement,m=d.scrollHeight-d.clientHeight;b.style.width=(m?scrollY/m*100:0)+'%'},{passive:true});</script></body></html>
