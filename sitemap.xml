@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.ukrabot.cl/</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -891,6 +891,48 @@
   <url>
     <loc>https://www.ukrabot.cl/blog/servomotores-closed-loop-vs-motores-paso-a-paso-cuando-dar-el-salto</loc>
     <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/creality-k1-max-vs-bambu-lab-p1s-la-batalla-de-la-velocidad-en-impresion-3d</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/repara-la-bateria-de-tu-scooter-electrico-xiaomi-m365</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/baterias-lifepo4-12v-100ah-calidad-y-precio-en-amazon</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/esp32-con-bluetooth-ble-control-desde-el-celular</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/construccion-de-una-maquina-recreativa-arcade-desde-cero-guia-completa-para-makers</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/arduino-due-vs-arduino-uno-cuando-necesitas-mas-potencia</loc>
+    <lastmod>2026-08-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
