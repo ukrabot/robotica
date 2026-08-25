@@ -2,3 +2,7 @@
 _serve.py
 __pycache__/
 .DS_Store
+
+# Archivos de trabajo del agente (no forman parte del sitio publicado)
+/work/
+/image-search/
