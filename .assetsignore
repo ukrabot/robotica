@@ -19,3 +19,7 @@
 wrangler.jsonc
 wrangler.toml
 .gitignore
+
+# Archivos de trabajo del agente
+/work/
+/image-search/
