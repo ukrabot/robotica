@@ -61,32 +61,32 @@
 
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Últimos artículos del blog",
-    "itemListOrder": "https://schema.org/ItemListOrderDescending",
-    "numberOfItems": 3,
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "url": "https://www.ukrabot.cl/blog/driver-a4988-vs-drv8825-vs-tmc2209/",
-        "name": "Driver A4988 vs DRV8825 vs TMC2209: ¿Cuál Elegir?"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "url": "https://www.ukrabot.cl/blog/filamento-pla-petg-abs-tpu-que-elegir/",
-        "name": "Filamento PLA, PETG, ABS o TPU: ¿Cuál Elegir?"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "url": "https://www.ukrabot.cl/blog/convertidor-buck-lm2596-ajustar-diagnosticar/",
-        "name": "Convertidor Buck LM2596: Ajuste, Cálculo y Diagnóstico"
-      }
-    ]
-  }
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Últimos artículos del blog",
+  "itemListOrder": "https://schema.org/ItemListOrderDescending",
+  "numberOfItems": 3,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "url": "https://www.ukrabot.cl/blog/calibracion-input-shaper-klipper-adxl345/",
+      "name": "Input Shaper en Klipper con ADXL345: Guía de Calibración"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "url": "https://www.ukrabot.cl/blog/protocolo-i2c-arduino-esp32-pull-up-scanner/",
+      "name": "Protocolo I2C en Arduino y ESP32: Pull-Up, Scanner y Fallas"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "url": "https://www.ukrabot.cl/blog/como-armar-pack-baterias-18650-21700-paso-a-paso/",
+      "name": "Cómo Armar un Pack de Baterías 18650 y 21700: Guía de Taller"
+    }
+  ]
+}
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -513,7 +513,7 @@
 
   <section class="stats" aria-label="Estadísticas del sitio">
     <div class="stats-inner">
-      <div class="stat"><h3>151</h3><p>Guías Publicadas</p></div>
+      <div class="stat"><h3>154</h3><p>Guías Publicadas</p></div>
       <div class="stat"><h3>20</h3><p>Categorías Editoriales</p></div>
       <div class="stat"><h3>2026</h3><p>Publicando Desde</p></div>
       <div class="stat"><h3>Chile · Latam</h3><p>Enfoque de Mercado</p></div>
@@ -532,7 +532,37 @@
       <p>Enlazamos directamente a fuentes primarias — hojas de datos de fabricantes, repositorios de código abierto y organismos de normas de seguridad (ISO, INN, SEC) — siempre que se menciona una cifra o afirmación específica. Si detectas un error o un dato desactualizado, por favor <a href="/contact">avísanos</a>.</p>
     </div>
 
-    <div class="cards" aria-label="Tarjetas de tutoriales">
+        <div class="cards" aria-label="Tarjetas de tutoriales">
+      <a href="/blog/calibracion-input-shaper-klipper-adxl345" class="card" aria-label="Cabezal de extrusión de impresora 3D con acelerómetro ADXL345">
+        <img src="blog/calibracion-input-shaper-klipper-adxl345-hero.jpg" alt="Cabezal de extrusión de impresora 3D con acelerómetro ADXL345 montado y cable cinta conectado sobre mesa de taller" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Impresión 3D y Energía de Taller</div>
+          <h3>Input Shaper en Klipper con ADXL345: Guía de Calibración</h3>
+          <p>Mide la frecuencia natural de tu impresora 3D, interpreta curvas FFT, selecciona el shaper óptimo (MZV, EI, 2HUMP_EI) y calcula aceleraciones seguras sin ghosting.</p>
+          <div class="card-footer"><time datetime="2026-08-27">27 ago 2026</time><span>·</span><span>21 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/protocolo-i2c-arduino-esp32-pull-up-scanner" class="card" aria-label="Microcontrolador ESP32 y sensores I2C con osciloscopio en banco de trabajo">
+        <img src="blog/protocolo-i2c-arduino-esp32-pull-up-scanner-hero.jpg" alt="Banco de trabajo electrónico con microcontrolador ESP32 y Arduino conectados a sensores I2C y osciloscopio digital" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Arduino, ESP32 y Control Embebido</div>
+          <h3>Protocolo I2C en Arduino y ESP32: Pull-Up, Scanner y Fallas</h3>
+          <p>Calcula resistencias pull-up según la capacitancia del bus, detecta dispositivos con Wire, multiplexa direcciones idénticas y recupera líneas bloqueadas con 9 pulsos.</p>
+          <div class="card-footer"><time datetime="2026-08-27">27 ago 2026</time><span>·</span><span>22 min de lectura</span></div>
+        </div>
+      </a>
+
+      <a href="/blog/como-armar-pack-baterias-18650-21700-paso-a-paso" class="card" aria-label="Ensamblaje de un pack de baterías de litio 18650 con tiras de níquel puro">
+        <img src="blog/como-armar-pack-baterias-18650-21700-paso-a-paso-hero.jpg" alt="Primer plano del ensamblaje de un pack de baterías de litio 18650 con tiras de níquel puro soldadas por puntos y aislantes de papel fishpaper" loading="lazy" width="640" height="210" />
+        <div class="card-body">
+          <div class="card-tag">Baterías y Reparación Electrónica</div>
+          <h3>Cómo Armar un Pack de Baterías 18650 y 21700: Guía de Taller</h3>
+          <p>Calcula la sección y ampacidad de tiras de níquel, verifica pureza con reactivos químicos, coloca aislantes dieléctricos y suelda por puntos con BMS seguro.</p>
+          <div class="card-footer"><time datetime="2026-08-27">27 ago 2026</time><span>·</span><span>23 min de lectura</span></div>
+        </div>
+      </a>
+
       <a href="/blog/driver-a4988-vs-drv8825-vs-tmc2209" class="card" aria-label="Módulo de driver para motor paso a paso sobre una mesa de electrónica">
         <img src="blog/driver-a4988-vs-drv8825-vs-tmc2209-hero.jpg" alt="Módulo controlador de motor paso a paso con circuito integrado y borneras sobre una mesa de taller" loading="lazy" width="640" height="210" />
         <div class="card-body">
@@ -1283,8 +1313,9 @@
 
       <div class="cat-block">
         <h3>Baterías y Reparación Electrónica</h3>
-        <span class="cat-count">11 publicados</span>
+        <span class="cat-count">12 publicados</span>
         <ul>
+          <li><a href="/blog/como-armar-pack-baterias-18650-21700-paso-a-paso">Cómo Armar un Pack de Baterías 18650 y 21700: Guía de Taller</a></li>
           <li><a href="/blog/repara-la-bateria-de-tu-scooter-electrico-xiaomi-m365">Repara la Batería de tu Scooter Eléctrico Xiaomi M365</a></li>
           <li><a href="/blog/baterias-lifepo4-12v-100ah-calidad-y-precio-en-amazon">Baterías LiFePO4 12V 100Ah: Calidad y Precio en Amazon</a></li>
           <li><a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">Cómo Reparar Baterías de Taladros Inalámbricos: BMS y Celdas</a></li>
@@ -1377,8 +1408,9 @@
 
       <div class="cat-block">
         <h3>Arduino, ESP32 y Control Embebido</h3>
-        <span class="cat-count">12 publicados</span>
+        <span class="cat-count">13 publicados</span>
         <ul>
+          <li><a href="/blog/protocolo-i2c-arduino-esp32-pull-up-scanner">Protocolo I2C en Arduino y ESP32: Pull-Up, Scanner y Fallas</a></li>
           <li><a href="/blog/esp32-con-bluetooth-ble-control-desde-el-celular">ESP32 con Bluetooth BLE: Control desde el Celular</a></li>
           <li><a href="/blog/como-usar-los-2-nucleos-del-esp32-simultaneamente">Cómo Usar los 2 Núcleos del ESP32 Simultáneamente</a></li>
           <li><a href="/blog/construye-tu-propio-brazo-robotico-impreso-en-3d-con-motores-paso-a-paso">Construye tu Propio Brazo Robótico Impreso en 3D con Motores Paso a Paso</a></li>
@@ -1496,8 +1528,9 @@
 
       <div class="cat-block">
         <h3>Impresión 3D y Energía de Taller</h3>
-        <span class="cat-count">10 publicados</span>
+        <span class="cat-count">11 publicados</span>
         <ul>
+          <li><a href="/blog/calibracion-input-shaper-klipper-adxl345">Input Shaper en Klipper con ADXL345: Guía de Calibración</a></li>
           <li><a href="/blog/creality-k1-max-vs-bambu-lab-p1s-la-batalla-de-la-velocidad-en-impresion-3d">Creality K1 Max vs Bambu Lab P1S: La Batalla de la Velocidad en Impresión 3D</a></li>
           <li><a href="/blog/las-mejores-impresoras-3d-de-gran-formato-500mm-para-makers">Las Mejores Impresoras 3D de Gran Formato (500 mm) para Makers</a></li>
           <li><a href="/blog/mejores-ups-sistemas-de-alimentacion-para-impresoras-3d">Mejores UPS: Sistemas de Alimentación para Impresoras 3D</a></li>
