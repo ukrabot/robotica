@@ -1,0 +1,459 @@
+<!DOCTYPE html><html lang="es-CL"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f6f4ee"><title>Protocolo I2C en Arduino y ESP32: Pull-Up, Scanner y Fallas</title><meta name="description" content="Guía técnica del protocolo I2C en Arduino y ESP32: cálculo de resistencias pull-up, escaneo de bus, multiplexor TCA9548A y solución a bloqueos de SDA/SCL."><meta name="keywords" content="protocolo i2c arduino esp32, resistencias pull up i2c, i2c scanner arduino, tca9548a multiplexor, bus hang i2c sda scl, osciloscopio i2c fallas"><meta name="author" content="Alberto Gallardo"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://www.ukrabot.cl/blog/protocolo-i2c-arduino-esp32-pull-up-scanner/"><meta property="og:type" content="article"><meta property="og:title" content="Protocolo I2C en Arduino y ESP32: Pull-Up, Scanner y Fallas"><meta property="og:description" content="Guía técnica del protocolo I2C en Arduino y ESP32: cálculo de resistencias pull-up, escaneo de bus, multiplexor TCA9548A y solución a bloqueos de SDA/SCL."><meta property="og:image" content="https://www.ukrabot.cl/blog/protocolo-i2c-arduino-esp32-pull-up-scanner-hero.jpg"><meta property="og:url" content="https://www.ukrabot.cl/blog/protocolo-i2c-arduino-esp32-pull-up-scanner/"><meta property="og:locale" content="es_CL"><meta property="og:site_name" content="Blog de Ingeniería Robótica"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Protocolo I2C en Arduino y ESP32: Pull-Up, Scanner y Fallas"><meta name="twitter:description" content="Guía técnica del protocolo I2C en Arduino y ESP32: cálculo de resistencias pull-up, escaneo de bus, multiplexor TCA9548A y solución a bloqueos de SDA/SCL."><meta name="twitter:image" content="https://www.ukrabot.cl/blog/protocolo-i2c-arduino-esp32-pull-up-scanner-hero.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Protocolo I2C en Arduino y ESP32: Pull-Up, Scanner y Fallas","description":"Guía técnica del protocolo I2C en Arduino y ESP32: cálculo de resistencias pull-up, escaneo de bus, multiplexor TCA9548A y solución a bloqueos de SDA/SCL.","author":{"@type":"Person","name":"Alberto Gallardo","jobTitle":"Analista Programador Computacional","url":"https://www.ukrabot.cl/about"},"publisher":{"@type":"Organization","name":"Blog de Ingeniería Robótica","url":"https://www.ukrabot.cl","logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}},"datePublished":"2026-08-27","dateModified":"2026-08-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/protocolo-i2c-arduino-esp32-pull-up-scanner/"},"image":"https://www.ukrabot.cl/blog/protocolo-i2c-arduino-esp32-pull-up-scanner-hero.jpg","wordCount":4696,"inLanguage":"es-CL","proficiencyLevel":"Intermedio","keywords":"protocolo i2c arduino esp32, resistencias pull up i2c, i2c scanner arduino, tca9548a multiplexor, bus hang i2c sda scl, osciloscopio i2c fallas"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},{"@type":"ListItem","position":3,"name":"Protocolo I2C en Arduino y ESP32: Pull-Up, Scanner y Fallas","item":"https://www.ukrabot.cl/blog/protocolo-i2c-arduino-esp32-pull-up-scanner/"}]}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type": "Question", "name": "¿Por qué no se debe confiar únicamente en las resistencias de pull-up internas del microcontrolador?", "acceptedAnswer": {"@type": "Answer", "text": "Los microcontroladores como el ATmega328P de Arduino Uno o el SoC del ESP32 integran resistencias de pull-up internas de valor muy elevado: aproximadamente 20–50 kΩ en AVR y 30–60 kΩ en ESP32. Un valor tan alto produce una constante de tiempo RC excesiva junto a la capacitancia parásita de las pistas y cables (típicamente 100–300 pF), lo que redondea los flancos de subida de la señal digital, superando el tiempo máximo de subida admisible (1.000 ns en modo estándar). Esto genera errores de paridad, falsos NACK y congelamiento del bus bajo la menor interferencia electromagnética."}}, {"@type": "Question", "name": "¿Puedo conectar directamente un sensor I2C de 3,3 V a un Arduino Uno de 5 V?", "acceptedAnswer": {"@type": "Answer", "text": "No es recomendable sin un conversor de nivel lógico bidireccional basado en MOSFETs (como el BSS138). Si el sensor de 3,3 V carece de diodos de protección tolerantes a 5 V y el bus tiene resistencias pull-up conectadas a la línea de 5 V del Arduino Uno, se inyectará sobretensión en las compuertas de silicio del periférico, degradándolo o destruyéndolo permanentemente. Además, la librería Wire de Arduino AVR activa por defecto los pull-ups internos a 5 V al ejecutar Wire.begin()."}}, {"@type": "Question", "name": "¿Cómo resuelvo el conflicto si tengo dos sensores con la misma dirección I2C fija (como dos MPU6050 o dos RTC)?", "acceptedAnswer": {"@type": "Answer", "text": "Existen tres métodos de ingeniería: (1) Si el módulo dispone de pin de configuración de dirección (como el pin AD0 del MPU6050), conéctalo a nivel alto (VCC) para cambiar su dirección de 0x68 a 0x69; (2) Utilizar un multiplexor I2C TCA9548A de 8 canales, que permite aislar y seleccionar dinámicamente canales independientes mediante comandos I2C; (3) En microcontroladores con múltiples controladores I2C por hardware como el ESP32, instanciar un segundo bus independiente (TwoWire I2C_Two = TwoWire(1)) asignado a pines GPIO libres."}}, {"@type": "Question", "name": "¿Qué causa el problema del bus I2C bloqueado (Bus Hang) donde la línea SDA queda en 0 V?", "acceptedAnswer": {"@type": "Answer", "text": "Ocurre cuando el microcontrolador maestro sufre un reinicio o una interrupción durante una lectura mientras el dispositivo esclavo está transmitiendo un bit '0' o un bit de reconocimiento (ACK). Como el maestro no completa el noveno ciclo de reloj en SCL, el esclavo mantiene su transistor de salida open-drain saturado conduciendo a tierra, dejando la línea SDA pegada en 0 V permanentemente. Ninguna llamada posterior a Wire.begin() funcionará hasta que el esclavo reciba pulsos de reloj para liberar el bus o se corte su alimentación."}}, {"@type": "Question", "name": "¿Cuál es la distancia física máxima a la que puedo tender un bus I2C de forma fiable?", "acceptedAnswer": {"@type": "Answer", "text": "La especificación I2C de NXP no limita una distancia en metros, sino una capacitancia máxima total del bus de 400 pF (o 4000 pF en buses Fast-mode Plus con búferes dedicados). Con cable plano común (~80 pF/metro), el límite práctico fiable sin búferes es de aproximadamente 1 a 1,5 metros a 100 kHz. Para distancias mayores (hasta 15–50 metros), se deben utilizar integrados extensores/búferes diferenciales como el P82B715, el P82B96 o transceptores diferenciales I2C sobre par trenzado como PCA9615."}}, {"@type": "Question", "name": "¿Por qué el escáner I2C detecta un dispositivo pero la librería del sensor no puede leer datos?", "acceptedAnswer": {"@type": "Answer", "text": "El escáner I2C únicamente comprueba si el esclavo responde con un pulso de ACK a su dirección física de 7 bits enviando una trama simple. Sin embargo, para leer datos reales, la librería debe enviar comandos a registros internos específicos (subdirecciones). Si el sensor está subalimentado (voltaje por debajo de su umbral operativo), si requiere un comando de inicialización previo, si opera a una velocidad de reloj no soportada, o si sus registros internos están bloqueados por ruido eléctrico, la librería fallará aunque el escáner lo detecte."}}]}</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"><style>:root{--ink:#f6f4ee;--card:#fff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}img{max-width:100%;height:auto}a{color:var(--blue);text-underline-offset:3px}.container{max-width:1050px;margin:auto;padding:0 24px}.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}.logo span{color:var(--gold);font-style:italic}.nav-links{display:flex;gap:20px;font-size:.86rem}.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer}.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:auto}.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300}.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08)}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.3),rgba(18,15,11,.9))}.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.2rem);line-height:1.08;font-weight:400;max-width:930px;margin:18px 0;color:#fff}.hero p{color:rgba(245,243,238,.8);max-width:760px;font-size:1.05rem}.byline{font-size:.85rem!important;color:rgba(245,243,238,.58)!important}.byline a{color:var(--gold-bright)}.article-body{padding-top:64px;padding-bottom:90px}.article-body section{scroll-margin-top:80px}.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px}.article-body p,.article-body li{color:var(--muted)}.article-body p{margin:0 0 20px}.article-body li{margin:8px 0}.article-body strong{color:var(--text)}.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}.toc ol{margin:0;padding-left:22px}.toc a{color:var(--muted);text-decoration:none}.note{border-left:4px solid var(--gold)}.warning{background:rgba(178,40,30,.06);border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0;color:var(--muted)}.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.article-img img{width:100%;display:block}.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:22px 0}table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}td:first-child{color:var(--text);font-weight:600}pre{background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;overflow-x:auto;font-size:.88rem;line-height:1.5}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.faq details{border-top:1px solid var(--line);padding:16px 0}.faq summary{cursor:pointer;font-weight:600;color:var(--text)}.faq p{padding-top:10px;margin:0}.sources{padding:48px 0;border-top:1px solid var(--line);color:var(--muted)}.sources h2{font-family:Georgia,serif;font-size:1.6rem;font-weight:400;margin-bottom:16px;color:var(--text)}.sources ul{padding-left:20px}.sources li{margin:8px 0}.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}.cta p{margin:0}.site-footer{padding:40px 24px;border-top:1px solid var(--line);font-size:.85rem;color:var(--quiet)}.site-footer a{color:var(--muted)}@media(max-width:760px){.nav-toggle{display:flex}.nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(246,244,238,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 24px 18px;display:none}.nav-links.open{display:flex}.nav-links a{padding:10px 0;width:100%}}@media(max-width:700px){.hero-inner{padding:80px 20px 50px}.article-body h2{font-size:1.6rem;margin:44px 0 14px}.article-body{padding-top:48px;padding-bottom:60px}}</style><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500});(function(){try{var c=document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);if(c&&c[1]==='granted'){gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'});}}catch(e){}})();</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1ZVHF8X35Q');</script></head><body><div class="progress-bar" id="progress-bar" aria-hidden="true"></div><nav class="site-nav" aria-label="Navegación del sitio"><div class="nav-inner"><a class="logo" href="/">Robótica <span>Ingeniería</span></a><button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación"><span></span><span></span><span></span></button><div class="nav-links" id="nav-links"><a href="/">Inicio</a><a href="/#categories">Tutoriales</a><a href="/#proyecto-destacado">Proyecto del Mes</a><a href="/about">Sobre Nosotros</a><a href="/contact">Contacto</a></div></div></nav><header class="hero"><img src="protocolo-i2c-arduino-esp32-pull-up-scanner-hero.jpg" alt="Banco de trabajo electrónico con microcontrolador ESP32 y Arduino conectados a sensores I2C y osciloscopio digital midiendo señales SDA y SCL" fetchpriority="high"><div class="hero-inner"><div class="eyebrow">Arduino, ESP32 y Control Embebido · Actualizado el <time datetime="2026-08-27">27 de agosto de 2026</time></div><h1>Protocolo I2C en Arduino y ESP32: Pull-Up, Scanner y Fallas</h1><p>Aprende a calcular resistencias pull-up según la capacitancia del bus, detectar dispositivos con Wire, multiplexar direcciones idénticas y recuperar líneas bloqueadas con 9 pulsos de reloj.</p><p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 22 min de lectura</p></div></header><main class="container article-body"><article>
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#topologia-fisica">Topología física de I2C: arquitectura open-drain y líneas bidireccionales</a></li>
+    <li><a href="#calculo-pullup">Cálculo de resistencias pull-up: ecuaciones de corriente y tiempo de subida</a></li>
+    <li><a href="#diferencias-arduino-esp32">Diferencias entre Arduino AVR (5 V) y ESP32 (3,3 V): niveles lógicos y Wire.h</a></li>
+    <li><a href="#codigo-scanner">Código completo de escaneo de bus (I2C Scanner) para Arduino y ESP32</a></li>
+    <li><a href="#multiplexor-tca9548a">Resolución de direcciones fijas duplicadas mediante multiplexor TCA9548A</a></li>
+    <li><a href="#diagnostico-osciloscopio">Diagnóstico con osciloscopio: análisis de flancos, rebotes y capacitancia parásita</a></li>
+    <li><a href="#bus-bloqueado">El fenómeno del bus bloqueado (I2C Lockup / Bus Hang) y por qué SDA queda a 0 V</a></li>
+    <li><a href="#rutina-recuperacion">Rutina de recuperación por software: secuencia de 9 pulsos de reloj (Clock Toggling)</a></li>
+    <li><a href="#cableado-campo">Topología de cableado en campo: pares trenzados, apantallamiento y límites de distancia</a></li>
+    <li><a href="#costos-chile">Precios de circuitos integrados I2C e instrumental en Chile (2026)</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+    <li><a href="#fuentes">Fuentes primarias y lecturas recomendadas</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="topologia-fisica">
+<h2>Topología física de I2C: arquitectura open-drain y líneas bidireccionales</h2>
+<p>El protocolo <strong>I2C (Inter-Integrated Circuit)</strong>, desarrollado originalmente por Philips Semiconductors (hoy NXP Semiconductors) y estandarizado bajo la especificación oficial <strong>UM10204</strong>, es el estándar síncrono semidúplex más extendido en la electrónica embebida para intercomunicar microcontroladores con sensores, memorias EEPROM, conversores ADC/DAC, controladores de pantalla y módulos de reloj en tiempo real (RTC). A diferencia de interfaces como SPI o UART que emplean etapas de salida complementarias en contrafase (push-pull), el bus I2C se fundamenta en una topología eléctrica puramente <strong>open-drain</strong> (colector abierto en tecnología bipolar o drenador abierto en transistores MOSFET de canal N).</p>
+
+<p>Esta arquitectura física utiliza únicamente dos conductores activos más la referencia de masa común (GND):</p>
+
+<ul>
+<li><strong>SDA (Serial Data):</strong> Línea de datos digital bidireccional por donde circulan las direcciones de 7 o 10 bits, los bytes de comando y las tramas de carga útil (payload).</li>
+<li><strong>SCL (Serial Clock):</strong> Línea de reloj síncrono generada habitualmente por el dispositivo maestro (Master) para sincronizar la captura de cada bit de datos, con soporte para estiramiento de reloj (<em>clock stretching</em>) por parte de esclavos lentos.</li>
+</ul>
+
+<p>Debido a la estructura open-drain, ningún circuito integrado conectado al bus es capaz de inyectar activamente voltaje positivo ($V_{DD}$) a las líneas SDA o SCL. Los transistores internos únicamente pueden actuar como interruptores electrónicos hacia masa: cuando un dispositivo quiere transmitir un nivel lógico '0', satura su MOSFET interno conectando la línea directamente a 0 V (GND). Por el contrario, cuando desea transmitir un nivel lógico '1', conmuta su transistor a estado de alta impedancia (corte / Hi-Z), permitiendo que la energía provenga exclusivamente de <strong>resistencias de polarización positiva externas (resistencias de pull-up)</strong> conectadas a la línea de alimentación $V_{DD}$.</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Modo de Operación I2C</th><th>Velocidad de Reloj Máxima</th><th>Tiempo Máximo de Subida ($t_r$)</th><th>Capacitancia Máxima de Bus ($C_b$)</th></tr></thead>
+<tbody>
+<tr><td>Standard-mode (Sm)</td><td>100 kHz (100 kbit/s)</td><td>1.000 ns (1,0 µs)</td><td>400 pF</td></tr>
+<tr><td>Fast-mode (Fm)</td><td>400 kHz (400 kbit/s)</td><td>300 ns (0,3 µs)</td><td>400 pF</td></tr>
+<tr><td>Fast-mode Plus (Fm+)</td><td>1.000 kHz (1,0 Mbit/s)</td><td>120 ns (0,12 µs)</td><td>550 pF (hasta 4000 pF con buffers)</td></tr>
+<tr><td>High-speed mode (Hs-mode)</td><td>3,4 MHz (3,4 Mbit/s)</td><td>80 ns (0,08 µs)</td><td>100 pF (con fuente de corriente activa)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Esta configuración de "función cableada O-exclusiva" (<em>wired-AND</em>) presenta dos ventajas críticas de ingeniería: elimina totalmente el riesgo de cortocircuito o contención de bus si dos dispositivos intentan transmitir simultáneamente (lo que permite implementar arbitraje multi-maestro transparente sin daño físico de silicio), y hace posible que periféricos de procesamiento lento detengan temporalmente la comunicación manteniendo la línea SCL a nivel bajo (clock stretching) mientras terminan de procesar una conversión analógica o escribir en una celda de memoria flash interna.</p>
+</section>
+
+<section id="calculo-pullup">
+<h2>Cálculo de resistencias pull-up: ecuaciones de corriente y tiempo de subida</h2>
+<p>El dimensionamiento de las resistencias de pull-up ($R_p$) en las líneas SDA y SCL es el factor físico que determina si un sistema embebido operará durante años con fiabilidad industrial o si sufrirá cuelgues aleatorios en campo. El valor de $R_p$ está estrictamente acotado por dos límites matemáticos fundamentales dictados por la norma NXP UM10204: un <strong>límite inferior ($R_{p(	ext{min})}$)</strong> fijado por la corriente máxima admisible que pueden disipar los transistores open-drain a masa, y un <strong>límite superior ($R_{p(	ext{max})}$)</strong> fijado por la capacitancia parásita total del bus y el tiempo máximo admisible de transición de nivel bajo a nivel alto ($t_r$).</p>
+
+<h3>1. Cálculo de la Resistencia Mínima ($R_{p(	ext{min})}$)</h3>
+<p>Cuando un dispositivo fuerza la línea a nivel bajo ('0' lógico), toda la corriente que desciende a través de $R_p$ desde $V_{DD}$ debe circular por el transistor interno hacia tierra. Para garantizar que el voltaje a nivel bajo ($V_{OL}$) permanezca por debajo del umbral de reconocimiento seguro ($V_{OL(	ext{max})} = 0,4\,	ext{V}$ a la corriente nominal de sumidero $I_{OL} = 3\,	ext{mA}$ en Standard y Fast-mode), la resistencia no puede ser menor a:</p>
+
+<pre><code>R_p(min) = (V_DD - V_OL(max)) / I_OL</code></pre>
+
+<p>Aplicando la fórmula para los dos voltajes lógicos predominantes en robótica y automatización:</p>
+
+<ul>
+<li><strong>Para sistemas de 3,3 V (ESP32, STM32, Raspberry Pi):</strong> $R_{p(	ext{min})} = (3,3\,	ext{V} - 0,4\,	ext{V}) / 0,003\,	ext{A} = 2,9\,	ext{V} / 0,003\,	ext{A} pprox 967\,\Omega$ (se adopta valor comercial de $1,0\,	ext{k}\Omega$).</li>
+<li><strong>Para sistemas de 5,0 V (Arduino Uno, Nano, Mega 2560):</strong> $R_{p(	ext{min})} = (5,0\,	ext{V} - 0,4\,	ext{V}) / 0,003\,	ext{A} = 4,6\,	ext{V} / 0,003\,	ext{A} pprox 1.533\,\Omega$ (se adopta valor comercial de $1,8\,	ext{k}\Omega$).</li>
+</ul>
+
+<h3>2. Cálculo de la Resistencia Máxima ($R_{p(	ext{max})}$)</h3>
+<p>Cuando el transistor conmuta a estado de alta impedancia, la línea asciende hacia $V_{DD}$ siguiendo una curva de carga exponencial de un circuito RC formado por la resistencia $R_p$ y la <strong>capacitancia distribuida total del bus ($C_b$)</strong>, que agrupa la capacitancia parásita de las pistas de PCB, los pines de entrada de los chips conectados (5 a 10 pF por dispositivo) y la capacitancia del cableado (50 a 100 pF por metro). La norma define el tiempo de subida ($t_r$) como el tiempo necesario para que la señal ascienda del 30 % ($0,3 	imes V_{DD}$) al 70 % ($0,7 	imes V_{DD}$) del voltaje de alimentación. A partir de la ecuación diferencial de carga del condensador, la constante matemática es $0,8473$:</p>
+
+<pre><code>R_p(max) = t_r(max) / (0,8473 × C_b)</code></pre>
+
+<p>Veamos un ejemplo numérico real de ingeniería: consideremos un bus I2C operando en <strong>Standard-mode a 100 kHz</strong> ($t_{r(	ext{max})} = 1.000\,	ext{ns} = 1 	imes 10^{-6}\,	ext{s}$) con cuatro sensores conectados mediante 80 cm de cable plano, acumulando una capacitancia estimada de $C_b = 180\,	ext{pF}$:</p>
+
+<pre><code>R_p(max) = 1.000 × 10^-9 s / (0,8473 × 180 × 10^-12 F) = 10^-6 / 1,525 × 10^-10 ≈ 6.557 Ω ≈ 6,5 kΩ</code></pre>
+
+<div class="note">
+<strong>Regla de oro de diseño:</strong> El rango válido de pull-up para este sistema es de $1,0\,	ext{k}\Omega \le R_p \le 6,5\,	ext{k}\Omega$. Un valor de <strong>$2,2\,	ext{k}\Omega$ a $3,3\,	ext{k}\Omega$</strong> es el punto de operación óptimo en 3,3 V: proporciona flancos de subida sumamente rápidos y limpios ($t_r pprox 340\,	ext{ns}$), excelente inmunidad contra el ruido electromagnético de motores y una corriente de consumo inferior a 1,5 mA por línea durante la transmisión.
+</div>
+</section>
+
+<section id="diferencias-arduino-esp32">
+<h2>Diferencias entre Arduino AVR (5 V) y ESP32 (3,3 V): niveles lógicos y Wire.h</h2>
+<p>Uno de los errores más destructivos en laboratorios de robótica y maker spaces es la interconexión directa entre placas Arduino basadas en microcontroladores AVR de 5 V (como el ATmega328P de Arduino Uno o ATmega2560) y microcontroladores o sensores modernos que operan estrictamente a 3,3 V (como el SoC Espressif ESP32, ESP8266 o microcontroladores ARM Cortex-M).</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Parámetro Eléctrico</th><th>Arduino Uno / Nano (ATmega328P)</th><th>Espressif ESP32 (ESP-WROOM-32)</th></tr></thead>
+<tbody>
+<tr><td>Voltaje de alimentación de bus ($V_{DD}$)</td><td>5,0 V nominal</td><td>3,3 V nominal (No tolerante a 5 V continuo)</td></tr>
+<tr><td>Pines de hardware I2C por defecto</td><td>SDA = A4 (Pin 27), SCL = A5 (Pin 28)</td><td>SDA = GPIO 21, SCL = GPIO 22 (Reconfigurables vía matriz GPIO)</td></tr>
+<tr><td>Comportamiento de <code>Wire.begin()</code></td><td><strong>Activa automáticamente pull-ups internos a 5 V</strong></td><td>Activa pull-ups internos débiles a 3,3 V (~45 kΩ)</td></tr>
+<tr><td>Umbral de voltaje para nivel lógico '1' ($V_{IH}$)</td><td>$0,7 	imes V_{CC} = 3,5\,	ext{V}$ mínimo</td><td>$0,75 	imes V_{DD} = 2,47\,	ext{V}$ mínimo</td></tr>
+<tr><td>Controladores de hardware I2C integrados</td><td>1 módulo Two-Wire Interface (TWI)</td><td>2 controladores independientes (I2C_NUM_0 e I2C_NUM_1)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Fíjate en el parámetro crítico $V_{IH}$ del Arduino Uno: para que el microcontrolador ATmega328P reconozca un '1' lógico con certeza garantizada por datasheet, el voltaje en la línea debe superar los <strong>3,5 V</strong> ($0,7 	imes 5\,	ext{V}$). Si conectas un sensor alimentado a 3,3 V con resistencias pull-up a 3,3 V directamente al Arduino Uno, el voltaje máximo alcanzado en estado alto será de 3,3 V, quedando por debajo de la especificación oficial de 3,5 V. Aunque en pruebas de banco a 25 °C pueda funcionar por margen de fabricación, en condiciones ambientales de temperatura variable el bus comenzará a registrar lecturas de datos corruptas.</p>
+
+<p>Además, al llamar a <code>Wire.begin()</code> en Arduino Uno, el núcleo activa los registros <code>PORTC4</code> y <code>PORTC5</code>, polarizando las líneas a través de sus resistencias internas de 5 V. Esto inyecta corriente positiva de 5 V directamente en las compuertas de los sensores de 3,3 V, provocando conducción en los diodos de protección ESD de silicio, sobrecalentamiento y fallo prematuro por <em>latch-up</em>.</p>
+
+<div class="warning">
+<strong>Obligación de diseño:</strong> Para comunicar un microcontrolador de 5 V con sensores de 3,3 V es <strong>mandatorio intercalar un conversor de nivel lógico bidireccional I2C</strong> basado en dos transistores MOSFET de canal N (como el BSS138) y resistencias de pull-up independientes en el lado de bajo voltaje (LV = 3,3 V) y en el lado de alto voltaje (HV = 5,0 V).
+</div>
+</section>
+
+<section id="codigo-scanner">
+<h2>Código completo de escaneo de bus (I2C Scanner) para Arduino y ESP32</h2>
+<p>La herramienta de diagnóstico primario más elemental y potente para verificar la presencia física y comunicación de cualquier dispositivo I2C es el <strong>I2C Scanner</strong>. El principio de funcionamiento consiste en recorrer secuencialmente las 128 direcciones posibles de 7 bits (del rango hexadecimal <code>0x01</code> a <code>0x7F</code>), enviando una condición de inicio (START), transmitiendo el byte de dirección con el bit de lectura/escritura en cero ($R/\overline{W} = 0$) y evaluando si el dispositivo responde liberando la línea SDA a nivel bajo en el noveno ciclo de reloj para emitir un pulso de <strong>Reconocimiento (ACK - Acknowledge)</strong>.</p>
+
+<p>A continuación se presenta el código de ingeniería optimizado y comentado para el entorno Arduino IDE y PlatformIO, compatible tanto con Arduino Uno/Nano como con <a href="/blog/como-usar-los-2-nucleos-del-esp32-simultaneamente">SoC ESP32 multihilo</a>, permitiendo reasignar pines GPIO y ajustar la velocidad del bus a 100 kHz o 400 kHz:</p>
+
+<pre><code>#include &lt;Arduino.h&gt;
+#include &lt;Wire.h&gt;
+
+// Definición de pines para ESP32 (en Arduino Uno estos pines se ignoran y usa A4/A5)
+#if defined(ESP32)
+  #define I2C_SDA_PIN 21
+  #define I2C_SCL_PIN 22
+#endif
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) {
+    delay(10); // Espera de conexión USB nativa en microcontroladores modernos
+  }
+
+  Serial.println("
+==================================================");
+  Serial.println("   UKRABOT - Diagnóstico de Bus I2C de Alta Velocidad");
+  Serial.println("==================================================");
+
+#if defined(ESP32)
+  Serial.printf("Configurando ESP32 I2C en SDA: GPIO %d, SCL: GPIO %d
+", I2C_SDA_PIN, I2C_SCL_PIN);
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+#else
+  Serial.println("Inicializando Wire en plataforma AVR estándar...");
+  Wire.begin();
+#endif
+
+  Wire.setClock(100000); // Modo Estándar a 100 kHz (cambiar a 400000 para Fast-mode)
+}
+
+void loop() {
+  byte error, address;
+  int nDevices = 0;
+
+  Serial.println("
+Iniciando escaneo de direcciones I2C (0x01 a 0x7E)...");
+  unsigned long startScanTime = micros();
+
+  for (address = 1; address < 127; address++) {
+    // La función Wire.endTransmission devuelve:
+    // 0: Éxito (Dispositivo respondió con ACK)
+    // 2: Error en transmisión de dirección (NACK recibido)
+    // 3: Error en transmisión de datos (NACK recibido)
+    // 4: Otro error en hardware del bus (Línea pegada, timeout o ruido)
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+
+    if (error == 0) {
+      Serial.print("  [+] Dispositivo detectado en dirección 0x");
+      if (address < 16) Serial.print("0");
+      Serial.print(address, HEX);
+      Serial.print(" (Decimal: ");
+      Serial.print(address);
+      Serial.print(")");
+
+      // Identificación orientativa de periféricos comunes
+      if (address == 0x27 || address == 0x3F) Serial.print(" -> Pantalla LCD con PCF8574");
+      else if (address == 0x3C || address == 0x3D) Serial.print(" -> Display OLED SSD1306");
+      else if (address == 0x68) Serial.print(" -> MPU6050 (Acelerómetro/Giroscopio) o RTC DS3231");
+      else if (address == 0x76 || address == 0x77) Serial.print(" -> Sensor BMP280 / BME280");
+      else if (address == 0x70) Serial.print(" -> Multiplexor TCA9548A");
+
+      Serial.println();
+      nDevices++;
+    } else if (error == 4) {
+      Serial.print("  [!] Error crítico de bus en dirección 0x");
+      if (address < 16) Serial.print("0");
+      Serial.println(address, HEX);
+    }
+  }
+
+  unsigned long totalScanTime = micros() - startScanTime;
+  Serial.println("--------------------------------------------------");
+  if (nDevices == 0) {
+    Serial.println("Resultado: No se encontraron dispositivos I2C en el bus.");
+    Serial.println("Consejo: Verifique alimentación (VCC/GND), continuidad y resistencias pull-up.");
+  } else {
+    Serial.printf("Resultado: Escaneo finalizado. %d dispositivo(s) activo(s) en %lu µs.
+", nDevices, totalScanTime);
+  }
+  Serial.println("==================================================");
+
+  delay(5000); // Pausa de 5 segundos entre barridos
+}</code></pre>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="multiplexor-tca9548a">
+<h2>Resolución de direcciones fijas duplicadas mediante multiplexor TCA9548A</h2>
+<p>En proyectos complejos de robótica móvil, brazos articulados o estaciones de adquisición multicanal, es sumamente habitual necesitar conectar múltiples sensores del mismo tipo; por ejemplo, cuatro unidades de medición inercial MPU6050 para medir la cinemática de cada eslabón, o dos pantallas OLED SSD1306 de 0,96 pulgadas para mostrar parámetros en interfaces de usuario. Sin embargo, muchos módulos comerciales poseen una dirección I2C cableada en el silicio que solo permite alternar entre dos valores posibles (por ejemplo, 0x68 y 0x69 en el MPU6050 mediante el pin AD0, o 0x3C y 0x3D en pantallas OLED mediante una resistencia puente).</p>
+
+<p>Cuando se requiere conectar tres o más sensores con la misma dirección física, conectarlos en paralelo al mismo bus SDA/SCL generará una colisión destructiva: ambos esclavos responderán con ACK al mismo tiempo y conducirán sus transistores open-drain simultáneamente sobre la línea SDA, corrompiendo por completo los datos leídos. La solución estándar de ingeniería consiste en incorporar un <strong>multiplexor y conmutador bidireccional I2C de 8 canales TCA9548A</strong> de Texas Instruments.</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Canal TCA9548A</th><th>Registro de Control (Byte enviado a 0x70)</th><th>Sensores conectados en canal aislado</th></tr></thead>
+<tbody>
+<tr><td>Canal 0 (SD0 / SC0)</td><td><code>0x01</code> (Binario: <code>00000001</code>)</td><td>MPU6050 Eslabón Base (Dirección 0x68)</td></tr>
+<tr><td>Canal 1 (SD1 / SC1)</td><td><code>0x02</code> (Binario: <code>00000010</code>)</td><td>MPU6050 Eslabón Hombro (Dirección 0x68)</td></tr>
+<tr><td>Canal 2 (SD2 / SC2)</td><td><code>0x04</code> (Binario: <code>00000100</code>)</td><td>MPU6050 Eslabón Codo (Dirección 0x68)</td></tr>
+<tr><td>Canal 3 (SD3 / SC3)</td><td><code>0x08</code> (Binario: <code>00001000</code>)</td><td>MPU6050 Efector Final (Dirección 0x68)</td></tr>
+<tr><td>Desactivar todos</td><td><code>0x00</code> (Binario: <code>00000000</code>)</td><td>Ninguno (Aislamiento total de canales)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>El TCA9548A se conecta al bus maestro principal en la dirección base <code>0x70</code> (configurable de 0x70 a 0x77 mediante los pines A0, A1 y A2). Para leer un sensor específico conectado en uno de sus 8 canales aislados (de SC0/SD0 a SC7/SD7), el microcontrolador simplemente envía un byte de selección a la dirección 0x70 antes de comunicarse con el sensor en su dirección normal 0x68:</p>
+
+<pre><code>void selectTCAChannel(uint8_t channel) {
+  if (channel > 7) return;
+  Wire.beginTransmission(0x70); // Dirección del multiplexor TCA9548A
+  Wire.write(1 << channel);     // Habilita únicamente el bit del canal deseado
+  Wire.endTransmission();
+}
+
+// Ejemplo de lectura secuencial en el bucle principal:
+void readAllSensors() {
+  for (uint8_t i = 0; i < 4; i++) {
+    selectTCAChannel(i);
+    // Ahora el bus maestro está conectado eléctricamente solo al canal 'i'
+    Wire.beginTransmission(0x68);
+    Wire.write(0x3B); // Registro ACCEL_XOUT_H en MPU6050
+    Wire.endTransmission(false);
+    Wire.requestFrom(0x68, 6);
+    // Lectura normal de bytes...
+  }
+}</code></pre>
+
+<p>Una ventaja eléctrica crucial del TCA9548A es que actúa como un <strong>aislador de capacitancia parásita</strong>: los cables y sensores conectados en los canales inactivos quedan desconectados galvánicamente del bus principal, permitiendo construir redes I2C extensas con decenas de dispositivos sin sobrepasar jamás el límite crítico de 400 pF en el canal activo.</p>
+</section>
+
+<section id="diagnostico-osciloscopio">
+<h2>Diagnóstico con osciloscopio: análisis de flancos, rebotes y capacitancia parásita</h2>
+<p>Cuando un bus I2C presenta fallas intermitentes, el análisis por software es insuficiente: se debe acudir al dominio eléctrico utilizando un <a href="/blog/como-usar-un-multimetro-guia-paso-a-paso">multímetro de precisión</a> para verificar niveles de continua y un <strong>osciloscopio digital con decodificación de protocolo</strong> (como Rigol DHO804, Hantek o Siglent) para capturar las señales analógicas en tiempo real:</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Forma de onda en pantalla del osciloscopio</th><th>Causa física subyacente</th><th>Corrección en circuito</th></tr></thead>
+<tbody>
+<tr><td>Flanco de subida con curva suave tipo "diente de tiburón" ($t_r &gt; 1.000\,	ext{ns}$)</td><td>Resistencia pull-up excesivamente alta (ej. usando solo pull-ups internos de 50 kΩ).</td><td>Reducir $R_p$ a un valor entre $2,2\,	ext{k}\Omega$ y $3,3\,	ext{k}\Omega$ conectado a 3,3 V.</td></tr>
+<tr><td>Nivel bajo ($V_{OL}$) no baja de 0,6 V a 0,9 V</td><td>Resistencia pull-up demasiado baja ($&lt; 800\,\Omega$) sobrecargando el transistor del esclavo.</td><td>Aumentar el valor de $R_p$ para no superar la corriente $I_{OL}$ de 3 mA.</td></tr>
+<tr><td>Oscilaciones y sobreimpulsos (ringing) de alta frecuencia en los flancos de bajada</td><td>Reflexiones por líneas largas sin terminación o inductancia en cables sueltos.</td><td>Añadir resistencias de amortiguamiento en serie ($R_s pprox 22–47\,\Omega$) en SDA/SCL cerca del maestro.</td></tr>
+<tr><td>Picos inducidos (crosstalk) en SDA al conmutar SCL</td><td>Líneas SDA y SCL ruteadas en pistas paralelas adyacentes a menos de 0,3 mm sin plano de masa.</td><td>Separar pistas al menos 3 veces su ancho ($3W$) o intercalar una pista de GND intermedia.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="note">
+<strong>Anécdota ilustrativa de taller:</strong> En una estación de monitoreo ambiental para agricultura de precisión instalada en un viñedo del Valle de Colchagua (Chile), un registrador basado en ESP32 conectado a un sensor barométrico BMP280, un RTC DS3231 y una pantalla OLED mediante un cable plano no blindado de 1,4 metros sufría bloqueos espontáneos cada 8 a 18 horas de funcionamiento continuo. El microcontrolador quedaba congelado de forma permanente en la llamada bloqueante <code>Wire.endTransmission()</code>. Al conectar un osciloscopio digital en banco reproduciendo la longitud del cable, se midió un tiempo de subida ($t_r$) de 1.520 ns en la línea SCL debido a que el desarrollador confiaba únicamente en las resistencias de pull-up internas del ESP32 (~45 kΩ). Al reemplazar el cable por un par trenzado apantallado conectando SDA trenzado con GND y SCL trenzado con 3,3 V, e instalar dos resistencias de película metálica de 2,2 kΩ al 1 % en el extremo de la placa, el tiempo de subida cayó a 210 ns y la estación operó más de 180 días continuos sin un solo fallo de comunicación.
+</div>
+</section>
+
+<section id="bus-bloqueado">
+<h2>El fenómeno del bus bloqueado (I2C Lockup / Bus Hang) y por qué SDA queda a 0 V</h2>
+<p>El fallo más insidioso y catastrófico en sistemas embebidos basados en I2C es el denominado <strong>I2C Bus Lockup</strong> o <strong>Bus Hang</strong>. El síntoma clásico es el siguiente: el microcontrolador se reinicia (por ejemplo, por un microcorte de energía, activación del temporizador Watchdog o un pulso de interferencia electromagnética), pero tras reiniciarse, <code>Wire.begin()</code> falla, el I2C Scanner no encuentra ningún dispositivo y la línea SDA permanece clavada en 0 V (GND) de forma indefinida. El sistema queda completamente inoperativo hasta que alguien desconecta físicamente la alimentación de los sensores.</p>
+
+<p>La física detrás de este bloqueo es puramente lógica y se produce por una asimetría en la máquina de estados del protocolo:</p>
+
+<ol>
+<li>El microcontrolador maestro inicia una transacción de lectura y comienza a recibir un byte enviado por un sensor esclavo.</li>
+<li>El sensor esclavo transmite los bits poniendo su transistor open-drain a masa para enviar un bit '0'.</li>
+<li>Justo en ese instante preciso, mientras el esclavo mantiene la línea SDA a 0 V, el microcontrolador maestro sufre un reinicio intempestivo o una interrupción de alta prioridad que aborta la ejecución del código.</li>
+<li>Al reiniciarse el maestro, este desconoce el estado anterior del bus e intenta iniciar una nueva comunicación enviando una condición de START (que requiere que SDA esté a nivel alto mientras SCL está en alto).</li>
+<li>Sin embargo, el sensor esclavo <strong>sigue congelado en su máquina de estados de hardware interna</strong>, esperando pacientemente a que el maestro le envíe el siguiente flanco de reloj en SCL para liberar el bit actual. Como el esclavo mantiene su transistor saturado a tierra, la línea SDA está forzada a 0 V.</li>
+<li>Como el maestro no puede elevar SDA a nivel alto, la condición de START no puede generarse físicamente, y la librería estándar <code>Wire.h</code> entra en un bucle de espera infinita (`while`), bloqueando por completo el microcontrolador.</li>
+</ol>
+
+<p>Para evitar que este fallo detenga sistemas críticos, es indispensable implementar una <strong>secuencia de desbloqueo por software previa a la inicialización de la librería Wire</strong>.</p>
+</section>
+
+<section id="rutina-recuperacion">
+<h2>Rutina de recuperación por software: secuencia de 9 pulsos de reloj (Clock Toggling)</h2>
+<p>La especificación NXP UM10204 establece el procedimiento estándar para forzar a cualquier esclavo desfasado a liberar la línea SDA: el maestro debe configurar temporalmente el pin SCL como salida GPIO convencional y <strong>conmutar manualmente hasta 9 ciclos de reloj a nivel alto y bajo</strong>. Al recibir estos pulsos de reloj, el esclavo transmitirá los bits restantes de su registro interno hasta alcanzar el bit 9 (el espacio del ACK), momento en el cual liberará la línea SDA poniéndola en alta impedancia. Finalmente, el maestro genera manualmente una condición de STOP para reiniciar la máquina de estados del esclavo.</p>
+
+<p>A continuación se detalla la función de ingeniería en C++ para Arduino y ESP32 que debe ejecutarse al inicio de la función <code>setup()</code> antes de llamar a <code>Wire.begin()</code>:</p>
+
+<pre><code>#include &lt;Arduino.h&gt;
+#include &lt;Wire.h&gt;
+
+bool recoverI2CBus(uint8_t sdaPin, uint8_t sclPin) {
+  pinMode(sdaPin, INPUT_PULLUP);
+  pinMode(sclPin, INPUT_PULLUP);
+  delay(10);
+
+  // Si SDA ya está en nivel alto (1), el bus está libre y saludable
+  if (digitalRead(sdaPin) == HIGH) {
+    return true; 
+  }
+
+  Serial.println("[!] ADVERTENCIA: Línea SDA bloqueada en 0V. Ejecutando rutina de 9 pulsos...");
+
+  // Configurar SCL como salida controlada manualmente
+  pinMode(sclPin, OUTPUT);
+
+  // Generar hasta 9 ciclos de reloj manuales para forzar al esclavo a vaciar su registro
+  for (uint8_t i = 0; i < 9; i++) {
+    digitalWrite(sclPin, LOW);
+    delayMicroseconds(5);
+    digitalWrite(sclPin, HIGH);
+    delayMicroseconds(5);
+
+    // Si el esclavo liberó SDA a nivel alto, salir del bucle prematuramente
+    pinMode(sdaPin, INPUT_PULLUP);
+    if (digitalRead(sdaPin) == HIGH) {
+      Serial.printf("[+] Bus liberado con éxito tras %d pulsos de reloj.
+", i + 1);
+      break;
+    }
+  }
+
+  // Generar manualmente una condición de STOP: SCL HIGH mientras SDA pasa de LOW a HIGH
+  pinMode(sdaPin, OUTPUT);
+  digitalWrite(sdaPin, LOW);
+  delayMicroseconds(5);
+  digitalWrite(sclPin, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(sdaPin, HIGH);
+  delayMicroseconds(5);
+
+  // Restaurar ambos pines al modo de entrada en alta impedancia
+  pinMode(sdaPin, INPUT_PULLUP);
+  pinMode(sclPin, INPUT_PULLUP);
+  delay(10);
+
+  // Evaluación final del estado físico del bus
+  if (digitalRead(sdaPin) == HIGH && digitalRead(sclPin) == HIGH) {
+    Serial.println("[+] Recuperación de Bus I2C completada exitosamente.");
+    return true;
+  } else {
+    Serial.println("[-] ERROR FATAL: El bus I2C permanece bloqueado. Revise cortocircuitos de hardware.");
+    return false;
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  const uint8_t SDA_PIN = 21;
+  const uint8_t SCL_PIN = 22;
+
+  // 1. Ejecutar desbloqueo preventivo de bus
+  if (!recoverI2CBus(SDA_PIN, SCL_PIN)) {
+    // Si no se libera, alertar por interfaz o reintentar corte de alimentación por relé/MOSFET
+  }
+
+  // 2. Inicializar la librería Wire de forma segura
+  Wire.begin(SDA_PIN, SCL_PIN);
+  Wire.setClock(100000);
+  Wire.setTimeOut(50); // Timeout en milisegundos para evitar bucles bloqueantes infinitos
+}
+
+void loop() {
+  // Bucle de adquisición normal
+}</code></pre>
+</section>
+
+<section id="cableado-campo">
+<h2>Topología de cableado en campo: pares trenzados, apantallamiento y límites de distancia</h2>
+<p>En el diseño de cableado para robots industriales, domótica o sistemas de monitoreo, el bus I2C no debe tratarse como un bus de telecomunicaciones de larga distancia: fue concebido para comunicar circuitos integrados sobre una misma placa de circuito impreso (PCB) a distancias de unos pocos centímetros. Para llevar señales I2C fuera de la caja de control a distancias de 0,5 a 2 metros, es imperativo seguir pautas estrictas de compatibilidad electromagnética (EMC):</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Estrategia de Cableado</th><th>Evaluación de Rendimiento</th><th>Recomendación de Implementación</th></tr></thead>
+<tbody>
+<tr><td>Cable plano sin blindaje con SDA adyacente a SCL</td><td>Pésimo: diafonía extrema por acoplamiento capacitivo mutuo.</td><td><strong>Prohibido</strong> en tendidos mayores a 20 cm.</td></tr>
+<tr><td>Cable plano con disposición: <code>GND - SDA - GND - SCL - VCC</code></td><td>Bueno: las pistas de masa intermedias actúan como blindaje electrostático.</td><td>Recomendado para arneses planos de 30 a 80 cm.</td></tr>
+<tr><td>Cable de par trenzado UTP CAT5e/CAT6 (Par 1: SDA + GND; Par 2: SCL + VCC)</td><td>Excelente: cancela la inducción de bucle y mantiene baja capacitancia mutua.</td><td>El estándar recomendado para distancias de 1 a 3 metros.</td></tr>
+<tr><td>Extensores diferenciales dedicados (P82B715 / PCA9615)</td><td>Grado Industrial: convierte I2C en señales diferenciales tolerantes a ruido.</td><td>Obligatorio para distancias de 5 a 50 metros en entornos industriales.</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Nunca trences la línea SDA directamente con la línea SCL en el mismo par helicoidal de un cable de red: la proximidad continua entre ambos conductores aumentará drásticamente la capacitancia mutua entre datos y reloj, inyectando pulsos espurios de reloj en la línea de datos cada vez que SCL conmute de estado. La regla de oro en pares trenzados es <strong>trenzar siempre SDA con una línea de referencia GND</strong>, y <strong>trenzar SCL con una línea de alimentación continua desacoplada ($V_{DD}$) o GND</strong>.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="costos-chile">
+<h2>Precios de circuitos integrados I2C e instrumental en Chile (2026)</h2>
+<p>El equipamiento e instrumental necesario para construir y depurar buses I2C robustos en Chile presenta valores sumamente asequibles en distribuidores locales del rubro electrónico:</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Componente / Instrumental</th><th>Rango de Precio Referencial Chile (CLP 2026)</th><th>Tiendas Locales / Disponibilidad</th></tr></thead>
+<tbody>
+<tr><td>Multiplexor I2C 8 canales TCA9548A (módulo breakout)</td><td>$2.900 – $4.500 CLP referenciales</td><td>Makers Chile, Olimex Chile, eVStore, MercadoLibre</td></tr>
+<tr><td>Conversor de nivel lógico bidireccional I2C 4 canales (BSS138)</td><td>$1.200 – $2.200 CLP referenciales</td><td>Altronics, Casa Royal, Ferreterías electrónicas San Diego</td></tr>
+<tr><td>Resistencias de película metálica 1% (pack 100 u surtidas)</td><td>$2.900 – $4.900 CLP referenciales</td><td>Comercio electrónico local, ferreterías de componentes</td></tr>
+<tr><td>Analizador lógico USB 8 canales 24 MHz (Compatible PulseView)</td><td>$8.900 – $14.500 CLP referenciales</td><td>Tiendas de robótica educativa, MercadoLibre Chile</td></tr>
+<tr><td>Sensor ambiental de precisión BME280 I2C (Temp/Hum/Presión)</td><td>$5.900 – $9.500 CLP referenciales</td><td>Makers Chile, eVStore, distribuidores locales</td></tr>
+<tr><td>Módulo RTC de alta precisión DS3231 con oscilador TCXO</td><td>$3.500 – $5.500 CLP referenciales</td><td>Altronics, Casa de la Ampolleta, distribuidores de robótica</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>En el marco de la normativa eléctrica chilena y las directivas de seguridad para instrumental de prueba <strong>IEC 61010-1</strong> (homologada en Chile por el INN), se recuerda que durante la depuración de buses digitales de baja tensión (SELV, por debajo de 50 V AC o 120 V DC), las puntas de prueba y osciloscopios deben compartir siempre una referencia de tierra de protección equipotencial para evitar lazos de masa (<em>ground loops</em>) que puedan dañar los puertos USB de los ordenadores de desarrollo.</p>
+</section>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Profundiza en la adquisición y filtrado de señales aprendiendo a alimentar tus sensores con la <a href="/blog/convertidor-buck-lm2596-ajustar-diagnosticar">guía del convertidor Buck LM2596</a> y domina la instrumentación de prueba en tu banco de trabajo.</p>
+</div>
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Por qué no se debe confiar únicamente en las resistencias de pull-up internas del microcontrolador?</summary><p>Los microcontroladores como el ATmega328P de Arduino Uno o el SoC del ESP32 integran resistencias de pull-up internas de valor muy elevado: aproximadamente 20–50 kΩ en AVR y 30–60 kΩ en ESP32. Un valor tan alto produce una constante de tiempo RC excesiva junto a la capacitancia parásita de las pistas y cables (típicamente 100–300 pF), lo que redondea los flancos de subida de la señal digital, superando el tiempo máximo de subida admisible (1.000 ns en modo estándar). Esto genera errores de paridad, falsos NACK y congelamiento del bus bajo la menor interferencia electromagnética.</p></details>
+<details><summary>¿Puedo conectar directamente un sensor I2C de 3,3 V a un Arduino Uno de 5 V?</summary><p>No es recomendable sin un conversor de nivel lógico bidireccional basado en MOSFETs (como el BSS138). Si el sensor de 3,3 V carece de diodos de protección tolerantes a 5 V y el bus tiene resistencias pull-up conectadas a la línea de 5 V del Arduino Uno, se inyectará sobretensión en las compuertas de silicio del periférico, degradándolo o destruyéndolo permanentemente. Además, la librería Wire de Arduino AVR activa por defecto los pull-ups internos a 5 V al ejecutar Wire.begin().</p></details>
+<details><summary>¿Cómo resuelvo el conflicto si tengo dos sensores con la misma dirección I2C fija (como dos MPU6050 o dos RTC)?</summary><p>Existen tres métodos de ingeniería: (1) Si el módulo dispone de pin de configuración de dirección (como el pin AD0 del MPU6050), conéctalo a nivel alto (VCC) para cambiar su dirección de 0x68 a 0x69; (2) Utilizar un multiplexor I2C TCA9548A de 8 canales, que permite aislar y seleccionar dinámicamente canales independientes mediante comandos I2C; (3) En microcontroladores con múltiples controladores I2C por hardware como el ESP32, instanciar un segundo bus independiente (TwoWire I2C_Two = TwoWire(1)) asignado a pines GPIO libres.</p></details>
+<details><summary>¿Qué causa el problema del bus I2C bloqueado (Bus Hang) donde la línea SDA queda en 0 V?</summary><p>Ocurre cuando el microcontrolador maestro sufre un reinicio o una interrupción durante una lectura mientras el dispositivo esclavo está transmitiendo un bit '0' o un bit de reconocimiento (ACK). Como el maestro no completa el noveno ciclo de reloj en SCL, el esclavo mantiene su transistor de salida open-drain saturado conduciendo a tierra, dejando la línea SDA pegada en 0 V permanentemente. Ninguna llamada posterior a Wire.begin() funcionará hasta que el esclavo reciba pulsos de reloj para liberar el bus o se corte su alimentación.</p></details>
+<details><summary>¿Cuál es la distancia física máxima a la que puedo tender un bus I2C de forma fiable?</summary><p>La especificación I2C de NXP no limita una distancia en metros, sino una capacitancia máxima total del bus de 400 pF (o 4000 pF en buses Fast-mode Plus con búferes dedicados). Con cable plano común (~80 pF/metro), el límite práctico fiable sin búferes es de aproximadamente 1 a 1,5 metros a 100 kHz. Para distancias mayores (hasta 15–50 metros), se deben utilizar integrados extensores/búferes diferenciales como el P82B715, el P82B96 o transceptores diferenciales I2C sobre par trenzado como PCA9615.</p></details>
+<details><summary>¿Por qué el escáner I2C detecta un dispositivo pero la librería del sensor no puede leer datos?</summary><p>El escáner I2C únicamente comprueba si el esclavo responde con un pulso de ACK a su dirección física de 7 bits enviando una trama simple. Sin embargo, para leer datos reales, la librería debe enviar comandos a registros internos específicos (subdirecciones). Si el sensor está subalimentado (voltaje por debajo de su umbral operativo), si requiere un comando de inicialización previo, si opera a una velocidad de reloj no soportada, o si sus registros internos están bloqueados por ruido eléctrico, la librería fallará aunque el escáner lo detecte.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Contenido editorial independiente, sin ubicaciones patrocinadas ni enlaces de afiliado. Las especificaciones, ecuaciones de tiempo de subida, fragmentos de código C++ y precios expuestos son referenciales para el mercado chileno y deben probarse con tu propio hardware antes de su implementación en sistemas críticos. Si detectas un error o deseas sugerir una adición, <a href="/contact">avísanos</a>.</p>
+</article></main><section class="container sources" id="fuentes" aria-label="Fuentes primarias"><h2>Fuentes primarias y lecturas recomendadas</h2><p>Especificaciones oficiales del protocolo, manuales de semiconductores e instituciones normativas consultadas.</p><ul><li><a href="https://www.nxp.com/docs/en/user-guide/UM10204.pdf" target="_blank" rel="noopener noreferrer">NXP Semiconductors — UM10204: I2C-bus Specification and User Manual (Rev. 7.0)</a></li><li><a href="https://www.ti.com/lit/ds/symlink/tca9548a.pdf" target="_blank" rel="noopener noreferrer">Texas Instruments — TCA9548A Low-Voltage 8-Channel I2C Switch with Reset Datasheet</a></li><li><a href="https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf" target="_blank" rel="noopener noreferrer">Espressif Systems — ESP32 Technical Reference Manual (Chapter: I2C Controller)</a></li><li><a href="https://docs.arduino.cc/language-reference/en/functions/communication/wire/" target="_blank" rel="noopener noreferrer">Arduino Official Documentation — Wire Library Reference</a></li><li><a href="https://www.analog.com/media/en/technical-documentation/application-notes/AN-1024.pdf" target="_blank" rel="noopener noreferrer">Analog Devices — AN-1024: How to Clear a Stuck I2C Bus</a></li><li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles (SEC Chile) — Regulaciones y Normativa Técnica</a></li></ul><p style="font-size:.75rem;color:var(--quiet)">Enlaces revisados: 27 de agosto de 2026.</p></section><footer class="container site-footer"><p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada.</p><p><a href="/about">Sobre Nosotros</a> · <a href="/contact">Contacto</a> · <a href="/privacy">Política de Privacidad</a> · <a href="/terms">Términos</a></p><p>© 2023–2026 Alberto Gallardo. Todos los derechos reservados.</p></footer><div id="rel-consent" role="dialog" aria-labelledby="consent-title" hidden style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#fff;border-top:1px solid rgba(30,25,15,.15);box-shadow:0 -8px 32px rgba(30,25,15,.18);padding:20px 24px"><div style="max-width:1050px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div style="flex:1;min-width:260px"><strong id="consent-title">Usamos cookies</strong><p style="margin:4px 0 0;color:#57534a;font-size:.85rem">Con tu permiso usamos cookies para analítica y anuncios personalizados. Puedes rechazar y seguir leyendo. <a href="/privacy">Política de Privacidad</a>.</p></div><div><button id="consent-no" type="button" style="padding:10px 18px;border:1px solid #aaa;border-radius:99px;background:#fff;margin-right:8px">Rechazar</button><button id="consent-yes" type="button" style="padding:11px 18px;border:0;border-radius:99px;background:#a97b23;color:#fff;font-weight:700">Aceptar todo</button></div></div></div><script>(function(){const b=document.getElementById('rel-consent');if(!document.cookie.match(/(?:^|;\s*)rel_consent=/))b.hidden=false;function set(v){document.cookie='rel_consent='+v+';max-age=15552000;path=/;SameSite=Lax';gtag('consent','update',{'ad_storage':v==='granted'?'granted':'denied','ad_user_data':v==='granted'?'granted':'denied','ad_personalization':v==='granted'?'granted':'denied','analytics_storage':v==='granted'?'granted':'denied'});b.hidden=true}document.getElementById('consent-yes').onclick=()=>set('granted');document.getElementById('consent-no').onclick=()=>set('denied')})();</script><script>const n=document.getElementById('nav-toggle'),l=document.getElementById('nav-links');n.addEventListener('click',()=>{let o=n.getAttribute('aria-expanded')==='true';n.setAttribute('aria-expanded',!o);l.classList.toggle('open',!o)});const b=document.getElementById('progress-bar');addEventListener('scroll',()=>{let d=document.documentElement,m=d.scrollHeight-d.clientHeight;b.style.width=(m?scrollY/m*100:0)+'%'},{passive:true});</script></body></html>
