@@ -295,6 +295,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/control-pid-con-arduino-sintonia-ziegler-nichols</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/controla-tu-arduino-por-bluetooth-con-el-modulo-hc-05</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
@@ -679,6 +685,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.ukrabot.cl/blog/mosfet-con-arduino-irlz44n-vs-irfz44n</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ukrabot.cl/blog/motores-bldc-con-control-de-campo-foc-para-robotica-potencia-y-precision</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -783,6 +795,12 @@
   <url>
     <loc>https://www.ukrabot.cl/blog/protocolo-i2c-arduino-esp32-pull-up-scanner</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/que-cable-y-conector-usar-segun-corriente</loc>
+    <lastmod>2026-08-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
