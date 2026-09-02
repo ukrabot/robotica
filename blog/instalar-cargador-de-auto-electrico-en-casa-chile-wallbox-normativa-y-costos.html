@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos</title>
+<meta name="description" content="Guía técnica para instalar un cargador EV en casa en Chile: modos de carga, 16A vs 32A, diferencial tipo A, certificado TE6 ante la SEC y costos reales 2026.">
+<meta name="keywords" content="cargador auto electrico casa chile, wallbox chile, instalar cargador ev, certificado te6 sec, cargador tipo 2 chile, diferencial tipo a cargador ev, costo instalar cargador electrico">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos">
+<meta property="og:description" content="Modos de carga, 16A vs 32A, protecciones obligatorias y el certificado TE6: lo que realmente implica instalar un punto de carga en casa.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos">
+<meta name="twitter:description" content="Modos de carga, 16A vs 32A, protecciones obligatorias y el certificado TE6: lo que realmente implica instalar un punto de carga en casa.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos",
+  "description":"Guía técnica completa para instalar un punto de carga de vehículo eléctrico en una vivienda en Chile: diferencia entre los modos de carga, elección entre cargadores de 16 A y 32 A, verificación de la capacidad del empalme, cableado y protecciones obligatorias (diferencial tipo A o tipo B, termomagnético dedicado), certificación TE6 ante la SEC, conectores Tipo 2, rangos de costo de mercado en 2026 y cómo combinar la carga con generación solar residencial.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-02",
+  "dateModified":"2026-09-02",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos"},
+  "image":"https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Vehículo eléctrico o híbrido enchufable, acceso al tablero eléctrico principal, conocimiento del tipo y capacidad del empalme (monofásico o trifásico, amperaje contratado), y un instalador eléctrico con credencial vigente ante la SEC para la ejecución",
+  "wordCount":"2650",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos","item":"https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Puedo cargar mi auto eléctrico con un enchufe normal mientras decido si instalar un wallbox?","acceptedAnswer":{"@type":"Answer","text":"Sí, de forma ocasional y con precauciones. Usa el cable Modo 2 que viene con el vehículo, conéctalo a un tomacorriente en buen estado y con puesta a tierra verificada, evita alargadores y zapatillas, y revisa que el enchufe no se caliente durante la carga. Lo que no es recomendable es hacerlo como método diario permanente: la carga vehicular somete al circuito a corriente sostenida durante muchas horas, algo para lo que un circuito de tomacorrientes doméstico no fue diseñado, y en instalaciones antiguas es una causa real de calentamiento de conexiones."}},
+    {"@type":"Question","name":"¿Necesito aumentar la potencia de mi empalme para instalar un cargador?","acceptedAnswer":{"@type":"Answer","text":"No necesariamente, y es lo primero que debe evaluar el instalador en la visita técnica. Depende de la capacidad actual de tu empalme, del consumo habitual de la vivienda y de la corriente del cargador que elijas. Muchas instalaciones se resuelven sin tocar el empalme optando por un cargador de 16 A en lugar de 32 A, o usando un wallbox con balance dinámico de carga que reduce automáticamente la corriente cuando el resto de la casa está demandando mucho. El aumento de potencia ante la distribuidora es la última opción, no la primera."}},
+    {"@type":"Question","name":"¿Qué diferencia hay entre un diferencial tipo A y uno tipo B para carga vehicular?","acceptedAnswer":{"@type":"Answer","text":"La diferencia está en el tipo de corriente de fuga que cada uno es capaz de detectar. Un diferencial tipo AC convencional solo detecta fugas de corriente alterna senoidal, y los cargadores de vehículos eléctricos pueden generar fugas con componente continua que ese tipo no ve de forma confiable. El tipo A detecta además corrientes pulsantes con componente continua, y el tipo B cubre también fugas de corriente continua pura. Qué tipo corresponde depende de si el propio wallbox integra detección de fuga DC internamente, algo que debe indicar la ficha técnica del equipo y que el instalador debe verificar antes de dimensionar la protección."}},
+    {"@type":"Question","name":"¿Cuánto cuesta cargar un auto eléctrico en casa comparado con cargar en una electrolinera?","acceptedAnswer":{"@type":"Answer","text":"Cargar en casa es sensiblemente más económico en la mayoría de los casos, porque pagas la energía a tarifa residencial en vez del precio de un punto de carga público, que incorpora el costo de la infraestructura de carga rápida y el margen del operador. El cálculo para tu caso es directo: multiplica la capacidad de la batería de tu vehículo en kWh por el valor del kWh de tu boleta para estimar el costo de una carga completa desde vacío. Si además tienes generación solar y cargas durante el día, el costo marginal de esa energía puede acercarse a cero."}},
+    {"@type":"Question","name":"¿El cargador wallbox sirve si cambio de auto eléctrico más adelante?","acceptedAnswer":{"@type":"Answer","text":"En general sí, siempre que el nuevo vehículo use el mismo estándar de conector, que en Chile es mayoritariamente Tipo 2. El wallbox no está atado a una marca de vehículo: el protocolo de comunicación entre cargador y auto está estandarizado, por lo que un cargador Modo 3 con conector Tipo 2 funciona con cualquier vehículo compatible con ese estándar. Lo que sí puede cambiar es si el auto nuevo acepta más potencia de carga AC que el anterior, en cuyo caso podrías estar limitado por el cargador ya instalado, aunque eso solo afecta la velocidad de carga y no la compatibilidad."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg" alt="Cargador wallbox para vehículo eléctrico montado en la pared de un garaje residencial con el cable de carga Tipo 2 conectado" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Movilidad Eléctrica · Publicado el <time datetime="2026-09-02">2 de septiembre de 2026</time></div>
+    <h1>Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos</h1>
+    <p>Por qué un enchufe común no sirve para uso diario, cómo elegir entre 16 A y 32 A, qué protecciones exige la normativa chilena y qué implica realmente el certificado TE6 ante la SEC.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg" alt="Cargador wallbox para vehículo eléctrico montado en la pared de un garaje residencial con el cable de carga Tipo 2 conectado" loading="lazy">
+  <div class="caption">Un wallbox no es solo un enchufe más rápido: es un circuito dedicado con protecciones específicas y comunicación con el vehículo, que es lo que permite cargar de forma segura durante horas sin supervisión.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que-wallbox">Por qué un enchufe común no basta</a></li>
+    <li><a href="#modos-de-carga">Modos de carga y conectores</a></li>
+    <li><a href="#16a-vs-32a">16 A vs 32 A: cuál necesitas realmente</a></li>
+    <li><a href="#empalme">Verificar el empalme antes de comprar nada</a></li>
+    <li><a href="#protecciones">Cableado y protecciones obligatorias</a></li>
+    <li><a href="#te6">El certificado TE6 y la SEC</a></li>
+    <li><a href="#costos">Costos de mercado en Chile (2026)</a></li>
+    <li><a href="#solar">Combinar la carga con paneles solares</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="por-que-wallbox">
+<h2>Por qué un enchufe común no basta</h2>
+<p>Técnicamente es posible cargar un vehículo eléctrico desde un tomacorriente doméstico usando el cable adaptador que suele venir con el auto. El problema no es que no funcione: es que carga a una potencia de apenas 2,3 a 3,7 kW, lo que se traduce en tiempos de <strong>20 a 30 horas</strong> para una carga completa en un vehículo de batería mediana, y somete al circuito a una corriente sostenida durante muchas horas seguidas.</p>
+<p>Esa segunda parte es la crítica. Un circuito de tomacorrientes doméstico está dimensionado para cargas intermitentes: un secador de pelo que funciona diez minutos, un hervidor que funciona tres. Una carga vehicular exige corriente cercana al límite del circuito de forma continua durante toda la noche, algo para lo que ese cableado, sus conexiones y su protección nunca fueron diseñados. En instalaciones antiguas o con empalmes de baja capacidad, es una receta conocida para calentamiento de conexiones y degradación del cableado.</p>
+<p>Un <strong>wallbox</strong> (o EVSE, <em>Electric Vehicle Supply Equipment</em>) resuelve esto con tres cosas que un enchufe no tiene: un circuito eléctrico dedicado dimensionado para carga continua, protecciones específicas para el tipo de corriente de fuga que genera un cargador, y comunicación con el vehículo mediante el protocolo de control piloto, que negocia la corriente máxima disponible antes de empezar a cargar y la ajusta durante la sesión.</p>
+</section>
+
+<section id="modos-de-carga">
+<h2>Modos de carga y conectores</h2>
+<p>La clasificación de cargadores que usa el Ministerio de Energía sigue el estándar internacional de modos:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Modos de carga según el estándar IEC 61851, con las potencias típicas de cada uno.</caption>
+<thead><tr><th>Modo</th><th>Descripción</th><th>Potencia típica</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td>Modo 1</td><td>Conexión directa sin protecciones dedicadas</td><td>≈ 2,3 kW</td><td>Desaconsejado; prohibido en varias normativas</td></tr>
+<tr><td>Modo 2</td><td>Cable con caja de protección incorporada a enchufe doméstico</td><td>2,3–3,7 kW</td><td>Cargas ocasionales, emergencia</td></tr>
+<tr><td>Modo 3</td><td>Wallbox con circuito dedicado y control piloto</td><td>7,4 kW (mono) / 22 kW (trifásico)</td><td>Estándar para carga domiciliaria diaria</td></tr>
+<tr><td>Modo 4</td><td>Carga rápida en corriente continua (DC)</td><td>50 kW en adelante</td><td>Electrolineras públicas; no aplica a vivienda</td></tr>
+</tbody>
+</table>
+</div>
+<p>Para uso domiciliario habitual, la respuesta es <strong>Modo 3</strong>. En cuanto al conector del lado del vehículo, el estándar dominante en Chile es el <strong>Tipo 2</strong> (también llamado Mennekes, el estándar europeo), que es el que traen la mayoría de los vehículos eléctricos comercializados en el país y el que ofrecen los wallbox disponibles localmente. Algunos vehículos de origen asiático más antiguos usan Tipo 1, en cuyo caso se requiere un cable o adaptador correspondiente.</p>
+</section>
+
+<section id="16a-vs-32a">
+<h2>16 A vs 32 A: cuál necesitas realmente</h2>
+<p>Los wallbox residenciales monofásicos se ofrecen principalmente en dos configuraciones de corriente, y elegir la mayor no siempre es lo correcto:</p>
+<ul>
+<li><strong>16 A (≈ 3,7 kW monofásico):</strong> recarga aproximadamente 20 a 25 km de autonomía por hora conectado. Para alguien que recorre 40–60 km diarios, una noche de carga sobra con holgura. Exige menos del empalme y su instalación es más económica.</li>
+<li><strong>32 A (≈ 7,4 kW monofásico):</strong> aproximadamente el doble de velocidad, del orden de 40 a 50 km de autonomía por hora. Es la opción razonable si el recorrido diario es alto, si hay más de un vehículo eléctrico en la casa, o si la ventana de carga disponible es corta.</li>
+</ul>
+<p>El criterio práctico es simple: <strong>calcula tu kilometraje diario real</strong> y verifica si la carga cabe en las horas que el auto pasa estacionado en casa. Si recorres 50 km al día y el auto está enchufado 10 horas cada noche, un cargador de 16 A recupera esa autonomía sin ningún problema, y pagar por 32 A más el refuerzo eléctrico que puede exigir no aporta nada. La velocidad extra importa cuando la ventana de carga es estrecha, no cuando sobra tiempo.</p>
+<div class="note">
+<strong>Sobre la carga trifásica de 22 kW:</strong> requiere un empalme trifásico, poco común en viviendas residenciales chilenas, y además muchos vehículos tienen un cargador interno (OBC) limitado a 7,4 u 11 kW, por lo que instalar 22 kW no acelera la carga si el auto no puede aceptarla. Verifica siempre la potencia máxima de carga AC que acepta tu vehículo específico antes de dimensionar el wallbox.
+</div>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="empalme">
+<h2>Verificar el empalme antes de comprar nada</h2>
+<p>Este es el paso que más presupuestos hace variar y el que más gente omite. Antes de elegir un cargador, hay que responder: <strong>¿tiene tu empalme capacidad suficiente para sumar esta carga?</strong></p>
+<p>Un cargador de 32 A monofásico consume, por sí solo, una corriente comparable a la de varios electrodomésticos grandes funcionando en simultáneo, y lo hace durante horas. Si tu empalme está dimensionado justo para el consumo actual de la vivienda, agregar esa carga puede hacer saltar la protección general cada vez que coincida con el horno, la lavadora o una estufa eléctrica. Las salidas posibles son tres:</p>
+<ul>
+<li><strong>Instalar un cargador de menor corriente</strong> (16 A en vez de 32 A), que muchas veces es suficiente y evita cualquier obra adicional.</li>
+<li><strong>Usar un wallbox con balance dinámico de carga.</strong> Estos modelos miden el consumo total de la vivienda en tiempo real y reducen automáticamente la corriente de carga cuando el resto de la casa está demandando mucho, evitando superar el límite del empalme. Es la solución más elegante cuando el empalme está ajustado.</li>
+<li><strong>Solicitar aumento de potencia a la distribuidora</strong> (Enel, CGE, Chilquinta, Saesa, Frontel según tu zona). Es un trámite con costo y plazo propios, y puede implicar cambio de empalme y de medidor.</li>
+</ul>
+</section>
+
+<section id="protecciones">
+<h2>Cableado y protecciones obligatorias</h2>
+<p>Una instalación de carga vehicular correcta en Chile involucra, como mínimo, estos elementos en el tablero y en el tendido:</p>
+<ul>
+<li><strong>Circuito dedicado exclusivo.</strong> El cargador no comparte circuito con ningún otro consumo de la casa; sale directo desde el tablero principal.</li>
+<li><strong>Cable de cobre de sección adecuada.</strong> La sección se calcula por la corriente del cargador y la distancia hasta el tablero: a mayor distancia, mayor sección necesaria para mantener la caída de tensión dentro de lo aceptable. Es exactamente el mismo criterio que explicamos en <a href="/blog/que-cable-y-conector-usar-segun-corriente">Qué Cable y Conector Usar Según la Corriente</a>, aplicado aquí a un caso de corriente continua sostenida.</li>
+<li><strong>Interruptor diferencial de alta sensibilidad (30 mA).</strong> Aquí hay un detalle técnico que distingue una instalación bien hecha: los cargadores EV pueden generar corrientes de fuga con componente continua, que un diferencial tipo AC convencional no detecta de forma confiable. Por eso se exige un <strong>diferencial tipo A</strong> como mínimo, y en algunos casos <strong>tipo B</strong>, según lo que declare el fabricante del wallbox. Muchos cargadores modernos integran detección de fuga DC internamente, lo que permite usar un tipo A externo; verificar esto en la ficha técnica del equipo es responsabilidad del instalador.</li>
+<li><strong>Interruptor termomagnético calibrado</strong> al amperaje del cargador (16 A o 32 A), que protege el cable ante sobrecarga sostenida y cortocircuito.</li>
+<li><strong>Puesta a tierra en condiciones.</strong> Un sistema de tierra deficiente invalida la protección diferencial; en viviendas antiguas es frecuente que esta sea la partida más costosa e inesperada del presupuesto.</li>
+</ul>
+<div class="warning">
+<strong>Este no es un trabajo para hacer por cuenta propia.</strong> A diferencia de un proyecto de electrónica de bajo voltaje, aquí se trabaja con la instalación eléctrica domiciliaria en corriente alterna, con riesgo de electrocución e incendio, y con una exigencia legal de certificación. La normativa chilena requiere que la ejecute un instalador con credencial vigente ante la SEC, y hacerlo de otra forma además de peligroso puede invalidar el seguro de la vivienda y la garantía del cargador.
+</div>
+</section>
+
+<section id="te6">
+<h2>El certificado TE6 y la SEC</h2>
+<p>Toda instalación eléctrica domiciliaria en Chile debe ser declarada ante la <strong>Superintendencia de Electricidad y Combustibles (SEC)</strong>. En el caso de un punto de carga vehicular, el instalador autorizado emite el formulario de declaración correspondiente —conocido comúnmente como <strong>TE6</strong>— que certifica que la instalación cumple con la normativa eléctrica vigente, incluyendo el reglamento específico de instalaciones de consumo.</p>
+<p>Este trámite no es un formalismo prescindible: es lo que respalda que la instalación fue ejecutada por alguien habilitado y bajo norma. Ante un siniestro eléctrico, la ausencia de esta declaración puede tener consecuencias directas en la cobertura del seguro del inmueble. Los rangos de mercado publicados por instaladores durante 2026 sitúan el costo de este trámite en el orden de los <strong>$150.000 a $250.000 CLP</strong>, habitualmente incluido dentro de la cotización de una instalación llave en mano.</p>
+</section>
+
+<section id="costos">
+<h2>Costos de mercado en Chile (2026)</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos de mercado publicados por instaladores chilenos durante 2026. Referenciales, no cotización.</caption>
+<thead><tr><th>Ítem</th><th>Rango aproximado (CLP)</th><th>Qué lo hace variar</th></tr></thead>
+<tbody>
+<tr><td>Cargador monofásico 7,4 kW</td><td>$400.000 – $750.000</td><td>Marca, conectividad, balance dinámico, grado IP</td></tr>
+<tr><td>Cargador trifásico 22 kW</td><td>$900.000 – $1.800.000</td><td>Potencia, uso comercial o de flota</td></tr>
+<tr><td>Instalación domiciliaria estándar</td><td>$480.000 – $750.000</td><td>Distancia al tablero, obras civiles, refuerzo de tierra</td></tr>
+<tr><td>Certificación ante la SEC</td><td>$150.000 – $250.000</td><td>Complejidad de la instalación</td></tr>
+<tr><td>Aumento de potencia del empalme</td><td>Variable, se cotiza aparte</td><td>Distribuidora, tipo de empalme, cambio de medidor</td></tr>
+</tbody>
+</table>
+</div>
+<p>En paquetes llave en mano que incluyen equipo, instalación y certificación, los valores publicados por instaladores en 2026 para casos estándar se mueven en el orden del millón a $1,3 millones de pesos. La regla al comparar cotizaciones es preguntar siempre <strong>si el cargador está incluido o solo la mano de obra</strong>, porque es la ambigüedad más frecuente entre presupuestos que a primera vista parecen muy distintos en precio.</p>
+</section>
+
+<section id="solar">
+<h2>Combinar la carga con paneles solares</h2>
+<p>Cargar un vehículo eléctrico es, para la mayoría de los hogares, la carga eléctrica individual más grande que van a sumar en su vida. Eso lo convierte en el complemento natural de una instalación fotovoltaica: como explicamos en la guía de <a href="/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento">Paneles Solares para Casa en Chile</a>, bajo el esquema de Net Billing cada kWh autoconsumido vale más que cada kWh inyectado, y un auto eléctrico cargando durante las horas de sol es una de las formas más eficientes de aumentar ese autoconsumo.</p>
+<p>Algunos wallbox ofrecen un <strong>modo de carga solar</strong>, que monitorea el excedente fotovoltaico disponible y ajusta la corriente de carga para usar solo esa energía sobrante, en vez de tomar de la red. Si ya tienes paneles o planeas instalarlos, es una función que vale la pena evaluar al elegir el equipo, porque no se puede agregar después a un cargador que no la trae.</p>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo cargar mi auto eléctrico con un enchufe normal mientras decido si instalar un wallbox?</summary><p>Sí, de forma ocasional y con precauciones. Usa el cable Modo 2 que viene con el vehículo, conéctalo a un tomacorriente en buen estado y con puesta a tierra verificada, evita alargadores y zapatillas, y revisa que el enchufe no se caliente durante la carga. Lo que no es recomendable es hacerlo como método diario permanente: la carga vehicular somete al circuito a corriente sostenida durante muchas horas, algo para lo que un circuito de tomacorrientes doméstico no fue diseñado, y en instalaciones antiguas es una causa real de calentamiento de conexiones.</p></details>
+<details><summary>¿Necesito aumentar la potencia de mi empalme para instalar un cargador?</summary><p>No necesariamente, y es lo primero que debe evaluar el instalador en la visita técnica. Depende de la capacidad actual de tu empalme, del consumo habitual de la vivienda y de la corriente del cargador que elijas. Muchas instalaciones se resuelven sin tocar el empalme optando por un cargador de 16 A en lugar de 32 A, o usando un wallbox con balance dinámico de carga que reduce automáticamente la corriente cuando el resto de la casa está demandando mucho. El aumento de potencia ante la distribuidora es la última opción, no la primera.</p></details>
+<details><summary>¿Qué diferencia hay entre un diferencial tipo A y uno tipo B para carga vehicular?</summary><p>La diferencia está en el tipo de corriente de fuga que cada uno es capaz de detectar. Un diferencial tipo AC convencional solo detecta fugas de corriente alterna senoidal, y los cargadores de vehículos eléctricos pueden generar fugas con componente continua que ese tipo no ve de forma confiable. El tipo A detecta además corrientes pulsantes con componente continua, y el tipo B cubre también fugas de corriente continua pura. Qué tipo corresponde depende de si el propio wallbox integra detección de fuga DC internamente, algo que debe indicar la ficha técnica del equipo y que el instalador debe verificar antes de dimensionar la protección.</p></details>
+<details><summary>¿Cuánto cuesta cargar un auto eléctrico en casa comparado con cargar en una electrolinera?</summary><p>Cargar en casa es sensiblemente más económico en la mayoría de los casos, porque pagas la energía a tarifa residencial en vez del precio de un punto de carga público, que incorpora el costo de la infraestructura de carga rápida y el margen del operador. El cálculo para tu caso es directo: multiplica la capacidad de la batería de tu vehículo en kWh por el valor del kWh de tu boleta para estimar el costo de una carga completa desde vacío. Si además tienes generación solar y cargas durante el día, el costo marginal de esa energía puede acercarse a cero.</p></details>
+<details><summary>¿El cargador wallbox sirve si cambio de auto eléctrico más adelante?</summary><p>En general sí, siempre que el nuevo vehículo use el mismo estándar de conector, que en Chile es mayoritariamente Tipo 2. El wallbox no está atado a una marca de vehículo: el protocolo de comunicación entre cargador y auto está estandarizado, por lo que un cargador Modo 3 con conector Tipo 2 funciona con cualquier vehículo compatible con ese estándar. Lo que sí puede cambiar es si el auto nuevo acepta más potencia de carga AC que el anterior, en cuyo caso podrías estar limitado por el cargador ya instalado, aunque eso solo afecta la velocidad de carga y no la compatibilidad.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si estás evaluando el ecosistema completo de movilidad eléctrica, revisa <a href="/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile">Cuánto Cuesta Convertir un Auto a Eléctrico en Chile</a> y <a href="/blog/homologacion-y-tramites-para-vehiculos-convertidos">Homologación y Trámites para Vehículos Convertidos</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento">← Anterior: Paneles Solares para Casa en Chile: Net Billing y Costos</a>
+  <a href="/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile">Siguiente: Cuánto Cuesta Convertir un Auto a Eléctrico en Chile →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles (SEC)</a></li>
+<li><a href="https://energia.gob.cl/electromovilidad" target="_blank" rel="noopener noreferrer">Ministerio de Energía — Electromovilidad</a></li>
+<li><a href="https://webstore.iec.ch/publication/33644" target="_blank" rel="noopener noreferrer">IEC 61851 — Sistema de carga conductiva para vehículos eléctricos</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 2 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

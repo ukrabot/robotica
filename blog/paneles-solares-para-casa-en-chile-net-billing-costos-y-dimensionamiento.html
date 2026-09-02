@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Paneles Solares para Casa en Chile: Net Billing, Costos y Dimensionamiento</title>
+<meta name="description" content="Guía técnica de energía solar residencial en Chile: cómo funciona el Net Billing (Ley 21.118), dimensionar el sistema según tu boleta, costos 2026 y trámites SEC.">
+<meta name="keywords" content="paneles solares casa chile, net billing chile, ley 21118, cuanto cuesta instalar paneles solares chile, dimensionar sistema fotovoltaico, energia solar residencial chile, tramite sec paneles solares">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paneles Solares para Casa en Chile: Net Billing, Costos y Dimensionamiento">
+<meta property="og:description" content="Cómo funciona el Net Billing, cómo calcular cuántos paneles necesitas según tu boleta, y qué incluye realmente una cotización fotovoltaica en Chile.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Paneles Solares para Casa en Chile: Net Billing, Costos y Dimensionamiento">
+<meta name="twitter:description" content="Cómo funciona el Net Billing, cómo calcular cuántos paneles necesitas según tu boleta, y qué incluye realmente una cotización fotovoltaica en Chile.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Paneles Solares para Casa en Chile: Net Billing, Costos y Dimensionamiento",
+  "description":"Guía técnica completa de instalación fotovoltaica residencial en Chile: funcionamiento del mecanismo Net Billing bajo la Ley 21.118, cálculo de horas solares pico por zona geográfica, dimensionamiento del sistema a partir del consumo en kWh de la boleta, componentes de una instalación on-grid (paneles, inversor, estructura, protecciones), rangos de costo de mercado en 2026, trámites obligatorios ante la SEC y la distribuidora, y errores frecuentes al cotizar.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-02",
+  "dateModified":"2026-09-02",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento"},
+  "image":"https://www.ukrabot.cl/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento-hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Boleta eléctrica de los últimos 12 meses, plano o medidas del techo disponible, conocimiento de la orientación y pendiente del techo, y acceso al tablero eléctrico para verificar el tipo de empalme (monofásico o trifásico)",
+  "wordCount":"2700",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Paneles Solares para Casa en Chile: Net Billing, Costos y Dimensionamiento","item":"https://www.ukrabot.cl/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Los paneles solares generan energía en días nublados o en invierno?","acceptedAnswer":{"@type":"Answer","text":"Sí, aunque bastante menos. Los paneles funcionan con luz difusa, no solo con sol directo, por lo que en un día nublado la generación se reduce de forma significativa pero no cae a cero. En invierno se combinan tres efectos: menos horas de luz, ángulo solar más bajo y mayor nubosidad, lo que hace que la producción mensual pueda ser la mitad o menos que en verano. Por eso el dimensionamiento se hace sobre el promedio anual y no sobre el mejor mes, y por eso las boletas de invierno siguen teniendo un cargo aunque el sistema esté funcionando perfectamente."}},
+    {"@type":"Question","name":"¿Conviene agregar baterías a un sistema residencial en Chile?","acceptedAnswer":{"@type":"Answer","text":"Depende del objetivo. Si la meta es reducir la boleta, las baterías empeoran el retorno de la inversión en la mayoría de los casos, porque el Net Billing ya cumple la función de 'almacenar' el excedente a costo cero de equipamiento. Las baterías tienen sentido cuando el objetivo es tener respaldo ante cortes de luz frecuentes, cuando la propiedad está fuera del alcance de la red, o cuando la diferencia entre la tarifa de consumo y el precio de inyección es tan grande que almacenar el excedente propio compensa el costo del banco de baterías. Es una decisión de disponibilidad, no de economía."}},
+    {"@type":"Question","name":"¿Qué pasa con los paneles solares si vendo la casa?","acceptedAnswer":{"@type":"Answer","text":"El sistema queda como parte de la instalación eléctrica del inmueble y se transfiere con la propiedad. Desde el punto de vista administrativo, el nuevo propietario debe gestionar el cambio de titularidad del suministro con la distribuidora, lo que incluye el contrato de conexión bajo Net Billing asociado al medidor bidireccional. Conviene entregar al comprador la documentación completa: declaración ante la SEC, garantías de paneles e inversor, y el manual del sistema de monitoreo."}},
+    {"@type":"Question","name":"¿Cuánto mantenimiento requiere una instalación fotovoltaica residencial?","acceptedAnswer":{"@type":"Answer","text":"Muy poco en términos de intervención activa, porque no hay partes móviles. Lo principal es la limpieza periódica de los paneles —el polvo acumulado puede reducir la generación de forma perceptible, sobre todo en zonas secas o con poca lluvia— y una revisión visual anual de la estructura, el cableado y las conexiones. Lo más útil en la práctica es revisar el monitoreo con cierta frecuencia: una caída sostenida de producción respecto al mismo mes del año anterior suele ser la primera señal de un panel con problema, un string desconectado o un inversor degradándose."}},
+    {"@type":"Question","name":"¿Puedo instalar paneles solares en un departamento o si arriendo la vivienda?","acceptedAnswer":{"@type":"Answer","text":"En un departamento la limitación práctica es el acceso a superficie de techo propia, que en un edificio pertenece a los bienes comunes y requiere aprobación de la comunidad; existen esquemas de generación compartida, pero son considerablemente más complejos de gestionar que una instalación en casa individual. Si arriendas, la instalación queda incorporada al inmueble y el retorno beneficia al propietario, por lo que instalarla por cuenta propia rara vez tiene sentido económico salvo que exista un acuerdo explícito con el dueño."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento-hero.jpg" alt="Instalación de paneles solares fotovoltaicos sobre el techo de una vivienda residencial con cielo despejado" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Energía Solar y Autonomía · Publicado el <time datetime="2026-09-02">2 de septiembre de 2026</time></div>
+    <h1>Paneles Solares para Casa en Chile: Net Billing, Costos y Dimensionamiento</h1>
+    <p>Cómo funciona realmente el Net Billing bajo la Ley 21.118, cómo calcular cuántos kWp necesitas a partir de tu boleta, qué debe incluir una cotización seria y qué trámites son obligatorios ante la SEC.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento-hero.jpg" alt="Instalación de paneles solares fotovoltaicos sobre el techo de una vivienda residencial con cielo despejado" loading="lazy">
+  <div class="caption">Un sistema fotovoltaico residencial bien dimensionado no busca cubrir el 100% del consumo instantáneo, sino maximizar el autoconsumo diurno y compensar el resto vía Net Billing.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#como-funciona">Cómo funciona un sistema fotovoltaico residencial</a></li>
+    <li><a href="#net-billing">Net Billing: qué es y qué no es</a></li>
+    <li><a href="#dimensionamiento">Dimensionamiento: de tu boleta a los kWp necesarios</a></li>
+    <li><a href="#componentes">Qué compone realmente una instalación</a></li>
+    <li><a href="#costos">Costos de mercado en Chile (2026)</a></li>
+    <li><a href="#tramites">Trámites obligatorios: SEC y distribuidora</a></li>
+    <li><a href="#errores-comunes">Errores frecuentes al cotizar</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="como-funciona">
+<h2>Cómo funciona un sistema fotovoltaico residencial</h2>
+<p>Un sistema solar residencial conectado a la red (<em>on-grid</em>) no almacena energía en baterías: usa la red eléctrica como si fuera una batería virtual. El flujo real durante un día típico es este:</p>
+<ol>
+<li><strong>Los paneles generan corriente continua (DC)</strong> proporcional a la radiación solar que reciben en ese instante.</li>
+<li><strong>El inversor convierte esa DC en corriente alterna (AC)</strong> sincronizada en frecuencia y fase con la red de tu distribuidora, e inyecta esa energía en el tablero de la vivienda.</li>
+<li><strong>Tu casa autoconsume primero.</strong> Todo lo que estés usando en ese momento —refrigerador, luces, computador— se alimenta de la generación solar antes de tomar un solo watt de la red.</li>
+<li><strong>El excedente se inyecta a la red</strong> y queda registrado por un medidor bidireccional que la distribuidora instala como parte del proceso.</li>
+<li><strong>En la noche o en días nublados</strong>, cuando la generación no alcanza, la casa consume normalmente desde la red.</li>
+</ol>
+<p>La consecuencia técnica más importante, y la que más sorprende a quien recién investiga: un sistema on-grid <strong>se desconecta automáticamente durante un corte de luz</strong>. No es una falla, es un requisito de seguridad llamado <em>anti-islanding</em>: si el inversor siguiera inyectando energía a una red caída, pondría en riesgo al personal de la distribuidora que está trabajando en ella. Para tener respaldo durante cortes se necesita un sistema híbrido con banco de baterías, que es una inversión considerablemente mayor y una decisión distinta a la de simplemente reducir la boleta.</p>
+</section>
+
+<section id="net-billing">
+<h2>Net Billing: qué es y qué no es</h2>
+<p>El mecanismo que hace viable la inversión en Chile es el <strong>Net Billing</strong>, regulado por la <strong>Ley 21.118</strong> (que modificó y amplió la anterior Ley 20.571). Permite a clientes regulados —residenciales, comerciales e industriales— instalar sistemas de generación distribuida de hasta 300 kW, autoconsumir su energía e inyectar los excedentes a la red recibiendo una compensación económica que se descuenta de la boleta.</p>
+<div class="note">
+<strong>La distinción que más confusión genera:</strong> Net Billing <em>no</em> es Net Metering. En un esquema de Net Metering (usado en otros países) un kWh inyectado vale exactamente lo mismo que un kWh consumido, y se compensan uno a uno. En Net Billing, en cambio, la energía que <strong>consumes</strong> de la red se te cobra a la tarifa completa de cliente final, mientras que la energía que <strong>inyectas</strong> se te acredita a un precio menor, más cercano al valor de la energía en el punto de compra de la distribuidora.
+</div>
+<p>La consecuencia práctica de esa asimetría es la regla de oro del diseño fotovoltaico en Chile: <strong>cada kWh que autoconsumes en el momento vale más que cada kWh que inyectas</strong>. Por eso un sistema bien diseñado no se dimensiona para generar lo máximo posible, sino para calzar lo mejor posible con la curva de consumo real de la vivienda. Correr el lavavajillas, la lavadora o cargar un vehículo eléctrico durante las horas de sol mejora el retorno de la inversión más de lo que la mayoría de la gente imagina.</p>
+</section>
+
+<section id="dimensionamiento">
+<h2>Dimensionamiento: de tu boleta a los kWp necesarios</h2>
+<p>El cálculo base es más simple de lo que parece y te permite evaluar si una cotización tiene sentido antes de firmar nada:</p>
+<ol>
+<li><strong>Saca tu consumo mensual promedio en kWh</strong> de las boletas de los últimos 12 meses (no de un solo mes: el consumo varía mucho entre invierno y verano).</li>
+<li><strong>Divídelo por 30</strong> para obtener el consumo diario promedio en kWh.</li>
+<li><strong>Divide ese consumo diario por las Horas Solares Pico (HSP) de tu zona.</strong> Las HSP no son las horas de luz, sino las horas equivalentes de radiación a máxima intensidad. Como referencia conservadora de diseño anual: el norte de Chile ronda 6–7 HSP, la zona central 4,5–5,5 HSP, y el sur 3–4 HSP, con variación estacional importante.</li>
+<li><strong>Aplica un factor de pérdidas de 1,25 a 1,35</strong> para cubrir pérdidas por temperatura, suciedad, cableado, eficiencia del inversor y degradación de los paneles.</li>
+</ol>
+<div class="note">
+<strong>Ejemplo de cálculo:</strong> una vivienda en la zona central que consume 300 kWh al mes tiene un consumo diario de 10 kWh. Con 5 HSP de diseño, eso requiere 10 ÷ 5 = 2 kWp; aplicando el factor de pérdidas de 1,3, el sistema necesario ronda los <strong>2,6 kWp</strong>. Con paneles de 550 Wp, son aproximadamente 5 paneles.
+</div>
+<p>Este cálculo dimensiona el sistema para cubrir el consumo <em>anual</em> en promedio. Dado que en Net Billing conviene privilegiar el autoconsumo, muchos instaladores recomiendan dimensionar ligeramente por debajo de ese número si la vivienda tiene poco consumo diurno, o ligeramente por encima si la familia está en casa durante el día o planea sumar carga eléctrica futura como un auto eléctrico.</p>
+<p>El otro límite duro es el <strong>espacio de techo disponible</strong>: como orden de magnitud, cada kWp instalado requiere entre 5 y 7 m² de superficie útil bien orientada. La orientación ideal en el hemisferio sur es al norte, con una inclinación cercana a la latitud del lugar; una desviación al oriente o poniente reduce la generación pero no la anula, mientras que una orientación al sur sí compromete seriamente la viabilidad.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="componentes">
+<h2>Qué compone realmente una instalación</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Componentes de un sistema fotovoltaico residencial on-grid y su función.</caption>
+<thead><tr><th>Componente</th><th>Función</th><th>Qué mirar</th></tr></thead>
+<tbody>
+<tr><td>Paneles fotovoltaicos</td><td>Convierten radiación solar en DC</td><td>Potencia (Wp), garantía de producto y de rendimiento a 25–30 años, fabricante tier-1</td></tr>
+<tr><td>Inversor</td><td>Convierte DC en AC sincronizada con la red</td><td>Es el componente que más falla; garantía típica menor que la del panel (5–12 años)</td></tr>
+<tr><td>Estructura de montaje</td><td>Fija los paneles al techo</td><td>Compatibilidad con tu tipo de cubierta; resistencia al viento de la zona</td></tr>
+<tr><td>Protecciones DC y AC</td><td>Seccionadores, fusibles, descargadores</td><td>Obligatorias; una cotización que no las detalla es una señal de alerta</td></tr>
+<tr><td>Medidor bidireccional</td><td>Registra consumo e inyección por separado</td><td>Lo instala la distribuidora tras aprobar la conexión</td></tr>
+<tr><td>Monitoreo</td><td>App o portal para ver generación en tiempo real</td><td>Permite detectar caídas de producción temprano</td></tr>
+</tbody>
+</table>
+</div>
+<p>El inversor merece atención especial porque es donde más se diferencian las cotizaciones. Un <strong>inversor string</strong> conecta todos los paneles en serie y es la opción más económica, pero si un panel queda sombreado, arrastra el rendimiento de toda la cadena. Los <strong>microinversores</strong> u <strong>optimizadores de potencia</strong> trabajan panel por panel y resuelven ese problema, a un costo mayor; tienen sentido real en techos con sombras parciales inevitables —una chimenea, un árbol, un edificio vecino— y son un gasto innecesario en un techo completamente despejado.</p>
+</section>
+
+<section id="costos">
+<h2>Costos de mercado en Chile (2026)</h2>
+<p>Los rangos de mercado publicados por instaladores chilenos durante 2026 sitúan un sistema residencial de <strong>5 kWp entre aproximadamente $3.800.000 y $5.000.000 CLP</strong> incluyendo paneles, inversor, estructura, instalación certificada y puesta en marcha. Sistemas más pequeños de 3 kWp aparecen desde el orden de los $3.500.000, y sistemas de 10 kWp para viviendas grandes se ubican cerca de los $8.500.000. El costo por watt instalado baja a medida que crece el sistema, lo que hace que un sistema más grande casi nunca cueste proporcionalmente el doble que uno de la mitad de tamaño.</p>
+<p>En cuanto al retorno, las cifras que manejan los instaladores en 2026 hablan de <strong>4 a 6 años en la zona central</strong> y de 3 a 4 años en el norte, donde la mayor irradiancia acelera el payback. Dos variables mueven mucho ese número: la tarifa eléctrica vigente de tu distribuidora (cada alza acorta el retorno) y qué porcentaje de tu generación logras autoconsumir en vez de inyectar.</p>
+<div class="warning">
+<strong>Sobre estas cifras:</strong> son rangos de mercado publicados por empresas instaladoras durante 2026 y sirven para evaluar si una cotización está dentro de lo razonable, no como precio garantizado. Varían según marca de equipos, tipo de cubierta, distancia al tablero, dificultad de acceso al techo y región. Pide siempre al menos tres cotizaciones detalladas y compara qué incluye cada una, no solo el total.
+</div>
+</section>
+
+<section id="tramites">
+<h2>Trámites obligatorios: SEC y distribuidora</h2>
+<p>Una instalación fotovoltaica residencial en Chile no se puede conectar a la red sin cumplir el proceso regulatorio. Los pasos principales, que normalmente ejecuta la empresa instaladora y no el propietario:</p>
+<ul>
+<li><strong>Instalador con credencial vigente ante la SEC.</strong> Es el requisito de base: la instalación debe ser ejecutada y declarada por un instalador eléctrico autorizado, con la clase de credencial correspondiente a la potencia del proyecto.</li>
+<li><strong>Declaración de la instalación eléctrica ante la SEC.</strong> Es el documento que certifica que la instalación cumple la normativa eléctrica vigente. Sin él, la distribuidora no aprueba la conexión.</li>
+<li><strong>Solicitud de conexión ante la distribuidora</strong> (Enel, CGE, Chilquinta, Saesa, Frontel, según tu zona), que evalúa la factibilidad técnica y, una vez aprobada, instala el medidor bidireccional.</li>
+<li><strong>Puesta en marcha y verificación.</strong> Recién con el medidor bidireccional operativo comienza a acreditarse la inyección de excedentes en la boleta.</li>
+</ul>
+<p>Para instalaciones residenciales bajo Net Billing no se requiere permiso de construcción municipal. El proceso completo desde la firma hasta la puesta en marcha suele tomar entre <strong>4 y 8 semanas</strong>, y el tramo más variable casi siempre son los tiempos de respuesta de la distribuidora, no la instalación física, que rara vez toma más de dos o tres días.</p>
+</section>
+
+<section id="errores-comunes">
+<h2>Errores frecuentes al cotizar</h2>
+<ul>
+<li><strong>Comparar solo el precio total sin revisar qué incluye.</strong> Una cotización puede omitir las protecciones DC, la tramitación ante la SEC o la gestión con la distribuidora, y aparecer más barata que otra que sí los incluye. Pide siempre el desglose por ítem.</li>
+<li><strong>Dimensionar según el techo disponible en vez del consumo real.</strong> Llenar el techo de paneles "porque cabe" genera un excedente que se compensa a precio de inyección, con un retorno mucho peor que un sistema calzado al consumo.</li>
+<li><strong>Ignorar las sombras.</strong> Un estudio de sombras serio evalúa la trayectoria solar durante todo el año, no solo el día de la visita; un árbol que no da sombra en diciembre puede tapar media cadena de paneles en junio, cuando el sol está más bajo.</li>
+<li><strong>No revisar la garantía del inversor por separado.</strong> Los paneles suelen tener garantías de rendimiento a 25–30 años, pero el inversor —el componente con más probabilidad de falla— tiene garantías bastante menores. Saber cuándo habrá que reemplazarlo es parte de calcular el retorno real.</li>
+<li><strong>Asumir que tendrás luz durante los cortes.</strong> Como se explicó al inicio, un sistema on-grid se desconecta durante un apagón; si el respaldo ante cortes es un objetivo, hay que plantear desde el principio un sistema híbrido con baterías, con un costo y un diseño distintos.</li>
+</ul>
+<p>Si tu interés está más en la autonomía energética de proyectos pequeños que en reducir la boleta de la casa, el enfoque técnico es completamente distinto: revisa nuestra guía de <a href="/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo">Paneles Solares y Controladores MPPT para Robótica e IoT Autónomo</a>, que cubre sistemas off-grid de baja potencia con banco de baterías propio.</p>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Los paneles solares generan energía en días nublados o en invierno?</summary><p>Sí, aunque bastante menos. Los paneles funcionan con luz difusa, no solo con sol directo, por lo que en un día nublado la generación se reduce de forma significativa pero no cae a cero. En invierno se combinan tres efectos: menos horas de luz, ángulo solar más bajo y mayor nubosidad, lo que hace que la producción mensual pueda ser la mitad o menos que en verano. Por eso el dimensionamiento se hace sobre el promedio anual y no sobre el mejor mes, y por eso las boletas de invierno siguen teniendo un cargo aunque el sistema esté funcionando perfectamente.</p></details>
+<details><summary>¿Conviene agregar baterías a un sistema residencial en Chile?</summary><p>Depende del objetivo. Si la meta es reducir la boleta, las baterías empeoran el retorno de la inversión en la mayoría de los casos, porque el Net Billing ya cumple la función de 'almacenar' el excedente a costo cero de equipamiento. Las baterías tienen sentido cuando el objetivo es tener respaldo ante cortes de luz frecuentes, cuando la propiedad está fuera del alcance de la red, o cuando la diferencia entre la tarifa de consumo y el precio de inyección es tan grande que almacenar el excedente propio compensa el costo del banco de baterías. Es una decisión de disponibilidad, no de economía.</p></details>
+<details><summary>¿Qué pasa con los paneles solares si vendo la casa?</summary><p>El sistema queda como parte de la instalación eléctrica del inmueble y se transfiere con la propiedad. Desde el punto de vista administrativo, el nuevo propietario debe gestionar el cambio de titularidad del suministro con la distribuidora, lo que incluye el contrato de conexión bajo Net Billing asociado al medidor bidireccional. Conviene entregar al comprador la documentación completa: declaración ante la SEC, garantías de paneles e inversor, y el manual del sistema de monitoreo.</p></details>
+<details><summary>¿Cuánto mantenimiento requiere una instalación fotovoltaica residencial?</summary><p>Muy poco en términos de intervención activa, porque no hay partes móviles. Lo principal es la limpieza periódica de los paneles —el polvo acumulado puede reducir la generación de forma perceptible, sobre todo en zonas secas o con poca lluvia— y una revisión visual anual de la estructura, el cableado y las conexiones. Lo más útil en la práctica es revisar el monitoreo con cierta frecuencia: una caída sostenida de producción respecto al mismo mes del año anterior suele ser la primera señal de un panel con problema, un string desconectado o un inversor degradándose.</p></details>
+<details><summary>¿Puedo instalar paneles solares en un departamento o si arriendo la vivienda?</summary><p>En un departamento la limitación práctica es el acceso a superficie de techo propia, que en un edificio pertenece a los bienes comunes y requiere aprobación de la comunidad; existen esquemas de generación compartida, pero son considerablemente más complejos de gestionar que una instalación en casa individual. Si arriendas, la instalación queda incorporada al inmueble y el retorno beneficia al propietario, por lo que instalarla por cuenta propia rara vez tiene sentido económico salvo que exista un acuerdo explícito con el dueño.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si tu interés por la energía solar viene del lado de la movilidad eléctrica, revisa <a href="/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos">Instalar un Cargador de Auto Eléctrico en Casa</a>, donde se explica cómo combinar carga vehicular con generación solar, o <a href="/blog/cuanto-cuesta-convertir-un-auto-a-electrico-en-chile">Cuánto Cuesta Convertir un Auto a Eléctrico en Chile</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo">← Anterior: Paneles Solares y Controladores MPPT para Robótica e IoT</a>
+  <a href="/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos">Siguiente: Instalar un Cargador de Auto Eléctrico en Casa (Chile) →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.bcn.cl/leychile/navegar?idNorma=1125560" target="_blank" rel="noopener noreferrer">Biblioteca del Congreso Nacional — Ley 21.118 sobre generación distribuida</a></li>
+<li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles (SEC)</a></li>
+<li><a href="https://energia.gob.cl/" target="_blank" rel="noopener noreferrer">Ministerio de Energía de Chile</a></li>
+<li><a href="https://www.nrel.gov/grid/solar-resource/renewable-resource-data.html" target="_blank" rel="noopener noreferrer">NREL — Metodología de horas solares pico</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 2 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
