@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Mejores Multímetros Digitales para Electrónica: Guía de Compra</title>
+<meta name="description" content="Guía de compra de multímetros digitales: cuentas, True RMS, categoría CAT, seguridad, y qué modelo elegir según tu nivel y presupuesto en electrónica y robótica.">
+<meta name="keywords" content="mejores multimetros digitales, multimetro digital comprar, fluke 117 vs uni-t ut61e, multimetro electronica, true rms multimetro, que multimetro comprar, multimetro cat iii">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/mejores-multimetros-digitales-para-electronica-guia-de-compra">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mejores Multímetros Digitales para Electrónica: Guía de Compra">
+<meta property="og:description" content="Cuentas, True RMS, categorías CAT y funciones reales: lo que necesitas saber antes de comprar un multímetro, según tu nivel y tu presupuesto.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/mejores-multimetros-digitales-para-electronica-guia-de-compra-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/mejores-multimetros-digitales-para-electronica-guia-de-compra">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mejores Multímetros Digitales para Electrónica: Guía de Compra">
+<meta name="twitter:description" content="Cuentas, True RMS, categorías CAT y funciones reales: lo que necesitas saber antes de comprar un multímetro, según tu nivel y tu presupuesto.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/mejores-multimetros-digitales-para-electronica-guia-de-compra-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Mejores Multímetros Digitales para Electrónica: Guía de Compra",
+  "description":"Guía de compra técnica de multímetros digitales para electrónica, robótica y taller maker: qué significan realmente las cuentas (counts), por qué importa True RMS, las categorías de seguridad CAT explicadas, funciones que sí necesitas vs marketing, y una tabla de decisión por perfil (principiante, maker avanzado, profesional) con rangos de precio orientativos.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-02",
+  "dateModified":"2026-09-02",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/mejores-multimetros-digitales-para-electronica-guia-de-compra"},
+  "image":"https://www.ukrabot.cl/blog/mejores-multimetros-digitales-para-electronica-guia-de-compra-hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Ninguno para leer la guía; si ya tienes un multímetro y quieres aprender a usarlo, revisa nuestra guía complementaria de uso paso a paso",
+  "wordCount":"2550",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Mejores Multímetros Digitales para Electrónica: Guía de Compra","item":"https://www.ukrabot.cl/blog/mejores-multimetros-digitales-para-electronica-guia-de-compra"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Un multímetro barato puede dañar mi Arduino o mis componentes?","acceptedAnswer":{"@type":"Answer","text":"No de forma directa: un multímetro mide pasivamente, no inyecta energía en el circuito en las funciones de voltaje y resistencia. El único modo en que podría haber un problema es si se mide resistencia o continuidad con el circuito alimentado, porque en ese modo el multímetro aplica una pequeña corriente de prueba que puede interferir con el circuito activo. La regla general es medir resistencia y continuidad solo con el circuito apagado, independientemente del multímetro que uses."}},
+    {"@type":"Question","name":"¿Vale la pena un Fluke para un hobbyist o es exagerado?","acceptedAnswer":{"@type":"Answer","text":"Depende de si vas a medir solo electrónica de bajo voltaje o también vas a intervenir en la red domiciliaria. Para electrónica DC con Arduino y sensores, un Fluke es más multímetro del que necesitas; un equipo de gama media de 6.000 cuentas con True RMS cumple igual de bien para ese uso. Donde el Fluke justifica su precio es en la seguridad y fiabilidad de sus protecciones internas cuando se trabaja en corriente alterna domiciliaria, y en que mantiene su calibración de fábrica durante años de uso diario sin necesidad de recalibrarlo."}},
+    {"@type":"Question","name":"¿Qué es la impedancia de entrada y por qué debería importarme?","acceptedAnswer":{"@type":"Answer","text":"La impedancia de entrada del multímetro en modo de voltaje determina cuánta corriente 'roba' del circuito para hacer la medición. Un multímetro con impedancia alta (10 MΩ es el estándar actual) apenas afecta al circuito; uno con impedancia baja puede alterar el punto de operación de un circuito de alta impedancia y dar una lectura más baja de la real. En la práctica, todos los multímetros digitales modernos tienen 10 MΩ o más y esto rara vez es un problema fuera de instrumentación de precisión."}},
+    {"@type":"Question","name":"¿Necesito un multímetro True RMS para medir la corriente de un motor controlado por PWM?","acceptedAnswer":{"@type":"Answer","text":"Si quieres saber el consumo real de corriente, sí. Un multímetro sin True RMS intentará leer esa corriente pulsada como si fuera continua o senoidal y dará un número que no corresponde al consumo real. Con True RMS la lectura refleja el valor eficaz real independientemente de la forma de la onda, que en el caso del PWM es un tren de pulsos rectangulares. Si tu trabajo involucra motores controlados por driver, LED dimmeados por PWM o fuentes conmutadas, True RMS te ahorra interpretar valores incorrectos."}},
+    {"@type":"Question","name":"¿Puedo usar un multímetro para verificar si un enchufe de mi casa tiene tierra?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es una de las verificaciones básicas más útiles que puedes hacer con un multímetro. Mides el voltaje AC entre la fase (uno de los dos cables de alimentación) y el pin de tierra del enchufe: si hay voltaje cercano al nominal (220 V en Chile), la tierra está conectada; si marca 0 V o un valor muy bajo e inestable, la tierra está ausente o desconectada. Pero para esta medición necesitas un multímetro con categoría de seguridad CAT II como mínimo, porque estás midiendo directamente en la red domiciliaria."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="mejores-multimetros-digitales-para-electronica-guia-de-compra-hero.jpg" alt="Multímetro digital sobre una mesa de taller electrónico junto a componentes, protoboard y un soldador" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Herramientas, Medición y Taller · Publicado el <time datetime="2026-09-02">2 de septiembre de 2026</time></div>
+    <h1>Mejores Multímetros Digitales para Electrónica: Guía de Compra</h1>
+    <p>Qué significan realmente las cuentas y True RMS, por qué la categoría CAT es la especificación de seguridad más importante, y cómo elegir según si estás empezando, si eres maker avanzado o si trabajas en red eléctrica domiciliaria.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="mejores-multimetros-digitales-para-electronica-guia-de-compra-hero.jpg" alt="Multímetro digital sobre una mesa de taller electrónico junto a componentes, protoboard y un soldador" loading="lazy">
+  <div class="caption">Un buen multímetro no es el más caro ni el que tiene más funciones: es el que mide con la precisión que necesitas, con la seguridad que tu trabajo exige y con la fiabilidad de seguir haciéndolo en cinco años.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#para-que-sirve">Para qué sirve un multímetro y por qué no todos son iguales</a></li>
+    <li><a href="#cuentas">Cuentas (counts): qué significan realmente</a></li>
+    <li><a href="#true-rms">True RMS: cuándo importa y cuándo no</a></li>
+    <li><a href="#cat">Categorías CAT: la especificación que salva vidas</a></li>
+    <li><a href="#funciones">Funciones que sí necesitas vs marketing</a></li>
+    <li><a href="#tabla-decision">Tabla de decisión: qué comprar según tu perfil</a></li>
+    <li><a href="#cuidados">Cuidados básicos para que dure</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="para-que-sirve">
+<h2>Para qué sirve un multímetro y por qué no todos son iguales</h2>
+<p>Un multímetro digital mide voltaje (AC y DC), corriente y resistencia como funciones base, y la mayoría agrega capacitancia, frecuencia, continuidad con zumbador y prueba de diodos. Es la herramienta de diagnóstico esencial en cualquier mesa de trabajo de electrónica, y si solo puedes tener una herramienta de medición, es esta.</p>
+<p>Lo que no es obvio hasta que se necesita es que un multímetro de 10 dólares y uno de 300 no se diferencian solo en funciones: se diferencian, sobre todo, en <strong>seguridad eléctrica</strong>, en <strong>precisión sostenida en el tiempo</strong> y en <strong>fiabilidad del aislamiento interno</strong> ante un transitorio en la línea. Esas diferencias son invisibles en el uso de bajo voltaje con Arduino, y se vuelven críticas en el momento en que se mide en un tablero eléctrico domiciliario a 220 VAC. La guía que sigue cubre los criterios técnicos que importan en cada nivel de uso, para que inviertas en lo que realmente necesitas.</p>
+<p>Si ya tienes un multímetro y lo que necesitas es aprender a usarlo, esta guía complementa la de <a href="/blog/como-usar-un-multimetro-guia-paso-a-paso">Cómo Usar un Multímetro: Guía Paso a Paso</a>, que cubre la parte operativa.</p>
+</section>
+
+<section id="cuentas">
+<h2>Cuentas (counts): qué significan realmente</h2>
+<p>Las "cuentas" (counts) de un multímetro no son una medida de calidad general: son la <strong>resolución del display</strong>, es decir, el valor máximo que puede mostrar antes de cambiar de rango. La relación es directa:</p>
+<ul>
+<li><strong>2.000 cuentas:</strong> en el rango de 200 V, muestra hasta 199,9 V. Si mides 220 V, salta al rango de 600 V y muestra 220 (sin decimales). Es la resolución de los multímetros más básicos.</li>
+<li><strong>6.000 cuentas:</strong> en el mismo rango, muestra hasta 599,9 V con un decimal. 220 V se ve como 220,5. Es el estándar de la gama media.</li>
+<li><strong>20.000+ cuentas:</strong> más decimales, más resolución. Necesario en electrónica de precisión, calibración y laboratorio; innecesario para el 90% del trabajo de taller.</li>
+</ul>
+<p>La trampa del marketing es presentar las cuentas como si fuesen un indicador de calidad absoluta: un multímetro de 6.000 cuentas con mala protección interna es más peligroso que uno de 2.000 cuentas con buena protección. Las cuentas dicen cuántos dígitos puedes ver; la categoría CAT dice si puedes confiar en el equipo cuando un transitorio lo pone a prueba.</p>
+</section>
+
+<section id="true-rms">
+<h2>True RMS: cuándo importa y cuándo no</h2>
+<p><strong>True RMS</strong> (Root Mean Square verdadero) significa que el multímetro calcula el valor eficaz real de una señal AC, sea cual sea su forma de onda. Un multímetro sin True RMS asume que la señal es una senoidal perfecta y aplica un factor de corrección fijo; si la señal es senoidal, la lectura coincide, pero si no lo es —y en la electrónica moderna rara vez lo es— la lectura miente.</p>
+<p>Dónde importa realmente:</p>
+<ul>
+<li><strong>Medir la salida de un variador de frecuencia (VFD)</strong>, un inversor solar, un UPS o cualquier fuente que no entregue una senoidal pura: la lectura sin True RMS puede estar entre un 10% y un 40% equivocada.</li>
+<li><strong>Medir corriente en circuitos con PWM</strong>, que es la forma habitual de controlar motores y LEDs: la corriente no es senoidal ni continua, y un multímetro no True RMS dará un valor sin relación con el consumo real.</li>
+<li><strong>Diagnóstico en tableros eléctricos</strong> donde conviven cargas lineales y no lineales (fuentes conmutadas, cargadores, iluminación LED).</li>
+</ul>
+<p>Dónde <em>no</em> importa: en mediciones de voltaje DC (baterías, pines de Arduino, alimentación regulada), True RMS no aporta nada porque no hay forma de onda alterna involucrada. Si tu uso es exclusivamente electrónica de bajo voltaje DC, True RMS es un extra que no vas a aprovechar.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="cat">
+<h2>Categorías CAT: la especificación que salva vidas</h2>
+<p>Las categorías CAT (IEC 61010) no son niveles de calidad sino <strong>niveles de protección</strong> que definen la energía transitoria máxima que el multímetro puede absorber sin romperse de forma peligrosa. El número romano indica dónde se puede usar con seguridad:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Categorías de seguridad según IEC 61010. El nivel más alto implica mayor energía transitoria soportada.</caption>
+<thead><tr><th>Categoría</th><th>Dónde se usa</th><th>Ejemplo</th></tr></thead>
+<tbody>
+<tr><td>CAT I</td><td>Electrónica de bajo voltaje, equipos protegidos</td><td>Circuitos de Arduino, señales de sensores</td></tr>
+<tr><td>CAT II</td><td>Aparatos conectados a enchufes</td><td>Electrodomésticos, equipos de oficina</td></tr>
+<tr><td>CAT III</td><td>Distribución fija del edificio</td><td>Tableros eléctricos, circuitos domiciliarios</td></tr>
+<tr><td>CAT IV</td><td>Punto de entrada del servicio eléctrico</td><td>Medidores, empalme, acometida</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warning">
+<strong>La categoría CAT es la especificación más importante de un multímetro para quien trabaja con corriente domiciliaria.</strong> Un multímetro CAT I usado en un tablero eléctrico puede explotar ante un transitorio que un CAT III absorbería sin problema. Los multímetros más baratos del mercado a menudo declaran categorías que no cumplen realmente en sus protecciones internas; comprar una marca con certificación verificable (Fluke, Brymen, UNI-T en sus líneas profesionales, Klein Tools) es una inversión en seguridad, no en prestigio.
+</div>
+</section>
+
+<section id="funciones">
+<h2>Funciones que sí necesitas vs marketing</h2>
+<p><strong>Las que sí importan</strong> en electrónica y robótica:</p>
+<ul>
+<li><strong>Continuidad con zumbador rápido:</strong> que suene al instante, no medio segundo después. Es la función que más se usa en el día a día para seguir pistas, verificar soldaduras y buscar cortocircuitos.</li>
+<li><strong>Medición de capacitancia:</strong> imprescindible para diagnosticar condensadores sospechosos sin desoldarlos.</li>
+<li><strong>Medición de frecuencia:</strong> útil para verificar señales PWM, relojes y generadores de señal.</li>
+<li><strong>Auto-rango:</strong> el multímetro selecciona el rango adecuado solo; evita la selección manual que es lenta y propensa a error.</li>
+<li><strong>Retroiluminación:</strong> parece trivial hasta que necesitas medir dentro de un gabinete o debajo de un escritorio.</li>
+</ul>
+<p><strong>Las que rara vez justifican pagar más:</strong></p>
+<ul>
+<li><strong>Bluetooth y app:</strong> útil en logging de largo plazo, pero no en la medición típica de taller.</li>
+<li><strong>Medición de temperatura con termopar:</strong> funciona pero suele tener una resolución mediocre respecto a un termómetro dedicado.</li>
+<li><strong>Cámara térmica integrada:</strong> existe en algunos modelos premium; es más un lujo que una necesidad salvo en diagnóstico de tableros eléctricos.</li>
+</ul>
+</section>
+
+<section id="tabla-decision">
+<h2>Tabla de decisión: qué comprar según tu perfil</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Orientación de compra por perfil de uso. Rangos de precio referenciales.</caption>
+<thead><tr><th>Perfil</th><th>Lo que necesitas</th><th>Rango de precio orientativo</th></tr></thead>
+<tbody>
+<tr><td>Principiante / primer multímetro para Arduino y electrónica DC</td><td>2.000-4.000 cuentas, auto-rango, continuidad rápida, CAT I o CAT II. True RMS no es necesario.</td><td>US$ 15–35</td></tr>
+<tr><td>Maker avanzado / taller con Arduino, ESP32, motores y fuentes</td><td>6.000 cuentas, True RMS, capacitancia, frecuencia, CAT II o CAT III 600V</td><td>US$ 40–80</td></tr>
+<tr><td>Profesional / electricista / trabajo en tableros eléctricos 220V</td><td>6.000+ cuentas, True RMS, CAT III 1000V o CAT IV, marca con certificación verificable, protección interna seria</td><td>US$ 100–350</td></tr>
+</tbody>
+</table>
+</div>
+<p>Dos observaciones sobre los extremos: para el principiante, un multímetro de US$ 15 de una marca razonablemente conocida (como la gama básica de UNI-T o de AstroAI) cumple para electrónica de bajo voltaje y es mejor inversión que no tener ninguno; la diferencia con uno de US$ 5 sin marca está en la fiabilidad de las puntas de prueba y en que las protecciones internas sean reales. Para el profesional, la diferencia entre un equipo de gama media y uno premium como la serie Fluke 117 o 179 es que el Fluke mantiene su calibración y su fiabilidad de forma verificable durante años de uso diario, algo que importa cuando la medición tiene consecuencias legales o de seguridad.</p>
+</section>
+
+<section id="cuidados">
+<h2>Cuidados básicos para que dure</h2>
+<ul>
+<li><strong>Cambia las pilas antes de que se agoten del todo:</strong> un multímetro con pilas bajas puede dar lecturas erróneas sin aviso visible; muchos modelos tienen indicador de batería baja pero no todos dejan de medir cuando la tensión baja.</li>
+<li><strong>No dejes las puntas conectadas en modo de corriente:</strong> si después de medir corriente (donde las puntas están en el borne de amperios) se conecta por error a un punto de voltaje, el camino de baja resistencia interna puede destruir el fusible interno o el propio multímetro.</li>
+<li><strong>Revisa las puntas de prueba periódicamente:</strong> el aislamiento de las puntas se degrada con el uso y con el calor si se dejan al sol; unas puntas en mal estado son un riesgo eléctrico directo.</li>
+<li><strong>Guárdalo en su funda:</strong> protege la pantalla y, más importante, los bornes de medición contra cortocircuitos accidentales con herramientas sueltas en un cajón o caja de herramientas.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Un multímetro barato puede dañar mi Arduino o mis componentes?</summary><p>No de forma directa: un multímetro mide pasivamente, no inyecta energía en el circuito en las funciones de voltaje y resistencia. El único modo en que podría haber un problema es si se mide resistencia o continuidad con el circuito alimentado, porque en ese modo el multímetro aplica una pequeña corriente de prueba que puede interferir con el circuito activo. La regla general es medir resistencia y continuidad solo con el circuito apagado, independientemente del multímetro que uses.</p></details>
+<details><summary>¿Vale la pena un Fluke para un hobbyist o es exagerado?</summary><p>Depende de si vas a medir solo electrónica de bajo voltaje o también vas a intervenir en la red domiciliaria. Para electrónica DC con Arduino y sensores, un Fluke es más multímetro del que necesitas; un equipo de gama media de 6.000 cuentas con True RMS cumple igual de bien para ese uso. Donde el Fluke justifica su precio es en la seguridad y fiabilidad de sus protecciones internas cuando se trabaja en corriente alterna domiciliaria, y en que mantiene su calibración de fábrica durante años de uso diario sin necesidad de recalibrarlo.</p></details>
+<details><summary>¿Qué es la impedancia de entrada y por qué debería importarme?</summary><p>La impedancia de entrada del multímetro en modo de voltaje determina cuánta corriente 'roba' del circuito para hacer la medición. Un multímetro con impedancia alta (10 MΩ es el estándar actual) apenas afecta al circuito; uno con impedancia baja puede alterar el punto de operación de un circuito de alta impedancia y dar una lectura más baja de la real. En la práctica, todos los multímetros digitales modernos tienen 10 MΩ o más y esto rara vez es un problema fuera de instrumentación de precisión.</p></details>
+<details><summary>¿Necesito un multímetro True RMS para medir la corriente de un motor controlado por PWM?</summary><p>Si quieres saber el consumo real de corriente, sí. Un multímetro sin True RMS intentará leer esa corriente pulsada como si fuera continua o senoidal y dará un número que no corresponde al consumo real. Con True RMS la lectura refleja el valor eficaz real independientemente de la forma de la onda, que en el caso del PWM es un tren de pulsos rectangulares. Si tu trabajo involucra motores controlados por driver, LED dimmeados por PWM o fuentes conmutadas, True RMS te ahorra interpretar valores incorrectos.</p></details>
+<details><summary>¿Puedo usar un multímetro para verificar si un enchufe de mi casa tiene tierra?</summary><p>Sí, y es una de las verificaciones básicas más útiles que puedes hacer con un multímetro. Mides el voltaje AC entre la fase (uno de los dos cables de alimentación) y el pin de tierra del enchufe: si hay voltaje cercano al nominal (220 V en Chile), la tierra está conectada; si marca 0 V o un valor muy bajo e inestable, la tierra está ausente o desconectada. Pero para esta medición necesitas un multímetro con categoría de seguridad CAT II como mínimo, porque estás midiendo directamente en la red domiciliaria.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Ahora que tienes el multímetro, aprende a usarlo de verdad en <a href="/blog/como-usar-un-multimetro-guia-paso-a-paso">Cómo Usar un Multímetro: Guía Paso a Paso</a>, o sigue equipando tu taller con <a href="/blog/estaciones-de-soldadura-como-elegir-la-adecuada-para-electronica">Estaciones de Soldadura: Cómo Elegir la Adecuada</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/como-usar-un-multimetro-guia-paso-a-paso">← Anterior: Cómo Usar un Multímetro: Guía Paso a Paso</a>
+  <a href="/blog/osciloscopios-de-entrada-que-ancho-de-banda-necesitas-de-verdad">Siguiente: Osciloscopios de Entrada: Qué Ancho de Banda Necesitas →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.fluke.com/en-us/learn/blog/digital-multimeters/what-is-true-rms" target="_blank" rel="noopener noreferrer">Fluke — Explicación de True RMS</a></li>
+<li><a href="https://webstore.iec.ch/publication/4585" target="_blank" rel="noopener noreferrer">IEC 61010-1 — Requisitos de seguridad para equipos de medición</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 2 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cámaras de Seguridad IP para Casa: PoE, NVR y Almacenamiento Local</title>
+<meta name="description" content="Guía técnica de videovigilancia residencial: WiFi vs PoE, qué es un NVR, almacenamiento local vs nube, resolución real, grado IP y cómo dimensionar un sistema.">
+<meta name="keywords" content="camaras seguridad ip casa, camara poe nvr, sistema vigilancia residencial, nvr 4k poe, almacenamiento local camaras, camaras seguridad sin suscripcion, frigate home assistant camaras">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cámaras de Seguridad IP para Casa: PoE, NVR y Almacenamiento Local">
+<meta property="og:description" content="WiFi o PoE, con NVR o sin él, en nube o en disco local: las decisiones técnicas reales detrás de un sistema de videovigilancia residencial que funcione.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cámaras de Seguridad IP para Casa: PoE, NVR y Almacenamiento Local">
+<meta name="twitter:description" content="WiFi o PoE, con NVR o sin él, en nube o en disco local: las decisiones técnicas reales detrás de un sistema de videovigilancia residencial que funcione.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Cámaras de Seguridad IP para Casa: PoE, NVR y Almacenamiento Local",
+  "description":"Guía técnica completa de sistemas de videovigilancia IP para vivienda: diferencia real entre cámaras WiFi y PoE, qué hace un NVR y cuándo es necesario, almacenamiento local en disco duro vs grabación en nube, resolución efectiva (1080p, 2K, 4K), visión nocturna, grado de protección IP para exterior, integración con Frigate y Home Assistant para IA local, y cómo dimensionar el sistema según el número de puntos a cubrir.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-02",
+  "dateModified":"2026-09-02",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local"},
+  "image":"https://www.ukrabot.cl/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local-hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Acceso al router de la vivienda, switch PoE o inyector si se opta por cableado, cable Ethernet Cat5e o Cat6 y herramientas de crimpado, disco duro de vigilancia si se usa NVR, y un punto de montaje con alimentación cercana si se opta por WiFi",
+  "wordCount":"2600",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Cámaras de Seguridad IP para Casa: PoE, NVR y Almacenamiento Local","item":"https://www.ukrabot.cl/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Puedo instalar cámaras de seguridad IP yo mismo o necesito un instalador profesional?","acceptedAnswer":{"@type":"Answer","text":"Un sistema residencial pequeño con cámaras WiFi o un kit PoE plug-and-play es perfectamente instalable por cuenta propia si tienes nociones básicas de red y herramientas. El cableado PoE exige fabricar o comprar cables Ethernet a medida y fijarlos correctamente, pero no requiere una certificación eléctrica porque opera a voltajes bajos y seguros. Lo que sí conviene evaluar con un profesional es el diseño de las ubicaciones para minimizar puntos ciegos, especialmente si el sistema es de más de cuatro cámaras o cubre un perímetro complejo."}},
+    {"@type":"Question","name":"¿Las cámaras IP funcionan si se corta internet?","acceptedAnswer":{"@type":"Answer","text":"Depende de la arquitectura. Un sistema con NVR local o con grabación en disco dentro de la propia cámara sigue grabando normalmente durante un corte de internet, porque la grabación ocurre dentro de la red local y no depende de la nube. Lo que se pierde es el acceso remoto desde el celular mientras dure el corte. Un sistema que graba solo en nube, en cambio, deja de grabar completamente sin internet, que es su limitación más crítica."}},
+    {"@type":"Question","name":"¿Cuánto almacenamiento necesito para grabar 24/7 con 4 cámaras?","acceptedAnswer":{"@type":"Answer","text":"Una cámara de 2K a 4 MP grabando de forma continua en H.265 genera del orden de 15 a 25 GB por día según el nivel de movimiento en la escena. Con 4 cámaras, eso suma entre 60 y 100 GB diarios. Un disco de 4 TB retiene aproximadamente 40 a 65 días de grabación antes de sobrescribir, y uno de 8 TB el doble. Si las cámaras graban solo por detección de movimiento en vez de continuamente, la retención se multiplica varias veces."}},
+    {"@type":"Question","name":"¿Qué diferencia hay entre las cámaras que vienen con un NVR en kit y comprar cámaras sueltas?","acceptedAnswer":{"@type":"Answer","text":"Los kits de NVR con cámaras incluidas están preconfigurados para funcionar entre sí de forma inmediata, con el switch PoE integrado en el NVR y una sola app para todo. Su limitación es que suelen ser ecosistemas cerrados: las cámaras del kit funcionan bien con ese NVR específico, pero agregar cámaras de otra marca puede ser complicado o imposible. Comprar cámaras sueltas compatibles con ONVIF da más flexibilidad para elegir marca, modelo y software de grabación, a cambio de más trabajo de configuración inicial."}},
+    {"@type":"Question","name":"¿Las cámaras PoE necesitan electricista o se pueden instalar como un proyecto maker?","acceptedAnswer":{"@type":"Answer","text":"PoE opera a 48 V DC de bajo amperaje, muy por debajo de los umbrales de riesgo eléctrico de la corriente domiciliaria. No requiere electricista ni certificación SEC. Lo que sí necesita es una planificación de red: un switch PoE con suficientes puertos y potencia total para alimentar todas las cámaras al mismo tiempo, cable Ethernet de calidad adecuada, y un tendido limpio que no interfiera con el cableado eléctrico existente."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local-hero.jpg" alt="Cámara de seguridad IP tipo bullet montada en el exterior de una vivienda con cableado Ethernet PoE visible" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Redes y Seguridad · Publicado el <time datetime="2026-09-02">2 de septiembre de 2026</time></div>
+    <h1>Cámaras de Seguridad IP para Casa: PoE, NVR y Almacenamiento Local</h1>
+    <p>La diferencia técnica entre WiFi y PoE, qué hace un NVR que una tarjeta SD no puede, por qué la resolución no lo es todo, y cómo armar un sistema sin suscripciones mensuales.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local-hero.jpg" alt="Cámara de seguridad IP tipo bullet montada en el exterior de una vivienda con cableado Ethernet PoE visible" loading="lazy">
+  <div class="caption">Un sistema PoE con NVR y almacenamiento local elimina las dos dependencias que más fallan en un sistema WiFi con nube: la señal inalámbrica y la suscripción mensual.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#wifi-vs-poe">WiFi vs PoE: la primera decisión</a></li>
+    <li><a href="#nvr">Qué es un NVR y cuándo lo necesitas</a></li>
+    <li><a href="#almacenamiento">Almacenamiento local vs nube: costos reales</a></li>
+    <li><a href="#resolucion">Resolución, visión nocturna y campo de visión</a></li>
+    <li><a href="#exterior">Cámaras de exterior: grado IP y montaje</a></li>
+    <li><a href="#dimensionamiento">Cómo dimensionar el sistema</a></li>
+    <li><a href="#integracion">Integración con Frigate y Home Assistant</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="wifi-vs-poe">
+<h2>WiFi vs PoE: la primera decisión</h2>
+<p>Antes de elegir marca o modelo, la decisión que más define cómo va a funcionar el sistema a largo plazo es el tipo de conexión. Es una elección de infraestructura, no de imagen:</p>
+<p><strong>WiFi</strong> es la opción de instalación rápida: la cámara solo necesita un enchufe para alimentarse y se conecta a la red por radio. Para una o dos cámaras interiores en una vivienda pequeña con buena cobertura WiFi, funciona bien. El problema aparece con tres o más cámaras, con paredes gruesas o distancias largas hasta el router, o con cámaras exteriores lejos de un enchufe: la señal inalámbrica se degrada, el video se entrecorta, y la cámara que más necesitas —la que apunta a la entrada— es normalmente la que peor señal recibe porque está más lejos del router.</p>
+<p><strong>PoE (Power over Ethernet)</strong> resuelve esos tres problemas con un solo cable: el Ethernet lleva datos y alimentación al mismo tiempo, hasta 100 metros de distancia sin repetidor, sin importar paredes ni interferencias. La desventaja es que hay que tirar cable desde un switch PoE central hasta cada cámara, lo que implica una instalación física inicial mayor. Si la vivienda ya tiene cableado estructurado o se está construyendo, PoE es la elección técnica correcta casi siempre. Si se trata de un departamento donde no se puede canalizar cable, WiFi es la alternativa práctica.</p>
+<p>Si tu sistema va a ser PoE y necesitas fabricar tus propios cables, revisa nuestra guía de <a href="/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva">Cómo Crimpar Conectores RJ45 Pasantes</a>, donde se cubre el estándar T568B y los errores que causan fallos intermitentes.</p>
+</section>
+
+<section id="nvr">
+<h2>Qué es un NVR y cuándo lo necesitas</h2>
+<p>Un <strong>NVR (Network Video Recorder)</strong> es un grabador dedicado que recibe las transmisiones de video de todas las cámaras de la red, las almacena en un disco duro interno y permite reproducirlas, buscar por fecha y hora, y acceder de forma remota. En un kit PoE, el NVR suele incluir también el switch PoE integrado, de modo que las cámaras se conectan directamente a él con un solo cable cada una.</p>
+<p>La alternativa al NVR es que cada cámara grabe de forma independiente en su propia tarjeta microSD. Funciona para una o dos cámaras, pero tiene limitaciones reales: las tarjetas SD tienen ciclos de escritura limitados y fallan con más frecuencia que un disco duro de vigilancia, la búsqueda de grabaciones entre varias cámaras es manual e individual, y si alguien roba la cámara se lleva también la grabación.</p>
+<p>El NVR tiene sentido a partir de tres o cuatro cámaras, o cuando la grabación continua 24/7 es un requisito, o cuando se necesita acceso remoto centralizado desde una sola app. Para sistemas más pequeños o más orientados a automatización, una alternativa es usar un mini PC o un NAS como servidor de grabación con software como <strong>Frigate</strong>, que además permite detección de objetos con IA local —algo que la mayoría de los NVR comerciales no hacen o hacen de forma limitada.</p>
+</section>
+
+<section id="almacenamiento">
+<h2>Almacenamiento local vs nube: costos reales</h2>
+<p>Muchas cámaras WiFi económicas ofrecen grabación gratuita solo en clips cortos activados por movimiento, y cobran una <strong>suscripción mensual</strong> para grabación continua o para retener los clips más de unos días. Ese modelo tiene sentido para el fabricante, pero rara vez para el usuario a largo plazo:</p>
+<ul>
+<li><strong>Un disco duro de vigilancia de 4 TB</strong> cuesta una sola vez lo que equivale a entre uno y dos años de suscripción en nube para varias cámaras, y almacena semanas o meses de grabación continua dependiendo del número de cámaras y la resolución.</li>
+<li><strong>Sin internet, sin grabación:</strong> un sistema que depende de la nube deja de grabar si se cae la conexión a internet, exactamente el escenario en que más se necesita que funcione (un intruso puede cortar el cable de fibra antes de entrar).</li>
+<li><strong>Privacidad:</strong> el almacenamiento local mantiene las grabaciones dentro de la vivienda; la nube implica que el video pasa por los servidores del fabricante, con las políticas de privacidad y jurisdicción que eso conlleva.</li>
+</ul>
+<p>La recomendación técnica para un sistema residencial serio es <strong>almacenamiento local como base</strong> —disco duro en NVR, en NAS o en un mini PC— con la opción de nube solo como respaldo redundante si el presupuesto lo permite, no como almacenamiento principal. Si ya tienes un NAS montado, revisa nuestra guía de <a href="/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso">Cómo Montar un Servidor NAS Casero</a> para evaluar si puede funcionar también como servidor de grabación.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="resolucion">
+<h2>Resolución, visión nocturna y campo de visión</h2>
+<p>La resolución de la cámara importa, pero bastante menos de lo que sugiere el marketing. Un par de puntos técnicos que ayudan a evaluar:</p>
+<ul>
+<li><strong>1080p (2 MP)</strong> es suficiente para identificar personas en distancias cortas (entrada, pasillo, garaje). Si el área a cubrir es pequeña y bien iluminada, más resolución no aporta una diferencia práctica visible.</li>
+<li><strong>2K (4-5 MP)</strong> da más margen para hacer zoom digital en la grabación sin perder detalle útil, y es el punto dulce de calidad/costo/almacenamiento para la mayoría de las instalaciones residenciales.</li>
+<li><strong>4K (8 MP)</strong> tiene sentido en áreas amplias —un jardín grande, un estacionamiento— donde se necesita identificar detalles a distancia, pero consume el doble o más de almacenamiento que 2K y exige más ancho de banda de red.</li>
+</ul>
+<p>La <strong>visión nocturna</strong> es donde se juega la utilidad real de la cámara, porque la mayoría de los incidentes ocurren de noche. Las opciones son infrarrojos (imagen en blanco y negro, invisibles para el ojo humano) o visión nocturna a color con foco LED integrado (imagen a color pero visible y potencialmente molesta para vecinos). Muchas cámaras actuales combinan ambos modos y eligen automáticamente según la luz disponible.</p>
+<p>El <strong>campo de visión (FOV)</strong> define cuánta área cubre la cámara sin moverla: 90–110° es lo habitual en cámaras fijas residenciales. Un ángulo más amplio cubre más superficie pero reduce el detalle en cada punto; un ángulo más estrecho da más detalle pero deja zonas ciegas. Para cubrir un perímetro completo sin puntos ciegos, la solución es el número y la ubicación de las cámaras, no estirar el ángulo al máximo en una sola.</p>
+</section>
+
+<section id="exterior">
+<h2>Cámaras de exterior: grado IP y montaje</h2>
+<p>Toda cámara de exterior necesita un grado de protección <strong>IP (Ingress Protection)</strong> adecuado al clima de la zona. El primer dígito indica protección contra polvo, el segundo contra agua:</p>
+<ul>
+<li><strong>IP65:</strong> protección total contra polvo y chorros de agua en cualquier dirección. Suficiente para la mayoría de las instalaciones residenciales bajo alero o con exposición moderada a lluvia.</li>
+<li><strong>IP66:</strong> resiste chorros de agua a presión. La opción razonable si la cámara queda completamente expuesta a la intemperie sin protección adicional.</li>
+<li><strong>IP67:</strong> soporta inmersión temporal; normalmente innecesario para montaje en pared o techo.</li>
+</ul>
+<p>El montaje físico es igual de relevante: una cámara apuntando al sur recibe luz directa de sol durante horas, lo que puede degradar la imagen por sobreexposición y calentar el equipo. Planificar la orientación y, cuando sea posible, instalar bajo un alero o con una visera protectora prolonga la vida útil más que cualquier especificación IP por sí sola.</p>
+</section>
+
+<section id="dimensionamiento">
+<h2>Cómo dimensionar el sistema</h2>
+<p>La pregunta correcta no es "cuántas cámaras necesito" sino "qué puntos quiero cubrir y con qué nivel de detalle". Un dimensionamiento práctico para una vivienda típica:</p>
+<ul>
+<li><strong>Entrada principal:</strong> siempre, con resolución suficiente para identificar rostros (2K o superior, con visión nocturna).</li>
+<li><strong>Accesos secundarios:</strong> puertas traseras, ventanas a nivel de calle, acceso al garaje.</li>
+<li><strong>Perímetro:</strong> si hay jardín, patio o estacionamiento exterior, una o dos cámaras panorámicas para contexto general.</li>
+<li><strong>Interior (opcional):</strong> solo si hay un motivo específico; muchas personas prefieren no grabar el interior de forma permanente por privacidad.</li>
+</ul>
+<p>Para almacenamiento, la regla de cálculo rápida: una cámara 2K grabando las 24 horas en H.265 consume aproximadamente 15–25 GB de disco por día, según la compresión y el movimiento en la escena. Un disco de 4 TB con 4 cámaras de este tipo retiene entre 3 y 5 semanas de grabación continua antes de sobrescribir.</p>
+</section>
+
+<section id="integracion">
+<h2>Integración con Frigate y Home Assistant</h2>
+<p>Para quien ya tiene un ecosistema de domótica local, la alternativa más potente al NVR comercial es <a href="/blog/vision-por-computadora-con-frigate-en-un-mini-pc">Frigate</a> corriendo sobre un mini PC o un NAS, integrado con Home Assistant. Frigate aporta algo que la mayoría de los NVR de kit no tienen: <strong>detección de objetos con IA local</strong> (personas, vehículos, animales) que filtra los falsos positivos y permite automatizaciones inteligentes (encender luces si se detecta una persona, ignorar un gato, enviar una notificación con la foto del evento).</p>
+<p>El requisito técnico es que las cámaras soporten el protocolo <strong>RTSP</strong> (Real Time Streaming Protocol) u <strong>ONVIF</strong>, que permite a Frigate recibir el stream de video sin depender de la app del fabricante. Es un punto a verificar antes de comprar: muchas cámaras económicas están diseñadas solo para funcionar con su propia app y no exponen un stream RTSP abierto. Si tu plan a mediano plazo es integrar la videovigilancia con <a href="/blog/domotica-local-al-alcance-de-todos-la-revolucion-de-home-assistant-green">Home Assistant</a>, RTSP/ONVIF no es un "nice to have" sino un requisito.</p>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo instalar cámaras de seguridad IP yo mismo o necesito un instalador profesional?</summary><p>Un sistema residencial pequeño con cámaras WiFi o un kit PoE plug-and-play es perfectamente instalable por cuenta propia si tienes nociones básicas de red y herramientas. El cableado PoE exige fabricar o comprar cables Ethernet a medida y fijarlos correctamente, pero no requiere una certificación eléctrica porque opera a voltajes bajos y seguros. Lo que sí conviene evaluar con un profesional es el diseño de las ubicaciones para minimizar puntos ciegos, especialmente si el sistema es de más de cuatro cámaras o cubre un perímetro complejo.</p></details>
+<details><summary>¿Las cámaras IP funcionan si se corta internet?</summary><p>Depende de la arquitectura. Un sistema con NVR local o con grabación en disco dentro de la propia cámara sigue grabando normalmente durante un corte de internet, porque la grabación ocurre dentro de la red local y no depende de la nube. Lo que se pierde es el acceso remoto desde el celular mientras dure el corte. Un sistema que graba solo en nube, en cambio, deja de grabar completamente sin internet, que es su limitación más crítica.</p></details>
+<details><summary>¿Cuánto almacenamiento necesito para grabar 24/7 con 4 cámaras?</summary><p>Una cámara de 2K a 4 MP grabando de forma continua en H.265 genera del orden de 15 a 25 GB por día según el nivel de movimiento en la escena. Con 4 cámaras, eso suma entre 60 y 100 GB diarios. Un disco de 4 TB retiene aproximadamente 40 a 65 días de grabación antes de sobrescribir, y uno de 8 TB el doble. Si las cámaras graban solo por detección de movimiento en vez de continuamente, la retención se multiplica varias veces.</p></details>
+<details><summary>¿Qué diferencia hay entre las cámaras que vienen con un NVR en kit y comprar cámaras sueltas?</summary><p>Los kits de NVR con cámaras incluidas están preconfigurados para funcionar entre sí de forma inmediata, con el switch PoE integrado en el NVR y una sola app para todo. Su limitación es que suelen ser ecosistemas cerrados: las cámaras del kit funcionan bien con ese NVR específico, pero agregar cámaras de otra marca puede ser complicado o imposible. Comprar cámaras sueltas compatibles con ONVIF da más flexibilidad para elegir marca, modelo y software de grabación, a cambio de más trabajo de configuración inicial.</p></details>
+<details><summary>¿Las cámaras PoE necesitan electricista o se pueden instalar como un proyecto maker?</summary><p>PoE opera a 48 V DC de bajo amperaje, muy por debajo de los umbrales de riesgo eléctrico de la corriente domiciliaria. No requiere electricista ni certificación SEC. Lo que sí necesita es una planificación de red: un switch PoE con suficientes puertos y potencia total para alimentar todas las cámaras al mismo tiempo, cable Ethernet de calidad adecuada, y un tendido limpio que no interfiera con el cableado eléctrico existente.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si tu sistema de cámaras se va a integrar con domótica, revisa <a href="/blog/domotica-local-al-alcance-de-todos-la-revolucion-de-home-assistant-green">Home Assistant Green</a> para el hub y <a href="/blog/vision-por-computadora-con-frigate-en-un-mini-pc">Frigate en un Mini PC</a> para la detección inteligente de objetos con IA local.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/vision-por-computadora-con-frigate-en-un-mini-pc">← Anterior: Visión por Computadora con Frigate en un Mini PC</a>
+  <a href="/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso">Siguiente: Cómo Montar un Servidor NAS Casero con Discos SATA →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.axis.com/learning/web-articles/selecting-the-right-ip-camera" target="_blank" rel="noopener noreferrer">Axis Communications — Selección de cámaras IP</a></li>
+<li><a href="https://docs.frigate.video/" target="_blank" rel="noopener noreferrer">Frigate NVR — Documentación oficial</a></li>
+<li><a href="https://www.home-assistant.io/integrations/camera/" target="_blank" rel="noopener noreferrer">Home Assistant — Integración de cámaras</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 2 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
