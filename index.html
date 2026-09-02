@@ -238,11 +238,11 @@
     /* Hero */
     .hero {
       position: relative;
-      min-height: 78vh;
+      min-height: 72vh;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       overflow: hidden;
-      background: #151310;
+      background: #0c0f14;
     }
     .hero img.hero-bg {
       position: absolute;
@@ -250,7 +250,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: brightness(0.55) contrast(1.1);
+      object-position: center center;
       z-index: 1;
       max-width: none;
     }
@@ -258,11 +258,11 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(18,15,11,0.35) 0%, rgba(18,15,11,0.62) 55%, rgba(18,15,11,0.86) 100%);
+      background: linear-gradient(90deg, rgba(12,15,20,0.92) 0%, rgba(12,15,20,0.7) 45%, rgba(12,15,20,0.3) 100%);
       z-index: 2;
       pointer-events: none;
     }
-    .hero-inner { position: relative; z-index: 3; max-width: 1200px; margin: 0 auto; padding: 110px 24px 90px; width: 100%; }
+    .hero-inner { position: relative; z-index: 3; max-width: 1200px; margin: 0 auto; padding: 100px 24px 80px; width: 100%; }
     .hero-badge {
       display: flex;
       flex-wrap: wrap;
@@ -550,14 +550,14 @@
   </header>
 
   <section class="hero" aria-label="Portada principal">
-    <img class="hero-bg" src="robotic_arm_hero.jpg" alt="Brazo robótico industrial moderno de 6 ejes en un entorno de manufactura" loading="eager" fetchpriority="high" />
+    <img class="hero-bg" src="hero_home.svg" alt="Ilustración técnica panorámica de ingeniería robótica con circuitos, engranajes y diagramas de brazo robótico" loading="eager" fetchpriority="high" />
     <div class="hero-inner" id="main">
       <div class="hero-badge" aria-label="Categoría y fecha">
         <span class="line" aria-hidden="true"></span>
-        Editorial de Robótica y Automatización · Actualizado el <time datetime="2026-08-30">30 de agosto de 2026</time>
+        Electrónica · Arduino · Robótica · Automatización · Septiembre 2026
       </div>
-      <h1>Aprende <em>Ingeniería Robótica</em> con Tutoriales Prácticos</h1>
-      <p class="sub">Desde prototipos con Arduino y sensores hasta control con ROS 2 e integración con PLC industriales. Tutoriales prácticos, comparativas de hardware basadas en documentación de fabricantes, y guías de compra para ingenieros, makers, docentes y estudiantes en Chile y Latinoamérica.</p>
+      <h1>Ingeniería Robótica<br><em>Aplicada</em></h1>
+      <p class="sub">Guías técnicas extensas para construir robots, controlar motores, armar packs de baterías y automatizar proyectos reales. Desde el primer LED con Arduino hasta navegación autónoma con ROS 2.</p>
       <div class="cta-row">
         <a href="#latest" class="btn btn-primary">Explorar Tutoriales</a>
         <a href="#categories" class="btn btn-ghost">Ver por Categoría</a>
@@ -567,24 +567,19 @@
 
   <section class="stats" aria-label="Estadísticas del sitio">
     <div class="stats-inner">
-      <div class="stat"><h3>163</h3><p>Guías Publicadas</p></div>
-      <div class="stat"><h3>20</h3><p>Categorías Editoriales</p></div>
-      <div class="stat"><h3>2026</h3><p>Publicando Desde</p></div>
-      <div class="stat"><h3>Chile · Latam</h3><p>Enfoque de Mercado</p></div>
+      <div class="stat"><h3>169</h3><p>Guías Técnicas</p></div>
+      <div class="stat"><h3>20+</h3><p>Categorías</p></div>
+      <div class="stat"><h3>100%</h3><p>Fuentes Primarias</p></div>
+      <div class="stat"><h3>Chile · Latam</h3><p>Precios Locales</p></div>
     </div>
   </section>
 
   <main>
 
   <section id="latest" aria-label="Últimos tutoriales">
-    <span class="section-label">Empieza Aquí</span>
-    <h2 class="section-title">Guías Publicadas</h2>
-    <p class="section-sub">La tanda del 31 de agosto suma tres guías de control y taller: el control PID con Arduino desde la fórmula discreta hasta la sintonía por Ziegler-Nichols, la comparativa IRLZ44N frente a IRFZ44N para conmutar carga con Arduino y ESP32 sin quemar el transistor, y la elección de cable y conector según corriente con la tabla AWG completa y el cálculo de caída de tensión. La tanda del 30 de agosto suma tres guías de taller: el control del servomotor con Arduino (SG90, MG996R y DS3218, con torque real y alimentación separada), el destape de boquillas de impresora 3D con cold pull y la conversión de una fuente ATX en fuente de banco paso a paso. Nuestras guías completas disponibles hoy: la serie sobre conversión de vehículos a eléctricos — costos en Chile, química de baterías, homologación y selección del motor —, la reparación de baterías de herramientas inalámbricas y la conversión de bicicletas, junto a los nuevos tutoriales de brazos robóticos impresos en 3D, audio DIY (altavoz Bluetooth y crossover), domótica local con Home Assistant Green, dosificación con Arduino, celdas LiFePO4, encoders, GPS e IA local. Se suman ahora guías de impresión cerámica, marcado láser en acero inoxidable, BLE de ultra bajo consumo (nRF52840 vs ESP32), OTA y FreeRTOS en ESP32, drones fumigadores y su regulación en Chile, simuladores de circuitos, motores BLDC con FOC, NEMA 17 vs NEMA 23 y una guía técnica completa de robótica educativa. La tanda más reciente suma siete guías nuevas: cómo montar un servidor NAS casero con discos SATA paso a paso, el duelo Creality K1 Max contra Bambu Lab P1S, la reparación de la batería del scooter Xiaomi M365, cómo evaluar baterías LiFePO4 12V 100Ah antes de comprar en Amazon, el control del ESP32 por Bluetooth BLE desde el celular, la construcción completa de una máquina recreativa arcade y Arduino Due frente a Arduino Uno. La tanda del 25 de agosto suma tres guías de taller e impresión 3D: cómo usar un multímetro paso a paso con la seguridad de la NCh Elec. 4/2003, la comparativa de firmware Klipper contra Marlin con presupuesto real en Chile, y el diagnóstico de defectos de impresión 3D con parámetros por material. La tanda anterior incorporó un bloque de robótica móvil e industrial: elección de LiDAR 2D (RPLIDAR A1 vs LD19), SLAM y navegación con Nav2, Jetson Orin Nano frente a Raspberry Pi 5 para IA en el borde, Modbus RTU sobre RS-485, bus CAN con MCP2515, variadores de frecuencia y su frenado, básculas con celdas de carga y HX711, reductores planetarios contra cicloidales, LoRa y LoRaWAN con la regulación chilena de 915 MHz, y servos closed-loop frente a motores paso a paso. La tanda del 26 de agosto agrega una comparativa de drivers A4988, DRV8825 y TMC2209 con Vref, una selección de filamentos PLA/PETG/ABS/TPU y el ajuste y diagnóstico del convertidor buck LM2596. Cada una es un artículo extenso, con tablas de datos, costos de referencia para Chile y fuentes primarias citadas.</p>
-
-    <div class="editorial-note" aria-label="Enfoque editorial">
-      <p><strong>Sobre este sitio:</strong> Blog de Ingeniería Robótica es un proyecto editorial pequeño e independiente, escrito y mantenido por una sola persona. Publicamos guías técnicas extensas sobre electrónica aplicada — movilidad eléctrica, baterías y sistemas BMS, Arduino, sensores y automatización — orientadas a makers, técnicos, docentes y estudiantes en Chile y Latinoamérica. Estamos comenzando: preferimos publicar pocas guías bien documentadas antes que llenar el sitio de contenido superficial, por lo que las secciones marcadas como <em>Próximamente</em> corresponden a temas en preparación y todavía no tienen artículo publicado.</p>
-      <p>Enlazamos directamente a fuentes primarias — hojas de datos de fabricantes, repositorios de código abierto y organismos de normas de seguridad (ISO, INN, SEC) — siempre que se menciona una cifra o afirmación específica. Si detectas un error o un dato desactualizado, por favor <a href="/contact">avísanos</a>.</p>
-    </div>
+    <span class="section-label">Últimas Publicaciones</span>
+    <h2 class="section-title">Tutoriales y Guías Técnicas</h2>
+    <p class="section-sub">Artículos extensos con código, diagramas, tablas de datos y precios de referencia para Chile. Cada guía enlaza directamente a fuentes primarias: hojas de datos de fabricantes, repositorios de código abierto y normas de seguridad.</p>
 
         <div class="cards" aria-label="Tarjetas de tutoriales">
       <a href="/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa" class="card" aria-label="Módulo driver L298N de doble puente H con disipador de aluminio conectado a una placa Arduino Uno y un motor DC">

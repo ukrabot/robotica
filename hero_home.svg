@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 680" role="img" aria-labelledby="hero-t hero-d">
+<title id="hero-t">Blog de Ingeniería Robótica</title>
+<desc id="hero-d">Ilustración panorámica de ingeniería robótica: circuitos, engranajes y conexiones técnicas</desc>
+
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#0c0f14"/>
+    <stop offset="50%" stop-color="#151b26"/>
+    <stop offset="100%" stop-color="#1a1510"/>
+  </linearGradient>
+  <linearGradient id="glow1" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#e4c07a" stop-opacity=".18"/>
+    <stop offset="100%" stop-color="#e4c07a" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="glow2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#2f6fb0" stop-opacity=".12"/>
+    <stop offset="100%" stop-color="#2f6fb0" stop-opacity="0"/>
+  </linearGradient>
+  <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+    <path d="M60 0H0V60" fill="none" stroke="#e4c07a" stroke-opacity=".04" stroke-width=".5"/>
+  </pattern>
+  <filter id="softglow">
+    <feGaussianBlur stdDeviation="2.5" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+
+<!-- Background -->
+<rect width="1920" height="680" fill="url(#bg)"/>
+<rect width="1920" height="680" fill="url(#grid)"/>
+
+<!-- Atmospheric glows -->
+<ellipse cx="1500" cy="200" rx="500" ry="350" fill="url(#glow1)"/>
+<ellipse cx="300" cy="500" rx="400" ry="300" fill="url(#glow2)"/>
+
+<!-- ═══ Circuit board traces (left) ═══ -->
+<g stroke="#e4c07a" stroke-opacity=".12" stroke-width="1.5" fill="none">
+  <path d="M0 340h180l20-20h80l20 20h60"/>
+  <path d="M0 380h120l15-15h50l15 15h100"/>
+  <path d="M0 420h200l10-10h40l10 10h80"/>
+  <path d="M0 300h100l25 25h60"/>
+  <path d="M0 460h150l20-20h70"/>
+</g>
+<!-- Solder points -->
+<g fill="#e4c07a" opacity=".25">
+  <circle cx="180" cy="340" r="3"/><circle cx="280" cy="340" r="3"/><circle cx="360" cy="340" r="3"/>
+  <circle cx="120" cy="380" r="3"/><circle cx="185" cy="365" r="3"/><circle cx="300" cy="380" r="3"/>
+  <circle cx="200" cy="420" r="3"/><circle cx="260" cy="410" r="3"/><circle cx="340" cy="420" r="3"/>
+</g>
+
+<!-- ═══ Central chip / processor symbol ═══ -->
+<g transform="translate(960,340)" stroke="#e4c07a" fill="none" opacity=".6">
+  <!-- Outer ring -->
+  <circle r="90" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <!-- Inner ring -->
+  <circle r="55" stroke-width="2"/>
+  <!-- Core -->
+  <rect x="-28" y="-28" width="56" height="56" rx="6" stroke-width="2.5" fill="#e4c07a" fill-opacity=".06"/>
+  <!-- Pins -->
+  <g stroke-width="1.5">
+    <line x1="0" y1="-55" x2="0" y2="-90"/><line x1="0" y1="55" x2="0" y2="90"/>
+    <line x1="-55" y1="0" x2="-90" y2="0"/><line x1="55" y1="0" x2="90" y2="0"/>
+    <line x1="-39" y1="-39" x2="-64" y2="-64"/><line x1="39" y1="-39" x2="64" y2="-64"/>
+    <line x1="-39" y1="39" x2="-64" y2="64"/><line x1="39" y1="39" x2="64" y2="64"/>
+  </g>
+</g>
+<!-- Pulse animation dots on center -->
+<g fill="#e4c07a" opacity=".5" filter="url(#softglow)">
+  <circle cx="960" cy="340" r="4">
+    <animate attributeName="r" values="4;8;4" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values=".5;.2;.5" dur="3s" repeatCount="indefinite"/>
+  </circle>
+</g>
+
+<!-- ═══ Right side: robotic arm schematic ═══ -->
+<g transform="translate(1420,280)" stroke="#2f6fb0" stroke-width="2.5" fill="none" opacity=".5">
+  <!-- Base -->
+  <rect x="-30" y="100" width="60" height="20" rx="4"/>
+  <!-- Arm segments -->
+  <line x1="0" y1="100" x2="0" y2="50"/>
+  <line x1="0" y1="50" x2="60" y2="-10"/>
+  <line x1="60" y1="-10" x2="100" y2="30"/>
+  <!-- Joints -->
+  <circle cx="0" cy="100" r="8" stroke-width="2"/>
+  <circle cx="0" cy="50" r="7" stroke-width="2"/>
+  <circle cx="60" cy="-10" r="6" stroke-width="2"/>
+  <circle cx="100" cy="30" r="5" stroke-width="2"/>
+  <!-- End effector -->
+  <line x1="100" y1="30" x2="115" y2="22"/>
+  <line x1="100" y1="30" x2="115" y2="38"/>
+</g>
+
+<!-- ═══ Right side: gear pair ═══ -->
+<g transform="translate(1650,420)" stroke="#e4c07a" stroke-width="1.5" fill="none" opacity=".3">
+  <circle r="40"/><circle r="30"/>
+  <circle cx="58" cy="0" r="25"/><circle cx="58" cy="0" r="18"/>
+  <!-- Teeth hints -->
+  <g stroke-width="1">
+    <line x1="0" y1="-40" x2="0" y2="-48"/><line x1="28" y1="-28" x2="34" y2="-34"/>
+    <line x1="40" y1="0" x2="48" y2="0"/><line x1="28" y1="28" x2="34" y2="34"/>
+    <line x1="0" y1="40" x2="0" y2="48"/><line x1="-28" y1="28" x2="-34" y2="34"/>
+    <line x1="-40" y1="0" x2="-48" y2="0"/><line x1="-28" y1="-28" x2="-34" y2="-34"/>
+  </g>
+</g>
+
+<!-- ═══ Floating data nodes ═══ -->
+<g fill="none" stroke-width="1.2" opacity=".35">
+  <g stroke="#2f6fb0">
+    <rect x="1700" y="150" width="80" height="50" rx="6"/>
+    <line x1="1710" y1="168" x2="1770" y2="168"/>
+    <line x1="1710" y1="180" x2="1750" y2="180"/>
+    <line x1="1710" y1="192" x2="1760" y2="192"/>
+  </g>
+  <g stroke="#e4c07a">
+    <rect x="1780" y="260" width="70" height="45" rx="6"/>
+    <line x1="1790" y1="278" x2="1840" y2="278"/>
+    <line x1="1790" y1="290" x2="1830" y2="290"/>
+  </g>
+</g>
+
+<!-- ═══ Connection lines between elements ═══ -->
+<g stroke="#e4c07a" stroke-opacity=".08" stroke-width="1" fill="none">
+  <path d="M360 340 Q500 320 870 340"/>
+  <path d="M1050 340 Q1200 310 1390 350"/>
+  <path d="M1050 340 Q1200 370 1420 400"/>
+  <path d="M1520 350 Q1580 300 1700 175"/>
+</g>
+
+<!-- ═══ Scattered tech dots ═══ -->
+<g fill="#e4c07a" opacity=".15">
+  <circle cx="500" cy="200" r="2"/><circle cx="550" cy="180" r="1.5"/>
+  <circle cx="700" cy="150" r="2"/><circle cx="750" cy="520" r="1.5"/>
+  <circle cx="1100" cy="160" r="2"/><circle cx="1200" cy="530" r="1.5"/>
+  <circle cx="1300" cy="180" r="2"/><circle cx="1600" cy="550" r="1.5"/>
+</g>
+<g fill="#2f6fb0" opacity=".12">
+  <circle cx="400" cy="250" r="2"/><circle cx="600" cy="500" r="2"/>
+  <circle cx="800" cy="180" r="1.5"/><circle cx="1350" cy="500" r="2"/>
+</g>
+
+<!-- ═══ Bottom gradient fade (matches site background) ═══ -->
+<rect y="580" width="1920" height="100" fill="url(#glow1)" opacity=".3"/>
+<linearGradient id="fade-bottom" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#151310" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#151310" stop-opacity=".6"/>
+</linearGradient>
+<rect y="540" width="1920" height="140" fill="url(#fade-bottom)"/>
+
+</svg>
