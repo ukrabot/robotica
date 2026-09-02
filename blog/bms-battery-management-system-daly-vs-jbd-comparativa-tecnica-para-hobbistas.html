@@ -1,1 +1,573 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>BMS Daly vs JBD: Comparativa Técnica para Hobbistas</title>
+<meta name="description" content="Daly vs JBD (Xiaoxiang): protecciones, balanceo, apps Bluetooth, corrientes soportadas y cuándo elegir cada BMS para packs 18650, LiFePO4 o robótica.">
+<meta name="keywords" content="bms daly vs jbd, daly bms, jbd bms, xiaoxiang bms, battery management system arduino, bms para bateria 18650, overkill solar bms, bms lifepo4 chile">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="BMS Daly vs JBD: Comparativa Técnica para Hobbistas">
+<meta property="og:description" content="Protecciones, balanceo pasivo, apps Bluetooth y corrientes soportadas: cuál BMS conviene según tu pack de baterías y tu proyecto.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas-hero.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BMS Daly vs JBD: Comparativa Técnica para Hobbistas">
+<meta name="twitter:description" content="Protecciones, balanceo pasivo, apps Bluetooth y corrientes soportadas: cuál BMS conviene según tu pack de baterías y tu proyecto.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas-hero.svg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"BMS Daly vs JBD: Comparativa Técnica para Hobbistas",
+  "description":"Comparativa técnica entre los BMS Daly y JBD (Xiaoxiang/Overkill Solar): funciones de protección OVP, UVP, OCP y OTP, balanceo pasivo, comunicación UART y Bluetooth, calidad de las apps, rangos de corriente disponibles, casos de uso típicos en packs 18650/21700 y LiFePO4 para robótica, ebikes y sistemas solares, y una guía de instalación y solución de problemas comunes.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-01",
+  "dateModified":"2026-09-01",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas"},
+  "image":"https://www.ukrabot.cl/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas-hero.svg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Pack de baterías de litio (18650, 21700 o LiFePO4 prismática) ya armado, BMS Daly o JBD del amperaje y número de celdas (S) correspondiente, multímetro, cargador balanceado o fuente de laboratorio, cinta kapton o funda termorretráctil",
+  "wordCount":"2450",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"BMS Daly vs JBD: Comparativa Técnica para Hobbistas","item":"https://www.ukrabot.cl/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Puedo mezclar celdas usadas de distintas fuentes en un pack con BMS Daly o JBD?","acceptedAnswer":{"@type":"Answer","text":"Técnicamente el BMS protegerá el pack incluso con celdas de distinta procedencia, pero no soluciona el problema de fondo: celdas con capacidad y resistencia interna distintas se degradan a ritmos diferentes y fuerzan al balanceo pasivo a trabajar constantemente. La recomendación técnica es emparejar celdas por capacidad medida y resistencia interna antes de armar el pack, e idealmente usar celdas del mismo lote y fabricante. El BMS es la última línea de defensa, no un sustituto de un buen emparejamiento inicial."}},
+    {"@type":"Question","name":"¿Un BMS de mayor amperaje del que necesito trae alguna desventaja?","acceptedAnswer":{"@type":"Answer","text":"La principal desventaja es que un BMS sobredimensionado en corriente ofrece menos protección real ante un cortocircuito franco, porque tolera picos más altos antes de cortar. También suele ser físicamente más grande y, en las versiones de más de 100 A, más caro. La práctica recomendada es dimensionar el BMS para la corriente de pico real de tu aplicación (no solo el promedio) con un margen razonable de 20–30%, sin irse a rangos muy superiores por precaución excesiva."}},
+    {"@type":"Question","name":"¿Daly y JBD funcionan igual con celdas LiFePO4 que con Li-ion o NMC?","acceptedAnswer":{"@type":"Answer","text":"El hardware es compatible con ambas químicas, pero los umbrales de voltaje de fábrica suelen venir configurados para Li-ion/NMC (corte a 4,2 V por celda). Para LiFePO4, cuyo voltaje máximo seguro es 3,65 V por celda, es indispensable verificar y, si es necesario, reconfigurar esos umbrales antes de la primera carga —mediante la app en las versiones Bluetooth o mediante el vendedor en las versiones sin app— porque un BMS configurado para Li-ion no protegerá correctamente a una celda LiFePO4."}},
+    {"@type":"Question","name":"¿Qué pasa si el BMS falla y no corta a tiempo?","acceptedAnswer":{"@type":"Answer","text":"Es exactamente el escenario que la selección cuidadosa de marca y modelo busca minimizar, pero ningún componente electrónico tiene una tasa de falla de cero. Por eso los packs bien diseñados no dependen únicamente del BMS: incorporan un fusible dimensionado por debajo de la corriente máxima del cableado como protección física de respaldo, y se cargan siempre sobre una superficie no inflamable y bajo supervisión, nunca de forma desatendida durante toda la noche."}},
+    {"@type":"Question","name":"¿Puedo usar un BMS sin Bluetooth y monitorear igual el estado del pack?","acceptedAnswer":{"@type":"Answer","text":"Sí. Los BMS sin Bluetooth siguen ejecutando las protecciones OVP/UVP/OCP/OTP de forma completamente autónoma; lo único que pierdes es la visibilidad remota del voltaje por celda y la temperatura desde el teléfono. Para proyectos de robótica donde el pack queda accesible y se revisa periódicamente con un multímetro, un BMS sin Bluetooth es una forma legítima de reducir costo sin perder la protección de fondo, que es la función que realmente importa."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas-hero.svg" alt="Placas de circuito de módulos BMS de balanceo y protección para packs de baterías de litio conectadas a celdas 18650" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Baterías y BMS · Publicado el <time datetime="2026-09-01">1 de septiembre de 2026</time></div>
+    <h1>BMS Daly vs JBD: Comparativa Técnica para Hobbistas</h1>
+    <p>Qué protege realmente un BMS, en qué se diferencian Daly y JBD (Xiaoxiang) en protecciones, balanceo y app Bluetooth, y cómo elegir uno según tu pack y tu proyecto.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas-hero.svg" alt="Placas de circuito de módulos BMS de balanceo y protección para packs de baterías de litio conectadas a celdas 18650" loading="lazy">
+  <div class="caption">Un BMS no es opcional en un pack de litio hecho a mano: es el único componente que corta la corriente antes de que una celda supere su límite seguro de voltaje o temperatura.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es-un-bms">Qué hace realmente un BMS y por qué no es opcional</a></li>
+    <li><a href="#daly">Daly BMS: protecciones, corrientes y app</a></li>
+    <li><a href="#jbd">JBD (Xiaoxiang / Overkill Solar): protecciones, corrientes y app</a></li>
+    <li><a href="#tabla-comparativa">Tabla comparativa técnica</a></li>
+    <li><a href="#cuando-elegir">Cuándo elegir Daly y cuándo elegir JBD</a></li>
+    <li><a href="#instalacion">Conexión conceptual: dónde va cada cable</a></li>
+    <li><a href="#errores-comunes">Errores comunes y cómo evitarlos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="que-es-un-bms">
+<h2>Qué hace realmente un BMS y por qué no es opcional</h2>
+<p>Un BMS (Battery Management System) es la placa que se conecta entre las celdas individuales de un pack de litio y el resto del circuito, con dos trabajos que ninguna celda puede hacer por sí sola: <strong>proteger</strong> y <strong>equilibrar</strong>. Sin él, un pack de varias celdas en serie es una apuesta: basta con que una sola celda se adelante o se atrase en voltaje respecto a las demás para que termine sobrecargada, sobredescargada o forzada más allá de su corriente segura, y ninguna de esas tres condiciones perdona en litio.</p>
+<p>Las cuatro protecciones que cualquier BMS decente debe ofrecer, con independencia de la marca, son:</p>
+<ul>
+<li><strong>OVP (Over-Voltage Protection):</strong> corta la carga si alguna celda supera su voltaje máximo (típicamente 4,25 V en Li-ion/NMC, 3,65 V en LiFePO4).</li>
+<li><strong>UVP (Under-Voltage Protection):</strong> corta la descarga si alguna celda cae por debajo de su mínimo seguro (2,5–3,0 V en Li-ion, 2,5 V en LiFePO4), evitando que la reacción interna la degrade de forma irreversible.</li>
+<li><strong>OCP (Over-Current Protection):</strong> desconecta si la corriente de carga o descarga supera el límite del BMS, protegiendo tanto las celdas como el propio módulo.</li>
+<li><strong>OTP (Over-Temperature Protection):</strong> corta si el sensor NTC detecta una temperatura anómala en el pack, algo especialmente relevante en celdas comprimidas dentro de un chasis de robot con poca ventilación.</li>
+</ul>
+<p>A esto se suma el <strong>balanceo</strong>: un circuito que desvía una pequeña corriente (habitualmente entre 30 y 100 mA) desde las celdas más cargadas hacia una resistencia, dándoles tiempo a las más débiles para alcanzar el mismo voltaje durante la carga. Es balanceo <em>pasivo</em> en la inmensa mayoría de los BMS de este segmento, Daly y JBD incluidos; el balanceo <em>activo</em> (que transfiere energía entre celdas en vez de disiparla) existe, pero es propio de gamas superiores como JK BMS, fuera del alcance de esta comparativa.</p>
+</section>
+
+<section id="daly">
+<h2>Daly BMS: protecciones, corrientes y app</h2>
+<p>Daly es un fabricante chino con un catálogo muy amplio, desde placas pequeñas de 4S para packs de herramientas hasta unidades industriales de 32S usadas en almacenamiento de energía y conversiones a vehículo eléctrico. Es, junto con JBD, una de las dos opciones que más aparecen en tiendas orientadas al hobbista y en AliExpress cuando se busca "BMS 18650" o "BMS LiFePO4".</p>
+<p>Lo que caracteriza a Daly en la práctica:</p>
+<ul>
+<li><strong>Rango de corriente muy amplio:</strong> hay modelos pensados para robótica y electrónica de baja potencia (20–60 A) y también versiones de alta corriente (100 A, 250 A e incluso más) orientadas a e-bikes, patinetes y baterías de vivienda, algo que JBD cubre de forma más limitada.</li>
+<li><strong>Protección básica completa:</strong> OVP, UVP, OCP, cortocircuito y OTP están presentes en prácticamente todo el catálogo, incluidas las versiones más económicas sin Bluetooth.</li>
+<li><strong>Comunicación:</strong> las versiones "Smart BMS" incorporan UART y un módulo Bluetooth propio; algunas líneas orientadas a almacenamiento de energía ofrecen además RS485, según el modelo específico y no de forma universal en todo el catálogo.</li>
+<li><strong>App:</strong> funcional y suficiente para monitorear voltaje por celda, temperatura y activar/desactivar protecciones, pero con una interfaz menos pulida y una comunidad de usuarios más pequeña que la de JBD.</li>
+<li><strong>Precio:</strong> es, en términos generales, la opción más económica de las dos para una corriente y número de celdas equivalentes.</li>
+</ul>
+<p>El punto débil que se repite en foros de energía solar y baterías DIY no es la ingeniería del BMS en sí, sino la <strong>variabilidad entre lotes</strong>: algunos usuarios reportan MOSFETs con más resistencia interna de la especificada o umbrales de protección que se disparan antes de lo esperado. La recomendación práctica es comprar a un vendedor con historial de reseñas específicas para el modelo exacto, no solo para la marca.</p>
+</section>
+
+<section id="jbd">
+<h2>JBD (Xiaoxiang / Overkill Solar): protecciones, corrientes y app</h2>
+<p>JBD —fabricado por Jiabaida— es la marca detrás de la mayoría de las placas Bluetooth genéricas de 7S a 20S que se ven en packs de e-bike y en baterías solares caseras. En el mercado angloparlante se la conoce también por el nombre de marca blanca <strong>Overkill Solar</strong>, y su app se llama "XiaoXiang BMS" (a veces aparece como "Elefante" en el ícono).</p>
+<p>Lo que caracteriza a JBD en la práctica:</p>
+<ul>
+<li><strong>App más madura:</strong> es, según el consenso de la comunidad DIY de baterías, la aplicación Bluetooth más desarrollada de las dos, con más parámetros configurables desde el teléfono (umbrales de OVP/UVP, corte de OCP, retardos, capacidad nominal para el cálculo de SOC) y una base de usuarios que lleva años reportando y documentando comportamientos.</li>
+<li><strong>Comunicación:</strong> UART y Bluetooth como estándar; a diferencia de algunas líneas de Daly orientadas a almacenamiento, JBD no ofrece CAN bus, por lo que no se comunica de forma nativa con inversores híbridos que esperan ese protocolo.</li>
+<li><strong>Formato compacto:</strong> las placas JBD tienden a ser más pequeñas para una corriente equivalente, lo que las hace convenientes en packs ajustados de espacio como baterías de e-bike o brazos robóticos con pack integrado.</li>
+<li><strong>Rango de corriente:</strong> cubre bien la franja de 40 A a 200 A que usa la mayoría de los proyectos DIY (e-bikes, packs de robótica móvil, baterías solares pequeñas), pero no llega a las versiones de altísima corriente que sí ofrece Daly para aplicaciones de tipo vehicular o de vivienda.</li>
+<li><strong>Precio:</strong> intermedio: más caro que Daly para una especificación equivalente, pero por debajo de marcas de gama alta como JK.</li>
+</ul>
+<p>Las MOSFETs de JBD tienen fama, dentro de la comunidad, de ser particularmente robustas para el segmento, lo cual ayuda quien construye un pack por primera vez y puede cometer errores de polaridad o dimensionamiento durante las pruebas iniciales.</p>
+</section>
+
+<section id="tabla-comparativa">
+<h2>Tabla comparativa técnica</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparativa orientativa entre Daly y JBD para uso hobbista. Los valores concretos varían según el modelo específico dentro de cada catálogo.</caption>
+<thead><tr><th>Característica</th><th>Daly</th><th>JBD (Xiaoxiang)</th></tr></thead>
+<tbody>
+<tr><td>Protecciones básicas (OVP/UVP/OCP/OTP)</td><td>Sí, en todo el catálogo</td><td>Sí, en todo el catálogo</td></tr>
+<tr><td>Balanceo</td><td>Pasivo, ~30–60 mA</td><td>Pasivo, ~30–100 mA según modelo</td></tr>
+<tr><td>Comunicación</td><td>UART, Bluetooth; RS485/CAN en algunas líneas de almacenamiento</td><td>UART, Bluetooth; sin CAN bus</td></tr>
+<tr><td>App Bluetooth</td><td>Funcional, menos pulida</td><td>Más madura y configurable</td></tr>
+<tr><td>Rango de celdas (S)</td><td>3S a 32S</td><td>3S a 24S aprox.</td></tr>
+<tr><td>Rango de corriente</td><td>Muy amplio: 20 A hasta 250 A+</td><td>Moderado-alto: 40 A a 200 A aprox.</td></tr>
+<tr><td>Tamaño físico</td><td>Variable según serie</td><td>Compacto para su corriente</td></tr>
+<tr><td>Precio relativo</td><td>El más económico</td><td>Intermedio</td></tr>
+<tr><td>Caso de uso típico</td><td>Packs grandes, e-bikes, conversión EV, almacenamiento</td><td>E-bikes, robótica móvil, baterías solares pequeñas y medianas</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="cuando-elegir">
+<h2>Cuándo elegir Daly y cuándo elegir JBD</h2>
+<p>La decisión rara vez depende de cuál BMS es "mejor" en abstracto, sino de qué necesita tu pack específico:</p>
+<div class="note">
+<strong>Elige Daly si:</strong> necesitas una corriente muy alta (por encima de 150–200 A), estás armando un pack grande para conversión eléctrica o almacenamiento de vivienda, o el presupuesto es la restricción principal del proyecto. También es razonable si no vas a usar la app con frecuencia y solo necesitas la protección de base funcionando de forma confiable.
+</div>
+<div class="note">
+<strong>Elige JBD si:</strong> el pack va dentro de un robot móvil, un dron de ala fija de resistencia o una batería de e-bike donde el espacio es ajustado, si vas a depender de la app para monitorear el estado de las celdas con frecuencia, o si valoras la documentación y el soporte de comunidad que existe alrededor de la app XiaoXiang.
+</div>
+<p>Para un pack de 18650 o 21700 típico de un brazo robótico o un robot móvil de 4S a 8S, con corrientes de 10 a 40 A, cualquiera de las dos marcas cumple sin problema; en ese rango la diferencia se reduce casi por completo a la calidad de la app y al soporte del vendedor específico, no a la ingeniería del BMS. Si tu proyecto usa celdas LiFePO4 en formato prismático, conviene revisar primero nuestra guía de <a href="/blog/baterias-lifepo4-12v-100ah-calidad-y-precio-en-amazon">Baterías LiFePO4 12V 100Ah</a> para asegurarte de que el BMS que elijas tenga los umbrales de voltaje correctos para esa química, que son distintos a los de Li-ion.</p>
+</section>
+
+<section id="instalacion">
+<h2>Conexión conceptual: dónde va cada cable</h2>
+<p>Con independencia de la marca, todo BMS de este tipo tiene tres grupos de conexiones. Antes de energizar nada, vale la pena tener claro qué hace cada uno:</p>
+<ol>
+<li><strong>Cables de balanceo (B1, B2, B3… hasta BS-):</strong> uno por cada unión entre celdas, más uno para el negativo del pack completo y otro para el positivo. Son los que el BMS usa para leer y equilibrar el voltaje de cada celda individual. Un error aquí —invertir el orden o saltarse una unión— es la causa más común de que un BMS "recién comprado" llegue a un usuario aparentemente dañado.</li>
+<li><strong>P- y B- (o "Pack-" y "Batt-"):</strong> el negativo del pack completo entra por B-, atraviesa los MOSFETs internos del BMS, y sale por P- hacia el resto del circuito. Toda la corriente de carga y descarga pasa por aquí, por lo que estos dos puntos requieren el cable de mayor sección de todo el sistema.</li>
+<li><strong>Sensor de temperatura (NTC):</strong> un termistor que se pega, con cinta térmica, directamente sobre una celda central del pack —normalmente la que menos ventilación recibe— para que el OTP tenga una lectura representativa del punto más caliente real.</li>
+</ol>
+<div class="warning">
+<strong>Antes de la primera carga:</strong> conecta primero todos los cables de balanceo con el pack en reposo, mide con un multímetro que el BMS reporta (o que cada B-n coincide con) el voltaje real de cada celda, y solo después conecta P- al resto del circuito. Cargar o descargar con un cable de balanceo mal conectado puede destruir el BMS y, en el peor caso, desequilibrar el pack de forma peligrosa.
+</div>
+</section>
+
+<section id="errores-comunes">
+<h2>Errores comunes y cómo evitarlos</h2>
+<ul>
+<li><strong>El BMS corta apenas se conecta la carga:</strong> casi siempre es OCP disparándose por una corriente de arranque (inrush) más alta de lo esperado, típica en motores o convertidores DC-DC con capacitores grandes. La solución habitual es precargar el circuito con una resistencia en serie antes de la conexión directa, o elegir un BMS con margen de corriente mayor al pico real, no solo al promedio.</li>
+<li><strong>Balanceo que nunca termina de nivelar las celdas:</strong> el balanceo pasivo de 30–100 mA es lento por diseño; un pack con celdas muy desiguales puede tardar varios ciclos de carga completos en converger. Si la diferencia entre celdas no baja con el tiempo, el problema suele ser una celda degradada, no el BMS.</li>
+<li><strong>La app no encuentra el BMS por Bluetooth:</strong> en Android, el escaneo Bluetooth de baja energía requiere permisos de ubicación activados a nivel de sistema operativo, no solo permisos de la app; es la causa más frecuente y menos evidente de este problema.</li>
+<li><strong>Contraseña de configuración desconocida:</strong> la mayoría de los BMS de ambas marcas usan contraseñas de fábrica genéricas como <code>123456</code> o <code>000000</code> antes de que el usuario la cambie; conviene probarlas antes de asumir que el módulo está bloqueado.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo mezclar celdas usadas de distintas fuentes en un pack con BMS Daly o JBD?</summary><p>Técnicamente el BMS protegerá el pack incluso con celdas de distinta procedencia, pero no soluciona el problema de fondo: celdas con capacidad y resistencia interna distintas se degradan a ritmos diferentes y fuerzan al balanceo pasivo a trabajar constantemente. La recomendación técnica es emparejar celdas por capacidad medida y resistencia interna antes de armar el pack, e idealmente usar celdas del mismo lote y fabricante. El BMS es la última línea de defensa, no un sustituto de un buen emparejamiento inicial.</p></details>
+<details><summary>¿Un BMS de mayor amperaje del que necesito trae alguna desventaja?</summary><p>La principal desventaja es que un BMS sobredimensionado en corriente ofrece menos protección real ante un cortocircuito franco, porque tolera picos más altos antes de cortar. También suele ser físicamente más grande y, en las versiones de más de 100 A, más caro. La práctica recomendada es dimensionar el BMS para la corriente de pico real de tu aplicación (no solo el promedio) con un margen razonable de 20–30%, sin irse a rangos muy superiores por precaución excesiva.</p></details>
+<details><summary>¿Daly y JBD funcionan igual con celdas LiFePO4 que con Li-ion o NMC?</summary><p>El hardware es compatible con ambas químicas, pero los umbrales de voltaje de fábrica suelen venir configurados para Li-ion/NMC (corte a 4,2 V por celda). Para LiFePO4, cuyo voltaje máximo seguro es 3,65 V por celda, es indispensable verificar y, si es necesario, reconfigurar esos umbrales antes de la primera carga —mediante la app en las versiones Bluetooth o mediante el vendedor en las versiones sin app— porque un BMS configurado para Li-ion no protegerá correctamente a una celda LiFePO4.</p></details>
+<details><summary>¿Qué pasa si el BMS falla y no corta a tiempo?</summary><p>Es exactamente el escenario que la selección cuidadosa de marca y modelo busca minimizar, pero ningún componente electrónico tiene una tasa de falla de cero. Por eso los packs bien diseñados no dependen únicamente del BMS: incorporan un fusible dimensionado por debajo de la corriente máxima del cableado como protección física de respaldo, y se cargan siempre sobre una superficie no inflamable y bajo supervisión, nunca de forma desatendida durante toda la noche.</p></details>
+<details><summary>¿Puedo usar un BMS sin Bluetooth y monitorear igual el estado del pack?</summary><p>Sí. Los BMS sin Bluetooth siguen ejecutando las protecciones OVP/UVP/OCP/OTP de forma completamente autónoma; lo único que pierdes es la visibilidad remota del voltaje por celda y la temperatura desde el teléfono. Para proyectos de robótica donde el pack queda accesible y se revisa periódicamente con un multímetro, un BMS sin Bluetooth es una forma legítima de reducir costo sin perder la protección de fondo, que es la función que realmente importa.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si este es tu primer pack de litio armado a mano, revisa antes cómo armar el pack físico en nuestra guía de <a href="/blog/como-armar-pack-baterias-18650-21700-paso-a-paso">Cómo Armar un Pack de Baterías 18650/21700 Paso a Paso</a>, y cómo cargarlo de forma segura en <a href="/blog/modulo-de-carga-tp4056-cargar-baterias-lipo-de-forma-segura">Módulo de Carga TP4056: Cargar Baterías LiPo de Forma Segura</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/como-armar-pack-baterias-18650-21700-paso-a-paso">← Anterior: Cómo Armar un Pack de Baterías 18650/21700 Paso a Paso</a>
+  <a href="/blog/celdas-lifepo4-grado-a-vs-grado-b-como-distinguirlas-antes-de-comprar">Siguiente: Celdas LiFePO4 Grado A vs Grado B →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.analog.com/en/resources/technical-articles/lithium-ion-battery-management.html" target="_blank" rel="noopener noreferrer">Analog Devices — Fundamentos de gestión de baterías de litio</a></li>
+<li><a href="https://www.batteryuniversity.com/article/bu-409-charging-lithium-ion" target="_blank" rel="noopener noreferrer">Battery University — Carga de baterías de litio</a></li>
+<li><a href="https://www.nrel.gov/transportation/battery-safety.html" target="_blank" rel="noopener noreferrer">NREL — Seguridad de baterías de litio</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 1 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

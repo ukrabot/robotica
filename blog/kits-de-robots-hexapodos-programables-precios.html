@@ -1,1 +1,542 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>Kits de Robots Hexápodos Programables: Guía de Precios y Cómo Elegir</title>
+<meta name="description" content="Comparativa de kits de robots hexápodos programables: gama Arduino, Raspberry Pi con IA/cámara y gama ROS 2, con rangos de precio y criterios de elección.">
+<meta name="keywords" content="robot hexapodo precio, kit robot hexapodo programable, robot araña arduino, freenove hexapod, adeept hexapod, robot hexapodo raspberry pi, comprar robot hexapodo">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/kits-de-robots-hexapodos-programables-precios">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kits de Robots Hexápodos Programables: Guía de Precios y Cómo Elegir">
+<meta property="og:description" content="De los kits Arduino de entrada a las plataformas Raspberry Pi con cámara e IA: rangos de precio, grados de libertad y qué mirar antes de comprar.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/kits-de-robots-hexapodos-programables-precios-hero.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/kits-de-robots-hexapodos-programables-precios">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kits de Robots Hexápodos Programables: Guía de Precios y Cómo Elegir">
+<meta name="twitter:description" content="De los kits Arduino de entrada a las plataformas Raspberry Pi con cámara e IA: rangos de precio, grados de libertad y qué mirar antes de comprar.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/kits-de-robots-hexapodos-programables-precios-hero.svg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Kits de Robots Hexápodos Programables: Guía de Precios y Cómo Elegir",
+  "description":"Guía comparativa de kits de robots hexápodos programables para makers, estudiantes y aficionados: diferencias entre kits basados en Arduino de nivel de entrada, kits para Raspberry Pi con cámara y reconocimiento facial, y plataformas más avanzadas orientadas a ROS 2 e IA de borde, con rangos de precio orientativos, criterios técnicos de elección (grados de libertad, tipo de servomotor, alimentación) y errores comunes de la primera compra.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-01",
+  "dateModified":"2026-09-01",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/kits-de-robots-hexapodos-programables-precios"},
+  "image":"https://www.ukrabot.cl/blog/kits-de-robots-hexapodos-programables-precios-hero.svg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Ninguno para leer la guía; para armar un kit: destornillador Phillips pequeño, pilas o pack de baterías recargable según el modelo, y computador o smartphone para cargar el firmware",
+  "wordCount":"2300",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Kits de Robots Hexápodos Programables: Guía de Precios y Cómo Elegir","item":"https://www.ukrabot.cl/blog/kits-de-robots-hexapodos-programables-precios"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Cuál es la diferencia real entre 12 y 18 grados de libertad en un hexápodo?","acceptedAnswer":{"@type":"Answer","text":"Con 12 DOF (2 servos por pata) el robot solo puede mover cada pata en un plano, lo que produce un movimiento de arrastre similar a remar sobre la superficie; funciona en terreno perfectamente plano pero pierde tracción y estabilidad ante cualquier irregularidad. Con 18 DOF (3 servos por pata) cada pata puede levantarse del suelo antes de avanzar, lo que permite marchas tipo trípode mucho más parecidas al movimiento real de un insecto, con mejor tracción sobre alfombra, terreno irregular o pequeños obstáculos. La diferencia se nota más en la estabilidad y en la posibilidad de programar marchas variadas que en la velocidad máxima."}},
+    {"@type":"Question","name":"¿Necesito saber programar para armar y usar un robot hexápodo por primera vez?","acceptedAnswer":{"@type":"Answer","text":"No para el primer contacto: la mayoría de los kits de gama de entrada y media incluyen una biblioteca de código con ejemplos ya escritos, de modo que controlar el robot con la app o el control remoto no exige escribir una sola línea. Programar entra en juego cuando quieres personalizar marchas, sumar sensores propios o programar comportamiento autónomo, y en ese punto conviene tener nociones básicas de Python (gama Raspberry Pi) o C/C++ estilo Arduino (gama de entrada)."}},
+    {"@type":"Question","name":"¿Vale la pena comprar un hexápodo de gama avanzada con ROS 2 para aprender robótica desde cero?","acceptedAnswer":{"@type":"Answer","text":"En general no, salvo que el objetivo específico sea trabajar directamente con ROS 2, SLAM o navegación autónoma. Para aprender los fundamentos de cinemática de marcha, control de servos y programación básica, un kit de gama de entrada o media cuesta una fracción del precio y expone los mismos conceptos base de forma más manejable. La gama avanzada tiene sentido como segundo o tercer proyecto, cuando ya se domina lo básico y se busca dar el salto a percepción y planificación de trayectoria."}},
+    {"@type":"Question","name":"¿Los hexápodos de kit vienen con batería incluida?","acceptedAnswer":{"@type":"Answer","text":"En la mayoría de los casos no. Es una de las omisiones más comunes y menos visibles en las fichas de producto, así que conviene revisar la sección de especificaciones o preguntas frecuentes del listado antes de comprar. El fabricante suele indicar el tipo de batería recomendado (habitualmente un pack de Li-ion o LiPo de la capacidad y voltaje adecuados para 12 o 18 servos), que hay que comprar por separado junto con un cargador compatible."}},
+    {"@type":"Question","name":"¿Cuánto tiempo de autonomía tiene un robot hexápodo típico?","acceptedAnswer":{"@type":"Answer","text":"Depende mucho del número de servos, su calidad y qué tan seguido están en movimiento, pero como referencia general un hexápodo de 18 servos caminando de forma más o menos continua suele rondar entre 30 minutos y un par de horas con un pack de batería de capacidad media, bastante menos que un robot de ruedas equivalente porque mantener el equilibrio sobre seis patas exige que varios servos trabajen de forma simultánea casi todo el tiempo, no solo al desplazarse."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="kits-de-robots-hexapodos-programables-precios-hero.svg" alt="Robot hexápodo de seis patas con servomotores y chasis de acrílico transparente sobre una mesa de trabajo, junto a una placa controladora" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Robótica Móvil · Publicado el <time datetime="2026-09-01">1 de septiembre de 2026</time></div>
+    <h1>Kits de Robots Hexápodos Programables: Guía de Precios y Cómo Elegir</h1>
+    <p>De los kits Arduino de nivel de entrada a las plataformas Raspberry Pi con cámara e IA de borde: qué determina el precio de un hexápodo y qué mirar antes de comprar uno.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 10 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="kits-de-robots-hexapodos-programables-precios-hero.svg" alt="Robot hexápodo de seis patas con servomotores y chasis de acrílico transparente sobre una mesa de trabajo, junto a una placa controladora" loading="lazy">
+  <div class="caption">Un hexápodo con 18 grados de libertad (3 servos por pata) camina con marchas más naturales y estables que uno de 12, pero también cuesta más y consume más energía.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-determina-precio">Qué determina el precio de un robot hexápodo</a></li>
+    <li><a href="#gama-arduino">Gama de entrada: kits basados en Arduino</a></li>
+    <li><a href="#gama-raspberry">Gama media: kits para Raspberry Pi con cámara e IA</a></li>
+    <li><a href="#gama-avanzada">Gama avanzada: ROS 2 y hexápodos de investigación</a></li>
+    <li><a href="#tabla-comparativa">Tabla comparativa por gama</a></li>
+    <li><a href="#criterios">Criterios técnicos antes de comprar</a></li>
+    <li><a href="#errores-comunes">Errores comunes de la primera compra</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="que-determina-precio">
+<h2>Qué determina el precio de un robot hexápodo</h2>
+<p>El precio de un kit de hexápodo programable no depende tanto de la marca como de cuatro variables técnicas que se pueden evaluar antes de comprar:</p>
+<ul>
+<li><strong>Grados de libertad (DOF):</strong> los diseños más simples usan 2 servos por pata (12 DOF totales) con un movimiento de "arrastre" más limitado; los diseños completos usan 3 servos por pata (18 DOF), lo que permite levantar cada pata en vez de arrastrarla y produce marchas mucho más naturales y estables sobre terreno irregular. Cada servo adicional suma costo de forma directa: 18 DOF significa el 50% más de servomotores que 12 DOF.</li>
+<li><strong>Cerebro del robot:</strong> un microcontrolador tipo Arduino ejecuta secuencias de marcha pregrabadas de forma confiable y económica, pero no procesa cámara ni hace reconocimiento de objetos por sí solo. Un Raspberry Pi corre Linux completo y puede sumar visión por computador, reconocimiento facial o control por voz, a cambio de un cerebro varias veces más caro que un microcontrolador.</li>
+<li><strong>Calidad del servomotor:</strong> los kits de entrada usan micro servos genéricos de plástico (categoría similar al SG90); los kits de gama media a alta usan servos con engranaje metálico, más pares de torque y mayor vida útil bajo carga repetida, con un costo unitario notoriamente más alto multiplicado por 12 o 18 unidades.</li>
+<li><strong>Sensores y periféricos incluidos:</strong> cámara, sensor ultrasónico, IMU/giroscopio para autoequilibrio, y control remoto dedicado suman al precio final; muchos kits los venden como opciones separadas del chasis base.</li>
+</ul>
+</section>
+
+<section id="gama-arduino">
+<h2>Gama de entrada: kits basados en Arduino</h2>
+<p>Es el punto de partida más razonable para conocer la cinemática de un hexápodo sin una inversión grande. Marcas como Freenove ofrecen kits de hexápodo compatibles con el IDE de Arduino, con chasis de acrílico transparente, 18 servomotores de plástico y control por app o control remoto dedicado según la versión comprada. El código de marcha viene preescrito en una librería, por lo que programar el primer movimiento requiere solo unas pocas líneas, dejando el aprendizaje enfocado en entender la cinemática de las patas más que en programar desde cero.</p>
+<p>Qué esperar en esta gama: chasis de acrílico atornillado (requiere tiempo de ensamblaje, normalmente varias horas la primera vez), servos plásticos sin engranaje metálico —adecuados para superficies parejas de interior, no para terreno exigente de forma sostenida—, y sin procesamiento de cámara integrado salvo que el kit lo incluya como opción adicional. El rango de precio típico de mercado ronda los 60 a 100 dólares para el chasis con servos, control y cableado, sin batería incluida en la mayoría de los casos.</p>
+</section>
+
+<section id="gama-raspberry">
+<h2>Gama media: kits para Raspberry Pi con cámara e IA</h2>
+<p>Un escalón arriba están los hexápodos pensados para correr sobre una Raspberry Pi (la 5, la 4B o la Zero 2 W según el modelo y kit específico, que no viene incluida en la mayoría de estos kits y debe comprarse aparte). Freenove ofrece una línea de "Big Hexapod" para Raspberry Pi con cámara, reconocimiento facial, medición ultrasónica y autoequilibrio; Adeept tiene su "Ultimate Hexapod Spider Robot Kit" con cuerpo metálico, control WiFi/IR, pantalla OLED y programación tanto en Python como por app.</p>
+<p>La diferencia real frente a la gama Arduino no es solo estética: al correr Linux completo, estos hexápodos pueden ejecutar bibliotecas de visión por computador como OpenCV directamente a bordo, tomar decisiones basadas en lo que "ven" con la cámara, y conectarse a la red para operarse de forma remota vía SSH o una interfaz web, algo que un microcontrolador no puede hacer sin hardware adicional. El costo del chasis y los servos en esta gama suele estar entre 100 y 200 dólares, sin contar la Raspberry Pi (cuyo precio, especialmente el de la Pi 5, subió de forma notoria en 2026 por la escasez global de memoria RAM) ni la batería.</p>
+</section>
+
+<section id="gama-avanzada">
+<h2>Gama avanzada: ROS 2 y hexápodos de investigación</h2>
+<p>En el extremo superior están las plataformas orientadas a quienes ya conocen ROS 2 y quieren un hexápodo con navegación autónoma real: SLAM, evitación de obstáculos con LiDAR o cámara de profundidad, e integración con modelos de IA para visión y voz. Marcas como Hiwonder venden líneas de este tipo con cuerpo más robusto, cómputo de borde más potente (a veces con un módulo Jetson en lugar de o además de una Raspberry Pi) y software preintegrado sobre ROS 2. Estas plataformas parten cerca de los 300-400 dólares y pueden superar largamente los 1.000 según los sensores incluidos, y están pensadas para quien ya domina lo básico y quiere trabajar en algoritmos de marcha, planificación de trayectoria o percepción, no para una primera introducción a la robótica.</p>
+<div class="note">
+<strong>Nota sobre precios:</strong> los valores de esta guía son rangos de mercado orientativos en dólares y cambian con el tipo de cambio, el vendedor y las promociones puntuales. Antes de comprar, verifica siempre el precio actual en el sitio del fabricante o del vendedor, y en Chile revisa además el costo de envío e importación, que puede ser una fracción significativa del valor final en kits importados.
+</div>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="tabla-comparativa">
+<h2>Tabla comparativa por gama</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos orientativos de mercado; verifica el precio vigente antes de comprar.</caption>
+<thead><tr><th>Gama</th><th>Cerebro típico</th><th>DOF</th><th>Rango de precio (chasis+servos)</th><th>Ideal para</th></tr></thead>
+<tbody>
+<tr><td>Entrada</td><td>Arduino / microcontrolador</td><td>12–18</td><td>≈ US$ 60–100</td><td>Primer contacto con cinemática de marcha</td></tr>
+<tr><td>Media</td><td>Raspberry Pi (no incluida)</td><td>18</td><td>≈ US$ 100–200</td><td>Visión por computador, reconocimiento facial, control remoto por red</td></tr>
+<tr><td>Avanzada</td><td>ROS 2 / cómputo de borde tipo Jetson</td><td>18+</td><td>≈ US$ 300–1000+</td><td>SLAM, navegación autónoma, investigación</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="criterios">
+<h2>Criterios técnicos antes de comprar</h2>
+<ul>
+<li><strong>¿12 o 18 DOF?</strong> Si el objetivo es entender bien la cinemática de la marcha y lograr desplazamiento sobre terreno algo irregular, 18 DOF (3 servos por pata) es la inversión que realmente se nota; 12 DOF es aceptable solo como introducción de presupuesto muy ajustado.</li>
+<li><strong>¿La batería está incluida?</strong> La mayoría de los kits de las tres gamas <strong>no</strong> incluyen batería, y 18 servomotores moviéndose de forma simultánea pueden exigir picos de corriente considerables; conviene revisar la recomendación de batería del fabricante y no asumir que unas pilas AA genéricas van a sostener el robot con marcha estable.</li>
+<li><strong>¿Necesitas comprar la placa por separado?</strong> Los kits para Raspberry Pi casi nunca la incluyen, así que ese costo hay que sumarlo al total antes de comparar precios entre gamas.</li>
+<li><strong>¿Qué tan abierto es el código?</strong> Los kits orientados al mercado educativo (Freenove, Adeept, SunFounder) suelen publicar el código fuente completo y tutoriales; eso importa mucho si el plan es modificar la marcha o agregar sensores propios más adelante, y menos si solo se busca correr lo que trae de fábrica.</li>
+<li><strong>¿El chasis es metálico o de acrílico/plástico?</strong> El acrílico es más económico y suficiente para uso de escritorio; el metal resiste mejor el uso repetido y las caídas mientras se aprende a programar la marcha, algo que ocurre más de una vez durante el aprendizaje.</li>
+</ul>
+</section>
+
+<section id="errores-comunes">
+<h2>Errores comunes de la primera compra</h2>
+<ul>
+<li><strong>No revisar si la Raspberry Pi está incluida:</strong> es, de lejos, el motivo más común de sorpresa en el precio final al comprar un kit de gama media; muchas fichas de producto lo aclaran en letra pequeña ("Raspberry Pi NOT included").</li>
+<li><strong>Subestimar el tiempo de ensamblaje:</strong> un hexápodo de 18 servos con chasis atornillado toma, para la mayoría de quienes lo arman por primera vez, entre 3 y 6 horas repartidas en más de una sesión, no una tarde de una hora como sugieren algunos videos acelerados.</li>
+<li><strong>No calibrar los servos antes del primer arranque:</strong> casi todos los tutoriales de estos kits piden centrar cada servo en su posición neutra antes de atornillar la pata definitiva; saltarse este paso es la causa más frecuente de que el robot "camine torcido" desde el primer intento.</li>
+<li><strong>Alimentar los servos desde el mismo riel que la placa controladora sin margen de corriente:</strong> 18 servos moviéndose a la vez pueden hacer caer el voltaje lo suficiente como para reiniciar una Raspberry Pi o un Arduino si comparten fuente sin margen; conviene revisar la <a href="/blog/guia-esencial-de-sensores-para-arduino">gestión de alimentación</a> recomendada por el fabricante del kit específico.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Cuál es la diferencia real entre 12 y 18 grados de libertad en un hexápodo?</summary><p>Con 12 DOF (2 servos por pata) el robot solo puede mover cada pata en un plano, lo que produce un movimiento de arrastre similar a remar sobre la superficie; funciona en terreno perfectamente plano pero pierde tracción y estabilidad ante cualquier irregularidad. Con 18 DOF (3 servos por pata) cada pata puede levantarse del suelo antes de avanzar, lo que permite marchas tipo trípode mucho más parecidas al movimiento real de un insecto, con mejor tracción sobre alfombra, terreno irregular o pequeños obstáculos. La diferencia se nota más en la estabilidad y en la posibilidad de programar marchas variadas que en la velocidad máxima.</p></details>
+<details><summary>¿Necesito saber programar para armar y usar un robot hexápodo por primera vez?</summary><p>No para el primer contacto: la mayoría de los kits de gama de entrada y media incluyen una biblioteca de código con ejemplos ya escritos, de modo que controlar el robot con la app o el control remoto no exige escribir una sola línea. Programar entra en juego cuando quieres personalizar marchas, sumar sensores propios o programar comportamiento autónomo, y en ese punto conviene tener nociones básicas de Python (gama Raspberry Pi) o C/C++ estilo Arduino (gama de entrada).</p></details>
+<details><summary>¿Vale la pena comprar un hexápodo de gama avanzada con ROS 2 para aprender robótica desde cero?</summary><p>En general no, salvo que el objetivo específico sea trabajar directamente con ROS 2, SLAM o navegación autónoma. Para aprender los fundamentos de cinemática de marcha, control de servos y programación básica, un kit de gama de entrada o media cuesta una fracción del precio y expone los mismos conceptos base de forma más manejable. La gama avanzada tiene sentido como segundo o tercer proyecto, cuando ya se domina lo básico y se busca dar el salto a percepción y planificación de trayectoria.</p></details>
+<details><summary>¿Los hexápodos de kit vienen con batería incluida?</summary><p>En la mayoría de los casos no. Es una de las omisiones más comunes y menos visibles en las fichas de producto, así que conviene revisar la sección de especificaciones o preguntas frecuentes del listado antes de comprar. El fabricante suele indicar el tipo de batería recomendado (habitualmente un pack de Li-ion o LiPo de la capacidad y voltaje adecuados para 12 o 18 servos), que hay que comprar por separado junto con un cargador compatible.</p></details>
+<details><summary>¿Cuánto tiempo de autonomía tiene un robot hexápodo típico?</summary><p>Depende mucho del número de servos, su calidad y qué tan seguido están en movimiento, pero como referencia general un hexápodo de 18 servos caminando de forma más o menos continua suele rondar entre 30 minutos y un par de horas con un pack de batería de capacidad media, bastante menos que un robot de ruedas equivalente porque mantener el equilibrio sobre seis patas exige que varios servos trabajen de forma simultánea casi todo el tiempo, no solo al desplazarse.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si ya tienes claro qué gama buscas, revisa cómo se calibran y controlan los servos en <a href="/blog/como-usar-un-servomotor-con-arduino-sg90-y-mg996r">Cómo Usar un Servomotor con Arduino (SG90 y MG996R)</a>, o profundiza en la teoría de movimiento en <a href="/blog/cinematica-directa-e-inversa-en-brazos-roboticos">Cinemática Directa e Inversa en Brazos Robóticos</a>, aplicable también al análisis de marcha de un hexápodo.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/servos-inteligentes-para-brazos-roboticos">← Anterior: Servos Inteligentes para Brazos Robóticos</a>
+  <a href="/blog/robotica-educativa-guia-tecnica-completa-plataformas-y-proyectos-para-aprender">Siguiente: Robótica Educativa: Guía Técnica Completa de Plataformas y Proyectos →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi Foundation — Especificaciones de Raspberry Pi 5</a></li>
+<li><a href="https://docs.ros.org/" target="_blank" rel="noopener noreferrer">ROS 2 Documentation — Documentación oficial de ROS 2</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 1 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

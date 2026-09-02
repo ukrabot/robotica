@@ -1,1 +1,555 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>Cómo Crimpar Conectores RJ45 Pasantes (Pass-Through) de Forma Efectiva</title>
+<meta name="description" content="Guía paso a paso para crimpar conectores RJ45 pass-through: orden T568B, herramientas, técnica de corte al ras y errores que causan fallos intermitentes.">
+<meta name="keywords" content="conector rj45 pasante, rj45 pass through, crimpar rj45, cable de red ethernet, t568b, crimpadora rj45, cable utp cat6">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cómo Crimpar Conectores RJ45 Pasantes (Pass-Through) de Forma Efectiva">
+<meta property="og:description" content="El orden T568B, la herramienta correcta y la técnica de corte al ras: por qué los conectores pasantes son más fáciles de crimpar bien que los tradicionales.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva-hero.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cómo Crimpar Conectores RJ45 Pasantes (Pass-Through) de Forma Efectiva">
+<meta name="twitter:description" content="El orden T568B, la herramienta correcta y la técnica de corte al ras: por qué los conectores pasantes son más fáciles de crimpar bien que los tradicionales.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva-hero.svg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Cómo Crimpar Conectores RJ45 Pasantes (Pass-Through) de Forma Efectiva",
+  "description":"Guía técnica para crimpar conectores RJ45 pasantes (pass-through): diferencias con los conectores tradicionales, el estándar de cableado T568B, herramientas necesarias, procedimiento paso a paso con la técnica de corte al ras de los pines sobrantes, verificación con probador de cable y solución de los errores más comunes que causan fallos intermitentes en redes domésticas y de automatización.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-01",
+  "dateModified":"2026-09-01",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva"},
+  "image":"https://www.ukrabot.cl/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva-hero.svg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Cable UTP Cat5e o Cat6, conectores RJ45 pasantes (pass-through), crimpadora compatible con conectores pasantes, pelacables o cuchilla, probador de continuidad de cable de red (opcional pero recomendado)",
+  "wordCount":"2050",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Cómo Crimpar Conectores RJ45 Pasantes (Pass-Through) de Forma Efectiva","item":"https://www.ukrabot.cl/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Los conectores RJ45 pasantes funcionan igual de bien que los tradicionales una vez crimpados?","acceptedAnswer":{"@type":"Answer","text":"Sí, eléctricamente no hay diferencia entre un conector pasante bien crimpado y uno tradicional bien crimpado: ambos terminan con los ocho contactos haciendo el mismo tipo de puente perforante sobre cada hilo. La ventaja del pasante no está en el resultado final sino en la probabilidad de llegar a ese resultado sin errores, porque permite ver y corregir el orden de los hilos antes de crimpar, algo que el conector tradicional no permite una vez que insertas los hilos ya cortados a medida."}},
+    {"@type":"Question","name":"¿Necesito una crimpadora distinta para conectores pasantes?","acceptedAnswer":{"@type":"Answer","text":"Sí, es la única herramienta que no es intercambiable entre ambos sistemas. Una crimpadora para conectores pasantes tiene una cuchilla adicional en la mandíbula, separada del mecanismo que forma el conector, cuya única función es cortar al ras los ocho hilos sobrantes durante el mismo movimiento de crimpado. Una crimpadora tradicional no tiene esa cuchilla y no cortará el sobrante, dejando hilos expuestos que pueden hacer cortocircuito entre sí."}},
+    {"@type":"Question","name":"¿Puedo crimpar un conector RJ45 sin probador de cable y confiar en que quedó bien?","acceptedAnswer":{"@type":"Answer","text":"Puedes, y en la mayoría de los casos un crimpado correcto con conector pasante funciona a la primera sin necesidad de probador. El riesgo es que un fallo intermitente —el más común y el más difícil de diagnosticar después— no se manifiesta de inmediato, sino con el uso, la vibración o los cambios de temperatura. Un probador de bajo costo elimina esa incertidumbre en segundos y es, en relación a su precio, una de las herramientas con mejor retorno de tiempo ahorrado en cualquier taller."}},
+    {"@type":"Question","name":"¿Qué categoría de cable debo usar para un proyecto de automatización con Ethernet cerca de motores?","acceptedAnswer":{"@type":"Answer","text":"Cat6 es la recomendación razonable en ese escenario, porque su trenzado más apretado y, en las versiones apantalladas (Cat6 STP/FTP), su malla de protección ofrecen mayor inmunidad al ruido electromagnético que generan motores, variadores de frecuencia y fuentes conmutadas cercanas. Si además el cable corre paralelo y a corta distancia de cableado de potencia durante varios metros, separarlo físicamente al menos 10-15 cm reduce el acoplamiento de ruido mucho más que cualquier mejora incremental en la categoría del cable."}},
+    {"@type":"Question","name":"¿Por qué mi cable enciende los ocho LEDs del probador pero el dispositivo igual no conecta a la red?","acceptedAnswer":{"@type":"Answer","text":"Un probador de continuidad básico solo confirma que existe conducción eléctrica en cada uno de los ocho hilos; no verifica velocidad, calidad de la señal a la frecuencia de trabajo real ni la longitud máxima recomendada del tramo. Si el cable pasa el probador pero el enlace no sube o es inestable, revisa que no supere los 100 metros de longitud total, que no esté doblado en ángulos muy cerrados, y que ambos extremos usen el mismo estándar T568B; con eso descartado, el problema suele estar en el switch, el puerto o la configuración de red, no en el cable."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva-hero.svg" alt="Cable de red Ethernet UTP con un conector RJ45 pasante recién crimpado, mostrando los ocho hilos de colores alineados antes del corte" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Herramientas, Medición y Taller · Publicado el <time datetime="2026-09-01">1 de septiembre de 2026</time></div>
+    <h1>Cómo Crimpar Conectores RJ45 Pasantes (Pass-Through) de Forma Efectiva</h1>
+    <p>La diferencia entre un conector tradicional y uno pasante, el orden T568B explicado hilo por hilo, y la técnica de corte al ras que evita los fallos intermitentes más comunes.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 9 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva-hero.svg" alt="Cable de red Ethernet UTP con un conector RJ45 pasante recién crimpado, mostrando los ocho hilos de colores alineados antes del corte" loading="lazy">
+  <div class="caption">En un conector pasante los ocho hilos atraviesan el cuerpo del conector de lado a lado, lo que permite verlos e igualarlos antes de crimpar: esa es la diferencia que hace más fácil un buen crimpado.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es-un-pasante">Qué es un conector RJ45 pasante y en qué se diferencia del tradicional</a></li>
+    <li><a href="#herramientas">Herramientas necesarias</a></li>
+    <li><a href="#t568b">El orden de colores: T568B explicado</a></li>
+    <li><a href="#procedimiento">Procedimiento paso a paso</a></li>
+    <li><a href="#verificacion">Verificación con probador de cable</a></li>
+    <li><a href="#errores-comunes">Errores comunes que causan fallos intermitentes</a></li>
+    <li><a href="#cuando-usar">Cuándo conviene un pasante y cuándo un conector tradicional</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="que-es-un-pasante">
+<h2>Qué es un conector RJ45 pasante y en qué se diferencia del tradicional</h2>
+<p>Un conector RJ45 <strong>tradicional</strong> obliga a cortar los ocho hilos del cable a una longitud exacta —normalmente unos 12-13 mm— antes de insertarlos, porque solo así llegan al fondo del conector donde están los contactos. Calcular esa longitud a ojo, sin que ningún hilo quede más corto que otro, es la parte que más se falla cuando alguien crimpa RJ45 por primera vez: basta con que un hilo quede medio milímetro más corto para que ese contacto nunca llegue a hacer un buen puente eléctrico.</p>
+<p>Un conector <strong>pasante (pass-through)</strong> resuelve ese problema cambiando el diseño: el cuerpo del conector es hueco de punta a punta, así que los ocho hilos se insertan sin cortar y sobresalen por la punta delantera, visibles y fáciles de comparar uno por uno. Recién ahí, con los hilos ya alineados y a la vista, se crimpa; el propio proceso de crimpado empuja los contactos hacia los hilos y, al mismo tiempo, una cuchilla en la crimpadora corta al ras el sobrante que quedó asomando. El resultado es un margen de error mucho menor para quien recién empieza, a cambio de necesitar una crimpadora específica para pasantes (no todas las crimpadoras tradicionales tienen la cuchilla de corte al ras).</p>
+</section>
+
+<section id="herramientas">
+<h2>Herramientas necesarias</h2>
+<ul>
+<li><strong>Cable UTP Cat5e o Cat6:</strong> Cat5e alcanza sin problema 1 Gbps hasta 100 m, suficiente para la enorme mayoría de instalaciones domésticas y de automatización; Cat6 da más margen de ruido y es la opción razonable si el cable va a correr cerca de motores, variadores de frecuencia o cableado de potencia.</li>
+<li><strong>Conectores RJ45 pasantes:</strong> cómpralos siempre para la categoría igual o superior a la del cable —un conector Cat5e en un cable Cat6 se convierte en el eslabón más débil de todo el tramo.</li>
+<li><strong>Crimpadora para pasantes:</strong> es la única herramienta no intercambiable con un kit de RJ45 tradicional. Se reconoce porque en la mandíbula tiene una cuchilla adicional, separada de la que da forma al conector, específicamente para el corte al ras.</li>
+<li><strong>Pelacables o cuchilla:</strong> para retirar entre 2,5 y 3 cm de la chaqueta exterior del cable sin dañar el aislante de los hilos internos. Muchas crimpadoras para RJ45 traen esta función integrada.</li>
+<li><strong>Probador de cable de red (opcional, recomendado):</strong> un módulo de continuidad de bajo costo que verifica los ocho hilos uno por uno; no es indispensable pero ahorra mucho tiempo de diagnóstico frente a instalar el cable y descubrir el fallo días después.</li>
+</ul>
+</section>
+
+<section id="t568b">
+<h2>El orden de colores: T568B explicado</h2>
+<p>Existen dos estándares de cableado, T568A y T568B, y la diferencia entre ellos es solo el orden en que se acomodan los pares naranja y verde; el resultado eléctrico es idéntico. En instalaciones nuevas y en la enorme mayoría del cableado residencial y comercial en Chile y Latinoamérica se usa <strong>T568B</strong> por convención, así que es el que conviene aprender de memoria si vas a crimpar más de un cable en tu vida.</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Orden T568B, de izquierda a derecha con el conector mirando hacia ti, los contactos hacia arriba y el clip hacia abajo.</caption>
+<thead><tr><th>Pin</th><th>Color</th><th>Función típica (Ethernet)</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Blanco-Naranja</td><td>Transmisión +</td></tr>
+<tr><td>2</td><td>Naranja</td><td>Transmisión −</td></tr>
+<tr><td>3</td><td>Blanco-Verde</td><td>Recepción +</td></tr>
+<tr><td>4</td><td>Azul</td><td>Reservado (Gigabit lo usa)</td></tr>
+<tr><td>5</td><td>Blanco-Azul</td><td>Reservado (Gigabit lo usa)</td></tr>
+<tr><td>6</td><td>Verde</td><td>Recepción −</td></tr>
+<tr><td>7</td><td>Blanco-Marrón</td><td>Reservado (Gigabit lo usa)</td></tr>
+<tr><td>8</td><td>Marrón</td><td>Reservado (Gigabit lo usa)</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note">
+<strong>Cable directo vs cable cruzado:</strong> si usas T568B en ambos extremos del cable obtienes un cable directo (straight-through), el que necesitas en el 99% de los casos: de un dispositivo a un switch o router. Un cable cruzado (T568B en un extremo, T568A en el otro) prácticamente no se usa hoy porque casi todas las interfaces Ethernet modernas —incluidas las de placas como Raspberry Pi o Arduino con shield Ethernet— tienen auto-detección MDI-X y no lo necesitan.
+</div>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="procedimiento">
+<h2>Procedimiento paso a paso</h2>
+<ol>
+<li><strong>Pela la chaqueta exterior:</strong> retira entre 2,5 y 3 cm de la cubierta plástica exterior sin cortar los hilos internos. Si tu pelacables corta demasiado profundo la primera vez, es preferible pasarse un poco de largo y recortar después que arriesgarse a mellar el aislante de un hilo.</li>
+<li><strong>Destrenza y ordena los pares:</strong> separa los cuatro pares trenzados y acomoda los ocho hilos en el orden T568B de la tabla anterior. Mantenlos lo más planos y paralelos posible entre sí, sin cruces.</li>
+<li><strong>Iguala las puntas con un corte limpio:</strong> con los ocho hilos ya en orden, dales un solo corte recto y parejo con la cuchilla, dejando unos 12-14 mm libres desde el borde de la chaqueta. A diferencia de un conector tradicional, aquí no necesitas una precisión milimétrica: el excedente se recorta después dentro de la crimpadora.</li>
+<li><strong>Inserta en el conector pasante:</strong> desliza los ocho hilos dentro del cuerpo del conector, empujando hasta que la chaqueta exterior del cable quede firme dentro del cuerpo (no solo los hilos pelados) y los ocho hilos asomen por la punta delantera. Revisa visualmente, a contraluz si es necesario, que el orden de colores siga siendo el correcto de punta a punta.</li>
+<li><strong>Crimpa:</strong> introduce el conector en la mandíbula de la crimpadora y aprieta con firmeza y de forma continua hasta el tope. Este movimiento hace tres cosas a la vez: empuja los contactos metálicos para que perforen el aislante de cada hilo, cierra la pestaña de retención sobre la chaqueta del cable, y corta al ras el sobrante de los ocho hilos que asomaba por la punta.</li>
+<li><strong>Repite en el otro extremo</strong> con el mismo orden T568B para obtener un cable directo.</li>
+</ol>
+</section>
+
+<section id="verificacion">
+<h2>Verificación con probador de cable</h2>
+<p>Antes de dar el cable por bueno, conecta ambos extremos al probador y confirma que los ocho LEDs (o el patrón que use tu modelo) se enciendan en el mismo orden en ambos lados. Un probador de bajo costo detecta los tres fallos más comunes:</p>
+<ul>
+<li><strong>Circuito abierto:</strong> un hilo que no hace contacto; el LED correspondiente no enciende en ningún lado.</li>
+<li><strong>Cruce de pines:</strong> dos hilos invertidos entre sí; los LEDs encienden pero en el orden incorrecto.</li>
+<li><strong>Cortocircuito entre pines:</strong> dos hilos en contacto eléctrico entre sí, normalmente por un hilo pelado de más tocando a su vecino.</li>
+</ul>
+<p>Si tu proyecto es de automatización o robótica y el cable Ethernet va a alimentar, por ejemplo, un módulo con Power over Ethernet (PoE) o un controlador basado en ESP32 con interfaz de red, verificar el cable antes de conectarlo evita perder tiempo depurando el lado equivocado del sistema cuando el problema en realidad estaba en el crimpado.</p>
+</section>
+
+<section id="errores-comunes">
+<h2>Errores comunes que causan fallos intermitentes</h2>
+<p>Los fallos "duros" —un cable que directamente no conecta— se detectan de inmediato con el probador. Los que de verdad hacen perder tiempo son los <strong>intermitentes</strong>, que funcionan la mayoría del tiempo y fallan bajo condiciones específicas:</p>
+<ul>
+<li><strong>Chaqueta exterior fuera de la pestaña de retención:</strong> si solo quedan atrapados los hilos pelados y no la chaqueta del cable, cualquier tirón por accidente transmite toda la fuerza directamente a los ocho contactos individuales, que terminan aflojándose con el tiempo. Es la causa número uno de conexiones que "andaban bien" y empiezan a fallar semanas después.</li>
+<li><strong>Destrenzado excesivo:</strong> el estándar permite destrenzar como máximo unos 13 mm de cada par antes de que empiece a degradarse la cancelación de ruido entre pares, algo que en Cat6 (usado a menudo cerca de motores o variadores de frecuencia en talleres de robótica) se nota mucho más que en Cat5e.</li>
+<li><strong>Presión de crimpado incompleta:</strong> apretar la crimpadora sin llegar hasta el tope deja los contactos haciendo un puente eléctrico débil, que puede funcionar en las pruebas iniciales y fallar más adelante con la vibración o los cambios de temperatura. La crimpadora debe cerrarse por completo y sentir el "clic" de tope, no detenerse a mitad de camino.</li>
+<li><strong>Cable de mala calidad con hilos de cobre revestido de aluminio (CCA):</strong> es más frágil, se rompe con facilidad al destrenzar y tiene mayor resistencia eléctrica que el cobre puro. Para instalaciones permanentes conviene verificar que el cable sea de cobre sólido ("bare copper" o "pure copper" en el empaque), no CCA.</li>
+</ul>
+</section>
+
+<section id="cuando-usar">
+<h2>Cuándo conviene un pasante y cuándo un conector tradicional</h2>
+<p>Los conectores pasantes son la opción recomendable por defecto para quien recién empieza, para instalaciones con muchos cables por hacer (paneles de patch, cableado estructurado de un taller) y para cualquier situación donde el margen de error humano importa más que ahorrar unos pesos en herramienta. Los conectores tradicionales siguen siendo válidos cuando ya tienes la técnica dominada, cuando el espacio de trabajo es muy reducido para que sobresalgan hilos por la punta antes de cortar, o cuando ya posees una crimpadora tradicional y no justifica comprar una nueva para pocos cables ocasionales.</p>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Los conectores RJ45 pasantes funcionan igual de bien que los tradicionales una vez crimpados?</summary><p>Sí, eléctricamente no hay diferencia entre un conector pasante bien crimpado y uno tradicional bien crimpado: ambos terminan con los ocho contactos haciendo el mismo tipo de puente perforante sobre cada hilo. La ventaja del pasante no está en el resultado final sino en la probabilidad de llegar a ese resultado sin errores, porque permite ver y corregir el orden de los hilos antes de crimpar, algo que el conector tradicional no permite una vez que insertas los hilos ya cortados a medida.</p></details>
+<details><summary>¿Necesito una crimpadora distinta para conectores pasantes?</summary><p>Sí, es la única herramienta que no es intercambiable entre ambos sistemas. Una crimpadora para conectores pasantes tiene una cuchilla adicional en la mandíbula, separada del mecanismo que forma el conector, cuya única función es cortar al ras los ocho hilos sobrantes durante el mismo movimiento de crimpado. Una crimpadora tradicional no tiene esa cuchilla y no cortará el sobrante, dejando hilos expuestos que pueden hacer cortocircuito entre sí.</p></details>
+<details><summary>¿Puedo crimpar un conector RJ45 sin probador de cable y confiar en que quedó bien?</summary><p>Puedes, y en la mayoría de los casos un crimpado correcto con conector pasante funciona a la primera sin necesidad de probador. El riesgo es que un fallo intermitente —el más común y el más difícil de diagnosticar después— no se manifiesta de inmediato, sino con el uso, la vibración o los cambios de temperatura. Un probador de bajo costo elimina esa incertidumbre en segundos y es, en relación a su precio, una de las herramientas con mejor retorno de tiempo ahorrado en cualquier taller.</p></details>
+<details><summary>¿Qué categoría de cable debo usar para un proyecto de automatización con Ethernet cerca de motores?</summary><p>Cat6 es la recomendación razonable en ese escenario, porque su trenzado más apretado y, en las versiones apantalladas (Cat6 STP/FTP), su malla de protección ofrecen mayor inmunidad al ruido electromagnético que generan motores, variadores de frecuencia y fuentes conmutadas cercanas. Si además el cable corre paralelo y a corta distancia de cableado de potencia durante varios metros, separarlo físicamente al menos 10-15 cm reduce el acoplamiento de ruido mucho más que cualquier mejora incremental en la categoría del cable.</p></details>
+<details><summary>¿Por qué mi cable enciende los ocho LEDs del probador pero el dispositivo igual no conecta a la red?</summary><p>Un probador de continuidad básico solo confirma que existe conducción eléctrica en cada uno de los ocho hilos; no verifica velocidad, calidad de la señal a la frecuencia de trabajo real ni la longitud máxima recomendada del tramo. Si el cable pasa el probador pero el enlace no sube o es inestable, revisa que no supere los 100 metros de longitud total, que no esté doblado en ángulos muy cerrados, y que ambos extremos usen el mismo estándar T568B; con eso descartado, el problema suele estar en el switch, el puerto o la configuración de red, no en el cable.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si este cable Ethernet va a alimentar un proyecto de automatización, revisa nuestra <a href="/blog/guia-esencial-de-sensores-para-arduino">Guía Esencial de Sensores para Arduino</a>, o si el destino es un mini servidor doméstico, no te pierdas <a href="/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso">Cómo Montar un Servidor NAS Casero</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/como-usar-un-multimetro-guia-paso-a-paso">← Anterior: Cómo Usar un Multímetro: Guía Paso a Paso</a>
+  <a href="/blog/crimpadora-de-punteras-huecas-ferrules-hexagonal-vs-cuadrada">Siguiente: Crimpadora de Punteras Huecas (Ferrules): Hexagonal vs Cuadrada →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.iso.org/standard/50941.html" target="_blank" rel="noopener noreferrer">ISO/IEC 11801 — Cableado genérico para instalaciones de cliente</a></li>
+<li><a href="https://www.tiaonline.org/" target="_blank" rel="noopener noreferrer">Telecommunications Industry Association — Estándares TIA/EIA-568</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 1 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

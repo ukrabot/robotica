@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Raspberry Pi vs Arduino: Cuál Elegir para tu Proyecto</title>
+<meta name="description" content="Diferencias reales entre Raspberry Pi y Arduino: microcontrolador vs computador, tiempo real, precios 2026, la Arduino UNO Q y cuándo combinar ambos.">
+<meta name="keywords" content="raspberry pi vs arduino, diferencia arduino raspberry pi, cual elegir arduino o raspberry pi, arduino uno q, raspberry pi 5 precio, microcontrolador vs sbc">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Raspberry Pi vs Arduino: Cuál Elegir para tu Proyecto">
+<meta property="og:description" content="Un microcontrolador determinista contra un computador Linux completo: en qué se diferencian de verdad, qué cuestan en 2026 y cuándo conviene usar ambos juntos.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto-hero.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Raspberry Pi vs Arduino: Cuál Elegir para tu Proyecto">
+<meta name="twitter:description" content="Un microcontrolador determinista contra un computador Linux completo: en qué se diferencian de verdad, qué cuestan en 2026 y cuándo conviene usar ambos juntos.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto-hero.svg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Raspberry Pi vs Arduino: Cuál Elegir para tu Proyecto",
+  "description":"Comparativa técnica entre Raspberry Pi y Arduino: la diferencia arquitectónica entre un microcontrolador y un computador de placa única, determinismo y tiempo real, consumo, precios actualizados de 2026 incluyendo el alza de la Raspberry Pi 5 y la nueva Arduino UNO Q con doble cerebro Linux/tiempo real, tabla de decisión por tipo de proyecto y una guía práctica para combinar ambas placas en el mismo sistema.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-01",
+  "dateModified":"2026-09-01",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto"},
+  "image":"https://www.ukrabot.cl/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto-hero.svg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Ninguno para leer la comparativa; para probar ambas plataformas, una Arduino Uno R3 o R4 y/o una Raspberry Pi con su fuente oficial, tarjeta microSD (solo Raspberry Pi) y cable USB",
+  "wordCount":"2600",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Raspberry Pi vs Arduino: Cuál Elegir para tu Proyecto","item":"https://www.ukrabot.cl/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Puedo programar una Raspberry Pi con el IDE de Arduino?","acceptedAnswer":{"@type":"Answer","text":"No directamente: el IDE de Arduino compila para el microcontrolador de la placa Arduino, mientras que una Raspberry Pi ejecuta Linux y espera programas compilados o interpretados para su arquitectura ARM bajo ese sistema operativo, típicamente en Python. Lo que sí es común es usar una Raspberry Pi para escribir y subir código a un Arduino conectado por USB, actuando como estación de desarrollo, o instalar Arduino IDE dentro del propio Linux de la Raspberry Pi para programar un Arduino externo conectado a ella."}},
+    {"@type":"Question","name":"¿La Raspberry Pi Pico es una Raspberry Pi de verdad?","acceptedAnswer":{"@type":"Answer","text":"Comparte marca pero no arquitectura: la Pico y la Pico 2 son microcontroladores (basados en los chips RP2040 y RP2350 respectivamente), sin sistema operativo, mucho más parecidos en concepto a un Arduino que a una Raspberry Pi 5 o Zero 2 W, que sí son computadores completos con Linux. Es una fuente de confusión frecuente entre principiantes: si tu proyecto necesita Linux, red completa o procesamiento de cámara, la Pico no es la placa adecuada aunque lleve el nombre Raspberry Pi."}},
+    {"@type":"Question","name":"¿Arduino puede conectarse a internet igual que una Raspberry Pi?","acceptedAnswer":{"@type":"Answer","text":"Puede, con matices. El Uno R4 WiFi y las placas basadas en ESP32 dentro del ecosistema Arduino incluyen conectividad WiFi y pueden hacer peticiones HTTP simples, publicar en un broker MQTT o exponer un pequeño servidor web embebido. Lo que no pueden es correr un stack de red completo con la flexibilidad de Linux: no manejan HTTPS con la misma facilidad, no corren un navegador ni un servidor de aplicaciones complejo, y la memoria disponible es órdenes de magnitud menor que la de un SBC, lo que limita el tamaño y la complejidad de lo que se puede procesar en red."}},
+    {"@type":"Question","name":"¿Cuál de las dos conviene para un primer proyecto de robótica sin experiencia previa?","acceptedAnswer":{"@type":"Answer","text":"Para un robot móvil simple con sensores y motores, Arduino suele ser el punto de partida más manejable: no hay que instalar un sistema operativo, no hay tiempos de arranque, y un error de programación rara vez deja la placa en un estado inconsistente que obligue a reinstalar algo. Raspberry Pi tiene más sentido como segundo paso, cuando el proyecto ya necesita cámara, red o procesamiento más pesado del que un microcontrolador puede ofrecer, y el usuario ya está cómodo con los fundamentos de electrónica y programación."}},
+    {"@type":"Question","name":"¿Vale la pena esperar a la Arduino UNO Q en vez de comprar Arduino o Raspberry Pi por separado?","acceptedAnswer":{"@type":"Answer","text":"Depende del proyecto y de cuánta tolerancia haya a trabajar con un ecosistema todavía joven. La UNO Q es prometedora para proyectos híbridos que hoy exigen dos placas conectadas por cable, pero su comunidad, documentación y librerías de terceros son, por ahora, mucho más limitadas que las de Arduino clásico o Raspberry Pi, ambos con más de una década de proyectos, tutoriales y foros acumulados. Para un proyecto que necesita salir andando pronto y con soporte probado, la combinación clásica de Arduino más Raspberry Pi sigue siendo la apuesta más segura en 2026."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto-hero.svg" alt="Placa Arduino Uno y Raspberry Pi 5 una junto a la otra sobre una mesa de trabajo, mostrando sus diferencias de tamaño y conectividad" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y SBC · Publicado el <time datetime="2026-09-01">1 de septiembre de 2026</time></div>
+    <h1>Raspberry Pi vs Arduino: Cuál Elegir para tu Proyecto</h1>
+    <p>La diferencia no es de potencia, es de arquitectura: un microcontrolador determinista contra un computador Linux completo. Qué implica eso en la práctica, qué cuesta cada uno en 2026 y cuándo conviene usar ambos en el mismo proyecto.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto-hero.svg" alt="Placa Arduino Uno y Raspberry Pi 5 una junto a la otra sobre una mesa de trabajo, mostrando sus diferencias de tamaño y conectividad" loading="lazy">
+  <div class="caption">Arduino y Raspberry Pi no compiten por el mismo trabajo: uno reacciona en microsegundos sin sistema operativo, el otro piensa, procesa video y se conecta a internet con Linux completo detrás.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#diferencia-arquitectonica">La diferencia real: microcontrolador vs computador</a></li>
+    <li><a href="#tiempo-real">Determinismo y tiempo real: por qué importa</a></li>
+    <li><a href="#lineup-2026">El panorama de placas en 2026</a></li>
+    <li><a href="#precios-2026">Precios en 2026: la Raspberry Pi 5 subió, Arduino sigue accesible</a></li>
+    <li><a href="#tabla-decision">Tabla de decisión: qué placa para qué proyecto</a></li>
+    <li><a href="#uno-q">Arduino UNO Q: el intento de tener ambos mundos en una placa</a></li>
+    <li><a href="#combinar">Cuándo conviene usar Arduino y Raspberry Pi juntos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="diferencia-arquitectonica">
+<h2>La diferencia real: microcontrolador vs computador</h2>
+<p>La comparación "Raspberry Pi vs Arduino" se plantea casi siempre como si fueran dos opciones de una misma categoría, cuando en realidad resuelven problemas distintos por diseño. Arduino no es, en rigor, un chip: es una plataforma de desarrollo que aloja un microcontrolador —un ATmega328P en el Uno clásico, un Renesas RA4M1 de 32 bits en el Uno R4 actual, o un ESP32 en las variantes de esa familia—. Un microcontrolador ejecuta un único programa, sin sistema operativo de por medio, con acceso directo al hardware. Cuando escribes <code>digitalWrite()</code> en un Arduino, esa instrucción se traduce casi directamente en el pin físico cambiando de estado, sin capas de software entre medio.</p>
+<p>Raspberry Pi es, en cambio, un SBC (Single Board Computer): un computador completo en una placa, que arranca un sistema operativo Linux de verdad, hace multitarea, y soporta USB, HDMI, Ethernet y WiFi de forma nativa. Ejecuta programas en Python, JavaScript, C++, Rust y prácticamente cualquier lenguaje con un intérprete o compilador para ARM. Puede correr un servidor web, un dashboard de Home Assistant, un modelo de reconocimiento de imágenes o media docenas de procesos a la vez, algo que un microcontrolador simplemente no está diseñado para hacer.</p>
+<p>La analogía más útil, y la que mejor resume la diferencia para quien recién empieza: Arduino es el reflejo —tocas algo caliente y la mano se retira antes de que el dolor llegue al cerebro, una respuesta de bajo nivel sin intermediarios—; Raspberry Pi es el cerebro que piensa, planifica, se conecta a internet y toma decisiones complejas, pero necesita tiempo de arranque y no puede garantizar una respuesta a nivel de microsegundos.</p>
+</section>
+
+<section id="tiempo-real">
+<h2>Determinismo y tiempo real: por qué importa</h2>
+<p>La consecuencia práctica de esa diferencia arquitectónica es el <strong>determinismo</strong>. Un Arduino ejecutando código bare-metal responde a un evento —un flanco en un pin, el vencimiento de un timer— en un intervalo de tiempo predecible y prácticamente constante, del orden de microsegundos. Linux, en cambio, no es un sistema operativo de tiempo real: el kernel puede decidir en cualquier momento darle prioridad a otro proceso, a una interrupción de red o a una tarea de mantenimiento, lo que introduce una variabilidad (jitter) que puede ir de fracciones de milisegundo a varios milisegundos según la carga del sistema en ese instante.</p>
+<p>Para generar un pulso PWM preciso hacia un servomotor, leer un encoder de cuadratura a alta velocidad sin perder pasos, o ejecutar un lazo de control PID con un periodo de muestreo estable, esa diferencia es determinante: un Arduino lo hace de forma confiable por diseño, mientras que hacerlo directamente desde Linux en una Raspberry Pi exige trucos adicionales (co-procesadores, colas de tiempo real, hardware PWM dedicado) para acercarse al mismo nivel de determinismo. Es exactamente el motivo por el que tantos proyectos de robótica usan un Arduino como "capa de tiempo real" para motores y sensores, coordinado por una Raspberry Pi que se encarga de la visión, la red y la lógica de alto nivel.</p>
+</section>
+
+<section id="lineup-2026">
+<h2>El panorama de placas en 2026</h2>
+<p>Ambos ecosistemas se ramificaron mucho más allá de la placa original, y conviene tenerlo claro porque compararlas por su modelo más famoso ya no cuenta toda la historia:</p>
+<ul>
+<li><strong>Familia Arduino:</strong> el Uno R3 clásico (ATmega328P) sigue disponible y es la referencia histórica; el <strong>Uno R4</strong> (Minima y WiFi) lo sucede con un microcontrolador Renesas RA4M1 de 32 bits, más memoria y, en la versión WiFi, conectividad inalámbrica integrada. Fuera de la línea Uno, el ecosistema Arduino también da soporte a placas basadas en ESP32, muy usadas cuando se necesita WiFi/Bluetooth de bajo costo con el mismo IDE.</li>
+<li><strong>Familia Raspberry Pi:</strong> la <strong>Raspberry Pi 5</strong> es el SBC de gama alta actual, con el salto de rendimiento más grande de la serie; la <strong>Raspberry Pi Zero 2 W</strong> cubre el nicho de proyectos compactos y de bajo consumo; y la <strong>Raspberry Pi Pico / Pico 2</strong> son, en realidad, microcontroladores (basados en el chip RP2040 y RP2350 respectivamente) y no computadores con Linux, por lo que compiten de forma más directa con Arduino que con la propia Raspberry Pi 5, algo que confunde a muchos principiantes por compartir nombre de marca.</li>
+</ul>
+</section>
+
+<section id="precios-2026">
+<h2>Precios en 2026: la Raspberry Pi 5 subió, Arduino sigue accesible</h2>
+<p>Un dato relevante para decidir en 2026 y que no aparece en comparativas más antiguas: la escasez global de memoria RAM durante este año presionó al alza el precio de la Raspberry Pi 5 de forma notoria, con la variante de 4 GB moviéndose por encima de los 60-70 dólares de su precio de lanzamiento original y la de 16 GB acercándose a los 200 dólares según el mercado y el momento de compra. En el lado Arduino, el Uno R4 Minima ronda los 20 dólares y el Uno R4 WiFi los 27 dólares, cifras que se mantuvieron mucho más estables porque un microcontrolador usa una fracción de la memoria y el silicio de un SBC completo.</p>
+<div class="note">
+<strong>Los precios cambian con el tiempo de cambio y el mercado:</strong> las cifras de esta sección son una fotografía de 2026 a modo de referencia comparativa, no una cotización vigente. Antes de comprar, verifica el precio actual en el distribuidor local o internacional que uses, y en Chile suma el costo de importación cuando corresponda.
+</div>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="tabla-decision">
+<h2>Tabla de decisión: qué placa para qué proyecto</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Criterio práctico de elección según el tipo de proyecto, no según preferencia de marca.</caption>
+<thead><tr><th>Necesitas</th><th>Elige</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>Leer sensores y controlar motores/servos con respuesta predecible</td><td>Arduino</td><td>Determinismo de tiempo real sin sistema operativo de por medio</td></tr>
+<tr><td>Procesar imagen de una cámara, IA de borde o reconocimiento de objetos</td><td>Raspberry Pi</td><td>CPU de propósito general y ecosistema de visión (OpenCV, TensorFlow Lite)</td></tr>
+<tr><td>Servidor web local, dashboard o base de datos del proyecto</td><td>Raspberry Pi</td><td>Linux completo con red, almacenamiento y multitarea</td></tr>
+<tr><td>Proyecto de bajísimo consumo, alimentado por batería, largo tiempo dormido</td><td>Arduino (o Pico)</td><td>Modos de bajo consumo mucho más agresivos que un SBC con Linux</td></tr>
+<tr><td>Robot con motores, sensores en tiempo real Y visión/navegación autónoma</td><td>Ambos combinados</td><td>Arduino gestiona el hardware crítico, Raspberry Pi la percepción y la lógica</td></tr>
+<tr><td>Aprender programación de electrónica desde cero, primer proyecto</td><td>Arduino</td><td>Curva de aprendizaje más simple, sin gestionar un sistema operativo</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="uno-q">
+<h2>Arduino UNO Q: el intento de tener ambos mundos en una placa</h2>
+<p>Tras la adquisición de Arduino por parte de Qualcomm a fines de 2025, apareció en 2026 la <strong>Arduino UNO Q</strong>, una placa de "doble cerebro" con un procesador de aplicaciones Arm Cortex-A53 (capaz de correr Linux) junto a un microcontrolador STM32 para tareas de tiempo real, ambos sobre el mismo formato de pines del Uno tradicional. Es, en esencia, un intento directo de resolver en una sola placa el problema que hasta ahora exigía combinar dos placas separadas: un lado piensa y se conecta a la red, el otro reacciona en tiempo real.</p>
+<p>En la práctica no reemplaza a una Raspberry Pi 5 en rendimiento bruto —los benchmarks de cómputo general siguen favoreciendo claramente a la Pi 5— pero sí ofrece algo que ninguna Raspberry Pi puede: un microcontrolador de tiempo real determinista integrado en la misma placa que el procesador Linux, en vez de depender de una segunda placa conectada por cable. Es una opción a seguir de cerca durante 2026 para proyectos híbridos, aunque su ecosistema de software y comunidad todavía es mucho más joven que el de Arduino clásico o Raspberry Pi.</p>
+</section>
+
+<section id="combinar">
+<h2>Cuándo conviene usar Arduino y Raspberry Pi juntos</h2>
+<p>La opción que subestiman muchos principiantes, enfocados en elegir "una" placa, es que buena parte de los proyectos de robótica más completos usan ambas a la vez, cada una en lo que hace mejor:</p>
+<ul>
+<li><strong>Arduino como capa de hardware:</strong> lee encoders, genera PWM para motores y servos, gestiona sensores de tiempo crítico (ultrasónicos, IMU) y ejecuta rutinas de seguridad como paradas de emergencia, todo con la latencia predecible que Linux no puede garantizar.</li>
+<li><strong>Raspberry Pi como capa de decisión:</strong> procesa la cámara, corre el algoritmo de navegación o el modelo de visión, expone una interfaz web de control remoto, y se conecta a internet o a una red local para telemetría.</li>
+<li><strong>Comunicación entre ambas:</strong> típicamente por UART/serie simple para comandos de bajo ancho de banda, o por I2C/SPI cuando la latencia importa más. Un patrón común es que la Raspberry Pi envíe comandos de alto nivel ("avanza", "gira 30°") y el Arduino los traduzca a señales PWM concretas para cada motor, cerrando el lazo de control localmente sin depender de que Linux responda a tiempo.</li>
+</ul>
+<p>Si tu plan es justamente ese —Arduino para el hardware, Raspberry Pi para la inteligencia—, vale la pena revisar antes nuestra comparativa de <a href="/blog/jetson-orin-nano-vs-raspberry-pi-5-ia-en-el-borde-para-robotica">Jetson Orin Nano vs Raspberry Pi 5 para IA en el Borde</a> si el procesamiento de visión que planeas es exigente, ya que en ese caso una Raspberry Pi puede quedarse corta y un módulo Jetson resulta más adecuado como "cerebro" del sistema.</p>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo programar una Raspberry Pi con el IDE de Arduino?</summary><p>No directamente: el IDE de Arduino compila para el microcontrolador de la placa Arduino, mientras que una Raspberry Pi ejecuta Linux y espera programas compilados o interpretados para su arquitectura ARM bajo ese sistema operativo, típicamente en Python. Lo que sí es común es usar una Raspberry Pi para escribir y subir código a un Arduino conectado por USB, actuando como estación de desarrollo, o instalar Arduino IDE dentro del propio Linux de la Raspberry Pi para programar un Arduino externo conectado a ella.</p></details>
+<details><summary>¿La Raspberry Pi Pico es una Raspberry Pi de verdad?</summary><p>Comparte marca pero no arquitectura: la Pico y la Pico 2 son microcontroladores (basados en los chips RP2040 y RP2350 respectivamente), sin sistema operativo, mucho más parecidos en concepto a un Arduino que a una Raspberry Pi 5 o Zero 2 W, que sí son computadores completos con Linux. Es una fuente de confusión frecuente entre principiantes: si tu proyecto necesita Linux, red completa o procesamiento de cámara, la Pico no es la placa adecuada aunque lleve el nombre Raspberry Pi.</p></details>
+<details><summary>¿Arduino puede conectarse a internet igual que una Raspberry Pi?</summary><p>Puede, con matices. El Uno R4 WiFi y las placas basadas en ESP32 dentro del ecosistema Arduino incluyen conectividad WiFi y pueden hacer peticiones HTTP simples, publicar en un broker MQTT o exponer un pequeño servidor web embebido. Lo que no pueden es correr un stack de red completo con la flexibilidad de Linux: no manejan HTTPS con la misma facilidad, no corren un navegador ni un servidor de aplicaciones complejo, y la memoria disponible es órdenes de magnitud menor que la de un SBC, lo que limita el tamaño y la complejidad de lo que se puede procesar en red.</p></details>
+<details><summary>¿Cuál de las dos conviene para un primer proyecto de robótica sin experiencia previa?</summary><p>Para un robot móvil simple con sensores y motores, Arduino suele ser el punto de partida más manejable: no hay que instalar un sistema operativo, no hay tiempos de arranque, y un error de programación rara vez deja la placa en un estado inconsistente que obligue a reinstalar algo. Raspberry Pi tiene más sentido como segundo paso, cuando el proyecto ya necesita cámara, red o procesamiento más pesado del que un microcontrolador puede ofrecer, y el usuario ya está cómodo con los fundamentos de electrónica y programación.</p></details>
+<details><summary>¿Vale la pena esperar a la Arduino UNO Q en vez de comprar Arduino o Raspberry Pi por separado?</summary><p>Depende del proyecto y de cuánta tolerancia haya a trabajar con un ecosistema todavía joven. La UNO Q es prometedora para proyectos híbridos que hoy exigen dos placas conectadas por cable, pero su comunidad, documentación y librerías de terceros son, por ahora, mucho más limitadas que las de Arduino clásico o Raspberry Pi, ambos con más de una década de proyectos, tutoriales y foros acumulados. Para un proyecto que necesita salir andando pronto y con soporte probado, la combinación clásica de Arduino más Raspberry Pi sigue siendo la apuesta más segura en 2026.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te decidiste por Arduino para el control de hardware, el siguiente paso lógico es <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">Primeros Pasos con Arduino Uno: de Cero a tu Primer Sketch</a>. Si tu proyecto necesita motores DC controlados desde cualquiera de las dos placas, revisa <a href="/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa">Control de Motores DC con Arduino y L298N</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/jetson-orin-nano-vs-raspberry-pi-5-ia-en-el-borde-para-robotica">← Anterior: Jetson Orin Nano vs Raspberry Pi 5 para IA en el Borde</a>
+  <a href="/blog/docker-en-raspberry-pi-contenedores-para-proyectos-caseros">Siguiente: Docker en Raspberry Pi: Contenedores para Proyectos Caseros →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi Foundation — Especificaciones oficiales de Raspberry Pi 5</a></li>
+<li><a href="https://docs.arduino.cc/hardware/uno-r4-minima/" target="_blank" rel="noopener noreferrer">Arduino — Documentación oficial del Uno R4</a></li>
+<li><a href="https://www.raspberrypi.com/products/raspberry-pi-pico-2/" target="_blank" rel="noopener noreferrer">Raspberry Pi Foundation — Especificaciones de Raspberry Pi Pico 2</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 1 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

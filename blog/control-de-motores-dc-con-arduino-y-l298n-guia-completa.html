@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Control de Motores DC con Arduino y L298N: Guía Completa</title>
+<meta name="description" content="Guía completa del driver L298N con Arduino: cableado, código PWM para velocidad y dirección, límites reales del chip y cuándo usar TB6612FNG o DRV8871.">
+<meta name="keywords" content="l298n arduino, control motor dc arduino, driver puente h arduino, l298n tutorial, tb6612fng vs l298n, motor dc con arduino codigo, puente h motor">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Control de Motores DC con Arduino y L298N: Guía Completa">
+<meta property="og:description" content="Qué es un puente H, cómo cablear el L298N, el código completo para velocidad y dirección con PWM, y por qué el L298N no siempre es la mejor opción en 2026.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa-hero.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Control de Motores DC con Arduino y L298N: Guía Completa">
+<meta name="twitter:description" content="Qué es un puente H, cómo cablear el L298N, el código completo para velocidad y dirección con PWM, y por qué el L298N no siempre es la mejor opción en 2026.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa-hero.svg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Control de Motores DC con Arduino y L298N: Guía Completa",
+  "description":"Guía técnica completa para controlar motores DC con Arduino y el módulo driver L298N: qué es un puente H y por qué un motor no se conecta directo a un pin digital, cableado paso a paso, código completo para controlar velocidad con PWM y dirección de giro, límites reales de corriente y caída de tensión del L298N, disipación de calor, y una comparativa con drivers más eficientes como TB6612FNG y DRV8871 para cuando el proyecto exige más rendimiento.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-01",
+  "dateModified":"2026-09-01",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa"},
+  "image":"https://www.ukrabot.cl/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa-hero.svg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Arduino Uno o compatible, módulo driver L298N, uno o dos motores DC de 6-12V, fuente de alimentación externa acorde al motor (pilas o fuente regulada), protoboard y jumpers",
+  "wordCount":"2500",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Control de Motores DC con Arduino y L298N: Guía Completa","item":"https://www.ukrabot.cl/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Puedo alimentar Arduino desde el mismo lugar que los motores del L298N?","acceptedAnswer":{"@type":"Answer","text":"Es posible usando el regulador de 5V integrado en muchos módulos L298N (activado por jumper), pero no es la opción más limpia: los motores generan ruido eléctrico en la línea de alimentación al arrancar y frenar, y ese ruido puede propagarse hacia la alimentación lógica de Arduino y provocar reinicios espontáneos o lecturas erráticas de sensores analógicos. La práctica más robusta es alimentar Arduino desde su propia fuente (USB o un regulador separado) y los motores desde una fuente distinta, uniendo únicamente los GND de ambas para tener una referencia común."}},
+    {"@type":"Question","name":"¿Por qué mi motor vibra pero no gira con el L298N?","acceptedAnswer":{"@type":"Answer","text":"Las causas más frecuentes son tres: un valor de PWM demasiado bajo que no alcanza el par mínimo necesario para vencer la fricción estática del motor (sube el valor de <code>analogWrite()</code> por encima de 60-80 como punto de partida), una fuente de alimentación de motores insuficiente en corriente que se hunde apenas el motor pide arranque, o un cableado de IN1/IN2 que oscila entre estados en vez de mantenerse estable, algo común si el código tiene un error de lógica en la función de dirección."}},
+    {"@type":"Question","name":"¿El L298N sirve para controlar un motor paso a paso además de motores DC?","acceptedAnswer":{"@type":"Answer","text":"Sí: al tener dos puentes H completos, un módulo L298N puede controlar un motor paso a paso bipolar de cuatro cables, tratando cada bobina como si fuera un 'motor DC' independiente y secuenciando las señales IN1-IN4 según el patrón de pasos deseado. Para proyectos serios con motor paso a paso, sin embargo, un driver dedicado como el A4988 o el DRV8825 resulta mucho más simple de programar porque generan la secuencia de pasos de forma automática a partir de un solo pin de pulsos."}},
+    {"@type":"Question","name":"¿Cuánto calienta el L298N en uso normal y es peligroso al tacto?","acceptedAnswer":{"@type":"Answer","text":"En uso dentro de sus límites recomendados (bastante por debajo de los 2A de datasheet por canal), el chip y su disipador se calientan de forma perceptible al tacto pero no hasta el punto de quemar; es normal sentir el disipador tibio a caliente tras varios minutos de uso continuo. Si el disipador está demasiado caliente para mantener el dedo apoyado más de un segundo, es una señal de que la corriente real está por encima de lo recomendable para ese módulo específico y conviene revisar el dimensionamiento del motor o sumar ventilación."}},
+    {"@type":"Question","name":"¿Necesito diodos adicionales si uso un módulo L298N comercial?","acceptedAnswer":{"@type":"Answer","text":"No: los módulos comerciales de L298N ya incluyen los diodos de protección (flyback) integrados en la placa para absorber los picos de voltaje inductivo generados por el motor al cortar la corriente. Esos diodos sí son necesarios si trabajas con el chip L298N desnudo, sin el módulo de la placa verde, algo poco común fuera de un diseño de PCB propio."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="control-de-motores-dc-con-arduino-y-l298n-guia-completa-hero.svg" alt="Módulo driver L298N de doble puente H con disipador de aluminio conectado a una placa Arduino Uno y un motor DC sobre una protoboard" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Motores y Actuadores · Publicado el <time datetime="2026-09-01">1 de septiembre de 2026</time></div>
+    <h1>Control de Motores DC con Arduino y L298N: Guía Completa</h1>
+    <p>Qué es un puente H y por qué un motor no se conecta directo a un pin de Arduino, el cableado completo del L298N, el código para velocidad y dirección, y cuándo conviene cambiar a un driver más eficiente.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="control-de-motores-dc-con-arduino-y-l298n-guia-completa-hero.svg" alt="Módulo driver L298N de doble puente H con disipador de aluminio conectado a una placa Arduino Uno y un motor DC sobre una protoboard" loading="lazy">
+  <div class="caption">El L298N resuelve dos problemas a la vez: entrega la corriente que un pin de Arduino no puede dar, y permite invertir el giro del motor sin cambiar el cableado físico.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que-un-driver">Por qué un motor no se conecta directo a Arduino</a></li>
+    <li><a href="#que-es-l298n">Qué es el L298N y cómo funciona un puente H</a></li>
+    <li><a href="#cableado">Cableado paso a paso</a></li>
+    <li><a href="#codigo">Código: velocidad con PWM y dirección de giro</a></li>
+    <li><a href="#limites">Límites reales del L298N: corriente, caída de tensión y calor</a></li>
+    <li><a href="#alternativas">Cuándo cambiar a TB6612FNG o DRV8871</a></li>
+    <li><a href="#errores-comunes">Errores comunes y cómo evitarlos</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="por-que-un-driver">
+<h2>Por qué un motor no se conecta directo a Arduino</h2>
+<p>Un pin digital de Arduino entrega, como máximo, unos 20 mA de forma segura y unos 40 mA en el límite absoluto que puede dañar el microcontrolador si se sostiene en el tiempo. Un motor DC pequeño, incluso en vacío sin carga mecánica, puede consumir entre 100 mA y varios amperios en el arranque, cuando el rotor todavía está detenido y la corriente de arranque (inrush) puede ser 5 a 10 veces mayor que la corriente en régimen. Conectar un motor directo a un pin no solo no lo hará girar con fuerza: en el mejor caso el pin se comporta como si estuviera en cortocircuito y se protege apagándose, y en el peor, se destruye.</p>
+<p>A eso se suma un segundo problema, independiente de la corriente: un motor es una carga inductiva, y al cortar la corriente que circula por su bobinado genera un pico de voltaje inverso (fuerza contraelectromotriz) que puede superar varias veces el voltaje de alimentación durante una fracción de segundo. Sin un componente que absorba ese pico, es una fuente habitual de daño en electrónica cercana, microcontrolador incluido.</p>
+<p>Un <strong>driver de motor</strong> como el L298N resuelve ambos problemas a la vez: actúa como un interruptor de potencia controlado por las señales de bajo consumo que sí puede entregar Arduino, y protege internamente contra los picos inductivos con diodos de protección integrados en el módulo.</p>
+</section>
+
+<section id="que-es-l298n">
+<h2>Qué es el L298N y cómo funciona un puente H</h2>
+<p>El L298N es un circuito integrado que contiene <strong>dos puentes H</strong> completos, es decir, puede controlar dos motores DC de forma independiente (o un motor paso a paso bipolar, que internamente también se controla como dos bobinas). Un puente H es un arreglo de cuatro interruptores de potencia dispuestos en forma de "H" alrededor del motor, que permite tres estados por motor:</p>
+<ul>
+<li><strong>Giro en un sentido:</strong> dos interruptores diagonales cerrados, corriente circulando en una dirección a través del motor.</li>
+<li><strong>Giro en sentido inverso:</strong> los dos interruptores diagonales opuestos cerrados, corriente circulando en dirección contraria.</li>
+<li><strong>Freno o rueda libre:</strong> según cómo se combinen las entradas, el motor puede quedar en cortocircuito controlado (frenado activo) o desconectado (rueda libre, se detiene por fricción e inercia).</li>
+</ul>
+<p>Los módulos comerciales de L298N —la placa verde con el disipador de aluminio negro que se ve en casi cualquier kit de robot con ruedas— exponen esta lógica en pines simples: dos pines de dirección (IN1/IN2 para el motor A, IN3/IN4 para el motor B) y dos pines de habilitación con PWM (ENA/ENB) que controlan la velocidad de cada motor de forma independiente al sentido de giro.</p>
+</section>
+
+<section id="cableado">
+<h2>Cableado paso a paso</h2>
+<ol>
+<li><strong>Alimentación de motores (12V y GND del módulo):</strong> conecta una fuente externa —nunca el pin de 5V de Arduino— al terminal de alimentación de motores del L298N, respetando el voltaje que soportan tus motores (habitualmente 6-12V). El GND de esta fuente debe unirse también al GND de Arduino, formando una referencia común: sin esta tierra compartida, las señales de control del Arduino no tienen un punto de referencia válido para el módulo.</li>
+<li><strong>Salidas de motor (OUT1/OUT2 y OUT3/OUT4):</strong> conecta los dos cables del motor A a OUT1 y OUT2, y del motor B (si usas ambos) a OUT3 y OUT4. La polaridad entre OUT1 y OUT2 determina el sentido "adelante"; si el motor gira al revés de lo esperado, es más simple invertir estos dos cables físicamente que cambiar el código.</li>
+<li><strong>Pines de dirección (IN1, IN2, IN3, IN4):</strong> a cuatro pines digitales cualquiera de Arduino (por ejemplo 8, 9, 10 y 11 si no vas a usarlos para PWM).</li>
+<li><strong>Pines de habilitación con PWM (ENA, ENB):</strong> a dos pines de Arduino <strong>con capacidad PWM</strong> (marcados con el símbolo ~ en un Uno: 3, 5, 6, 9, 10 u 11). Muchos módulos L298N traen un jumper que conecta ENA/ENB directo a 5V; si lo dejas puesto, el motor siempre irá a velocidad máxima y no podrás controlar la velocidad por software, así que retíralo si quieres control de velocidad real.</li>
+<li><strong>5V lógicos del módulo:</strong> algunos módulos L298N incluyen un regulador de 5V a bordo que puede alimentar la lógica del propio módulo (y opcionalmente a Arduino) a partir del voltaje de motores, activo mediante otro jumper. Si tu fuente de motores supera los 12V, retira ese jumper y alimenta la lógica del módulo desde el 5V de Arduino por separado, para no forzar el regulador integrado más allá de su límite.</li>
+</ol>
+<div class="warning">
+<strong>Nunca compartas la alimentación de los motores con la alimentación lógica de Arduino sin el GND en común.</strong> Es el error de cableado más frecuente en la primera prueba con L298N, y produce un síntoma confuso: el Arduino parece funcionar bien por USB pero el motor no responde o responde de forma errática, porque las señales de control no tienen una referencia de tierra válida respecto a la etapa de potencia.
+</div>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="codigo">
+<h2>Código: velocidad con PWM y dirección de giro</h2>
+<p>El siguiente sketch controla un motor conectado al canal A (IN1, IN2, ENA), alternando dirección y variando la velocidad con <code>analogWrite()</code>:</p>
+<pre><code>// Control de un motor DC con L298N: dirección y velocidad
+const int IN1 = 8;
+const int IN2 = 9;
+const int ENA = 10;  // Pin con PWM (~)
+
+void setup() {
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(ENA, OUTPUT);
+}
+
+void girarAdelante(int velocidad) {   // velocidad: 0-255
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  analogWrite(ENA, velocidad);
+}
+
+void girarAtras(int velocidad) {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  analogWrite(ENA, velocidad);
+}
+
+void detener() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  analogWrite(ENA, 0);
+}
+
+void loop() {
+  girarAdelante(180);   // ~70% de velocidad
+  delay(2000);
+
+  detener();
+  delay(500);
+
+  girarAtras(120);      // ~47% de velocidad
+  delay(2000);
+
+  detener();
+  delay(1000);
+}
+</code></pre>
+<p>Para controlar un segundo motor en el canal B, se replica la misma lógica con IN3, IN4 y ENB. En un robot de dos ruedas motrices, cada motor suele llevar su propia función de velocidad, de forma que <code>girarAdelante()</code> del robot completo simplemente llama a ambas funciones con el mismo valor, y un giro sobre el propio eje se logra invirtiendo el sentido de un lado respecto al otro.</p>
+</section>
+
+<section id="limites">
+<h2>Límites reales del L298N: corriente, caída de tensión y calor</h2>
+<p>El chip L298N está especificado hasta 2 A por canal en el datasheet, pero en la práctica, sobre el módulo comercial típico con el disipador pequeño que trae de fábrica, es prudente diseñar para no superar 1-1,5 A continuos por canal sin refrigeración adicional. Hay dos razones técnicas para ese margen:</p>
+<ul>
+<li><strong>El L298N está construido con transistores bipolares, no MOSFETs.</strong> Eso significa una caída de tensión inherente entre la entrada y la salida de aproximadamente 2 V, que no depende tanto de la corriente como el diseño lo permite en drivers más modernos. Con una fuente de 12V, el motor en la práctica recibe más cerca de 9-10V efectivos, y esa diferencia se disipa como calor dentro del propio chip.</li>
+<li><strong>Esa caída de tensión, multiplicada por la corriente, es la potencia que el chip debe disipar.</strong> A 1 A por canal con ambos canales activos, son varios vatios de calor concentrados en un chip pequeño; el disipador de aluminio que traen los módulos ayuda, pero no es suficiente para corrientes sostenidas cercanas al límite del datasheet sin ventilación adicional.</li>
+</ul>
+<p>Para la enorme mayoría de proyectos de robótica de nivel de aficionado —un robot pequeño de dos o cuatro ruedas con motores de caja reductora estándar— el L298N cumple sin problema, porque la corriente real en régimen suele quedar bastante por debajo de esos límites. El problema aparece cuando el motor se traba mecánicamente (rotor bloqueado): en ese momento la corriente puede dispararse muy por encima del régimen normal, y sin una protección de software o hardware adicional, es la forma más común de dañar un módulo L298N en la práctica.</p>
+</section>
+
+<section id="alternativas">
+<h2>Cuándo cambiar a TB6612FNG o DRV8871</h2>
+<p>El L298N sigue siendo la opción más enseñada porque es barata, robusta ante errores de principiante y fácil de conseguir, pero no es la más eficiente disponible hoy. Dos alternativas basadas en MOSFETs, mucho más comunes en diseños actuales:</p>
+<ul>
+<li><strong>TB6612FNG:</strong> driver doble de menor tamaño, basado en MOSFETs con una caída de tensión mucho menor que el L298N (del orden de decenas a pocos cientos de milivoltios en vez de ~2V), lo que significa más torque y velocidad reales entregados al motor con la misma fuente. Soporta hasta unos 1,2 A continuos por canal (algo más en pico), un poco menos en corriente absoluta que el L298N pero entregando mucha más potencia útil al motor por la menor pérdida.</li>
+<li><strong>DRV8871:</strong> pensado para un solo motor de mayor corriente (hasta 3,6 A), con protección integrada contra sobrecorriente, cortocircuito y sobretemperatura que el L298N no ofrece de fábrica en el módulo básico. Es la opción razonable cuando un solo motor exige más corriente de la que el L298N maneja con margen de seguridad.</li>
+</ul>
+<p>La recomendación práctica: usa L298N para aprender el concepto de puente H y para proyectos de baja exigencia donde la eficiencia no es crítica; cambia a TB6612FNG o DRV8871 cuando la autonomía de batería importa (la pérdida de ~2V del L298N se traduce directamente en menos autonomía útil) o cuando el motor exige corrientes cercanas al límite seguro del L298N de forma sostenida.</p>
+</section>
+
+<section id="errores-comunes">
+<h2>Errores comunes y cómo evitarlos</h2>
+<ul>
+<li><strong>Alimentar el módulo solo desde el USB de Arduino:</strong> el pin de 5V de Arduino no tiene la corriente necesaria para mover motores de forma sostenida; la alimentación de motores del L298N siempre debe venir de una fuente externa dimensionada para el motor.</li>
+<li><strong>Dejar el jumper ENA/ENB puesto y esperar control de velocidad:</strong> con el jumper puesto, esos pines quedan fijos a 5V y <code>analogWrite()</code> no tiene ningún efecto porque nunca llegan a conectarse al pin PWM de Arduino.</li>
+<li><strong>No frenar activamente antes de invertir el sentido de giro a alta velocidad:</strong> invertir IN1/IN2 de forma abrupta con el motor aún girando a velocidad alta genera un pico de corriente de frenado regenerativo que puede superar el pico de arranque normal; para motores grandes conviene pasar primero por una breve parada (ambos IN en LOW) antes de invertir el sentido.</li>
+<li><strong>No prever el bloqueo mecánico del motor:</strong> si el robot puede quedar atascado contra un obstáculo, la corriente de rotor bloqueado puede sostenerse indefinidamente y sobrecalentar el driver; una protección simple por software —cortar el PWM si la velocidad esperada no se refleja en un encoder tras cierto tiempo— evita depender solo de la protección térmica pasiva del chip.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo alimentar Arduino desde el mismo lugar que los motores del L298N?</summary><p>Es posible usando el regulador de 5V integrado en muchos módulos L298N (activado por jumper), pero no es la opción más limpia: los motores generan ruido eléctrico en la línea de alimentación al arrancar y frenar, y ese ruido puede propagarse hacia la alimentación lógica de Arduino y provocar reinicios espontáneos o lecturas erráticas de sensores analógicos. La práctica más robusta es alimentar Arduino desde su propia fuente (USB o un regulador separado) y los motores desde una fuente distinta, uniendo únicamente los GND de ambas para tener una referencia común.</p></details>
+<details><summary>¿Por qué mi motor vibra pero no gira con el L298N?</summary><p>Las causas más frecuentes son tres: un valor de PWM demasiado bajo que no alcanza el par mínimo necesario para vencer la fricción estática del motor (sube el valor de <code>analogWrite()</code> por encima de 60-80 como punto de partida), una fuente de alimentación de motores insuficiente en corriente que se hunde apenas el motor pide arranque, o un cableado de IN1/IN2 que oscila entre estados en vez de mantenerse estable, algo común si el código tiene un error de lógica en la función de dirección.</p></details>
+<details><summary>¿El L298N sirve para controlar un motor paso a paso además de motores DC?</summary><p>Sí: al tener dos puentes H completos, un módulo L298N puede controlar un motor paso a paso bipolar de cuatro cables, tratando cada bobina como si fuera un 'motor DC' independiente y secuenciando las señales IN1-IN4 según el patrón de pasos deseado. Para proyectos serios con motor paso a paso, sin embargo, un driver dedicado como el A4988 o el DRV8825 resulta mucho más simple de programar porque generan la secuencia de pasos de forma automática a partir de un solo pin de pulsos.</p></details>
+<details><summary>¿Cuánto calienta el L298N en uso normal y es peligroso al tacto?</summary><p>En uso dentro de sus límites recomendados (bastante por debajo de los 2A de datasheet por canal), el chip y su disipador se calientan de forma perceptible al tacto pero no hasta el punto de quemar; es normal sentir el disipador tibio a caliente tras varios minutos de uso continuo. Si el disipador está demasiado caliente para mantener el dedo apoyado más de un segundo, es una señal de que la corriente real está por encima de lo recomendable para ese módulo específico y conviene revisar el dimensionamiento del motor o sumar ventilación.</p></details>
+<details><summary>¿Necesito diodos adicionales si uso un módulo L298N comercial?</summary><p>No: los módulos comerciales de L298N ya incluyen los diodos de protección (flyback) integrados en la placa para absorber los picos de voltaje inductivo generados por el motor al cortar la corriente. Esos diodos sí son necesarios si trabajas con el chip L298N desnudo, sin el módulo de la placa verde, algo poco común fuera de un diseño de PCB propio.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si tu proyecto es un robot de ruedas completo, sigue con la <a href="/blog/sensores-infrarrojos-para-robots-siguelineas">Guía de Sensores Infrarrojos para Robots Siguelíneas</a> para sumar navegación básica, o revisa la <a href="/blog/guia-esencial-de-sensores-para-arduino">Guía Esencial de Sensores para Arduino</a> si necesitas evitar obstáculos.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/mosfet-con-arduino-irlz44n-vs-irfz44n">← Anterior: MOSFET con Arduino: IRLZ44N vs IRFZ44N</a>
+  <a href="/blog/automatiza-tu-gallinero-controla-la-puerta-y-comedero-de-manera-efectiva">Siguiente: Automatiza tu Gallinero: Puerta y Comedero →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.st.com/en/motor-drivers/l298.html" target="_blank" rel="noopener noreferrer">STMicroelectronics — Datasheet oficial del L298</a></li>
+<li><a href="https://www.ti.com/product/DRV8871" target="_blank" rel="noopener noreferrer">Texas Instruments — Datasheet del DRV8871</a></li>
+<li><a href="https://www.sparkfun.com/products/14451" target="_blank" rel="noopener noreferrer">SparkFun — Documentación del driver TB6612FNG</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 1 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

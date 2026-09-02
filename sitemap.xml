@@ -68,7 +68,7 @@
   </url>
   <url>
     <loc>https://www.ukrabot.cl/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -176,7 +176,7 @@
   </url>
   <url>
     <loc>https://www.ukrabot.cl/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -578,7 +578,7 @@
   </url>
   <url>
     <loc>https://www.ukrabot.cl/blog/kits-de-robots-hexapodos-programables-precios</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1085,5 +1085,23 @@
     <lastmod>2026-08-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/control-de-motores-dc-con-arduino-y-l298n-guia-completa</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ukrabot.cl/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

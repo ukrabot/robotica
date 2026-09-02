@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Paneles Solares y Controladores MPPT para Robótica e IoT Autónomo</title>
+<meta name="description" content="Guía técnica de energía solar para proyectos maker: MPPT vs PWM, el módulo CN3791 para packs de una celda, dimensionamiento de panel y protección del BMS.">
+<meta name="keywords" content="panel solar arduino, controlador mppt para robotica, cn3791 arduino, energia solar iot, robot autonomo energia solar, cargador solar bateria litio, mppt vs pwm">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paneles Solares y Controladores MPPT para Robótica e IoT Autónomo">
+<meta property="og:description" content="MPPT vs PWM explicado sin humo, el módulo CN3791 para proyectos de una celda, y cómo dimensionar un panel solar para que tu robot o nodo IoT no se quede sin batería.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo-hero.svg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Paneles Solares y Controladores MPPT para Robótica e IoT Autónomo">
+<meta name="twitter:description" content="MPPT vs PWM explicado sin humo, el módulo CN3791 para proyectos de una celda, y cómo dimensionar un panel solar para que tu robot o nodo IoT no se quede sin batería.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo-hero.svg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Paneles Solares y Controladores MPPT para Robótica e IoT Autónomo",
+  "description":"Guía técnica de energía solar aplicada a robótica e IoT autónomo: diferencia real entre un controlador MPPT y uno PWM, el módulo CN3791 para cargar baterías de una celda en estaciones meteorológicas y nodos remotos, cómo dimensionar el panel según el consumo del proyecto, integración segura con BMS en packs multi-celda, y errores comunes de instalación en exteriores.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-01",
+  "dateModified":"2026-09-01",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo"},
+  "image":"https://www.ukrabot.cl/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo-hero.svg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Panel solar del voltaje adecuado al controlador (5-12V para proyectos de una celda), controlador de carga MPPT o PWM, batería de litio compatible, multímetro, gabinete resistente a la intemperie para uso exterior",
+  "wordCount":"2400",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Paneles Solares y Controladores MPPT para Robótica e IoT Autónomo","item":"https://www.ukrabot.cl/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Un controlador MPPT sirve con cualquier panel solar o hay que elegir el voltaje correcto?","acceptedAnswer":{"@type":"Answer","text":"Hay que elegir el rango de voltaje de entrada correcto para el controlador específico. Módulos como el CN3791 vienen en variantes para 6V, 9V o 12V nominales de panel, y conectar un panel fuera del rango soportado por la variante que compraste puede impedir que el MPPT funcione correctamente o, en casos de sobretensión, dañar el módulo. Antes de comprar, confirma el voltaje de circuito abierto (Voc) de tu panel específico y elige la variante del controlador que lo cubra con margen."}},
+    {"@type":"Question","name":"¿Vale la pena un controlador MPPT para un panel muy pequeño de pocos watts?","acceptedAnswer":{"@type":"Answer","text":"Sí, y de hecho es donde más se nota proporcionalmente: en paneles pequeños, cualquier pérdida de eficiencia por un mal punto de trabajo representa una fracción mayor de la energía total disponible que en un sistema grande. El costo adicional de un módulo MPPT tipo CN3791 frente a un regulador PWM básico es pequeño en términos absolutos, y la energía extra capturada puede ser la diferencia entre un nodo IoT que sobrevive el invierno y uno que se queda sin batería en los días de menor radiación."}},
+    {"@type":"Question","name":"¿Puedo cargar una batería LiFePO4 con un controlador MPPT pensado para Li-ion?","acceptedAnswer":{"@type":"Answer","text":"No sin verificar los umbrales de voltaje primero. Los módulos MPPT de una celda como el CN3791 suelen venir configurados de fábrica para el voltaje de carga completa de Li-ion/LiPo (4,2V), mientras que una celda LiFePO4 se carga completamente a 3,65V; usar el módulo sin ajustar ese umbral sobrecargaría la celda LiFePO4 de forma peligrosa. Para proyectos con química LiFePO4, busca específicamente un controlador solar que declare compatibilidad con esa química o que permita configurar el voltaje de corte."}},
+    {"@type":"Question","name":"¿Qué pasa si el panel solar entrega más corriente de la que el controlador MPPT soporta?","acceptedAnswer":{"@type":"Answer","text":"El controlador simplemente limita la corriente de salida a su máximo especificado, dejando de extraer el punto óptimo de potencia del panel en esa condición; no suele dañarse por un sobredimensionamiento moderado del panel, siempre que el voltaje de circuito abierto del panel esté dentro del rango de entrada soportado. Aun así, no es una práctica recomendable de diseño: es preferible dimensionar el panel para el consumo real del proyecto con el factor de seguridad adecuado, no comprar el panel más grande disponible asumiendo que 'más es mejor' sin límite."}},
+    {"@type":"Question","name":"¿Cuánto dura una batería de litio alimentada por panel solar en ciclos de carga antes de degradarse?","acceptedAnswer":{"@type":"Answer","text":"Depende mucho de la profundidad de descarga diaria y la temperatura de operación, pero un sistema solar bien dimensionado —donde la batería rara vez baja de un 30-40% de carga porque el panel la repone a diario— favorece precisamente el tipo de ciclo superficial que más alarga la vida útil de una celda de litio, en comparación con ciclos profundos de 0 a 100%. Un pack Li-ion de calidad en ese régimen de uso suave puede mantener una capacidad utilizable razonable durante varios años de operación continua en exterior."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo-hero.svg" alt="Panel solar pequeño conectado a un módulo controlador de carga MPPT y una batería de litio, alimentando un nodo de sensores al aire libre" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Energía Solar y Autonomía · Publicado el <time datetime="2026-09-01">1 de septiembre de 2026</time></div>
+    <h1>Paneles Solares y Controladores MPPT para Robótica e IoT Autónomo</h1>
+    <p>La diferencia real entre MPPT y PWM, el módulo CN3791 para proyectos de una celda, y cómo dimensionar panel y batería para que un robot o nodo IoT remoto no se quede sin energía.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 11 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo-hero.svg" alt="Panel solar pequeño conectado a un módulo controlador de carga MPPT y una batería de litio, alimentando un nodo de sensores al aire libre" loading="lazy">
+  <div class="caption">Un controlador MPPT ajusta el punto de trabajo del panel varias veces por segundo para extraer la máxima potencia disponible, algo que un simple regulador PWM no hace.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#mppt-vs-pwm">MPPT vs PWM: la diferencia que sí importa</a></li>
+    <li><a href="#cn3791">El módulo CN3791: MPPT accesible para una celda</a></li>
+    <li><a href="#dimensionamiento">Cómo dimensionar el panel según el consumo</a></li>
+    <li><a href="#multiceldas">Packs multi-celda: MPPT más BMS, no MPPT en vez de BMS</a></li>
+    <li><a href="#instalacion-exterior">Instalación en exteriores: qué falla primero</a></li>
+    <li><a href="#casos-de-uso">Casos de uso en robótica e IoT</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="mppt-vs-pwm">
+<h2>MPPT vs PWM: la diferencia que sí importa</h2>
+<p>Un panel solar no entrega una potencia fija: su curva de voltaje y corriente cambia con la intensidad de luz y la temperatura, y en cualquier condición dada existe un único punto de la curva —el <strong>MPP, Maximum Power Point</strong— donde el producto de voltaje por corriente es máximo. Un controlador <strong>PWM</strong> simple conecta el panel más o menos directo a la batería, dejando que el propio voltaje de la batería "tire" del panel hacia un punto de trabajo que casi nunca coincide con el MPP real; es barato y funciona, pero deja potencia disponible sin aprovechar, sobre todo con luz débil o parcialmente nublada.</p>
+<p>Un controlador <strong>MPPT</strong> (Maximum Power Point Tracking) resuelve esto con un convertidor DC-DC intermedio: mide constantemente voltaje y corriente del panel, calcula dónde está el punto de máxima potencia en ese instante, y ajusta su propio punto de trabajo para operar el panel ahí, entregando a la salida la corriente que la batería necesita al voltaje que ya tiene. La diferencia práctica de eficiencia entre ambos suele estar entre un 10% y un 30% más de energía capturada a favor del MPPT, con la brecha más grande justo en las condiciones que más le importan a un proyecto remoto: luz baja, temperatura alta o un panel más grande que el estrictamente necesario en watts pero conectado a una batería de menor voltaje.</p>
+</section>
+
+<section id="cn3791">
+<h2>El módulo CN3791: MPPT accesible para una celda</h2>
+<p>Para proyectos de electrónica de baja potencia —una estación meteorológica remota, un nodo de sensores IoT, un pequeño robot solar de exploración— el punto de entrada más accesible al mundo MPPT es el módulo basado en el chip <strong>CN3791</strong>, ampliamente disponible en tiendas de electrónica y plataformas de importación. Sus características típicas:</p>
+<ul>
+<li><strong>Entrada:</strong> paneles solares de 6V, 9V o 12V nominales según la variante del módulo (hay que elegir la variante correcta para el panel que se va a usar; no es un rango universal).</li>
+<li><strong>Salida:</strong> carga de una sola celda de litio (Li-ion o LiPo, 3,7V nominal) hasta 4,2V de carga completa, con corriente de carga máxima configurable por resistencia de sensado, típicamente hasta 2A según la variante.</li>
+<li><strong>Protecciones integradas:</strong> sobrevoltaje de batería, cortocircuito, arranque suave y recuperación automática de descarga profunda, lo que lo hace razonablemente seguro para dejar operando sin supervisión en campo.</li>
+<li><strong>Conectores:</strong> habitualmente JST-PH de 2 mm para panel, batería y salida de carga, facilitando el cableado sin soldadura directa.</li>
+</ul>
+<p>Es compatible en la práctica con celdas 18650 o 14500 sueltas (siempre que tengan su propia protección o se sumen a un BMS de una celda) y con packs LiPo de una celda. Para alimentar directamente un microcontrolador o sensor a partir de la batería cargada, conviene revisar nuestra guía de <a href="/blog/modulo-de-carga-tp4056-cargar-baterias-lipo-de-forma-segura">Módulo de Carga TP4056</a>, que cubre la carga por USB de la misma celda; la diferencia clave es que el TP4056 es un cargador CC/CV simple sin seguimiento MPPT, adecuado para carga por cable pero no para exprimir al máximo un panel solar de potencia limitada.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="dimensionamiento">
+<h2>Cómo dimensionar el panel según el consumo</h2>
+<p>El error más común al sumar energía solar a un proyecto es elegir el panel por tamaño físico disponible en vez de por el consumo real del sistema. El cálculo base, aunque simplificado, evita la mayoría de las sorpresas:</p>
+<ol>
+<li><strong>Calcula el consumo diario en watt-hora (Wh):</strong> multiplica el consumo promedio en watts del proyecto por las horas diarias de operación. Un ESP32 con sensores en modo deep-sleep la mayor parte del tiempo puede promediar apenas 0,05-0,2 W; un robot con motores activos varias horas al día puede promediar varios watts.</li>
+<li><strong>Estima las horas solares pico (HSP) de tu ubicación:</strong> no son las horas de luz de sol, sino las horas equivalentes de radiación a máxima intensidad (1000 W/m²); en Chile central un valor conservador para diseño durante todo el año ronda las 4-5 HSP diarias, bastante más en el norte y algo menos en el sur, con variación estacional relevante en invierno.</li>
+<li><strong>Divide el consumo diario por las HSP</strong> para obtener la potencia nominal de panel necesaria, y multiplica el resultado por un factor de seguridad de 1,3-1,5 para cubrir pérdidas de cableado, temperatura, suciedad sobre el panel y días nublados consecutivos.</li>
+</ol>
+<div class="note">
+<strong>Ejemplo de cálculo:</strong> un nodo IoT que consume en promedio 0,3 W de forma continua necesita 0,3 W × 24 h = 7,2 Wh diarios. Con 4 HSP de diseño, eso exige un panel de al menos 7,2 ÷ 4 = 1,8 W nominales; aplicando el factor de seguridad de 1,4, un panel de 2,5-3 W cubre el consumo con margen razonable para días de menor radiación.
+</div>
+<p>La batería, por su parte, debe dimensionarse para cubrir al menos 2-3 días de autonomía sin sol directo (más en zonas con inviernos muy nublados), no solo el consumo de un día, porque un sistema dimensionado al límite exacto se queda sin energía en la primera racha de mal tiempo.</p>
+</section>
+
+<section id="multiceldas">
+<h2>Packs multi-celda: MPPT más BMS, no MPPT en vez de BMS</h2>
+<p>Para proyectos de mayor potencia —un robot móvil grande, una estación de riego automatizada con pack de varias celdas en serie— el controlador solar y el BMS del pack cumplen funciones distintas y no se reemplazan entre sí. El controlador MPPT gestiona la transferencia de energía desde el panel hacia el pack de forma eficiente; el BMS protege las celdas individuales del pack durante esa carga (y durante la descarga), evitando que una celda se adelante en voltaje respecto a las demás.</p>
+<p>Si tu proyecto ya usa un pack de varias celdas con su propio BMS —por ejemplo, siguiendo nuestra comparativa de <a href="/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas">BMS Daly vs JBD</a>— la integración correcta es: panel solar → controlador MPPT dimensionado para el voltaje de salida del pack completo → BMS → celdas. El controlador solar entrega la corriente de carga; el BMS decide, celda por celda, si esa carga es segura de aceptar en cada momento. Saltarse el BMS confiando solo en la protección de sobrevoltaje del controlador solar deja al pack sin balanceo entre celdas, exactamente el mismo riesgo que cargar un pack multi-celda sin BMS por cualquier otra vía.</p>
+</section>
+
+<section id="instalacion-exterior">
+<h2>Instalación en exteriores: qué falla primero</h2>
+<ul>
+<li><strong>Conectores sin sellar:</strong> la humedad que entra por un conector JST o Dupont expuesto es, en la práctica, la causa de falla más común en instalaciones solares de exterior de baja potencia, mucho más que cualquier falla del propio controlador. Usa conectores IP65 o superior en el punto donde el cable sale del gabinete, o al menos séllalos con termorretráctil con adhesivo interno.</li>
+<li><strong>Panel mal orientado o con sombra parcial:</strong> incluso una sombra pequeña —una rama, un poste, un soporte metálico del propio proyecto— sobre una parte del panel puede reducir la potencia entregada de forma desproporcionada respecto al área sombreada, porque afecta a toda una cadena de celdas internas del panel, no solo al área tapada.</li>
+<li><strong>Ciclos térmicos sobre el gabinete electrónico:</strong> un gabinete sellado herméticamente puede acumular condensación por el ciclo de calor diurno y frío nocturno; un pequeño desecante o una válvula de ecualización de presión (venteo hidrofóbico) evita que la humedad se acumule dentro con el tiempo.</li>
+<li><strong>Cableado dimensionado solo para la corriente nominal:</strong> si el proyecto se instala en un punto con posibilidad de sobre-irradiancia (superficies reflectantes cercanas, gran altitud), la corriente real puede superar brevemente la nominal del panel; conviene revisar nuestra guía de <a href="/blog/que-cable-y-conector-usar-segun-corriente">Qué Cable y Conector Usar Según la Corriente</a> para no quedarse justo en el límite.</li>
+</ul>
+</section>
+
+<section id="casos-de-uso">
+<h2>Casos de uso en robótica e IoT</h2>
+<p>La energía solar tiene sentido claro en proyectos donde el acceso físico para cambiar o recargar batería es costoso o poco práctico: estaciones meteorológicas de exterior, nodos de monitoreo agrícola distribuidos, cámaras trampa, boyas o sensores de nivel de agua remotos, y robots de exploración de baja velocidad con superficie disponible para el panel. No tiene tanto sentido en robots móviles rápidos o brazos robóticos de interior, donde el consumo instantáneo supera por mucho lo que un panel razonable puede entregar en tiempo real y la recarga por cable simplemente es más práctica.</p>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Un controlador MPPT sirve con cualquier panel solar o hay que elegir el voltaje correcto?</summary><p>Hay que elegir el rango de voltaje de entrada correcto para el controlador específico. Módulos como el CN3791 vienen en variantes para 6V, 9V o 12V nominales de panel, y conectar un panel fuera del rango soportado por la variante que compraste puede impedir que el MPPT funcione correctamente o, en casos de sobretensión, dañar el módulo. Antes de comprar, confirma el voltaje de circuito abierto (Voc) de tu panel específico y elige la variante del controlador que lo cubra con margen.</p></details>
+<details><summary>¿Vale la pena un controlador MPPT para un panel muy pequeño de pocos watts?</summary><p>Sí, y de hecho es donde más se nota proporcionalmente: en paneles pequeños, cualquier pérdida de eficiencia por un mal punto de trabajo representa una fracción mayor de la energía total disponible que en un sistema grande. El costo adicional de un módulo MPPT tipo CN3791 frente a un regulador PWM básico es pequeño en términos absolutos, y la energía extra capturada puede ser la diferencia entre un nodo IoT que sobrevive el invierno y uno que se queda sin batería en los días de menor radiación.</p></details>
+<details><summary>¿Puedo cargar una batería LiFePO4 con un controlador MPPT pensado para Li-ion?</summary><p>No sin verificar los umbrales de voltaje primero. Los módulos MPPT de una celda como el CN3791 suelen venir configurados de fábrica para el voltaje de carga completa de Li-ion/LiPo (4,2V), mientras que una celda LiFePO4 se carga completamente a 3,65V; usar el módulo sin ajustar ese umbral sobrecargaría la celda LiFePO4 de forma peligrosa. Para proyectos con química LiFePO4, busca específicamente un controlador solar que declare compatibilidad con esa química o que permita configurar el voltaje de corte.</p></details>
+<details><summary>¿Qué pasa si el panel solar entrega más corriente de la que el controlador MPPT soporta?</summary><p>El controlador simplemente limita la corriente de salida a su máximo especificado, dejando de extraer el punto óptimo de potencia del panel en esa condición; no suele dañarse por un sobredimensionamiento moderado del panel, siempre que el voltaje de circuito abierto del panel esté dentro del rango de entrada soportado. Aun así, no es una práctica recomendable de diseño: es preferible dimensionar el panel para el consumo real del proyecto con el factor de seguridad adecuado, no comprar el panel más grande disponible asumiendo que 'más es mejor' sin límite.</p></details>
+<details><summary>¿Cuánto dura una batería de litio alimentada por panel solar en ciclos de carga antes de degradarse?</summary><p>Depende mucho de la profundidad de descarga diaria y la temperatura de operación, pero un sistema solar bien dimensionado —donde la batería rara vez baja de un 30-40% de carga porque el panel la repone a diario— favorece precisamente el tipo de ciclo superficial que más alarga la vida útil de una celda de litio, en comparación con ciclos profundos de 0 a 100%. Un pack Li-ion de calidad en ese régimen de uso suave puede mantener una capacidad utilizable razonable durante varios años de operación continua en exterior.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si tu proyecto solar alimenta un pack de varias celdas, revisa antes cómo protegerlo con la comparativa de <a href="/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas">BMS Daly vs JBD</a>, o si es una sola celda, la carga por cable en <a href="/blog/modulo-de-carga-tp4056-cargar-baterias-lipo-de-forma-segura">Módulo de Carga TP4056</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/baterias-lifepo4-12v-100ah-calidad-y-precio-en-amazon">← Anterior: Baterías LiFePO4 12V 100Ah: Calidad y Precio</a>
+  <a href="/blog/sistema-de-riego-automatico-con-sensor-de-humedad-de-suelo">Siguiente: Sistema de Riego Automático con Sensor de Humedad de Suelo →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.nrel.gov/grid/solar-resource/renewable-resource-data.html" target="_blank" rel="noopener noreferrer">NREL — Datos de recurso solar y horas solares pico</a></li>
+<li><a href="https://www.mouser.com/datasheet/2/115/CN3791-3237221.pdf" target="_blank" rel="noopener noreferrer">Consonance Electronics — Datasheet del controlador CN3791</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 1 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
