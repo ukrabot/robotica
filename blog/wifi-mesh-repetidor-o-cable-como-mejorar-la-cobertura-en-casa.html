@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>WiFi Mesh, Repetidor o Cable: Cómo Mejorar la Cobertura en Casa</title>
+<meta name="description" content="Guía técnica de redes domésticas: mesh vs repetidor vs PLC, backhaul dedicado, WiFi 6 vs 6E vs 7, cuántos nodos necesitas y dónde colocarlos para que funcione.">
+<meta name="keywords" content="wifi mesh vs repetidor, mejorar cobertura wifi casa, sistema mesh wifi, backhaul ethernet mesh, wifi 6 vs wifi 7, cuantos nodos mesh necesito, repetidor wifi o mesh">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="WiFi Mesh, Repetidor o Cable: Cómo Mejorar la Cobertura en Casa">
+<meta property="og:description" content="Mesh, repetidor o cable: qué resuelve cada uno, por qué el backhaul decide el rendimiento y cuántos nodos necesita tu casa realmente.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WiFi Mesh, Repetidor o Cable: Cómo Mejorar la Cobertura en Casa">
+<meta name="twitter:description" content="Mesh, repetidor o cable: qué resuelve cada uno, por qué el backhaul decide el rendimiento y cuántos nodos necesita tu casa realmente.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"WiFi Mesh, Repetidor o Cable: Cómo Mejorar la Cobertura en Casa",
+  "description":"Guía técnica para resolver problemas de cobertura WiFi en una vivienda: diferencia real entre un sistema mesh y un repetidor tradicional, qué es el backhaul y por qué decide el rendimiento del sistema, cuándo un PLC o un cable Ethernet es mejor que ambos, comparación entre WiFi 5, 6, 6E y 7 según los dispositivos reales, cuántos nodos necesita cada tipo de vivienda, colocación correcta de los nodos y errores frecuentes de configuración.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-03",
+  "dateModified":"2026-09-03",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa"},
+  "image":"https://www.ukrabot.cl/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa-hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Router actual de tu proveedor de internet, conocimiento aproximado de los metros cuadrados y número de pisos de la vivienda, y un teléfono con una app de medición de señal WiFi para diagnosticar antes de comprar",
+  "wordCount":"2550",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"WiFi Mesh, Repetidor o Cable: Cómo Mejorar la Cobertura en Casa","item":"https://www.ukrabot.cl/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Puedo mezclar nodos mesh de distintas marcas?","acceptedAnswer":{"@type":"Answer","text":"En general no, salvo que ambos equipos estén certificados bajo el estándar Wi-Fi CERTIFIED EasyMesh de la Wi-Fi Alliance, que existe precisamente para permitir interoperabilidad entre fabricantes. La mayoría de los sistemas mesh comerciales usan protocolos propietarios y solo funcionan como sistema unificado con nodos de la misma marca y, a menudo, de la misma línea de producto. Si planeas ampliar el sistema más adelante, verifica antes qué nodos son compatibles con el modelo que compras."}},
+    {"@type":"Question","name":"¿Un sistema mesh mejora la velocidad de mi internet contratado?","acceptedAnswer":{"@type":"Answer","text":"No. Un mesh distribuye mejor la conexión que ya tienes, pero no puede entregar más velocidad de la que llega a tu casa. Si tu plan es de 100 Mbps, ningún equipo WiFi hará que sea de 300. Lo que sí hace un buen mesh es que esos 100 Mbps lleguen de forma completa a habitaciones donde antes llegaban 20, y que la conexión sea estable al moverte por la casa. Si la velocidad es baja incluso junto al router, el problema está en el plan o en la conexión de entrada."}},
+    {"@type":"Question","name":"¿Qué es mejor: un router potente o varios nodos mesh?","acceptedAnswer":{"@type":"Answer","text":"Depende de la geometría de la vivienda. En un departamento compacto y sin muros gruesos, un solo router de buena calidad bien ubicado en el centro suele dar mejor resultado que un mesh mal colocado, y cuesta menos. En una casa alargada, de varios pisos, o con muros de hormigón, ningún router individual puede cubrirlo todo desde un punto: la física de la propagación lo impide, y ahí varios nodos son la única solución real. La potencia de emisión está regulada y limitada, así que no existe el router que cubra cualquier casa."}},
+    {"@type":"Question","name":"¿El backhaul por cable requiere que el cable sea Cat6 o sirve Cat5e?","acceptedAnswer":{"@type":"Answer","text":"Cat5e es suficiente para backhaul en la enorme mayoría de instalaciones domésticas: soporta 1 Gbps hasta 100 metros, muy por encima de lo que un plan residencial típico y un sistema mesh doméstico van a mover entre nodos. Cat6 da más margen si los puertos de tus nodos son de 2,5 Gbps o superiores, o si el cable va a correr paralelo a cableado eléctrico donde el ruido puede afectar. Para un tendido normal dentro de una vivienda, Cat5e de cobre puro cumple sin problema."}},
+    {"@type":"Question","name":"¿Cuántos dispositivos puede manejar un sistema mesh doméstico?","acceptedAnswer":{"@type":"Answer","text":"Los fabricantes suelen declarar cifras de 100 o más dispositivos, pero esa cifra teórica rara vez es el límite práctico. Lo que realmente importa es cuántos dispositivos están transmitiendo de forma activa y simultánea, no cuántos están conectados: veinte sensores de domótica que envían un dato cada minuto pesan muchísimo menos que tres televisores reproduciendo video en 4K a la vez. Un sistema WiFi 6 de gama media maneja sin problemas una casa con domótica, varios televisores y una decena de dispositivos móviles."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa-hero.jpg" alt="Router y nodos de un sistema WiFi mesh instalados en una vivienda con cableado de red visible" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Redes y Seguridad · Publicado el <time datetime="2026-09-03">3 de septiembre de 2026</time></div>
+    <h1>WiFi Mesh, Repetidor o Cable: Cómo Mejorar la Cobertura en Casa</h1>
+    <p>Qué resuelve cada tecnología, por qué el backhaul decide el rendimiento real del sistema, cuántos nodos necesita tu casa y dónde colocarlos para que la inversión sirva de algo.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa-hero.jpg" alt="Router y nodos de un sistema WiFi mesh instalados en una vivienda con cableado de red visible" loading="lazy">
+  <div class="caption">Un sistema mesh con backhaul por cable es siempre superior a uno inalámbrico: el enlace entre nodos deja de competir por el mismo aire que usan tus dispositivos.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#diagnostico">Primero diagnostica: ¿es cobertura o es velocidad?</a></li>
+    <li><a href="#mesh-vs-repetidor">Mesh vs repetidor: la diferencia técnica</a></li>
+    <li><a href="#backhaul">Backhaul: la especificación que decide todo</a></li>
+    <li><a href="#plc-cable">PLC y cable Ethernet: cuándo ganan a los dos anteriores</a></li>
+    <li><a href="#estandares">WiFi 5, 6, 6E y 7: qué necesitas realmente</a></li>
+    <li><a href="#nodos">Cuántos nodos y dónde colocarlos</a></li>
+    <li><a href="#errores">Errores frecuentes de configuración</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="diagnostico">
+<h2>Primero diagnostica: ¿es cobertura o es velocidad?</h2>
+<p>Antes de comprar cualquier equipo, conviene distinguir dos problemas que se confunden constantemente y que tienen soluciones completamente distintas:</p>
+<ul>
+<li><strong>Problema de cobertura:</strong> hay habitaciones donde la señal llega débil o no llega. El indicador de WiFi del teléfono marca una o dos barras, la conexión se corta al moverte, o directamente no aparece la red. <strong>Esto sí lo resuelve un mesh, un repetidor o un punto de acceso.</strong></li>
+<li><strong>Problema de velocidad contratada:</strong> la señal llega perfecta en toda la casa (cuatro barras en todas partes) pero la velocidad es baja en todos lados por igual. <strong>Esto no lo resuelve ningún equipo WiFi</strong>, porque el cuello de botella está en el plan contratado con tu proveedor o en la conexión de entrada, no en la distribución interna.</li>
+</ul>
+<p>La prueba de diagnóstico más simple: haz un test de velocidad con el teléfono conectado por WiFi <strong>junto al router</strong>, y luego repítelo en la habitación problemática. Si junto al router obtienes la velocidad contratada y en la habitación obtienes mucho menos, es un problema de cobertura y este artículo te sirve. Si junto al router ya obtienes una velocidad baja, el problema es la conexión de entrada y hay que hablar con el proveedor, no comprar equipos.</p>
+</section>
+
+<section id="mesh-vs-repetidor">
+<h2>Mesh vs repetidor: la diferencia técnica</h2>
+<p>Ambos amplían la cobertura, pero funcionan de forma distinta y el resultado en uso diario no se parece:</p>
+<p>Un <strong>repetidor</strong> (o extensor) recibe la señal del router y la retransmite. En su forma más común, crea una <strong>segunda red</strong> con otro nombre (o el mismo nombre pero como red separada a nivel técnico), y tu dispositivo se queda pegado a la red original hasta que la señal es tan mala que finalmente cambia. El resultado típico: caminas de una habitación a otra, el teléfono sigue conectado al router lejano con una barra, y la conexión va lenta aunque tengas un repetidor a dos metros. Además, un repetidor de banda única recibe y retransmite por la misma radio, lo que divide el ancho de banda disponible aproximadamente a la mitad.</p>
+<p>Un <strong>sistema mesh</strong> está compuesto por varios nodos que forman <strong>una sola red coordinada</strong>. Los nodos se comunican entre sí, saben qué dispositivos hay conectados y a qué nodo conviene que cada uno se conecte, y ejecutan el traspaso (roaming) de forma gestionada usando estándares como 802.11k, 802.11v y 802.11r. El dispositivo ve una única red y cambia de nodo de forma mucho más fluida al desplazarse.</p>
+<div class="note">
+<strong>Regla práctica:</strong> si el problema es <em>una zona concreta</em> con señal débil y hay un punto intermedio donde la señal aún es decente, un repetidor bien colocado puede bastar y es mucho más barato. Si el problema es <em>cobertura desigual en toda la casa</em> y quieres una experiencia uniforme al moverte, un sistema mesh es la solución correcta.
+</div>
+</section>
+
+<section id="backhaul">
+<h2>Backhaul: la especificación que decide todo</h2>
+<p>El <strong>backhaul</strong> es el enlace por el que los nodos se comunican entre sí y con el nodo principal. Es la especificación menos visible en las fichas de producto y la que más determina el rendimiento real del sistema. Hay tres configuraciones:</p>
+<ul>
+<li><strong>Backhaul inalámbrico compartido (dual-band):</strong> los nodos usan las mismas bandas de 2,4 y 5 GHz tanto para hablar entre sí como para atender a tus dispositivos. Es la configuración más económica, y también la que más rendimiento pierde: el tráfico entre nodos compite por el mismo aire que usan tus equipos.</li>
+<li><strong>Backhaul inalámbrico dedicado (tri-band):</strong> el sistema reserva una banda completa —típicamente una segunda banda de 5 GHz, o la de 6 GHz en equipos WiFi 6E/7— exclusivamente para la comunicación entre nodos. Tus dispositivos usan las otras bandas sin competir con el tráfico interno. Es notoriamente mejor que el dual-band y es lo que justifica el precio de los sistemas tri-band.</li>
+<li><strong>Backhaul por cable Ethernet:</strong> conectas los nodos entre sí con cable de red. Es, sin discusión, la mejor configuración posible: el enlace entre nodos es estable, de alta velocidad y no consume nada de espectro inalámbrico. Todas las bandas WiFi quedan íntegramente disponibles para tus dispositivos.</li>
+</ul>
+<p>Si existe la posibilidad de tirar cable Ethernet entre los puntos donde irán los nodos, hazlo: convierte un sistema mesh mediocre en uno excelente, y es una mejora que ningún cambio de modelo iguala. Si necesitas fabricar los cables tú mismo, revisa nuestra guía de <a href="/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva">Cómo Crimpar Conectores RJ45 Pasantes</a>.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="plc-cable">
+<h2>PLC y cable Ethernet: cuándo ganan a los dos anteriores</h2>
+<p>Hay dos alternativas que muchas veces resuelven mejor el problema que comprar más equipos WiFi:</p>
+<p><strong>Cable Ethernet directo (punto de acceso):</strong> si puedes llevar un cable de red hasta la zona sin cobertura, instalar ahí un punto de acceso da una conexión más estable y rápida que cualquier solución inalámbrica. Es la opción técnicamente superior cuando el cableado es viable. También es la mejor solución para equipos fijos que consumen mucho ancho de banda —consola de videojuegos, computador de escritorio, televisor de streaming, o un <a href="/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso">servidor NAS casero</a>—: conectarlos por cable libera espectro WiFi para todo lo demás.</p>
+<p><strong>PLC (Powerline):</strong> usa la instalación eléctrica de la vivienda para transportar datos entre dos adaptadores enchufados a la corriente. Es útil cuando no puedes tirar cable y el WiFi no atraviesa bien las paredes o los pisos. La advertencia importante: su rendimiento depende completamente de la calidad y topología de tu instalación eléctrica. Si los dos enchufes están en circuitos distintos del tablero, o si hay mucho ruido eléctrico de fuentes conmutadas y motores, el rendimiento puede ser muy inferior al declarado. Nunca conectes un PLC a través de una zapatilla con protección contra sobretensiones: el filtro degrada o bloquea la señal.</p>
+</section>
+
+<section id="estandares">
+<h2>WiFi 5, 6, 6E y 7: qué necesitas realmente</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Estándares WiFi y su nombre técnico IEEE, con el criterio práctico de elección.</caption>
+<thead><tr><th>Nombre</th><th>Estándar IEEE</th><th>Bandas</th><th>Cuándo tiene sentido</th></tr></thead>
+<tbody>
+<tr><td>WiFi 5</td><td>802.11ac</td><td>2,4 y 5 GHz</td><td>Suficiente si tienes pocos dispositivos y un plan de internet moderado</td></tr>
+<tr><td>WiFi 6</td><td>802.11ax</td><td>2,4 y 5 GHz</td><td>El punto dulce actual: mejor gestión de muchos dispositivos simultáneos</td></tr>
+<tr><td>WiFi 6E</td><td>802.11ax (banda 6 GHz)</td><td>2,4, 5 y 6 GHz</td><td>Añade la banda de 6 GHz, limpia de interferencia; útil como backhaul dedicado</td></tr>
+<tr><td>WiFi 7</td><td>802.11be</td><td>2,4, 5 y 6 GHz</td><td>Solo si tus dispositivos lo soportan; hoy pocos lo aprovechan</td></tr>
+</tbody>
+</table>
+</div>
+<p>El punto que más se malinterpreta: <strong>WiFi 6 no es principalmente "más rápido", es mejor gestionando muchos dispositivos a la vez</strong>. Sus mejoras clave (OFDMA, MU-MIMO mejorado, BSS coloring) están orientadas a mantener el rendimiento cuando hay decenas de equipos conectados, que es la situación real de una casa moderna con teléfonos, televisores, consolas, domótica y sensores.</p>
+<p>Comprar WiFi 7 en 2026 tiene sentido solo si vas a mantener el equipo muchos años o si ya tienes dispositivos compatibles; la mayoría de los teléfonos y computadores en uso hoy no aprovechan sus mejoras, y el router más avanzado no puede darle a un dispositivo más de lo que ese dispositivo sabe recibir.</p>
+</section>
+
+<section id="nodos">
+<h2>Cuántos nodos y dónde colocarlos</h2>
+<p>Como punto de partida razonable:</p>
+<ul>
+<li><strong>Departamento pequeño o mediano (una planta):</strong> 2 nodos suelen bastar si están bien colocados.</li>
+<li><strong>Casa de dos o tres pisos:</strong> aproximadamente 1 nodo por planta como punto de partida.</li>
+<li><strong>Casa grande o con muros de hormigón armado:</strong> puede requerir un nodo adicional; el hormigón y las estructuras metálicas atenúan la señal mucho más que los tabiques livianos.</li>
+</ul>
+<p>La colocación importa tanto como la cantidad, y es donde más se falla:</p>
+<ul>
+<li><strong>Ni muy lejos ni muy cerca:</strong> un nodo demasiado lejos del anterior recibe una señal débil y retransmite algo peor; uno demasiado cerca desperdicia su alcance y no aporta cobertura nueva. La referencia práctica es colocarlo en un punto donde la señal del nodo anterior todavía sea buena (dos o tres barras), no donde ya sea mala.</li>
+<li><strong>A media altura y despejado:</strong> no dentro de un mueble cerrado, no detrás del televisor, no en el suelo, no en un rincón del sótano. La señal se propaga en todas direcciones y cualquier obstáculo cercano la degrada de forma desproporcionada.</li>
+<li><strong>Lejos de fuentes de interferencia:</strong> microondas, teléfonos inalámbricos antiguos y grandes superficies metálicas (refrigerador, espejos con respaldo metálico) afectan sobre todo a la banda de 2,4 GHz.</li>
+</ul>
+</section>
+
+<section id="errores">
+<h2>Errores frecuentes de configuración</h2>
+<ul>
+<li><strong>Dejar el router del proveedor emitiendo su propia red WiFi además del mesh:</strong> genera dos redes compitiendo por el mismo espectro y confunde el roaming de los dispositivos. Lo correcto es poner el router del proveedor en modo bridge (o desactivar su WiFi) y dejar que el sistema mesh gestione toda la red inalámbrica.</li>
+<li><strong>Separar las bandas 2,4 y 5 GHz con nombres distintos en un sistema mesh:</strong> anula parte del propósito del mesh, que es decidir automáticamente la mejor banda y el mejor nodo para cada dispositivo. Salvo un caso muy específico (un dispositivo antiguo que solo funciona en 2,4 GHz y se confunde), conviene dejar una única red unificada.</li>
+<li><strong>Encadenar nodos en serie sin necesidad:</strong> si tres nodos están en línea y cada uno se conecta al anterior en vez de al principal, el ancho de banda se degrada en cada salto. Cuando es posible, es preferible que todos los nodos secundarios enlacen directamente con el principal.</li>
+<li><strong>Comprar más nodos en vez de resolver el backhaul:</strong> agregar un cuarto nodo a un sistema con backhaul inalámbrico compartido y saturado empeora las cosas en vez de mejorarlas. Antes de sumar nodos, evalúa si puedes cablear los que ya tienes.</li>
+<li><strong>Ignorar el firmware:</strong> los fabricantes publican actualizaciones que corrigen problemas de estabilidad y de roaming; un sistema mesh con firmware de hace dos años puede comportarse notoriamente peor que el mismo equipo actualizado.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo mezclar nodos mesh de distintas marcas?</summary><p>En general no, salvo que ambos equipos estén certificados bajo el estándar Wi-Fi CERTIFIED EasyMesh de la Wi-Fi Alliance, que existe precisamente para permitir interoperabilidad entre fabricantes. La mayoría de los sistemas mesh comerciales usan protocolos propietarios y solo funcionan como sistema unificado con nodos de la misma marca y, a menudo, de la misma línea de producto. Si planeas ampliar el sistema más adelante, verifica antes qué nodos son compatibles con el modelo que compras.</p></details>
+<details><summary>¿Un sistema mesh mejora la velocidad de mi internet contratado?</summary><p>No. Un mesh distribuye mejor la conexión que ya tienes, pero no puede entregar más velocidad de la que llega a tu casa. Si tu plan es de 100 Mbps, ningún equipo WiFi hará que sea de 300. Lo que sí hace un buen mesh es que esos 100 Mbps lleguen de forma completa a habitaciones donde antes llegaban 20, y que la conexión sea estable al moverte por la casa. Si la velocidad es baja incluso junto al router, el problema está en el plan o en la conexión de entrada.</p></details>
+<details><summary>¿Qué es mejor: un router potente o varios nodos mesh?</summary><p>Depende de la geometría de la vivienda. En un departamento compacto y sin muros gruesos, un solo router de buena calidad bien ubicado en el centro suele dar mejor resultado que un mesh mal colocado, y cuesta menos. En una casa alargada, de varios pisos, o con muros de hormigón, ningún router individual puede cubrirlo todo desde un punto: la física de la propagación lo impide, y ahí varios nodos son la única solución real. La potencia de emisión está regulada y limitada, así que no existe el router que cubra cualquier casa.</p></details>
+<details><summary>¿El backhaul por cable requiere que el cable sea Cat6 o sirve Cat5e?</summary><p>Cat5e es suficiente para backhaul en la enorme mayoría de instalaciones domésticas: soporta 1 Gbps hasta 100 metros, muy por encima de lo que un plan residencial típico y un sistema mesh doméstico van a mover entre nodos. Cat6 da más margen si los puertos de tus nodos son de 2,5 Gbps o superiores, o si el cable va a correr paralelo a cableado eléctrico donde el ruido puede afectar. Para un tendido normal dentro de una vivienda, Cat5e de cobre puro cumple sin problema.</p></details>
+<details><summary>¿Cuántos dispositivos puede manejar un sistema mesh doméstico?</summary><p>Los fabricantes suelen declarar cifras de 100 o más dispositivos, pero esa cifra teórica rara vez es el límite práctico. Lo que realmente importa es cuántos dispositivos están transmitiendo de forma activa y simultánea, no cuántos están conectados: veinte sensores de domótica que envían un dato cada minuto pesan muchísimo menos que tres televisores reproduciendo video en 4K a la vez. Un sistema WiFi 6 de gama media maneja sin problemas una casa con domótica, varios televisores y una decena de dispositivos móviles.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si vas a cablear el backhaul, revisa <a href="/blog/como-crimpar-conectores-rj45-pasantes-pass-through-de-manera-efectiva">Cómo Crimpar Conectores RJ45 Pasantes</a>. Y si quieres aprovechar la red para almacenamiento propio, mira <a href="/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso">Cómo Montar un Servidor NAS Casero</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local">← Anterior: Cámaras de Seguridad IP para Casa: PoE, NVR y Almacenamiento Local</a>
+  <a href="/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso">Siguiente: Cómo Montar un Servidor NAS Casero con Discos SATA →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.wi-fi.org/discover-wi-fi/wi-fi-easymesh" target="_blank" rel="noopener noreferrer">Wi-Fi Alliance — Wi-Fi CERTIFIED EasyMesh</a></li>
+<li><a href="https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-7" target="_blank" rel="noopener noreferrer">Wi-Fi Alliance — Wi-Fi CERTIFIED 7</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 3 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
