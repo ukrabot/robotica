@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Estaciones de Energía Portátiles: Guía de Compra y Comparativa</title>
+<meta name="description" content="Guía técnica de power stations: capacidad real en Wh, potencia continua vs pico, LiFePO4 vs Li-ion, carga solar, y tabla de decisión por uso y presupuesto en 2026.">
+<meta name="keywords" content="estacion energia portatil, power station comprar, ecoflow vs jackery, bluetti vs ecoflow, generador solar portatil, power station camping, bateria portatil corte de luz, power station chile">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/estaciones-de-energia-portatiles-guia-de-compra-y-comparativa">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Estaciones de Energía Portátiles: Guía de Compra y Comparativa">
+<meta property="og:description" content="Wh y W reales vs catálogo, LiFePO4 vs NMC, carga solar y tabla por uso: lo que necesitas saber antes de comprar una power station.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/estaciones-de-energia-portatiles-guia-de-compra-y-comparativa-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/estaciones-de-energia-portatiles-guia-de-compra-y-comparativa">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Estaciones de Energía Portátiles: Guía de Compra y Comparativa">
+<meta name="twitter:description" content="Wh y W reales vs catálogo, LiFePO4 vs NMC, carga solar y tabla por uso: lo que necesitas saber antes de comprar una power station.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/estaciones-de-energia-portatiles-guia-de-compra-y-comparativa-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Estaciones de Energía Portátiles: Guía de Compra y Comparativa",
+  "description":"Guía de compra técnica de estaciones de energía portátiles (power stations) para respaldo domiciliario, camping, taller móvil y proyectos maker: qué significan realmente los Wh y los W de catálogo, diferencia entre potencia continua y potencia de arranque (surge), química LiFePO4 frente a litio NMC y por qué importa, carga solar con MPPT integrado, tabla de decisión por capacidad y presupuesto, y cuándo conviene una power station frente a un generador de combustión.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-04",
+  "dateModified":"2026-09-04",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/estaciones-de-energia-portatiles-guia-de-compra-y-comparativa"},
+  "image":"https://www.ukrabot.cl/blog/estaciones-de-energia-portatiles-guia-de-compra-y-comparativa-hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Ninguno para leer la guía; para usar una power station con carga solar se necesita además un panel solar compatible con la entrada MC4 del modelo elegido",
+  "wordCount":"2550",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Estaciones de Energía Portátiles: Guía de Compra y Comparativa","item":"https://www.ukrabot.cl/blog/estaciones-de-energia-portatiles-guia-de-compra-y-comparativa"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Una power station puede alimentar un refrigerador durante un corte de luz?","acceptedAnswer":{"@type":"Answer","text":"Sí, siempre que la potencia continua y el surge sean suficientes para el compresor del refrigerador. Un mini refrigerador consume del orden de 50–80 W en régimen con picos de arranque de 200–400 W. Una estación de 600 W continuos con 1.200 W de pico maneja ese arranque sin problema, y con una capacidad de 1.000 Wh puede mantenerlo entre 8 y 14 horas según el modelo y la frecuencia con que el compresor cicla. Un refrigerador de tamaño completo consume más y tiene picos de arranque más altos, por lo que requiere una estación de mayor potencia y capacidad."}},
+    {"@type":"Question","name":"¿Cuánto tarda en recargarse una power station por red eléctrica?","acceptedAnswer":{"@type":"Answer","text":"Depende de la potencia de entrada de carga y de la capacidad. Muchos modelos actuales ofrecen carga rápida por red: la EcoFlow DELTA 2, por ejemplo, se carga del 0 al 80% en aproximadamente una hora con su sistema X-Stream. Modelos con carga estándar pueden tardar de 2 a 6 horas para una carga completa según la capacidad. La carga rápida genera más calor, lo que a largo plazo puede reducir ligeramente la vida útil de la batería, pero en modelos con LiFePO4 y buena gestión térmica el efecto es mínimo."}},
+    {"@type":"Question","name":"¿Puedo usar una power station como UPS para mi computador?","acceptedAnswer":{"@type":"Answer","text":"Algunas power stations incluyen modo UPS integrado, que detecta el corte de red y conmuta a batería en milisegundos. El tiempo de conmutación es el dato clave: si es de 10–20 ms, el computador y el monitor suelen mantenerse encendidos sin reiniciarse; si es mayor, puede no ser suficiente para proteger el equipo. Para proteger un computador como función primaria, un UPS dedicado con conmutación instantánea sigue siendo la opción más fiable. Una power station con modo UPS es un buen compromiso si necesitas ambas funciones y no quieres comprar dos dispositivos."}},
+    {"@type":"Question","name":"¿Vale la pena comprar paneles solares junto con la power station?","acceptedAnswer":{"@type":"Answer","text":"Si planeas usar la estación en camping, en un vehículo o como respaldo ante cortes prolongados, sí: el panel solar convierte una batería que se agota en un sistema que se regenera cada día. Para uso exclusivo como respaldo domiciliario de cortes cortos (unas pocas horas), donde la estación se recarga por red apenas vuelve la luz, el panel solar es un extra agradable pero no indispensable."}},
+    {"@type":"Question","name":"¿Una power station necesita mantenimiento?","acceptedAnswer":{"@type":"Answer","text":"Prácticamente ninguno, que es una de sus mayores ventajas sobre un generador. Lo único que conviene hacer es mantenerla con un nivel de carga entre el 30% y el 80% durante el almacenamiento prolongado (no dejarla al 0% ni al 100% durante meses), y encenderla al menos una vez cada dos o tres meses para que la electrónica interna se auto-calibre. Con LiFePO4 la degradación por almacenamiento es mínima, pero la autodescarga existe y una estación olvidada durante un año puede bajar a un nivel de voltaje que impida el arranque."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="estaciones-de-energia-portatiles-guia-de-compra-y-comparativa-hero.jpg" alt="Estación de energía portátil con paneles solares plegables sobre una mesa de camping al aire libre" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Energía Solar y Autonomía · Publicado el <time datetime="2026-09-04">4 de septiembre de 2026</time></div>
+    <h1>Estaciones de Energía Portátiles: Guía de Compra y Comparativa</h1>
+    <p>Qué significan realmente los Wh y los W de catálogo, por qué la química de la batería decide cuántos años dura, cómo funciona la carga solar integrada, y cuándo elegir una power station en vez de un generador.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="estaciones-de-energia-portatiles-guia-de-compra-y-comparativa-hero.jpg" alt="Estación de energía portátil con paneles solares plegables sobre una mesa de camping al aire libre" loading="lazy">
+  <div class="caption">Una estación de 1.000 Wh alimenta un refrigerador pequeño unas 8–12 horas: suficiente para un corte de luz de una noche, no para varios días.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es una estación de energía portátil y para qué sirve</a></li>
+    <li><a href="#wh-y-w">Wh y W: lo que dice el catálogo vs lo que recibes</a></li>
+    <li><a href="#quimica">LiFePO4 vs litio NMC: por qué importa en 2026</a></li>
+    <li><a href="#carga-solar">Carga solar con MPPT integrado</a></li>
+    <li><a href="#vs-generador">Power station vs generador de combustión</a></li>
+    <li><a href="#tabla">Tabla de decisión por uso y presupuesto</a></li>
+    <li><a href="#errores">Errores frecuentes al comprar</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="que-es">
+<h2>Qué es una estación de energía portátil y para qué sirve</h2>
+<p>Una estación de energía portátil (también llamada <em>power station</em> o <em>generador solar portátil</em>) es, en esencia, un banco de baterías de gran capacidad con un inversor integrado que entrega corriente alterna doméstica (220 V en Chile) y múltiples puertos de salida: tomacorrientes AC, USB-A, USB-C PD, y salidas DC de 12 V. A diferencia de un generador de combustión, no quema combustible, no emite gases, no hace ruido y se puede usar dentro de la vivienda.</p>
+<p>Los usos prácticos que justifican la inversión:</p>
+<ul>
+<li><strong>Respaldo ante cortes de luz:</strong> mantener el refrigerador, el router, cargar teléfonos, alimentar una CPAP o un concentrador de oxígeno durante horas sin depender de combustible ni de encender nada al aire libre.</li>
+<li><strong>Camping, autocaravana y vanlife:</strong> alimentar nevera portátil, iluminación, cargadores y equipos de cocina eléctrica sin estar conectado a la red.</li>
+<li><strong>Taller móvil y trabajo en terreno:</strong> operar herramientas eléctricas, equipos de medición, iluminación de obra o una impresora 3D en un lugar sin enchufe.</li>
+<li><strong>Complemento solar:</strong> almacenar energía de un panel solar portátil durante el día para usarla en la noche o en días nublados, creando un sistema off-grid compacto sin instalación fija.</li>
+</ul>
+</section>
+
+<section id="wh-y-w">
+<h2>Wh y W: lo que dice el catálogo vs lo que recibes</h2>
+<p>Las dos cifras centrales de una power station son la <strong>capacidad en Wh</strong> (cuánta energía almacena) y la <strong>potencia en W</strong> (cuánta puede entregar simultáneamente). Ambas requieren lectura cuidadosa:</p>
+<ul>
+<li><strong>Capacidad (Wh):</strong> indica la energía total almacenada, pero no toda es utilizable. La electrónica interna del inversor consume una parte, y la batería no se descarga al 100% en la práctica para proteger su vida útil. La energía entregable real suele ser entre un 85% y un 90% de la capacidad nominal. Una estación de "1.000 Wh" entrega del orden de 850–900 Wh al enchufe.</li>
+<li><strong>Potencia continua (W):</strong> es la potencia que la estación puede entregar de forma sostenida sin sobrecalentarse. Es la cifra que importa para saber qué aparatos puede alimentar durante horas.</li>
+<li><strong>Potencia de pico o surge (W):</strong> es la potencia máxima que puede entregar durante unos segundos para absorber la corriente de arranque de un motor. Muchas estaciones de 1.000 W continuos declaran 2.000 W de pico, lo que significa que pueden arrancar un compresor de refrigerador pero no sostener dos simultáneamente.</li>
+</ul>
+<div class="note">
+<strong>Cálculo rápido de autonomía:</strong> divide la capacidad utilizable (Wh × 0,85) por la potencia de la carga en watts. Una estación de 1.024 Wh alimentando un mini refrigerador de 60 W dura aproximadamente (1.024 × 0,85) ÷ 60 ≈ <strong>14,5 horas</strong>. Alimentando un portátil de 65 W, unas <strong>13 horas</strong>. Alimentando los dos a la vez: (870) ÷ (60+65) ≈ <strong>7 horas</strong>. Es aritmética simple, pero el error más común es hacer el cálculo con los Wh nominales sin el factor de eficiencia.
+</div>
+</section>
+
+<section id="quimica">
+<h2>LiFePO4 vs litio NMC: por qué importa en 2026</h2>
+<p>La química de la batería interna es la especificación que más afecta a cuántos años va a durar la inversión, y es donde más ha cambiado el mercado en los últimos dos años:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación entre las dos químicas usadas en power stations.</caption>
+<thead><tr><th>Característica</th><th>LiFePO4 (LFP)</th><th>Litio NMC</th></tr></thead>
+<tbody>
+<tr><td>Ciclos de vida</td><td>3.000–6.000+ ciclos al 80%</td><td>500–800 ciclos al 80%</td></tr>
+<tr><td>Seguridad térmica</td><td>Más estable, menor riesgo de fuga térmica</td><td>Menos tolerante a altas temperaturas</td></tr>
+<tr><td>Peso por Wh</td><td>Más pesada</td><td>Más liviana</td></tr>
+<tr><td>Vida útil estimada</td><td>10–15 años con uso regular</td><td>3–5 años con uso regular</td></tr>
+<tr><td>Costo</td><td>Ligeramente mayor al comprar</td><td>Menor al comprar, mayor a largo plazo</td></tr>
+</tbody>
+</table>
+</div>
+<p>En 2026, la recomendación es directa: <strong>compra LiFePO4 salvo que el peso sea la restricción absoluta</strong> (por ejemplo, si necesitas llevarla en mochila). Los tres fabricantes principales (EcoFlow, Jackery y Bluetti) ya ofrecen LiFePO4 en la gran mayoría de sus modelos actuales, y la diferencia de precio con NMC se ha reducido al punto de que la mayor vida útil del LFP la compensa con creces. Si encuentras una oferta tentadora de un modelo con NMC, calcula: a 500 ciclos vas a necesitar reemplazarla en 3–4 años de uso regular, y ese reemplazo cuesta más que la diferencia de precio inicial.</p>
+<p>Si te interesa entender más a fondo la diferencia entre estas químicas aplicadas a packs más grandes, revisa nuestra comparativa de <a href="/blog/baterias-lfp-vs-nmc-para-conversiones-electricas">Baterías LFP vs NMC para Conversiones Eléctricas</a>.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="carga-solar">
+<h2>Carga solar con MPPT integrado</h2>
+<p>La mayoría de las power stations actuales incluyen un controlador de carga solar <strong>MPPT</strong> integrado, lo que permite conectar un panel solar directamente a la estación sin un controlador externo. Esto las convierte en un sistema off-grid portátil completo: panel solar de día → almacenamiento en la estación → uso por la noche o en días nublados.</p>
+<p>Lo que hay que verificar antes de comprar un panel solar para tu estación:</p>
+<ul>
+<li><strong>Voltaje de circuito abierto (Voc) del panel</strong> dentro del rango de entrada solar de la estación. Cada modelo tiene un rango aceptado (por ejemplo, 11–50 V); un panel que exceda ese rango puede dañar el regulador.</li>
+<li><strong>Potencia máxima de entrada solar:</strong> las estaciones varían desde 100 W hasta 800 W o más. Un panel de 200 W en una estación con entrada máxima de 100 W no cargará más rápido: la estación limita la entrada a su máximo especificado.</li>
+<li><strong>Conector MC4:</strong> es el estándar industrial de la energía solar y el que usan la mayoría de paneles y estaciones. Verificar compatibilidad antes de comprar evita adaptadores innecesarios.</li>
+</ul>
+<p>Si el concepto de MPPT es nuevo para ti, explicamos cómo funciona con detalle técnico en <a href="/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo">Paneles Solares y Controladores MPPT para Robótica e IoT</a>.</p>
+</section>
+
+<section id="vs-generador">
+<h2>Power station vs generador de combustión</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación práctica entre power station y generador para respaldo domiciliario.</caption>
+<thead><tr><th>Criterio</th><th>Power station</th><th>Generador de combustión</th></tr></thead>
+<tbody>
+<tr><td>Ruido</td><td>Silenciosa (0 dB en reposo)</td><td>50–80 dB según tipo</td></tr>
+<tr><td>Emisiones</td><td>Ninguna (puede usarse en interior)</td><td>Monóxido de carbono (solo exterior)</td></tr>
+<tr><td>Autonomía</td><td>Limitada a la capacidad de la batería</td><td>Ilimitada mientras haya combustible</td></tr>
+<tr><td>Potencia máxima</td><td>Generalmente hasta 3–4 kW</td><td>Desde 2 kW hasta 10+ kW</td></tr>
+<tr><td>Mantenimiento</td><td>Prácticamente ninguno</td><td>Cambio de aceite, bujía, filtro, combustible fresco</td></tr>
+<tr><td>Recarga</td><td>Enchufe, solar o auto (horas)</td><td>Llenar estanque (minutos)</td></tr>
+<tr><td>Uso durante corte largo (2+ días)</td><td>Se agota sin forma de recargar (salvo solar)</td><td>Se sostiene con combustible adicional</td></tr>
+</tbody>
+</table>
+</div>
+<p>La power station gana en cortes cortos, uso nocturno, entornos sin ventilación y cuando el ruido es un problema. El generador gana en cortes prolongados y cuando se necesita más potencia de la que una batería puede entregar. Para una comparativa detallada de generadores, revisa <a href="/blog/generador-electrico-para-casa-en-chile-guia-de-compra-y-dimensionamiento">Generador Eléctrico para Casa en Chile</a>.</p>
+</section>
+
+<section id="tabla">
+<h2>Tabla de decisión por uso y presupuesto</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos orientativos en USD de 2026. Los precios fluctúan por promociones, modelo y región. En Chile, sumar envío e importación.</caption>
+<thead><tr><th>Uso</th><th>Capacidad recomendada</th><th>Potencia continua</th><th>Rango de precio</th></tr></thead>
+<tbody>
+<tr><td>Cargar teléfonos, portátil, luces LED, router</td><td>250–500 Wh</td><td>300–600 W</td><td>US$ 200–400</td></tr>
+<tr><td>Refrigerador pequeño + cargas básicas (corte de una noche)</td><td>500–1.000 Wh</td><td>600–1.000 W</td><td>US$ 400–800</td></tr>
+<tr><td>Camping completo, vanlife, taller móvil</td><td>1.000–2.000 Wh</td><td>1.000–2.000 W</td><td>US$ 700–1.500</td></tr>
+<tr><td>Respaldo domiciliario amplio, cargas grandes</td><td>2.000+ Wh</td><td>2.000–3.800 W</td><td>US$ 1.500–3.500+</td></tr>
+</tbody>
+</table>
+</div>
+<p>El punto dulce para la mayoría de los usos domésticos y de camping en 2026 es la franja de <strong>1.000–1.500 Wh con LiFePO4</strong>: capacidad suficiente para sostener un refrigerador y cargas básicas durante un corte de una noche, lo bastante liviana para trasladarla entre la casa y el auto, y con un precio que ha bajado notoriamente en los últimos dos años.</p>
+</section>
+
+<section id="errores">
+<h2>Errores frecuentes al comprar</h2>
+<ul>
+<li><strong>Comprar por Wh nominales sin calcular la autonomía real:</strong> 1.000 Wh suena mucho hasta que calculas que alimentar un microondas de 1.000 W agota la batería en menos de una hora. La autonomía depende del consumo de la carga conectada, no del número grande del catálogo.</li>
+<li><strong>Ignorar la potencia de arranque de los motores:</strong> un compresor de refrigerador puede exigir 3× su consumo nominal al arrancar, igual que en un generador. Si la power station no tiene suficiente surge para el pico de arranque, se apaga por protección.</li>
+<li><strong>No verificar la forma de onda:</strong> todas las estaciones de marcas reconocidas entregan onda senoidal pura, pero algunos modelos de marca blanca entregan onda senoidal modificada, que puede dañar equipos con motores o electrónica sensible. Verifica "pure sine wave" en las especificaciones.</li>
+<li><strong>Asumir que la carga solar es instantánea:</strong> un panel de 200 W carga una estación de 1.000 Wh en condiciones ideales en unas 5–6 horas de sol pleno, no en una hora. En días nublados o parcialmente sombreados, mucho más.</li>
+<li><strong>Comprar NMC por ahorrarse unos dólares:</strong> la diferencia de vida útil (500 ciclos vs 3.000+) significa que a mediano plazo la LiFePO4 sale más barata por ciclo, y mucho más confiable como equipo de emergencia que puede pasar meses sin usarse.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Una power station puede alimentar un refrigerador durante un corte de luz?</summary><p>Sí, siempre que la potencia continua y el surge sean suficientes para el compresor del refrigerador. Un mini refrigerador consume del orden de 50–80 W en régimen con picos de arranque de 200–400 W. Una estación de 600 W continuos con 1.200 W de pico maneja ese arranque sin problema, y con una capacidad de 1.000 Wh puede mantenerlo entre 8 y 14 horas según el modelo y la frecuencia con que el compresor cicla. Un refrigerador de tamaño completo consume más y tiene picos de arranque más altos, por lo que requiere una estación de mayor potencia y capacidad.</p></details>
+<details><summary>¿Cuánto tarda en recargarse una power station por red eléctrica?</summary><p>Depende de la potencia de entrada de carga y de la capacidad. Muchos modelos actuales ofrecen carga rápida por red: la EcoFlow DELTA 2, por ejemplo, se carga del 0 al 80% en aproximadamente una hora con su sistema X-Stream. Modelos con carga estándar pueden tardar de 2 a 6 horas para una carga completa según la capacidad. La carga rápida genera más calor, lo que a largo plazo puede reducir ligeramente la vida útil de la batería, pero en modelos con LiFePO4 y buena gestión térmica el efecto es mínimo.</p></details>
+<details><summary>¿Puedo usar una power station como UPS para mi computador?</summary><p>Algunas power stations incluyen modo UPS integrado, que detecta el corte de red y conmuta a batería en milisegundos. El tiempo de conmutación es el dato clave: si es de 10–20 ms, el computador y el monitor suelen mantenerse encendidos sin reiniciarse; si es mayor, puede no ser suficiente para proteger el equipo. Para proteger un computador como función primaria, un UPS dedicado con conmutación instantánea sigue siendo la opción más fiable. Una power station con modo UPS es un buen compromiso si necesitas ambas funciones y no quieres comprar dos dispositivos.</p></details>
+<details><summary>¿Vale la pena comprar paneles solares junto con la power station?</summary><p>Si planeas usar la estación en camping, en un vehículo o como respaldo ante cortes prolongados, sí: el panel solar convierte una batería que se agota en un sistema que se regenera cada día. Para uso exclusivo como respaldo domiciliario de cortes cortos (unas pocas horas), donde la estación se recarga por red apenas vuelve la luz, el panel solar es un extra agradable pero no indispensable.</p></details>
+<details><summary>¿Una power station necesita mantenimiento?</summary><p>Prácticamente ninguno, que es una de sus mayores ventajas sobre un generador. Lo único que conviene hacer es mantenerla con un nivel de carga entre el 30% y el 80% durante el almacenamiento prolongado (no dejarla al 0% ni al 100% durante meses), y encenderla al menos una vez cada dos o tres meses para que la electrónica interna se auto-calibre. Con LiFePO4 la degradación por almacenamiento es mínima, pero la autodescarga existe y una estación olvidada durante un año puede bajar a un nivel de voltaje que impida el arranque.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si estás comparando esta opción con un generador de combustión, revisa <a href="/blog/generador-electrico-para-casa-en-chile-guia-de-compra-y-dimensionamiento">Generador Eléctrico para Casa en Chile</a>. Y si el plan es montar un sistema solar fijo, revisa <a href="/blog/paneles-solares-para-casa-en-chile-net-billing-costos-y-dimensionamiento">Paneles Solares para Casa en Chile</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/generador-electrico-para-casa-en-chile-guia-de-compra-y-dimensionamiento">← Anterior: Generador Eléctrico para Casa en Chile</a>
+  <a href="/blog/paneles-solares-y-controladores-mppt-para-robotica-e-iot-autonomo">Siguiente: Paneles Solares y Controladores MPPT para Robótica e IoT →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.ecoflow.com/" target="_blank" rel="noopener noreferrer">EcoFlow — Catálogo y especificaciones oficiales</a></li>
+<li><a href="https://www.jackery.com/" target="_blank" rel="noopener noreferrer">Jackery — Especificaciones de la línea Explorer</a></li>
+<li><a href="https://www.bluettipower.com/" target="_blank" rel="noopener noreferrer">Bluetti — Catálogo oficial</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 4 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>

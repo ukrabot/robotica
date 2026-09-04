@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>CNC Router para Madera: Guía de Compra para Makers</title>
+<meta name="description" content="Guía de compra de CNC router de escritorio: área de trabajo, husillo vs spindle, rigidez del frame, control GRBL/Mach3, materiales que corta y precios 2026.">
+<meta name="keywords" content="cnc router comprar, cnc para madera, fresadora cnc escritorio, genmitsu cnc, sainsmart cnc, cnc router maker, cnc madera precio, cnc casera vs comercial">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/cnc-router-para-madera-guia-de-compra-para-makers">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="CNC Router para Madera: Guía de Compra para Makers">
+<meta property="og:description" content="Área de trabajo, husillo, rigidez del frame y control GRBL o Mach3: las decisiones técnicas antes de comprar tu primera CNC router.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/cnc-router-para-madera-guia-de-compra-para-makers-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/cnc-router-para-madera-guia-de-compra-para-makers">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CNC Router para Madera: Guía de Compra para Makers">
+<meta name="twitter:description" content="Área de trabajo, husillo, rigidez del frame y control GRBL o Mach3: las decisiones técnicas antes de comprar tu primera CNC router.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/cnc-router-para-madera-guia-de-compra-para-makers-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"CNC Router para Madera: Guía de Compra para Makers",
+  "description":"Guía de compra técnica de routers CNC de escritorio para madera, acrílico y PCB: diferencia entre formato de escritorio y frame grande, husillo de mandrino vs motor de router, rigidez del bastidor y por qué define la calidad del corte, controladores GRBL y Mach3, qué materiales puede fresar cada gama, software CAM, tabla de decisión por uso y presupuesto, y errores frecuentes de la primera compra.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-04",
+  "dateModified":"2026-09-04",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/cnc-router-para-madera-guia-de-compra-para-makers"},
+  "image":"https://www.ukrabot.cl/blog/cnc-router-para-madera-guia-de-compra-para-makers-hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Ninguno para leer la guía; para operar una CNC se necesita además fresas de carburo del diámetro adecuado, material de sujeción (clamps o mesa de vacío), aspiración de virutas, computador con software CAM y protección ocular y auditiva",
+  "wordCount":"2500",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"CNC Router para Madera: Guía de Compra para Makers","item":"https://www.ukrabot.cl/blog/cnc-router-para-madera-guia-de-compra-para-makers"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Una CNC router de escritorio puede fresar aluminio?","acceptedAnswer":{"@type":"Answer","text":"Las de gama media con rigidez suficiente (guías lineales, frame robusto) pueden fresar aluminio blando (6061) con pasadas poco profundas, velocidades de avance bajas y fresas adecuadas. No es su uso principal y requiere paciencia y buenos parámetros, pero es viable para piezas pequeñas y placas frontales. Las de gama de entrada con ruedas V-slot y frame delgado no tienen la rigidez necesaria y van a vibrar de forma excesiva al intentarlo."}},
+    {"@type":"Question","name":"¿Necesito saber G-code para operar una CNC?","acceptedAnswer":{"@type":"Answer","text":"No para el uso habitual: el software CAM genera el código G automáticamente a partir de tu diseño y los parámetros de fresado. Entender los comandos básicos de G-code ayuda para diagnosticar problemas y hacer ajustes finos, pero no es un requisito para empezar a cortar piezas. Es como la impresión 3D: el slicer genera el código y la mayoría de los usuarios nunca lo editan a mano."}},
+    {"@type":"Question","name":"¿CNC router o grabadora láser para señalética en madera?","acceptedAnswer":{"@type":"Answer","text":"La diferencia principal es la profundidad: el láser graba la superficie (penetra fracciones de milímetro a pocos milímetros) y produce marcas de color pero no relieve profundo. La CNC router remueve material y puede crear relieves 3D, letras talladas con profundidad y piezas cortadas con bordes limpios. Para señalética plana con grabado superficial, el láser es más rápido. Para letras en relieve, piezas 3D o corte de formas complejas en madera gruesa, la CNC es la herramienta correcta. Muchos talleres tienen ambas."}},
+    {"@type":"Question","name":"¿Cuánto ruido hace una CNC router de escritorio?","acceptedAnswer":{"@type":"Answer","text":"Con un motor de router tipo Makita a plena velocidad y fresando madera, el nivel de ruido es comparable a una aspiradora industrial o un taladro funcionando de forma continua: del orden de 75–90 dB dependiendo del material y la velocidad. Es un equipo que requiere protección auditiva durante la operación y que no puede funcionar en un departamento sin problemas con los vecinos. Un husillo refrigerado con VFD es notoriamente más silencioso, pero sigue requiriendo protección auditiva en la mayoría de las operaciones de fresado."}},
+    {"@type":"Question","name":"¿Puedo usar una CNC router para fabricar PCBs en vez de mandarlas a fabricar?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es uno de los usos más prácticos de una CNC de escritorio pequeña para un maker de electrónica: fresar las pistas de una placa de circuito impreso con una fresa de grabado de 0,1–0,2 mm de punta. La ventaja es tener el PCB listo en minutos en vez de esperar días o semanas del fabricante. La limitación es que solo produce placas de una o dos capas (la CNC fresa la cara superior; para dos capas se voltea manualmente), el ancho mínimo de pista depende de la precisión de la máquina, y no aplica máscara de soldadura ni serigrafía, por lo que es ideal para prototipos pero no para producción."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="cnc-router-para-madera-guia-de-compra-para-makers-hero.jpg" alt="CNC router de escritorio fresando una pieza de madera con virutas sobre la mesa de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Láser y CNC · Publicado el <time datetime="2026-09-04">4 de septiembre de 2026</time></div>
+    <h1>CNC Router para Madera: Guía de Compra para Makers</h1>
+    <p>Área de trabajo, husillo de mandrino vs motor de router, rigidez del bastidor, GRBL o Mach3, y por qué la CNC más barata casi nunca es la más barata a largo plazo.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="cnc-router-para-madera-guia-de-compra-para-makers-hero.jpg" alt="CNC router de escritorio fresando una pieza de madera con virutas sobre la mesa de trabajo" loading="lazy">
+  <div class="caption">La rigidez del bastidor define la calidad del corte mucho más que la velocidad del husillo: una CNC que vibra a mitad de pasada no se arregla con ajustes de software.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-puede">Qué puede hacer una CNC router y qué no</a></li>
+    <li><a href="#formatos">Formatos: escritorio, frame grande y kit DIY</a></li>
+    <li><a href="#husillo">Husillo de mandrino vs motor de router</a></li>
+    <li><a href="#rigidez">Rigidez del bastidor: la especificación invisible</a></li>
+    <li><a href="#control">Control: GRBL, Mach3 y LinuxCNC</a></li>
+    <li><a href="#software">Software CAM: de tu diseño al código G</a></li>
+    <li><a href="#tabla">Tabla de decisión por uso y presupuesto</a></li>
+    <li><a href="#errores">Errores de la primera compra</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="que-puede">
+<h2>Qué puede hacer una CNC router y qué no</h2>
+<p>Una CNC router es una fresadora controlada por computador que mueve una herramienta de corte rotativa (fresa) en tres ejes (X, Y, Z) para cortar, grabar o perfilar material sólido. A diferencia de una impresora 3D (que <em>agrega</em> material) o un láser (que <em>quema</em> material), la CNC <em>arranca viruta</em>: la fresa gira a alta velocidad y remueve material capa por capa hasta llegar a la forma programada.</p>
+<p>Lo que una CNC router de escritorio para makers puede hacer bien:</p>
+<ul>
+<li><strong>Madera:</strong> fresado de piezas, cajas, articulaciones, señalética, relieves 2.5D, juguetes, joyería en madera.</li>
+<li><strong>Acrílico y plásticos blandos:</strong> corte y grabado de paneles, letras, cajas de proyecto.</li>
+<li><strong>PCB:</strong> fresado de pistas en placas de circuito impreso (con fresas de grabado muy finas).</li>
+<li><strong>Aluminio blando y latón:</strong> fresado ligero con la velocidad y los avances correctos; requiere una máquina con rigidez suficiente.</li>
+</ul>
+<p>Lo que <strong>no</strong> puede hacer de forma razonable:</p>
+<ul>
+<li><strong>Acero:</strong> demasiado duro para las fuerzas y velocidades de husillo de una CNC de escritorio. Se necesita una fresadora industrial o un centro de mecanizado.</li>
+<li><strong>Cortes de más profundidad que la longitud útil de la fresa en un solo recorrido:</strong> se hacen en múltiples pasadas, cada una removiendo una capa controlada.</li>
+</ul>
+</section>
+
+<section id="formatos">
+<h2>Formatos: escritorio, frame grande y kit DIY</h2>
+<ul>
+<li><strong>CNC de escritorio (300×180 mm a 400×400 mm):</strong> es el formato de entrada para makers. Cabe en una mesa de taller, pesa entre 8 y 25 kg, y es suficiente para la mayoría de piezas de proyectos de robótica, señalética pequeña, cajas de electrónica y PCBs. Marcas como Genmitsu (SainSmart), FoxAlien y Omiocnc operan en este segmento.</li>
+<li><strong>CNC de frame grande (600×600 mm a 1.200×1.200 mm):</strong> para quien necesita fresar tablas de madera completas, muebles, señalética de gran formato o piezas de chasis de robots grandes. Es una inversión significativa en espacio, en la máquina y en aspiración de virutas. Brands como Onefinity, Shapeoko y X-Carve operan aquí.</li>
+<li><strong>Kit DIY (construir tu propia CNC):</strong> perfiles de aluminio, motores NEMA, husillos, driver y controlador comprados por separado. Mucho más barato en costo de materiales, mucho más caro en tiempo y en las iteraciones de ajuste hasta que la máquina produce cortes consistentes. Tiene sentido como proyecto de aprendizaje mecánico, no como camino rápido a una herramienta productiva.</li>
+</ul>
+<p>Si estás evaluando armar tu propia CNC, la selección de motores y drivers la cubrimos en <a href="/blog/motores-paso-a-paso-nema-17-vs-nema-23-diferencias">NEMA 17 vs NEMA 23</a> y en <a href="/blog/driver-a4988-vs-drv8825-vs-tmc2209">Driver A4988 vs DRV8825 vs TMC2209</a>, y la elección de husillos y guías en <a href="/blog/husillos-y-motores-paso-a-paso-para-una-cnc-rigida">Husillos para una CNC Rígida</a>.</p>
+</section>
+
+<section id="husillo">
+<h2>Husillo de mandrino vs motor de router</h2>
+<p>La herramienta que sostiene y hace girar la fresa es el segundo componente más importante después del bastidor, y hay dos opciones con características distintas:</p>
+<ul>
+<li><strong>Motor de router (tipo Makita RT0700, DeWalt DWP611):</strong> es un motor de mano adaptado a la CNC. Gira a velocidades fijas (normalmente 10.000–30.000 RPM con regulación manual), es fácil de conseguir y barato de reemplazar. La desventaja es el ruido (considerable), la menor precisión del rodamiento respecto a un husillo industrial, y que la velocidad no se controla desde el software de la CNC.</li>
+<li><strong>Husillo de mandrino (spindle) refrigerado:</strong> es un motor diseñado específicamente para fresado, con rodamientos de precisión, control de velocidad por VFD (variador de frecuencia) integrado con el software de la CNC, y refrigeración por agua o aire. Es más silencioso, más preciso y la velocidad se ajusta automáticamente según el material. Su costo es bastante mayor y la instalación es más compleja (el VFD, la bomba de agua si es refrigerado por agua, y el cableado adicional).</li>
+</ul>
+<p>Para la primera CNC de un maker, un motor de router cumple bien y es lo que traen la mayoría de las máquinas de escritorio de entrada y gama media. El husillo de mandrino tiene sentido cuando el nivel de detalle, la consistencia entre cortes o el ruido se convierten en limitaciones reales con el router.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="rigidez">
+<h2>Rigidez del bastidor: la especificación invisible</h2>
+<p>La rigidez del frame —la resistencia de la estructura a flexionarse bajo las fuerzas del fresado— es la especificación que más determina la calidad del corte y la que menos aparece en las fichas de producto. Una CNC que vibra durante el corte deja marcas en la pieza (chatter), rompe fresas con más frecuencia, y no se arregla cambiando parámetros de software: es una limitación física de la estructura.</p>
+<p>Las señales de rigidez que se pueden evaluar antes de comprar:</p>
+<ul>
+<li><strong>Material del frame:</strong> aluminio extruido es el mínimo aceptable; acero soldado es mejor. Acrílico, MDF o plástico moldeado son señales de una máquina que no va a fresar más que materiales muy blandos a velocidades muy bajas.</li>
+<li><strong>Tipo de guías:</strong> guías lineales con carriolas (tipo HGR) son superiores a barras redondas con bujes, que a su vez son superiores a ruedas V-slot rodando sobre perfiles de aluminio. Las ruedas V-slot son las más baratas y las que más juego lateral tienen, lo que se traduce directamente en vibraciones durante el corte.</li>
+<li><strong>Peso de la máquina:</strong> en CNC, más peso generalmente significa más masa para absorber vibraciones. Una máquina de 8 kg no va a fresar aluminio con la misma consistencia que una de 25 kg, por simple física.</li>
+</ul>
+</section>
+
+<section id="control">
+<h2>Control: GRBL, Mach3 y LinuxCNC</h2>
+<p>El software de control traduce el código G (generado por el CAM) en señales de paso para los motores de la CNC. Las tres opciones dominantes las cubrimos en detalle en <a href="/blog/grbl-vs-marlin-en-maquinas-cnc-caseras">GRBL vs Marlin en CNC Caseras</a> y <a href="/blog/mach3-vs-linuxcnc-control-de-cnc-para-makers">Mach3 vs LinuxCNC</a>, pero el resumen de decisión al comprar es:</p>
+<ul>
+<li><strong>GRBL:</strong> gratuito, corre en un Arduino o en un controlador dedicado como el ESP32-GRBL, perfecto para máquinas de 3 ejes de escritorio. Es el estándar de facto en CNC de entrada.</li>
+<li><strong>Mach3:</strong> corre en Windows, licencia de pago, interfaz más completa para máquinas de mayor complejidad. Es la opción si necesitas más de 3 ejes o funciones avanzadas como cambio de herramienta automático.</li>
+<li><strong>LinuxCNC:</strong> gratuito y de código abierto, potente y flexible, pero con una curva de aprendizaje más pronunciada. Es la opción si quieres control total sobre cada aspecto de la máquina.</li>
+</ul>
+<p>Para la primera CNC, GRBL es la elección correcta: gratis, simple, documentado y compatible con la mayoría de las máquinas de escritorio que se venden con controlador incluido.</p>
+</section>
+
+<section id="software">
+<h2>Software CAM: de tu diseño al código G</h2>
+<p>El flujo de trabajo en CNC es: <strong>diseño (CAD) → trayectorias de corte (CAM) → código G → controlador → máquina</strong>. El software CAM es el que convierte tu pieza diseñada en las instrucciones de fresado, y es donde defines profundidad de pasada, velocidad de avance, velocidad del husillo y tipo de operación (contorno, vaciado, grabado).</p>
+<ul>
+<li><strong>Fusion 360 (Autodesk):</strong> integra CAD y CAM en un solo programa, con una licencia gratuita para uso personal. Es la opción más completa para makers que también diseñan sus propias piezas.</li>
+<li><strong>Carbide Create:</strong> gratuito, orientado a las CNC de Carbide 3D (Shapeoko, Nomad) pero compatible con cualquier máquina que use código G. Más simple que Fusion, ideal para señalética y corte 2D/2.5D.</li>
+<li><strong>Easel (Inventables):</strong> basado en navegador, extremadamente simple de usar. Bueno para empezar, limitado para trabajo avanzado.</li>
+<li><strong>VCarve / Aspire (Vectric):</strong> de pago, estándar de la industria para señalética y relieves en madera. Excelente pero con precio significativo.</li>
+</ul>
+</section>
+
+<section id="tabla">
+<h2>Tabla de decisión por uso y presupuesto</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos orientativos en USD de 2026. Precios varían por marca, configuración y región.</caption>
+<thead><tr><th>Uso</th><th>Área de trabajo</th><th>Tipo de husillo</th><th>Rango de precio</th></tr></thead>
+<tbody>
+<tr><td>PCB, grabado fino, piezas pequeñas</td><td>300×180 mm</td><td>Motor pequeño o router</td><td>US$ 200–400</td></tr>
+<tr><td>Piezas de robótica, cajas, señalética pequeña</td><td>300×300 a 400×400 mm</td><td>Router (Makita/DeWalt)</td><td>US$ 400–1.000</td></tr>
+<tr><td>Señalética mediana, muebles pequeños, producción baja</td><td>600×600 mm+</td><td>Router o spindle</td><td>US$ 1.000–2.500</td></tr>
+<tr><td>Producción, muebles, carpintería digital</td><td>1.200×1.200 mm+</td><td>Spindle refrigerado</td><td>US$ 2.500–6.000+</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="errores">
+<h2>Errores de la primera compra</h2>
+<ul>
+<li><strong>Comprar la CNC más barata sin evaluar la rigidez:</strong> una máquina de $150 con frame de aluminio delgado y ruedas V-slot con juego produce cortes irregulares que ningún ajuste de software corrige. Es el equivalente a comprar la impresora 3D más barata sin autonivelación: funciona mal y frustra.</li>
+<li><strong>No presupuestar las fresas:</strong> las fresas de carburo de tungsteno se desgastan y se rompen, especialmente mientras se aprende. Un set de fresas de calidad razonable no es barato, y sin fresas afiladas la mejor CNC produce malos resultados.</li>
+<li><strong>No resolver la aspiración de virutas:</strong> fresar madera genera un volumen considerable de viruta y polvo fino. Sin aspiración, el polvo se acumula sobre la pieza (degradando el corte), invade los rodamientos y guías (degradando la máquina), y se inhala (problema de salud). Una aspiradora de taller conectada a un colector de polvo cerca del husillo es la inversión complementaria más importante.</li>
+<li><strong>Confundir velocidad del husillo con velocidad de avance:</strong> el husillo gira a miles de RPM; el avance es la velocidad a la que la fresa se desplaza por el material. La relación entre ambas (el "chipload") es el parámetro que determina si el corte es limpio o si la fresa quema el material o se rompe.</li>
+<li><strong>No sujetar bien la pieza:</strong> si la pieza se mueve durante el fresado, el resultado es una pieza arruinada y, en el peor caso, una fresa rota que sale despedida. La sujeción (clamps, tornillos de sacrificio, cinta de doble faz industrial, mesa de vacío) es un paso obligatorio, no un detalle menor.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Una CNC router de escritorio puede fresar aluminio?</summary><p>Las de gama media con rigidez suficiente (guías lineales, frame robusto) pueden fresar aluminio blando (6061) con pasadas poco profundas, velocidades de avance bajas y fresas adecuadas. No es su uso principal y requiere paciencia y buenos parámetros, pero es viable para piezas pequeñas y placas frontales. Las de gama de entrada con ruedas V-slot y frame delgado no tienen la rigidez necesaria y van a vibrar de forma excesiva al intentarlo.</p></details>
+<details><summary>¿Necesito saber G-code para operar una CNC?</summary><p>No para el uso habitual: el software CAM genera el código G automáticamente a partir de tu diseño y los parámetros de fresado. Entender los comandos básicos de G-code ayuda para diagnosticar problemas y hacer ajustes finos, pero no es un requisito para empezar a cortar piezas. Es como la impresión 3D: el slicer genera el código y la mayoría de los usuarios nunca lo editan a mano.</p></details>
+<details><summary>¿CNC router o grabadora láser para señalética en madera?</summary><p>La diferencia principal es la profundidad: el láser graba la superficie (penetra fracciones de milímetro a pocos milímetros) y produce marcas de color pero no relieve profundo. La CNC router remueve material y puede crear relieves 3D, letras talladas con profundidad y piezas cortadas con bordes limpios. Para señalética plana con grabado superficial, el láser es más rápido. Para letras en relieve, piezas 3D o corte de formas complejas en madera gruesa, la CNC es la herramienta correcta. Muchos talleres tienen ambas.</p></details>
+<details><summary>¿Cuánto ruido hace una CNC router de escritorio?</summary><p>Con un motor de router tipo Makita a plena velocidad y fresando madera, el nivel de ruido es comparable a una aspiradora industrial o un taladro funcionando de forma continua: del orden de 75–90 dB dependiendo del material y la velocidad. Es un equipo que requiere protección auditiva durante la operación y que no puede funcionar en un departamento sin problemas con los vecinos. Un husillo refrigerado con VFD es notoriamente más silencioso, pero sigue requiriendo protección auditiva en la mayoría de las operaciones de fresado.</p></details>
+<details><summary>¿Puedo usar una CNC router para fabricar PCBs en vez de mandarlas a fabricar?</summary><p>Sí, y es uno de los usos más prácticos de una CNC de escritorio pequeña para un maker de electrónica: fresar las pistas de una placa de circuito impreso con una fresa de grabado de 0,1–0,2 mm de punta. La ventaja es tener el PCB listo en minutos en vez de esperar días o semanas del fabricante. La limitación es que solo produce placas de una o dos capas (la CNC fresa la cara superior; para dos capas se voltea manualmente), el ancho mínimo de pista depende de la precisión de la máquina, y no aplica máscara de soldadura ni serigrafía, por lo que es ideal para prototipos pero no para producción.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si la CNC es para complementar tu taller de robótica, revisa también la <a href="/blog/grabadoras-y-cortadoras-laser-para-makers-guia-de-compra">Guía de Compra de Grabadoras Láser</a>, y si vas a armar tu propia máquina, los motores y drivers en <a href="/blog/motores-paso-a-paso-nema-17-vs-nema-23-diferencias">NEMA 17 vs NEMA 23</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/grabadoras-y-cortadoras-laser-para-makers-guia-de-compra">← Anterior: Grabadoras y Cortadoras Láser para Makers</a>
+  <a href="/blog/grbl-vs-marlin-en-maquinas-cnc-caseras">Siguiente: GRBL vs Marlin en Máquinas CNC Caseras →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.sainsmart.com/collections/genmitsu-cnc" target="_blank" rel="noopener noreferrer">SainSmart / Genmitsu — Catálogo de CNC</a></li>
+<li><a href="https://carbide3d.com/" target="_blank" rel="noopener noreferrer">Carbide 3D — Shapeoko y Nomad</a></li>
+<li><a href="https://www.autodesk.com/products/fusion-360" target="_blank" rel="noopener noreferrer">Autodesk Fusion 360 — CAD/CAM integrado</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 4 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
