@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>NAS: Synology vs QNAP vs Casero — Cuál Elegir</title>
+<meta name="description" content="Comparativa técnica de NAS: Synology DSM vs QNAP QTS vs armar tu propio NAS casero, discos recomendados, RAID, apps, rendimiento y precios 2026.">
+<meta name="keywords" content="nas synology vs qnap, que nas comprar, synology ds224+, qnap ts-264, nas casero vs synology, nas almacenamiento casa, nas para fotos, servidor nas domestico">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/nas-synology-vs-qnap-vs-casero-cual-elegir">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="NAS: Synology vs QNAP vs Casero — Cuál Elegir">
+<meta property="og:description" content="Synology DSM, QNAP QTS o armar el tuyo: ecosistema de software, discos, RAID y tabla por uso y presupuesto para elegir tu primer NAS.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/nas-synology-vs-qnap-vs-casero-cual-elegir-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/nas-synology-vs-qnap-vs-casero-cual-elegir">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NAS: Synology vs QNAP vs Casero — Cuál Elegir">
+<meta name="twitter:description" content="Synology DSM, QNAP QTS o armar el tuyo: ecosistema de software, discos, RAID y tabla por uso y presupuesto para elegir tu primer NAS.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/nas-synology-vs-qnap-vs-casero-cual-elegir-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"NAS: Synology vs QNAP vs Casero — Cuál Elegir",
+  "description":"Guía de compra y comparativa técnica de servidores NAS para almacenamiento doméstico y de pequeña oficina: Synology con DSM frente a QNAP con QTS frente a un NAS armado por cuenta propia con TrueNAS u OpenMediaVault, cuántas bahías necesitas, qué discos comprar (WD Red, Seagate IronWolf, Toshiba N300), niveles de RAID explicados, apps y ecosistema de software, rendimiento de red, y tabla de decisión por uso y presupuesto.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-05",
+  "dateModified":"2026-09-05",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/nas-synology-vs-qnap-vs-casero-cual-elegir"},
+  "image":"https://www.ukrabot.cl/blog/nas-synology-vs-qnap-vs-casero-cual-elegir-hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Red doméstica con al menos un puerto Ethernet libre en el router o switch, y discos duros compatibles (se compran por separado en la mayoría de los NAS)",
+  "wordCount":"2600",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"NAS: Synology vs QNAP vs Casero — Cuál Elegir","item":"https://www.ukrabot.cl/blog/nas-synology-vs-qnap-vs-casero-cual-elegir"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Puedo reemplazar Google Photos/iCloud con un NAS?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es uno de los usos más populares de un NAS doméstico. Synology Photos ofrece respaldo automático de fotos del teléfono con reconocimiento facial y álbumes, de forma muy similar a Google Photos pero almacenado en tu propio hardware sin suscripción mensual ni límite de almacenamiento más allá de tus discos. En QNAP, QuMagie cumple la misma función. En un NAS casero, Immich es la alternativa de código abierto que más se acerca a la experiencia de Google Photos."}},
+    {"@type":"Question","name":"¿Cuánto consume un NAS encendido 24/7?","acceptedAnswer":{"@type":"Answer","text":"Un NAS de 2 bahías como el Synology DS224+ consume del orden de 15-20 W con los discos activos y menos de 10 W en hibernación. Eso equivale a unos 10-15 kWh al mes, lo que en Chile representa un costo eléctrico mensual de unos $1.500-$2.500 CLP. Es significativamente menos que un computador de escritorio haciendo la misma función, y los NAS comerciales están optimizados específicamente para este uso continuo de bajo consumo."}},
+    {"@type":"Question","name":"¿Puedo usar el NAS como servidor de Plex o Jellyfin para ver películas?","acceptedAnswer":{"@type":"Answer","text":"Sí, y es uno de los usos más comunes. La diferencia está en si el NAS puede hacer transcodificación de video (convertir formatos en tiempo real para dispositivos que no soportan el formato original). Los NAS con procesadores Intel recientes soportan transcodificación por hardware (Quick Sync) y manejan streaming de 4K sin problema. Los modelos más baratos con procesadores ARM pueden servir video solo en reproducción directa, sin transcodificación, lo que requiere que el dispositivo de reproducción soporte el formato del archivo."}},
+    {"@type":"Question","name":"¿Un NAS casero con TrueNAS es difícil de configurar?","acceptedAnswer":{"@type":"Answer","text":"Es más complejo que un Synology o QNAP, pero no es inaccesible para alguien con conocimientos técnicos básicos. La instalación de TrueNAS en sí toma menos de una hora; la configuración de pools de almacenamiento ZFS, usuarios, recursos compartidos y servicios adicionales (Docker, Plex, respaldos) puede tomar un fin de semana la primera vez. La ventaja es que una vez configurado, TrueNAS es muy estable y requiere poca intervención. Lo cubrimos paso a paso en nuestra guía de NAS casero."}},
+    {"@type":"Question","name":"¿Es seguro acceder a mi NAS desde fuera de casa?","acceptedAnswer":{"@type":"Answer","text":"Puede serlo, con la configuración correcta. Los NAS comerciales ofrecen servicios de acceso remoto (Synology QuickConnect, QNAP myQNAPcloud) que crean un túnel cifrado sin necesidad de abrir puertos. Si prefieres más control, una VPN (WireGuard o Tailscale) es la opción más segura: cifra todo el tráfico y no expone el NAS directamente a internet. Lo que nunca se debe hacer es abrir el puerto de administración del NAS directamente a internet sin protección; los NAS expuestos son un objetivo habitual de ransomware."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="nas-synology-vs-qnap-vs-casero-cual-elegir-hero.jpg" alt="Servidor NAS de escritorio con dos bahías de disco duro sobre un escritorio junto a un router" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Redes y Seguridad · Publicado el <time datetime="2026-09-05">5 de septiembre de 2026</time></div>
+    <h1>NAS: Synology vs QNAP vs Casero — Cuál Elegir</h1>
+    <p>Synology DSM, QNAP QTS o armar el tuyo con TrueNAS: qué ofrece cada opción en software, cuántas bahías necesitas, qué discos comprar, y cuándo conviene cada camino.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="nas-synology-vs-qnap-vs-casero-cual-elegir-hero.jpg" alt="Servidor NAS de escritorio con dos bahías de disco duro sobre un escritorio junto a un router" loading="lazy">
+  <div class="caption">Un NAS no es solo "un disco duro en la red": es un servidor que corre aplicaciones, gestiona respaldos, sirve multimedia y protege tus datos con redundancia.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#que-es">Qué es un NAS y por qué no basta con un disco externo</a></li>
+    <li><a href="#synology">Synology (DSM): el ecosistema más pulido</a></li>
+    <li><a href="#qnap">QNAP (QTS): más hardware por el precio</a></li>
+    <li><a href="#casero">NAS casero: máxima flexibilidad, más trabajo</a></li>
+    <li><a href="#discos">Qué discos comprar: NAS-grade vs desktop</a></li>
+    <li><a href="#raid">RAID explicado sin jerga</a></li>
+    <li><a href="#tabla">Tabla de decisión por uso y presupuesto</a></li>
+    <li><a href="#errores">Errores al comprar</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="que-es">
+<h2>Qué es un NAS y por qué no basta con un disco externo</h2>
+<p>Un NAS (Network Attached Storage) es un pequeño servidor dedicado al almacenamiento, conectado a la red doméstica por Ethernet, accesible desde cualquier dispositivo de la casa y, si se configura, desde fuera de ella por internet. La diferencia con un disco externo USB es fundamental:</p>
+<ul>
+<li><strong>Acceso simultáneo:</strong> todos los dispositivos de la casa (computadores, teléfonos, televisores, consolas) acceden a los mismos archivos al mismo tiempo, sin enchufar ni desenchufar nada.</li>
+<li><strong>Redundancia:</strong> con dos o más discos en RAID, los datos sobreviven al fallo de un disco sin pérdida. Un disco externo USB que falla se lleva todo lo que tenía.</li>
+<li><strong>Aplicaciones:</strong> un NAS moderno corre aplicaciones propias: servidor multimedia (Plex, Jellyfin), respaldo automático de fotos del teléfono (reemplazo de Google Photos/iCloud sin suscripción), sincronización tipo Dropbox, vigilancia con cámaras IP, y mucho más.</li>
+<li><strong>Respaldo automatizado:</strong> puede respaldar automáticamente computadores, teléfonos y otros dispositivos de la red sin intervención del usuario.</li>
+</ul>
+<p>Si tu necesidad es simplemente guardar archivos y llevártelos a otro lugar, un disco externo sigue siendo la solución más simple. El NAS tiene sentido cuando quieres acceso desde múltiples dispositivos, protección contra pérdida de datos, y/o reemplazar servicios de nube con almacenamiento propio.</p>
+</section>
+
+<section id="synology">
+<h2>Synology (DSM): el ecosistema más pulido</h2>
+<p>Synology es la marca más popular en NAS doméstico y de pequeña oficina, y el motivo no es el hardware sino el <strong>software: DSM (DiskStation Manager)</strong>. Es un sistema operativo web con una interfaz que parece un escritorio de computador, intuitivo incluso para quien no tiene experiencia con servidores. Las aplicaciones integradas que más se usan:</p>
+<ul>
+<li><strong>Synology Photos:</strong> respaldo automático de fotos del teléfono con reconocimiento facial y organización por álbum. Es el reemplazo más directo de Google Photos sin depender de una suscripción mensual.</li>
+<li><strong>Synology Drive:</strong> sincronización de archivos entre computadores tipo Dropbox/OneDrive, pero almacenado en tu propio hardware.</li>
+<li><strong>Hyper Backup:</strong> respaldos versionados a otro NAS, a un disco USB o a la nube como destino de respaldo secundario.</li>
+<li><strong>Surveillance Station:</strong> grabación de cámaras IP con licencias incluidas (típicamente 2 cámaras gratis, más con licencias de pago adicionales).</li>
+</ul>
+<p>La contrapartida de Synology es el <strong>precio del hardware</strong>: cobra una prima por un hardware que, en especificaciones puras (CPU, RAM), es inferior al de QNAP al mismo precio. Lo que pagas es la calidad del software, la estabilidad de las actualizaciones y la comunidad de soporte. Es la opción correcta para quien quiere un NAS que funcione de forma confiable sin necesitar conocimientos de servidor.</p>
+</section>
+
+<section id="qnap">
+<h2>QNAP (QTS): más hardware por el precio</h2>
+<p>QNAP ofrece <strong>más potencia de hardware por dólar</strong> que Synology: a un precio equivalente, suele tener mejor CPU, más RAM, más puertos (incluidos puertos de red de 2,5 GbE que Synology cobra como premium), y en algunos modelos la posibilidad de agregar SSD NVMe como caché. Su sistema operativo, <strong>QTS</strong>, es funcional y capaz, con aplicaciones equivalentes a las de Synology para respaldo, multimedia y vigilancia.</p>
+<p>El punto donde QNAP pierde frente a Synology es la <strong>pulcritud del software</strong>: QTS tiene más opciones y más potencia, pero la interfaz es menos intuitiva, las actualizaciones han tenido históricamente más vulnerabilidades de seguridad (algo que QNAP ha trabajado en mejorar pero que sigue siendo un punto de preocupación en la comunidad), y la experiencia de "configurar y olvidarse" es menos lograda.</p>
+<p>QNAP es la opción correcta para quien valora las especificaciones de hardware, quiere puertos de red rápidos, planea correr contenedores Docker o máquinas virtuales dentro del NAS, y tiene la disposición de invertir algo más de tiempo en la configuración y el mantenimiento del software.</p>
+</section>
+
+<section id="casero">
+<h2>NAS casero: máxima flexibilidad, más trabajo</h2>
+<p>La tercera vía es armar tu propio NAS con un mini PC o hardware reciclado, e instalar un sistema operativo de almacenamiento de código abierto como <strong>TrueNAS</strong> (basado en ZFS, excelente protección de datos) u <strong>OpenMediaVault</strong> (más simple, basado en Debian). Lo cubrimos en detalle en <a href="/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso">Cómo Montar un Servidor NAS Casero</a> y en <a href="/blog/crea-tu-propio-nas-casero-con-raspberry-pi-facilmente">NAS con Raspberry Pi</a>.</p>
+<p>Las ventajas reales de esta ruta:</p>
+<ul>
+<li><strong>Hardware exactamente a tu medida:</strong> eliges el procesador, la cantidad de RAM, el número de puertos SATA y la capacidad de expansión.</li>
+<li><strong>Sin costo de licencia:</strong> TrueNAS y OpenMediaVault son gratuitos.</li>
+<li><strong>Flexibilidad total:</strong> puedes correr Docker, Home Assistant, Frigate, Plex, y cualquier otro servicio sobre el mismo hardware.</li>
+</ul>
+<p>Las desventajas reales:</p>
+<ul>
+<li><strong>Más tiempo de configuración:</strong> lo que en un Synology toma 15 minutos (respaldo de fotos del teléfono) puede tomar horas de configuración manual en TrueNAS.</li>
+<li><strong>Sin soporte del fabricante:</strong> si algo falla, la solución es buscar en foros y documentación.</li>
+<li><strong>Consumo eléctrico potencialmente mayor:</strong> un mini PC genérico no está optimizado para bajo consumo 24/7 como un NAS dedicado.</li>
+</ul>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="discos">
+<h2>Qué discos comprar: NAS-grade vs desktop</h2>
+<p>Los discos duros diseñados para NAS (WD Red Plus, Seagate IronWolf, Toshiba N300) se diferencian de los discos de escritorio en tres aspectos técnicos que importan para un uso 24/7 en RAID:</p>
+<ul>
+<li><strong>Firmware optimizado para RAID:</strong> limitan el tiempo de recuperación de errores (TLER/ERC) para evitar que el controlador RAID expulse el disco por timeout ante un sector lento. Un disco desktop sin TLER puede ser expulsado del array aunque no esté realmente dañado.</li>
+<li><strong>Vibración:</strong> los discos NAS-grade tienen sensores y compensación de vibración rotacional (RV), importante cuando varios discos giran juntos en el mismo chasis.</li>
+<li><strong>Garantía y carga de trabajo:</strong> típicamente 3 años de garantía y una carga de trabajo especificada de 180-300 TB/año, frente a 1-2 años y cargas menores en discos desktop.</li>
+</ul>
+<p>¿Se puede usar un disco desktop en un NAS? Sí, y muchos lo hacen, especialmente en NAS de 1-2 bahías donde la vibración es menor. Pero en un NAS de 4+ bahías con RAID, usar discos NAS-grade reduce significativamente la probabilidad de expulsiones falsas y de fallas prematuras bajo carga continua.</p>
+<p>Sobre capacidad: <strong>4 TB por disco</strong> es el punto dulce de costo por TB para la mayoría de los usuarios domésticos en 2026. Discos de 8 TB y más son proporcionalmente más económicos por TB pero implican una inversión inicial mayor.</p>
+</section>
+
+<section id="raid">
+<h2>RAID explicado sin jerga</h2>
+<p>RAID es la forma en que el NAS combina varios discos para proteger tus datos. Los dos niveles que importan en uso doméstico:</p>
+<ul>
+<li><strong>RAID 1 (espejo):</strong> dos discos con exactamente la misma información. Si uno falla, el otro tiene todos los datos intactos. Pierdes la mitad de la capacidad total (dos discos de 4 TB te dan 4 TB útiles), pero la protección es simple y efectiva. Es el nivel recomendable para un NAS de 2 bahías.</li>
+<li><strong>RAID 5 (paridad distribuida):</strong> tres o más discos que distribuyen los datos y la información de paridad entre todos. Soporta el fallo de un disco sin pérdida de datos, y la capacidad útil es la suma de todos los discos menos uno (cuatro discos de 4 TB te dan 12 TB útiles). Es el nivel más común en NAS de 4+ bahías.</li>
+</ul>
+<div class="warning">
+<strong>RAID no es respaldo.</strong> RAID protege contra la falla de un disco, pero no protege contra borrado accidental, ransomware, robo del NAS o una falla eléctrica que dañe todos los discos a la vez. Un respaldo real es una copia adicional en otro lugar: un disco externo en otra ubicación, o un servicio de respaldo en la nube como destino secundario.
+</div>
+</section>
+
+<section id="tabla">
+<h2>Tabla de decisión por uso y presupuesto</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos en USD de 2026, sin incluir discos (se compran aparte). Precios varían por modelo y tienda.</caption>
+<thead><tr><th>Opción</th><th>Bahías</th><th>Ideal para</th><th>Rango precio (solo NAS)</th></tr></thead>
+<tbody>
+<tr><td>Synology DS224+</td><td>2</td><td>Fotos, respaldo familiar, multimedia básico, setup simple</td><td>US$ 300–350</td></tr>
+<tr><td>QNAP TS-264</td><td>2</td><td>Lo mismo + más RAM, puerto 2,5 GbE, Docker/VMs</td><td>US$ 280–340</td></tr>
+<tr><td>Synology DS923+</td><td>4</td><td>Almacenamiento grande, vigilancia, pequeña oficina</td><td>US$ 550–620</td></tr>
+<tr><td>QNAP TS-464</td><td>4</td><td>Lo mismo + 2×2,5 GbE, NVMe caché, más potencia bruta</td><td>US$ 450–550</td></tr>
+<tr><td>NAS casero (mini PC + TrueNAS)</td><td>Variable</td><td>Máxima flexibilidad, Home Assistant, Frigate, Docker</td><td>US$ 150–400 (hardware reciclado/nuevo)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Si tu prioridad es <strong>simplicidad y confiabilidad</strong> → Synology. Si es <strong>rendimiento y valor por dólar</strong> → QNAP. Si es <strong>flexibilidad y aprendizaje</strong> → casero. Las tres opciones protegen tus datos correctamente si se configuran con RAID y respaldo externo.</p>
+</section>
+
+<section id="errores">
+<h2>Errores al comprar</h2>
+<ul>
+<li><strong>Olvidar el costo de los discos:</strong> un NAS de 2 bahías vacío cuesta US$ 300, pero dos discos de 4 TB NAS-grade suman otros US$ 200-250. El presupuesto total es NAS + discos, no solo el NAS.</li>
+<li><strong>Comprar un NAS de 2 bahías cuando se necesitan 4:</strong> la capacidad de expansión futura importa. Un NAS de 2 bahías en RAID 1 con discos de 4 TB ofrece 4 TB útiles; si necesitas más, no puedes agregar discos sin cambiar el equipo. Si anticipas que vas a necesitar más almacenamiento en 2-3 años, empieza con 4 bahías.</li>
+<li><strong>Conectar el NAS por WiFi:</strong> un NAS debe estar conectado por cable Ethernet al router o switch. La velocidad de transferencia por WiFi es una fracción de la que se obtiene por cable, y para streaming de video en 4K o respaldos de terabytes la diferencia es inaceptable.</li>
+<li><strong>Confundir RAID con respaldo:</strong> como se explicó, RAID protege contra falla de disco, no contra pérdida total. Un NAS con RAID más un respaldo externo (disco USB, nube, o segundo NAS en otra ubicación) es la configuración correcta.</li>
+<li><strong>No configurar UPS:</strong> un corte de luz durante una escritura en disco puede corromper el sistema de archivos. Un UPS pequeño que dé al NAS 5-10 minutos de energía para apagarse de forma limpia es una inversión de protección crítica.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo reemplazar Google Photos/iCloud con un NAS?</summary><p>Sí, y es uno de los usos más populares de un NAS doméstico. Synology Photos ofrece respaldo automático de fotos del teléfono con reconocimiento facial y álbumes, de forma muy similar a Google Photos pero almacenado en tu propio hardware sin suscripción mensual ni límite de almacenamiento más allá de tus discos. En QNAP, QuMagie cumple la misma función. En un NAS casero, Immich es la alternativa de código abierto que más se acerca a la experiencia de Google Photos.</p></details>
+<details><summary>¿Cuánto consume un NAS encendido 24/7?</summary><p>Un NAS de 2 bahías como el Synology DS224+ consume del orden de 15-20 W con los discos activos y menos de 10 W en hibernación. Eso equivale a unos 10-15 kWh al mes, lo que en Chile representa un costo eléctrico mensual de unos $1.500-$2.500 CLP. Es significativamente menos que un computador de escritorio haciendo la misma función, y los NAS comerciales están optimizados específicamente para este uso continuo de bajo consumo.</p></details>
+<details><summary>¿Puedo usar el NAS como servidor de Plex o Jellyfin para ver películas?</summary><p>Sí, y es uno de los usos más comunes. La diferencia está en si el NAS puede hacer transcodificación de video (convertir formatos en tiempo real para dispositivos que no soportan el formato original). Los NAS con procesadores Intel recientes soportan transcodificación por hardware (Quick Sync) y manejan streaming de 4K sin problema. Los modelos más baratos con procesadores ARM pueden servir video solo en reproducción directa, sin transcodificación, lo que requiere que el dispositivo de reproducción soporte el formato del archivo.</p></details>
+<details><summary>¿Un NAS casero con TrueNAS es difícil de configurar?</summary><p>Es más complejo que un Synology o QNAP, pero no es inaccesible para alguien con conocimientos técnicos básicos. La instalación de TrueNAS en sí toma menos de una hora; la configuración de pools de almacenamiento ZFS, usuarios, recursos compartidos y servicios adicionales (Docker, Plex, respaldos) puede tomar un fin de semana la primera vez. La ventaja es que una vez configurado, TrueNAS es muy estable y requiere poca intervención. Lo cubrimos paso a paso en nuestra guía de NAS casero.</p></details>
+<details><summary>¿Es seguro acceder a mi NAS desde fuera de casa?</summary><p>Puede serlo, con la configuración correcta. Los NAS comerciales ofrecen servicios de acceso remoto (Synology QuickConnect, QNAP myQNAPcloud) que crean un túnel cifrado sin necesidad de abrir puertos. Si prefieres más control, una VPN (WireGuard o Tailscale) es la opción más segura: cifra todo el tráfico y no expone el NAS directamente a internet. Lo que nunca se debe hacer es abrir el puerto de administración del NAS directamente a internet sin protección; los NAS expuestos son un objetivo habitual de ransomware.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si te decides por el camino casero, la guía completa está en <a href="/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso">Cómo Montar un Servidor NAS Casero</a>. Y para proteger el NAS de cortes de luz, revisa <a href="/blog/mejores-ups-sistemas-de-alimentacion-para-impresoras-3d">Mejores UPS</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/como-montar-un-servidor-nas-casero-con-discos-sata-guia-paso-a-paso">← Anterior: Cómo Montar un Servidor NAS Casero</a>
+  <a href="/blog/respaldos-automaticos-y-raid-en-un-nas-domestico">Siguiente: Respaldos Automáticos y RAID en un NAS Doméstico →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.synology.com/" target="_blank" rel="noopener noreferrer">Synology — Productos y DSM</a></li>
+<li><a href="https://www.qnap.com/" target="_blank" rel="noopener noreferrer">QNAP — Productos y QTS</a></li>
+<li><a href="https://www.truenas.com/" target="_blank" rel="noopener noreferrer">TrueNAS — Sistema operativo de almacenamiento</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 5 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
