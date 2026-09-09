@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Placas ESP32: Cuál Elegir para tu Proyecto (Guía de Compra)</title>
+<meta name="description" content="Guía de compra de placas ESP32: ESP32 clásico vs S3 vs C3 vs C6, WiFi/BLE, USB nativo, pines, memoria, consumo, y tabla de decisión por tipo de proyecto.">
+<meta name="keywords" content="esp32 cual elegir, esp32 vs esp32-s3, esp32-c3 vs esp32, placas esp32 comprar, esp32 s3 comprar, mejor placa esp32 2026, esp32 c6 zigbee thread, devkit esp32">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Placas ESP32: Cuál Elegir para tu Proyecto (Guía de Compra)">
+<meta property="og:description" content="ESP32 clásico, S3, C3 o C6: qué cambia entre ellos, para qué sirve cada uno y cuál necesitas según tu proyecto.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Placas ESP32: Cuál Elegir para tu Proyecto (Guía de Compra)">
+<meta name="twitter:description" content="ESP32 clásico, S3, C3 o C6: qué cambia entre ellos, para qué sirve cada uno y cuál necesitas según tu proyecto.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Placas ESP32: Cuál Elegir para tu Proyecto (Guía de Compra)",
+  "description":"Guía técnica de compra y selección de placas de desarrollo ESP32: diferencias reales entre ESP32 clásico, ESP32-S2, ESP32-S3, ESP32-C3 y ESP32-C6, WiFi 4 vs WiFi 6 vs Thread/Zigbee, USB nativo vs puente USB-UART, cantidad de pines GPIO y ADC, RAM y flash, modos de bajo consumo, módulos con antena externa vs integrada, y tabla de decisión por tipo de proyecto (IoT sensor, domótica, audio, cámara, wearable, gateway).",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-05",
+  "dateModified":"2026-09-05",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra"},
+  "image":"https://www.ukrabot.cl/blog/placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra-hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Un computador con un puerto USB, el IDE de Arduino o PlatformIO instalado, y un cable USB-C (la mayoría de las placas actuales usan USB-C)",
+  "wordCount":"2600",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Placas ESP32: Cuál Elegir para tu Proyecto (Guía de Compra)","item":"https://www.ukrabot.cl/blog/placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Puedo programar todas las variantes de ESP32 con el IDE de Arduino?","acceptedAnswer":{"@type":"Answer","text":"Sí, todas las variantes activas (ESP32, S2, S3, C3, C6) son compatibles con el IDE de Arduino a través del paquete de placas de Espressif. La mayoría de las funciones básicas (GPIO, WiFi, BLE, I2C, SPI, UART) se programan de la misma forma. Las diferencias aparecen en funciones específicas del hardware (USB nativo, acelerador de IA, Thread) que requieren librerías o configuraciones distintas según la variante."}},
+    {"@type":"Question","name":"¿ESP32 o Arduino para un principiante total?","acceptedAnswer":{"@type":"Answer","text":"Para un principiante total sin experiencia en electrónica ni programación, Arduino Uno sigue siendo un mejor punto de partida: curva de aprendizaje más simple, sin gestionar WiFi ni sistemas operativos, y con la base de tutoriales para principiantes más grande del mundo. El ESP32 tiene sentido como siguiente paso cuando se necesita WiFi, Bluetooth o más potencia. Revisa nuestra comparativa de Raspberry Pi vs Arduino para entender las diferencias entre plataformas."}},
+    {"@type":"Question","name":"¿El ESP32-C6 reemplaza al ESP32 clásico?","acceptedAnswer":{"@type":"Answer","text":"No completamente. El C6 aporta WiFi 6 y Thread/Zigbee, que el clásico no tiene, pero es single-core RISC-V frente a dual-core Xtensa, lo que significa menos potencia de procesamiento bruto y menos compatibilidad con librerías escritas específicamente para Xtensa. Además, el clásico tiene Bluetooth Classic que ninguna otra variante ofrece. Para proyectos nuevos de domótica en 2026, el C6 es generalmente mejor; para proyectos que necesitan potencia de cómputo o BT Classic, el clásico sigue vigente."}},
+    {"@type":"Question","name":"¿Cuánto cuesta una placa ESP32?","acceptedAnswer":{"@type":"Answer","text":"Un ESP32-DevKitC clásico de clon ronda los US$ 4-8. Un ESP32-S3-DevKitC de clon cuesta US$ 6-12. Un ESP32-C3 SuperMini cuesta US$ 3-5, siendo la opción más económica. Los DevKit oficiales de Espressif cuestan entre US$ 8-15. Los módulos con cámara (ESP32-S3-CAM) rondan los US$ 8-15. Son precios de plataformas de importación; en tiendas locales en Chile pueden ser el doble o más."}},
+    {"@type":"Question","name":"¿Puedo usar un ESP32 en vez de un Arduino para los proyectos de mi kit starter?","acceptedAnswer":{"@type":"Answer","text":"Sí, la mayoría de los proyectos de un kit Arduino starter (LEDs, sensores, servos, LCD) funcionan en un ESP32 con adaptaciones menores en el código (los pines tienen numeración distinta y algunos pines tienen restricciones). La ventaja es que el ESP32 además puede conectarse a WiFi y BLE, abriendo la puerta a proyectos IoT. La desventaja para un principiante total es que el ESP32 tiene más complejidad (más pines con funciones especiales, gestión de alimentación) y el ecosistema de tutoriales para principiantes absolutos sigue siendo más maduro en Arduino."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra-hero.jpg" alt="Varias placas de desarrollo ESP32 sobre una mesa de trabajo junto a sensores y cables" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y SBC · Publicado el <time datetime="2026-09-05">5 de septiembre de 2026</time></div>
+    <h1>Placas ESP32: Cuál Elegir para tu Proyecto (Guía de Compra)</h1>
+    <p>ESP32 clásico, S2, S3, C3 o C6: qué cambia entre cada variante, para qué sirve cada una y cuál necesitas realmente según tu proyecto.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra-hero.jpg" alt="Varias placas de desarrollo ESP32 sobre una mesa de trabajo junto a sensores y cables" loading="lazy">
+  <div class="caption">La familia ESP32 tiene al menos cinco variantes activas que no son intercambiables: elegir la correcta antes de comprar evita descubrir a mitad de proyecto que te falta USB nativo, Zigbee o pines suficientes.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#familia">La familia ESP32: no es una sola placa</a></li>
+    <li><a href="#clasico">ESP32 clásico (WROOM-32): el veterano</a></li>
+    <li><a href="#s3">ESP32-S3: USB nativo, IA y cámara</a></li>
+    <li><a href="#c3">ESP32-C3: el más económico con BLE 5</a></li>
+    <li><a href="#c6">ESP32-C6: WiFi 6, Thread y Zigbee</a></li>
+    <li><a href="#tabla">Tabla de decisión: qué variante para qué proyecto</a></li>
+    <li><a href="#modulos">Módulos y breakouts: qué buscar al comprar</a></li>
+    <li><a href="#errores">Errores al elegir</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="familia">
+<h2>La familia ESP32: no es una sola placa</h2>
+<p>Cuando alguien dice "ESP32" puede referirse a cualquiera de al menos cinco variantes con capacidades técnicas distintas, y esa confusión es la causa número uno de compras equivocadas. Todas las fabrica Espressif, todas se programan con el mismo framework (Arduino o ESP-IDF), y todas tienen WiFi y Bluetooth, pero las diferencias en núcleos, periféricos, protocolos y pines son reales y determinan para qué sirve cada una.</p>
+<p>Las variantes activas en 2026 que importan para un maker:</p>
+<ul>
+<li><strong>ESP32 clásico</strong> (WROOM-32, WROVER): dual-core Xtensa, WiFi 4, Bluetooth Classic + BLE 4.2.</li>
+<li><strong>ESP32-S2</strong>: single-core Xtensa, WiFi 4, USB nativo OTG, sin Bluetooth. Nicho: seguridad y USB.</li>
+<li><strong>ESP32-S3</strong>: dual-core Xtensa, WiFi 4, BLE 5, USB nativo OTG, acelerador de IA (vector instructions). El más potente de la familia.</li>
+<li><strong>ESP32-C3</strong>: single-core RISC-V, WiFi 4, BLE 5. El más barato y eficiente para IoT simple.</li>
+<li><strong>ESP32-C6</strong>: single-core RISC-V, <strong>WiFi 6</strong>, BLE 5, <strong>Thread/Zigbee</strong>. El más nuevo y el primero con WiFi 6 y soporte nativo para Thread/Matter.</li>
+</ul>
+<p>Esta guía cubre las cuatro variantes que más se usan (ESP32 clásico, S3, C3 y C6), dejando el S2 como caso de nicho que rara vez es la mejor opción para un proyecto nuevo.</p>
+</section>
+
+<section id="clasico">
+<h2>ESP32 clásico (WROOM-32): el veterano</h2>
+<p>Es la placa con la que empezó todo y sigue siendo la más vendida, la más documentada y la que tiene más proyectos publicados en internet. Sus fortalezas:</p>
+<ul>
+<li><strong>Dual-core Xtensa LX6 a 240 MHz:</strong> potencia de sobra para la mayoría de los proyectos maker, incluidos los que combinan WiFi activo con procesamiento de sensores.</li>
+<li><strong>Bluetooth Classic + BLE 4.2:</strong> es la única variante que soporta Bluetooth Classic (SPP), necesario para comunicarse con dispositivos antiguos que no hablan BLE. Todas las demás variantes solo tienen BLE.</li>
+<li><strong>Comunidad y documentación:</strong> la base de tutoriales, librerías y foros es inmensa. Cualquier problema que tengas, alguien ya lo tuvo y lo documentó.</li>
+<li><strong>Precio:</strong> las placas DevKit V1 con WROOM-32 son las más baratas de toda la familia.</li>
+</ul>
+<p>Sus limitaciones frente a las variantes más nuevas: no tiene USB nativo (usa un puente UART como CP2102 o CH340, que requiere driver), no tiene acelerador de IA, el BLE es versión 4.2 (más lento y con menor rango que BLE 5), y no soporta WiFi 6 ni Thread/Zigbee. Para proyectos nuevos en 2026, sigue siendo una opción válida cuando se necesita Bluetooth Classic o cuando el precio mínimo es la prioridad absoluta. Si no necesitas Bluetooth Classic, el S3 o el C3 son técnicamente superiores en casi todo.</p>
+<p>Si recién estás empezando con ESP32, revisa nuestra guía de <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">Domótica con ESP32 y MQTT</a> para un primer proyecto práctico, o el <a href="/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos">ESP32 como Analizador WiFi</a> para un uso más avanzado.</p>
+</section>
+
+<section id="s3">
+<h2>ESP32-S3: USB nativo, IA y cámara</h2>
+<p>Es la variante más potente de la familia y la elección correcta para proyectos que exigen procesamiento pesado:</p>
+<ul>
+<li><strong>Dual-core Xtensa LX7 a 240 MHz</strong> con instrucciones vectoriales para aceleración de IA/ML: corre modelos de TensorFlow Lite Micro con rendimiento muy superior al ESP32 clásico para tareas como reconocimiento de palabras clave (wake word), clasificación de audio y detección de objetos simples.</li>
+<li><strong>USB nativo OTG:</strong> se conecta al computador directamente como dispositivo USB, sin necesitar un chip puente USB-UART externo. Eso significa: no más drivers CH340/CP2102, más velocidad de transferencia, y la posibilidad de que el ESP32-S3 actúe como dispositivo USB (teclado, ratón, MIDI, almacenamiento) frente al computador.</li>
+<li><strong>Más RAM:</strong> hasta 8 MB de PSRAM externa en los módulos con WROVER/Octal, lo que permite procesar imágenes de cámara en resoluciones útiles. Es la variante usada en la mayoría de los proyectos con cámara (ESP32-S3-CAM).</li>
+<li><strong>BLE 5.0:</strong> mayor rango y throughput que el BLE 4.2 del clásico. Sin Bluetooth Classic.</li>
+</ul>
+<p>Es la placa que conviene elegir para: proyectos con cámara, procesamiento de audio o voz, IA en el borde (edge AI), interfaces USB personalizadas, y cualquier proyecto donde la potencia de cómputo o la RAM sean una limitación en el ESP32 clásico.</p>
+</section>
+
+<section id="c3">
+<h2>ESP32-C3: el más económico con BLE 5</h2>
+<p>Es un chip basado en arquitectura <strong>RISC-V</strong> (no Xtensa como el clásico y el S3), single-core a 160 MHz, diseñado para ser la opción de menor costo en IoT con conectividad:</p>
+<ul>
+<li><strong>WiFi 4 + BLE 5.0:</strong> conectividad completa para la mayoría de los proyectos IoT de sensores y actuadores.</li>
+<li><strong>USB nativo:</strong> como el S3, no necesita chip puente.</li>
+<li><strong>Precio mínimo:</strong> es el ESP32 más barato por unidad, lo que lo hace ideal para proyectos donde se necesitan muchos nodos (red de sensores, domótica distribuida) y el costo unitario importa.</li>
+<li><strong>Bajo consumo:</strong> excelente para dispositivos alimentados por batería que necesitan WiFi o BLE con autonomía larga.</li>
+</ul>
+<p>Lo que <strong>no</strong> tiene: segundo núcleo (es single-core, lo que limita la multitarea pesada), Bluetooth Classic, acelerador de IA, interfaz de cámara. Para un sensor de temperatura con WiFi o un nodo de domótica Zigbee/BLE, es más que suficiente y cuesta la mitad que un S3.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="c6">
+<h2>ESP32-C6: WiFi 6, Thread y Zigbee</h2>
+<p>Es la variante más nueva y la primera de la familia con soporte para los protocolos del futuro de la domótica:</p>
+<ul>
+<li><strong>WiFi 6 (802.11ax):</strong> mejor eficiencia espectral y menor consumo que WiFi 4, especialmente en redes con muchos dispositivos. Es el primer ESP32 compatible con WiFi 6.</li>
+<li><strong>Thread y Zigbee nativos (802.15.4):</strong> la radio de 2,4 GHz soporta el protocolo IEEE 802.15.4, que es la base de Thread y Zigbee. Esto permite construir dispositivos <strong>Matter-compatibles</strong> sobre Thread sin hardware adicional, lo que posiciona al C6 como la placa ideal para construir dispositivos domóticos que funcionen con cualquier ecosistema (Apple Home, Google Home, Amazon Alexa, Home Assistant).</li>
+<li><strong>RISC-V single-core a 160 MHz + co-procesador LP:</strong> un núcleo de ultra bajo consumo permite ejecutar tareas simples (lectura de sensores, comunicación BLE) con un consumo mínimo mientras el núcleo principal duerme.</li>
+</ul>
+<p>El C6 es la variante que más sentido tiene para proyectos nuevos de domótica en 2026, especialmente si planeas que el dispositivo sea compatible con Matter/Thread. Si tu proyecto de domótica está basado en <a href="/blog/domotica-como-automatizar-tu-casa-desde-cero-guia-completa">el ecosistema que describimos en la guía de automatización del hogar</a>, el C6 es la placa sobre la que conviene construir sensores y actuadores propios.</p>
+</section>
+
+<section id="tabla">
+<h2>Tabla de decisión: qué variante para qué proyecto</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Guía de selección rápida por tipo de proyecto.</caption>
+<thead><tr><th>Proyecto</th><th>Variante recomendada</th><th>Por qué</th></tr></thead>
+<tbody>
+<tr><td>Sensor IoT básico con WiFi</td><td>ESP32-C3</td><td>El más barato con WiFi + BLE 5 + USB nativo</td></tr>
+<tr><td>Nodo domótico Matter/Thread/Zigbee</td><td>ESP32-C6</td><td>Único con 802.15.4 nativo para Thread y Zigbee</td></tr>
+<tr><td>Proyecto con cámara</td><td>ESP32-S3</td><td>Interfaz de cámara, 8 MB PSRAM, procesamiento de imagen</td></tr>
+<tr><td>IA en el borde (wake word, clasificación)</td><td>ESP32-S3</td><td>Instrucciones vectoriales, dual-core, más RAM</td></tr>
+<tr><td>Dispositivo USB personalizado (MIDI, HID, storage)</td><td>ESP32-S3 o C3</td><td>USB nativo OTG sin chip puente</td></tr>
+<tr><td>Comunicación con dispositivo Bluetooth Classic</td><td>ESP32 clásico</td><td>Única variante con Bluetooth Classic (SPP)</td></tr>
+<tr><td>Audio (Bluetooth speaker, I2S)</td><td>ESP32 clásico o S3</td><td>BT Classic para A2DP (clásico) o mejor I2S (S3)</td></tr>
+<tr><td>Red de muchos sensores (bajo costo unitario)</td><td>ESP32-C3</td><td>Precio mínimo por nodo con conectividad completa</td></tr>
+<tr><td>Gateway WiFi 6 + Thread para domótica</td><td>ESP32-C6</td><td>WiFi 6 + 802.15.4 en una sola placa</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="modulos">
+<h2>Módulos y breakouts: qué buscar al comprar</h2>
+<ul>
+<li><strong>DevKit oficial de Espressif vs clones:</strong> los DevKit oficiales (ESP32-DevKitC, ESP32-S3-DevKitC-1) son la referencia con documentación garantizada. Los clones de AliExpress/Amazon son significativamente más baratos y funcionalmente idénticos en la mayoría de los casos, pero la calidad del PCB, la regulación de voltaje y la antena pueden ser inferiores.</li>
+<li><strong>Antena integrada (PCB) vs conector U.FL/IPEX:</strong> la antena PCB es compacta y suficiente para la mayoría de los usos en interiores. Si el proyecto va en una caja metálica o necesita alcance exterior, una placa con conector para antena externa es necesaria.</li>
+<li><strong>Flash y PSRAM:</strong> 4 MB de flash es el mínimo razonable; 8-16 MB es mejor si vas a hacer OTA (actualización inalámbrica de firmware). PSRAM (2-8 MB) es necesaria para proyectos con cámara o procesamiento de datos grandes; innecesaria para sensores simples.</li>
+<li><strong>USB-C vs micro-USB:</strong> las placas más recientes usan USB-C; las más antiguas o baratas pueden traer micro-USB. Funciona igual, pero la durabilidad del conector USB-C es significativamente mayor.</li>
+</ul>
+</section>
+
+<section id="errores">
+<h2>Errores al elegir</h2>
+<ul>
+<li><strong>Comprar ESP32 clásico para un proyecto de cámara:</strong> técnicamente funciona con los módulos ESP32-CAM originales, pero el S3 tiene mejor interfaz de cámara, más RAM y procesamiento de imagen más rápido. Para un proyecto nuevo con cámara en 2026, el S3 es la opción correcta.</li>
+<li><strong>Comprar ESP32-S3 para un sensor simple:</strong> es como matar un mosquito con un cañón. Un C3 hace lo mismo por la mitad del precio y con menor consumo.</li>
+<li><strong>Asumir que todas las librerías Arduino funcionan en todas las variantes:</strong> la mayoría sí, pero algunas librerías escritas para ESP32 clásico usan registros específicos de Xtensa que no son compatibles con las variantes RISC-V (C3, C6). Verifica la compatibilidad antes de basar un proyecto en una librería específica.</li>
+<li><strong>No considerar el consumo de energía en proyectos con batería:</strong> el ESP32 clásico consume más en deep sleep que el C3 o el C6 con su co-procesador LP. Para un sensor de batería que debe durar meses, esa diferencia es real.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Puedo programar todas las variantes de ESP32 con el IDE de Arduino?</summary><p>Sí, todas las variantes activas (ESP32, S2, S3, C3, C6) son compatibles con el IDE de Arduino a través del paquete de placas de Espressif. La mayoría de las funciones básicas (GPIO, WiFi, BLE, I2C, SPI, UART) se programan de la misma forma. Las diferencias aparecen en funciones específicas del hardware (USB nativo, acelerador de IA, Thread) que requieren librerías o configuraciones distintas según la variante.</p></details>
+<details><summary>¿ESP32 o Arduino para un principiante total?</summary><p>Para un principiante total sin experiencia en electrónica ni programación, Arduino Uno sigue siendo un mejor punto de partida: curva de aprendizaje más simple, sin gestionar WiFi ni sistemas operativos, y con la base de tutoriales para principiantes más grande del mundo. El ESP32 tiene sentido como siguiente paso cuando se necesita WiFi, Bluetooth o más potencia. Revisa nuestra comparativa de Raspberry Pi vs Arduino para entender las diferencias entre plataformas.</p></details>
+<details><summary>¿El ESP32-C6 reemplaza al ESP32 clásico?</summary><p>No completamente. El C6 aporta WiFi 6 y Thread/Zigbee, que el clásico no tiene, pero es single-core RISC-V frente a dual-core Xtensa, lo que significa menos potencia de procesamiento bruto y menos compatibilidad con librerías escritas específicamente para Xtensa. Además, el clásico tiene Bluetooth Classic que ninguna otra variante ofrece. Para proyectos nuevos de domótica en 2026, el C6 es generalmente mejor; para proyectos que necesitan potencia de cómputo o BT Classic, el clásico sigue vigente.</p></details>
+<details><summary>¿Cuánto cuesta una placa ESP32?</summary><p>Un ESP32-DevKitC clásico de clon ronda los US$ 4-8. Un ESP32-S3-DevKitC de clon cuesta US$ 6-12. Un ESP32-C3 SuperMini cuesta US$ 3-5, siendo la opción más económica. Los DevKit oficiales de Espressif cuestan entre US$ 8-15. Los módulos con cámara (ESP32-S3-CAM) rondan los US$ 8-15. Son precios de plataformas de importación; en tiendas locales en Chile pueden ser el doble o más.</p></details>
+<details><summary>¿Puedo usar un ESP32 en vez de un Arduino para los proyectos de mi kit starter?</summary><p>Sí, la mayoría de los proyectos de un kit Arduino starter (LEDs, sensores, servos, LCD) funcionan en un ESP32 con adaptaciones menores en el código (los pines tienen numeración distinta y algunos pines tienen restricciones). La ventaja es que el ESP32 además puede conectarse a WiFi y BLE, abriendo la puerta a proyectos IoT. La desventaja para un principiante total es que el ESP32 tiene más complejidad (más pines con funciones especiales, gestión de alimentación) y el ecosistema de tutoriales para principiantes absolutos sigue siendo más maduro en Arduino.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Una vez que elijas tu placa, el siguiente paso es un proyecto práctico: <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">Domótica con ESP32 y MQTT</a> para conectividad, o <a href="/blog/esp32-con-bluetooth-ble-control-desde-el-celular">ESP32 con Bluetooth BLE desde el Celular</a> para control inalámbrico.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/raspberry-pi-vs-arduino-cual-elegir-para-tu-proyecto">← Anterior: Raspberry Pi vs Arduino: Cuál Elegir</a>
+  <a href="/blog/domotica-con-esp32-y-mqtt-controla-tu-casa-desde-el-celular">Siguiente: Domótica con ESP32 y MQTT →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.espressif.com/en/products/socs" target="_blank" rel="noopener noreferrer">Espressif — Catálogo de SoCs ESP32</a></li>
+<li><a href="https://docs.espressif.com/" target="_blank" rel="noopener noreferrer">Espressif — Documentación técnica oficial</a></li>
+<li><a href="https://github.com/espressif/arduino-esp32" target="_blank" rel="noopener noreferrer">Espressif — Soporte Arduino para ESP32</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 5 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
