@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Luces LED Inteligentes: Guía de Compra y Comparativa</title>
+<meta name="description" content="Guía de compra de luces inteligentes: Philips Hue vs IKEA vs WiZ vs Govee, Zigbee vs WiFi, blanco regulable vs RGBIC, tiras LED, hub y precios 2026.">
+<meta name="keywords" content="luces inteligentes, luces led inteligentes, philips hue, luces wifi, luces zigbee, tiras led inteligentes, govee luces, wiz bombillas, iluminacion inteligente casa">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/luces-led-inteligentes-guia-de-compra-y-comparativa">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Luces LED Inteligentes: Guía de Compra y Comparativa">
+<meta property="og:description" content="Hue vs IKEA vs WiZ vs Govee, Zigbee o WiFi, blanco regulable o RGB, tiras LED y automatizaciones reales: la guía completa antes de comprar.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/luces-led-inteligentes-guia-de-compra-y-comparativa-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/luces-led-inteligentes-guia-de-compra-y-comparativa">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Luces LED Inteligentes: Guía de Compra y Comparativa">
+<meta name="twitter:description" content="Hue vs IKEA vs WiZ vs Govee, Zigbee o WiFi, blanco regulable o RGB, tiras LED y automatizaciones reales: la guía completa antes de comprar.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/luces-led-inteligentes-guia-de-compra-y-comparativa-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Luces LED Inteligentes: Guía de Compra y Comparativa",
+  "description":"Guía técnica de compra de iluminación inteligente para el hogar: diferencia entre ecosistemas (Philips Hue Zigbee, IKEA TRÅDFRI, WiZ WiFi, Govee), bombillas blanco regulable vs RGB vs RGBIC, tiras LED inteligentes, lámparas de ambiente, cuándo necesitas hub y cuándo no, integración con Home Assistant y asistentes de voz, automatizaciones de luz que realmente se usan, y tabla de decisión por ecosistema y presupuesto.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-06",
+  "dateModified":"2026-09-06",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/luces-led-inteligentes-guia-de-compra-y-comparativa"},
+  "image":"https://www.ukrabot.cl/blog/luces-led-inteligentes-guia-de-compra-y-comparativa-hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Red WiFi doméstica para luces WiFi, o un hub Zigbee compatible para luces Zigbee; smartphone con iOS o Android para la app de control",
+  "wordCount":"2550",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Luces LED Inteligentes: Guía de Compra y Comparativa","item":"https://www.ukrabot.cl/blog/luces-led-inteligentes-guia-de-compra-y-comparativa"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Las luces inteligentes gastan más electricidad que las normales?","acceptedAnswer":{"@type":"Answer","text":"No de forma significativa. Una bombilla LED inteligente consume la misma potencia que una LED convencional del mismo brillo (típicamente 8-10W para equivalente a 60W incandescente), más un consumo de standby de 0,3-0,5W para mantener la radio WiFi o Zigbee activa. Ese standby es despreciable: menos de 4 kWh al año por bombilla, lo que equivale a unos pocos pesos al mes."}},
+    {"@type":"Question","name":"¿Puedo usar bombillas inteligentes en un dimmer tradicional?","acceptedAnswer":{"@type":"Answer","text":"No. Los dimmers tradicionales regulan el voltaje que llega a la bombilla, lo que puede dañar la electrónica interna de una bombilla inteligente o hacer que parpadee de forma errática. Las bombillas inteligentes se regulan digitalmente desde la app, el asistente de voz o una automatización, no desde un dimmer de pared. Si tienes un dimmer instalado, debes retirarlo y dejarlo como interruptor simple (on/off) antes de poner una bombilla inteligente."}},
+    {"@type":"Question","name":"¿Puedo mezclar bombillas Philips Hue con bombillas IKEA en el mismo hub?","acceptedAnswer":{"@type":"Answer","text":"Si usas el Bridge de Philips Hue como hub, las bombillas IKEA Zigbee se pueden emparejar directamente con él y controlarse desde la app Hue, porque ambas usan el protocolo Zigbee Light Link. Pierdes algunas funciones específicas de la app IKEA, pero la iluminación y la regulación funcionan correctamente. Si usas Home Assistant con un dongle Zigbee, puedes mezclar bombillas de cualquier fabricante Zigbee sin restricciones."}},
+    {"@type":"Question","name":"¿Qué pasa si se cae el WiFi o el internet? ¿Las luces dejan de funcionar?","acceptedAnswer":{"@type":"Answer","text":"Las luces Zigbee con hub siguen funcionando localmente (el hub se comunica directo con las bombillas sin internet). Las luces WiFi con control local (Shelly, Tapo con procesamiento local) también siguen respondiendo. Las que dependen de la nube (algunas marcas baratas) pueden dejar de responder desde la app hasta que vuelva internet. En todos los casos, si alguien enciende el interruptor físico, la luz se enciende siempre, independientemente de la red."}},
+    {"@type":"Question","name":"¿Las tiras LED inteligentes se pueden cortar a medida?","acceptedAnswer":{"@type":"Answer","text":"Sí, la mayoría de las tiras LED tienen marcas de corte cada 5-10 cm donde se pueden cortar con tijeras sin dañar el circuito. Lo que varía entre modelos es si los segmentos cortados se pueden reconectar con conectores o soldadura. Las tiras RGBIC (con color independiente por segmento) suelen ser más restrictivas en el corte que las RGB simples, porque cada segmento tiene su propio controlador integrado."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="luces-led-inteligentes-guia-de-compra-y-comparativa-hero.jpg" alt="Bombillas LED inteligentes de distintos colores instaladas en lámparas de una sala de estar moderna" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Domótica y Smart Home · Publicado el <time datetime="2026-09-06">6 de septiembre de 2026</time></div>
+    <h1>Luces LED Inteligentes: Guía de Compra y Comparativa</h1>
+    <p>Philips Hue, IKEA, WiZ o Govee: qué ecosistema conviene, Zigbee o WiFi, blanco regulable o RGB, tiras LED, y las automatizaciones de luz que de verdad se usan después del primer mes.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="luces-led-inteligentes-guia-de-compra-y-comparativa-hero.jpg" alt="Bombillas LED inteligentes de distintos colores instaladas en lámparas de una sala de estar moderna" loading="lazy">
+  <div class="caption">Las luces inteligentes son el punto de entrada más natural a la domótica porque el resultado es inmediato, visible y no requiere obra eléctrica: se atornilla la bombilla y se configura la app.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#ecosistemas">Ecosistemas: Philips Hue, IKEA, WiZ y Govee</a></li>
+    <li><a href="#tipos">Tipos: blanco regulable, RGB, RGBIC y tiras LED</a></li>
+    <li><a href="#hub">Hub o sin hub: cuándo necesitas cada cosa</a></li>
+    <li><a href="#automatizaciones">Automatizaciones de luz que realmente se usan</a></li>
+    <li><a href="#interruptores">El problema del interruptor físico y cómo resolverlo</a></li>
+    <li><a href="#tabla">Tabla de decisión por ecosistema y presupuesto</a></li>
+    <li><a href="#errores">Errores al comprar</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="ecosistemas">
+<h2>Ecosistemas: Philips Hue, IKEA, WiZ y Govee</h2>
+<ul>
+<li><strong>Philips Hue (Zigbee):</strong> el ecosistema más maduro y amplio del mercado: bombillas, tiras LED, luminarias de exterior, barras de ambiente, interruptores inalámbricos y sensores de movimiento. Usa Zigbee con su propio Bridge (hub) obligatorio, lo que significa que las luces no saturan tu WiFi y la red mesh mejora con cada luminaria que agregas. La calidad de color y la reproducción cromática son las mejores del mercado doméstico. La contrapartida es el precio: es la opción más cara por bombilla. Integración excelente con HomeKit, Alexa, Google Home y <a href="/blog/domotica-local-al-alcance-de-todos-la-revolucion-de-home-assistant-green">Home Assistant</a>.</li>
+<li><strong>IKEA TRÅDFRI / DIRIGERA (Zigbee):</strong> bombillas Zigbee a precio significativamente menor que Hue, controladas desde el hub DIRIGERA de IKEA. La gama de colores es más limitada (blanco cálido/frío regulable en la mayoría, RGB solo en algunos modelos), pero la calidad es correcta y el precio por bombilla la convierte en la opción más accesible para iluminar toda la casa. Compatible con Home Assistant vía Zigbee2MQTT, y parcialmente compatible con Matter desde las últimas actualizaciones del hub DIRIGERA.</li>
+<li><strong>WiZ (WiFi):</strong> marca de Signify (la misma empresa que Philips Hue) posicionada en un rango de precio más accesible. Las bombillas se conectan directo al WiFi sin necesidad de hub, lo que simplifica la instalación inicial. La gama incluye bombillas blancas regulables, RGB completo y tiras LED. La limitación es que cada bombilla ocupa un puesto en tu red WiFi: con 15-20 bombillas WiZ, un router de ISP básico puede empezar a saturarse.</li>
+<li><strong>Govee:</strong> la marca que domina las tiras LED de ambiente (detrás de televisores, bajo muebles, marcos de ventana) y las barras de retroiluminación. Su punto fuerte no es la iluminación funcional sino el <strong>ambiente decorativo</strong>: efectos RGBIC que muestran múltiples colores simultáneamente en la misma tira, sincronización con música, y sincronización con lo que muestra la TV. WiFi + Bluetooth, sin hub. Precio competitivo para el efecto visual que logra.</li>
+</ul>
+</section>
+
+<section id="tipos">
+<h2>Tipos: blanco regulable, RGB, RGBIC y tiras LED</h2>
+<ul>
+<li><strong>Blanco regulable (tunable white):</strong> la bombilla ajusta su temperatura de color desde blanco cálido (2.700K, amarillento, acogedor) hasta blanco frío (6.500K, azulado, energizante), y su brillo del 1 al 100%. Es la opción más útil para iluminación funcional: blanco cálido tenue para la noche, blanco frío brillante para trabajar. Si solo vas a comprar un tipo de bombilla inteligente, esta es la que más valor aporta.</li>
+<li><strong>RGB (color completo):</strong> además de blanco regulable, puede mostrar cualquier color del espectro. Útil para ambientes específicos (luz roja tenue para cine, azul para gaming, verde para Navidad), pero en la práctica la mayoría de los usuarios la usan en modo blanco el 90% del tiempo. Es un plus agradable, no una necesidad.</li>
+<li><strong>RGBIC (color independiente por segmento):</strong> específico de tiras LED (Govee la popularizó): cada segmento de la tira puede mostrar un color distinto al mismo tiempo, creando degradados, arcoíris y efectos de flujo. En una tira RGB convencional toda la tira muestra el mismo color.</li>
+<li><strong>Tiras LED:</strong> cintas adhesivas flexibles que se pegan detrás de muebles, bajo gabinetes de cocina, tras el televisor o en marcos. Son el producto de iluminación inteligente con mayor impacto visual por dólar invertido, porque transforman la percepción de una habitación completa con una instalación de minutos.</li>
+</ul>
+</section>
+
+<section id="hub">
+<h2>Hub o sin hub: cuándo necesitas cada cosa</h2>
+<p>La decisión entre luces que necesitan hub (Zigbee) y luces sin hub (WiFi) depende de cuántas vas a instalar:</p>
+<ul>
+<li><strong>1-5 bombillas:</strong> WiFi funciona bien y es más simple. No necesitas comprar un hub adicional.</li>
+<li><strong>6-15 bombillas:</strong> zona gris. WiFi sigue funcionando si tu router es decente, pero empieza a sumar dispositivos a la red.</li>
+<li><strong>15+ bombillas:</strong> Zigbee (con hub) es claramente superior. Las bombillas forman su propia red mesh sin tocar el WiFi, el hub gestiona toda la comunicación, y la red doméstica no se resiente.</li>
+</ul>
+<p>Si ya tienes un hub Zigbee de otra marca (Aqara, IKEA DIRIGERA, Amazon Echo con Zigbee), puedes usarlo también para las bombillas Zigbee compatibles sin comprar otro hub. Con <a href="/blog/domotica-como-automatizar-tu-casa-desde-cero-guia-completa">Home Assistant</a> y un dongle Zigbee, puedes mezclar bombillas de cualquier fabricante Zigbee en una sola red.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="automatizaciones">
+<h2>Automatizaciones de luz que realmente se usan</h2>
+<p>Las automatizaciones que sobreviven al primer mes son las simples e invisibles:</p>
+<ul>
+<li><strong>Encendido al atardecer:</strong> las luces de la sala y el pasillo se encienden automáticamente al ponerse el sol, al brillo y temperatura de color que elijas. No tocas un interruptor al llegar a casa de noche.</li>
+<li><strong>"Buenas noches":</strong> todas las luces se apagan, o se reducen a un 5% de brillo cálido en el pasillo como luz de guía nocturna. Se activa por hora, por un botón inalámbrico en la mesita de noche, o por comando de voz.</li>
+<li><strong>Movimiento en pasillo/baño:</strong> la luz se enciende con el sensor de movimiento y se apaga 3-5 minutos después del último movimiento. De noche, al 10% de brillo cálido para no deslumbrar.</li>
+<li><strong>Simulación de presencia:</strong> cuando no hay nadie en casa, las luces se encienden y apagan en patrones aleatorios que simulan actividad, disuadiendo intrusiones.</li>
+<li><strong>Luz de lectura/trabajo:</strong> un botón o escena que ajusta todas las luces de la habitación a blanco frío al 100% para trabajar, sin tener que ajustar cada bombilla individualmente.</li>
+</ul>
+</section>
+
+<section id="interruptores">
+<h2>El problema del interruptor físico y cómo resolverlo</h2>
+<p>El dolor de cabeza que nadie menciona al comprar luces inteligentes: si alguien apaga el interruptor físico de la pared, la bombilla inteligente pierde alimentación y queda inaccesible para la app, el asistente de voz y las automatizaciones. Soluciones:</p>
+<ul>
+<li><strong>Cubre-interruptores:</strong> una tapa que bloquea el interruptor en posición "encendido" permanentemente. La más barata y simple; el control se hace siempre por app o voz.</li>
+<li><strong>Interruptores inteligentes Zigbee/WiFi:</strong> reemplazan el interruptor físico por uno que envía un comando inalámbrico a la bombilla en vez de cortar la corriente. La bombilla siempre tiene alimentación y el interruptor sigue funcionando como interruptor. Requiere instalación eléctrica (cambio de mecanismo).</li>
+<li><strong>Módulo Shelly detrás del interruptor:</strong> un relé WiFi diminuto que se instala dentro de la caja del interruptor sin cambiar el mecanismo visible. El interruptor físico sigue funcionando como siempre, y además puedes controlarlo desde la app. Es la solución más elegante pero requiere conocimiento eléctrico básico o un electricista.</li>
+</ul>
+</section>
+
+<section id="tabla">
+<h2>Tabla de decisión por ecosistema y presupuesto</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Precios orientativos por bombilla E27 blanco regulable en USD de 2026.</caption>
+<thead><tr><th>Ecosistema</th><th>Protocolo</th><th>Hub</th><th>Precio por bombilla</th><th>Ideal para</th></tr></thead>
+<tbody>
+<tr><td>Philips Hue</td><td>Zigbee</td><td>Obligatorio (Bridge)</td><td>US$ 15–25</td><td>Máxima calidad, ecosistema más amplio, casa grande</td></tr>
+<tr><td>IKEA TRÅDFRI</td><td>Zigbee</td><td>DIRIGERA</td><td>US$ 8–12</td><td>Presupuesto ajustado, casa completa, IKEA accesible</td></tr>
+<tr><td>WiZ</td><td>WiFi</td><td>No necesita</td><td>US$ 10–15</td><td>Pocas bombillas, sin hub, setup simple</td></tr>
+<tr><td>Govee</td><td>WiFi+BT</td><td>No necesita</td><td>Tiras desde US$ 20–50</td><td>Ambiente decorativo, retroiluminación TV, gaming</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="errores">
+<h2>Errores al comprar</h2>
+<ul>
+<li><strong>Comprar bombillas WiFi para toda la casa:</strong> 20 bombillas WiFi saturan un router de ISP básico. Si planeas más de 10-15 luces, Zigbee con hub es el camino correcto.</li>
+<li><strong>Mezclar ecosistemas sin un hub unificador:</strong> bombillas Hue, WiZ e IKEA con tres apps distintas es un dolor de cabeza. Si vas a mezclar marcas, usa Home Assistant como controlador central.</li>
+<li><strong>Comprar RGB cuando solo necesitas blanco regulable:</strong> las bombillas RGB cuestan más y en la práctica el 90% del uso es en modo blanco. El blanco regulable (warm to cool) es la inversión que más retorno da en comodidad diaria.</li>
+<li><strong>No resolver el problema del interruptor físico:</strong> si alguien en la familia apaga la luz desde el interruptor de la pared, la bombilla inteligente deja de funcionar hasta que alguien la vuelva a encender físicamente, anulando toda la inversión en automatización.</li>
+<li><strong>Comprar tiras LED sin medir:</strong> las tiras se venden en largos estándar (2 m, 5 m, 10 m). Mide el recorrido exacto antes de comprar; cortarlas es posible pero no todas permiten reconectar los segmentos cortados.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Las luces inteligentes gastan más electricidad que las normales?</summary><p>No de forma significativa. Una bombilla LED inteligente consume la misma potencia que una LED convencional del mismo brillo (típicamente 8-10W para equivalente a 60W incandescente), más un consumo de standby de 0,3-0,5W para mantener la radio WiFi o Zigbee activa. Ese standby es despreciable: menos de 4 kWh al año por bombilla, lo que equivale a unos pocos pesos al mes.</p></details>
+<details><summary>¿Puedo usar bombillas inteligentes en un dimmer tradicional?</summary><p>No. Los dimmers tradicionales regulan el voltaje que llega a la bombilla, lo que puede dañar la electrónica interna de una bombilla inteligente o hacer que parpadee de forma errática. Las bombillas inteligentes se regulan digitalmente desde la app, el asistente de voz o una automatización, no desde un dimmer de pared. Si tienes un dimmer instalado, debes retirarlo y dejarlo como interruptor simple (on/off) antes de poner una bombilla inteligente.</p></details>
+<details><summary>¿Puedo mezclar bombillas Philips Hue con bombillas IKEA en el mismo hub?</summary><p>Si usas el Bridge de Philips Hue como hub, las bombillas IKEA Zigbee se pueden emparejar directamente con él y controlarse desde la app Hue, porque ambas usan el protocolo Zigbee Light Link. Pierdes algunas funciones específicas de la app IKEA, pero la iluminación y la regulación funcionan correctamente. Si usas Home Assistant con un dongle Zigbee, puedes mezclar bombillas de cualquier fabricante Zigbee sin restricciones.</p></details>
+<details><summary>¿Qué pasa si se cae el WiFi o el internet? ¿Las luces dejan de funcionar?</summary><p>Las luces Zigbee con hub siguen funcionando localmente (el hub se comunica directo con las bombillas sin internet). Las luces WiFi con control local (Shelly, Tapo con procesamiento local) también siguen respondiendo. Las que dependen de la nube (algunas marcas baratas) pueden dejar de responder desde la app hasta que vuelva internet. En todos los casos, si alguien enciende el interruptor físico, la luz se enciende siempre, independientemente de la red.</p></details>
+<details><summary>¿Las tiras LED inteligentes se pueden cortar a medida?</summary><p>Sí, la mayoría de las tiras LED tienen marcas de corte cada 5-10 cm donde se pueden cortar con tijeras sin dañar el circuito. Lo que varía entre modelos es si los segmentos cortados se pueden reconectar con conectores o soldadura. Las tiras RGBIC (con color independiente por segmento) suelen ser más restrictivas en el corte que las RGB simples, porque cada segmento tiene su propio controlador integrado.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Si las luces son el primer paso de tu casa inteligente, sigue con <a href="/blog/domotica-como-automatizar-tu-casa-desde-cero-guia-completa">Domótica: Cómo Automatizar tu Casa desde Cero</a> para el ecosistema completo, y complementa con un <a href="/blog/timbres-inteligentes-video-doorbell-guia-de-compra">Timbre Inteligente con Video</a> para la entrada.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/domotica-como-automatizar-tu-casa-desde-cero-guia-completa">← Anterior: Domótica: Cómo Automatizar tu Casa desde Cero</a>
+  <a href="/blog/cerraduras-inteligentes-guia-de-compra-y-comparativa">Siguiente: Cerraduras Inteligentes: Guía de Compra →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.philips-hue.com/" target="_blank" rel="noopener noreferrer">Philips Hue — Catálogo oficial</a></li>
+<li><a href="https://www.ikea.com/global/en/range/smart-home/" target="_blank" rel="noopener noreferrer">IKEA — Iluminación inteligente TRÅDFRI</a></li>
+<li><a href="https://www.wizconnected.com/" target="_blank" rel="noopener noreferrer">WiZ — Bombillas WiFi</a></li>
+<li><a href="https://www.govee.com/" target="_blank" rel="noopener noreferrer">Govee — Tiras LED y ambiente</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 6 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
