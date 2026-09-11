@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Proyectos Arduino para Principiantes: Los Mejores para Empezar</title>
+<meta name="description" content="Los 10 mejores proyectos Arduino para principiantes ordenados por dificultad: desde el primer LED hasta un robot autónomo, con componentes, conceptos y enlaces.">
+<meta name="keywords" content="proyectos arduino, proyectos arduino principiantes, ideas arduino, arduino para principiantes, que hacer con arduino, proyectos faciles arduino, arduino proyectos 2026">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/proyectos-arduino-para-principiantes-los-mejores-para-empezar">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Proyectos Arduino para Principiantes: Los Mejores para Empezar">
+<meta property="og:description" content="Los 10 proyectos que todo principiante debería hacer con Arduino, en orden: del primer LED al robot que esquiva paredes solo.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/proyectos-arduino-para-principiantes-los-mejores-para-empezar-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/proyectos-arduino-para-principiantes-los-mejores-para-empezar">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Proyectos Arduino para Principiantes: Los Mejores para Empezar">
+<meta name="twitter:description" content="Los 10 proyectos que todo principiante debería hacer con Arduino, en orden: del primer LED al robot que esquiva paredes solo.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/proyectos-arduino-para-principiantes-los-mejores-para-empezar-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Proyectos Arduino para Principiantes: Los Mejores para Empezar",
+  "description":"Selección curada de los mejores proyectos Arduino para principiantes, ordenados de menor a mayor dificultad: cada uno introduce un concepto nuevo (salida digital, entrada analógica, PWM, comunicación serial, sensores, actuadores, motores, conectividad) y usa componentes de los kits de inicio estándar, con enlaces a las guías técnicas detalladas de cada tema.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-07",
+  "dateModified":"2026-09-07",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/proyectos-arduino-para-principiantes-los-mejores-para-empezar"},
+  "image":"https://www.ukrabot.cl/blog/proyectos-arduino-para-principiantes-los-mejores-para-empezar-hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Una placa Arduino Uno o compatible, un kit de componentes básicos (LEDs, resistencias, protoboard, cables, sensores, servo) y el IDE de Arduino instalado",
+  "wordCount":"2650",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Proyectos Arduino para Principiantes: Los Mejores para Empezar","item":"https://www.ukrabot.cl/blog/proyectos-arduino-para-principiantes-los-mejores-para-empezar"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Necesito comprar todos los componentes por separado o vienen en un kit?","acceptedAnswer":{"@type":"Answer","text":"La mayoría de los componentes de los proyectos 1 al 8 vienen incluidos en un kit starter estándar de Arduino (Elegoo, SunFounder o el kit oficial). Los componentes del proyecto 9 (módulo Bluetooth) y 10 (chasis, motores, driver L298N) normalmente se compran aparte porque no vienen en los kits de inicio. Revisa nuestra guía de kits de Arduino para elegir el que mejor se ajuste a tu presupuesto."}},
+    {"@type":"Question","name":"¿Puedo saltar directamente al proyecto que me interesa?","acceptedAnswer":{"@type":"Answer","text":"Técnicamente sí, cada proyecto tiene su propio circuito y código. Pero si nunca has usado Arduino, saltarte los primeros proyectos significa enfrentar varios conceptos nuevos a la vez sin base, lo que hace que diagnosticar un problema sea mucho más difícil. Los proyectos 1-4 toman menos de una hora en total y dan la base para todo lo demás."}},
+    {"@type":"Question","name":"¿Estos proyectos funcionan con un Arduino compatible (clon) o solo con el original?","acceptedAnswer":{"@type":"Answer","text":"Funcionan igual en originales y clones. El código, los pines y la electrónica son idénticos. La única diferencia práctica es que algunos clones usan el chip USB CH340G en vez del de Arduino, lo que requiere instalar un driver adicional la primera vez que conectas la placa. Una vez instalado, la experiencia es la misma."}},
+    {"@type":"Question","name":"¿Cuánto tiempo toma completar los 10 proyectos?","acceptedAnswer":{"@type":"Answer","text":"Depende de la experiencia previa y del ritmo de cada persona. Como referencia: los proyectos 1-4 se hacen en una tarde. Los proyectos 5-8 toman otra tarde cada uno si se entiende cada concepto. El proyecto 9 toma un par de horas extra por la configuración Bluetooth. El proyecto 10 (el robot) puede tomar un fin de semana completo entre ensamblaje, cableado, pruebas y ajustes. En total, de 2 a 4 semanas dedicando algunas horas a la semana."}},
+    {"@type":"Question","name":"¿Estos proyectos sirven para enseñar Arduino en un colegio?","acceptedAnswer":{"@type":"Answer","text":"Sí, la progresión de dificultad está diseñada para un aprendizaje secuencial, y cada proyecto introduce exactamente un concepto nuevo. Para contexto educativo, conviene complementar con explicaciones teóricas entre proyectos y evaluaciones por proyecto completado. Los proyectos 1-7 se pueden hacer en un taller de 8-10 sesiones de una hora."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="proyectos-arduino-para-principiantes-los-mejores-para-empezar-hero.jpg" alt="Mesa de trabajo con varios proyectos Arduino en distintas etapas: LED, sensor, servomotor y robot móvil" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Arduino y SBC · Publicado el <time datetime="2026-09-07">7 de septiembre de 2026</time></div>
+    <h1>Proyectos Arduino para Principiantes: Los Mejores para Empezar</h1>
+    <p>Los 10 proyectos en orden de dificultad: cada uno enseña un concepto nuevo y usa componentes de un kit estándar. Del primer LED parpadeante al robot autónomo.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="proyectos-arduino-para-principiantes-los-mejores-para-empezar-hero.jpg" alt="Mesa de trabajo con varios proyectos Arduino en distintas etapas: LED, sensor, servomotor y robot móvil" loading="lazy">
+  <div class="caption">El orden importa: cada proyecto de esta lista construye sobre lo que aprendiste en el anterior. Saltarse al robot sin haber hecho el LED y el sensor es la receta para frustrarse.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#por-que-orden">Por qué el orden importa</a></li>
+    <li><a href="#proyecto-1">1. LED parpadeante (Blink)</a></li>
+    <li><a href="#proyecto-2">2. Semáforo con 3 LEDs</a></li>
+    <li><a href="#proyecto-3">3. Botón que enciende un LED</a></li>
+    <li><a href="#proyecto-4">4. Potenciómetro y brillo de LED (PWM)</a></li>
+    <li><a href="#proyecto-5">5. Sensor de temperatura (DHT22)</a></li>
+    <li><a href="#proyecto-6">6. Distancia con ultrasónico (HC-SR04)</a></li>
+    <li><a href="#proyecto-7">7. Servomotor controlado por potenciómetro</a></li>
+    <li><a href="#proyecto-8">8. Display LCD con datos de sensor</a></li>
+    <li><a href="#proyecto-9">9. Control Bluetooth desde el celular</a></li>
+    <li><a href="#proyecto-10">10. Robot evasor de obstáculos</a></li>
+    <li><a href="#siguiente">Qué sigue después</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="por-que-orden">
+<h2>Por qué el orden importa</h2>
+<p>El error más común de quien recién compra un Arduino es intentar hacer el proyecto más ambicioso de la caja como primera cosa. Un robot con sensores, motores y Bluetooth involucra salidas digitales, entradas analógicas, PWM, comunicación serial, alimentación separada y lógica de control, todo a la vez. Si algo falla —y algo siempre falla la primera vez— no hay forma de saber dónde está el problema.</p>
+<p>La lista que sigue está ordenada deliberadamente: cada proyecto introduce <strong>un solo concepto nuevo</strong> sobre lo que ya aprendiste en los anteriores. Cuando llegas al proyecto 10 (el robot), ya dominas todos los conceptos individuales que lo componen, y si algo falla sabes exactamente dónde buscar. Si estás empezando de cero con Arduino, revisa primero <a href="/blog/primeros-pasos-con-arduino-uno-de-cero-a-tu-primer-sketch">Primeros Pasos con Arduino Uno</a> para instalar el IDE y configurar la placa.</p>
+<p>Todos estos proyectos se pueden hacer con un <a href="/blog/mejores-kits-de-arduino-para-principiantes-guia-de-compra">kit starter de Arduino</a> estándar. Si quieres una referencia adicional en inglés sobre <a href="https://roboticsengineeringlab.com/articles/arduino-classroom-robotics-beginners" target="_blank" rel="noopener noreferrer">cómo estructurar el aprendizaje de Arduino y robótica para principiantes</a>, y cómo sacarle más provecho a un <a href="https://roboticsengineeringlab.com/articles/arduino-mega-kit-getting-started" target="_blank" rel="noopener noreferrer">kit con Arduino Mega</a>, esos recursos complementan bien esta progresión.</p>
+</section>
+
+<section id="proyecto-1">
+<h2>1. LED parpadeante (Blink)</h2>
+<p><strong>Concepto nuevo:</strong> salida digital, estructura de un sketch (<code>setup()</code> y <code>loop()</code>), <code>digitalWrite()</code>, <code>delay()</code>.</p>
+<p>Es el "Hola mundo" de Arduino: un LED conectado al pin 13 (o el LED incorporado en la placa) que se enciende y se apaga cada segundo. No requiere ningún componente externo y confirma que el IDE, el cable y la placa funcionan correctamente. Si este proyecto funciona, tu entorno está listo para todo lo demás.</p>
+<p><strong>Componentes:</strong> solo la placa Arduino y el cable USB.</p>
+</section>
+
+<section id="proyecto-2">
+<h2>2. Semáforo con 3 LEDs</h2>
+<p><strong>Concepto nuevo:</strong> múltiples salidas digitales, secuencia de estados, resistencias de protección.</p>
+<p>Tres LEDs (rojo, amarillo, verde) conectados a tres pines digitales distintos, con una resistencia de 220Ω cada uno, que se encienden y apagan en la secuencia de un semáforo real. Introduce la idea de controlar varios pines de forma coordinada y de usar resistencias para proteger los LEDs.</p>
+<p><strong>Componentes:</strong> 3 LEDs de colores, 3 resistencias de 220Ω, protoboard, cables.</p>
+</section>
+
+<section id="proyecto-3">
+<h2>3. Botón que enciende un LED</h2>
+<p><strong>Concepto nuevo:</strong> entrada digital, <code>digitalRead()</code>, resistencia pull-up/pull-down, condicionales (<code>if</code>).</p>
+<p>Un botón pulsador que, al presionarlo, enciende un LED; al soltarlo, se apaga. Introduce el concepto de leer una entrada del mundo real y tomar una decisión en el código. Es el primer proyecto donde el Arduino reacciona a algo externo en vez de seguir un guion fijo.</p>
+<p><strong>Componentes:</strong> 1 LED, 1 resistencia de 220Ω, 1 botón pulsador, 1 resistencia de 10kΩ (pull-down).</p>
+</section>
+
+<section id="proyecto-4">
+<h2>4. Potenciómetro y brillo de LED (PWM)</h2>
+<p><strong>Concepto nuevo:</strong> entrada analógica (<code>analogRead()</code>), salida PWM (<code>analogWrite()</code>), mapeo de valores.</p>
+<p>Un potenciómetro (perilla giratoria) controla el brillo de un LED de forma continua: girar la perilla cambia el brillo de apagado a máximo. Introduce las entradas analógicas (valores de 0 a 1023) y la salida PWM (valores de 0 a 255), y la función <code>map()</code> para convertir entre ambos rangos.</p>
+<p><strong>Componentes:</strong> 1 potenciómetro de 10kΩ, 1 LED, 1 resistencia de 220Ω.</p>
+</section>
+
+<section id="proyecto-5">
+<h2>5. Sensor de temperatura (DHT22)</h2>
+<p><strong>Concepto nuevo:</strong> librerías externas, comunicación con sensores digitales, Monitor Serial.</p>
+<p>Lee temperatura y humedad del sensor DHT22 y muestra los valores en el Monitor Serial del IDE. Introduce las librerías externas (hay que instalar la librería DHT), la comunicación serial para ver datos en el computador, y la lectura de un sensor real. Lo cubrimos en detalle en <a href="/blog/sensor-dht22-temperatura-y-humedad-con-arduino">Sensor DHT22: Temperatura y Humedad con Arduino</a>.</p>
+<p><strong>Componentes:</strong> 1 sensor DHT22, 1 resistencia de 10kΩ (pull-up).</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="proyecto-6">
+<h2>6. Distancia con ultrasónico (HC-SR04)</h2>
+<p><strong>Concepto nuevo:</strong> <code>pulseIn()</code>, cálculo de distancia por tiempo de vuelo, umbrales y alertas.</p>
+<p>El sensor HC-SR04 mide la distancia al objeto frente a él y muestra el valor en cm por el Monitor Serial. Agrega un LED o un buzzer que se activa cuando la distancia baja de cierto umbral, y tienes tu primera "alarma de proximidad". Este es el mismo sensor que usará el robot en el proyecto 10. Lo cubrimos en <a href="/blog/sensor-ultrasonico-hc-sr04-medicion-de-distancias-paso-a-paso">HC-SR04: Medición de Distancias Paso a Paso</a>, y este <a href="https://roboticsengineeringlab.com/articles/hc-sr04-ultrasonic-led-proximity-alert" target="_blank" rel="noopener noreferrer">tutorial de alerta de proximidad con LEDs (en inglés)</a> lo complementa con una implementación visual muy clara.</p>
+<p><strong>Componentes:</strong> 1 sensor HC-SR04, 1 LED o buzzer.</p>
+</section>
+
+<section id="proyecto-7">
+<h2>7. Servomotor controlado por potenciómetro</h2>
+<p><strong>Concepto nuevo:</strong> control de actuadores, la librería Servo, movimiento mecánico controlado por código.</p>
+<p>El potenciómetro del proyecto 4 ahora controla la posición de un servomotor SG90: girar la perilla mueve el brazo del servo de 0° a 180°. Es el primer proyecto donde el Arduino mueve algo físico de forma precisa. Lo cubrimos en <a href="/blog/como-usar-un-servomotor-con-arduino-sg90-y-mg996r">Servomotor con Arduino: SG90 y MG996R</a>.</p>
+<p><strong>Componentes:</strong> 1 servo SG90, 1 potenciómetro de 10kΩ.</p>
+</section>
+
+<section id="proyecto-8">
+<h2>8. Display LCD con datos de sensor</h2>
+<p><strong>Concepto nuevo:</strong> comunicación I2C, display de información, proyecto autónomo sin computador.</p>
+<p>Conecta un display LCD 16×2 con adaptador I2C y muestra la temperatura y humedad del DHT22 en pantalla. Es el primer proyecto que funciona de forma completamente autónoma: el Arduino lee un sensor y muestra la información en una pantalla, sin necesitar un computador conectado.</p>
+<p><strong>Componentes:</strong> 1 LCD 16×2 con módulo I2C, 1 DHT22.</p>
+</section>
+
+<section id="proyecto-9">
+<h2>9. Control Bluetooth desde el celular</h2>
+<p><strong>Concepto nuevo:</strong> comunicación inalámbrica, protocolo serial por Bluetooth, interfaz de usuario remota.</p>
+<p>Agrega un módulo Bluetooth HC-05 o usa un <a href="/blog/placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra">ESP32 con BLE integrado</a> para controlar LEDs o un servo desde una app en el celular. Introduce la comunicación inalámbrica y la idea de que el Arduino recibe comandos de una fuente remota. Si usas Arduino vs ESP32 para este tipo de proyectos con conectividad, este <a href="https://roboticsengineeringlab.com/articles/arduino-vs-raspberry-pi-robotics" target="_blank" rel="noopener noreferrer">análisis comparativo de Arduino y Raspberry Pi para robótica (en inglés)</a> da contexto útil sobre cuándo cada plataforma es la opción correcta.</p>
+<p><strong>Componentes:</strong> 1 módulo HC-05 (o un ESP32), 1 LED o servo.</p>
+</section>
+
+<section id="proyecto-10">
+<h2>10. Robot evasor de obstáculos</h2>
+<p><strong>Concepto nuevo:</strong> integración de todos los conceptos anteriores en un sistema autónomo.</p>
+<p>El proyecto que une todo: un robot móvil con motores DC controlados por un driver L298N, un sensor ultrasónico HC-SR04 que detecta obstáculos, y un servo que gira el sensor para "mirar" a los lados. El Arduino toma decisiones de navegación autónoma basándose en lo que el sensor ve. Lo cubrimos con código completo en <a href="/blog/como-construir-un-robot-con-arduino-paso-a-paso">Cómo Construir un Robot con Arduino Paso a Paso</a>.</p>
+<p><strong>Componentes:</strong> todo lo anterior + chasis 2WD con motores, driver L298N, pack de baterías.</p>
+</section>
+
+<section id="siguiente">
+<h2>Qué sigue después</h2>
+<p>Si completaste los 10 proyectos, ya dominas los fundamentos de Arduino: entradas/salidas digitales y analógicas, sensores, actuadores, comunicación serial e inalámbrica, y la integración de todo en un sistema autónomo. Los siguientes pasos dependen de lo que quieras hacer:</p>
+<ul>
+<li><strong>Robótica más avanzada:</strong> <a href="/blog/kits-de-robots-hexapodos-programables-precios">Kits de robots hexápodos</a>, <a href="/blog/cinematica-directa-e-inversa-en-brazos-roboticos">cinemática de brazos robóticos</a> y control PID.</li>
+<li><strong>IoT y domótica:</strong> pasa a un <a href="/blog/placas-esp32-cual-elegir-para-tu-proyecto-guia-de-compra">ESP32</a> con WiFi y construye sensores conectados a <a href="/blog/domotica-como-automatizar-tu-casa-desde-cero-guia-completa">Home Assistant</a>.</li>
+<li><strong>Impresión 3D:</strong> diseña e imprime carcasas y piezas para tus proyectos. Empieza por <a href="/blog/que-impresora-3d-comprar-guia-para-principiantes">Qué Impresora 3D Comprar</a>.</li>
+<li><strong>Electrónica más profunda:</strong> entiende mejor los componentes con la <a href="/blog/guia-esencial-de-sensores-para-arduino">Guía Esencial de Sensores</a> y equipa tu taller con las herramientas correctas siguiendo nuestra <a href="/blog/mejores-multimetros-digitales-para-electronica-guia-de-compra">Guía de Multímetros</a>.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Necesito comprar todos los componentes por separado o vienen en un kit?</summary><p>La mayoría de los componentes de los proyectos 1 al 8 vienen incluidos en un kit starter estándar de Arduino (Elegoo, SunFounder o el kit oficial). Los componentes del proyecto 9 (módulo Bluetooth) y 10 (chasis, motores, driver L298N) normalmente se compran aparte porque no vienen en los kits de inicio. Revisa nuestra guía de kits de Arduino para elegir el que mejor se ajuste a tu presupuesto.</p></details>
+<details><summary>¿Puedo saltar directamente al proyecto que me interesa?</summary><p>Técnicamente sí, cada proyecto tiene su propio circuito y código. Pero si nunca has usado Arduino, saltarte los primeros proyectos significa enfrentar varios conceptos nuevos a la vez sin base, lo que hace que diagnosticar un problema sea mucho más difícil. Los proyectos 1-4 toman menos de una hora en total y dan la base para todo lo demás.</p></details>
+<details><summary>¿Estos proyectos funcionan con un Arduino compatible (clon) o solo con el original?</summary><p>Funcionan igual en originales y clones. El código, los pines y la electrónica son idénticos. La única diferencia práctica es que algunos clones usan el chip USB CH340G en vez del de Arduino, lo que requiere instalar un driver adicional la primera vez que conectas la placa. Una vez instalado, la experiencia es la misma.</p></details>
+<details><summary>¿Cuánto tiempo toma completar los 10 proyectos?</summary><p>Depende de la experiencia previa y del ritmo de cada persona. Como referencia: los proyectos 1-4 se hacen en una tarde. Los proyectos 5-8 toman otra tarde cada uno si se entiende cada concepto. El proyecto 9 toma un par de horas extra por la configuración Bluetooth. El proyecto 10 (el robot) puede tomar un fin de semana completo entre ensamblaje, cableado, pruebas y ajustes. En total, de 2 a 4 semanas dedicando algunas horas a la semana.</p></details>
+<details><summary>¿Estos proyectos sirven para enseñar Arduino en un colegio?</summary><p>Sí, la progresión de dificultad está diseñada para un aprendizaje secuencial, y cada proyecto introduce exactamente un concepto nuevo. Para contexto educativo, conviene complementar con explicaciones teóricas entre proyectos y evaluaciones por proyecto completado. Los proyectos 1-7 se pueden hacer en un taller de 8-10 sesiones de una hora.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Para el detalle técnico de cada sensor y componente, sigue con la <a href="/blog/guia-esencial-de-sensores-para-arduino">Guía Esencial de Sensores para Arduino</a>. Y cuando estés listo para el robot del proyecto 10, la guía completa está en <a href="/blog/como-construir-un-robot-con-arduino-paso-a-paso">Cómo Construir un Robot con Arduino Paso a Paso</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/mejores-kits-de-arduino-para-principiantes-guia-de-compra">← Anterior: Mejores Kits de Arduino para Principiantes</a>
+  <a href="/blog/guia-esencial-de-sensores-para-arduino">Siguiente: Guía Esencial de Sensores para Arduino →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://docs.arduino.cc/built-in-examples/" target="_blank" rel="noopener noreferrer">Arduino — Ejemplos incorporados</a></li>
+<li><a href="https://roboticsengineeringlab.com/articles/arduino-classroom-robotics-beginners" target="_blank" rel="noopener noreferrer">Robotics Engineering Lab — Arduino y robótica para principiantes en el aula</a></li>
+<li><a href="https://roboticsengineeringlab.com/articles/arduino-mega-kit-getting-started" target="_blank" rel="noopener noreferrer">Robotics Engineering Lab — Primeros pasos con el kit Arduino Mega</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 7 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
