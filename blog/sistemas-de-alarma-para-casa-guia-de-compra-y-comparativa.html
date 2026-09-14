@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sistemas de Alarma para Casa: Guía de Compra y Comparativa</title>
+<meta name="description" content="Guía técnica de alarmas domiciliarias: con o sin monitoreo, sensores PIR y magnéticos, cableada vs inalámbrica, falsas alarmas, DIY vs empresa y costos 2026.">
+<meta name="keywords" content="alarma para casa, sistema de alarma domiciliaria, alarma con monitoreo, alarma inalambrica casa, sensores pir alarma, alarma casa chile, verisure vs adt, alarma diy">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/sistemas-de-alarma-para-casa-guia-de-compra-y-comparativa">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sistemas de Alarma para Casa: Guía de Compra y Comparativa">
+<meta property="og:description" content="Monitoreada o autónoma, qué sensores necesitas realmente, cómo evitar falsas alarmas y DIY vs empresa: la guía técnica antes de contratar.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/sistemas-de-alarma-para-casa-guia-de-compra-y-comparativa-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/sistemas-de-alarma-para-casa-guia-de-compra-y-comparativa">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sistemas de Alarma para Casa: Guía de Compra y Comparativa">
+<meta name="twitter:description" content="Monitoreada o autónoma, qué sensores necesitas realmente, cómo evitar falsas alarmas y DIY vs empresa: la guía técnica antes de contratar.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/sistemas-de-alarma-para-casa-guia-de-compra-y-comparativa-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Sistemas de Alarma para Casa: Guía de Compra y Comparativa",
+  "description":"Guía de compra técnica de sistemas de alarma para vivienda: diferencia entre alarma monitoreada y autónoma, tipos de sensores (PIR, magnéticos de apertura, rotura de cristal, barreras perimetrales), sistemas cableados frente a inalámbricos, cómo evitar falsas alarmas con mascotas, alarmas comerciales con contrato frente a sistemas DIY autogestionados, integración con cámaras y domótica, y tabla de decisión por tipo de vivienda y presupuesto.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-08",
+  "dateModified":"2026-09-08",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/sistemas-de-alarma-para-casa-guia-de-compra-y-comparativa"},
+  "image":"https://www.ukrabot.cl/blog/sistemas-de-alarma-para-casa-guia-de-compra-y-comparativa-hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"Plano o croquis de la vivienda con puertas y ventanas identificadas, y conocimiento de si hay mascotas en casa (condiciona el tipo de sensor)",
+  "wordCount":"2600",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Sistemas de Alarma para Casa: Guía de Compra y Comparativa","item":"https://www.ukrabot.cl/blog/sistemas-de-alarma-para-casa-guia-de-compra-y-comparativa"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Una alarma sin monitoreo sirve de algo?","acceptedAnswer":{"@type":"Answer","text":"Sí, cumple dos de las tres funciones de un sistema de seguridad: disuasión (la sirena y los carteles hacen que un intruso prefiera otra casa) y aviso (recibes la notificación y puedes reaccionar o pedir que alguien revise). Lo que no cubre es la respuesta operativa 24/7 de una central que despacha un móvil. Para una vivienda habitualmente ocupada o con vecinos y familiares cercanos que puedan reaccionar, una alarma autónoma bien diseñada es una solución razonable a un costo mucho menor."}},
+    {"@type":"Question","name":"¿Los sensores PIR detectan a mi mascota y disparan la alarma?","acceptedAnswer":{"@type":"Answer","text":"Los PIR estándar sí. Los sensores con inmunidad a mascotas (pet immune) están diseñados para ignorar masas térmicas bajo cierto peso, típicamente entre 10 y 25 kg según el modelo, y funcionan bien con gatos y perros pequeños. Para perros grandes, la solución adicional es el montaje: instalar el sensor más alto y con la lente ligeramente inclinada hacia arriba deja la zona baja fuera del campo de detección. Es una decisión que hay que tomar antes de comprar, no después."}},
+    {"@type":"Question","name":"¿Puedo armar mi propio sistema de alarma con Arduino o ESP32?","acceptedAnswer":{"@type":"Answer","text":"Técnicamente sí, y es un proyecto educativo excelente: un ESP32 con sensores PIR HC-SR501, contactos magnéticos y una sirena, integrado con Home Assistant, replica la funcionalidad básica de una alarma comercial. Lo que un sistema DIY con microcontrolador no iguala fácilmente es la robustez de un panel comercial: batería de respaldo dimensionada, supervisión de sabotaje en cada sensor, comunicación cifrada con detección de inhibición y certificaciones. Como proyecto de aprendizaje es ideal; como única protección de una vivienda, un panel comercial da más garantías."}},
+    {"@type":"Question","name":"¿Qué pasa con la alarma si se corta la luz o el internet?","acceptedAnswer":{"@type":"Answer","text":"Un sistema serio tiene batería de respaldo en el panel (típicamente 8-24 horas de autonomía) y un canal de comunicación secundario. Si el sistema usa internet como canal principal, el respaldo suele ser una SIM celular integrada en el panel; si se corta la fibra, la señal sigue saliendo por la red móvil. Verificar que el panel tenga batería de respaldo y comunicación dual es uno de los puntos más importantes al comparar sistemas, porque cortar la luz o el cable de internet es lo primero que hace un intruso preparado."}},
+    {"@type":"Question","name":"¿Cuántos sensores necesito para una casa de dos pisos?","acceptedAnswer":{"@type":"Answer","text":"Como punto de partida: sensores magnéticos en todas las puertas exteriores y en todas las ventanas de planta baja (que suelen ser 6-10 puntos en una casa típica), más 2-3 PIR en los espacios de circulación obligada (hall de entrada, pasillo central de cada piso, escalera). Las ventanas del segundo piso solo necesitan sensor si son accesibles desde un techo, un árbol o una estructura adyacente. Un sensor de rotura de cristal es útil si hay ventanales grandes que serían costosos de cubrir con magnéticos individuales."}}
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="sistemas-de-alarma-para-casa-guia-de-compra-y-comparativa-hero.jpg" alt="Panel de control de sistema de alarma domiciliaria instalado en la pared junto a la puerta de entrada" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Redes y Seguridad · Publicado el <time datetime="2026-09-08">8 de septiembre de 2026</time></div>
+    <h1>Sistemas de Alarma para Casa: Guía de Compra y Comparativa</h1>
+    <p>Monitoreada o autónoma, qué sensores cubren cada punto, cómo evitar que el gato dispare la sirena a las 3 AM, y cuándo un sistema DIY supera a uno con contrato mensual.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="sistemas-de-alarma-para-casa-guia-de-compra-y-comparativa-hero.jpg" alt="Panel de control de sistema de alarma domiciliaria instalado en la pared junto a la puerta de entrada" loading="lazy">
+  <div class="caption">La mayoría de las intrusiones ocurren por puertas y ventanas de planta baja: un sistema bien diseñado cubre esos puntos primero, antes de invertir en sensores de interior.</div>
+</div>
+
+<div class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#monitoreada">Monitoreada vs autónoma: la decisión de fondo</a></li>
+    <li><a href="#sensores">Tipos de sensores y qué cubre cada uno</a></li>
+    <li><a href="#pir">Sensores PIR: cómo funcionan y sus límites</a></li>
+    <li><a href="#cableada">Cableada vs inalámbrica</a></li>
+    <li><a href="#falsas-alarmas">Falsas alarmas: el problema real</a></li>
+    <li><a href="#diy">DIY vs empresa con contrato</a></li>
+    <li><a href="#integracion">Integración con cámaras y domótica</a></li>
+    <li><a href="#tabla">Tabla de decisión por vivienda y presupuesto</a></li>
+    <li><a href="#errores">Errores al contratar o instalar</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</div>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <!-- ANUNCIO UKRABOT -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7032484018692343"
+       data-ad-slot="7434550690"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+<section id="monitoreada">
+<h2>Monitoreada vs autónoma: la decisión de fondo</h2>
+<p>Esta es la elección que más define el costo total y el nivel de servicio:</p>
+<ul>
+<li><strong>Alarma autónoma (no monitoreada):</strong> cuando se dispara, suena una sirena local y te envía una notificación al teléfono. Nadie más se entera. Tú decides qué hacer: llamar a un vecino, revisar la cámara, avisar a carabineros. No tiene costo mensual más allá de la conectividad. Es la opción de la mayoría de los sistemas DIY (Ring Alarm sin plan, Ajax sin monitoreo, sistemas basados en Home Assistant).</li>
+<li><strong>Alarma monitoreada:</strong> además de la sirena y la notificación, la señal llega a una <strong>central receptora de alarmas</strong> que opera 24/7. Un operador verifica el evento (llamando a la casa, revisando cámaras si el servicio lo incluye) y, si corresponde, despacha a un móvil de seguridad o coordina con la policía. Tiene costo mensual permanente.</li>
+</ul>
+<div class="note">
+<strong>Cómo decidir:</strong> el monitoreo aporta valor real cuando nadie va a poder reaccionar a una notificación (vivienda desocupada largos períodos, segunda vivienda, personas mayores solas, propiedades aisladas). Si la casa está habitualmente ocupada o hay vecinos y familiares cerca que pueden reaccionar, una alarma autónoma bien diseñada cubre la función disuasoria y de aviso a un costo mucho menor a largo plazo.
+</div>
+</section>
+
+<section id="sensores">
+<h2>Tipos de sensores y qué cubre cada uno</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Tipos de sensores de un sistema de alarma y su función específica.</caption>
+<thead><tr><th>Sensor</th><th>Qué detecta</th><th>Dónde se instala</th></tr></thead>
+<tbody>
+<tr><td>Magnético (contacto)</td><td>Apertura de puerta o ventana</td><td>Marco y hoja de cada acceso</td></tr>
+<tr><td>PIR (infrarrojo pasivo)</td><td>Movimiento de un cuerpo con calor</td><td>Esquina de habitaciones, pasillos</td></tr>
+<tr><td>Rotura de cristal</td><td>Frecuencia acústica del vidrio al romperse</td><td>Habitaciones con ventanales grandes</td></tr>
+<tr><td>Barrera perimetral</td><td>Cruce de un haz infrarrojo exterior</td><td>Perímetro del terreno, antejardín</td></tr>
+<tr><td>Vibración / sísmico</td><td>Golpes en muros, cajas fuertes o rejas</td><td>Muros perimetrales, caja fuerte</td></tr>
+<tr><td>Botón de pánico</td><td>Activación manual de emergencia</td><td>Dormitorio, llavero</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Estrategia de cobertura recomendada:</strong> la mayoría de las intrusiones ocurren por puertas y ventanas de planta baja. Un sistema con buen diseño cubre primero <strong>todos los accesos perimetrales con sensores magnéticos</strong>, luego agrega <strong>uno o dos PIR en los espacios de circulación obligada</strong> (pasillo central, hall de entrada), y solo después considera sensores más especializados. Llenar la casa de PIR sin cubrir las ventanas es un error de diseño común.</p>
+</section>
+
+<section id="pir">
+<h2>Sensores PIR: cómo funcionan y sus límites</h2>
+<p>El PIR (<em>Passive Infrared</em>) es el sensor más usado en sistemas de alarma, y entender cómo funciona explica tanto su efectividad como sus falsas alarmas. No emite nada: <strong>detecta cambios en la radiación infrarroja</strong> que emiten los cuerpos con temperatura. Cuando una persona cruza su campo de visión, la diferencia de temperatura entre el cuerpo y el fondo genera una variación que el sensor interpreta como movimiento.</p>
+<p>Sus límites técnicos, que conviene conocer antes de instalar:</p>
+<ul>
+<li><strong>Detecta mejor el movimiento transversal que el frontal:</strong> alguien caminando de lado a lado frente al sensor se detecta mucho antes que alguien avanzando directamente hacia él. Por eso los PIR se montan en esquinas, cubriendo el ancho de la habitación, no apuntando a una puerta de frente.</li>
+<li><strong>No ve a través del vidrio:</strong> un PIR apuntando hacia una ventana no detecta movimiento en el exterior, porque el vidrio bloquea el infrarrojo lejano.</li>
+<li><strong>Le afectan las fuentes de calor:</strong> una estufa que se enciende, una corriente de aire caliente de un split, o el sol dando directamente sobre el sensor pueden generar variaciones que se interpretan como movimiento.</li>
+</ul>
+<p>El sensor PIR de uso doméstico y en proyectos DIY es el <strong>HC-SR501</strong>, que es exactamente el mismo principio de funcionamiento que usan los sensores de las alarmas comerciales, en formato de módulo para microcontrolador. Si quieres entender en profundidad cómo se calibran su sensibilidad y su tiempo de retardo, y experimentar con uno, este <a href="https://roboticsengineeringlab.com/articles/hc-sr501-pir-motion-sensor-arduino" target="_blank" rel="noopener noreferrer">tutorial del sensor PIR HC-SR501 con Arduino (en inglés)</a> cubre el detalle técnico de los potenciómetros de ajuste y los modos de disparo. También tenemos nuestra propia guía en <a href="/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad">Sensor PIR de Movimiento para Proyectos de Seguridad</a>.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="cableada">
+<h2>Cableada vs inalámbrica</h2>
+<ul>
+<li><strong>Cableada:</strong> cada sensor se conecta al panel central por cable. Ventajas: no depende de baterías, no se puede inhibir por radiofrecuencia, y la comunicación es absolutamente confiable. Desventajas: la instalación requiere canalizar cable por toda la vivienda, lo que es viable en obra nueva o remodelación y muy invasivo en una casa terminada.</li>
+<li><strong>Inalámbrica:</strong> los sensores se comunican por radio con el panel. Ventajas: instalación en horas sin obra, fácil de ampliar, portable si te mudas. Desventajas: cada sensor tiene batería que hay que reemplazar (típicamente 2-5 años según el sensor), y en teoría la señal puede ser inhibida por un <em>jammer</em>, aunque los sistemas serios detectan la inhibición y disparan la alarma precisamente por eso.</li>
+</ul>
+<p>Para la enorme mayoría de las viviendas ya construidas, <strong>inalámbrica es la opción práctica</strong>. Los sistemas inalámbricos actuales de marcas serias usan protocolos propietarios cifrados con salto de frecuencia y supervisión permanente de cada sensor: si un sensor deja de reportar (batería agotada, sabotaje, inhibición), el panel lo detecta y avisa.</p>
+</section>
+
+<section id="falsas-alarmas">
+<h2>Falsas alarmas: el problema real</h2>
+<p>Una alarma que se dispara sola tres veces al mes termina desactivada, que es la peor situación posible. Las causas más comunes y sus soluciones:</p>
+<ul>
+<li><strong>Mascotas:</strong> un perro o gato que cruza el campo de un PIR genera una detección. Solución: <strong>sensores PIR con inmunidad a mascotas</strong> (pet immune), que ignoran masas térmicas bajo cierto peso, o montaje del sensor a mayor altura apuntando ligeramente hacia arriba para que la zona baja quede fuera del campo.</li>
+<li><strong>Corrientes de aire y fuentes de calor:</strong> un PIR frente a una ventana con sol directo, cerca de un split o de una estufa. Solución: reubicar el sensor lejos de fuentes térmicas y del sol directo.</li>
+<li><strong>Insectos:</strong> una araña o una polilla caminando directamente sobre la lente del sensor genera una señal enorme. Solución: limpieza periódica de las lentes y sellado de ranuras de ventilación del sensor.</li>
+<li><strong>Puertas mal ajustadas:</strong> un sensor magnético cuyo imán queda al límite de la distancia de detección puede reportar apertura con una ráfaga de viento. Solución: reajustar la separación entre imán y sensor (normalmente debe ser menor a 1 cm).</li>
+<li><strong>Baterías bajas:</strong> un sensor con batería agotándose puede enviar señales erráticas antes de morir. Solución: atender los avisos de batería baja del panel en vez de ignorarlos.</li>
+</ul>
+</section>
+
+<section id="diy">
+<h2>DIY vs empresa con contrato</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación entre sistema autogestionado y servicio con empresa de seguridad.</caption>
+<thead><tr><th>Aspecto</th><th>DIY autogestionado</th><th>Empresa con contrato</th></tr></thead>
+<tbody>
+<tr><td>Costo inicial</td><td>Medio (compras el equipo)</td><td>Bajo o cero (equipo en comodato)</td></tr>
+<tr><td>Costo mensual</td><td>Cero o mínimo</td><td>Permanente mientras dure el contrato</td></tr>
+<tr><td>Propiedad del equipo</td><td>Tuyo</td><td>Habitualmente de la empresa</td></tr>
+<tr><td>Instalación</td><td>Tú o un técnico independiente</td><td>Incluida</td></tr>
+<tr><td>Respuesta ante evento</td><td>Tú y tu red de contactos</td><td>Central 24/7 + móvil de seguridad</td></tr>
+<tr><td>Permanencia</td><td>Ninguna</td><td>Contrato con plazo mínimo habitual</td></tr>
+<tr><td>Ampliación</td><td>Compras y agregas tú</td><td>Se cotiza con la empresa</td></tr>
+</tbody>
+</table>
+</div>
+<p>La cuenta que conviene hacer antes de firmar: <strong>multiplica el costo mensual por 36 o 60 meses</strong> y compara con el costo de comprar un sistema equivalente. En muchos casos el sistema propio se paga en menos de dos años, y a partir de ahí es ahorro puro. Lo que compras con el contrato no es el equipo, es la <strong>respuesta operativa 24/7</strong>, y si esa respuesta es lo que necesitas, el costo está justificado.</p>
+</section>
+
+<section id="integracion">
+<h2>Integración con cámaras y domótica</h2>
+<p>Una alarma aislada avisa que algo pasó; una alarma integrada te dice <em>qué</em> pasó. Las combinaciones que más valor aportan:</p>
+<ul>
+<li><strong>Alarma + cámaras:</strong> al dispararse un sensor, las <a href="/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local">cámaras IP</a> de esa zona graban y te envían el clip. Puedes verificar si es una intrusión real o el gato antes de llamar a nadie.</li>
+<li><strong>Alarma + luces:</strong> al detectar intrusión, encender todas las <a href="/blog/luces-led-inteligentes-guia-de-compra-y-comparativa">luces de la casa</a> al 100%. Es un disuasor sorprendentemente efectivo.</li>
+<li><strong>Alarma + timbre con cámara:</strong> el <a href="/blog/timbres-inteligentes-video-doorbell-guia-de-compra">video doorbell</a> registra quién se acercó a la puerta antes del evento.</li>
+<li><strong>Armado automático:</strong> integrada con <a href="/blog/domotica-como-automatizar-tu-casa-desde-cero-guia-completa">Home Assistant</a>, la alarma puede armarse sola cuando el último teléfono de la familia sale de casa, y desarmarse al volver, sin tocar un teclado.</li>
+</ul>
+</section>
+
+<section id="tabla">
+<h2>Tabla de decisión por vivienda y presupuesto</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos orientativos en USD de 2026 para el equipamiento, sin considerar costos de monitoreo mensual.</caption>
+<thead><tr><th>Vivienda</th><th>Cobertura recomendada</th><th>Rango equipo</th></tr></thead>
+<tbody>
+<tr><td>Departamento</td><td>1 panel + 1-2 magnéticos + 1 PIR + sirena</td><td>US$ 150–300</td></tr>
+<tr><td>Casa pequeña (1 piso)</td><td>Panel + 4-6 magnéticos + 2 PIR + sirena interior y exterior</td><td>US$ 300–600</td></tr>
+<tr><td>Casa grande (2 pisos)</td><td>Panel + 8-12 magnéticos + 3-4 PIR + rotura de cristal + 2 sirenas</td><td>US$ 600–1.200</td></tr>
+<tr><td>Casa con terreno / parcela</td><td>Lo anterior + barreras perimetrales + cámaras exteriores</td><td>US$ 1.200–3.000+</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="errores">
+<h2>Errores al contratar o instalar</h2>
+<ul>
+<li><strong>Cubrir solo con PIR y olvidar los accesos:</strong> los sensores magnéticos en puertas y ventanas detectan la intrusión <em>antes</em> de que el intruso entre; un PIR la detecta cuando ya está dentro. Los magnéticos son la primera línea, no un extra.</li>
+<li><strong>No considerar las mascotas antes de comprar:</strong> instalar PIR estándar en una casa con perro garantiza falsas alarmas. Los sensores pet-immune deben elegirse desde el inicio.</li>
+<li><strong>Instalar la sirena en un lugar accesible:</strong> una sirena exterior a la altura de una persona se puede silenciar con espuma expansiva en segundos. Debe ir alta, protegida y con batería de respaldo propia (sirena autoalimentada).</li>
+<li><strong>Firmar un contrato sin leer la permanencia:</strong> muchos contratos de monitoreo tienen plazo mínimo con multa por término anticipado, y el equipo queda en comodato (no es tuyo al terminar). Revisa esas dos cláusulas específicamente antes de firmar.</li>
+<li><strong>No probar el sistema periódicamente:</strong> un sensor con batería agotada o desalineado puede llevar meses sin funcionar sin que lo notes. La mayoría de los paneles tienen modo de prueba: úsalo cada pocos meses.</li>
+</ul>
+</section>
+
+
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq">
+<details><summary>¿Una alarma sin monitoreo sirve de algo?</summary><p>Sí, cumple dos de las tres funciones de un sistema de seguridad: disuasión (la sirena y los carteles hacen que un intruso prefiera otra casa) y aviso (recibes la notificación y puedes reaccionar o pedir que alguien revise). Lo que no cubre es la respuesta operativa 24/7 de una central que despacha un móvil. Para una vivienda habitualmente ocupada o con vecinos y familiares cercanos que puedan reaccionar, una alarma autónoma bien diseñada es una solución razonable a un costo mucho menor.</p></details>
+<details><summary>¿Los sensores PIR detectan a mi mascota y disparan la alarma?</summary><p>Los PIR estándar sí. Los sensores con inmunidad a mascotas (pet immune) están diseñados para ignorar masas térmicas bajo cierto peso, típicamente entre 10 y 25 kg según el modelo, y funcionan bien con gatos y perros pequeños. Para perros grandes, la solución adicional es el montaje: instalar el sensor más alto y con la lente ligeramente inclinada hacia arriba deja la zona baja fuera del campo de detección. Es una decisión que hay que tomar antes de comprar, no después.</p></details>
+<details><summary>¿Puedo armar mi propio sistema de alarma con Arduino o ESP32?</summary><p>Técnicamente sí, y es un proyecto educativo excelente: un ESP32 con sensores PIR HC-SR501, contactos magnéticos y una sirena, integrado con Home Assistant, replica la funcionalidad básica de una alarma comercial. Lo que un sistema DIY con microcontrolador no iguala fácilmente es la robustez de un panel comercial: batería de respaldo dimensionada, supervisión de sabotaje en cada sensor, comunicación cifrada con detección de inhibición y certificaciones. Como proyecto de aprendizaje es ideal; como única protección de una vivienda, un panel comercial da más garantías.</p></details>
+<details><summary>¿Qué pasa con la alarma si se corta la luz o el internet?</summary><p>Un sistema serio tiene batería de respaldo en el panel (típicamente 8-24 horas de autonomía) y un canal de comunicación secundario. Si el sistema usa internet como canal principal, el respaldo suele ser una SIM celular integrada en el panel; si se corta la fibra, la señal sigue saliendo por la red móvil. Verificar que el panel tenga batería de respaldo y comunicación dual es uno de los puntos más importantes al comparar sistemas, porque cortar la luz o el cable de internet es lo primero que hace un intruso preparado.</p></details>
+<details><summary>¿Cuántos sensores necesito para una casa de dos pisos?</summary><p>Como punto de partida: sensores magnéticos en todas las puertas exteriores y en todas las ventanas de planta baja (que suelen ser 6-10 puntos en una casa típica), más 2-3 PIR en los espacios de circulación obligada (hall de entrada, pasillo central de cada piso, escalera). Las ventanas del segundo piso solo necesitan sensor si son accesibles desde un techo, un árbol o una estructura adyacente. Un sensor de rotura de cristal es útil si hay ventanales grandes que serían costosos de cubrir con magnéticos individuales.</p></details>
+</div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Para completar la seguridad del hogar, revisa <a href="/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local">Cámaras de Seguridad IP</a>, <a href="/blog/cerraduras-inteligentes-guia-de-compra-y-comparativa">Cerraduras Inteligentes</a> y <a href="/blog/timbres-inteligentes-video-doorbell-guia-de-compra">Timbres con Video</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local">← Anterior: Cámaras de Seguridad IP para Casa</a>
+  <a href="/blog/sensor-pir-de-movimiento-para-proyectos-de-seguridad">Siguiente: Sensor PIR de Movimiento para Proyectos de Seguridad →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://roboticsengineeringlab.com/articles/hc-sr501-pir-motion-sensor-arduino" target="_blank" rel="noopener noreferrer">Robotics Engineering Lab — Sensor PIR HC-SR501 con Arduino</a></li>
+<li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles</a></li>
+<li><a href="https://www.carabineros.cl/" target="_blank" rel="noopener noreferrer">Carabineros de Chile — Prevención situacional</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 8 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
