@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Paletizado y Pick & Place Robotizado: Guía Técnica</title>
+<meta name="description" content="Guía técnica de paletizado y pick and place con robots: cálculo de ciclo, elección de efector, visión para bin picking, patrones de estiba y dimensionamiento.">
+<meta name="keywords" content="paletizado robotizado, pick and place robot, robot paletizador, bin picking, robot scara, robot delta, patron de estiba, automatizacion de paletizado">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/paletizado-y-pick-and-place-robotizado-guia-tecnica">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paletizado y Pick & Place Robotizado: Guía Técnica">
+<meta property="og:description" content="Cómo calcular la cadencia real, qué robot y qué efector elegir según el producto, y por qué la alimentación de piezas decide el proyecto.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/paletizado-y-pick-and-place-robotizado-guia-tecnica-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/paletizado-y-pick-and-place-robotizado-guia-tecnica">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Paletizado y Pick & Place Robotizado: Guía Técnica">
+<meta name="twitter:description" content="Cómo calcular la cadencia real, qué robot y qué efector elegir según el producto, y por qué la alimentación de piezas decide el proyecto.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/paletizado-y-pick-and-place-robotizado-guia-tecnica-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Paletizado y Pick & Place Robotizado: Guía Técnica",
+  "description":"Guía técnica de aplicaciones de paletizado y pick & place robotizado: diferencia entre ambas aplicaciones y sus exigencias, cálculo del tiempo de ciclo y de la cadencia requerida, selección del efector según el producto (ventosa, pinza mecánica, garra de capas), patrones de estiba y software de paletizado, visión 2D y 3D para bin picking, tipos de robot adecuados (SCARA, delta, articulado, paletizador dedicado), y errores frecuentes de dimensionamiento.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-10",
+  "dateModified":"2026-09-10",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/paletizado-y-pick-and-place-robotizado-guia-tecnica"},
+  "image":"https://www.ukrabot.cl/blog/paletizado-y-pick-and-place-robotizado-guia-tecnica-hero.jpg",
+  "proficiencyLevel":"Avanzado",
+  "dependencies":"Datos del producto a manipular: dimensiones, peso, material de la superficie de agarre, y la cadencia objetivo en unidades por minuto. También el patrón de estiba requerido si es paletizado.",
+  "wordCount":"2600",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Paletizado y Pick & Place Robotizado: Guía Técnica","item":"https://www.ukrabot.cl/blog/paletizado-y-pick-and-place-robotizado-guia-tecnica"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué robot conviene para paletizar cajas de 20 kg?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para paletizado puro de cajas, un paletizador dedicado de 4 ejes suele ser la mejor opción: al no necesitar los dos grados de libertad adicionales que el paletizado no usa (la caja siempre se deposita horizontal), gana rigidez, carga útil y velocidad para esa tarea, normalmente a menor costo que un 6 ejes equivalente. Un articulado de 6 ejes tiene sentido si además de paletizar necesitas orientar el producto o realizar otras tareas en la misma celda. Recuerda descontar el peso del efector de la carga útil disponible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuántas piezas por minuto puede hacer un robot pick and place?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende del tipo de robot y de la aplicación concreta. Un robot delta en aplicaciones de alta velocidad puede superar los 100-150 ciclos por minuto con piezas livianas y movimientos cortos; un SCARA se mueve en el rango de 60-120; un articulado de 6 ejes, entre 10 y 40. Pero esas cifras son de catálogo con ciclos estándar: tu cadencia real depende del tiempo de agarre de tu efector, la distancia real del movimiento, el tiempo de estabilización y, muy frecuentemente, del ritmo al que la alimentación entrega piezas aprovechables."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es bin picking y por qué es tan complejo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bin picking es tomar piezas amontonadas de forma desordenada dentro de un contenedor. Es la aplicación de manipulación más exigente porque requiere reconstruir en 3D la escena, identificar qué piezas son alcanzables, calcular un punto de agarre válido para cada una considerando su orientación, y planificar una trayectoria que no colisione con las paredes del contenedor ni con las otras piezas. Todo eso en tiempo real y en cada ciclo, porque la escena cambia cada vez que se retira una pieza. Su costo y su tiempo de puesta en marcha son considerablemente mayores que los de una aplicación con visión 2D."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Ventosas o pinza mecánica para paletizar cajas de cartón?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para cajas de cartón cerradas y con superficie superior lisa, las ventosas son el estándar: son rápidas de acoplar y soltar, escalan bien con arreglos de múltiples copas, y no marcan el producto. Las pinzas mecánicas se justifican cuando la superficie no permite vacío (cartón muy poroso, superficies irregulares, film plástico suelto) o cuando las aceleraciones son tan altas que se necesita sujeción positiva. Un punto clave al dimensionar el vacío: la fuerza requerida no es el peso de la caja, sino el peso multiplicado por la aceleración del movimiento más un factor de seguridad."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito sistema de visión para una aplicación de paletizado?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Normalmente no. En paletizado las cajas suelen llegar por un transportador con guías que garantizan una posición repetible, y el robot solo necesita ejecutar el patrón de estiba programado. La visión se justifica cuando llegan referencias mezcladas que hay que identificar y clasificar, cuando la posición de entrada no se puede garantizar mecánicamente, o cuando se requiere verificación de calidad o lectura de códigos como parte del ciclo. Si el problema se puede resolver con un utillaje mecánico, esa suele ser la solución más robusta y económica."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="paletizado-y-pick-and-place-robotizado-guia-tecnica-hero.jpg" alt="Robot paletizador apilando cajas sobre un pallet en una línea de producción" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Automatización Industrial · Publicado el <time datetime="2026-09-10">10 de septiembre de 2026</time></div>
+    <h1>Paletizado y Pick & Place Robotizado: Guía Técnica</h1>
+    <p>Cómo calcular la cadencia real antes de comprar nada, qué tipo de robot corresponde a cada velocidad, cómo elegir el efector según el producto, y por qué la alimentación de piezas decide el éxito del proyecto.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="paletizado-y-pick-and-place-robotizado-guia-tecnica-hero.jpg" alt="Robot paletizador apilando cajas sobre un pallet en una línea de producción" loading="lazy">
+  <div class="caption">La cadencia máxima de un robot en catálogo se mide en condiciones ideales: en una aplicación real con aceleración, aproximación y agarre, el ciclo efectivo suele ser bastante mayor.</div>
+</div>
+
+<nav class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#diferencia">Paletizado vs pick &amp; place: no son lo mismo</a></li>
+    <li><a href="#ciclo">Tiempo de ciclo: el cálculo que define todo</a></li>
+    <li><a href="#robot">Qué tipo de robot para cada aplicación</a></li>
+    <li><a href="#efector">Efector según el producto</a></li>
+    <li><a href="#vision">Visión: cuándo la necesitas y de qué tipo</a></li>
+    <li><a href="#estiba">Patrones de estiba y software de paletizado</a></li>
+    <li><a href="#alimentacion">Alimentación de piezas: el cuello de botella real</a></li>
+    <li><a href="#errores">Errores de dimensionamiento</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+<section id="diferencia">
+<h2>Paletizado vs pick &amp; place: no son lo mismo</h2>
+<p>Ambas aplicaciones consisten en tomar algo de un sitio y dejarlo en otro, pero sus exigencias técnicas son muy distintas y confundirlas lleva a dimensionar mal:</p>
+<ul>
+<li><strong>Paletizado:</strong> cargas pesadas (cajas, sacos, bidones de 5 a 50 kg o más), cadencias moderadas (5–20 ciclos por minuto), alcance grande (hay que cubrir uno o varios pallets completos y alcanzar altura de estiba), y precisión modesta (±1–2 mm es suficiente). El desafío es la <strong>carga y el alcance</strong>.</li>
+<li><strong>Pick &amp; place:</strong> piezas livianas (gramos a pocos kilos), cadencias altas (60–200 ciclos por minuto en aplicaciones de alimentación o farma), alcance reducido, y precisión alta. El desafío es la <strong>velocidad y la precisión</strong>.</li>
+</ul>
+<p>Un robot articulado de gran carga útil que palletiza sacos de 25 kg no sirve para colocar 120 piezas por minuto, y un robot delta de alta velocidad no puede levantar una caja de 20 kg. Definir en cuál de los dos mundos está tu aplicación es el primer paso, y a veces la respuesta es que necesitas ambos en estaciones distintas.</p>
+</section>
+
+<section id="ciclo">
+<h2>Tiempo de ciclo: el cálculo que define todo</h2>
+<p>El error más común es tomar la cifra de "ciclos por minuto" del catálogo del robot y asumir que esa será la cadencia de la aplicación. Esa cifra se mide normalmente con el ciclo estándar de la industria (un movimiento corto de 25 mm arriba, 305 mm horizontal y 25 mm abajo, sin carga y sin tiempo de agarre). Tu aplicación real tiene más elementos:</p>
+<div class="note">
+<strong>Ciclo real = tiempo de aproximación + tiempo de agarre + tiempo de transporte + tiempo de posicionamiento + tiempo de liberación + tiempo de retorno</strong>
+</div>
+<p>Los componentes que más se olvidan:</p>
+<ul>
+<li><strong>Tiempo de agarre y liberación:</strong> una ventosa necesita establecer vacío (decenas a cientos de milisegundos según el generador y el volumen) y luego romperlo. Una pinza neumática tarda en cerrar y abrir. Sumado sobre 100 ciclos por minuto, es tiempo significativo.</li>
+<li><strong>Aceleración y desaceleración:</strong> en movimientos cortos el robot nunca alcanza su velocidad máxima; pasa todo el trayecto acelerando y frenando. Por eso la velocidad máxima del catálogo es poco representativa en pick &amp; place.</li>
+<li><strong>Estabilización:</strong> tras un movimiento rápido, el brazo oscila. Si la precisión de colocación es estrecha, hay que esperar a que se asiente antes de liberar.</li>
+<li><strong>Tiempo de visión:</strong> si un sistema de cámara localiza la pieza, su tiempo de captura y procesamiento entra en el ciclo salvo que se solape con el movimiento.</li>
+</ul>
+<p>Regla práctica: calcula tu ciclo teórico y aplica un <strong>factor de disponibilidad del 80–85%</strong> para cubrir microparos, cambios de pallet, reposición de material y mantenimiento. La cadencia que debes garantizar es la del peor caso, no la del promedio.</p>
+</section>
+
+<section id="robot">
+<h2>Qué tipo de robot para cada aplicación</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Arquitecturas de robot y su aplicación típica en manipulación.</caption>
+<thead><tr><th>Tipo</th><th>Carga típica</th><th>Cadencia</th><th>Aplicación</th></tr></thead>
+<tbody>
+<tr><td>Delta (paralelo)</td><td>0,5–8 kg</td><td>Muy alta (100–200/min)</td><td>Pick &amp; place de alta velocidad, alimentos, farma</td></tr>
+<tr><td>SCARA</td><td>1–20 kg</td><td>Alta (60–120/min)</td><td>Ensamblaje, inserción, pick &amp; place en plano</td></tr>
+<tr><td>Articulado 6 ejes</td><td>3–500+ kg</td><td>Media (10–40/min)</td><td>Versatilidad, orientación compleja, paletizado</td></tr>
+<tr><td>Paletizador dedicado (4 ejes)</td><td>50–800 kg</td><td>Media (10–25/min)</td><td>Paletizado de cajas y sacos</td></tr>
+<tr><td>Cobot</td><td>3–20 kg</td><td>Baja (5–20/min)</td><td>Volúmenes bajos junto a personas</td></tr>
+</tbody>
+</table>
+</div>
+<p>El <strong>paletizador dedicado de 4 ejes</strong> merece atención: al renunciar a dos grados de libertad que el paletizado no necesita (la caja siempre se deposita horizontal), gana rigidez, carga útil y velocidad para esa tarea específica, normalmente a menor costo que un 6 ejes equivalente. Si tu aplicación es exclusivamente paletizar, suele ser la elección correcta.</p>
+<p>Para aplicaciones donde el robot debe operar cerca de personas sin vallado completo, los <a href="/blog/robots-colaborativos-para-lineas-de-ensamblaje">robots colaborativos</a> son una alternativa, con la advertencia de que su cadencia es considerablemente menor por los límites de velocidad que impone la operación colaborativa.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="efector">
+<h2>Efector según el producto</h2>
+<p>La elección del efector la dicta el producto, no el robot:</p>
+<ul>
+<li><strong>Ventosas de vacío:</strong> la opción por defecto en paletizado de cajas de cartón y en manipulación de superficies planas y lisas. Rápidas de acoplar y soltar, y escalan bien con arreglos de múltiples copas para repartir la carga. Su límite: superficies porosas, rugosas, mojadas o deformables. Nuestra guía es <a href="/blog/pinzas-de-vacio-para-brazos-roboticos">Pinzas de Vacío para Brazos Robóticos</a>, y este <a href="https://roboticsengineeringlab.com/articles/vacuum-gripper-robot" target="_blank" rel="noopener noreferrer">análisis de grippers de vacío para robots (en inglés)</a> detalla el cálculo de fuerza de sujeción y los factores de seguridad a aplicar según la aceleración del movimiento.</li>
+<li><strong>Pinzas mecánicas:</strong> para piezas rígidas donde el vacío no agarra o donde se necesita sujeción positiva ante aceleraciones altas. El diseño de los dedos es determinante: deben adaptarse a la geometría y distribuir la fuerza sin marcar el producto. Cubrimos los criterios en <a href="/blog/fundamentos-de-diseno-de-pinzas-para-brazos-roboticos">Fundamentos de Diseño de Pinzas</a>, y este <a href="https://roboticsengineeringlab.com/articles/robot-arm-gripper-design" target="_blank" rel="noopener noreferrer">estudio de diseño de pinzas para brazos robóticos (en inglés)</a> profundiza en cinemática de dedos y materiales de contacto.</li>
+<li><strong>Garras de capa completa:</strong> manipulan una capa entera del pallet de una vez en vez de caja por caja. Multiplican la cadencia efectiva en productos que llegan ya agrupados, a costa de un efector grande y pesado que exige más carga útil del robot.</li>
+<li><strong>Pinzas magnéticas:</strong> para piezas ferromagnéticas. Simples y rápidas, con la limitación obvia del material. Lo vemos en <a href="/blog/pinzas-magneticas-para-brazos-roboticos">Pinzas Magnéticas para Brazos Robóticos</a>.</li>
+</ul>
+<p>Si el producto es frágil o requiere control de la fuerza de agarre, un <a href="/blog/sensores-de-fuerza-torque-para-brazos-roboticos">sensor de fuerza-torque</a> permite cerrar el lazo y evitar daños. Este <a href="https://roboticsengineeringlab.com/articles/force-torque-sensors-robot" target="_blank" rel="noopener noreferrer">análisis de sensores de fuerza-torque (en inglés)</a> cubre las tecnologías disponibles y sus rangos de resolución.</p>
+<p>Un detalle constructivo que decide la fiabilidad a largo plazo: el <strong>enrutado de mangueras de vacío y cables del efector</strong>. En una aplicación de 100 ciclos por minuto, un conductor mal guiado acumula millones de flexiones al año y falla por fatiga. Lo tratamos en <a href="/blog/gestion-de-cables-para-brazos-roboticos">Gestión de Cables para Brazos Robóticos</a>, y este <a href="https://roboticsengineeringlab.com/articles/cable-management-robot" target="_blank" rel="noopener noreferrer">artículo sobre gestión de cables en robots (en inglés)</a> muestra configuraciones de dress pack y errores de enrutado que causan fallos prematuros.</p>
+</section>
+
+<section id="vision">
+<h2>Visión: cuándo la necesitas y de qué tipo</h2>
+<ul>
+<li><strong>Sin visión:</strong> viable cuando las piezas llegan siempre en la misma posición y orientación, garantizado por un utillaje, un transportador con guías o un alimentador indexado. Es la opción más rápida y barata, y siempre que sea posible mecánicamente, es la correcta.</li>
+<li><strong>Visión 2D:</strong> localiza piezas sobre un plano y corrige posición y rotación. Es la solución estándar cuando las piezas llegan desordenadas pero no apiladas: sobre un transportador plano, por ejemplo. Buena relación costo/beneficio y puesta en marcha razonable. Lo cubrimos en <a href="/blog/sistemas-de-vision-computacional-para-brazos-roboticos">Sistemas de Visión Computacional para Brazos Robóticos</a>, y este <a href="https://roboticsengineeringlab.com/articles/robot-arm-vision-system" target="_blank" rel="noopener noreferrer">análisis de sistemas de visión para brazos robóticos (en inglés)</a> revisa la calibración mano-ojo, que es el paso donde más proyectos se atascan.</li>
+<li><strong>Visión 3D (bin picking):</strong> necesaria cuando las piezas están amontonadas en un contenedor en posiciones y orientaciones arbitrarias. Es la aplicación más exigente: requiere reconstrucción 3D de la escena, cálculo de puntos de agarre viables y planificación de trayectoria libre de colisiones con las paredes del bin. Es significativamente más cara y más lenta de poner a punto, y la cadencia alcanzable es menor que en pick &amp; place con visión 2D.</li>
+</ul>
+</section>
+
+<section id="estiba">
+<h2>Patrones de estiba y software de paletizado</h2>
+<p>En paletizado, el <strong>patrón de estiba</strong> define cómo se disponen las cajas en cada capa y cómo rotan entre capas. Un buen patrón busca tres cosas a la vez: maximizar el aprovechamiento de la superficie del pallet, mantener la estabilidad de la carga (trabando las capas entre sí como una albañilería), y respetar las restricciones del producto (qué caras pueden quedar abajo, cuánto peso soporta la caja inferior).</p>
+<p>El software de paletizado de los fabricantes de robots genera estos patrones automáticamente a partir de las dimensiones de la caja y del pallet, calcula las trayectorias y gestiona el cambio de pallet. Lo relevante al evaluar un proyecto es verificar que el software soporte <strong>todas las referencias que produces</strong> y que el cambio de patrón sea rápido: si cada nueva referencia requiere reprogramación manual del integrador, la flexibilidad prometida no existe.</p>
+<p>Elementos complementarios habituales en una celda de paletizado: dispensador de láminas separadoras entre capas, estación de enfardado o envolvedora, e impresión y aplicación de etiquetas. Cada uno suma costo y tiempo de ciclo, y deben considerarse desde el diseño.</p>
+</section>
+
+<section id="alimentacion">
+<h2>Alimentación de piezas: el cuello de botella real</h2>
+<p>Este es el punto donde más proyectos de pick &amp; place fallan en cumplir la cadencia prometida. El robot puede ser capaz de 120 ciclos por minuto, pero si el transportador entrega 70 piezas por minuto en posiciones aprovechables, la celda produce 70. El robot no es el cuello de botella: la alimentación lo es.</p>
+<p>Aspectos a dimensionar con el mismo rigor que el robot:</p>
+<ul>
+<li><strong>Caudal de entrada:</strong> unidades por minuto que el proceso aguas arriba entrega de forma sostenida, no en su pico.</li>
+<li><strong>Distribución sobre el transportador:</strong> piezas demasiado juntas o superpuestas no se pueden tomar; piezas muy dispersas desperdician alcance y tiempo.</li>
+<li><strong>Acumulación (buffer):</strong> un pulmón entre procesos absorbe variaciones y evita que un microparo aguas arriba detenga el robot.</li>
+<li><strong>Salida:</strong> el mismo análisis aguas abajo. Si el pallet lleno tarda en retirarse y no hay posición de intercambio, el robot se detiene esperando.</li>
+</ul>
+<p>La integración de todo esto con la lógica de planta se hace normalmente a través del PLC, tema que cubrimos en <a href="/blog/integrando-brazos-roboticos-con-plc">Integrando Brazos Robóticos con PLC</a>.</p>
+</section>
+
+<section id="errores">
+<h2>Errores de dimensionamiento</h2>
+<ul>
+<li><strong>Usar la cadencia de catálogo como cadencia de proyecto:</strong> el ciclo estándar del fabricante no incluye tu tiempo de agarre, tu distancia real ni tu tiempo de estabilización.</li>
+<li><strong>Olvidar el peso del efector en la carga útil:</strong> un robot de 20 kg de payload con una garra de 6 kg solo puede manipular 14 kg de producto. Con garras de capa completa, el efector puede pesar más que el producto.</li>
+<li><strong>No considerar el momento de inercia:</strong> además del peso, importa la distancia del centro de masa a la brida. Una carga liviana pero muy alejada puede exceder el límite del robot aunque el peso esté dentro de especificación.</li>
+<li><strong>Dimensionar el vacío sin factor de seguridad por aceleración:</strong> la fuerza que debe resistir una ventosa no es el peso de la pieza, sino el peso multiplicado por las aceleraciones del movimiento. En movimientos rápidos ese factor es varias veces la gravedad.</li>
+<li><strong>Diseñar la celda sin acceso para mantenimiento:</strong> si cambiar una ventosa desgastada requiere desmontar medio vallado, ese mantenimiento rutinario se posterga y termina causando paros.</li>
+</ul>
+</section>
+
+<section id="fuentes">
+<h2>Fuentes primarias</h2>
+<ul>
+    <li><a href="https://roboticsengineeringlab.com/articles/vacuum-gripper-robot" target="_blank" rel="noopener noreferrer">Robotics Engineering Lab — Grippers de vacío para robots</a></li>
+    <li><a href="https://roboticsengineeringlab.com/articles/robot-arm-gripper-design" target="_blank" rel="noopener noreferrer">Robotics Engineering Lab — Diseño de pinzas para brazos robóticos</a></li>
+    <li><a href="https://roboticsengineeringlab.com/articles/robot-arm-vision-system" target="_blank" rel="noopener noreferrer">Robotics Engineering Lab — Sistemas de visión para brazos robóticos</a></li>
+    <li><a href="https://roboticsengineeringlab.com/articles/arduino-mega-kit-getting-started" target="_blank" rel="noopener noreferrer">Robotics Engineering Lab — Primeros pasos con el kit Arduino Mega</a></li>
+</ul>
+</section>
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq"><details><summary>¿Qué robot conviene para paletizar cajas de 20 kg?</summary><p>Para paletizado puro de cajas, un paletizador dedicado de 4 ejes suele ser la mejor opción: al no necesitar los dos grados de libertad adicionales que el paletizado no usa (la caja siempre se deposita horizontal), gana rigidez, carga útil y velocidad para esa tarea, normalmente a menor costo que un 6 ejes equivalente. Un articulado de 6 ejes tiene sentido si además de paletizar necesitas orientar el producto o realizar otras tareas en la misma celda. Recuerda descontar el peso del efector de la carga útil disponible.</p></details>
+<details><summary>¿Cuántas piezas por minuto puede hacer un robot pick and place?</summary><p>Depende del tipo de robot y de la aplicación concreta. Un robot delta en aplicaciones de alta velocidad puede superar los 100-150 ciclos por minuto con piezas livianas y movimientos cortos; un SCARA se mueve en el rango de 60-120; un articulado de 6 ejes, entre 10 y 40. Pero esas cifras son de catálogo con ciclos estándar: tu cadencia real depende del tiempo de agarre de tu efector, la distancia real del movimiento, el tiempo de estabilización y, muy frecuentemente, del ritmo al que la alimentación entrega piezas aprovechables.</p></details>
+<details><summary>¿Qué es bin picking y por qué es tan complejo?</summary><p>Bin picking es tomar piezas amontonadas de forma desordenada dentro de un contenedor. Es la aplicación de manipulación más exigente porque requiere reconstruir en 3D la escena, identificar qué piezas son alcanzables, calcular un punto de agarre válido para cada una considerando su orientación, y planificar una trayectoria que no colisione con las paredes del contenedor ni con las otras piezas. Todo eso en tiempo real y en cada ciclo, porque la escena cambia cada vez que se retira una pieza. Su costo y su tiempo de puesta en marcha son considerablemente mayores que los de una aplicación con visión 2D.</p></details>
+<details><summary>¿Ventosas o pinza mecánica para paletizar cajas de cartón?</summary><p>Para cajas de cartón cerradas y con superficie superior lisa, las ventosas son el estándar: son rápidas de acoplar y soltar, escalan bien con arreglos de múltiples copas, y no marcan el producto. Las pinzas mecánicas se justifican cuando la superficie no permite vacío (cartón muy poroso, superficies irregulares, film plástico suelto) o cuando las aceleraciones son tan altas que se necesita sujeción positiva. Un punto clave al dimensionar el vacío: la fuerza requerida no es el peso de la caja, sino el peso multiplicado por la aceleración del movimiento más un factor de seguridad.</p></details>
+<details><summary>¿Necesito sistema de visión para una aplicación de paletizado?</summary><p>Normalmente no. En paletizado las cajas suelen llegar por un transportador con guías que garantizan una posición repetible, y el robot solo necesita ejecutar el patrón de estiba programado. La visión se justifica cuando llegan referencias mezcladas que hay que identificar y clasificar, cuando la posición de entrada no se puede garantizar mecánicamente, o cuando se requiere verificación de calidad o lectura de códigos como parte del ciclo. Si el problema se puede resolver con un utillaje mecánico, esa suele ser la solución más robusta y económica.</p></details></div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Para evaluar la viabilidad económica del proyecto, revisa <a href="/blog/cuanto-cuesta-automatizar-con-un-robot-industrial-roi-y-costos">Cuánto Cuesta Automatizar con un Robot Industrial</a>, y para el diseño de la celda, <a href="/blog/como-seleccionar-un-efector-final-para-robots">Cómo Seleccionar un Efector Final</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/cuanto-cuesta-automatizar-con-un-robot-industrial-roi-y-costos">← Anterior: Cuánto Cuesta Automatizar con un Robot Industrial</a>
+  <a href="/blog/como-seleccionar-un-efector-final-para-robots">Siguiente: Cómo Seleccionar un Efector Final para Robots →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.wi-fi.org/discover-wi-fi/security" target="_blank" rel="noopener noreferrer">Wi-Fi Alliance — WPA3 y seguridad</a></li>
+<li><a href="https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-6" target="_blank" rel="noopener noreferrer">Wi-Fi Alliance — Wi-Fi CERTIFIED 6</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 10 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
