@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>SSD vs HDD: Cuál Comprar — NVMe, SATA y Durabilidad</title>
+<meta name="description" content="Guía técnica de almacenamiento: SSD vs HDD, NVMe vs SATA, TLC y QLC, TBW y durabilidad, DRAM caché, y qué disco conviene según cada uso y presupuesto.">
+<meta name="keywords" content="ssd vs hdd, que ssd comprar, nvme vs sata, disco duro o ssd, ssd tlc vs qlc, tbw ssd durabilidad, mejor ssd 2026, disco para nas">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/ssd-vs-hdd-cual-comprar-nvme-sata-y-durabilidad">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSD vs HDD: Cuál Comprar — NVMe, SATA y Durabilidad">
+<meta property="og:description" content="NVMe o SATA, TLC o QLC, qué es el TBW y cuándo un HDD sigue siendo mejor opción: la guía técnica antes de comprar almacenamiento.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/ssd-vs-hdd-cual-comprar-nvme-sata-y-durabilidad-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/ssd-vs-hdd-cual-comprar-nvme-sata-y-durabilidad">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SSD vs HDD: Cuál Comprar — NVMe, SATA y Durabilidad">
+<meta name="twitter:description" content="NVMe o SATA, TLC o QLC, qué es el TBW y cuándo un HDD sigue siendo mejor opción: la guía técnica antes de comprar almacenamiento.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/ssd-vs-hdd-cual-comprar-nvme-sata-y-durabilidad-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"SSD vs HDD: Cuál Comprar — NVMe, SATA y Durabilidad",
+  "description":"Guía de compra técnica de discos de almacenamiento: diferencia real entre SSD y HDD en velocidad, durabilidad y costo por terabyte, interfaces SATA y NVMe con sus límites de ancho de banda, tipos de memoria NAND (SLC, MLC, TLC, QLC) y su efecto en rendimiento sostenido, importancia de la caché DRAM, indicador TBW de resistencia a escritura, cuándo un HDD sigue siendo la opción correcta, discos para NAS y videovigilancia, y tabla de decisión por uso y presupuesto.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-11",
+  "dateModified":"2026-09-11",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/ssd-vs-hdd-cual-comprar-nvme-sata-y-durabilidad"},
+  "image":"https://www.ukrabot.cl/blog/ssd-vs-hdd-cual-comprar-nvme-sata-y-durabilidad-hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"Conocer qué interfaces tiene tu equipo: puertos SATA disponibles, slots M.2 y su tipo (NVMe PCIe o solo SATA), y la generación PCIe que soportan, porque determina la velocidad máxima alcanzable",
+  "wordCount":"2600",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"SSD vs HDD: Cuál Comprar — NVMe, SATA y Durabilidad","item":"https://www.ukrabot.cl/blog/ssd-vs-hdd-cual-comprar-nvme-sata-y-durabilidad"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Vale la pena un NVMe si solo uso el PC para ofimática y navegar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La diferencia frente a un SSD SATA será prácticamente imperceptible en ese uso. El salto grande es pasar de HDD a SSD; entre SATA y NVMe la mejora solo se percibe en tareas que mueven archivos muy grandes o que hacen accesos intensivos, como edición de video, compilación de proyectos grandes o máquinas virtuales. Si el presupuesto es limitado, conviene más un SSD SATA de mayor capacidad que un NVMe pequeño."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto dura un SSD?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para uso doméstico y de oficina, más de lo que durará siendo útil por capacidad. El indicador de resistencia es el TBW (terabytes escritos), que en discos de consumo suele estar en los cientos de TB. Considerando que un usuario normal escribe del orden de 10 a 30 GB diarios, agotar esa resistencia tomaría décadas. El TBW solo se vuelve un criterio real en servidores, edición profesional con escrituras masivas diarias o cachés de bases de datos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es mejor, TLC o QLC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "TLC para la mayoría de los casos. QLC almacena más bits por celda, lo que abarata el costo por terabyte, pero tiene menos ciclos de escritura y, sobre todo, su velocidad de escritura sostenida cae bastante una vez agotada la caché rápida del disco. Eso lo hace notorio al copiar archivos muy grandes. QLC es una opción razonable para almacenamiento de lectura frecuente y escritura ocasional, como una biblioteca de juegos; para disco de sistema o trabajo con archivos grandes, TLC es preferible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sigue teniendo sentido comprar un disco duro mecánico en 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, para almacenamiento masivo. El costo por terabyte de un HDD sigue siendo una fracción del de un SSD, y para datos que se leen de forma secuencial y ocasional —bibliotecas de video, respaldos, archivos históricos— la velocidad del SSD no aporta nada perceptible. La configuración óptima en la mayoría de los equipos combina ambos: SSD para sistema y programas, HDD para datos masivos. En NAS de gran capacidad, los HDD siguen siendo el estándar por razones puramente económicas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar un SSD normal en un NAS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Funcionará, pero hay dos consideraciones. La primera es económica: llenar varias bahías con SSD de gran capacidad es mucho más caro que con HDD NAS-grade, y en un NAS la prioridad suele ser capacidad. La segunda es técnica: los discos NAS-grade tienen firmware con control del tiempo de recuperación de errores para evitar que el controlador RAID los expulse ante un sector lento. Los SSD de consumo no están pensados para ese escenario. Donde los SSD sí aportan en un NAS es como caché de lectura o escritura, función que varios modelos comerciales soportan."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="ssd-vs-hdd-cual-comprar-nvme-sata-y-durabilidad-hero.jpg" alt="Unidad SSD NVMe M.2 junto a un disco duro mecánico de 3,5 pulgadas sobre una mesa de trabajo" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Redes y Seguridad · Publicado el <time datetime="2026-09-11">11 de septiembre de 2026</time></div>
+    <h1>SSD vs HDD: Cuál Comprar — NVMe, SATA y Durabilidad</h1>
+    <p>Por qué un SSD transforma un equipo lento, cuándo NVMe realmente se nota frente a SATA, qué significan TLC y QLC en el uso diario, y en qué casos un disco mecánico sigue siendo la elección correcta.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="ssd-vs-hdd-cual-comprar-nvme-sata-y-durabilidad-hero.jpg" alt="Unidad SSD NVMe M.2 junto a un disco duro mecánico de 3,5 pulgadas sobre una mesa de trabajo" loading="lazy">
+  <div class="caption">Cambiar un disco mecánico por un SSD es la mejora de rendimiento más grande que se puede hacer en un equipo antiguo, por encima de agregar RAM o cambiar el procesador.</div>
+</div>
+
+<nav class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#diferencia">SSD vs HDD: la diferencia que importa</a></li>
+    <li><a href="#interfaces">SATA vs NVMe: dónde se nota de verdad</a></li>
+    <li><a href="#nand">Tipos de memoria NAND: TLC y QLC</a></li>
+    <li><a href="#dram">Caché DRAM y rendimiento sostenido</a></li>
+    <li><a href="#tbw">TBW: cuánto dura realmente un SSD</a></li>
+    <li><a href="#hdd-vigente">Cuándo un HDD sigue siendo la mejor opción</a></li>
+    <li><a href="#especiales">Discos para NAS y videovigilancia</a></li>
+    <li><a href="#tabla">Tabla de decisión por uso y presupuesto</a></li>
+    <li><a href="#errores">Errores al comprar</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+<section id="diferencia">
+<h2>SSD vs HDD: la diferencia que importa</h2>
+<p>Un <strong>HDD</strong> (disco duro mecánico) guarda los datos magnéticamente en platos que giran mientras un cabezal se desplaza para leerlos. Un <strong>SSD</strong> los guarda en memoria flash, sin partes móviles. Las consecuencias prácticas:</p>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación entre almacenamiento mecánico y de estado sólido.</caption>
+<thead><tr><th>Criterio</th><th>HDD</th><th>SSD</th></tr></thead>
+<tbody>
+<tr><td>Tiempo de acceso</td><td>Milisegundos</td><td>Microsegundos</td></tr>
+<tr><td>Lectura secuencial</td><td>~150-250 MB/s</td><td>550 MB/s (SATA) a 7.000+ MB/s (NVMe)</td></tr>
+<tr><td>Lectura aleatoria</td><td>Muy lenta</td><td>Órdenes de magnitud superior</td></tr>
+<tr><td>Resistencia a golpes</td><td>Frágil en funcionamiento</td><td>Sin partes móviles</td></tr>
+<tr><td>Ruido</td><td>Audible</td><td>Silencioso</td></tr>
+<tr><td>Consumo</td><td>Mayor</td><td>Menor</td></tr>
+<tr><td>Costo por TB</td><td>Mucho menor</td><td>Mayor</td></tr>
+<tr><td>Capacidades grandes</td><td>Hasta 20+ TB accesibles</td><td>Caras sobre 4 TB</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note">
+<strong>Lo que más se nota en el uso diario no es la velocidad secuencial sino el acceso aleatorio.</strong> Arrancar el sistema operativo, abrir programas y buscar archivos implican miles de lecturas pequeñas y dispersas: ahí el HDD pierde tiempo moviendo el cabezal físicamente, mientras el SSD responde casi instantáneamente. Por eso migrar el sistema operativo de HDD a SSD transforma la sensación de un equipo antiguo más que cualquier otra mejora individual.
+</div>
+</section>
+
+<section id="interfaces">
+<h2>SATA vs NVMe: dónde se nota de verdad</h2>
+<ul>
+<li><strong>SSD SATA:</strong> usa la misma interfaz que los discos mecánicos, limitada a unos 550 MB/s por el protocolo. Viene en formato de 2,5" o en M.2 con llave B+M. Es más barato y compatible con prácticamente cualquier equipo, incluso antiguos.</li>
+<li><strong>SSD NVMe:</strong> se conecta directamente al bus PCIe, eliminando el cuello de botella de SATA. Velocidades de 3.500 MB/s (PCIe 3.0), 7.000 MB/s (PCIe 4.0) o más (PCIe 5.0). Formato M.2 con llave M.</li>
+</ul>
+<p>La pregunta honesta es <strong>cuándo se nota esa diferencia</strong>:</p>
+<ul>
+<li><strong>Uso general (sistema, ofimática, navegación, la mayoría de los juegos):</strong> la diferencia entre SATA y NVMe es marginal en la práctica. Ambos son instantáneos comparados con un HDD, y las tareas cotidianas no mueven archivos lo bastante grandes como para saturar SATA.</li>
+<li><strong>Edición de video, transferencia de archivos muy grandes, compilación de proyectos grandes, máquinas virtuales:</strong> aquí NVMe sí marca una diferencia perceptible y medible.</li>
+</ul>
+<p>Si el presupuesto es limitado, <strong>vale más la pena un SSD SATA de mayor capacidad que un NVMe pequeño</strong>: el salto grande es de HDD a SSD, no de SATA a NVMe. Verifica también qué soporta tu equipo: un NVMe PCIe 4.0 instalado en una placa con PCIe 3.0 funciona, pero a la velocidad de la generación menor.</p>
+</section>
+
+<section id="nand">
+<h2>Tipos de memoria NAND: TLC y QLC</h2>
+<p>La memoria flash almacena carga eléctrica en celdas. Cuántos bits guarda cada celda determina densidad, costo y resistencia:</p>
+<ul>
+<li><strong>SLC (1 bit/celda):</strong> máxima resistencia y velocidad, costo prohibitivo. Solo en aplicaciones industriales.</li>
+<li><strong>MLC (2 bits):</strong> buen equilibrio, prácticamente descontinuado en consumo.</li>
+<li><strong>TLC (3 bits):</strong> el estándar actual de consumo. Buen rendimiento y resistencia adecuada para uso doméstico y profesional.</li>
+<li><strong>QLC (4 bits):</strong> mayor densidad y menor costo por TB, pero con menos ciclos de escritura y un comportamiento particular: tras agotar su caché rápida, la velocidad de escritura sostenida cae de forma pronunciada.</li>
+</ul>
+<div class="warning">
+<strong>El detalle del SLC caché que explica reseñas contradictorias:</strong> los SSD TLC y QLC reservan una porción de su memoria operando en modo SLC como caché rápida. Mientras escribes dentro de esa caché, la velocidad es excelente. Al agotarla —copiando un archivo muy grande, por ejemplo— la escritura cae a la velocidad nativa de la NAND, que en QLC puede bajar drásticamente. Por eso un mismo disco puede medirse rapidísimo en una prueba corta y decepcionar copiando 200 GB seguidos. Si tu uso implica transferencias grandes y sostenidas, prioriza TLC.
+</div>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="dram">
+<h2>Caché DRAM y rendimiento sostenido</h2>
+<p>Los SSD mantienen una tabla que mapea direcciones lógicas a ubicaciones físicas en la NAND. Dónde se guarda esa tabla marca una diferencia de rendimiento:</p>
+<ul>
+<li><strong>Con DRAM dedicada:</strong> el disco incorpora un chip de memoria propio para esa tabla, lo que permite accesos rápidos y consistentes, especialmente con el disco lleno y en cargas de trabajo intensas.</li>
+<li><strong>DRAM-less:</strong> prescinde de ese chip y usa una porción de la RAM del sistema (HMB) o la propia NAND. Abarata el disco, pero el rendimiento en accesos aleatorios y con el disco muy ocupado es menor.</li>
+</ul>
+<p>Para un disco de sistema en un equipo de trabajo, uno con DRAM da una experiencia más consistente a lo largo del tiempo. Para almacenamiento secundario de archivos o juegos, un DRAM-less cumple bien y permite más capacidad por el mismo dinero.</p>
+</section>
+
+<section id="tbw">
+<h2>TBW: cuánto dura realmente un SSD</h2>
+<p>El <strong>TBW (Terabytes Written)</strong> indica cuántos terabytes se pueden escribir en el disco dentro de la garantía. Es el indicador de resistencia de la NAND, que tiene un número finito de ciclos de escritura por celda.</p>
+<p>Los valores típicos según capacidad rondan los cientos de TBW en discos de consumo de 500 GB a 1 TB. Para poner eso en perspectiva: un usuario doméstico normal escribe del orden de <strong>10 a 30 GB al día</strong> entre sistema, descargas y trabajo. A 20 GB diarios, agotar 300 TBW tomaría más de 40 años.</p>
+<div class="note">
+<strong>Conclusión práctica:</strong> para uso doméstico y de oficina, el TBW no es una limitación real; el disco quedará obsoleto por capacidad antes de agotar su resistencia. El TBW sí importa en servidores, en equipos de edición que escriben cientos de GB diarios, en cachés de bases de datos o en un <a href="/blog/nas-synology-vs-qnap-vs-casero-cual-elegir">NAS</a> con escritura intensiva.
+</div>
+<p>Un hábito que sí prolonga la vida y el rendimiento: <strong>no llenar el SSD al máximo</strong>. Dejar entre un 10% y un 20% libre permite que el controlador haga <em>wear leveling</em> y recolección de basura con holgura. Un SSD al 99% de capacidad se vuelve notoriamente más lento y se desgasta más rápido.</p>
+</section>
+
+<section id="hdd-vigente">
+<h2>Cuándo un HDD sigue siendo la mejor opción</h2>
+<p>El disco mecánico no está obsoleto: sigue siendo la opción correcta en escenarios concretos:</p>
+<ul>
+<li><strong>Almacenamiento masivo:</strong> bibliotecas de video, respaldos, archivos históricos. El costo por terabyte de un HDD sigue siendo una fracción del de un SSD, y para datos que se leen de forma secuencial y ocasional, la velocidad del SSD no aporta.</li>
+<li><strong>Servidores de medios:</strong> reproducir video no exige acceso aleatorio rápido; un HDD entrega streaming sin problema, como en las configuraciones que vimos en <a href="/blog/mini-pc-para-servidor-casero-guia-de-compra">Mini PC para Servidor Casero</a>.</li>
+<li><strong>Respaldos de archivo frío:</strong> un HDD desconectado conserva datos de forma confiable durante años; un SSD sin alimentación durante períodos muy prolongados puede perder carga en sus celdas.</li>
+<li><strong><a href="/blog/nas-synology-vs-qnap-vs-casero-cual-elegir">NAS</a> de gran capacidad:</strong> llenar bahías con SSD de 8 TB es económicamente inviable para la mayoría; los HDD NAS-grade siguen siendo el estándar.</li>
+</ul>
+<p>La configuración óptima en la mayoría de los equipos combina ambos: <strong>SSD para sistema operativo y programas, HDD para datos masivos</strong>.</p>
+</section>
+
+<section id="especiales">
+<h2>Discos para NAS y videovigilancia</h2>
+<p>Los HDD diseñados para funcionamiento continuo se diferencian de los de escritorio en aspectos que importan cuando el disco nunca se apaga:</p>
+<ul>
+<li><strong>Discos NAS (WD Red Plus, Seagate IronWolf, Toshiba N300):</strong> firmware con control del tiempo de recuperación de errores para que el controlador RAID no los expulse por un sector lento, compensación de vibración rotacional para operar junto a otros discos en el mismo chasis, y carga de trabajo anual especificada mucho mayor. Lo detallamos en <a href="/blog/nas-synology-vs-qnap-vs-casero-cual-elegir">NAS: Synology vs QNAP vs Casero</a>.</li>
+<li><strong>Discos de videovigilancia (WD Purple, Seagate SkyHawk):</strong> optimizados para escritura continua de múltiples flujos de video simultáneos, que es el patrón de un <a href="/blog/camaras-de-seguridad-ip-para-casa-poe-nvr-y-almacenamiento-local">NVR con cámaras IP</a> grabando 24/7. Priorizan la escritura sostenida sin pérdida de cuadros por encima de la velocidad de lectura aleatoria.</li>
+</ul>
+<p>Usar un disco de escritorio en un NAS de varias bahías funciona, pero aumenta la probabilidad de expulsiones falsas del array y de fallas prematuras bajo carga continua.</p>
+</section>
+
+<section id="tabla">
+<h2>Tabla de decisión por uso y presupuesto</h2>
+<div class="table-wrap">
+<table>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Recomendación por escenario de uso.</caption>
+<thead><tr><th>Uso</th><th>Recomendación</th><th>Capacidad sugerida</th></tr></thead>
+<tbody>
+<tr><td>Revivir un equipo antiguo con HDD</td><td>SSD SATA 2,5" (TLC)</td><td>500 GB – 1 TB</td></tr>
+<tr><td>Sistema y programas en equipo moderno</td><td>NVMe PCIe 3.0/4.0 con DRAM</td><td>1 TB</td></tr>
+<tr><td>Edición de video, máquinas virtuales</td><td>NVMe PCIe 4.0, TLC, con DRAM</td><td>2 TB</td></tr>
+<tr><td>Juegos (biblioteca grande)</td><td>NVMe o SATA, DRAM-less aceptable</td><td>2 TB</td></tr>
+<tr><td>Almacenamiento masivo y respaldos</td><td>HDD 7200 rpm</td><td>4 – 8 TB</td></tr>
+<tr><td>NAS de varias bahías</td><td>HDD NAS-grade</td><td>4 – 8 TB por bahía</td></tr>
+<tr><td>Grabación de cámaras 24/7</td><td>HDD de videovigilancia</td><td>4 – 8 TB</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="errores">
+<h2>Errores al comprar</h2>
+<ul>
+<li><strong>Comprar un NVMe sin verificar que la placa lo soporte:</strong> algunos slots M.2 son solo SATA pese a tener el mismo formato físico. Un NVMe en un slot SATA-only simplemente no es detectado.</li>
+<li><strong>Elegir por la velocidad de pico anunciada:</strong> esa cifra corresponde a lectura secuencial dentro de la caché. El rendimiento sostenido, sobre todo en QLC, puede ser muy distinto.</li>
+<li><strong>Comprar la capacidad justa:</strong> un SSD casi lleno pierde rendimiento y se desgasta más rápido. Conviene dejar margen desde la compra.</li>
+<li><strong>Usar un SSD como único respaldo:</strong> ningún soporte único es un respaldo. Un SSD puede fallar sin aviso previo, a diferencia de un HDD que suele dar señales (ruidos, sectores defectuosos crecientes). La estrategia de respaldo la cubrimos en <a href="/blog/respaldos-automaticos-y-raid-en-un-nas-domestico">Respaldos Automáticos y RAID</a>.</li>
+<li><strong>Olvidar la disipación en NVMe rápidos:</strong> los PCIe 4.0 y 5.0 generan calor y reducen su velocidad si se sobrecalientan. Muchas placas incluyen disipador para el slot M.2; si la tuya no, vale la pena uno.</li>
+</ul>
+</section>
+
+<section id="fuentes">
+<h2>Fuentes primarias</h2>
+<ul>
+    <li><a href="https://nvmexpress.org/" target="_blank" rel="noopener noreferrer">NVM Express — Especificación NVMe</a></li>
+    <li><a href="https://www.jedec.org/standards-documents/focus/flash/solid-state-drives" target="_blank" rel="noopener noreferrer">JEDEC — Estándares de resistencia en SSD</a></li>
+</ul>
+</section>
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq"><details><summary>¿Vale la pena un NVMe si solo uso el PC para ofimática y navegar?</summary><p>La diferencia frente a un SSD SATA será prácticamente imperceptible en ese uso. El salto grande es pasar de HDD a SSD; entre SATA y NVMe la mejora solo se percibe en tareas que mueven archivos muy grandes o que hacen accesos intensivos, como edición de video, compilación de proyectos grandes o máquinas virtuales. Si el presupuesto es limitado, conviene más un SSD SATA de mayor capacidad que un NVMe pequeño.</p></details>
+<details><summary>¿Cuánto dura un SSD?</summary><p>Para uso doméstico y de oficina, más de lo que durará siendo útil por capacidad. El indicador de resistencia es el TBW (terabytes escritos), que en discos de consumo suele estar en los cientos de TB. Considerando que un usuario normal escribe del orden de 10 a 30 GB diarios, agotar esa resistencia tomaría décadas. El TBW solo se vuelve un criterio real en servidores, edición profesional con escrituras masivas diarias o cachés de bases de datos.</p></details>
+<details><summary>¿Qué es mejor, TLC o QLC?</summary><p>TLC para la mayoría de los casos. QLC almacena más bits por celda, lo que abarata el costo por terabyte, pero tiene menos ciclos de escritura y, sobre todo, su velocidad de escritura sostenida cae bastante una vez agotada la caché rápida del disco. Eso lo hace notorio al copiar archivos muy grandes. QLC es una opción razonable para almacenamiento de lectura frecuente y escritura ocasional, como una biblioteca de juegos; para disco de sistema o trabajo con archivos grandes, TLC es preferible.</p></details>
+<details><summary>¿Sigue teniendo sentido comprar un disco duro mecánico en 2026?</summary><p>Sí, para almacenamiento masivo. El costo por terabyte de un HDD sigue siendo una fracción del de un SSD, y para datos que se leen de forma secuencial y ocasional —bibliotecas de video, respaldos, archivos históricos— la velocidad del SSD no aporta nada perceptible. La configuración óptima en la mayoría de los equipos combina ambos: SSD para sistema y programas, HDD para datos masivos. En NAS de gran capacidad, los HDD siguen siendo el estándar por razones puramente económicas.</p></details>
+<details><summary>¿Puedo usar un SSD normal en un NAS?</summary><p>Funcionará, pero hay dos consideraciones. La primera es económica: llenar varias bahías con SSD de gran capacidad es mucho más caro que con HDD NAS-grade, y en un NAS la prioridad suele ser capacidad. La segunda es técnica: los discos NAS-grade tienen firmware con control del tiempo de recuperación de errores para evitar que el controlador RAID los expulse ante un sector lento. Los SSD de consumo no están pensados para ese escenario. Donde los SSD sí aportan en un NAS es como caché de lectura o escritura, función que varios modelos comerciales soportan.</p></details></div>
+</section>
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Para planificar tu almacenamiento en red, revisa <a href="/blog/nas-synology-vs-qnap-vs-casero-cual-elegir">NAS: Synology vs QNAP vs Casero</a> y <a href="/blog/respaldos-automaticos-y-raid-en-un-nas-domestico">Respaldos Automáticos y RAID</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/nas-synology-vs-qnap-vs-casero-cual-elegir">← Anterior: NAS: Synology vs QNAP vs Casero</a>
+  <a href="/blog/respaldos-automaticos-y-raid-en-un-nas-domestico">Siguiente: Respaldos Automáticos y RAID en un NAS Doméstico →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.wi-fi.org/discover-wi-fi/security" target="_blank" rel="noopener noreferrer">Wi-Fi Alliance — WPA3 y seguridad</a></li>
+<li><a href="https://www.wi-fi.org/discover-wi-fi/wi-fi-certified-6" target="_blank" rel="noopener noreferrer">Wi-Fi Alliance — Wi-Fi CERTIFIED 6</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 11 de septiembre de 2026.</p>
+</section>
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
