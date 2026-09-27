@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Costo de Calefacción por Hora: Pellet vs Eléctrica vs Parafina vs Gas</title>
+<meta name="description" content="Cómo calcular el costo real de calefaccionar tu casa: poder calorífico de cada combustible, rendimiento del equipo, pesos por kWh útil y comparación entre pellet, electricidad, parafina y gas.">
+<meta name="keywords" content="costo calefaccion por hora, cuanto cuesta calefaccionar una casa, estufa a pellet consumo, calefaccion electrica vs parafina, cual calefaccion es mas economica, kwh util calefaccion, estufa parafina consumo">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/costo-de-calefaccion-por-hora-pellet-vs-electrica-vs-parafina-vs-gas">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Costo de Calefacción por Hora: Pellet vs Eléctrica vs Parafina vs Gas">
+<meta property="og:description" content="El método para comparar pellet, electricidad, parafina, gas y bomba de calor en la única unidad que importa: pesos por kWh útil.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/costo-de-calefaccion-por-hora-pellet-vs-electrica-vs-parafina-vs-gas-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/costo-de-calefaccion-por-hora-pellet-vs-electrica-vs-parafina-vs-gas">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Costo de Calefacción por Hora: Pellet vs Eléctrica vs Parafina vs Gas">
+<meta name="twitter:description" content="El método para comparar pellet, electricidad, parafina, gas y bomba de calor en la única unidad que importa: pesos por kWh útil.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/costo-de-calefaccion-por-hora-pellet-vs-electrica-vs-parafina-vs-gas-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Costo de Calefacción por Hora: Pellet vs Eléctrica vs Parafina vs Gas",
+  "description":"Metodología completa para comparar el costo real de las distintas fuentes de calefacción domiciliaria: el concepto de kWh útil como única unidad comparable, poder calorífico del pellet, la parafina, el gas licuado y el gas natural, rendimiento típico de cada tipo de equipo y por qué un equipo de bajo rendimiento encarece un combustible barato, cálculo paso a paso del costo por kWh útil a partir del precio de venta habitual de cada combustible, el caso particular de la bomba de calor y su coeficiente de rendimiento superior a la unidad, estimación de la potencia térmica necesaria según superficie y nivel de aislamiento, costos de instalación y mantenimiento de cada alternativa, implicancias de seguridad y calidad del aire interior, y tabla final de decisión por tipo de vivienda.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-27",
+  "dateModified":"2026-09-27",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/costo-de-calefaccion-por-hora-pellet-vs-electrica-vs-parafina-vs-gas"},
+  "image":"https://www.ukrabot.cl/blog/costo-de-calefaccion-por-hora-pellet-vs-electrica-vs-parafina-vs-gas-hero.jpg",
+  "proficiencyLevel":"Intermedio",
+  "dependencies":"La superficie en metros cuadrados y la altura de techo del espacio a calefaccionar, el precio local actual de cada combustible, y la tarifa por kWh de tu última boleta eléctrica",
+  "wordCount":"2800",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Costo de Calefacción por Hora: Pellet vs Eléctrica vs Parafina vs Gas","item":"https://www.ukrabot.cl/blog/costo-de-calefaccion-por-hora-pellet-vs-electrica-vs-parafina-vs-gas"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cómo calculo el costo real de calefacción por hora?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con tres datos y una división. Primero, el precio de la unidad de combustible que compras. Segundo, los kWh que contiene esa unidad: un saco de pellet de 15 kg lleva unos 72 kWh, un litro de parafina unos 9,6 y un balón de gas licuado de 15 kg unos 192. Tercero, el rendimiento del equipo. Entonces el costo por kWh útil es el precio dividido por el producto de los kWh contenidos y el rendimiento. Para pasarlo a costo por hora, multiplica ese valor por la potencia del equipo en kW y por la fracción de tiempo que realmente funciona, que suele ser entre 40 y 70% una vez alcanzada la temperatura."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es más económico, estufa a pellet o calefacción eléctrica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de qué calefacción eléctrica. Frente a un calefactor de resistencia, el pellet es claramente más económico: del orden de 95 pesos por kWh útil contra unos 150. Frente a una bomba de calor, en cambio, el pellet pierde, porque un split inverter con COP 3,5 entrega calor a unos 43 pesos por kWh útil al no generarlo sino transportarlo desde el aire exterior. Hay que sumarle al pellet el consumo eléctrico de sus propios ventiladores y del tornillo alimentador, unos 50 a 100 W en marcha, y el hecho de que no funciona durante un corte de luz."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué la estufa a parafina tiene 97% de rendimiento y no es la más barata?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque ese rendimiento altísimo se debe justamente a que no evacúa nada al exterior: todo el calor queda dentro, pero también todos los productos de la combustión, incluidos vapor de agua, óxidos de nitrógeno y monóxido de carbono si la combustión es incompleta. Eso obliga a mantener ventilación permanente, y el aire frío que entra por esa ventilación es una pérdida de calor que la ficha técnica no contabiliza. En la práctica el rendimiento efectivo es menor, y al costo por kWh hay que sumarle un riesgo de seguridad que los equipos eléctricos no tienen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánta potencia de calefacción necesito para mi living?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Multiplica la superficie en metros cuadrados por la altura de techo en metros para obtener el volumen, y multiplica ese volumen por un factor de aislamiento: 30 a 35 W por metro cúbico en una vivienda bien aislada con termopanel, 40 a 45 en una estándar, y 50 a 60 en una antigua con vidrio simple. Un living de 30 m² y 2,5 m de altura en vivienda estándar necesita unos 3.150 W, es decir una estufa de 3 kW. El factor de aislamiento es la variable de mayor peso: bajarlo de 55 a 35 reduce la necesidad en más de un tercio, un ahorro que ningún cambio de combustible iguala."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿La bomba de calor funciona bien cuando hace mucho frío?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Funciona, pero con menor rendimiento. Su COP cae al bajar la temperatura exterior porque hay menos calor disponible para extraer y el compresor debe vencer una diferencia térmica mayor: un equipo con COP 4 a 7 °C puede quedar en torno a 2,5 a 0 °C, y los modelos no preparados para frío intenso necesitan ciclos de descongelamiento que interrumpen el calentamiento. Por eso el dato útil es el SCOP, que promedia toda la temporada, y no el COP nominal. En la zona central de Chile sigue siendo la opción más económica todo el invierno; donde se cruza el cero con frecuencia, conviene revisar el rango de operación declarado y considerar un segundo equipo de apoyo."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="costo-de-calefaccion-por-hora-pellet-vs-electrica-vs-parafina-vs-gas-hero.jpg" alt="Montaje de electrónica doméstica con microcontrolador y sensores sobre una mesa de madera junto a una ventana" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Eficiencia Energética en el Hogar · Publicado el <time datetime="2026-09-27">27 de septiembre de 2026</time></div>
+    <h1>Costo de Calefacción por Hora: Pellet vs Eléctrica vs Parafina vs Gas</h1>
+    <p>Cómo convertir el precio de un saco de pellet, un litro de parafina, un balón de gas o un kWh eléctrico a la única unidad comparable: pesos por kilovatio-hora de calor útil entregado.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="costo-de-calefaccion-por-hora-pellet-vs-electrica-vs-parafina-vs-gas-hero.jpg" alt="Montaje de electrónica doméstica con microcontrolador y sensores sobre una mesa de madera junto a una ventana" loading="lazy">
+  <div class="caption">Comparar combustibles por su precio de venta lleva a conclusiones equivocadas: lo único comparable es el costo por kilovatio-hora de calor realmente entregado a la habitación.</div>
+</div>
+
+<nav class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#kwh-util">El kWh útil: la única unidad comparable</a></li>
+    <li><a href="#poder-calorifico">Poder calorífico de cada combustible</a></li>
+    <li><a href="#rendimiento">Rendimiento del equipo: dónde se pierde el calor</a></li>
+    <li><a href="#calculo">Cálculo paso a paso del costo por kWh útil</a></li>
+    <li><a href="#comparativa">Comparativa: pesos por kWh útil</a></li>
+    <li><a href="#bomba-de-calor">El caso aparte: bomba de calor y COP</a></li>
+    <li><a href="#potencia">Cuánta potencia térmica necesitas</a></li>
+    <li><a href="#instalacion">Costos de instalación y mantenimiento</a></li>
+    <li><a href="#seguridad">Seguridad y calidad del aire interior</a></li>
+    <li><a href="#decision">Tabla de decisión por vivienda</a></li>
+  </ol>
+</nav>
+
+<p>La pregunta "¿cuál calefacción es más económica?" se responde casi siempre mal, porque se comparan precios que no son comparables: el precio de un saco de pellet, el de un litro de parafina, el de un balón de gas y el de un kilovatio-hora eléctrico son cifras expresadas en unidades distintas, referidas a cantidades distintas de energía, y entregadas con eficiencias distintas. Poner esos cuatro números uno al lado del otro no informa nada.</p>
+
+<p>Existe una unidad que sí permite comparar, y es el <strong>kilovatio-hora útil</strong>: el calor que efectivamente termina dentro de la habitación, después de descontar lo que se pierde por la chimenea, por los gases de combustión o por el rendimiento del equipo. Esta guía muestra cómo llegar a ese número desde el precio de la vitrina, con la aritmética explícita para que puedas repetirla con los precios de tu ciudad y de tu mes, que es lo que realmente determina la respuesta.</p>
+
+<div class="note">
+<p><strong>Por qué no damos un ganador fijo.</strong> El resultado de esta comparación cambia con el precio local del pellet, con la tarifa eléctrica de tu comuna y con el rendimiento del equipo concreto que compres. Lo que no cambia es el método. Los precios que usamos en los ejemplos son referenciales para mostrar el cálculo; reemplázalos por los tuyos y el orden de las alternativas se ajustará solo.</p>
+</div>
+
+<section id="kwh-util">
+<h2>El kWh útil: la única unidad comparable</h2>
+
+<p>Un kilovatio-hora es una cantidad de energía: la que entrega una potencia de 1.000 vatios funcionando durante una hora. Sirve igual para medir electricidad que para medir el contenido energético de la leña, del gas o de la parafina, y por eso es el puente que permite comparar cosas distintas.</p>
+
+<p>La distinción importante es entre dos tipos de kWh:</p>
+
+<ul>
+<li><strong>kWh comprado (o de entrada):</strong> la energía contenida en el combustible que pagaste. Es lo que sale del poder calorífico multiplicado por la cantidad.</li>
+<li><strong>kWh útil (o de salida):</strong> la fracción de esa energía que termina como calor en el aire de la habitación. Es kWh comprado multiplicado por el rendimiento del equipo.</li>
+</ul>
+
+<p>La fórmula completa, que es la que usaremos todo el artículo, cabe en una línea:</p>
+
+<pre>Costo por kWh útil = Precio de la unidad de combustible
+                     ÷ (kWh contenidos en esa unidad × Rendimiento del equipo)</pre>
+
+<p>Todo el trabajo consiste en conseguir esos tres números para cada alternativa. El primero lo tienes en la boleta o en el precio de venta; los otros dos son los que explicamos a continuación.</p>
+</section>
+
+<section id="poder-calorifico">
+<h2>Poder calorífico de cada combustible</h2>
+
+<p>El poder calorífico es la energía liberada al quemar por completo una unidad de combustible. Estos son los valores de referencia habituales, expresados ya en kWh para ahorrarte conversiones:</p>
+
+<div style="overflow-x:auto;">
+<table>
+<thead>
+<tr><th>Combustible</th><th>Unidad de venta</th><th>Contenido energético aproximado</th></tr>
+</thead>
+<tbody>
+<tr><td>Pellet de madera</td><td>Saco de 15 kg</td><td>≈ 4,8 kWh/kg → ≈ 72 kWh por saco</td></tr>
+<tr><td>Parafina (kerosene doméstico)</td><td>Litro</td><td>≈ 9,6 kWh/L</td></tr>
+<tr><td>Gas licuado (GLP)</td><td>Balón de 15 kg</td><td>≈ 12,8 kWh/kg → ≈ 192 kWh por balón</td></tr>
+<tr><td>Gas natural (red)</td><td>Metro cúbico</td><td>≈ 10,5 kWh/m³</td></tr>
+<tr><td>Leña seca (20% humedad)</td><td>Kilogramo</td><td>≈ 4,0 kWh/kg</td></tr>
+<tr><td>Electricidad</td><td>kWh</td><td>1 kWh (por definición)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Dos advertencias sobre esta tabla. La primera es que estos valores son típicos, no exactos: el pellet varía con su densidad y su contenido de humedad, y el gas licuado con la proporción de propano y butano. La segunda, y mucho más importante en la práctica: <strong>la humedad destruye el poder calorífico de la biomasa</strong>. La leña con 40% de humedad puede rendir la mitad que la misma leña seca, porque una parte del calor generado se gasta en evaporar el agua que lleva dentro antes de poder calentar la casa. Es la razón por la que el pellet, que se vende con humedad controlada bajo el 10%, es predecible, y la leña comprada sin certificación no lo es.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="rendimiento">
+<h2>Rendimiento del equipo: dónde se pierde el calor</h2>
+
+<p>Ningún equipo convierte el 100% de la energía del combustible en calor dentro de la habitación. Donde hay combustión, hay gases calientes que salen por el ducto, y ese calor se pierde. Los rendimientos típicos:</p>
+
+<div style="overflow-x:auto;">
+<table>
+<thead>
+<tr><th>Tipo de equipo</th><th>Rendimiento típico</th><th>Dónde se pierde</th></tr>
+</thead>
+<tbody>
+<tr><td>Estufa a pellet moderna</td><td>85 – 92%</td><td>Gases por el ducto de evacuación</td></tr>
+<tr><td>Estufa a leña certificada</td><td>65 – 78%</td><td>Gases y combustión incompleta</td></tr>
+<tr><td>Estufa a leña antigua o salamandra</td><td>40 – 60%</td><td>Tiraje sin control, combustión pobre</td></tr>
+<tr><td>Estufa a parafina (sin ducto)</td><td>≈ 95 – 99%</td><td>Casi nada al exterior: todo queda dentro</td></tr>
+<tr><td>Estufa a gas licuado (sin ducto)</td><td>≈ 95 – 99%</td><td>Casi nada al exterior: todo queda dentro</td></tr>
+<tr><td>Caldera de gas natural de condensación</td><td>90 – 98%</td><td>Recupera el calor latente de los gases</td></tr>
+<tr><td>Calefactor eléctrico por resistencia</td><td>100%</td><td>Nada: toda la electricidad se vuelve calor</td></tr>
+<tr><td>Bomba de calor (split inverter)</td><td>300 – 450% (COP 3 a 4,5)</td><td>Mueve calor, no lo genera</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Esta tabla contiene dos trampas que conviene desarmar antes de seguir.</p>
+
+<p><strong>Primera trampa: el 99% de la parafina y el gas sin ducto no es una virtud, es un problema.</strong> Ese rendimiento altísimo se debe a que el equipo no evacúa nada al exterior: todos los productos de la combustión —incluidos vapor de agua, monóxido de carbono, dióxido de nitrógeno y material particulado— quedan dentro de la casa. Térmicamente es eficiente; sanitariamente es la razón por la que estos equipos exigen ventilación permanente, lo que a su vez introduce una pérdida de calor que la ficha técnica no contabiliza. Un equipo al 99% de rendimiento en una habitación que debe mantener una ventana entreabierta no rinde 99% en la práctica.</p>
+
+<p><strong>Segunda trampa: el 100% del calefactor eléctrico suena inmejorable y no lo es.</strong> Es cierto que toda la electricidad se convierte en calor, pero eso solo significa que no se puede hacer peor que 1 a 1 con una resistencia. Una bomba de calor no genera calor: lo transporta desde el aire exterior al interior usando un ciclo de refrigeración, y por eso entrega tres o cuatro unidades de calor por cada unidad de electricidad consumida. Frente a eso, el 100% de una resistencia es el piso, no el techo.</p>
+</section>
+
+<section id="calculo">
+<h2>Cálculo paso a paso del costo por kWh útil</h2>
+
+<p>Hagamos el ejercicio completo con una estufa a pellet, y luego apliquemos el mismo molde al resto.</p>
+
+<p><strong>Paso 1 — precio de la unidad.</strong> Un saco de pellet de 15 kg a 6.000 pesos.</p>
+<p><strong>Paso 2 — energía contenida.</strong> 15 kg × 4,8 kWh/kg = 72 kWh comprados.</p>
+<p><strong>Paso 3 — rendimiento.</strong> Estufa moderna al 88%, es decir 0,88.</p>
+<p><strong>Paso 4 — energía útil.</strong> 72 × 0,88 = 63,4 kWh útiles.</p>
+<p><strong>Paso 5 — costo por kWh útil.</strong> 6.000 ÷ 63,4 = <strong>95 pesos por kWh útil.</strong></p>
+
+<p>Ese es el número que sí se puede comparar. Repite exactamente estos cinco pasos con los precios que pagas tú, y tendrás tu propia respuesta en lugar de una promedio nacional que no corresponde a tu caso.</p>
+
+<div class="warning">
+<p><strong>No olvides los consumos parásitos.</strong> Una estufa a pellet no es solo el pellet: tiene un tornillo alimentador, un ventilador de convección, uno de extracción de gases y una resistencia de encendido. Eso suma del orden de 50 a 100 W en marcha normal, con un pico de 300 a 400 W durante el encendido. Son unos 10 a 20 pesos por hora de operación que hay que sumar al costo del combustible y que el cálculo de arriba no incluye. En la misma línea, una estufa a pellet no funciona durante un corte de luz, a diferencia de una a leña.</p>
+</div>
+</section>
+
+<section id="comparativa">
+<h2>Comparativa: pesos por kWh útil</h2>
+
+<p>Aplicando el mismo método a las demás alternativas, con precios referenciales que debes reemplazar por los de tu ciudad:</p>
+
+<div style="overflow-x:auto;">
+<table>
+<thead>
+<tr><th>Alternativa</th><th>Precio supuesto</th><th>kWh útiles obtenidos</th><th>Costo por kWh útil</th></tr>
+</thead>
+<tbody>
+<tr><td>Pellet, estufa 88%</td><td>$6.000 / saco 15 kg</td><td>63,4</td><td>≈ $95</td></tr>
+<tr><td>Parafina, estufa 97%</td><td>$1.100 / litro</td><td>9,3</td><td>≈ $118</td></tr>
+<tr><td>Gas licuado, estufa 97%</td><td>$25.000 / balón 15 kg</td><td>186</td><td>≈ $134</td></tr>
+<tr><td>Gas natural, caldera 95%</td><td>$900 / m³</td><td>10,0</td><td>≈ $90</td></tr>
+<tr><td>Electricidad, resistencia 100%</td><td>$150 / kWh</td><td>1,0</td><td>≈ $150</td></tr>
+<tr><td>Electricidad, bomba de calor COP 3,5</td><td>$150 / kWh</td><td>3,5</td><td>≈ $43</td></tr>
+<tr><td>Leña seca, estufa certificada 70%</td><td>$180 / kg</td><td>2,8</td><td>≈ $64</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Tres lecturas que se sostienen aunque cambies los precios dentro de rangos razonables:</p>
+
+<ul>
+<li><strong>La bomba de calor gana por un margen que no es marginal.</strong> No es un ajuste de 10 o 20%: opera a un tercio del costo de la calefacción eléctrica por resistencia y por debajo de todos los combustibles. La razón es estructural —transporta calor en lugar de generarlo— y por eso no depende de fluctuaciones de precio de combustibles.</li>
+<li><strong>El calefactor eléctrico de resistencia es la peor opción por kWh, y es la más vendida.</strong> Un panel eléctrico, un halógeno o un aceite eléctrico cuestan poco en la vitrina y son los más caros de operar. Tienen sentido como apoyo puntual en un baño o una pieza que se usa media hora al día, no como calefacción principal.</li>
+<li><strong>La parafina y el gas parecen más baratos de lo que son</strong>, porque su 97% de rendimiento ignora la ventilación obligatoria que su propio uso impone, y ese aire frío que entra no aparece en ninguna tabla.</li>
+</ul>
+
+<p>Si lo que te interesa es la bomba de calor, el equipo que la implementa en la práctica es un split inverter funcionando en modo calor, y sus criterios de dimensionamiento e instalación están detallados en nuestra <a href="/blog/aire-acondicionado-split-guia-de-compra-e-instalacion-chile">guía de aire acondicionado split</a>. El mismo principio aplicado al agua caliente se compara en <a href="/blog/agua-caliente-termo-electrico-vs-calefont-vs-bomba-de-calor">termo eléctrico vs calefont vs bomba de calor</a>.</p>
+</section>
+
+<section id="bomba-de-calor">
+<h2>El caso aparte: bomba de calor y COP</h2>
+
+<p>El COP (coeficiente de rendimiento) es la relación entre el calor entregado y la electricidad consumida. Un COP de 3,5 significa 3,5 kWh de calor por cada kWh eléctrico. No viola ninguna ley física, porque el equipo no crea esos 3,5 kWh: extrae 2,5 del aire exterior y solo aporta 1 desde la red para mover el ciclo. Es exactamente lo que hace un refrigerador, con el circuito apuntando hacia adentro.</p>
+
+<p>Hay una letra chica que conviene conocer antes de decidir: <strong>el COP cae cuando baja la temperatura exterior</strong>, porque hay menos calor disponible para extraer y la diferencia térmica que el compresor debe vencer es mayor. Un equipo con COP 4 a 7 °C exteriores puede quedar en torno a 2,5 a 0 °C, y un equipo no preparado para frío intenso llega a necesitar ciclos de descongelamiento que interrumpen el calentamiento. Por eso el dato que sirve no es el COP nominal en cartel, sino el <strong>SCOP</strong>, que es el rendimiento promediado a lo largo de una temporada completa de calefacción.</p>
+
+<p>Conclusión práctica: en la zona central de Chile, donde las mínimas invernales rara vez son extremas, la bomba de calor es difícil de superar y funciona bien todo el invierno. En zonas donde se cruza el cero con frecuencia, conviene verificar el rango de operación declarado y considerar un sistema mixto: bomba de calor como base y un segundo equipo para los días más fríos.</p>
+</section>
+
+<section id="potencia">
+<h2>Cuánta potencia térmica necesitas</h2>
+
+<p>Saber el costo por kWh no basta: falta cuántos kWh vas a usar, y eso depende de la potencia del equipo y de las horas de uso. Para dimensionar la potencia, la regla de partida es:</p>
+
+<pre>Potencia (W) ≈ Superficie (m²) × Altura (m) × Factor de aislamiento
+
+Factor de aislamiento (W por m³):
+  Vivienda bien aislada, ventanas termopanel    →  30 – 35
+  Vivienda estándar                             →  40 – 45
+  Vivienda antigua, vidrio simple, sin aislación → 50 – 60</pre>
+
+<p>Un living de 30 m² con techo de 2,5 m en una vivienda estándar da 30 × 2,5 × 42 ≈ 3.150 W, es decir una estufa de unos 3 kW. Con esa potencia y el costo por kWh útil de la sección anterior ya puedes estimar el gasto: 3 kW durante 6 horas son 18 kWh útiles, que a 95 pesos son unos 1.700 pesos por día de uso intensivo con pellet, o unos 780 con bomba de calor.</p>
+
+<p>Dos correcciones que casi siempre se omiten. La primera es que el equipo no trabaja al 100% de su potencia todo el tiempo: una vez alcanzada la temperatura objetivo, modula o cicla, y el consumo real suele estar entre el 40 y el 70% del nominal. La segunda es que el factor de aislamiento es, con diferencia, la variable con más peso de toda la ecuación: pasar de 55 a 35 reduce la necesidad de calefacción en más de un tercio, y ningún cambio de combustible logra ese ahorro. Sellar filtraciones en puertas y ventanas y aislar el cielo raso son intervenciones de bajo costo con un retorno que supera al de cambiar de equipo, y es el punto de partida que recomendamos en <a href="/blog/como-bajar-la-cuenta-de-la-luz-medir-y-reducir-el-consumo-electrico">cómo bajar la cuenta de la luz</a>.</p>
+</section>
+
+<section id="instalacion">
+<h2>Costos de instalación y mantenimiento</h2>
+
+<p>El costo por kWh útil describe la operación, no la inversión. Para una decisión completa hay que sumar lo que cuesta poner el sistema en marcha y mantenerlo funcionando:</p>
+
+<div style="overflow-x:auto;">
+<table>
+<thead>
+<tr><th>Sistema</th><th>Instalación</th><th>Mantenimiento anual</th></tr>
+</thead>
+<tbody>
+<tr><td>Estufa a parafina portátil</td><td>Ninguna</td><td>Mínimo: limpieza de mecha o filtro</td></tr>
+<tr><td>Calefactor eléctrico</td><td>Ninguna</td><td>Ninguno</td></tr>
+<tr><td>Estufa a gas licuado</td><td>Ninguna, pero requiere ventilación</td><td>Revisión de manguera y regulador</td></tr>
+<tr><td>Estufa a pellet</td><td>Ducto de evacuación y punto eléctrico</td><td>Limpieza de cenicero e intercambiador, revisión anual</td></tr>
+<tr><td>Estufa o caldera a leña</td><td>Chimenea o ducto certificado</td><td>Limpieza de hollín del ducto, obligatoria</td></tr>
+<tr><td>Split inverter (bomba de calor)</td><td>Instalación por técnico certificado</td><td>Limpieza de filtros, revisión de carga de gas</td></tr>
+<tr><td>Caldera de gas natural</td><td>Conexión a red y radiadores</td><td>Revisión anual por técnico autorizado</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>El orden de la inversión inicial es casi el inverso al del costo de operación, y de ahí nace la mayoría de las decisiones equivocadas: lo más barato de instalar es lo más caro de usar. La forma correcta de decidir es estimar el costo total a cinco años —inversión más operación más mantenimiento— con tus horas de uso reales. Un sistema que cuesta 800.000 pesos instalar y ahorra 100.000 al año frente a la alternativa se paga en ocho años si calefaccionas poco, y en tres si calefaccionas mucho.</p>
+
+<p>Sea cual sea el sistema, el control es lo que convierte la eficiencia nominal en ahorro medible: apagar por horario, bajar la temperatura de noche y evitar sobrecalentar habitaciones vacías es donde se consigue el resto del ahorro. Esa es la función de un <a href="/blog/termostatos-inteligentes-y-control-de-calefaccion-guia-de-compra">termostato inteligente</a>, y su retorno es proporcional al costo por kWh del sistema que controla.</p>
+</section>
+
+<section id="seguridad">
+<h2>Seguridad y calidad del aire interior</h2>
+
+<p>Este apartado no es un anexo: en calefacción, la seguridad puede ser el criterio que descarte la alternativa más económica.</p>
+
+<p><strong>Todo equipo de combustión sin ducto libera sus gases dentro de la casa.</strong> La parafina y el gas licuado en estufas portátiles producen vapor de agua, dióxido de carbono, óxidos de nitrógeno y, si la combustión es incompleta, monóxido de carbono, que es inodoro y potencialmente letal. Las reglas no negociables son tres: ventilación permanente aunque haga frío, nunca usarlos en un dormitorio mientras se duerme, y no confiar en que "se nota" si algo va mal, porque el monóxido no se nota. Un detector de monóxido de carbono con certificación cuesta una fracción de la estufa y es el accesorio de mejor relación costo-beneficio de toda esta guía.</p>
+
+<p><strong>Los equipos con evacuación al exterior</strong> —pellet, leña, calderas— desplazan el problema hacia el ducto, y ahí el riesgo cambia de naturaleza: hollín acumulado, tiraje insuficiente o un ducto mal ejecutado. La limpieza periódica del ducto no es opcional, y la instalación debe hacerla alguien competente respetando las distancias a materiales combustibles.</p>
+
+<p><strong>Los equipos eléctricos</strong> —resistencia y bomba de calor— no producen combustión ni gases interiores, lo que los deja fuera de todo este capítulo. A cambio, demandan corriente: un calefactor de 2.000 W consume cerca de 9 A de forma sostenida, y varios enchufados en el mismo circuito, o conectados con alargadores subdimensionados, son una causa habitual de sobrecalentamiento de conductores.</p>
+
+<p>Un último punto que en Chile tiene peso normativo: en las comunas con planes de descontaminación atmosférica existen restricciones y programas de recambio de calefactores, porque la calefacción residencial a leña es una fuente principal de material particulado. Antes de invertir en un equipo a combustión sólida conviene revisar qué aplica en tu comuna, tanto por las restricciones como por los subsidios de recambio disponibles.</p>
+</section>
+
+<section id="decision">
+<h2>Tabla de decisión por vivienda</h2>
+
+<div style="overflow-x:auto;">
+<table>
+<thead>
+<tr><th>Situación</th><th>Recomendación</th><th>Razón</th></tr>
+</thead>
+<tbody>
+<tr><td>Departamento, uso diario, zona central</td><td>Split inverter en modo calor</td><td>Menor costo por kWh útil, sin combustión ni ducto</td></tr>
+<tr><td>Casa grande, invierno largo y frío</td><td>Pellet o leña certificada como base</td><td>Potencia alta sostenida a costo razonable</td></tr>
+<tr><td>Pieza o baño, media hora al día</td><td>Calefactor eléctrico</td><td>Inversión nula; el costo por kWh es irrelevante con tan poco uso</td></tr>
+<tr><td>Arriendo, sin poder instalar nada</td><td>Eléctrico o parafina con ventilación</td><td>Sin obra; asumir el mayor costo operativo</td></tr>
+<tr><td>Vivienda con gas natural de red</td><td>Caldera de condensación</td><td>Costo por kWh competitivo y calor distribuido</td></tr>
+<tr><td>Vivienda muy mal aislada</td><td>Aislar antes de elegir equipo</td><td>Ningún combustible compensa 55 W/m³ de pérdidas</td></tr>
+<tr><td>Zona con plan de descontaminación</td><td>Verificar restricciones y subsidios</td><td>Pueden condicionar o financiar la decisión</td></tr>
+<tr><td>Cortes de luz frecuentes</td><td>Leña o gas, no pellet</td><td>El pellet depende de electricidad para operar</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Y el resumen en una frase: si puedes instalar un equipo eléctrico eficiente y tu clima lo permite, la bomba de calor gana por amplio margen; si necesitas potencia alta sostenida en invierno duro, el pellet con un equipo de buen rendimiento es la alternativa sólida; y en cualquier escenario, invertir primero en aislación rinde más que cualquier cambio de combustible.</p>
+</section>
+
+<section id="fuentes">
+<h2>Fuentes primarias</h2>
+<ul>
+    <li><a href="https://www.energia.gob.cl/" target="_blank" rel="noopener noreferrer">Ministerio de Energía de Chile — Información energética y eficiencia</a></li>
+    <li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles (SEC) — Seguridad en artefactos a gas y combustibles</a></li>
+    <li><a href="https://mma.gob.cl/" target="_blank" rel="noopener noreferrer">Ministerio del Medio Ambiente — Planes de descontaminación y calefacción residencial</a></li>
+</ul>
+</section>
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq"><details><summary>¿Cómo calculo el costo real de calefacción por hora?</summary><p>Con tres datos y una división. Primero, el precio de la unidad de combustible que compras. Segundo, los kWh que contiene esa unidad: un saco de pellet de 15 kg lleva unos 72 kWh, un litro de parafina unos 9,6 y un balón de gas licuado de 15 kg unos 192. Tercero, el rendimiento del equipo. Entonces el costo por kWh útil es el precio dividido por el producto de los kWh contenidos y el rendimiento. Para pasarlo a costo por hora, multiplica ese valor por la potencia del equipo en kW y por la fracción de tiempo que realmente funciona, que suele ser entre 40 y 70% una vez alcanzada la temperatura.</p></details>
+<details><summary>¿Qué es más económico, estufa a pellet o calefacción eléctrica?</summary><p>Depende de qué calefacción eléctrica. Frente a un calefactor de resistencia, el pellet es claramente más económico: del orden de 95 pesos por kWh útil contra unos 150. Frente a una bomba de calor, en cambio, el pellet pierde, porque un split inverter con COP 3,5 entrega calor a unos 43 pesos por kWh útil al no generarlo sino transportarlo desde el aire exterior. Hay que sumarle al pellet el consumo eléctrico de sus propios ventiladores y del tornillo alimentador, unos 50 a 100 W en marcha, y el hecho de que no funciona durante un corte de luz.</p></details>
+<details><summary>¿Por qué la estufa a parafina tiene 97% de rendimiento y no es la más barata?</summary><p>Porque ese rendimiento altísimo se debe justamente a que no evacúa nada al exterior: todo el calor queda dentro, pero también todos los productos de la combustión, incluidos vapor de agua, óxidos de nitrógeno y monóxido de carbono si la combustión es incompleta. Eso obliga a mantener ventilación permanente, y el aire frío que entra por esa ventilación es una pérdida de calor que la ficha técnica no contabiliza. En la práctica el rendimiento efectivo es menor, y al costo por kWh hay que sumarle un riesgo de seguridad que los equipos eléctricos no tienen.</p></details>
+<details><summary>¿Cuánta potencia de calefacción necesito para mi living?</summary><p>Multiplica la superficie en metros cuadrados por la altura de techo en metros para obtener el volumen, y multiplica ese volumen por un factor de aislamiento: 30 a 35 W por metro cúbico en una vivienda bien aislada con termopanel, 40 a 45 en una estándar, y 50 a 60 en una antigua con vidrio simple. Un living de 30 m² y 2,5 m de altura en vivienda estándar necesita unos 3.150 W, es decir una estufa de 3 kW. El factor de aislamiento es la variable de mayor peso: bajarlo de 55 a 35 reduce la necesidad en más de un tercio, un ahorro que ningún cambio de combustible iguala.</p></details>
+<details><summary>¿La bomba de calor funciona bien cuando hace mucho frío?</summary><p>Funciona, pero con menor rendimiento. Su COP cae al bajar la temperatura exterior porque hay menos calor disponible para extraer y el compresor debe vencer una diferencia térmica mayor: un equipo con COP 4 a 7 °C puede quedar en torno a 2,5 a 0 °C, y los modelos no preparados para frío intenso necesitan ciclos de descongelamiento que interrumpen el calentamiento. Por eso el dato útil es el SCOP, que promedia toda la temporada, y no el COP nominal. En la zona central de Chile sigue siendo la opción más económica todo el invierno; donde se cruza el cero con frecuencia, conviene revisar el rango de operación declarado y considerar un segundo equipo de apoyo.</p></details></div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Para el equipo que implementa la bomba de calor en la práctica, revisa <a href="/blog/aire-acondicionado-split-guia-de-compra-e-instalacion-chile">Aire Acondicionado Split: Guía de Compra e Instalación</a>; para convertir eficiencia en ahorro medible, <a href="/blog/termostatos-inteligentes-y-control-de-calefaccion-guia-de-compra">Termostatos Inteligentes</a>; y para saber cuánto pesa realmente cada consumo en tu boleta, <a href="/blog/como-bajar-la-cuenta-de-la-luz-medir-y-reducir-el-consumo-electrico">Cómo Bajar la Cuenta de la Luz</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/termostatos-inteligentes-y-control-de-calefaccion-guia-de-compra">← Anterior: Termostatos Inteligentes: Guía de Compra</a>
+  <a href="/blog/aire-acondicionado-split-guia-de-compra-e-instalacion-chile">Siguiente: Aire Acondicionado Split: Guía de Compra →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.energia.gob.cl/" target="_blank" rel="noopener noreferrer">Ministerio de Energía de Chile — Información energética y eficiencia</a></li>
+<li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles (SEC) — Seguridad en artefactos a gas y combustibles</a></li>
+<li><a href="https://mma.gob.cl/" target="_blank" rel="noopener noreferrer">Ministerio del Medio Ambiente — Planes de descontaminación y calefacción residencial</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 27 de septiembre de 2026.</p>
+</section>
+
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
