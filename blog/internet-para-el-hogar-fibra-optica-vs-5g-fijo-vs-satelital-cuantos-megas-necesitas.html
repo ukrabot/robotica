@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Internet para el Hogar: Fibra Óptica vs 5G Fijo vs Satelital — Cuántos Megas Necesitas</title>
+<meta name="description" content="Guía técnica para contratar internet en casa: fibra óptica, 5G fijo, satelital LEO y cable, latencia, velocidad de subida, cuántos megas necesitas y qué revisar antes de firmar.">
+<meta name="keywords" content="que internet contratar, fibra optica vs 5g, cuantos megas necesito, internet satelital chile, starlink vs fibra, internet hogar comparativa, velocidad de subida, latencia internet">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/internet-para-el-hogar-fibra-optica-vs-5g-fijo-vs-satelital-cuantos-megas-necesitas">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Internet para el Hogar: Fibra Óptica vs 5G Fijo vs Satelital — Cuántos Megas Necesitas">
+<meta property="og:description" content="Qué tecnología llega a tu casa, cuántos megas necesitas de verdad y por qué la latencia y la subida importan tanto como la bajada.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/internet-para-el-hogar-fibra-optica-vs-5g-fijo-vs-satelital-cuantos-megas-necesitas-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/internet-para-el-hogar-fibra-optica-vs-5g-fijo-vs-satelital-cuantos-megas-necesitas">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Internet para el Hogar: Fibra Óptica vs 5G Fijo vs Satelital — Cuántos Megas Necesitas">
+<meta name="twitter:description" content="Qué tecnología llega a tu casa, cuántos megas necesitas de verdad y por qué la latencia y la subida importan tanto como la bajada.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/internet-para-el-hogar-fibra-optica-vs-5g-fijo-vs-satelital-cuantos-megas-necesitas-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"Internet para el Hogar: Fibra Óptica vs 5G Fijo vs Satelital — Cuántos Megas Necesitas",
+  "description":"Guía técnica para elegir y contratar internet domiciliario: funcionamiento de cada tecnología de acceso (fibra óptica FTTH, cable coaxial HFC, 5G fijo o FWA, satélite de órbita baja y satélite geoestacionario), diferencia entre velocidad de bajada, velocidad de subida, latencia y jitter, cálculo de cuántos megas necesita realmente un hogar según sus usos simultáneos, por qué la velocidad contratada rara vez llega al dispositivo y dónde se pierde, cómo medir correctamente con cable y por Wi-Fi, qué revisar en el contrato (velocidad mínima garantizada, simetría, IP pública, permanencia), y tabla de decisión por tipo de vivienda y ubicación.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-09-28",
+  "dateModified":"2026-09-28",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/internet-para-el-hogar-fibra-optica-vs-5g-fijo-vs-satelital-cuantos-megas-necesitas"},
+  "image":"https://www.ukrabot.cl/blog/internet-para-el-hogar-fibra-optica-vs-5g-fijo-vs-satelital-cuantos-megas-necesitas-hero.jpg",
+  "proficiencyLevel":"Principiante",
+  "dependencies":"La dirección exacta para consultar factibilidad técnica, un computador con puerto Ethernet para medir la velocidad real, y el listado de usos simultáneos del hogar",
+  "wordCount":"2800",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"Internet para el Hogar: Fibra Óptica vs 5G Fijo vs Satelital — Cuántos Megas Necesitas","item":"https://www.ukrabot.cl/blog/internet-para-el-hogar-fibra-optica-vs-5g-fijo-vs-satelital-cuantos-megas-necesitas"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuántos megas de internet necesito en mi casa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Suma los usos que ocurren al mismo tiempo en la hora de mayor demanda y agrega un margen del 50%. Como referencia, un video 4K usa entre 15 y 25 Mbps, uno en HD entre 5 y 8, una videollamada HD entre 2 y 4 de bajada y lo mismo de subida, y la navegación apenas unos pocos. Un hogar de cuatro personas con dos pantallas en 4K, una videollamada y un juego en línea a la vez queda cómodo con unos 100 Mbps de bajada y al menos 20 de subida. Los planes de 600 o 1.000 Mbps solo se justifican con descargas grandes frecuentes o muchos usuarios intensivos simultáneos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es mejor, fibra óptica o 5G fijo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Si la fibra llega a tu dirección, casi siempre es mejor: ofrece menor latencia, mayor estabilidad, y con frecuencia subida simétrica, porque la señal viaja por vidrio sin interferencia y no depende de cuántos usuarios comparten una antena. El 5G fijo tiene sentido donde la fibra no llega, en arriendos cortos o cuando no se puede instalar nada, ya que solo hay que enchufar el equipo. Su rendimiento varía con la distancia a la antena, los obstáculos y la congestión de la celda, así que la ubicación del equipo dentro de la casa influye mucho."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El internet satelital sirve para trabajar desde casa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende del tipo de satélite. Los de órbita baja, a unos pocos cientos de kilómetros, logran latencias de decenas de milisegundos y funcionan bien para videollamadas y la mayoría del trabajo remoto, siempre que la antena tenga una vista despejada del cielo, porque árboles y construcciones cercanos producen microcortes. Los geoestacionarios, a unos 36.000 kilómetros, tienen una latencia física cercana a 600 milisegundos que ninguna mejora de equipo reduce, y hacen muy deficientes las videollamadas y los juegos en línea."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué no me llega la velocidad que contraté?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque hay varias etapas donde se pierde capacidad: la congestión de la red del proveedor en horas punta, el Wi-Fi limitado del módem entregado en comodato, las paredes y la distancia dentro de la casa, dispositivos antiguos con Wi-Fi o puertos Ethernet lentos, y el propio servidor desde el que descargas. La pérdida más grande suele ser el Wi-Fi. Para distinguir, mide con un computador conectado por cable directo al equipo del proveedor: si por cable llega lo contratado y por Wi-Fi no, el problema está en tu red interna y no se resuelve subiendo de plan."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es la latencia y por qué importa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es el tiempo que tarda un paquete de datos en ir hasta un servidor y volver, medido en milisegundos. No depende de los megas contratados sino principalmente de la tecnología de acceso y la distancia física. Una latencia baja y estable es lo que hace que una videollamada fluya sin retrasos y que un juego en línea responda al instante. Por eso un plan de fibra de 100 Mbps con 8 milisegundos se siente mejor en esos usos que un plan satelital geoestacionario de muchos más megas con 600 milisegundos."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="internet-para-el-hogar-fibra-optica-vs-5g-fijo-vs-satelital-cuantos-megas-necesitas-hero.jpg" alt="Montaje de electrónica doméstica con microcontrolador y sensores sobre una mesa de madera junto a una ventana" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Redes y Seguridad · Publicado el <time datetime="2026-09-28">28 de septiembre de 2026</time></div>
+    <h1>Internet para el Hogar: Fibra Óptica vs 5G Fijo vs Satelital — Cuántos Megas Necesitas</h1>
+    <p>Qué tecnología llega realmente a tu dirección, cuántos megas necesita tu hogar según sus usos simultáneos, y por qué la latencia y la velocidad de subida pesan tanto como la cifra de bajada que anuncia el plan.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="internet-para-el-hogar-fibra-optica-vs-5g-fijo-vs-satelital-cuantos-megas-necesitas-hero.jpg" alt="Montaje de electrónica doméstica con microcontrolador y sensores sobre una mesa de madera junto a una ventana" loading="lazy">
+  <div class="caption">La tecnología de acceso define la latencia y la estabilidad de la conexión; la cantidad de megas contratada es solo una parte de la decisión.</div>
+</div>
+
+<nav class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#metricas">Las cuatro métricas que importan</a></li>
+    <li><a href="#tecnologias">Tecnologías de acceso y cómo funcionan</a></li>
+    <li><a href="#comparativa">Comparativa técnica</a></li>
+    <li><a href="#cuantos-megas">Cuántos megas necesitas realmente</a></li>
+    <li><a href="#subida">La velocidad de subida: la cifra olvidada</a></li>
+    <li><a href="#perdidas">Por qué no te llega lo contratado</a></li>
+    <li><a href="#medir">Cómo medir la velocidad correctamente</a></li>
+    <li><a href="#contrato">Qué revisar antes de firmar</a></li>
+    <li><a href="#decision">Tabla de decisión por vivienda</a></li>
+  </ol>
+</nav>
+
+<p>La publicidad de los planes de internet compite con una sola cifra: los megas de bajada. Es la cifra más fácil de vender y, en la mayoría de los hogares, no es la que determina si la conexión se siente buena o mala. Una videollamada que se congela, un juego en línea con saltos o un respaldo en la nube que tarda toda la noche suelen tener su origen en otras tres métricas que el plan menciona en letra chica o no menciona.</p>
+
+<p>Esta guía explica qué tecnología puede llegar físicamente a tu dirección y qué implica cada una, cómo calcular cuántos megas necesita tu hogar a partir de lo que realmente hace, y dónde se pierde la velocidad entre el cable del proveedor y tu dispositivo. La parte de la red interna —el router y la cobertura dentro de la casa— la tratamos por separado en <a href="/blog/router-wifi-cual-comprar-y-como-configurarlo-bien">router Wi-Fi: cuál comprar y cómo configurarlo</a> y en <a href="/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa">Wi-Fi mesh, repetidor o cable</a>; aquí nos quedamos en la conexión que llega desde afuera.</p>
+
+<section id="metricas">
+<h2>Las cuatro métricas que importan</h2>
+
+<ul>
+<li><strong>Velocidad de bajada (download):</strong> cuántos datos por segundo puedes recibir. Se mide en megabits por segundo (Mbps) —no megabytes: un archivo de 100 MB tarda al menos 8 segundos en una conexión de 100 Mbps—. Determina cuánto tarda una descarga y cuántos videos en alta resolución puede sostener la casa a la vez.</li>
+<li><strong>Velocidad de subida (upload):</strong> cuántos datos por segundo puedes enviar. Determina la calidad de tu imagen en una videollamada, la velocidad de los respaldos en la nube y cualquier transmisión en vivo.</li>
+<li><strong>Latencia (ping):</strong> el tiempo que tarda un paquete en ir y volver a un servidor, en milisegundos. No depende de los megas: un plan de 1.000 Mbps con 600 ms de latencia se siente peor en una videollamada que uno de 50 Mbps con 10 ms.</li>
+<li><strong>Jitter y pérdida de paquetes:</strong> cuánto varía la latencia de un momento a otro y qué porcentaje de paquetes no llega. Son la causa de los cortes de audio, las imágenes pixeladas y los saltos en juegos, aun con megas de sobra.</li>
+</ul>
+
+<p>Las dos últimas dependen casi por completo de la tecnología de acceso, no del plan. Por eso la primera decisión no es cuántos megas contratar, sino qué tecnología está disponible en tu dirección.</p>
+</section>
+
+<section id="tecnologias">
+<h2>Tecnologías de acceso y cómo funcionan</h2>
+
+<h3>Fibra óptica hasta el hogar (FTTH)</h3>
+<p>Un hilo de vidrio lleva la señal como pulsos de luz desde la central hasta un equipo terminal (ONT) dentro de tu casa. En la mayoría de las redes residenciales se usa una arquitectura pasiva (GPON o su sucesora XGS-PON): una fibra de la central se divide ópticamente entre varios hogares, que comparten su capacidad. Aun así, esa capacidad es tan grande que en la práctica rara vez es el cuello de botella.</p>
+<p>La luz en el vidrio casi no sufre interferencia eléctrica ni pierde calidad con la distancia en los tramos urbanos, así que la fibra ofrece la latencia más baja, la mayor estabilidad y, en muchos planes, velocidad de subida simétrica o casi simétrica. Si está disponible en tu dirección, es la referencia contra la que se mide todo lo demás.</p>
+
+<h3>Cable coaxial (HFC)</h3>
+<p>Una red híbrida: fibra hasta un nodo del barrio y cable coaxial —el mismo de la televisión por cable— desde el nodo hasta la casa. El tramo coaxial es compartido por todas las viviendas del nodo, por lo que la velocidad puede caer en horas punta. Su gran limitación es la subida: el espectro del coaxial se reparte de forma muy asimétrica, y es común que la subida sea una décima parte de la bajada o menos. En muchos lugares está siendo reemplazada por fibra.</p>
+
+<h3>5G fijo (FWA)</h3>
+<p>Un módem-router con antena recibe la señal de una estación base de telefonía móvil, igual que un celular, y la distribuye por Wi-Fi en la casa. No requiere cableado externo ni instalación, lo que lo hace atractivo donde la fibra no llega o para arriendos cortos.</p>
+<p>Su rendimiento depende de tres cosas que el plan no controla: la distancia y los obstáculos hasta la antena, la banda de frecuencia disponible y la cantidad de usuarios conectados a esa misma celda. Una ubicación del equipo cerca de una ventana orientada hacia la antena puede duplicar la velocidad frente a la misma casa con el equipo en el centro. La latencia suele ser aceptable para videollamadas, pero más variable que la fibra.</p>
+
+<h3>Satélite de órbita baja (LEO)</h3>
+<p>Constelaciones de miles de satélites a unos pocos cientos de kilómetros de altura, con una antena plana en el techo que se orienta electrónicamente hacia el satélite visible. La baja altura permite latencias de decenas de milisegundos, suficientes para videollamadas y la mayoría de los usos, algo impensado con los satélites tradicionales.</p>
+<p>Es la opción real para zonas rurales y parcelas sin fibra ni buena cobertura móvil. Sus limitaciones: requiere una vista despejada del cielo (árboles y construcciones cercanos producen microcortes), el equipo y la cuota mensual cuestan más que la fibra urbana, y la capacidad por zona es compartida, con lo que la velocidad varía según la demanda local.</p>
+
+<h3>Satélite geoestacionario (GEO)</h3>
+<p>El satélite está a unos 36.000 km, por lo que la señal debe recorrer más de 70.000 km de ida y otro tanto de vuelta. Eso fija una latencia física de alrededor de 600 ms que ninguna mejora de equipo puede reducir. Funciona para correo y navegación, pero las videollamadas y los juegos en línea son muy deficientes. Hoy solo tiene sentido donde no existe ninguna otra opción.</p>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="comparativa">
+<h2>Comparativa técnica</h2>
+
+<p>Valores típicos de orden de magnitud; la cifra exacta depende del plan, del proveedor y de la ubicación.</p>
+
+<div style="overflow-x:auto;">
+<table>
+<thead>
+<tr><th>Tecnología</th><th>Latencia típica</th><th>Subida frente a bajada</th><th>Estabilidad</th><th>Instalación</th></tr>
+</thead>
+<tbody>
+<tr><td>Fibra óptica (FTTH)</td><td>3 – 15 ms</td><td>Simétrica o casi</td><td>Muy alta</td><td>Técnico, cableado a la vivienda</td></tr>
+<tr><td>Cable coaxial (HFC)</td><td>10 – 30 ms</td><td>Muy asimétrica</td><td>Alta, cae en horas punta</td><td>Técnico</td></tr>
+<tr><td>5G fijo (FWA)</td><td>20 – 50 ms</td><td>Asimétrica</td><td>Variable según celda y ubicación</td><td>Enchufar el equipo</td></tr>
+<tr><td>Satélite órbita baja</td><td>25 – 60 ms</td><td>Asimétrica</td><td>Media, sensible a obstáculos</td><td>Antena en techo con vista al cielo</td></tr>
+<tr><td>Satélite geoestacionario</td><td>≈ 600 ms</td><td>Muy asimétrica</td><td>Media, sensible a lluvia intensa</td><td>Antena parabólica orientada</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>La lectura práctica es simple: si en tu dirección hay fibra, es la opción técnicamente superior casi siempre y a un precio que suele ser el más bajo por Mbps. Las demás tecnologías tienen sentido cuando la fibra no llega, cuando no puedes hacer instalación o cuando necesitas movilidad.</p>
+</section>
+
+<section id="cuantos-megas">
+<h2>Cuántos megas necesitas realmente</h2>
+
+<p>La forma correcta de calcularlo no es sumar todos los dispositivos de la casa, sino sumar los usos que ocurren <em>a la vez</em> en la hora de mayor demanda, y añadir un margen. Consumos de referencia por actividad:</p>
+
+<div style="overflow-x:auto;">
+<table>
+<thead>
+<tr><th>Actividad</th><th>Bajada aproximada</th><th>Subida aproximada</th></tr>
+</thead>
+<tbody>
+<tr><td>Navegación, correo, redes sociales</td><td>1 – 5 Mbps</td><td>&lt; 1 Mbps</td></tr>
+<tr><td>Música en streaming</td><td>&lt; 1 Mbps</td><td>—</td></tr>
+<tr><td>Video en HD (1080p)</td><td>5 – 8 Mbps</td><td>—</td></tr>
+<tr><td>Video en 4K</td><td>15 – 25 Mbps</td><td>—</td></tr>
+<tr><td>Videollamada HD</td><td>2 – 4 Mbps</td><td>2 – 4 Mbps</td></tr>
+<tr><td>Juego en línea (partida)</td><td>1 – 5 Mbps</td><td>1 – 3 Mbps</td></tr>
+<tr><td>Juego en la nube (cloud gaming)</td><td>15 – 45 Mbps</td><td>1 – 3 Mbps</td></tr>
+<tr><td>Cámara de seguridad IP subiendo a la nube</td><td>—</td><td>1 – 4 Mbps por cámara</td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Ejemplo:</strong> un hogar de cuatro personas donde, a las nueve de la noche, dos personas ven video 4K en distintas pantallas, una está en videollamada y otra juega en línea, mientras dos cámaras suben a la nube. Bajada: 2 × 25 + 4 + 5 = 59 Mbps. Subida: 4 + 3 + 2 × 3 = 13 Mbps. Con un margen del 50% para descargas de actualizaciones y picos, ese hogar está cómodo con unos 100 Mbps de bajada y al menos 20 de subida.</p>
+
+<p>El resultado sorprende a mucha gente: la mayoría de los hogares no necesita un plan de 600 ni de 1.000 Mbps para su uso diario. Los planes de muy alta velocidad sirven cuando hay descargas grandes frecuentes (juegos de cien gigabytes, respaldos masivos, trabajo con archivos de video) o muchos usuarios simultáneos intensivos. Pagar por velocidad que no se usa es la forma más habitual de gastar de más en internet; contratar una subida insuficiente es la forma más habitual de quedar insatisfecho.</p>
+</section>
+
+<section id="subida">
+<h2>La velocidad de subida: la cifra olvidada</h2>
+
+<p>Con el trabajo remoto, las cámaras en la nube y los respaldos automáticos, la subida pasó de ser irrelevante a ser el cuello de botella de muchos hogares. Tres síntomas típicos de subida insuficiente:</p>
+
+<ul>
+<li>Tu imagen se ve pixelada para los demás en una videollamada, aunque tú los veas bien.</li>
+<li>La conexión entera se vuelve lenta —incluida la navegación— mientras el celular respalda fotos en la nube. Esto ocurre porque la subida saturada retrasa también las confirmaciones de los datos de bajada.</li>
+<li>Las cámaras de seguridad que suben video a la nube pierden fragmentos o bajan de calidad solas.</li>
+</ul>
+
+<p>Si tu hogar tiene cámaras IP, alguien que trabaja desde casa o un <a href="/blog/nas-synology-vs-qnap-vs-casero-cual-elegir">NAS</a> que sincroniza con la nube o al que accedes desde afuera, la subida debería ser un criterio de selección tan importante como la bajada. Aquí la fibra con planes simétricos tiene una ventaja que ninguna otra tecnología iguala.</p>
+</section>
+
+<section id="perdidas">
+<h2>Por qué no te llega lo contratado</h2>
+
+<p>Entre la velocidad del plan y la que mide tu celular hay varias etapas, y en cada una se puede perder capacidad:</p>
+
+<ol>
+<li><strong>Sobrecarga del proveedor.</strong> Redes compartidas en horas punta (cable coaxial, 5G fijo, satélite). Se detecta midiendo a distintas horas.</li>
+<li><strong>El equipo del proveedor.</strong> Muchos módems entregados en comodato tienen un Wi-Fi limitado. La velocidad por cable desde el equipo suele ser muy superior a la inalámbrica.</li>
+<li><strong>El Wi-Fi.</strong> Es, con diferencia, la pérdida más grande en la mayoría de las casas. Paredes, distancia, interferencia de redes vecinas y la banda de 2,4 GHz pueden reducir un plan de 600 Mbps a menos de 100 en el dormitorio.</li>
+<li><strong>El dispositivo.</strong> Un notebook o un televisor antiguo con Wi-Fi 4 o un puerto Ethernet de 100 Mbps nunca verá más que eso, contrates lo que contrates.</li>
+<li><strong>El servidor de destino.</strong> La velocidad de una descarga también depende de quien envía los datos; que una descarga específica vaya lenta no significa que tu conexión lo sea.</li>
+</ol>
+
+<p>Esto tiene una consecuencia económica directa: antes de subir de plan porque "el internet anda lento", conviene medir por cable. Si por cable llega lo contratado y por Wi-Fi no, el problema está dentro de la casa y se resuelve mejorando la red interna, no pagando más al proveedor. Esa parte está resuelta en detalle en nuestra guía de <a href="/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa">cobertura Wi-Fi</a>.</p>
+</section>
+
+<section id="medir">
+<h2>Cómo medir la velocidad correctamente</h2>
+
+<ol>
+<li>Conecta un computador por cable Ethernet directamente al equipo del proveedor. Verifica que su puerto sea gigabit.</li>
+<li>Cierra aplicaciones que descarguen o respalden en segundo plano, y pide que nadie use la red durante la prueba.</li>
+<li>Usa un sitio de medición de velocidad, idealmente con un servidor en tu propio país, y registra bajada, subida y latencia.</li>
+<li>Repite la medición en tres momentos: mañana, tarde y la hora punta de la noche. La diferencia entre ellas revela la congestión de la red del proveedor.</li>
+<li>Recién después, mide por Wi-Fi desde los lugares donde realmente usas los dispositivos. La diferencia entre la medición por cable y la inalámbrica es la pérdida atribuible a tu red interna.</li>
+</ol>
+
+<p>Guarda las capturas con fecha y hora. Si la medición por cable queda sistemáticamente bajo la velocidad mínima que el contrato garantiza, ese registro es la base para un reclamo formal.</p>
+</section>
+
+<section id="contrato">
+<h2>Qué revisar antes de firmar</h2>
+
+<ul>
+<li><strong>Factibilidad técnica real en tu dirección.</strong> Que un proveedor ofrezca fibra en tu comuna no significa que llegue a tu edificio o a tu calle. Consulta con la dirección exacta.</li>
+<li><strong>Velocidad mínima garantizada o comprometida</strong>, no solo la velocidad máxima publicitada. Es la cifra que define tu derecho a reclamar.</li>
+<li><strong>Velocidad de subida</strong> explícita en el contrato.</li>
+<li><strong>Tipo de tecnología de acceso.</strong> Dos planes con los mismos megas pueden ser fibra o cable coaxial, con experiencias muy distintas.</li>
+<li><strong>Período de permanencia y costo de término anticipado.</strong> Las ofertas con precio promocional suelen amarrar un plazo.</li>
+<li><strong>Precio después de la promoción.</strong> Compara el costo total del primer año y del segundo, no solo el primer mes.</li>
+<li><strong>IP pública o CGNAT.</strong> Si necesitas acceder desde afuera a cámaras, a un NAS o a un servidor propio, una conexión detrás de CGNAT lo complica; pregunta si ofrecen IP pública y a qué costo.</li>
+<li><strong>Equipo entregado:</strong> estándar Wi-Fi que soporta, si permite modo puente para usar tu propio router, y condiciones de devolución.</li>
+</ul>
+</section>
+
+<section id="decision">
+<h2>Tabla de decisión por vivienda</h2>
+
+<div style="overflow-x:auto;">
+<table>
+<thead>
+<tr><th>Situación</th><th>Opción recomendada</th><th>Razón</th></tr>
+</thead>
+<tbody>
+<tr><td>Ciudad, fibra disponible</td><td>Fibra óptica</td><td>Menor latencia, mayor estabilidad y mejor precio por Mbps</td></tr>
+<tr><td>Teletrabajo, cámaras o NAS</td><td>Fibra con subida simétrica</td><td>La subida es el cuello de botella de estos usos</td></tr>
+<tr><td>Arriendo corto o sin permiso de instalación</td><td>5G fijo</td><td>Sin obra; se lleva al mudarse</td></tr>
+<tr><td>Parcela o zona rural sin fibra</td><td>Satélite de órbita baja o 5G fijo si hay buena señal</td><td>Latencia aceptable donde no llega el cable</td></tr>
+<tr><td>Gamer competitivo</td><td>Fibra, conexión por cable</td><td>Latencia y jitter mínimos</td></tr>
+<tr><td>Uso básico, 1–2 personas</td><td>Plan de entrada en la mejor tecnología disponible</td><td>La tecnología pesa más que los megas</td></tr>
+<tr><td>Única opción es satélite geoestacionario</td><td>Aceptar sus límites o evaluar 5G con antena externa</td><td>La latencia de ≈ 600 ms es física, no del plan</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Una vez contratada la conexión, dos pasos rinden más que cualquier mejora de plan: llevar el router a una posición central y conectar por cable los equipos fijos. Y si la red va a transportar trabajo o datos sensibles, revisa también nuestra guía de <a href="/blog/vpn-y-seguridad-digital-en-casa-guia-practica">VPN y seguridad digital en casa</a>.</p>
+</section>
+
+<section id="fuentes">
+<h2>Fuentes primarias</h2>
+<ul>
+    <li><a href="https://www.subtel.gob.cl/" target="_blank" rel="noopener noreferrer">Subsecretaría de Telecomunicaciones (SUBTEL) — Información para usuarios de servicios de internet</a></li>
+    <li><a href="https://www.itu.int/" target="_blank" rel="noopener noreferrer">Unión Internacional de Telecomunicaciones (UIT) — Estándares de acceso de banda ancha</a></li>
+    <li><a href="https://www.sernac.cl/" target="_blank" rel="noopener noreferrer">SERNAC — Derechos del consumidor en servicios de telecomunicaciones</a></li>
+</ul>
+</section>
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq"><details><summary>¿Cuántos megas de internet necesito en mi casa?</summary><p>Suma los usos que ocurren al mismo tiempo en la hora de mayor demanda y agrega un margen del 50%. Como referencia, un video 4K usa entre 15 y 25 Mbps, uno en HD entre 5 y 8, una videollamada HD entre 2 y 4 de bajada y lo mismo de subida, y la navegación apenas unos pocos. Un hogar de cuatro personas con dos pantallas en 4K, una videollamada y un juego en línea a la vez queda cómodo con unos 100 Mbps de bajada y al menos 20 de subida. Los planes de 600 o 1.000 Mbps solo se justifican con descargas grandes frecuentes o muchos usuarios intensivos simultáneos.</p></details>
+<details><summary>¿Qué es mejor, fibra óptica o 5G fijo?</summary><p>Si la fibra llega a tu dirección, casi siempre es mejor: ofrece menor latencia, mayor estabilidad, y con frecuencia subida simétrica, porque la señal viaja por vidrio sin interferencia y no depende de cuántos usuarios comparten una antena. El 5G fijo tiene sentido donde la fibra no llega, en arriendos cortos o cuando no se puede instalar nada, ya que solo hay que enchufar el equipo. Su rendimiento varía con la distancia a la antena, los obstáculos y la congestión de la celda, así que la ubicación del equipo dentro de la casa influye mucho.</p></details>
+<details><summary>¿El internet satelital sirve para trabajar desde casa?</summary><p>Depende del tipo de satélite. Los de órbita baja, a unos pocos cientos de kilómetros, logran latencias de decenas de milisegundos y funcionan bien para videollamadas y la mayoría del trabajo remoto, siempre que la antena tenga una vista despejada del cielo, porque árboles y construcciones cercanos producen microcortes. Los geoestacionarios, a unos 36.000 kilómetros, tienen una latencia física cercana a 600 milisegundos que ninguna mejora de equipo reduce, y hacen muy deficientes las videollamadas y los juegos en línea.</p></details>
+<details><summary>¿Por qué no me llega la velocidad que contraté?</summary><p>Porque hay varias etapas donde se pierde capacidad: la congestión de la red del proveedor en horas punta, el Wi-Fi limitado del módem entregado en comodato, las paredes y la distancia dentro de la casa, dispositivos antiguos con Wi-Fi o puertos Ethernet lentos, y el propio servidor desde el que descargas. La pérdida más grande suele ser el Wi-Fi. Para distinguir, mide con un computador conectado por cable directo al equipo del proveedor: si por cable llega lo contratado y por Wi-Fi no, el problema está en tu red interna y no se resuelve subiendo de plan.</p></details>
+<details><summary>¿Qué es la latencia y por qué importa?</summary><p>Es el tiempo que tarda un paquete de datos en ir hasta un servidor y volver, medido en milisegundos. No depende de los megas contratados sino principalmente de la tecnología de acceso y la distancia física. Una latencia baja y estable es lo que hace que una videollamada fluya sin retrasos y que un juego en línea responda al instante. Por eso un plan de fibra de 100 Mbps con 8 milisegundos se siente mejor en esos usos que un plan satelital geoestacionario de muchos más megas con 600 milisegundos.</p></details></div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<div class="cta">
+  <h3>Sigue aprendiendo</h3>
+  <p>Una vez que la conexión llega a casa, el siguiente paso es distribuirla bien: revisa <a href="/blog/router-wifi-cual-comprar-y-como-configurarlo-bien">Router Wi-Fi: Cuál Comprar y Cómo Configurarlo</a> y <a href="/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa">Wi-Fi Mesh, Repetidor o Cable</a>. Para proteger lo que viaja por esa red, <a href="/blog/vpn-y-seguridad-digital-en-casa-guia-practica">VPN y Seguridad Digital en Casa</a>.</p>
+</div>
+
+<div class="footer-nav">
+  <a href="/blog/router-wifi-cual-comprar-y-como-configurarlo-bien">← Anterior: Router Wi-Fi: Cuál Comprar y Cómo Configurarlo</a>
+  <a href="/blog/wifi-mesh-repetidor-o-cable-como-mejorar-la-cobertura-en-casa">Siguiente: Wi-Fi Mesh, Repetidor o Cable →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://www.subtel.gob.cl/" target="_blank" rel="noopener noreferrer">Subsecretaría de Telecomunicaciones (SUBTEL) — Información para usuarios de servicios de internet</a></li>
+<li><a href="https://www.itu.int/" target="_blank" rel="noopener noreferrer">Unión Internacional de Telecomunicaciones (UIT) — Estándares de acceso de banda ancha</a></li>
+<li><a href="https://www.sernac.cl/" target="_blank" rel="noopener noreferrer">SERNAC — Derechos del consumidor en servicios de telecomunicaciones</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 28 de septiembre de 2026.</p>
+</section>
+
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
