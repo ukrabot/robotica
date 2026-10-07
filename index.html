@@ -381,6 +381,23 @@
     .fp-cta .btn-primary:hover { box-shadow: 0 10px 26px rgba(169,123,35,0.42); }
     .fp-cta .fp-note { font-size: 0.78rem; color: var(--text-muted); }
 
+    /* Productos */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 48px; }
+    .product-card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; box-shadow: var(--shadow-card); }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 20px 44px rgba(30,25,15,0.14); border-color: rgba(169,123,35,0.4); }
+    .product-card img { width: 100%; height: 180px; object-fit: cover; transition: filter .3s ease; }
+    .product-card:hover img { filter: brightness(1.04) contrast(1.04); }
+    .product-card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; gap: 6px; }
+    .product-card-cat { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: var(--accent-2); }
+    .product-card h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.05rem; color: var(--text-primary); line-height: 1.22; letter-spacing: -0.01em; margin-top: 2px; }
+    .product-card p { color: var(--text-secondary); font-size: 0.84rem; line-height: 1.5; flex: 1; margin-top: 4px; }
+    .product-price { margin-top: 12px; font-size: 1.05rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+    .product-price span { font-size: 0.72rem; font-weight: 500; color: var(--text-muted); margin-left: 4px; }
+    .product-cta { display: inline-block; margin-top: 12px; background: var(--accent); color: #fff; font-size: 0.78rem; font-weight: 700; padding: 8px 16px; border-radius: 999px; text-align: center; transition: box-shadow .2s, transform .15s; }
+    .product-card:hover .product-cta { box-shadow: 0 6px 18px rgba(169,123,35,0.38); transform: translateY(-1px); }
+    @media (max-width: 700px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 420px) { .product-grid { grid-template-columns: 1fr; } .product-card img { height: 160px; } }
+
     /* Category browse */
     .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 44px; }
     .cat-block { background: var(--surface-card); border: 1px solid var(--border); border-radius: 18px; padding: 26px; box-shadow: var(--shadow-card); transition: transform .2s ease, border-color .2s ease; }
@@ -540,6 +557,7 @@
       </button>
       <nav class="nav-links" id="nav-links" aria-label="Navegación principal">
         <a href="#latest">Tutoriales</a>
+        <a href="#productos">Productos</a>
         <a href="#proyecto-destacado">Proyecto del Mes</a>
         <a href="#categories">Categorías</a>
         <a href="/about">Sobre Nosotros</a>
@@ -2057,6 +2075,204 @@
           <span class="fp-note">Incluye protocolo de seguridad con litio</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== NUESTROS PRODUCTOS ===== -->
+  <section id="productos" aria-label="Nuestros productos de electrónica y robótica" style="border-top:1px solid var(--border);">
+    <span class="section-label">Tienda · Componentes y Kits</span>
+    <h2 class="section-title">Nuestros Productos</h2>
+    <p class="section-sub">Componentes de electrónica, kits de robótica y accesorios seleccionados para proyectos con Arduino y automatización. Precios en pesos chilenos con despacho a todo Chile.</p>
+
+    <div class="product-grid" aria-label="Catálogo de productos">
+
+      <a href="/producto/placa-uno-cable-usb" class="product-card" aria-label="Placa Arduino Uno compatible con cable USB">
+        <img src="producto/placa-uno-cable-usb.jpg" alt="Placa Arduino Uno compatible R3 con cable USB" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Arduino y Microcontroladores</div>
+          <h3>Placa Arduino Uno + Cable USB</h3>
+          <p>Placa de desarrollo compatible Arduino Uno R3 con cable USB tipo A-B. Ideal para aprender programación de microcontroladores.</p>
+          <div class="product-price">$8.990 <span>CLP</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/arduino-mega-2560-cable-usb" class="product-card" aria-label="Arduino Mega 2560 con cable USB">
+        <img src="producto/arduino-mega-2560-cable-usb.jpg" alt="Arduino Mega 2560 compatible con cable USB tipo A-B" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Arduino y Microcontroladores</div>
+          <h3>Arduino Mega 2560 + Cable USB</h3>
+          <p>Placa compatible Mega 2560 con 54 pines digitales, 16 entradas analógicas y 4 puertos serie. Perfecta para proyectos complejos y CNC.</p>
+          <div class="product-price">$37.990 <span>CLP</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/kit-avanzado-arduino" class="product-card" aria-label="Kit avanzado de componentes para Arduino">
+        <img src="producto/kit-avanzado-arduino.jpg" alt="Kit avanzado de componentes electrónicos para Arduino" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Kits y Bundles</div>
+          <h3>Kit Avanzado Arduino</h3>
+          <p>Bundle completo con sensores, actuadores, módulos de comunicación y componentes pasivos para proyectos intermedios y avanzados.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/robot-arduino" class="product-card" aria-label="Kit robot Arduino con chasis y motores">
+        <img src="producto/robot-arduino.jpg" alt="Kit de robot Arduino con chasis de dos ruedas y sensores" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Kits y Robótica</div>
+          <h3>Robot Arduino</h3>
+          <p>Kit completo para armar un robot móvil con Arduino: chasis, motores, driver L298N y sensor ultrasónico HC-SR04.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/protoboard-400-puntos" class="product-card" aria-label="Protoboard de 400 puntos para prototipos">
+        <img src="producto/protoboard-400-puntos.jpg" alt="Protoboard de 400 puntos para prototipado rápido" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Prototipos y Taller</div>
+          <h3>Protoboard 400 Puntos</h3>
+          <p>Placa de prototipado sin soldadura de 400 puntos, perfecta para montar y probar circuitos de forma rápida y segura.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/sensor-de-distancia-ultrasonico" class="product-card" aria-label="Sensor de distancia ultrasónico HC-SR04">
+        <img src="producto/sensor-de-distancia-ultrasonico.jpg" alt="Sensor ultrasónico HC-SR04 para medición de distancia con Arduino" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Sensores</div>
+          <h3>Sensor Distancia Ultrasónico</h3>
+          <p>Módulo HC-SR04 para medir distancias entre 2 cm y 4 m con precisión de 3 mm. Compatible con Arduino y ESP32.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/sensor-de-sonido-ky-038" class="product-card" aria-label="Módulo sensor de sonido KY-038">
+        <img src="producto/sensor-de-sonido-ky-038.jpg" alt="Módulo sensor de sonido KY-038 con salida digital y analógica" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Sensores</div>
+          <h3>Sensor de Sonido KY-038</h3>
+          <p>Módulo micrófono con salida digital y analógica ajustable. Ideal para detectar aplausos, voz o niveles de ruido ambiental.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/sensor-flujo-de-agua-yf-s201" class="product-card" aria-label="Sensor de flujo de agua YF-S201">
+        <img src="producto/sensor-flujo-de-agua-yf-s201.jpg" alt="Sensor de flujo de agua YF-S201 con conector de manguera" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Sensores</div>
+          <h3>Sensor Flujo de Agua YF-S201</h3>
+          <p>Medidor de caudal de agua de 1 a 30 L/min, rosca G 1/2". Compatible con Arduino para proyectos de riego e IoT hídrico.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/modulo-rfid-rc522" class="product-card" aria-label="Módulo RFID RC522 con tarjeta y llavero">
+        <img src="producto/modulo-rfid-rc522.jpg" alt="Módulo lector RFID RC522 con tarjeta y llavero de muestra" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Comunicación Inalámbrica</div>
+          <h3>Módulo RFID RC522</h3>
+          <p>Lector/escritor RFID a 13.56 MHz, interfaz SPI. Incluye tarjeta blanca y llavero de muestra. Ideal para control de acceso y asistencia.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/modulo-de-reconocimiento-de-voz" class="product-card" aria-label="Módulo de reconocimiento de voz para Arduino">
+        <img src="producto/modulo-de-reconocimiento-de-voz.jpg" alt="Módulo de reconocimiento de voz offline para Arduino" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Inteligencia Artificial · Voice</div>
+          <h3>Módulo Reconocimiento de Voz</h3>
+          <p>Reconocimiento de voz offline, hasta 80 comandos en español. Comunicación UART con Arduino, sin necesidad de internet.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/modulo-4-reles-arduino" class="product-card" aria-label="Módulo de 4 relés para Arduino 5V">
+        <img src="producto/modulo-4-reles-arduino.jpg" alt="Módulo de 4 relés 5V para Arduino con optoacopladores" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Actuadores y Control</div>
+          <h3>Módulo 4 Relés Arduino</h3>
+          <p>Cuatro relés de 10 A / 250 VAC con optoacopladores para proteger la placa. Controla cargas 220 V desde Arduino o ESP32.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/modulo-rele-de-02-canales" class="product-card" aria-label="Módulo relé de 2 canales para Arduino">
+        <img src="producto/modulo-rele-de-02-canales.jpg" alt="Módulo de 2 relés 5V para Arduino" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Actuadores y Control</div>
+          <h3>Módulo Relé 2 Canales</h3>
+          <p>Dos relés de 10 A con optoacopladores y LEDs indicadores. Ideal para automatización domótica y proyectos con cargas 220 V.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/display-lcd-16x2-con-i2c" class="product-card" aria-label="Display LCD 16x2 con módulo I2C">
+        <img src="producto/display-lcd-16x2-con-i2c.jpg" alt="Pantalla LCD 16x2 caracteres con adaptador I2C para Arduino" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Pantallas y Visualización</div>
+          <h3>Display LCD 16×2 con I2C</h3>
+          <p>Pantalla LCD de 16 caracteres y 2 líneas con módulo I2C incluido. Solo 2 cables de datos para conectar con Arduino o ESP32.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/potenciometro-10k" class="product-card" aria-label="Potenciómetro lineal de 10K ohm">
+        <img src="producto/potenciometro-10k.jpg" alt="Potenciómetro lineal 10K ohm para proyectos Arduino" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Componentes Pasivos</div>
+          <h3>Potenciómetro 10K</h3>
+          <p>Potenciómetro rotativo lineal de 10.000 Ω. Imprescindible para controlar intensidad, velocidad o ajustar parámetros de forma manual.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/porta-bateria-18650-x-4" class="product-card" aria-label="Porta batería para 4 celdas 18650">
+        <img src="producto/porta-bateria-18650-x-4.jpg" alt="Porta batería para 4 celdas 18650 con tapa y cable" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Baterías y Energía</div>
+          <h3>Porta Batería 18650 ×4</h3>
+          <p>Holder para 4 celdas 18650 en paralelo o serie, con cables y conector. Ideal para packs de litio en robots y proyectos portátiles.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/pila-recargable-via-usb-c-aaax4-2" class="product-card" aria-label="Pilas recargables AA con carga USB-C x4">
+        <img src="producto/pila-recargable-via-usb-c-aaax4-2.jpg" alt="Pack de 4 pilas AA recargables con carga micro USB o USB-C" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Baterías y Energía</div>
+          <h3>Pilas AA Recargables USB-C ×4</h3>
+          <p>Pack de 4 pilas AA NiMH con carga directa USB-C integrada en cada pila. Sin cargador externo, listas donde haya un puerto USB.</p>
+          <div class="product-price">Consultar <span>precio</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
+      <a href="/producto/cargador-de-pilas-universal-aa-aaa-4c-d" class="product-card" aria-label="Cargador de pilas universal NiMH AA AAA C D 9V">
+        <img src="producto/cargador-de-pilas-universal-aa-aaa-4c-d.webp" alt="Cargador universal NiMH para pilas AA, AAA, C, D y 9V" loading="lazy" width="400" height="180" />
+        <div class="product-card-body">
+          <div class="product-card-cat">Baterías y Energía</div>
+          <h3>Cargador Pilas Universal NiMH</h3>
+          <p>Carga pilas recargables AA, AAA, C, D y 9V en un solo equipo. Corte automático, detección de polaridad y compatible con 220 V.</p>
+          <div class="product-price">$39.990 <span>CLP</span></div>
+          <span class="product-cta">Ver producto →</span>
+        </div>
+      </a>
+
     </div>
   </section>
 
