@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>UPS y Estabilizador de Voltaje para Casa — Guía de Compra: Potencia y Autonomía</title>
+<meta name="description" content="Guía técnica de UPS y estabilizadores de voltaje para el hogar: tipos (standby, line-interactive, online), cálculo de VA, autonomía real, onda sinusoidal, protección contra sobretensión y tabla de decisión.">
+<meta name="keywords" content="UPS para casa, estabilizador de voltaje, UPS Chile, respaldo de energía hogar, UPS 1000VA, protección sobretensión, onda sinusoidal UPS, autonomía UPS, regulador de voltaje, UPS para computador">
+<meta name="author" content="Alberto Gallardo">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.ukrabot.cl/blog/ups-y-estabilizador-de-voltaje-para-casa-guia-de-compra-potencia-y-autonomia">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="UPS y Estabilizador de Voltaje para Casa — Guía de Compra: Potencia y Autonomía">
+<meta property="og:description" content="Standby vs line-interactive vs online, cálculo de VA, autonomía real, onda sinusoidal y protección contra sobretensión: todo para elegir el UPS correcto para tu casa.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/ups-y-estabilizador-de-voltaje-para-casa-guia-de-compra-potencia-y-autonomia-hero.jpg">
+<meta property="og:url" content="https://www.ukrabot.cl/blog/ups-y-estabilizador-de-voltaje-para-casa-guia-de-compra-potencia-y-autonomia">
+<meta property="og:locale" content="es_CL">
+<meta property="og:site_name" content="Blog de Ingeniería Robótica">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UPS y Estabilizador de Voltaje para Casa — Guía de Compra: Potencia y Autonomía">
+<meta name="twitter:description" content="Standby vs line-interactive vs online, cálculo de VA, autonomía real, onda sinusoidal y protección contra sobretensión: todo para elegir el UPS correcto para tu casa.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/ups-y-estabilizador-de-voltaje-para-casa-guia-de-compra-potencia-y-autonomia-hero.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"TechArticle",
+  "headline":"UPS y Estabilizador de Voltaje para Casa — Guía de Compra: Potencia y Autonomía",
+  "description":"Un corte de luz de medio segundo basta para quemar una fuente de poder o perder horas de trabajo. Esta guía te enseña a calcular qué UPS necesitas, qué diferencia hay entre estabilizador y UPS, y cómo proteger cada equipo de tu casa sin sobredimensionar.",
+  "author":{
+    "@type":"Person",
+    "name":"Alberto Gallardo",
+    "jobTitle":"Analista Programador Computacional",
+    "url":"https://www.ukrabot.cl/about",
+    "worksFor": { "@type": "Organization", "name": "Blog de Ingeniería Robótica" }
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Blog de Ingeniería Robótica",
+    "url":"https://www.ukrabot.cl",
+    "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
+  },
+  "datePublished":"2026-10-19",
+  "dateModified":"2026-10-19",
+  "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/ups-y-estabilizador-de-voltaje-para-casa-guia-de-compra-potencia-y-autonomia"},
+  "image":"https://www.ukrabot.cl/blog/ups-y-estabilizador-de-voltaje-para-casa-guia-de-compra-potencia-y-autonomia-hero.jpg",
+  "proficiencyLevel":"Principiante – Intermedio",
+  "dependencies":"Ninguno",
+  "wordCount":"3 300",
+  "inLanguage":"es-CL"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.ukrabot.cl/"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://www.ukrabot.cl/blog/"},
+    {"@type":"ListItem","position":3,"name":"UPS y Estabilizador de Voltaje para Casa — Guía de Compra: Potencia y Autonomía","item":"https://www.ukrabot.cl/blog/ups-y-estabilizador-de-voltaje-para-casa-guia-de-compra-potencia-y-autonomia"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuántos VA necesito para un PC de escritorio y un monitor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Un PC de oficina (150 W) más un monitor de 27 pulgadas (35 W) suman unos 185 W. Con factor de potencia 0,6 y margen del 25 %, necesitas al menos 385 VA. Un UPS de 600 VA cubre con holgura y te da unos 10–15 minutos de autonomía."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo conectar una impresora láser al UPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No se recomienda. Las impresoras láser consumen picos de 1 000 W o más cuando calientan el fusor, lo que puede sobrecargar el UPS y dañar la batería. Conéctalas directamente a la red eléctrica con un protector de sobretensión."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cada cuánto debo cambiar la batería del UPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Las baterías de plomo-ácido selladas duran entre 3 y 5 años. El calor excesivo acorta su vida. Haz una prueba mensual de autonomía desenchufando el UPS de la red: si la duración baja notoriamente respecto al inicio, es hora de cambiarla."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia hay entre un estabilizador y un UPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El estabilizador solo regula el voltaje (corrige subidas y bajadas), pero no tiene batería: si se corta la luz, tus equipos se apagan. El UPS regula el voltaje y además incluye batería de respaldo que mantiene tus equipos encendidos durante el corte."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Un UPS de onda simulada puede dañar mi computador?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Las fuentes de poder ATX modernas funcionan correctamente con onda sinusoidal simulada. La onda pura solo es necesaria para equipos con motores eléctricos, fuentes PFC activo muy sensibles o equipos de audio de alta fidelidad."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--ink:#f6f4ee;--card:#ffffff;--text:#1e1b15;--muted:#57534a;--quiet:#8b8577;--gold:#a97b23;--gold-bright:#e4c07a;--blue:#2f6fb0;--line:rgba(30,25,15,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;height:auto}
+a{color:var(--blue);text-underline-offset:3px}
+.container{max-width:1050px;margin:auto;padding:0 24px}
+
+/* NAV */
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1050px;margin:auto;gap:12px}
+.logo{color:var(--text);text-decoration:none;font-family:Georgia,serif;font-size:1.35rem;flex-shrink:0}
+.logo span{color:var(--gold);font-style:italic}
+.nav-links{display:flex;gap:20px;font-size:.86rem}
+.nav-links a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav-links a:hover{color:var(--text)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:0;background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;flex-shrink:0}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--text);margin:0 auto;transition:transform .2s ease,opacity .2s ease}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:300;transition:width .08s linear}
+
+.hero{position:relative;min-height:54vh;display:flex;align-items:end;overflow:hidden;background:#151310}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) contrast(1.08);z-index:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,15,11,.35) 0%,rgba(18,15,11,.62) 55%,rgba(18,15,11,.88) 100%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:100px 24px 70px;width:100%;max-width:1050px;margin:auto}
+.eyebrow{color:var(--gold-bright);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,6vw,4.3rem);line-height:1.1;font-weight:400;max-width:900px;margin:18px 0;color:#fff;word-wrap:break-word}
+.hero p{color:rgba(245,243,238,.78);max-width:720px;font-size:1.05rem}
+.byline{color:rgba(245,243,238,.55);font-size:.85rem;margin-top:14px}
+.byline a{color:var(--gold-bright);text-decoration:none}
+.byline a:hover{text-decoration:underline}
+
+.article-body{padding-top:64px;padding-bottom:90px}
+.article-body h2{font-family:Georgia,serif;font-size:2rem;font-weight:400;line-height:1.2;margin:58px 0 16px;color:var(--text)}
+.article-body h3{font-size:1.18rem;margin:32px 0 8px;color:var(--text)}
+.article-body p{color:var(--muted);margin:0 0 20px}
+.article-body li{color:var(--muted);margin:8px 0}
+.article-body strong{color:var(--text)}
+
+.toc,.note,.cta{background:linear-gradient(135deg,rgba(169,123,35,.08),rgba(47,111,176,.06));border:1px solid var(--line);border-radius:14px;padding:24px;margin:28px 0}
+.toc h2{font-family:inherit;font-size:1.05rem;margin:0 0 10px}
+.toc ol{margin:0;padding-left:22px}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--gold)}
+
+.note{border-left:4px solid var(--gold)}
+.note strong{color:var(--text)}
+.warning{background:linear-gradient(135deg,rgba(178,40,30,.08),rgba(178,40,30,.03));border:1px solid rgba(178,40,30,.25);border-left:4px solid #b2281e;border-radius:14px;padding:24px;margin:28px 0}
+.warning strong{color:#7a1c14}
+
+.article-img{margin:0 0 42px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.article-img img{width:100%;display:block}
+.caption{padding:12px 16px;background:var(--card);color:var(--quiet);font-size:.82rem}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;margin:22px 0;box-shadow:0 8px 24px rgba(30,25,15,.06)}
+table{border-collapse:collapse;width:100%;min-width:650px;background:var(--card)}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+th{background:#faf7f0;color:var(--text);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{color:var(--text);font-weight:600}
+
+pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:#14121a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;color:#e8d9b6;line-height:1.5;font-size:.88rem;white-space:pre-wrap;word-break:break-word}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+
+.faq{border-bottom:1px solid var(--line)}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;color:var(--text);font-weight:600}
+details p{padding-top:10px;margin-bottom:0}
+
+.footer-nav{border-top:1px solid var(--line);padding-top:34px;margin-top:54px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-nav a{color:var(--muted);text-decoration:none;max-width:100%}
+.footer-nav a:hover{color:var(--gold)}
+
+
+.disclosure{font-size:.78rem;color:var(--quiet);border-top:1px solid var(--line);padding-top:16px;margin-top:34px}
+.cta h3{margin:0 0 8px;font-size:1.05rem;color:var(--text)}
+.cta p{margin:0}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    background:rgba(246,244,238,.98);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:8px 24px 18px;
+    box-shadow:0 12px 24px rgba(30,25,15,.08);
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:10px 0;width:100%}
+}
+
+@media(max-width:700px){
+  .hero-inner{padding:80px 20px 50px}
+  .article-body h2{font-size:1.6rem;margin:44px 0 14px}
+  .article-body{padding-top:48px;padding-bottom:60px}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .nav-inner{padding:14px 16px}
+  .logo{font-size:1.15rem}
+  .hero{min-height:60vh}
+  .hero-inner{padding:70px 16px 40px}
+  .hero p{font-size:.95rem}
+  .eyebrow{font-size:.7rem}
+  .article-body h2{font-size:1.4rem}
+  .article-body h3{font-size:1.05rem}
+  .toc,.note,.cta,.warning{padding:16px;margin:20px 0}
+  .toc ol{padding-left:18px}
+  th,td{padding:10px 10px;font-size:.82rem}
+  table{min-width:560px}
+  pre{padding:14px;font-size:.78rem}
+  .article-img .caption{font-size:.78rem;padding:10px 12px}
+  .disclosure{font-size:.74rem}
+  .footer-nav{gap:12px}
+  .footer-nav a{font-size:.9rem}
+}
+
+</style>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try {
+      var c = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+      if (c && c[1] === 'granted') {
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7032484018692343" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZVHF8X35Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1ZVHF8X35Q');
+  </script>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
+
+<nav class="site-nav" aria-label="Navegación del sitio">
+  <div class="nav-inner">
+    <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/#categories">Tutoriales</a>
+      <a href="/#proyecto-destacado">Proyecto del Mes</a>
+      <a href="/about">Sobre Nosotros</a>
+      <a href="/contact">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="ups-y-estabilizador-de-voltaje-para-casa-guia-de-compra-potencia-y-autonomia-hero.jpg" alt="Montaje de electrónica doméstica con microcontrolador y sensores sobre una mesa de madera junto a una ventana" fetchpriority="high">
+  <div class="hero-inner">
+    <div class="eyebrow">Energía y Protección Eléctrica · Publicado el <time datetime="2026-10-19">19 octubre 2026</time></div>
+    <h1>UPS y Estabilizador de Voltaje para Casa — Guía de Compra: Potencia y Autonomía</h1>
+    <p>Tipos, cálculo de potencia, autonomía real y onda sinusoidal: todo para proteger tus equipos.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 14 min de lectura min de lectura</p>
+  </div>
+</header>
+
+<main class="container article-body">
+<article>
+
+<div class="article-img">
+  <img src="ups-y-estabilizador-de-voltaje-para-casa-guia-de-compra-potencia-y-autonomia-hero.jpg" alt="Montaje de electrónica doméstica con microcontrolador y sensores sobre una mesa de madera junto a una ventana" loading="lazy">
+  <div class="caption">Componentes electrónicos y sensores sobre mesa de trabajo — imagen referencial</div>
+</div>
+
+<nav class="toc" aria-label="Tabla de contenidos">
+  <h2>Qué cubre esta guía</h2>
+  <ol>
+    <li><a href="#diferencia">Estabilizador vs UPS: cuál necesitas</a></li>
+    <li><a href="#tipos-ups">Tipos de UPS: standby, line-interactive y online</a></li>
+    <li><a href="#calcular-va">Cómo calcular los VA que necesitas</a></li>
+    <li><a href="#autonomia">Autonomía real: minutos según la carga</a></li>
+    <li><a href="#onda-sinusoidal">Onda sinusoidal simulada vs pura</a></li>
+    <li><a href="#sobretension">Protección contra sobretensión y joules</a></li>
+    <li><a href="#bateria">Batería: plomo-ácido vs litio</a></li>
+    <li><a href="#tabla-decision">Tabla de decisión por equipo</a></li>
+    <li><a href="#instalacion">Instalación y mantenimiento</a></li>
+    <li><a href="#normativa-chile">Voltaje en Chile y problemas comunes</a></li>
+  </ol>
+</nav>
+
+<section id="diferencia">
+<h2>Estabilizador vs UPS: cuál necesitas</h2>
+<p>Un <strong>estabilizador de voltaje</strong> (también llamado regulador) corrige las fluctuaciones de la red eléctrica — sube el voltaje cuando baja y lo reduce cuando sube — pero <em>no</em> tiene batería: si se corta la luz, tus equipos se apagan igual.</p>
+<p>Un <strong>UPS (Uninterruptible Power Supply)</strong> hace lo mismo que el estabilizador y además incluye una <strong>batería interna</strong> que alimenta tus equipos durante el corte. Te da desde unos pocos minutos hasta más de una hora (según el modelo y la carga) para guardar tu trabajo y apagar correctamente.</p>
+
+<table>
+<thead><tr><th>Característica</th><th>Estabilizador</th><th>UPS</th></tr></thead>
+<tbody>
+<tr><td>Regula voltaje</td><td>Sí</td><td>Sí (line-interactive y online)</td></tr>
+<tr><td>Respaldo con batería</td><td>No</td><td>Sí</td></tr>
+<tr><td>Protege contra cortes</td><td>No</td><td>Sí</td></tr>
+<tr><td>Protección contra sobretensión</td><td>Parcial</td><td>Sí (con varistores y fusibles)</td></tr>
+<tr><td>Precio referencial CLP</td><td>10 000 – 30 000</td><td>40 000 – 300 000+</td></tr>
+</tbody>
+</table>
+
+<p><strong>Recomendación:</strong> si solo tienes problemas de voltaje inestable (luces que parpadean, pero sin cortes), un estabilizador basta. Si además sufres cortes de luz — aunque sean breves — necesitas un UPS.</p>
+</section>
+
+<section id="tipos-ups">
+<h2>Tipos de UPS: standby, line-interactive y online</h2>
+
+<h3>Standby (offline)</h3>
+<p>El más básico y económico. En condiciones normales, la corriente pasa directo de la red al equipo. Cuando detecta un corte, la batería entra en acción con un <strong>tiempo de transferencia de 5–12 milisegundos</strong>. Esos milisegundos son imperceptibles para un computador con fuente ATX, pero pueden afectar equipos muy sensibles.</p>
+<p><em>Ideal para:</em> PC de escritorio, monitor, router WiFi, módem de fibra óptica.</p>
+
+<h3>Line-interactive</h3>
+<p>Incluye un <strong>regulador automático de voltaje (AVR)</strong> que corrige fluctuaciones sin tocar la batería. Solo usa la batería cuando hay un corte real. Tiempo de transferencia: <strong>2–4 milisegundos</strong>. Es el tipo más vendido para uso residencial y pequeñas oficinas.</p>
+<p><em>Ideal para:</em> PC de trabajo, NAS doméstico, consola de videojuegos, equipo de audio, CCTV.</p>
+
+<h3>Online (doble conversión)</h3>
+<p>La corriente pasa <em>siempre</em> por la batería: convierte AC a DC y de vuelta a AC. No existe tiempo de transferencia — la protección es continua. Produce <strong>onda sinusoidal pura</strong> en todo momento. Es el más caro y el que más consume.</p>
+<p><em>Ideal para:</em> servidores domésticos, equipos médicos, estaciones de trabajo profesionales. Sobredimensionado para la mayoría de los hogares.</p>
+
+<table>
+<thead><tr><th>Tipo</th><th>Transferencia</th><th>AVR</th><th>Onda</th><th>Precio CLP (1000 VA)</th></tr></thead>
+<tbody>
+<tr><td>Standby</td><td>5–12 ms</td><td>No</td><td>Simulada</td><td>40 000 – 60 000</td></tr>
+<tr><td>Line-interactive</td><td>2–4 ms</td><td>Sí</td><td>Simulada o pura</td><td>60 000 – 120 000</td></tr>
+<tr><td>Online</td><td>0 ms</td><td>Integrado</td><td>Pura</td><td>150 000 – 350 000</td></tr>
+</tbody>
+</table>
+</section>
+
+<div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7032484018692343" data-ad-slot="7434550690" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<section id="calcular-va">
+<h2>Cómo calcular los VA que necesitas</h2>
+<p>Los UPS se clasifican en <strong>VA (voltamperios)</strong>, no en watts. La relación entre ambos depende del <em>factor de potencia</em> del UPS:</p>
+<p style="text-align:center;font-size:1.15rem;"><strong>Watts = VA × Factor de potencia</strong></p>
+<p>La mayoría de los UPS residenciales tienen un factor de potencia de <strong>0,6</strong>. Así, un UPS de 1 000 VA entrega como máximo 600 W reales.</p>
+
+<h3>Paso a paso</h3>
+<ol>
+<li><strong>Lista cada equipo</strong> que conectarás al UPS y su consumo en watts (revisa la etiqueta o mide con un <a href="/blog/como-bajar-la-cuenta-de-la-luz-medir-y-reducir-el-consumo-electrico">medidor de consumo</a>).</li>
+<li><strong>Suma los watts</strong> de todos los equipos.</li>
+<li><strong>Divide por el factor de potencia</strong> (0,6 para la mayoría de UPS residenciales).</li>
+<li><strong>Agrega un 25 % de margen</strong> para picos de encendido y expansión futura.</li>
+</ol>
+
+<h3>Ejemplo práctico</h3>
+<table>
+<thead><tr><th>Equipo</th><th>Consumo típico</th></tr></thead>
+<tbody>
+<tr><td>PC de escritorio (uso oficina)</td><td>150 W</td></tr>
+<tr><td>Monitor 27"</td><td>35 W</td></tr>
+<tr><td>Router WiFi + módem fibra</td><td>20 W</td></tr>
+<tr><td>Parlantes de escritorio</td><td>15 W</td></tr>
+</tbody>
+</table>
+<p>Total: 220 W → 220 / 0,6 = 367 VA → con 25 % de margen: <strong>460 VA mínimo</strong>. Un UPS de 600–800 VA cubre con holgura.</p>
+
+<h3>Consumos de referencia</h3>
+<table>
+<thead><tr><th>Equipo</th><th>Watts típicos</th></tr></thead>
+<tbody>
+<tr><td>Router WiFi + módem</td><td>15–30 W</td></tr>
+<tr><td>PC oficina (sin GPU dedicada)</td><td>120–200 W</td></tr>
+<tr><td>PC gaming (GPU dedicada)</td><td>350–650 W</td></tr>
+<tr><td>Monitor 24–27"</td><td>25–45 W</td></tr>
+<tr><td>NAS 2 bahías</td><td>25–40 W</td></tr>
+<tr><td>Smart TV 55"</td><td>60–100 W</td></tr>
+<tr><td>Consola (PS5 / Xbox Series X)</td><td>100–200 W</td></tr>
+<tr><td>DVR / NVR CCTV</td><td>30–60 W</td></tr>
+</tbody>
+</table>
+<p><strong>Nunca conectes</strong> al UPS: impresoras láser (pico de 1 000+ W al encender el fusor), calefactores, secadores de pelo ni ningún equipo con resistencia calefactora. Sobrecargan el UPS y acortan la vida de la batería.</p>
+</section>
+
+<section id="autonomia">
+<h2>Autonomía real: minutos según la carga</h2>
+<p>La autonomía depende de la relación entre la capacidad de la batería y la carga conectada. A menor carga, más minutos de respaldo.</p>
+
+<table>
+<thead><tr><th>UPS</th><th>Carga 50 % (W)</th><th>Autonomía ≈</th><th>Carga 100 % (W)</th><th>Autonomía ≈</th></tr></thead>
+<tbody>
+<tr><td>600 VA</td><td>180 W</td><td>8–12 min</td><td>360 W</td><td>2–4 min</td></tr>
+<tr><td>800 VA</td><td>240 W</td><td>10–15 min</td><td>480 W</td><td>3–5 min</td></tr>
+<tr><td>1 000 VA</td><td>300 W</td><td>12–18 min</td><td>600 W</td><td>4–6 min</td></tr>
+<tr><td>1 500 VA</td><td>450 W</td><td>15–22 min</td><td>900 W</td><td>5–8 min</td></tr>
+<tr><td>2 200 VA</td><td>660 W</td><td>18–25 min</td><td>1 320 W</td><td>6–10 min</td></tr>
+</tbody>
+</table>
+
+<p>Los valores son orientativos: la autonomía real varía según la marca, la edad de la batería y la temperatura ambiente. Una batería con más de 3 años puede perder un 40–50 % de su capacidad original.</p>
+<p><strong>Consejo:</strong> si necesitas más de 20 minutos de respaldo, busca un UPS que soporte <strong>baterías externas adicionales</strong> (EBM — Extended Battery Module). Es más eficiente y económico que comprar un UPS de mayor VA solo por autonomía.</p>
+</section>
+
+<section id="onda-sinusoidal">
+<h2>Onda sinusoidal simulada vs pura</h2>
+<p>Cuando el UPS opera en batería, la forma de la corriente que entrega puede ser:</p>
+<ul>
+<li><strong>Onda sinusoidal simulada (stepped / modified):</strong> una aproximación escalonada de la onda real. Funciona bien para fuentes de poder ATX de computadores, monitores y routers. Es más barata de producir.</li>
+<li><strong>Onda sinusoidal pura:</strong> réplica exacta de la corriente de la red. Necesaria para equipos con motores (ventiladores de pedestal, bombas de acuario), fuentes de poder PFC activo de gama alta y equipos médicos. Algunos equipos con onda simulada producen un zumbido audible o se recalientan.</li>
+</ul>
+<p>Para uso doméstico general (PC, router, NAS, TV), la onda simulada es suficiente. Si tienes un equipo de audio de alta fidelidad o electrodomésticos con motor conectados al UPS, invierte en onda pura.</p>
+</section>
+
+<section id="sobretension">
+<h2>Protección contra sobretensión y joules</h2>
+<p>La <strong>protección contra sobretensión (surge protection)</strong> absorbe los picos de voltaje causados por rayos, fallos en la red eléctrica o encendido de equipos pesados. Se mide en <strong>joules</strong>: cuanto mayor el número, más energía puede absorber antes de degradarse.</p>
+<ul>
+<li><strong>Menos de 500 joules:</strong> protección mínima. Solo para equipos de bajo valor.</li>
+<li><strong>500–1 000 joules:</strong> adecuado para PC y periféricos básicos.</li>
+<li><strong>Más de 1 000 joules:</strong> recomendado para equipos costosos, home theater, estaciones de trabajo.</li>
+</ul>
+<p>Los varistores (MOV) que absorben la sobretensión se degradan con cada pico. Un UPS de buena calidad indica con un LED o en pantalla cuando la protección se ha agotado y necesita reemplazo.</p>
+<p>En zonas rurales de Chile con tendido eléctrico aéreo, la protección contra sobretensión es especialmente importante por la exposición a descargas atmosféricas.</p>
+</section>
+
+<section id="bateria">
+<h2>Batería: plomo-ácido vs litio</h2>
+<table>
+<thead><tr><th>Característica</th><th>Plomo-ácido sellada (SLA/VRLA)</th><th>Litio-ion (Li-ion)</th></tr></thead>
+<tbody>
+<tr><td>Vida útil</td><td>3–5 años</td><td>8–10 años</td></tr>
+<tr><td>Peso (para 1 000 VA)</td><td>~8–12 kg</td><td>~3–5 kg</td></tr>
+<tr><td>Autodescarga mensual</td><td>3–5 %</td><td>1–2 %</td></tr>
+<tr><td>Ciclos de carga</td><td>200–400</td><td>1 000–2 000</td></tr>
+<tr><td>Precio</td><td>Base</td><td>2–3× más caro</td></tr>
+<tr><td>Temperatura máxima recomendada</td><td>25 °C</td><td>35 °C</td></tr>
+</tbody>
+</table>
+<p>La mayoría de UPS residenciales usan <strong>plomo-ácido sellada (SLA)</strong> porque el costo inicial es menor. Los modelos con litio tienen mejor relación costo-ciclo a largo plazo, pero su precio de compra sigue siendo alto.</p>
+<p>Sea cual sea la tecnología, la batería se degrada con el calor: cada 10 °C por encima de 25 °C reduce la vida útil a la mitad. No ubiques el UPS junto a un calefactor ni en un armario sin ventilación.</p>
+</section>
+
+<section id="tabla-decision">
+<h2>Tabla de decisión por equipo</h2>
+<table>
+<thead><tr><th>Equipo a proteger</th><th>VA mínimo</th><th>Tipo recomendado</th><th>Onda</th><th>Presupuesto CLP</th></tr></thead>
+<tbody>
+<tr><td>Router + módem (solo internet)</td><td>400–600</td><td>Standby</td><td>Simulada</td><td>30 000 – 45 000</td></tr>
+<tr><td>PC oficina + monitor</td><td>600–800</td><td>Line-interactive</td><td>Simulada</td><td>50 000 – 80 000</td></tr>
+<tr><td>PC gaming + monitor + periféricos</td><td>1 200–1 500</td><td>Line-interactive</td><td>Simulada o pura</td><td>90 000 – 150 000</td></tr>
+<tr><td>NAS + router + switch</td><td>600–800</td><td>Line-interactive</td><td>Simulada</td><td>50 000 – 80 000</td></tr>
+<tr><td>Smart TV + consola + audio</td><td>800–1 000</td><td>Line-interactive</td><td>Simulada</td><td>60 000 – 100 000</td></tr>
+<tr><td>Home office completo</td><td>1 000–1 500</td><td>Line-interactive</td><td>Pura</td><td>80 000 – 160 000</td></tr>
+<tr><td>Servidor doméstico / rack</td><td>1 500–3 000</td><td>Online</td><td>Pura</td><td>180 000 – 400 000</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="instalacion">
+<h2>Instalación y mantenimiento</h2>
+<p>Instalar un UPS es tan simple como enchufarlo, pero hay buenas prácticas que alargan su vida:</p>
+<ul>
+<li><strong>Ubicación:</strong> superficie plana, ventilada, alejada de fuentes de calor. Nunca dentro de un armario cerrado sin ventilación.</li>
+<li><strong>Primera carga:</strong> carga la batería al menos 8 horas antes de usar el UPS por primera vez.</li>
+<li><strong>No encadenar regletas:</strong> conecta los equipos directamente a las tomas del UPS. Una regleta entre el UPS y el equipo puede anular la protección contra sobretensión.</li>
+<li><strong>Prueba mensual:</strong> desconecta el UPS de la red (simula un corte) y verifica que tus equipos sigan funcionando. Si la autonomía es notablemente menor que la original, la batería necesita reemplazo.</li>
+<li><strong>Software de monitoreo:</strong> instala el software del fabricante (PowerChute de APC, WinPower de CyberPower) para programar apagados automáticos del PC cuando la batería baje del 20 %. Si usas un <a href="/blog/nas-synology-vs-qnap-vs-casero-cual-elegir">NAS</a>, configura el protocolo NUT (Network UPS Tools) para apagado coordinado.</li>
+<li><strong>Reemplazo de batería:</strong> cada 3–4 años para plomo-ácido. La mayoría de UPS permiten cambiar la batería sin herramientas (hot-swappable).</li>
+</ul>
+</section>
+
+<section id="normativa-chile">
+<h2>Voltaje en Chile y problemas comunes</h2>
+<p>Chile opera con <strong>220 V / 50 Hz</strong>. Los problemas más frecuentes que justifican un UPS o estabilizador son:</p>
+<ul>
+<li><strong>Microcortes:</strong> interrupciones de menos de un segundo que reinician routers, NVR y computadores. Comunes en zonas con tendido aéreo y durante tormentas eléctricas.</li>
+<li><strong>Sobretensión por rayos:</strong> especialmente en regiones como Los Lagos, Los Ríos y Biobío, donde las tormentas eléctricas son más frecuentes.</li>
+<li><strong>Caídas de voltaje (brownouts):</strong> el voltaje baja de 220 V a 180–190 V. Los equipos con fuente de poder económica pueden reiniciarse o dañarse. Un UPS line-interactive con AVR corrige esto automáticamente.</li>
+<li><strong>Cortes programados:</strong> las empresas distribuidoras notifican cortes por mantenimiento. Un UPS te da tiempo para guardar trabajo y apagar correctamente.</li>
+</ul>
+<p>La <strong>SEC (Superintendencia de Electricidad y Combustibles)</strong> regula la calidad del suministro eléctrico en Chile. Si experimentas problemas frecuentes de voltaje, puedes presentar un reclamo ante la SEC a través de su portal web.</p>
+</section>
+
+<section id="fuentes">
+<h2>Fuentes primarias</h2>
+<ul>
+    <li><a href="https://apc.estorewale.com/blog/how-to-choose-the-right-ups-va-rating-for-your-home-or-office-2026-guide/" target="_blank" rel="noopener noreferrer">APC — How to Choose the Right UPS VA Rating 2026</a></li>
+    <li><a href="https://impactotic.co/innovacion/consumo-digital/ups-proteger-sus-dispositivos-en-casa/" target="_blank" rel="noopener noreferrer">ImpactoTIC — UPS para proteger dispositivos en casa</a></li>
+    <li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">SEC Chile — Superintendencia de Electricidad y Combustibles</a></li>
+    <li><a href="https://www.apc.com/us/en/solutions/home-office/ups.jsp" target="_blank" rel="noopener noreferrer">APC by Schneider Electric — UPS for Home and Office</a></li>
+</ul>
+</section>
+<section id="faq">
+<h2>Preguntas frecuentes</h2>
+<div class="faq"><details><summary>¿Cuántos VA necesito para un PC de escritorio y un monitor?</summary><p>Un PC de oficina (150 W) más un monitor de 27 pulgadas (35 W) suman unos 185 W. Con factor de potencia 0,6 y margen del 25 %, necesitas al menos 385 VA. Un UPS de 600 VA cubre con holgura y te da unos 10–15 minutos de autonomía.</p></details>
+<details><summary>¿Puedo conectar una impresora láser al UPS?</summary><p>No se recomienda. Las impresoras láser consumen picos de 1 000 W o más cuando calientan el fusor, lo que puede sobrecargar el UPS y dañar la batería. Conéctalas directamente a la red eléctrica con un protector de sobretensión.</p></details>
+<details><summary>¿Cada cuánto debo cambiar la batería del UPS?</summary><p>Las baterías de plomo-ácido selladas duran entre 3 y 5 años. El calor excesivo acorta su vida. Haz una prueba mensual de autonomía desenchufando el UPS de la red: si la duración baja notoriamente respecto al inicio, es hora de cambiarla.</p></details>
+<details><summary>¿Qué diferencia hay entre un estabilizador y un UPS?</summary><p>El estabilizador solo regula el voltaje (corrige subidas y bajadas), pero no tiene batería: si se corta la luz, tus equipos se apagan. El UPS regula el voltaje y además incluye batería de respaldo que mantiene tus equipos encendidos durante el corte.</p></details>
+<details><summary>¿Un UPS de onda simulada puede dañar mi computador?</summary><p>No. Las fuentes de poder ATX modernas funcionan correctamente con onda sinusoidal simulada. La onda pura solo es necesaria para equipos con motores eléctricos, fuentes PFC activo muy sensibles o equipos de audio de alta fidelidad.</p></details></div>
+</section>
+
+
+<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+
+<a href="/blog/como-bajar-la-cuenta-de-la-luz-medir-y-reducir-el-consumo-electrico" class="cta-link">Lee también: Cómo bajar la cuenta de la luz — Medir y reducir el consumo eléctrico →</a>
+
+<div class="footer-nav">
+  <a href="/blog/generador-electrico-para-casa-en-chile-guia-de-compra-y-dimensionamiento">← Anterior: Generador Eléctrico para Casa en Chile</a>
+  <a href="/blog/estaciones-de-energia-portatiles-guia-de-compra-y-comparativa">Siguiente: Estaciones de Energía Portátiles: Guía de Compra →</a>
+</div>
+
+</article>
+<section class="editorial-sources" aria-label="Fuentes primarias" style="margin:48px 0 24px;padding:22px 24px;background:#ffffff;border:1px solid rgba(30,25,15,.09);border-radius:12px;">
+<h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
+<p style="font-size:.9rem;color:#57534a;">Referencias que sustentan los conceptos generales de la guía. Los valores exactos pueden variar según el fabricante.</p>
+<ul>
+<li><a href="https://apc.estorewale.com/blog/how-to-choose-the-right-ups-va-rating-for-your-home-or-office-2026-guide/" target="_blank" rel="noopener noreferrer">APC — How to Choose the Right UPS VA Rating 2026</a></li>
+<li><a href="https://impactotic.co/innovacion/consumo-digital/ups-proteger-sus-dispositivos-en-casa/" target="_blank" rel="noopener noreferrer">ImpactoTIC — UPS para proteger dispositivos en casa</a></li>
+<li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">SEC Chile — Superintendencia de Electricidad y Combustibles</a></li>
+<li><a href="https://www.apc.com/us/en/solutions/home-office/ups.jsp" target="_blank" rel="noopener noreferrer">APC by Schneider Electric — UPS for Home and Office</a></li>
+</ul>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 19 octubre 2026.</p>
+</section>
+
+</main>
+
+<footer class="container" style="border-top:1px solid var(--line);padding-top:34px;padding-bottom:45px;color:var(--quiet);font-size:.85rem">
+  <p>Blog de Ingeniería Robótica · Tutoriales prácticos de Arduino, robótica, automatización y electrónica aplicada, escritos y mantenidos por Alberto Gallardo.</p>
+  <p style="margin-top:10px;">
+    <a href="/about" style="color:var(--muted);text-decoration:none;margin-right:16px;">Sobre Nosotros</a>
+    <a href="/contact" style="color:var(--muted);text-decoration:none;margin-right:16px;">Contacto</a>
+    <a href="/privacy" style="color:var(--muted);text-decoration:none;">Política de Privacidad</a>
+  </p>
+  <div style="max-width:1100px;margin:28px auto 0;padding-top:20px;border-top:1px solid rgba(30,25,15,.09);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;">
+      <p style="font-size:0.8rem;opacity:0.6;margin:0;">&copy; 2023&ndash;2026 Blog de Ingeniería Robótica · Alberto Gallardo. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces legales y de empresa" style="display:flex;flex-wrap:wrap;gap:18px;">
+        <a href="/about" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Sobre Nosotros</a>
+        <a href="/contact" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Contacto</a>
+        <a href="/privacy" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Política de Privacidad</a>
+        <a href="/terms" style="font-size:0.82rem;opacity:0.75;text-decoration:none;color:inherit;">Términos y Condiciones</a>
+      </nav>
+  </div>
+</footer>
+
+<div id="rel-consent" role="dialog" aria-modal="false" aria-labelledby="rel-consent-title" hidden
+     style="position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#ffffff;border-top:1px solid rgba(30,25,15,0.12);box-shadow:0 -8px 32px rgba(30,25,15,0.18);padding:20px 24px;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+    <div style="flex:1;min-width:260px;">
+      <p id="rel-consent-title" style="margin:0 0 6px;font-size:0.95rem;font-weight:600;color:#1e1b15;">Usamos cookies</p>
+      <p style="margin:0;font-size:0.85rem;line-height:1.5;color:#57534a;">
+        Usamos cookies para operar este sitio y, con tu consentimiento, para mostrar anuncios personalizados a través de Google AdSense.
+        Puedes rechazar y seguir leyendo todo el contenido. Consulta nuestra
+        <a id="rel-consent-privacy" href="/privacy" style="color:#2f6fb0;">Política de Privacidad</a>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button type="button" id="rel-consent-decline"
+        style="padding:11px 22px;border-radius:999px;border:1px solid rgba(30,25,15,0.25);background:transparent;color:#1e1b15;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;">Rechazar</button>
+      <button type="button" id="rel-consent-accept"
+        style="padding:11px 22px;border-radius:999px;border:none;background:#a97b23;color:#ffffff;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">Aceptar todo</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var NAME = 'rel_consent';
+  var box = document.getElementById('rel-consent');
+  if (!box) return;
+
+  function read() {
+    var m = document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);
+    return m ? m[1] : null;
+  }
+  function write(v) {
+    var d = new Date();
+    d.setTime(d.getTime() + 180 * 24 * 60 * 60 * 1000);
+    document.cookie = NAME + '=' + v + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+
+  if (!read()) box.hidden = false;
+
+  function decide(granted) {
+    write(granted ? 'granted' : 'denied');
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied',
+        'analytics_storage': granted ? 'granted' : 'denied'
+      });
+    }
+    box.hidden = true;
+  }
+
+  document.getElementById('rel-consent-accept').addEventListener('click', function () { decide(true); });
+  document.getElementById('rel-consent-decline').addEventListener('click', function () { decide(false); });
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById('progress-bar');
+  if (!bar) return;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (window.scrollY || doc.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', function () {
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('open');
+    }
+  });
+})();
+</script>
+</body>
+</html>
