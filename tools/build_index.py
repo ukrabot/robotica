@@ -419,7 +419,8 @@ page = f'''<!DOCTYPE html>
 <header class="site-header">
   <div class="nav-inner">
     <a href="/" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
-    <nav class="nav-links" aria-label="Navegación principal">
+    <button type="button" class="mnav-btn" id="mnav-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    <nav class="nav-links mnav" id="nav-links" aria-label="Navegación principal">
       <a href="/">Inicio</a>
       <a href="/blog/" aria-current="page">Tutoriales</a>
       <a href="/productos">Productos</a>

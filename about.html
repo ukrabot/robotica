@@ -150,6 +150,24 @@ gtag('consent', 'default', {
   gtag('js', new Date());
   gtag('config', 'G-1ZVHF8X35Q');
 </script>
+<style id="mnav-css">
+.mnav-btn{display:none;width:44px;height:44px;flex:none;padding:0;border:1px solid rgba(30,25,15,.14);border-radius:10px;background:#fffdf8;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.mnav-btn span{display:block;width:20px;height:2px;border-radius:2px;background:#1e1b15;transition:transform .2s,opacity .2s}
+.mnav-btn[aria-expanded=true] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.mnav-btn[aria-expanded=true] span:nth-child(2){opacity:0}
+.mnav-btn[aria-expanded=true] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mnav-btn:focus-visible{outline:2px solid #2f6fb0;outline-offset:2px}
+.site-nav.mnav-host{position:relative}
+@media (max-width:760px){
+ .mnav-btn{display:flex}
+ .nav-inner{flex-wrap:nowrap!important}
+ .nav-links.mnav{display:none!important;position:absolute;left:0;right:0;top:100%;z-index:300;flex-direction:column;align-items:stretch;gap:0!important;padding:4px 24px 12px;background:#f6f4ee;border-bottom:1px solid rgba(30,25,15,.12);box-shadow:0 14px 28px rgba(30,25,15,.1)}
+ .nav-links.mnav.is-open{display:flex!important}
+ .nav-links.mnav a{display:block;padding:13px 0;font-size:1rem!important;border-bottom:1px solid rgba(30,25,15,.07)}
+ .nav-links.mnav a:last-child{border-bottom:0}
+}
+@media (prefers-reduced-motion:reduce){.mnav-btn span{transition:none}}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -157,7 +175,7 @@ gtag('consent', 'default', {
 <header class="site-header">
   <div class="nav-inner">
     <a href="/" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
-    <nav class="nav-links" aria-label="Navegación principal">
+    <button type="button" class="mnav-btn" id="mnav-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span><span></span></button><nav id="nav-links" class="nav-links mnav" aria-label="Navegación principal">
       <a href="/">Inicio</a>
       <a href="/blog/">Tutoriales</a>
       <a href="/productos">Productos</a>
@@ -344,6 +362,16 @@ gtag('consent', 'default', {
   }
   document.getElementById('rel-consent-accept').addEventListener('click', function(){ decide(true); });
   document.getElementById('rel-consent-decline').addEventListener('click', function(){ decide(false); });
+})();
+</script>
+<script id="mnav-js">
+(function(){
+  var b=document.getElementById('mnav-btn'),n=document.getElementById('nav-links');
+  if(!b||!n) return;
+  function set(open){n.classList.toggle('is-open',open);b.setAttribute('aria-expanded',open?'true':'false');b.setAttribute('aria-label',open?'Cerrar menú':'Abrir menú');}
+  b.addEventListener('click',function(){set(!n.classList.contains('is-open'));});
+  n.addEventListener('click',function(e){if(e.target.closest('a')) set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&n.classList.contains('is-open')){set(false);b.focus();}});
 })();
 </script>
 </body>

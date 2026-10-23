@@ -19,10 +19,28 @@ h1{font-family:Georgia,serif;font-size:clamp(2.1rem,6vw,3.6rem);line-height:1.1;
 .tile span{color:var(--muted);font-size:.88rem}
 .btn{display:inline-block;margin-top:30px;padding:13px 26px;border-radius:99px;background:var(--gold);color:#fff;font-weight:700;text-decoration:none}
 .site-footer{border-top:1px solid var(--line);padding:34px 24px 45px;color:var(--quiet);font-size:.85rem;max-width:1050px;margin:auto}
-</style></head><body>
-<nav class="site-nav" aria-label="Navegación del sitio"><div class="nav-inner">
+</style><style id="mnav-css">
+.mnav-btn{display:none;width:44px;height:44px;flex:none;padding:0;border:1px solid rgba(30,25,15,.14);border-radius:10px;background:#fffdf8;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.mnav-btn span{display:block;width:20px;height:2px;border-radius:2px;background:#1e1b15;transition:transform .2s,opacity .2s}
+.mnav-btn[aria-expanded=true] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.mnav-btn[aria-expanded=true] span:nth-child(2){opacity:0}
+.mnav-btn[aria-expanded=true] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mnav-btn:focus-visible{outline:2px solid #2f6fb0;outline-offset:2px}
+.site-nav.mnav-host{position:relative}
+@media (max-width:760px){
+ .mnav-btn{display:flex}
+ .nav-inner{flex-wrap:nowrap!important}
+ .nav-links.mnav{display:none!important;position:absolute;left:0;right:0;top:100%;z-index:300;flex-direction:column;align-items:stretch;gap:0!important;padding:4px 24px 12px;background:#f6f4ee;border-bottom:1px solid rgba(30,25,15,.12);box-shadow:0 14px 28px rgba(30,25,15,.1)}
+ .nav-links.mnav.is-open{display:flex!important}
+ .nav-links.mnav a{display:block;padding:13px 0;font-size:1rem!important;border-bottom:1px solid rgba(30,25,15,.07)}
+ .nav-links.mnav a:last-child{border-bottom:0}
+}
+@media (prefers-reduced-motion:reduce){.mnav-btn span{transition:none}}
+</style>
+</head><body>
+<nav class="site-nav mnav-host" aria-label="Navegación del sitio"><div class="nav-inner">
 <a class="logo" href="/">Robótica <span>Ingeniería</span></a>
-<div class="nav-links"><a href="/">Inicio</a><a href="/blog/">Tutoriales</a><a href="/productos">Productos</a><a href="/contact">Contacto</a></div>
+<button type="button" class="mnav-btn" id="mnav-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú"><span></span><span></span><span></span></button><div id="nav-links" class="nav-links mnav"><a href="/">Inicio</a><a href="/blog/">Tutoriales</a><a href="/productos">Productos</a><a href="/contact">Contacto</a></div>
 </div></nav>
 <main class="container">
 <div class="eyebrow">Error 404</div>
@@ -40,4 +58,14 @@ h1{font-family:Georgia,serif;font-size:clamp(2.1rem,6vw,3.6rem);line-height:1.1;
 <p><a href="/about">Sobre Nosotros</a> · <a href="/contact">Contacto</a> · <a href="/privacy">Política de Privacidad</a> · <a href="/terms">Términos</a></p>
 <p>© 2023–2026 Alberto Gallardo. Todos los derechos reservados.</p>
 </footer>
+<script id="mnav-js">
+(function(){
+  var b=document.getElementById('mnav-btn'),n=document.getElementById('nav-links');
+  if(!b||!n) return;
+  function set(open){n.classList.toggle('is-open',open);b.setAttribute('aria-expanded',open?'true':'false');b.setAttribute('aria-label',open?'Cerrar menú':'Abrir menú');}
+  b.addEventListener('click',function(){set(!n.classList.contains('is-open'));});
+  n.addEventListener('click',function(e){if(e.target.closest('a')) set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&n.classList.contains('is-open')){set(false);b.focus();}});
+})();
+</script>
 </body></html>
