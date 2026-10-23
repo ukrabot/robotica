@@ -223,9 +223,8 @@ page = f'''<!DOCTYPE html>
     <a href="/" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
     <nav class="nav-links" aria-label="Navegación principal">
       <a href="/">Inicio</a>
-      <a href="/#categories">Tutoriales</a>
+      <a href="/blog/">Tutoriales</a>
       <a href="/productos" aria-current="page">Productos</a>
-      <a href="/about">Quiénes Somos</a>
       <a href="/contact">Contacto</a>
     </nav>
   </div>

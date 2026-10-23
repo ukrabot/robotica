@@ -423,7 +423,6 @@ page = f'''<!DOCTYPE html>
       <a href="/">Inicio</a>
       <a href="/blog/" aria-current="page">Tutoriales</a>
       <a href="/productos">Productos</a>
-      <a href="/about">Quiénes Somos</a>
       <a href="/contact">Contacto</a>
     </nav>
   </div>
