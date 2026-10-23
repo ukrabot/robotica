@@ -108,7 +108,20 @@ footer{border-top:1px solid var(--border);background:#f1ede3}
 @media(max-width:700px){.prose{padding:26px 22px}.nav-links{gap:12px}.page-hero{padding-top:44px}}
 
 .store{max-width:1200px;margin:auto;padding:0 24px 40px}
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 28px}
+.store-tools{margin:4px 0 14px}
+.store-search{display:flex;align-items:center;gap:10px;max-width:560px;background:#fff;border:1px solid rgba(30,25,15,.18);border-radius:999px;padding:0 18px}
+.store-search:focus-within{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(47,111,176,.15)}
+.store-search svg{flex:none;color:var(--text-muted)}
+.store-search input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:1rem;padding:12px 0;color:var(--text-primary)}
+.store-search input:focus{outline:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.store-count{font-size:.9rem;color:var(--text-muted);margin:0 0 14px}
+.store-empty{padding:40px 26px;text-align:center;background:#fff;border:1px solid var(--border);border-radius:20px;color:var(--text-secondary)}
+.store-empty p+p{margin-top:8px}
+.store-reset{margin-top:16px;font:inherit;font-weight:700;font-size:.9rem;padding:10px 20px;border-radius:999px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+.store-reset:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+.product-grid[hidden]{display:none}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
 .chip{font:inherit;font-size:.82rem;font-weight:600;padding:9px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:border-color .2s,color .2s,background .2s}
 .chip span{color:var(--text-muted);font-weight:500;margin-left:4px}
 .chip:hover{border-color:rgba(169,123,35,.45);color:var(--text-primary)}
@@ -188,7 +201,7 @@ gtag('consent', 'default', {
     <a href="/" class="logo" aria-label="Inicio Blog de Ingeniería Robótica">Robótica <span>Ingeniería</span></a>
     <nav class="nav-links" aria-label="Navegación principal">
       <a href="/">Inicio</a>
-      <a href="/blog/">Tutoriales</a>
+      <a href="/#categories">Tutoriales</a>
       <a href="/productos" aria-current="page">Productos</a>
       <a href="/about">Quiénes Somos</a>
       <a href="/contact">Contacto</a>
@@ -204,12 +217,17 @@ gtag('consent', 'default', {
 </section>
 
 <main class="store" id="main">
+  <div class="store-tools">
+    <label class="store-search"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="sr-only">Buscar productos</span>
+      <input id="pq" type="search" placeholder="Buscar: relé, sensor, pilas AAA, Arduino Uno…" autocomplete="off" enterkeyhint="search">
+    </label>
+  </div>
   <div class="chips" role="group" aria-label="Filtrar por categoría">
     <button type="button" class="chip" aria-pressed="true" data-filter="all">Todos <span>19</span></button><button type="button" class="chip" aria-pressed="false" data-filter="placas">Arduino y placas <span>2</span></button><button type="button" class="chip" aria-pressed="false" data-filter="kits">Kits y robótica <span>2</span></button><button type="button" class="chip" aria-pressed="false" data-filter="sensores">Sensores <span>4</span></button><button type="button" class="chip" aria-pressed="false" data-filter="modulos">Módulos, relés y pantallas <span>5</span></button><button type="button" class="chip" aria-pressed="false" data-filter="prototipado">Prototipado <span>3</span></button><button type="button" class="chip" aria-pressed="false" data-filter="energia">Energía y pilas <span>3</span></button>
   </div>
-  <p class="sr-only" id="count" aria-live="polite" style="position:absolute;left:-9999px">19 productos</p>
-  <div class="product-grid" aria-label="Catálogo de productos">
-      <a href="/producto/placa-uno-cable-usb" class="product-card" data-cat="placas">
+  <p class="store-count" id="count" aria-live="polite">19 productos</p>
+  <div class="product-grid" id="pgrid" aria-label="Catálogo de productos">
+      <a href="/producto/placa-uno-cable-usb" class="product-card" data-cat="placas" data-q=" placa compatible arduino uno cable usb placa compatible con arduino uno r3 con cable usb placa de desarrollo compatible con arduino uno r3 basada en atmega328p a 16 mhz con 14 entradas salidas digitales 6 entradas analogicas y puente usb serie ch340 incluye cable usb tipo a a b para programacion y alimentacion ideal para aprender electronica y robotica con el ide oficial de arduino arduino y microcontroladores placa uno cable usb ">
         <img src="/producto/placa-uno-cable-usb.jpg" alt="Placa Arduino Uno compatible R3 con cable USB" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Arduino y placas</div>
@@ -219,7 +237,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/arduino-mega-2560-cable-usb" class="product-card" data-cat="placas">
+      <a href="/producto/arduino-mega-2560-cable-usb" class="product-card" data-cat="placas" data-q=" placa compatible mega 2560 cable usb arduino mega 2560 con cable usb placa atmega2560 54 pines placa de desarrollo arduino mega 2560 basada en el microcontrolador atmega2560 incluye 54 pines digitales i o 15 con pwm 16 entradas analogicas 256 kb de memoria flash 8 kb sram 4 kb eeprom 4 puertos seriales por hardware reloj de 16 mhz chip usb serial ch340 y cable usb incluido ideal para proyectos de robotica avanzada impresoras 3d marlin cnc domotica y automatizacion industrial arduino y microcontroladores arduino mega 2560 cable usb ">
         <img src="/producto/arduino-mega-2560-cable-usb.jpg" alt="Arduino Mega 2560 compatible con cable USB tipo A-B" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Arduino y placas</div>
@@ -229,7 +247,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/robot-arduino" class="product-card" data-cat="kits">
+      <a href="/producto/robot-arduino" class="product-card" data-cat="kits" data-q=" kit robot arduino 2wd kit robot arduino 2wd con sensor ultrasonico hc sr04 kit completo de robot carro de 2 ruedas con arduino uno r3 compatible driver de motor l298n sensor ultrasonico hc sr04 servomotor sg90 chasis de acrilico transparente y todos los componentes necesarios para armar un robot evita obstaculos kits y robotica robot arduino ">
         <img src="/producto/robot-arduino-kit-hero.jpg" alt="Kit de robot Arduino con chasis de dos ruedas y sensores" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Kits y robótica</div>
@@ -239,7 +257,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/kit-avanzado-arduino" class="product-card" data-cat="kits">
+      <a href="/producto/kit-avanzado-arduino" class="product-card" data-cat="kits" data-q=" kit avanzado arduino kit avanzado arduino uno educativo con 37 componentes y caja organizadora kit educativo avanzado compatible con arduino uno que incluye modulo rfid rc522 pantalla lcd 1602 con interfaz i2c matriz de leds 8x8 displays de 7 segmentos teclado matricial 4x4 receptor y control infrarrojo sensores dht11 ds18b20 nivel de agua y sonido motor paso a paso 28byj 48 con driver uln2003 servomotor sg90 modulo rtc ds1302 joystick ky 023 rele de 1 canal protoboard de 830 puntos y caja organizadora transparente kits y bundles kit avanzado arduino ">
         <img src="/producto/kit-avanzado-arduino.webp" alt="Kit avanzado de componentes electrónicos para Arduino" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Kits y robótica</div>
@@ -249,7 +267,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/sensor-de-distancia-ultrasonico" class="product-card" data-cat="sensores">
+      <a href="/producto/sensor-de-distancia-ultrasonico" class="product-card" data-cat="sensores" data-q=" sensor distancia ultrasonico sensor de distancia ultrasonico hc sr04 modulo ultrasonico de 40 khz para medicion de distancia sin contacto en proyectos con arduino esp32 raspberry pi y robotica educativa sensores sensor de distancia ultrasonico ">
         <img src="/blog/hc_sr04_hero.jpg" alt="Sensor ultrasónico HC-SR04 para medición de distancia con Arduino" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Sensores</div>
@@ -259,7 +277,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/sensor-de-sonido-ky-038" class="product-card" data-cat="sensores">
+      <a href="/producto/sensor-de-sonido-ky-038" class="product-card" data-cat="sensores" data-q=" sensor de sonido ky 038 sensor de sonido ky 038 con microfono y lm393 modulo detector de sonido con microfono electret salida analogica ao salida digital do y ajuste de umbral para arduino esp32 y robotica educativa sensores sensor de sonido ky 038 ">
         <img src="/producto/sensor-de-sonido-ky-038.png" alt="Módulo sensor de sonido KY-038 con salida digital y analógica" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Sensores</div>
@@ -269,7 +287,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/sensor-flujo-de-agua-yf-s201" class="product-card" data-cat="sensores">
+      <a href="/producto/sensor-flujo-de-agua-yf-s201" class="product-card" data-cat="sensores" data-q=" sensor flujo de agua yf s201 sensor de flujo de agua yf s201 de 1 2 pulgada caudalimetro de turbina con sensor de efecto hall y salida de pulsos para medir caudal y volumen de agua en proyectos con arduino esp32 y automatizacion sensores sensor flujo de agua yf s201 ">
         <img src="/producto/sensor-flujo-de-agua-yf-s201.jpg" alt="Sensor de flujo de agua YF-S201 con conector de manguera" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Sensores</div>
@@ -279,7 +297,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/fotoresistencia-ldr-5mm" class="product-card" data-cat="sensores">
+      <a href="/producto/fotoresistencia-ldr-5mm" class="product-card" data-cat="sensores" data-q=" fotoresistencia ldr 5 mm fotoresistencia ldr 5mm sensor de luz para arduino y esp32 fotorresistencia ldr de 5 mm de diametro que varia su resistencia segun la intensidad luminica baja a 1 k con luz directa y sube hasta 10 m en oscuridad total ideal para proyectos de deteccion de luz encendido automatico control de iluminacion y estaciones meteorologicas con arduino esp32 esp8266 y raspberry pi sensores fotoresistencia ldr 5mm ">
         <img src="/producto/fotoresistencia-ldr-5mm.webp" alt="Fotoresistencia LDR de 5 mm con cara naranja fotosensible y dos pines para protoboard" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Sensores</div>
@@ -289,7 +307,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/modulo-4-reles-arduino" class="product-card" data-cat="modulos">
+      <a href="/producto/modulo-4-reles-arduino" class="product-card" data-cat="modulos" data-q=" modulo 4 reles arduino modulo 4 reles arduino 5v con optoacopladores modulo de 4 reles electromecanicos de 5v con contactos com no y nc por canal entradas in1 in4 optoacopladas jumper jd vcc y leds de estado para automatizacion con arduino y esp32 actuadores y control modulo 4 reles arduino ">
         <img src="/producto/modulo-4-reles-arduino.png" alt="Módulo de 4 relés 5V para Arduino con optoacopladores" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Módulos, relés y pantallas</div>
@@ -299,7 +317,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/modulo-rele-de-02-canales" class="product-card" data-cat="modulos">
+      <a href="/producto/modulo-rele-de-02-canales" class="product-card" data-cat="modulos" data-q=" modulo rele 2 canales modulo rele de 2 canales 5 v con optoacopladores placa de dos reles electromecanicos de 5 v con contactos com no y nc entradas in1 e in2 leds y optoacopladores para proyectos de automatizacion actuadores y control modulo rele de 02 canales ">
         <img src="/producto/modulo-rele-de-02-canales.png" alt="Módulo de 2 relés 5V para Arduino" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Módulos, relés y pantallas</div>
@@ -309,7 +327,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/display-lcd-16x2-con-i2c" class="product-card" data-cat="modulos">
+      <a href="/producto/display-lcd-16x2-con-i2c" class="product-card" data-cat="modulos" data-q=" display lcd 16 2 con i2c display lcd 16x2 con modulo i2c hd44780 pcf8574 modulo lcd alfanumerico 16x2 con controlador hd44780 y adaptador i2c pcf8574 retroiluminacion potenciometro de contraste y conexion de 4 hilos sda scl vcc gnd pantallas y visualizacion display lcd 16x2 con i2c ">
         <img src="/producto/display-lcd-16x2-con-i2c.png" alt="Pantalla LCD 16x2 caracteres con adaptador I2C para Arduino" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Módulos, relés y pantallas</div>
@@ -319,7 +337,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/modulo-rfid-rc522" class="product-card" data-cat="modulos">
+      <a href="/producto/modulo-rfid-rc522" class="product-card" data-cat="modulos" data-q=" modulo rfid rc522 modulo rfid rc522 13 56 mhz con tarjeta y llavero para arduino modulo lector y grabador rfid rc522 de 13 56 mhz con comunicacion spi compatible con arduino esp32 esp8266 y otros microcontroladores permite leer y escribir tarjetas y llaveros rfid pasivos con distancia de lectura de hasta 60 mm incluye tarjeta rfid llavero rfid y set de pines para soldar comunicacion inalambrica modulo rfid rc522 ">
         <img src="/producto/modulo-rfid-rc522.webp" alt="Módulo lector RFID RC522 con tarjeta y llavero de muestra" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Módulos, relés y pantallas</div>
@@ -329,7 +347,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/modulo-de-reconocimiento-de-voz" class="product-card" data-cat="modulos">
+      <a href="/producto/modulo-de-reconocimiento-de-voz" class="product-card" data-cat="modulos" data-q=" modulo reconocimiento de voz modulo de reconocimiento de voz v3 1 elechouse vr3 modulo de reconocimiento de voz offline v3 1 con microfono 80 comandos entrenables 7 simultaneos interfaz uart y control por voz sin internet para arduino y esp32 inteligencia artificial voice modulo de reconocimiento de voz ">
         <img src="/producto/modulo-de-reconocimiento-de-voz.png" alt="Módulo de reconocimiento de voz offline para Arduino" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Módulos, relés y pantallas</div>
@@ -339,7 +357,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/protoboard-400-puntos" class="product-card" data-cat="prototipado">
+      <a href="/producto/protoboard-400-puntos" class="product-card" data-cat="prototipado" data-q=" protoboard 400 puntos protoboard 400 puntos mini breadboard para arduino y esp32 mini protoboard de 400 puntos 300 de conexion 100 de alimentacion para prototipado rapido sin soldadura cuerpo abs contactos de bronce fosforoso niquelado base autoadhesiva sistema encastrable y espaciado estandar de 2 54 mm compatible con componentes dip arduino y esp32 prototipos y taller protoboard 400 puntos ">
         <img src="/producto/protoboard-400-puntos.png" alt="Protoboard de 400 puntos para prototipado rápido" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Prototipado</div>
@@ -349,7 +367,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/cables-dupont-macho-macho" class="product-card" data-cat="prototipado">
+      <a href="/producto/cables-dupont-macho-macho" class="product-card" data-cat="prototipado" data-q=" cables dupont macho macho 40 cm cables dupont macho macho 40 cm para arduino y protoboard pack 40 unidades pack de 40 cables jumper dupont macho macho de 40 cm multicolor con codigo de colores universal paso de 2 54 mm compatible con pines de arduino uno mega esp32 esp8266 protoboard y modulos electronicos conductores de cobre estanado chaqueta pvc flexible y conectores con retencion mecanica cables y conectores cables dupont macho macho ">
         <img src="/producto/cables-dupont-macho-macho.jpg" alt="Pack de 40 cables Dupont macho-macho 40 cm multicolor para protoboard" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Prototipado</div>
@@ -359,7 +377,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/potenciometro-10k" class="product-card" data-cat="prototipado">
+      <a href="/producto/potenciometro-10k" class="product-card" data-cat="prototipado" data-q=" potenciometro 10k potenciometro rotativo de 10k ohm 10 k resistor variable de 10 000 con tres terminales util como entrada analogica divisor de tension y control de brillo velocidad o posicion en proyectos con arduino esp32 raspberry pi y robotica educativa componentes pasivos potenciometro 10k ">
         <img src="/producto/potenciometro-10k.png" alt="Potenciómetro lineal 10K ohm para proyectos Arduino" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Prototipado</div>
@@ -369,7 +387,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/porta-bateria-18650-x-4" class="product-card" data-cat="energia">
+      <a href="/producto/porta-bateria-18650-x-4" class="product-card" data-cat="energia" data-q=" porta bateria 18650 4 porta bateria 18650 x4 serie soporte para 4 pilas 18650 14 8v porta pilas para 4 baterias 18650 conectadas en serie con voltaje de salida de 14 8v nominal cuerpo plastico de 75 80 mm contactos de resorte metalico cables precableados y montaje compacto ideal para proyectos de electronica diy robotica vehiculos rc iluminacion led portatil y fuentes de alimentacion para prototipos baterias y energia porta bateria 18650 x 4 ">
         <img src="/producto/porta-bateria-18650-x-4.webp" alt="Porta batería para 4 celdas 18650 con tapa y cable" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Energía y pilas</div>
@@ -379,7 +397,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/pila-recargable-via-usb-c-aaax4-2" class="product-card" data-cat="energia">
+      <a href="/producto/pila-recargable-via-usb-c-aaax4-2" class="product-card" data-cat="energia" data-q=" pilas aaa recargables usb c 4 pilas recargables aaa usb c dairu li ion polimero 1 5v x4 pack de 4 pilas recargables aaa con carga directa por usb c tecnologia li ion polimero voltaje constante de 1 5v capacidad de 500mah 750mwh y hasta 1500 ciclos de recarga reemplazo ecologico de pilas desechables aaa baterias y energia pila recargable via usb c aaax4 2 ">
         <img src="/producto/pila-recargable-via-usb-c-aaax4-2.webp" alt="Pack de 4 pilas AA recargables con carga micro USB o USB-C" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Energía y pilas</div>
@@ -389,7 +407,7 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
-      <a href="/producto/cargador-de-pilas-universal-aa-aaa-4c-d" class="product-card" data-cat="energia">
+      <a href="/producto/cargador-de-pilas-universal-aa-aaa-4c-d" class="product-card" data-cat="energia" data-q=" cargador pilas universal nimh cargador de pilas universal aa aaa c d y 9v energizer accu recharge universal nimh cargador universal de pilas recargables nimh compatible con formatos aa aaa c d y 9v carga hasta 4 pilas cilindricas simultaneamente mas 2 baterias de 9v con indicador luminoso de estado de carga y corte automatico al completar el ciclo alimentacion de red 100 240v ideal para hogares oficinas colegios talleres de electronica y proyectos de robotica que buscan eliminar el gasto recurrente en pilas alcalinas desechables baterias y energia cargador de pilas universal aa aaa 4c d ">
         <img src="/producto/cargador-de-pilas-universal-aa-aaa-4c-d.webp" alt="Cargador universal NiMH para pilas AA, AAA, C, D y 9V" loading="lazy" width="400" height="180">
         <div class="product-card-body">
           <div class="product-card-cat">Energía y pilas</div>
@@ -399,6 +417,11 @@ gtag('consent', 'default', {
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>
+  </div>
+  <div class="store-empty" id="pempty" hidden>
+    <p id="pempty-msg">No hay productos que coincidan.</p>
+    <p>¿Buscas algo que no está en el catálogo? <a href="https://wa.me/56993514970" target="_blank" rel="noopener">Escríbenos por WhatsApp</a> y te confirmamos si lo tenemos.</p>
+    <button type="button" class="store-reset" id="preset">Quitar filtros</button>
   </div>
 </main>
 
@@ -441,14 +464,33 @@ gtag('consent', 'default', {
 
 <script>
 (function(){
-  var chips=document.querySelectorAll('.chip'),cards=document.querySelectorAll('.product-card'),count=document.getElementById('count');
-  function apply(f){
-    var n=0;
-    cards.forEach(function(c){var show=f==='all'||c.getAttribute('data-cat')===f;c.hidden=!show;if(show)n++;});
-    chips.forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-filter')===f?'true':'false');});
-    if(count)count.textContent=n+' productos';
+  var chips=[].slice.call(document.querySelectorAll('.chip')),cards=[].slice.call(document.querySelectorAll('.product-card')),
+      q=document.getElementById('pq'),count=document.getElementById('count'),grid=document.getElementById('pgrid'),
+      empty=document.getElementById('pempty'),emsg=document.getElementById('pempty-msg'),cat='all';
+  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ');}
+  function label(){var c=chips.filter(function(b){return b.getAttribute('data-filter')===cat;})[0];return c?c.firstChild.textContent.trim():'';}
+  function apply(push){
+    var words=norm(q.value).split(/\s+/).filter(Boolean),n=0;
+    cards.forEach(function(c){
+      var ok=(cat==='all'||c.getAttribute('data-cat')===cat)&&words.every(function(w){return c.getAttribute('data-q').indexOf(' '+w)>-1;});
+      c.hidden=!ok; if(ok) n++;
+    });
+    chips.forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-filter')===cat?'true':'false');});
+    count.textContent=n===1?'1 producto':n+' productos';
+    grid.hidden=n===0; empty.hidden=n>0;
+    if(!n) emsg.textContent='No hay productos que coincidan con "'+q.value.trim()+'"'+(cat!=='all'?' en '+label():'')+'.';
+    if(push!==false){
+      var p=new URLSearchParams(); if(cat!=='all') p.set('cat',cat); if(q.value.trim()) p.set('q',q.value.trim());
+      history.replaceState(null,'',location.pathname+(p.toString()?'?'+p:''));
+    }
   }
-  chips.forEach(function(b){b.addEventListener('click',function(){apply(b.getAttribute('data-filter'));});});
+  chips.forEach(function(b){b.addEventListener('click',function(){cat=b.getAttribute('data-filter');apply();});});
+  q.addEventListener('input',function(){apply();});
+  document.getElementById('preset').addEventListener('click',function(){q.value='';cat='all';apply();q.focus();});
+  var p=new URLSearchParams(location.search);
+  if(p.get('q')) q.value=p.get('q');
+  if(p.get('cat')&&chips.some(function(b){return b.getAttribute('data-filter')===p.get('cat');})) cat=p.get('cat');
+  if(p.get('q')||p.get('cat')) apply(false);
 })();
 </script>
 

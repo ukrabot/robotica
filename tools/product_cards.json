@@ -1,0 +1,154 @@
+{
+ "placa-uno-cable-usb": {
+  "img": "producto/placa-uno-cable-usb.jpg",
+  "alt": "Placa Arduino Uno compatible R3 con cable USB",
+  "cat": "Arduino y Microcontroladores",
+  "h3": "Placa Arduino Uno + Cable USB",
+  "p": "Placa de desarrollo compatible Arduino Uno R3 con cable USB tipo A-B. Ideal para aprender programación de microcontroladores.",
+  "price": "$8.990 CLP"
+ },
+ "arduino-mega-2560-cable-usb": {
+  "img": "producto/arduino-mega-2560-cable-usb.jpg",
+  "alt": "Arduino Mega 2560 compatible con cable USB tipo A-B",
+  "cat": "Arduino y Microcontroladores",
+  "h3": "Arduino Mega 2560 + Cable USB",
+  "p": "Placa compatible Mega 2560 con 54 pines digitales, 16 entradas analógicas y 4 puertos serie. Perfecta para proyectos complejos y CNC.",
+  "price": "$37.990 CLP"
+ },
+ "kit-avanzado-arduino": {
+  "img": "producto/kit-avanzado-arduino.webp",
+  "alt": "Kit avanzado de componentes electrónicos para Arduino",
+  "cat": "Kits y Bundles",
+  "h3": "Kit Avanzado Arduino",
+  "p": "Bundle completo con sensores, actuadores, módulos de comunicación y componentes pasivos para proyectos intermedios y avanzados.",
+  "price": "Consultar precio"
+ },
+ "robot-arduino": {
+  "img": "producto/robot-arduino-kit-hero.jpg",
+  "alt": "Kit de robot Arduino con chasis de dos ruedas y sensores",
+  "cat": "Kits y Robótica",
+  "h3": "Robot Arduino",
+  "p": "Kit completo para armar un robot móvil con Arduino: chasis, motores, driver L298N y sensor ultrasónico HC-SR04.",
+  "price": "Consultar precio"
+ },
+ "protoboard-400-puntos": {
+  "img": "producto/protoboard-400-puntos.png",
+  "alt": "Protoboard de 400 puntos para prototipado rápido",
+  "cat": "Prototipos y Taller",
+  "h3": "Protoboard 400 Puntos",
+  "p": "Placa de prototipado sin soldadura de 400 puntos, perfecta para montar y probar circuitos de forma rápida y segura.",
+  "price": "Consultar precio"
+ },
+ "sensor-de-distancia-ultrasonico": {
+  "img": "blog/hc_sr04_hero.jpg",
+  "alt": "Sensor ultrasónico HC-SR04 para medición de distancia con Arduino",
+  "cat": "Sensores",
+  "h3": "Sensor Distancia Ultrasónico",
+  "p": "Módulo HC-SR04 para medir distancias entre 2 cm y 4 m con precisión de 3 mm. Compatible con Arduino y ESP32.",
+  "price": "Consultar precio"
+ },
+ "sensor-de-sonido-ky-038": {
+  "img": "producto/sensor-de-sonido-ky-038.png",
+  "alt": "Módulo sensor de sonido KY-038 con salida digital y analógica",
+  "cat": "Sensores",
+  "h3": "Sensor de Sonido KY-038",
+  "p": "Módulo micrófono con salida digital y analógica ajustable. Ideal para detectar aplausos, voz o niveles de ruido ambiental.",
+  "price": "Consultar precio"
+ },
+ "sensor-flujo-de-agua-yf-s201": {
+  "img": "producto/sensor-flujo-de-agua-yf-s201.jpg",
+  "alt": "Sensor de flujo de agua YF-S201 con conector de manguera",
+  "cat": "Sensores",
+  "h3": "Sensor Flujo de Agua YF-S201",
+  "p": "Medidor de caudal de agua de 1 a 30 L/min, rosca G 1/2\". Compatible con Arduino para proyectos de riego e IoT hídrico.",
+  "price": "Consultar precio"
+ },
+ "modulo-rfid-rc522": {
+  "img": "producto/modulo-rfid-rc522.webp",
+  "alt": "Módulo lector RFID RC522 con tarjeta y llavero de muestra",
+  "cat": "Comunicación Inalámbrica",
+  "h3": "Módulo RFID RC522",
+  "p": "Lector/escritor RFID a 13.56 MHz, interfaz SPI. Incluye tarjeta blanca y llavero de muestra. Ideal para control de acceso y asistencia.",
+  "price": "Consultar precio"
+ },
+ "modulo-de-reconocimiento-de-voz": {
+  "img": "producto/modulo-de-reconocimiento-de-voz.png",
+  "alt": "Módulo de reconocimiento de voz offline para Arduino",
+  "cat": "Inteligencia Artificial · Voice",
+  "h3": "Módulo Reconocimiento de Voz",
+  "p": "Reconocimiento de voz offline, hasta 80 comandos en español. Comunicación UART con Arduino, sin necesidad de internet.",
+  "price": "Consultar precio"
+ },
+ "modulo-4-reles-arduino": {
+  "img": "producto/modulo-4-reles-arduino.png",
+  "alt": "Módulo de 4 relés 5V para Arduino con optoacopladores",
+  "cat": "Actuadores y Control",
+  "h3": "Módulo 4 Relés Arduino",
+  "p": "Cuatro relés de 10 A / 250 VAC con optoacopladores para proteger la placa. Controla cargas 220 V desde Arduino o ESP32.",
+  "price": "Consultar precio"
+ },
+ "modulo-rele-de-02-canales": {
+  "img": "producto/modulo-rele-de-02-canales.png",
+  "alt": "Módulo de 2 relés 5V para Arduino",
+  "cat": "Actuadores y Control",
+  "h3": "Módulo Relé 2 Canales",
+  "p": "Dos relés de 10 A con optoacopladores y LEDs indicadores. Ideal para automatización domótica y proyectos con cargas 220 V.",
+  "price": "Consultar precio"
+ },
+ "display-lcd-16x2-con-i2c": {
+  "img": "producto/display-lcd-16x2-con-i2c.png",
+  "alt": "Pantalla LCD 16x2 caracteres con adaptador I2C para Arduino",
+  "cat": "Pantallas y Visualización",
+  "h3": "Display LCD 16×2 con I2C",
+  "p": "Pantalla LCD de 16 caracteres y 2 líneas con módulo I2C incluido. Solo 2 cables de datos para conectar con Arduino o ESP32.",
+  "price": "Consultar precio"
+ },
+ "potenciometro-10k": {
+  "img": "producto/potenciometro-10k.jpg",
+  "alt": "Potenciómetro lineal 10K ohm para proyectos Arduino",
+  "cat": "Componentes Pasivos",
+  "h3": "Potenciómetro 10K",
+  "p": "Potenciómetro rotativo lineal de 10.000 Ω. Imprescindible para controlar intensidad, velocidad o ajustar parámetros de forma manual.",
+  "price": "Consultar precio"
+ },
+ "porta-bateria-18650-x-4": {
+  "img": "producto/porta-bateria-18650-x-4.webp",
+  "alt": "Porta batería para 4 celdas 18650 con tapa y cable",
+  "cat": "Baterías y Energía",
+  "h3": "Porta Batería 18650 ×4",
+  "p": "Holder para 4 celdas 18650 en paralelo o serie, con cables y conector. Ideal para packs de litio en robots y proyectos portátiles.",
+  "price": "Consultar precio"
+ },
+ "pila-recargable-via-usb-c-aaax4-2": {
+  "img": "producto/pila-recargable-via-usb-c-aaax4-2.webp",
+  "alt": "Pack de 4 pilas AA recargables con carga micro USB o USB-C",
+  "cat": "Baterías y Energía",
+  "h3": "Pilas AA Recargables USB-C ×4",
+  "p": "Pack de 4 pilas AA NiMH con carga directa USB-C integrada en cada pila. Sin cargador externo, listas donde haya un puerto USB.",
+  "price": "Consultar precio"
+ },
+ "cargador-de-pilas-universal-aa-aaa-4c-d": {
+  "img": "producto/cargador-de-pilas-universal-aa-aaa-4c-d.webp",
+  "alt": "Cargador universal NiMH para pilas AA, AAA, C, D y 9V",
+  "cat": "Baterías y Energía",
+  "h3": "Cargador Pilas Universal NiMH",
+  "p": "Carga pilas recargables AA, AAA, C, D y 9V en un solo equipo. Corte automático, detección de polaridad y compatible con 220 V.",
+  "price": "$39.990 CLP"
+ },
+ "cables-dupont-macho-macho": {
+  "img": "producto/cables-dupont-macho-macho.jpg",
+  "alt": "Pack de 40 cables Dupont macho-macho 40 cm multicolor para protoboard",
+  "cat": "Cables y Conectores",
+  "h3": "Cables Dupont Macho-Macho 40 cm",
+  "p": "Pack de 40 cables Dupont M-M de 40 cm, paso 2.54 mm. Ideales para protoboard y conexiones Arduino, ESP32 y Raspberry Pi sin soldar.",
+  "price": "$4.990 CLP"
+ },
+ "fotoresistencia-ldr-5mm": {
+  "img": "producto/fotoresistencia-ldr-5mm.webp",
+  "alt": "Fotoresistencia LDR de 5 mm con cara naranja fotosensible y dos pines para protoboard",
+  "cat": "Sensores",
+  "h3": "Fotoresistencia LDR 5 mm",
+  "p": "Sensor de luz GL5528 que varía de 1 kΩ (luz directa) a 10 MΩ (oscuridad). Compatible con Arduino, ESP32 y Raspberry Pi para luces automáticas y seguidores solares.",
+  "price": "$490 CLP"
+ }
+}
