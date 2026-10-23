@@ -323,7 +323,7 @@ details p{padding-top:10px;margin-bottom:0}
     </button>
     <div class="nav-links" id="nav-links">
       <a href="/">Inicio</a>
-      <a href="/#categories">Tutoriales</a>
+      <a href="/#latest">Tutoriales</a>
       <a href="/productos">Productos</a>
       <a href="/about">Sobre Nosotros</a>
       <a href="/contact">Contacto</a>
@@ -512,7 +512,7 @@ rknn.release()</code></pre>
 </div>
 <div class="warning">La NPU tiene límites claros. No admite todas las operaciones: modelos con capas poco habituales fallan en la conversión o caen parcialmente a CPU, perdiendo la ventaja. Los transformadores grandes y los modelos de lenguaje no encajan bien en su arquitectura. Y la cuantización a INT8 puede degradar la precisión entre uno y tres puntos porcentuales, lo que en aplicaciones críticas hay que medir, no suponer.</div>
 <h3>Los tres núcleos de la NPU</h3>
-<p>Los 6 TOPS se reparten en tres núcleos de 2 TOPS. Puedes ejecutar tres modelos distintos en paralelo, uno por núcleo, o repartir un solo modelo entre los tres. Para procesar varias cámaras simultáneamente, la primera estrategia suele dar mejor rendimiento agregado.</p>
+<p>Los 6 TOPS se reparten en tres núcleos de 2 TOPS. Puedes ejecutar tres modelos distintos en paralelo, uno por núcleo, o repartir un solo modelo entre los tres. Para procesar varias cámaras simultáneamente, la primera estrategia suele dar mejor rendimiento agregado. Para el flujo completo de conversión ONNX a RKNN, cuantización INT8 y medición del pipeline, revisa <a href="/blog/aceleracion-npu-en-rk3588-para-vision-por-computadora">Aceleración NPU en RK3588 para visión por computadora</a>.</p>
 </section>
 <section id="termica">
 <h2>Térmica y alimentación</h2>
