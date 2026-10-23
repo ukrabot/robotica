@@ -425,8 +425,6 @@ page = f'''<!DOCTYPE html>
       <a href="/productos">Productos</a>
       <a href="/about">Quiénes Somos</a>
       <a href="/contact">Contacto</a>
-      <a href="/privacy">Privacidad</a>
-      <a href="/terms">Términos</a>
     </nav>
   </div>
 </header>
