@@ -23,3 +23,6 @@ wrangler.toml
 # Archivos de trabajo del agente
 /work/
 /image-search/
+
+# Scripts de mantenimiento del sitio (no son contenido)
+/tools/
