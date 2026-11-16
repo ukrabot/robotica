@@ -13,7 +13,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cómo Reparar Baterías de Taladros Inalámbricos: BMS y Celdas — Guía Completa">
 <meta property="og:description" content="Diagnóstico paso a paso, reemplazo de celdas, reparación del BMS, soldadura por puntos y seguridad con litio para revivir la batería de tu taladro inalámbrico.">
-<meta property="og:image" content="https://www.ukrabot.cl/blog/battery_repair_hero.jpg">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/bateria-taladro-5s2p-hero.jpg">
 <meta property="og:url" content="https://www.ukrabot.cl/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="Blog de Ingeniería Robótica">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Guía Completa: Reparar Baterías de Taladros Inalámbricos (BMS y Celdas)">
 <meta name="twitter:description" content="Diagnóstico, reemplazo de celdas, reparación de BMS, soldadura por puntos y seguridad con litio.">
-<meta name="twitter:image" content="https://www.ukrabot.cl/blog/battery_repair_hero.jpg">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/bateria-taladro-5s2p-hero.jpg">
 
 <script type="application/ld+json">
 {
@@ -43,9 +43,9 @@
     "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
   },
   "datePublished":"2026-08-17",
-  "dateModified":"2026-08-17",
+  "dateModified":"2026-11-16",
   "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa"},
-  "image":"https://www.ukrabot.cl/blog/battery_repair_hero.jpg",
+  "image":"https://www.ukrabot.cl/blog/bateria-taladro-5s2p-hero.jpg",
   "proficiencyLevel":"Intermedio",
   "dependencies":"Multímetro, cargador/analizador de baldeo, soldador de punto (spot welder) o soldador de estaño de baja potencia, celdas de reemplazo 18650/21700/Sub-C, cinta de níquel, EPP (guantes, lentes), bolsa ignífuga para litio",
   "wordCount":"2500",
@@ -70,10 +70,10 @@
   "@context":"https://schema.org",
   "@type":"FAQPage",
   "mainEntity":[
-    {"@type":"Question","name":"¿Vale la pena reparar la batería de un taladro o es mejor comprar una nueva?","acceptedAnswer":{"@type":"Answer","text":"Depende del precio de una batería nueva original para tu modelo. Si el pack original cuesta más de 40-50% del precio de una herramienta nueva equivalente, y el resto del pack (carcasa, contactos, BMS) está sano, reemplazar solo las celdas suele ahorrar entre 50% y 70% del costo, siempre que consigas celdas de calidad conocida."}},
+    {"@type": "Question", "name": "¿Vale la pena reparar la batería de un taladro o es mejor comprar una nueva?", "acceptedAnswer": {"@type": "Answer", "text": "Depende del precio de una batería nueva para tu modelo y de cuántas celdas tiene. Si la carcasa, los contactos y el BMS están sanos, cambiar las celdas de una batería 5S1P suele costar entre un cuarto y la mitad de una original nueva. En una 5S2P se necesitan diez celdas y conviene comparar con una batería compatible de buena calidad o con un taller, sobre todo si tendrías que comprar el soldador de punto solo para esa reparación."}},
     {"@type":"Question","name":"¿Puedo soldar celdas de litio directamente con soldador de estaño?","acceptedAnswer":{"@type":"Answer","text":"No es recomendable. El calor prolongado de un soldador de estaño convencional puede dañar el sellado interno de la celda y degradar el separador, aumentando el riesgo de falla térmica. La técnica correcta es soldadura por puntos (spot welding) con cinta de níquel, que aplica calor en milisegundos. Si no tienes spot welder, es preferible pagar el servicio a un taller especializado."}},
-    {"@type":"Question","name":"¿Cómo sé si el problema es el BMS y no las celdas?","acceptedAnswer":{"@type":"Answer","text":"Mide el voltaje total del pack y el de cada celda individual con un multímetro. Si las celdas están dentro de un rango de voltaje sano y equilibrado entre sí, pero el pack no entrega corriente a la herramienta ni acepta carga, el problema suele estar en el circuito de protección (BMS/PCB), no en las celdas."}},
-    {"@type":"Question","name":"¿Es peligroso reparar una batería de litio en casa?","acceptedAnswer":{"@type":"Answer","text":"Existe riesgo real de cortocircuito, incendio o fuga térmica si se manipulan celdas de litio sin las precauciones adecuadas: usar EPP, trabajar sobre superficie no conductora, no perforar ni deformar celdas, no mezclar celdas de distinto estado de salud y realizar la primera carga bajo supervisión y sobre una superficie no inflamable o en bolsa ignífuga."}},
+    {"@type": "Question", "name": "¿Cómo sé si el problema es el BMS y no las celdas?", "acceptedAnswer": {"@type": "Answer", "text": "Mide el voltaje en los contactos externos y el de cada grupo de celdas en paralelo, entre nodos consecutivos de la cinta de níquel. Si todos los grupos están sanos y parejos (diferencia menor a 0,05 V) pero los contactos marcan 0 V o el cargador rechaza la batería, el problema suele estar en el BMS, un fusible o una conexión. Si un grupo está muy por debajo del resto, el problema son las celdas."}},
+    {"@type": "Question", "name": "¿Es peligroso reparar una batería de litio en casa?", "acceptedAnswer": {"@type": "Answer", "text": "Existe riesgo real de cortocircuito, quemaduras e incendio si se manipulan celdas de litio sin precauciones: trabajar sin anillos ni relojes, sobre superficie no inflamable, sin perforar ni deformar celdas, sin mezclar celdas de distinto estado y con la primera carga supervisada. Si una celda humea, aléjate y llama a Bomberos (132); las celdas de iones de litio se enfrían con agua abundante."}},
     {"@type":"Question","name":"¿Qué celdas debo comprar para reemplazar las de mi taladro?","acceptedAnswer":{"@type":"Answer","text":"Debes igualar química, formato físico (18650, 21700 o Sub-C), voltaje nominal y, muy importante, la corriente máxima de descarga continua (rating en amperios), ya que un taladro exige picos de corriente altos. Usar celdas de baja descarga pensadas para linternas puede provocar sobrecalentamiento y protecciones del BMS que cortan la potencia."}}
   ]
 }
@@ -249,6 +249,22 @@ details p{padding-top:10px;margin-bottom:0}
     gtag('js', new Date());
     gtag('config', 'G-1ZVHF8X35Q');
   </script>
+<style>
+.pack{margin:52px 0;padding:28px;border:1px solid rgba(169,123,35,.35);border-radius:18px;background:#fff;box-shadow:0 18px 40px rgba(30,25,15,.06)}
+.pack-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:start}
+.pack-grid>img{width:100%;height:auto;border-radius:12px;display:block}
+.pack-tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.pack h2{margin:8px 0 12px}
+.pack ul{padding-left:20px;margin:0 0 18px}
+.pack li{margin-bottom:8px}
+.pack-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 2px}
+.pack-price strong{font-family:Georgia,serif;font-size:2rem;font-weight:400;color:var(--text)}
+.pack-price span{color:var(--muted);font-size:.9rem}
+.pack-fine{font-size:.8rem;color:var(--quiet);margin:14px 0 0;line-height:1.5}
+.pack-callout a{font-weight:600}
+@media (max-width:820px){.pack{padding:20px}.pack-grid{grid-template-columns:1fr;gap:20px}}
+</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=4">
 </head>
 <body>
 
@@ -271,9 +287,9 @@ details p{padding-top:10px;margin-bottom:0}
 </nav>
 
 <header class="hero">
-  <img src="battery_repair_hero.jpg" alt="Batería de taladro inalámbrico desarmada sobre una mesa de trabajo mostrando celdas cilíndricas 18650, cinta de níquel y placa BMS" fetchpriority="high">
+  <img src="bateria-taladro-5s2p-hero.jpg" alt="Ilustración de una batería de taladro de 18 V abierta: diez celdas 18650 en configuración 5S2P unidas con cinta de níquel, cables de sensado y placa BMS" fetchpriority="high">
   <div class="hero-inner">
-    <div class="eyebrow">Reparación electrónica · Actualizado el <time datetime="2026-08-17">17 de agosto de 2026</time></div>
+    <div class="eyebrow">Reparación electrónica · Actualizado el <time datetime="2026-11-16">16 de noviembre de 2026</time></div>
     <h1>Cómo Reparar Baterías de Taladros Inalámbricos: BMS y Celdas — Guía Completa</h1>
     <p>Diagnóstico técnico, reemplazo de celdas 18650/21700/Sub-C, reparación del circuito de protección (BMS), soldadura por puntos, balanceo y seguridad con litio — todo lo necesario para decidir si conviene revivir tu batería o reemplazarla.</p>
     <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
@@ -284,8 +300,8 @@ details p{padding-top:10px;margin-bottom:0}
 <article>
 
 <div class="article-img">
-  <img src="drill_battery_cells.jpg" alt="Celdas de litio 18650 nuevas junto a celdas usadas hinchadas retiradas de una batería de taladro, con multímetro midiendo voltaje" loading="lazy">
-  <div class="caption">La mayoría de las baterías de taladro "muertas" no están realmente muertas: tienen una o dos celdas caídas dentro de un pack por lo demás sano. Diagnosticar antes de comprar es la diferencia entre gastar $8.000 y gastar $60.000.</div>
+  <img src="medir-grupos-bateria-5s2p.jpg" alt="Diagrama: cómo medir con multímetro cada grupo en paralelo de una batería 18 V 5S2P; cuatro grupos marcan alrededor de 3,84 V y el grupo 3 marca 1,92 V" width="1408" height="768" loading="lazy">
+  <div class="caption">La mayoría de las baterías de taladro "muertas" no están realmente muertas: tienen un grupo de celdas caído dentro de un pack por lo demás sano, como el grupo 3 de este ejemplo. Medir cada grupo antes de comprar es la diferencia entre gastar en un par de celdas y gastar en una batería nueva.</div>
 </div>
 
 <div class="toc" aria-label="Tabla de contenidos">
@@ -306,6 +322,24 @@ details p{padding-top:10px;margin-bottom:0}
     <li><a href="#faq">Preguntas frecuentes</a></li>
   </ol>
 </div>
+
+<section id="pack" class="pack" aria-labelledby="pack-t">
+<div class="pack-grid">
+  <img src="pack-reparacion-baterias.jpg" alt="Portada del Pack Reparación de Baterías: planilla de diagnóstico en Excel y guía práctica en PDF" width="1200" height="800" loading="lazy">
+  <div>
+    <span class="pack-tag">Pack digital · ukrabot.cl</span>
+    <h2 id="pack-t">Pack Reparación de Baterías: diagnostica antes de gastar</h2>
+    <p>Todo lo de esta guía, aplicado a tu batería: una planilla que interpreta tus mediciones y una guía práctica para reparar con seguridad.</p>
+    <ul>
+      <li><strong>Planilla en Excel (8 hojas):</strong> configuración del pack a partir de la etiqueta, diagnóstico de cada grupo con veredicto (celdas, BMS o conexión), tabla de celdas que marca cuáles sirven para tu herramienta, cálculo de la cinta de níquel, costos de reparar frente a comprar, checklist y registro.</li>
+      <li><strong>Guía práctica en PDF (12 páginas):</strong> cuándo no reparar, seguridad con litio, cómo identificar tu batería, diagnóstico en 6 pasos, cómo elegir celdas y detectar falsificaciones, soldadura por puntos, primera carga, mantenimiento y reciclaje.</li>
+    </ul>
+    <div class="pack-price"><strong data-price-slug="pack-reparacion-baterias">$5.990</strong><span>Pago único · descarga inmediata en un archivo .zip</span></div>
+    <div class="ukr-buy" id="comprar-pack" data-ukr-buy="pack-reparacion-baterias" aria-label="Comprar el Pack Reparación de Baterías"></div>
+    <p class="pack-fine">Al pagar descargas un archivo .zip con la planilla (.xlsx), la guía (.pdf) y las instrucciones. La planilla se abre en Excel, LibreOffice y Google Sheets. Licencia de uso personal. Por ser contenido digital de descarga inmediata, no tiene derecho a retracto; si un archivo llega dañado o no abre, te lo reponemos o devolvemos el dinero.</p>
+  </div>
+</div>
+</section>
 
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
@@ -375,15 +409,15 @@ details p{padding-top:10px;margin-bottom:0}
 <section id="herramientas">
 <h2>Herramientas y materiales necesarios</h2>
 <ul>
-<li><strong>Multímetro digital</strong> con capacidad de medir hasta al menos 30 V DC y, idealmente, resistencia interna aproximada.</li>
-<li><strong>Soldador de punto (spot welder)</strong> de al menos 18650 W de descarga por condensadores — es la herramienta correcta para unir celdas de litio sin dañarlas térmicamente. Existen versiones portátiles a batería asequibles para uso ocasional.</li>
-<li><strong>Cinta de níquel puro</strong> (nickel strip) de 0,15–0,2 mm de espesor, en los anchos adecuados para el amperaje del pack.</li>
+<li><strong>Multímetro digital</strong> con rango de al menos 30 V DC (o autorrango) y puntas finas. Un multímetro común no mide la resistencia interna de una celda: para eso se usa un medidor dedicado o un analizador de celdas.</li>
+<li><strong>Soldador de punto (spot welder)</strong> de condensadores o de batería, con pulso ajustable y capaz de soldar la cinta que vas a usar: entrega cientos o miles de amperios durante milisegundos, por eso une la cinta sin calentar el interior de la celda. Existen versiones portátiles asequibles para uso ocasional.</li>
+<li><strong>Cinta de níquel puro</strong> (nickel strip), no acero niquelado, de 0,10–0,15 mm de espesor según lo que suelde tu equipo y del mismo ancho que la original. El acero niquelado conduce aproximadamente la mitad y se oxida.</li>
 <li><strong>Celdas de reemplazo</strong> del mismo formato, química y, críticamente, misma o mejor tasa de descarga continua (medida en A) que las originales. Compra siempre a proveedores que entreguen hoja de datos verificable.</li>
-<li><strong>Cargador/analizador de baldeo individual</strong> (tipo banco de carga para celdas 18650) para verificar capacidad real de celdas usadas o nuevas antes de instalarlas.</li>
+<li><strong>Cargador analizador de celdas</strong> (carga, descarga y mide capacidad; algunos también estiman resistencia interna) para verificar celdas nuevas o usadas antes de instalarlas.</li>
 <li><strong>Base de silicona o soporte no conductor</strong> para sujetar las celdas durante el trabajo.</li>
-<li><strong>Elementos de protección personal (EPP):</strong> lentes de seguridad, guantes resistentes a cortes y, si es posible, guantes dieléctricos ante cualquier manipulación con el pack conectado.</li>
+<li><strong>Elementos de protección personal (EPP):</strong> lentes de seguridad y guantes de trabajo delgados. Lo más importante: sin anillos, relojes ni pulseras, porque un cortocircuito a través de un objeto metálico produce quemaduras al instante.</li>
 <li><strong>Bolsa o caja ignífuga para litio (LiPo safety bag)</strong> para la primera carga de prueba del pack reparado.</li>
-<li><strong>Extintor tipo ABC o arena</strong> a mano en el área de trabajo — nunca agua sobre una celda de litio en fuga térmica.</li>
+<li><strong>Agua abundante y un balde metálico con arena</strong> a mano. Para celdas de iones de litio, la guía de emergencias ERG (guía 147) indica enfriar con grandes cantidades de agua y desaconseja el polvo químico y el CO<sub>2</sub>.</li>
 </ul>
 <div class="note"><strong>Sobre el spot welder:</strong> es la inversión que más diferencia hace en la calidad final. Una soldadura de punto correcta no calienta el núcleo de la celda ni debilita mecánicamente los terminales, mientras que un soldador de estaño mal usado puede iniciar una falla térmica horas o días después, sin aviso visible inmediato.</div>
 </section>
@@ -394,7 +428,7 @@ details p{padding-top:10px;margin-bottom:0}
 <ul>
 <li><strong>Si el voltaje total es 0 V pero las celdas individuales miden voltajes razonables (2,8–4,2 V):</strong> el problema está en el BMS (fusible interno, MOSFET de protección en corte permanente) o en un cable/soldadura suelta entre el BMS y los contactos externos.</li>
 <li><strong>Si una o más celdas miden muy por debajo del resto (por ejemplo, 0,5 V mientras las demás marcan 3,7 V):</strong> el problema son las celdas — reemplázalas por unidades equivalentes, idealmente todo el grupo en paralelo afectado, no solo la celda peor.</li>
-<li><strong>Si todas las celdas miden parejo y sano, pero el pack no carga ni entrega corriente:</strong> el BMS probablemente está dañado o bloqueado por un evento de protección que requiere "despertar" el chip (algunos BMS necesitan un pulso de carga breve para salir del modo de corte ultra-profundo).</li>
+<li><strong>Si todas las celdas miden parejo y sano, pero el pack no carga ni entrega corriente:</strong> el BMS probablemente está dañado o bloqueado por un evento de protección. Algunos BMS salen del corte al conectarlos al cargador original; otros registran la falla y bloquean la batería de forma permanente (es conocido el caso de ciertas baterías Makita LXT), y entonces se necesita una placa nueva o una herramienta de desbloqueo. Ojo: si alguna celda quedó bajo ~2 V, no la "revivas" con carga: reemplázala.</li>
 <li><strong>Si hay celdas hinchadas, con fuga o quemadas junto con daño visible en el BMS:</strong> evalúa seriamente si conviene reparar. El costo de repuestos más el riesgo ya no compensa frente a un pack nuevo.</li>
 </ul>
 </section>
@@ -405,11 +439,11 @@ details p{padding-top:10px;margin-bottom:0}
 <li><strong>Descarga parcial de seguridad.</strong> Si el pack conserva algo de carga, úsalo hasta un nivel bajo pero no nulo antes de desarmar; reduce el riesgo de chispas al manipular contactos.</li>
 <li><strong>Apertura de la carcasa.</strong> Retira tornillos ocultos bajo etiquetas, separa las mitades con cuidado (algunos fabricantes usan clips plásticos frágiles) y fotografía el cableado antes de desconectar nada.</li>
 <li><strong>Diagnóstico completo</strong> según la sección anterior: mide voltaje total, por celda, e inspecciona visualmente cada unidad y el BMS.</li>
-<li><strong>Retiro de celdas dañadas.</strong> Con el spot welder, corta o despega con cuidado las tiras de níquel de las celdas a reemplazar. Trabaja de a una celda por vez para no perder la configuración serie/paralelo original.</li>
+<li><strong>Retiro de celdas dañadas.</strong> Desconecta primero el conector de sensado del BMS. Luego corta la cinta de níquel junto al grupo a reemplazar con una tijera de hojalata y despega los restos con alicate de punta, sin apalancar sobre las celdas. Trabaja de a un grupo por vez para no perder la configuración serie/paralelo original.</li>
 <li><strong>Preparación de celdas nuevas.</strong> Verifica en el banco de carga que las celdas de reemplazo tengan voltaje y capacidad dentro de especificación, y que estén "emparejadas" entre sí (voltajes muy similares) si vas a reemplazar varias.</li>
 <li><strong>Soldadura por puntos.</strong> Suelda las nuevas tiras de níquel replicando exactamente la configuración original de series y paralelos. Verifica cada punto de soldadura tirando suavemente — no debe despegarse con un tirón leve.</li>
-<li><strong>Reconexión al BMS.</strong> Vuelve a conectar los cables de sensado (si el BMS balancea celda por celda) y las líneas de potencia principales, respetando polaridad estrictamente.</li>
-<li><strong>Prueba en banco antes de cerrar la carcasa.</strong> Mide voltaje total y por celda nuevamente; conecta a un cargador de baja corriente en un área controlada, sobre superficie no inflamable, con supervisión directa durante al menos los primeros 20-30 minutos.</li>
+<li><strong>Reconexión al BMS.</strong> Vuelve a conectar las líneas de potencia y los cables de sensado respetando estrictamente la polaridad, en el orden que indique el fabricante de la placa; si no lo indica, desde el negativo (B0) hacia arriba y el conector de sensado al final.</li>
+<li><strong>Prueba en banco antes de cerrar la carcasa.</strong> Mide voltaje total y por celda nuevamente; carga con el cargador original de la herramienta sobre una superficie no inflamable, con supervisión directa durante al menos los primeros 20-30 minutos, comprobando al tacto que ninguna celda se caliente más que el resto.</li>
 <li><strong>Prueba de descarga funcional.</strong> Instala en el taladro y realiza un trabajo real moderado, verificando que no haya calentamiento anómalo ni caída brusca de potencia.</li>
 <li><strong>Cierre y etiquetado.</strong> Cierra la carcasa, y anota la fecha de reparación y las celdas usadas en una etiqueta interna o externa discreta — te será útil para el siguiente diagnóstico.</li>
 </ol>
@@ -457,15 +491,15 @@ details p{padding-top:10px;margin-bottom:0}
 
 <section id="seguridad">
 <h2>Seguridad al trabajar con litio</h2>
-<p>Las celdas de litio almacenan mucha energía en poco volumen, y un manejo incorrecto puede desencadenar una <strong>fuga térmica</strong> (thermal runaway): una reacción en cadena que genera calor, gases y, en casos extremos, fuego difícil de apagar con agua. Estas reglas no son opcionales:</p>
+<p>Las celdas de litio almacenan mucha energía en poco volumen, y un manejo incorrecto puede desencadenar una <strong>fuga térmica</strong> (thermal runaway): una reacción en cadena que genera calor, gases tóxicos y, en casos extremos, fuego que puede reencenderse horas después. Estas reglas no son opcionales:</p>
 <ul>
 <li><strong>Nunca perfores, dobles ni aplastes una celda.</strong> El daño mecánico interno es la causa más común de fallas retardadas.</li>
 <li><strong>Nunca cortocircuites los terminales</strong>, ni siquiera "un segundo" para probar. Trabaja siempre con herramientas aisladas y sobre superficies no conductoras.</li>
 <li><strong>Descarta de inmediato toda celda hinchada, con olor químico o que se haya calentado sola.</strong> No intentes "usarla un poco más". Guárdala en un contenedor no inflamable, idealmente con arena, hasta llevarla a reciclaje especializado.</li>
 <li><strong>No mezcles celdas de distinta edad o estado de salud en un mismo grupo.</strong> Una celda vieja junto a una nueva en el mismo paralelo fuerza a la más débil a ciclos de estrés desiguales.</li>
 <li><strong>Realiza la primera carga tras la reparación en una superficie no inflamable</strong>, alejada de materiales combustibles, con supervisión activa y, si tienes, dentro de una bolsa ignífuga para litio.</li>
-<li><strong>Ten a mano un extintor apto o arena</strong>, nunca agua, ante cualquier señal de humo o calor excesivo durante la prueba.</li>
-<li><strong>Recicla correctamente</strong> las celdas retiradas: llévalas a un punto de reciclaje de baterías (muchas ferreterías y tiendas de herramientas en Chile tienen puntos limpios), nunca las deseches en la basura doméstica.</li>
+<li><strong>Si una celda humea o se inflama:</strong> aléjate, ventila y llama a Bomberos (132). Si es seguro hacerlo, enfríala con agua abundante, como indica la guía ERG 147 para baterías de iones de litio. La advertencia de "nunca agua" corresponde a baterías de litio metálico, no a las de herramientas.</li>
+<li><strong>Recicla correctamente</strong> las celdas retiradas: cubre sus terminales con cinta aislante y llévalas a un punto limpio o a un punto de recepción de pilas y baterías (consulta en tu municipalidad). Nunca las deseches en la basura domiciliaria.</li>
 </ul>
 <div class="warning"><strong>Límite de esta guía:</strong> este artículo describe un procedimiento técnico general con fines educativos. Si no te sientes cómodo con alguno de estos pasos, o el pack presenta daño físico visible (hinchazón, fuga, quemaduras), la opción más segura es descartarlo y comprar un reemplazo nuevo o llevarlo a un técnico especializado.</div>
 </section>
@@ -475,10 +509,11 @@ details p{padding-top:10px;margin-bottom:0}
 <p>Cifras de referencia editorial para el mercado chileno (verifica precios vigentes antes de decidir):</p>
 <div class="table-wrap">
 <table>
-<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos orientativos para un pack de 18V/20V Li-ion de gama media, 5 celdas en serie.</caption>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos orientativos para baterías de 18 V/20 V máx. Li-ion de gama media (5 celdas en serie), noviembre de 2026.</caption>
 <thead><tr><th>Opción</th><th>Costo aprox. (CLP)</th><th>Cuándo tiene sentido</th></tr></thead>
 <tbody>
-<tr><td>Celdas de reemplazo (5 unidades, calidad media)</td><td>$15.000 – $35.000</td><td>Pack con BMS y carcasa sanos, solo celdas degradadas</td></tr>
+<tr><td>Celdas de alta descarga para un pack 5S1P (5 unidades)</td><td>$15.000 – $30.000</td><td>Pack con BMS y carcasa sanos, solo celdas degradadas</td></tr>
+<tr><td>Celdas de alta descarga para un pack 5S2P (10 unidades)</td><td>$30.000 – $60.000</td><td>Baterías de 4–6 Ah: el doble de celdas</td></tr>
 <tr><td>Soldador de punto básico (inversión única)</td><td>$25.000 – $60.000</td><td>Si planeas reparar más de un pack o herramienta a futuro</td></tr>
 <tr><td>Servicio de reparación en taller especializado</td><td>$20.000 – $45.000</td><td>No tienes equipo propio o prefieres no manipular litio</td></tr>
 <tr><td>Batería nueva original de fábrica</td><td>$45.000 – $110.000</td><td>Pack con BMS dañado, carcasa rota o celdas hinchadas</td></tr>
@@ -486,8 +521,10 @@ details p{padding-top:10px;margin-bottom:0}
 </tbody>
 </table>
 </div>
-<p>El patrón más común: reparar solo las celdas de un pack con BMS sano cuesta entre 25% y 40% de una batería original nueva, y menos aún si ya cuentas con el soldador de punto. La ecuación cambia si necesitas comprar el equipo solo para un pack: ahí, comparar contra el servicio de un taller especializado suele ser más razonable.</p>
+<p>El patrón más común: en una batería 5S1P con BMS sano, las celdas cuestan entre un cuarto y la mitad de una original nueva. En una 5S2P se necesita el doble de celdas y la cuenta se acerca al precio de una batería compatible. Y si tienes que comprar el soldador de punto para un solo pack, el servicio de un taller especializado suele ser más razonable.</p>
 </section>
+
+<div class="note pack-callout"><strong>¿Vas a reparar tu batería?</strong> El <a href="#pack">Pack Reparación de Baterías</a> (<span data-price-slug="pack-reparacion-baterias">$5.990</span>, descarga inmediata en .zip) trae una planilla en Excel que interpreta tus mediciones grupo por grupo, te dice qué celdas sirven para tu herramienta y compara reparar contra comprar, más una guía práctica en PDF para hacerlo con seguridad.</div>
 
 <section id="errores">
 <h2>Errores comunes y cómo evitarlos</h2>
@@ -537,15 +574,15 @@ details p{padding-top:10px;margin-bottom:0}
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
 <div class="faq">
-<details><summary>¿Vale la pena reparar la batería de un taladro o es mejor comprar una nueva?</summary><p>Depende del precio de una batería nueva original para tu modelo. Si el pack original cuesta más de 40-50% del precio de una herramienta nueva equivalente, y el resto del pack (carcasa, contactos, BMS) está sano, reemplazar solo las celdas suele ahorrar entre 50% y 70% del costo, siempre que consigas celdas de calidad conocida.</p></details>
+<details><summary>¿Vale la pena reparar la batería de un taladro o es mejor comprar una nueva?</summary><p>Depende del precio de una batería nueva para tu modelo y de cuántas celdas tiene. Si la carcasa, los contactos y el BMS están sanos, cambiar las celdas de una batería 5S1P suele costar entre un cuarto y la mitad de una original nueva. En una 5S2P se necesitan diez celdas y conviene comparar con una batería compatible de buena calidad o con un taller, sobre todo si tendrías que comprar el soldador de punto solo para esa reparación.</p></details>
 <details><summary>¿Puedo soldar celdas de litio directamente con soldador de estaño?</summary><p>No es recomendable. El calor prolongado de un soldador de estaño convencional puede dañar el sellado interno de la celda y degradar el separador, aumentando el riesgo de falla térmica. La técnica correcta es soldadura por puntos (spot welding) con cinta de níquel. Si no tienes spot welder, es preferible pagar el servicio a un taller especializado.</p></details>
-<details><summary>¿Cómo sé si el problema es el BMS y no las celdas?</summary><p>Mide el voltaje total del pack y el de cada celda individual con un multímetro. Si las celdas están dentro de un rango de voltaje sano y equilibrado entre sí, pero el pack no entrega corriente a la herramienta ni acepta carga, el problema suele estar en el circuito de protección (BMS/PCB), no en las celdas.</p></details>
-<details><summary>¿Es peligroso reparar una batería de litio en casa?</summary><p>Existe riesgo real de cortocircuito, incendio o fuga térmica si se manipulan celdas de litio sin las precauciones adecuadas: usar EPP, trabajar sobre superficie no conductora, no perforar ni deformar celdas, no mezclar celdas de distinto estado de salud y realizar la primera carga bajo supervisión y sobre una superficie no inflamable o en bolsa ignífuga.</p></details>
+<details><summary>¿Cómo sé si el problema es el BMS y no las celdas?</summary><p>Mide el voltaje en los contactos externos y el de cada grupo de celdas en paralelo, entre nodos consecutivos de la cinta de níquel. Si todos los grupos están sanos y parejos (diferencia menor a 0,05 V) pero los contactos marcan 0 V o el cargador rechaza la batería, el problema suele estar en el BMS, un fusible o una conexión. Si un grupo está muy por debajo del resto, el problema son las celdas.</p></details>
+<details><summary>¿Es peligroso reparar una batería de litio en casa?</summary><p>Existe riesgo real de cortocircuito, quemaduras e incendio si se manipulan celdas de litio sin precauciones: trabajar sin anillos ni relojes, sobre superficie no inflamable, sin perforar ni deformar celdas, sin mezclar celdas de distinto estado y con la primera carga supervisada. Si una celda humea, aléjate y llama a Bomberos (132); las celdas de iones de litio se enfrían con agua abundante.</p></details>
 <details><summary>¿Qué celdas debo comprar para reemplazar las de mi taladro?</summary><p>Debes igualar química, formato físico (18650, 21700 o Sub-C), voltaje nominal y, muy importante, la corriente máxima de descarga continua (rating en amperios), ya que un taladro exige picos de corriente altos. Usar celdas de baja descarga pensadas para linternas puede provocar sobrecalentamiento y protecciones del BMS que cortan la potencia.</p></details>
 </div>
 </section>
 
-<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de celdas o herramientas, serán identificados explícitamente. Las cifras de costos son estimaciones con supuestos declarados; verifica precios vigentes antes de comprar repuestos o herramientas.</p>
+<p class="disclosure">Este artículo es contenido editorial independiente y no contiene enlaces de afiliado. Incluye la oferta de un pack digital de pago elaborado por ukrabot.cl, identificado como tal. Las cifras de costos son estimaciones con supuestos declarados; verifica precios vigentes antes de comprar repuestos o herramientas.</p>
 
 <div class="cta">
   <h3>Sigue aprendiendo</h3>
@@ -566,8 +603,9 @@ details p{padding-top:10px;margin-bottom:0}
 <li><a href="https://batteryuniversity.com/" target="_blank" rel="noopener noreferrer">Battery University — Fundamentos de baterías de litio y NiMH</a></li>
 <li><a href="https://www.nfpa.org/" target="_blank" rel="noopener noreferrer">National Fire Protection Association (NFPA) — Seguridad con baterías de litio</a></li>
 <li><a href="https://www.sernac.cl" target="_blank" rel="noopener noreferrer">SERNAC Chile — Información al consumidor sobre garantías de herramientas y repuestos</a></li>
+<li><a href="https://cameochemicals.noaa.gov/erg_guides/en/Guide_147.pdf" target="_blank" rel="noopener noreferrer">Guía de Respuesta en Caso de Emergencia (ERG) — Guía 147: baterías de iones de litio</a></li>
 </ul>
-<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 17 de agosto de 2026.</p>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 16 de noviembre de 2026.</p>
 </section>
 </main>
 
@@ -686,5 +724,6 @@ details p{padding-top:10px;margin-bottom:0}
   });
 })();
 </script>
+<script src="/tienda/tienda.js?v=4" defer></script>
 </body>
 </html>

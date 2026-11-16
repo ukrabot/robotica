@@ -166,5 +166,21 @@
    "Se entrega en un archivo .zip con instrucciones; se abre en Excel, LibreOffice y Google Sheets"
   ],
   "cover": "/blog/pack-conversion-ev.jpg"
+ },
+ {
+  "slug": "pack-reparacion-baterias",
+  "name": "Pack Reparación de Baterías: planilla de diagnóstico en Excel + guía práctica en PDF",
+  "short": "Pack Reparación de Baterías (Excel + PDF)",
+  "price": 5990,
+  "img": "/blog/pack-reparacion-baterias-thumb.jpg",
+  "url": "/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa#pack",
+  "digital": true,
+  "desc": "Diagnostica tu batería de taladro grupo por grupo, elige celdas que soporten la corriente de tu herramienta y decide con números si conviene reparar, llevar a un taller o comprar una nueva.",
+  "includes": [
+   "Planilla en Excel con 8 hojas: configuración del pack, diagnóstico por grupo, tabla de celdas, cinta de níquel, costos, checklist y registro",
+   "Guía práctica en PDF de 12 páginas: cuándo no reparar, seguridad con litio, diagnóstico en 6 pasos, soldadura por puntos y primera carga",
+   "Se entrega en un archivo .zip con instrucciones; se abre en Excel, LibreOffice y Google Sheets"
+  ],
+  "cover": "/blog/pack-reparacion-baterias.jpg"
  }
 ]
