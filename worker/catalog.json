@@ -158,6 +158,13 @@
   "price": 7990,
   "img": "/blog/pack-conversion-ev-thumb.jpg",
   "url": "/blog/transforma-tu-vehiculo-guia-completa-sobre-kits-de-conversion-a-coche-electrico#pack",
-  "digital": true
+  "digital": true,
+  "desc": "Haz los números de tu conversión a eléctrico antes de comprar: un planificador que calcula con los datos de tu auto y una guía práctica para llevar el proyecto ordenado hasta el certificado, con la Ley 21.793 explicada.",
+  "includes": [
+   "Planificador en Excel con 10 hojas: peso, batería, consumo, autonomía, motor, presupuesto, ahorro, checklist y registro de consumo",
+   "Guía práctica en PDF de 13 páginas: test de decisión, normativa en Chile, preguntas para el taller, seguridad de alto voltaje y plan de pruebas",
+   "Se entrega en un archivo .zip con instrucciones; se abre en Excel, LibreOffice y Google Sheets"
+  ],
+  "cover": "/blog/pack-conversion-ev.jpg"
  }
 ]

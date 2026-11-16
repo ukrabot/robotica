@@ -52,7 +52,7 @@ function stripAds(res) {
 }
 const isHtml = res => (res.headers.get('content-type') || '').includes('text/html');
 
-async function blogPage(req, env) {
+async function blogPage(req, env, adsKey = 'ads_blog') {
   const res = await env.ASSETS.fetch(req);
   if (!res.ok || !isHtml(res)) return res;
   let front;
@@ -65,7 +65,7 @@ async function blogPage(req, env) {
       if (BASE[slug]) e.setInnerContent(fmtCLP(merged(slug, front.overrides, front.files).price));
     },
   }).transform(out);
-  return front.settings.ads_blog !== 0 ? out : stripAds(out);
+  return !adsKey || front.settings[adsKey] !== 0 ? out : stripAds(out);
 }
 
 // ---------------------------------------------------------------- utilidades
@@ -611,6 +611,7 @@ export default {
       if (path.startsWith('/api/')) return fail('No encontrado', 404);
       if ((path.startsWith('/producto/') || /^\/productos(\.html)?\/?$/.test(path)) && req.method === 'GET') return await storePage(req, env, url);
       if ((path === '/blog' || path.startsWith('/blog/')) && req.method === 'GET') return await blogPage(req, env);
+      if (/^\/productos-digitales(\.html)?\/?$/.test(path) && req.method === 'GET') return await blogPage(req, env, null);
       return env.ASSETS.fetch(req);
     } catch (e) {
       console.error(path, e);

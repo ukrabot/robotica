@@ -227,6 +227,7 @@ page = f'''<!DOCTYPE html>
       <a href="/">Inicio</a>
       <a href="/blog/">Tutoriales</a>
       <a href="/productos" aria-current="page">Productos</a>
+      <a href="/productos-digitales">Productos digitales</a>
       <a href="/contact">Contacto</a>
     </nav>
   </div>
