@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Genera worker/catalog.json (catálogo base de la tienda) desde producto/*.html.
+"""Genera worker/catalog.json (catálogo base de la tienda) desde producto/*.html
+y tools/digital_products.json.
 El precio de la ficha es el precio base; el panel de admin puede sobrescribirlo.
 Uso: python3 tools/build_catalog.py"""
 import os, re, json, glob, html
@@ -39,6 +40,8 @@ for f in sorted(glob.glob('producto/*.html')):
         'img': img.replace('https://www.ukrabot.cl', ''),
         'url': f'/producto/{slug}',
     })
+# productos digitales (descarga inmediata): no tienen ficha en /producto/
+out += json.load(open('tools/digital_products.json', encoding='utf-8'))
 os.makedirs('worker', exist_ok=True)
 json.dump(out, open('worker/catalog.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 print(f'worker/catalog.json: {len(out)} productos')

@@ -12,6 +12,9 @@ export const MP_PAY = {
   rejected: 'rechazado', cancelled: 'anulado', refunded: 'devuelto', charged_back: 'devuelto', in_mediation: 'devuelto',
 };
 const UNPAID = ['pendiente_pago', 'rechazado', 'anulado', 'error_flow'];
+// Un pedido solo digital se entrega al pagarse (la entrega es la descarga)
+const paidStatus = o => (o.zone === 'digital' ? 'entregado' : 'pagado');
+const CHUNK = 1024 * 1024; // las celdas BLOB de SQLite en Durable Objects admiten hasta 2 MB
 // Estados de preparación que el admin puede asignar a un pedido pagado
 export const FULFILL = ['pagado', 'preparando', 'enviado', 'entregado', 'cancelado'];
 
@@ -55,6 +58,17 @@ export class Store extends DurableObject {
       CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS hits (bucket TEXT NOT NULL, ts INTEGER NOT NULL);
       CREATE INDEX IF NOT EXISTS idx_hits ON hits(bucket, ts);
+      CREATE TABLE IF NOT EXISTS files (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        product TEXT NOT NULL,
+        name TEXT NOT NULL,
+        type TEXT NOT NULL,
+        size INTEGER NOT NULL,
+        sha256 TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_files_product ON files(product);
+      CREATE TABLE IF NOT EXISTS file_chunks (file_id INTEGER NOT NULL, idx INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY (file_id, idx));
     `);
     // v2: Mercado Pago como segundo medio de pago
     const cols = this.sql.exec('PRAGMA table_info(orders)').toArray().map(c => c.name);
@@ -103,8 +117,45 @@ export class Store extends DurableObject {
       slug, price, stock, active ? 1 : 0, now());
     return this.overrides()[slug];
   }
-  /** Estado público de la tienda en una sola llamada (catálogo + envío). */
-  storefront() { return { overrides: this.overrides(), settings: this.getSettings() }; }
+  /** Estado público de la tienda en una sola llamada (catálogo, envío y archivos digitales). */
+  storefront() { return { overrides: this.overrides(), settings: this.getSettings(), files: this.fileCounts() }; }
+
+  // ---------------------------------------------------------------- archivos de productos digitales
+  fileCounts() {
+    const o = {};
+    for (const r of this.sql.exec('SELECT product, COUNT(*) AS n FROM files GROUP BY product').toArray()) o[r.product] = r.n;
+    return o;
+  }
+  listFiles(product) {
+    return this.sql.exec('SELECT id, product, name, type, size, sha256, created_at FROM files WHERE product = ? ORDER BY id', product).toArray();
+  }
+  saveFile(product, name, type, data, sha256) {
+    return this.ctx.storage.transactionSync(() => {
+      const bytes = new Uint8Array(data);
+      const row = this.sql.exec('INSERT INTO files (product, name, type, size, sha256, created_at) VALUES (?, ?, ?, ?, ?, ?) RETURNING id',
+        product, name, type, bytes.byteLength, sha256, now()).one();
+      for (let i = 0, idx = 0; i < bytes.byteLength; i += CHUNK, idx++) {
+        this.sql.exec('INSERT INTO file_chunks (file_id, idx, data) VALUES (?, ?, ?)', row.id, idx, bytes.slice(i, i + CHUNK).buffer);
+      }
+      return this.sql.exec('SELECT id, product, name, type, size, sha256, created_at FROM files WHERE id = ?', row.id).one();
+    });
+  }
+  deleteFile(id) {
+    return this.ctx.storage.transactionSync(() => {
+      this.sql.exec('DELETE FROM file_chunks WHERE file_id = ?', id);
+      return this.sql.exec('DELETE FROM files WHERE id = ?', id).rowsWritten > 0;
+    });
+  }
+  getFile(id) {
+    const meta = this.sql.exec('SELECT id, product, name, type, size FROM files WHERE id = ?', id).toArray()[0];
+    if (!meta) return null;
+    const out = new Uint8Array(meta.size);
+    let off = 0;
+    for (const c of this.sql.exec('SELECT data FROM file_chunks WHERE file_id = ? ORDER BY idx', id)) {
+      const b = new Uint8Array(c.data); out.set(b, off); off += b.byteLength;
+    }
+    return { ...meta, data: out.buffer };
+  }
 
   // ---------------------------------------------------------------- pedidos
   createOrder({ items, subtotal, shipping, total, zone, customer, provider = 'flow' }) {
@@ -151,7 +202,7 @@ export class Store extends DurableObject {
       }
       const payStatus = PAY[st.status] || 'pendiente_pago';
       let status = o.status;
-      if (UNPAID.includes(status)) status = review ? 'revisar' : payStatus;
+      if (UNPAID.includes(status)) status = review ? 'revisar' : (payStatus === 'pagado' ? paidStatus(o) : payStatus);
       let paidAt = o.paid_at;
       if (payStatus === 'pagado' && !paidAt) paidAt = t;
       let applied = o.stock_applied;
@@ -186,7 +237,7 @@ export class Store extends DurableObject {
           review = `Mercado Pago informó $${pay.transaction_amount} ${pay.currency_id}; se esperaba $${o.total} CLP (${label}). Revisar en Mercado Pago.`;
           status = 'revisar'; paidAt = t;
         } else if (payStatus === 'pagado') {
-          status = 'pagado'; paidAt = t;
+          status = paidStatus(o); paidAt = t;
           if (!applied) { this._takeStock(o, t); applied = 1; }
         } else if (UNPAID.includes(status)) {
           status = payStatus === 'devuelto' ? 'anulado' : payStatus;

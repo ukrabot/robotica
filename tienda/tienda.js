@@ -2,7 +2,7 @@
    Los precios, el stock y el total final siempre los decide el servidor. */
 (function () {
   'use strict';
-  var KEY = 'ukr_cart_v1', FORM_KEY = 'ukr_checkout_v1';
+  var KEY = 'ukr_cart_v1', FORM_KEY = 'ukr_checkout_v1', ORDERS_KEY = 'ukr_orders_v1';
   var catalogPromise = null;
 
   // ------------------------------------------------------------ utilidades
@@ -90,7 +90,7 @@
       '<button type="button" class="ukr-add" disabled>Agregar al carrito</button>' +
       '<p class="ukr-stock">Consultando disponibilidad…</p><p class="ukr-added" hidden></p>';
     var out = box.querySelector('output'), add = box.querySelector('.ukr-add'), stock = box.querySelector('.ukr-stock'), added = box.querySelector('.ukr-added');
-    var minus = box.querySelector('[data-d="-1"]'), plus = box.querySelector('[data-d="1"]'), max = 50;
+    var minus = box.querySelector('[data-d="-1"]'), plus = box.querySelector('[data-d="1"]'), max = 50, digital = false;
     function render() {
       out.textContent = qty;
       minus.disabled = qty <= 1;
@@ -102,6 +102,15 @@
     });
     add.addEventListener('click', function () {
       var inCart = Cart.qty(slug);
+      if (digital) {
+        if (inCart) { location.href = '/carrito'; return; }
+        Cart.set(slug, 1);
+        added.hidden = false;
+        added.innerHTML = 'Agregaste el pack a tu carrito. <a href="/carrito">Ver carrito y pagar</a>';
+        toast('Pack agregado al carrito <a href="/carrito">Ver carrito</a>');
+        add.innerHTML = 'Ya está en tu carrito · Pagar';
+        return;
+      }
       if (inCart + qty > max) { stock.textContent = 'Ya tienes ' + inCart + ' en el carrito; quedan ' + max + ' disponibles.'; stock.className = 'ukr-stock is-low'; return; }
       Cart.add(slug, qty);
       added.hidden = false;
@@ -113,12 +122,22 @@
     catalog().then(function (d) {
       var p = d.bySlug[slug];
       if (!p) { stock.textContent = 'Este producto no se puede comprar en línea. Escríbenos por WhatsApp.'; return; }
+      var pay = d.methods && d.methods.length ? 'Pago seguro con ' + d.methods.map(function (m) { return PAY_NAME[m]; }).join(' o ') + '.' : '';
+      if (p.digital) {
+        digital = true; box.classList.add('is-digital');
+        box.querySelector('.ukr-qty').style.display = 'none';
+        if (!p.available) { add.disabled = true; add.textContent = 'No disponible por ahora'; stock.textContent = 'Estamos preparando la descarga. Escríbenos por WhatsApp y te avisamos.'; stock.className = 'ukr-stock is-out'; return; }
+        add.disabled = false;
+        add.innerHTML = Cart.qty(slug) ? 'Ya está en tu carrito · Pagar' : 'Comprar y descargar<span class="ukr-add-price"> · ' + clp(p.price) + '</span>';
+        stock.textContent = 'Descarga inmediata después del pago. ' + pay;
+        return;
+      }
       if (!p.available) { add.disabled = true; minus.disabled = plus.disabled = true; add.textContent = 'Agotado'; stock.textContent = 'Sin stock por ahora. Escríbenos por WhatsApp y te avisamos cuando llegue.'; stock.className = 'ukr-stock is-out'; return; }
       max = p.stock === null ? 50 : Math.min(50, p.stock);
       add.disabled = false;
       add.innerHTML = 'Agregar al carrito<span class="ukr-add-price"> · ' + clp(p.price) + '</span>';
       if (p.stock !== null && p.stock <= 5) { stock.textContent = p.stock === 1 ? 'Queda 1 unidad.' : 'Quedan ' + p.stock + ' unidades.'; stock.className = 'ukr-stock is-low'; }
-      else { stock.textContent = (d.methods && d.methods.length ? 'Pago seguro con ' + d.methods.map(function (m) { return PAY_NAME[m]; }).join(' o ') + ' · ' : '') + 'Envío a todo Chile.'; }
+      else { stock.textContent = (pay ? pay.slice(0, -1) + ' · ' : '') + 'Envío a todo Chile.'; }
       render();
     }).catch(function () { stock.textContent = 'No pudimos cargar la disponibilidad. Recarga la página o escríbenos por WhatsApp.'; });
   }
@@ -137,14 +156,17 @@
 
   // ------------------------------------------------------------ /carrito
   function mountCheckout(root) {
-    var form, alertEl, data;
-    function savedForm() { try { return JSON.parse(store(FORM_KEY) || '{}'); } catch (e) { return {}; } }
+    var form, alertEl, data, mode = '';
+    var FIELDS = ['nombre', 'email', 'telefono', 'region', 'comuna', 'direccion', 'notas'];
+    function savedForm() { try { return JSON.parse(store(FORM_KEY) || '{}') || {}; } catch (e) { return {}; } }
     function saveForm() {
       if (!form) return;
-      var o = {}; ['nombre', 'email', 'telefono', 'region', 'comuna', 'direccion', 'notas'].forEach(function (k) { o[k] = form.elements[k].value; });
+      var o = savedForm(); FIELDS.forEach(function (k) { if (form.elements[k]) o[k] = form.elements[k].value; });
       o.metodo = method();
       store(FORM_KEY, JSON.stringify(o));
     }
+    // 'digital' cuando todo el carrito es descargable: no se pide dirección ni se cobra envío
+    function digitalOnly(items) { return items.length > 0 && items.every(function (i) { return i.p.digital; }); }
     function methods() { return data.methods || []; }
     function method() {
       var r = root.querySelector('input[name="ukr-metodo"]:checked');
@@ -155,38 +177,51 @@
       var items = Cart.items().map(function (i) {
         var p = data.bySlug[i.slug];
         if (!p) { errs.push(i.slug); return null; }
-        return { slug: i.slug, qty: i.qty, p: p };
+        return { slug: i.slug, qty: p.digital ? 1 : i.qty, p: p };
       }).filter(Boolean);
       if (errs.length) write(Cart.items().filter(function (i) { return errs.indexOf(i.slug) < 0; }));
+      else if (items.some(function (i) { return i.p.digital && Cart.qty(i.slug) > 1; })) {
+        store(KEY, JSON.stringify(Cart.items().map(function (i) { return data.bySlug[i.slug] && data.bySlug[i.slug].digital ? { slug: i.slug, qty: 1 } : i; })));
+        badge();
+      }
       return items;
     }
     function totals(items) {
       var sub = items.reduce(function (s, i) { return s + i.p.price * i.qty; }, 0);
-      var region = form ? form.elements.region.value : '';
+      if (digitalOnly(items)) return { sub: sub, ship: 0, total: sub, digital: true };
+      var region = form && form.elements.region ? form.elements.region.value : '';
       var ship = region ? (region === 'Metropolitana de Santiago' ? data.shipping.rm : data.shipping.regiones) : null;
       return { sub: sub, ship: ship, total: ship === null ? null : sub + ship };
     }
     function render() {
       var items = lines();
       if (!items.length) {
-        root.innerHTML = '<div class="ukr-box ukr-empty"><h2>Tu carrito está vacío</h2><p>Revisa el catálogo y agrega lo que necesitas para tu proyecto.</p><a class="ukr-btn" href="/productos">Ver productos</a></div>';
+        var recent = []; try { recent = JSON.parse(store(ORDERS_KEY) || '[]'); } catch (e) {}
+        root.innerHTML = '<div class="ukr-box ukr-empty"><h2>Tu carrito está vacío</h2><p>Revisa el catálogo y agrega lo que necesitas para tu proyecto.</p><a class="ukr-btn" href="/productos">Ver productos</a>' +
+          (recent.length ? '<div class="ukr-recent"><h3>Tus compras recientes</h3><ul>' + recent.map(function (r) {
+            return '<li><a href="/pedido?o=' + encodeURIComponent(r.o) + '&k=' + encodeURIComponent(r.k) + '">Pedido ' + esc(r.o) + '</a> <span class="ukr-item-meta">' + new Date(r.t).toLocaleDateString('es-CL') + '</span></li>';
+          }).join('') + '</ul></div>' : '') + '</div>';
         form = null; return;
       }
       var problems = items.filter(function (i) { return !i.p.available || (i.p.stock !== null && i.qty > i.p.stock); });
-      if (!form) build();
+      var m0 = (digitalOnly(items) ? 'digital' : 'fisico') + (items.some(function (i) { return i.p.digital; }) ? '+d' : '');
+      if (form && m0 !== mode) { saveForm(); form = null; }
+      if (!form) { mode = m0; build(); }
       var list = root.querySelector('.ukr-items');
       list.innerHTML = items.map(function (i) {
-        var warn = !i.p.available ? 'Agotado: quítalo para continuar.' : (i.p.stock !== null && i.qty > i.p.stock ? 'Solo quedan ' + i.p.stock + '. Ajusta la cantidad.' : '');
+        var warn = !i.p.available ? (i.p.digital ? 'No disponible por ahora: quítalo para continuar.' : 'Agotado: quítalo para continuar.') : (i.p.stock !== null && i.qty > i.p.stock ? 'Solo quedan ' + i.p.stock + '. Ajusta la cantidad.' : '');
         var max = i.p.stock === null ? 50 : Math.min(50, i.p.stock);
+        var qtyCtl = i.p.digital ? '<span class="ukr-item-meta">Descarga digital</span>' :
+          '<span class="ukr-qty" role="group" aria-label="Cantidad de ' + esc(i.p.short) + '"><button type="button" data-d="-1" aria-label="Quitar uno"' + (i.qty <= 1 ? ' disabled' : '') + '>−</button><output>' + i.qty + '</output><button type="button" data-d="1" aria-label="Agregar uno"' + (i.qty >= max ? ' disabled' : '') + '>+</button></span>';
         return '<li class="ukr-item" data-slug="' + esc(i.slug) + '"><img src="' + esc(i.p.img) + '" alt="" width="72" height="72" loading="lazy">' +
-          '<div><a class="ukr-item-name" href="' + esc(i.p.url) + '">' + esc(i.p.short) + '</a><div class="ukr-item-meta">' + clp(i.p.price) + ' c/u</div></div>' +
-          '<div class="ukr-item-side"><span class="ukr-qty" role="group" aria-label="Cantidad de ' + esc(i.p.short) + '"><button type="button" data-d="-1" aria-label="Quitar uno"' + (i.qty <= 1 ? ' disabled' : '') + '>−</button><output>' + i.qty + '</output><button type="button" data-d="1" aria-label="Agregar uno"' + (i.qty >= max ? ' disabled' : '') + '>+</button></span>' +
+          '<div><a class="ukr-item-name" href="' + esc(i.p.url) + '">' + esc(i.p.short) + '</a><div class="ukr-item-meta">' + (i.p.digital ? 'Descarga inmediata · ' + clp(i.p.price) : clp(i.p.price) + ' c/u') + '</div></div>' +
+          '<div class="ukr-item-side">' + qtyCtl +
           '<span class="ukr-line">' + clp(i.p.price * i.qty) + '</span><button type="button" class="ukr-remove">Quitar</button></div>' +
           (warn ? '<p class="ukr-item-warn">' + warn + '</p>' : '') + '</li>';
       }).join('');
       var t = totals(items);
       root.querySelector('[data-sum="sub"]').textContent = clp(t.sub);
-      root.querySelector('[data-sum="ship"]').textContent = t.ship === null ? 'Elige tu región' : (t.ship === 0 ? 'Gratis' : clp(t.ship));
+      root.querySelector('[data-sum="ship"]').textContent = t.digital ? 'No aplica' : t.ship === null ? 'Elige tu región' : (t.ship === 0 ? 'Gratis' : clp(t.ship));
       root.querySelector('[data-sum="total"]').textContent = t.total === null ? '—' : clp(t.total);
       var pay = root.querySelector('.ukr-pay');
       var m = method();
@@ -195,32 +230,36 @@
       root.querySelector('[data-pay-note]').textContent = m ? 'Te llevaremos a ' + PAY_NAME[m] + ' para completar el pago. ' + PAY_NAME[m] + ' te envía el comprobante a tu correo.' : '';
     }
     function build() {
-      var f = savedForm();
+      var f = savedForm(), dig = mode.indexOf('digital') === 0, hasDig = mode.indexOf('+d') > 0;
       var regions = data.regions.map(function (r) { return '<option' + (f.region === r ? ' selected' : '') + '>' + esc(r) + '</option>'; }).join('');
       root.innerHTML =
         '<div class="ukr-grid"><div>' +
         '<section class="ukr-box" aria-labelledby="ukr-items-t"><h2 id="ukr-items-t">Productos</h2><ul class="ukr-items"></ul></section>' +
-        '<section class="ukr-box" aria-labelledby="ukr-ship-t"><h2 id="ukr-ship-t">Datos de despacho</h2><form class="ukr-form" novalidate>' +
+        '<section class="ukr-box" aria-labelledby="ukr-ship-t"><h2 id="ukr-ship-t">' + (dig ? 'Tus datos' : 'Datos de despacho') + '</h2>' +
+        (dig ? '<p class="ukr-note" style="margin:-6px 0 14px">Es una descarga: no necesitamos tu dirección. Al pagar verás el botón para descargar.</p>' : '') +
+        '<form class="ukr-form" novalidate>' +
         field('nombre', 'Nombre y apellido', '<input id="f-nombre" name="nombre" autocomplete="name" maxlength="80" required>') +
         field('email', 'Correo', '<input id="f-email" name="email" type="email" autocomplete="email" maxlength="120" required>') +
-        field('telefono', 'Teléfono', '<input id="f-telefono" name="telefono" type="tel" autocomplete="tel" maxlength="20" placeholder="+56 9 1234 5678" required>') +
+        field('telefono', dig ? 'Teléfono (opcional)' : 'Teléfono', '<input id="f-telefono" name="telefono" type="tel" autocomplete="tel" maxlength="20" placeholder="+56 9 1234 5678"' + (dig ? '' : ' required') + '>') +
+        (dig ? '' :
         field('region', 'Región', '<select id="f-region" name="region" autocomplete="address-level1" required><option value="">Elige tu región</option>' + regions + '</select>') +
         field('comuna', 'Comuna', '<input id="f-comuna" name="comuna" autocomplete="address-level2" maxlength="60" required>') +
         field('direccion', 'Dirección', '<input id="f-direccion" name="direccion" autocomplete="street-address" maxlength="160" placeholder="Calle, número, depto." required>', true) +
-        field('notas', 'Notas para el despacho (opcional)', '<textarea id="f-notas" name="notas" maxlength="300"></textarea>', true) +
+        field('notas', 'Notas para el despacho (opcional)', '<textarea id="f-notas" name="notas" maxlength="300"></textarea>', true)) +
         '</form></section></div>' +
         '<aside class="ukr-box ukr-sum" aria-labelledby="ukr-sum-t"><h2 id="ukr-sum-t">Resumen</h2>' +
         '<dl><dt>Productos</dt><dd data-sum="sub"></dd><dt>Envío</dt><dd data-sum="ship"></dd><div class="ukr-total"><dt>Total</dt><dd data-sum="total"></dd></div></dl>' +
         '<p class="ukr-alert" role="alert" hidden></p>' +
         payBlock(f.metodo) +
-        '<label class="ukr-check"><input type="checkbox" id="f-acepta"> <span>Acepto las <a href="/terms#compras" target="_blank" rel="noopener">condiciones de compra</a>, incluido el derecho a retracto.</span></label>' +
+        '<label class="ukr-check"><input type="checkbox" id="f-acepta"> <span>Acepto las <a href="/terms#compras" target="_blank" rel="noopener">condiciones de compra</a>' +
+        (hasDig ? '. Entiendo que los productos digitales se entregan como descarga inmediata y no tienen derecho a retracto.' : ', incluido el derecho a retracto.') + '</span></label>' +
         '<button type="button" class="ukr-pay">Pagar</button>' +
         '<p class="ukr-note" data-pay-note></p>' +
-        '<p class="ukr-note">Envío a la Región Metropolitana: ' + clp(data.shipping.rm) + '. Resto de Chile: ' + clp(data.shipping.regiones) + '.</p></aside></div>';
+        (dig ? '' : '<p class="ukr-note">Envío a la Región Metropolitana: ' + clp(data.shipping.rm) + '. Resto de Chile: ' + clp(data.shipping.regiones) + '.</p>') + '</aside></div>';
       form = root.querySelector('form'); alertEl = root.querySelector('.ukr-alert');
-      ['nombre', 'email', 'telefono', 'comuna', 'direccion', 'notas'].forEach(function (k) { if (f[k]) form.elements[k].value = f[k]; });
+      ['nombre', 'email', 'telefono', 'comuna', 'direccion', 'notas'].forEach(function (k) { if (f[k] && form.elements[k]) form.elements[k].value = f[k]; });
       form.addEventListener('input', function (e) { saveForm(); clearErr(e.target.name); });
-      form.elements.region.addEventListener('change', render);
+      if (form.elements.region) form.elements.region.addEventListener('change', render);
       root.querySelectorAll('input[name="ukr-metodo"]').forEach(function (r) { r.addEventListener('change', function () { saveForm(); showAlert(''); render(); }); });
       root.querySelector('.ukr-items').addEventListener('click', function (e) {
         var li = e.target.closest('.ukr-item'); if (!li) return;
@@ -255,20 +294,22 @@
     function showAlert(msg) { alertEl.textContent = msg; alertEl.hidden = !msg; }
     function pay() {
       showAlert('');
-      var v = {}; ['nombre', 'email', 'telefono', 'region', 'comuna', 'direccion', 'notas'].forEach(function (k) { v[k] = form.elements[k].value.trim(); });
-      var errs = {};
+      var v = {}; FIELDS.forEach(function (k) { v[k] = form.elements[k] ? form.elements[k].value.trim() : ''; });
+      var errs = {}, dig = mode.indexOf('digital') === 0;
       if (v.nombre.length < 3) errs.nombre = 'Escribe tu nombre y apellido.';
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) errs.email = 'Revisa el correo: ahí te llega el comprobante del pago.';
-      if (v.telefono.replace(/\D/g, '').length < 8) errs.telefono = 'Escribe un teléfono de al menos 8 dígitos.';
-      if (!v.region) errs.region = 'Elige tu región.';
-      if (v.comuna.length < 2) errs.comuna = 'Escribe tu comuna.';
-      if (v.direccion.length < 5) errs.direccion = 'Escribe calle, número y depto. si corresponde.';
+      if (dig ? v.telefono && v.telefono.replace(/\D/g, '').length < 8 : v.telefono.replace(/\D/g, '').length < 8) errs.telefono = dig ? 'Revisa el teléfono o déjalo en blanco.' : 'Escribe un teléfono de al menos 8 dígitos.';
+      if (!dig) {
+        if (!v.region) errs.region = 'Elige tu región.';
+        if (v.comuna.length < 2) errs.comuna = 'Escribe tu comuna.';
+        if (v.direccion.length < 5) errs.direccion = 'Escribe calle, número y depto. si corresponde.';
+      }
       Object.keys(errs).forEach(function (k) { setErr(k, errs[k]); });
       if (Object.keys(errs).length) { var first = root.querySelector('.has-error input, .has-error select'); if (first) first.focus(); return; }
       var m = method();
       if (!m) { showAlert('Elige un medio de pago.'); var fs = root.querySelector('.ukr-methods input'); if (fs) fs.focus(); return; }
       if (!root.querySelector('#f-acepta').checked) { showAlert('Para continuar, acepta las condiciones de compra.'); return; }
-      var items = Cart.items(), t = totals(lines());
+      var t = totals(lines()), items = Cart.items();
       var btn = root.querySelector('.ukr-pay'); btn.disabled = true; btn.textContent = 'Conectando con ' + PAY_NAME[m] + '…';
       fetch('/api/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ items: items, customer: v, acepta: true, expected_total: t.total, method: m }) })
         .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, status: r.status, d: d }; }); })
@@ -302,16 +343,37 @@
     };
     function show(o) {
       var P = PAY_NAME[o.provider] || 'Flow';
-      var s = (STATES[o.status] || STATES.pendiente_pago).map(function (x) { return x.replace(/\{P\}/g, P); }), paid = ['pagado', 'preparando', 'enviado', 'entregado', 'revisar'].indexOf(o.status) >= 0;
+      var st = STATES[o.status] || STATES.pendiente_pago, paid = ['pagado', 'preparando', 'enviado', 'entregado', 'revisar'].indexOf(o.status) >= 0;
+      var dl = o.downloads && o.downloads.length;
+      if (o.zone === 'digital' && dl) st = ['is-ok', '✓', '¡Listo! Ya puedes descargar', 'Gracias por tu compra. {P} te envió el comprobante por correo. Descarga tus archivos aquí abajo.'];
+      else if (o.has_digital && o.status === 'revisar') st = ['is-wait', '…', 'Estamos verificando tu pago', 'Recibimos el aviso de {P} y lo estamos revisando. Habilitaremos tu descarga apenas se confirme y te avisaremos por correo.'];
+      var s = st.map(function (x) { return x.replace(/\{P\}/g, P); });
       if (paid) Cart.clear();
-      root.innerHTML = '<div class="ukr-status"><div class="ukr-status-icon ' + s[0] + '" aria-hidden="true">' + s[1] + '</div><div><h1>' + s[2] + '</h1><p>' + s[3] + '</p></div></div>' +
+      remember(o.code);
+      var dlBox = dl ? '<section class="ukr-box ukr-dl" aria-labelledby="ukr-dl-t"><h2 id="ukr-dl-t">Tus descargas</h2><ul>' +
+        o.downloads.map(function (f) { return '<li><a class="ukr-btn" href="' + esc(f.url) + '" download>Descargar ' + esc(f.name) + '</a><span class="ukr-item-meta">' + esc(f.product) + ' · ' + size(f.size) + '</span></li>'; }).join('') +
+        '</ul><p class="ukr-note"><strong>Guarda este enlace</strong> (agrégalo a favoritos): te permite volver a descargar tus archivos. Si lo pierdes, escríbenos con tu número de pedido. <button type="button" class="ukr-remove" data-copy-link>Copiar enlace</button></p></section>' : '';
+      root.innerHTML = '<div class="ukr-status"><div class="ukr-status-icon ' + s[0] + '" aria-hidden="true">' + s[1] + '</div><div><h1>' + s[2] + '</h1><p>' + s[3] + '</p></div></div>' + dlBox +
         '<section class="ukr-box"><h2>Pedido ' + esc(o.code) + '</h2><p class="ukr-order-meta">Comprobante enviado a ' + esc(o.email) + '</p><ul class="ukr-items">' +
         o.items.map(function (i) { return '<li class="ukr-item" style="grid-template-columns:minmax(0,1fr) auto"><div><span class="ukr-item-name">' + esc(i.name) + '</span><div class="ukr-item-meta">Cantidad: ' + i.qty + '</div></div><span class="ukr-line">' + clp(i.line) + '</span></li>'; }).join('') +
-        '</ul><div class="ukr-sum" style="position:static;margin-top:14px"><dl><dt>Productos</dt><dd>' + clp(o.subtotal) + '</dd><dt>Envío (' + (o.zone === 'rm' ? 'Región Metropolitana' : 'regiones') + ')</dt><dd>' + clp(o.shipping) + '</dd><div class="ukr-total"><dt>Total</dt><dd>' + clp(o.total) + '</dd></div></dl></div>' +
+        '</ul><div class="ukr-sum" style="position:static;margin-top:14px"><dl><dt>Productos</dt><dd>' + clp(o.subtotal) + '</dd><dt>Envío (' + (o.zone === 'digital' ? 'no aplica' : o.zone === 'rm' ? 'Región Metropolitana' : 'regiones') + ')</dt><dd>' + clp(o.shipping) + '</dd><div class="ukr-total"><dt>Total</dt><dd>' + clp(o.total) + '</dd></div></dl></div>' +
         (o.tracking ? '<p class="ukr-note">Seguimiento: <strong>' + esc((o.courier ? o.courier + ' · ' : '') + o.tracking) + '</strong></p>' : '') +
         '</section><div class="ukr-actions">' + (paid ? '<a class="ukr-btn" href="/productos">Seguir comprando</a>' : '<a class="ukr-btn" href="/carrito">Volver al carrito</a>') +
         '<a class="ukr-btn is-ghost" href="https://wa.me/56993514970?text=' + encodeURIComponent('Hola, tengo una consulta sobre mi pedido ' + o.code) + '">Escribir por WhatsApp</a></div>';
+      var cp = root.querySelector('[data-copy-link]');
+      if (cp) cp.addEventListener('click', function () {
+        var url = location.href;
+        (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () { cp.textContent = 'Enlace copiado'; }, function () { prompt('Copia este enlace:', url); });
+      });
       if (o.status === 'pendiente_pago' && tries < 30) setTimeout(load, 4000);
+    }
+    function size(n) { return n >= 1048576 ? (n / 1048576).toFixed(1).replace('.', ',') + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }
+    function remember(c) {
+      try {
+        var list = JSON.parse(store(ORDERS_KEY) || '[]').filter(function (x) { return x && x.o !== c; });
+        list.unshift({ o: c, k: key, t: Date.now() });
+        store(ORDERS_KEY, JSON.stringify(list.slice(0, 8)));
+      } catch (e) {}
     }
     function notFound() {
       root.innerHTML = '<div class="ukr-box ukr-empty"><h2>No encontramos este pedido</h2><p>Revisa que el enlace esté completo. Si ya pagaste, escríbenos con el número de tu pedido.</p><a class="ukr-btn" href="https://wa.me/56993514970">Escribir por WhatsApp</a></div>';

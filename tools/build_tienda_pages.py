@@ -34,7 +34,7 @@ for fn, (title, desc, body) in PAGES.items():
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>{css}</style>
-<link rel="stylesheet" href="/tienda/tienda.css?v=2">
+<link rel="stylesheet" href="/tienda/tienda.css?v=3">
 {tracking}</head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -43,7 +43,7 @@ for fn, (title, desc, body) in PAGES.items():
 
 {body}
 
-<script src="/tienda/tienda.js?v=2" defer></script>
+<script src="/tienda/tienda.js?v=3" defer></script>
 {footer}'''
     open(fn, 'w', encoding='utf-8').write(page)
     print('ok', fn, len(page))

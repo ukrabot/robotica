@@ -6,6 +6,7 @@
 //   /api/mp/notify          notificación (webhook) de Mercado Pago
 //   /api/mp/return          vuelta del cliente desde Mercado Pago (back_urls)
 //   /api/order              estado de un pedido (requiere su clave de acceso)
+//   /api/download           descarga de un archivo digital de un pedido pagado
 //   /admin, /api/admin/*    panel de administración (contraseña)
 //   /producto/*, /productos se sirven con el precio y stock vigentes
 //   /blog/*                  artículos; se les quita AdSense si se desactiva en el panel
@@ -27,15 +28,16 @@ const SESSION_HOURS = 12;
 
 const store = env => env.STORE.get(env.STORE.idFromName('tienda'));
 
-// Ajustes leídos en cada página del blog: se guardan 30 s en memoria para no
-// consultar el Durable Object en cada visita.
-let settingsCache = null;
-async function cachedSettings(env) {
-  if (settingsCache && Date.now() - settingsCache.t < 30e3) return settingsCache.s;
-  const s = await store(env).getSettings();
-  settingsCache = { s, t: Date.now() };
-  return s;
+// Estado de la tienda leído en cada página del blog: se guarda 30 s en memoria
+// para no consultar el Durable Object en cada visita.
+let frontCache = null;
+async function cachedFront(env) {
+  if (frontCache && Date.now() - frontCache.t < 30e3) return frontCache.v;
+  const v = await store(env).storefront();
+  frontCache = { v, t: Date.now() };
+  return v;
 }
+const PAID_OK = ['pagado', 'preparando', 'enviado', 'entregado'];
 
 // ---------------------------------------------------------------- AdSense
 /** Quita el script de AdSense y los bloques de anuncios de una página HTML. */
@@ -53,9 +55,17 @@ const isHtml = res => (res.headers.get('content-type') || '').includes('text/htm
 async function blogPage(req, env) {
   const res = await env.ASSETS.fetch(req);
   if (!res.ok || !isHtml(res)) return res;
-  let on = true;
-  try { on = (await cachedSettings(env)).ads_blog !== 0; } catch (e) { console.error('ajustes blog', e); }
-  return on ? res : stripAds(res);
+  let front;
+  try { front = await cachedFront(env); } catch (e) { console.error('ajustes blog', e); return res; }
+  let out = res;
+  // precio vigente de productos ofrecidos dentro de un artículo
+  out = new HTMLRewriter().on('[data-price-slug]', {
+    element(e) {
+      const slug = e.getAttribute('data-price-slug');
+      if (BASE[slug]) e.setInnerContent(fmtCLP(merged(slug, front.overrides, front.files).price));
+    },
+  }).transform(out);
+  return front.settings.ads_blog !== 0 ? out : stripAds(out);
 }
 
 // ---------------------------------------------------------------- utilidades
@@ -79,12 +89,16 @@ async function safeEqual(a, b) {
 }
 const clientIP = req => req.headers.get('cf-connecting-ip') || 'local';
 
-function merged(slug, overrides) {
+function merged(slug, overrides, files = {}) {
   const b = BASE[slug], o = overrides[slug] || {};
   const price = Number.isInteger(o.price) ? o.price : b.price;
-  const stock = o.stock === undefined ? null : o.stock;
+  const digital = !!b.digital;
+  const stock = digital || o.stock === undefined ? null : o.stock;
   const active = o.active === undefined ? true : !!o.active;
-  return { ...b, base_price: b.price, price, stock, active, available: active && (stock === null || stock > 0) };
+  const nfiles = files[slug] || 0;
+  // un producto digital solo se vende cuando tiene archivos cargados
+  return { ...b, base_price: b.price, price, stock, active, digital, files: nfiles,
+    available: active && (stock === null || stock > 0) && (!digital || nfiles > 0) };
 }
 
 // ---------------------------------------------------------------- Flow
@@ -193,7 +207,7 @@ function sameOrigin(req) {
 }
 
 // ---------------------------------------------------------------- validación del checkout
-function validCustomer(c) {
+function validCustomer(c, digitalOnly = false) {
   const s = v => (typeof v === 'string' ? v.trim() : '');
   const out = {
     nombre: s(c.nombre), email: s(c.email).toLowerCase(), telefono: s(c.telefono),
@@ -202,6 +216,12 @@ function validCustomer(c) {
   const errors = {};
   if (out.nombre.length < 3 || out.nombre.length > 80) errors.nombre = 'Escribe tu nombre y apellido.';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(out.email) || out.email.length > 120) errors.email = 'Revisa el correo: ahí te llega el comprobante del pago.';
+  if (digitalOnly) {
+    // descarga: basta nombre y correo; el teléfono es opcional
+    if (out.telefono && (out.telefono.replace(/\D/g, '').length < 8 || out.telefono.length > 20)) errors.telefono = 'Revisa el teléfono o déjalo en blanco.';
+    out.region = ''; out.comuna = ''; out.direccion = ''; out.notas = '';
+    return { customer: out, errors };
+  }
   if (out.telefono.replace(/\D/g, '').length < 8 || out.telefono.length > 20) errors.telefono = 'Escribe un teléfono de al menos 8 dígitos.';
   if (!REGIONS.includes(out.region)) errors.region = 'Elige tu región.';
   if (out.comuna.length < 2 || out.comuna.length > 60) errors.comuna = 'Escribe tu comuna.';
@@ -212,12 +232,12 @@ function validCustomer(c) {
 
 // ---------------------------------------------------------------- handlers públicos
 async function catalog(env) {
-  const { overrides, settings } = await store(env).storefront();
+  const { overrides, settings, files } = await store(env).storefront();
   const methods = payMethods(env, settings);
   return json({
     products: CATALOG.map(p => {
-      const m = merged(p.slug, overrides);
-      return { slug: m.slug, name: m.name, short: m.short, price: m.price, img: m.img, url: m.url, stock: m.stock, available: m.available };
+      const m = merged(p.slug, overrides, files);
+      return { slug: m.slug, name: m.name, short: m.short, price: m.price, img: m.img, url: m.url, stock: m.stock, available: m.available, digital: m.digital };
     }),
     shipping: { rm: settings.ship_rm, regiones: settings.ship_regiones },
     regions: REGIONS,
@@ -234,7 +254,7 @@ async function checkout(req, env) {
   if (body.acepta !== true) return fail('Debes aceptar las condiciones de compra.');
   const raw = Array.isArray(body.items) ? body.items : [];
   if (!raw.length || raw.length > 30) return fail('El carrito está vacío.');
-  const { overrides, settings } = await st.storefront();
+  const { overrides, settings, files } = await st.storefront();
   const methods = payMethods(env, settings);
   if (!methods.length) return fail('Los pagos en línea no están disponibles en este momento. Escríbenos por WhatsApp para comprar.', 503);
   const method = body.method === undefined && methods.length === 1 ? methods[0] : String(body.method || '');
@@ -247,16 +267,18 @@ async function checkout(req, env) {
     qty[slug] = (qty[slug] || 0) + q;
   }
   for (const [slug, q] of Object.entries(qty)) {
-    const m = merged(slug, overrides);
-    if (!m.active) return json({ error: `${m.short} ya no está disponible.`, slug }, 409);
+    const m = merged(slug, overrides, files);
+    if (!m.active || (m.digital && !m.files)) return json({ error: `${m.short} ya no está disponible.`, slug }, 409);
+    if (m.digital && q > 1) return json({ error: `${m.short} es una descarga: se compra una sola unidad.`, slug }, 409);
     if (m.stock !== null && q > m.stock) return json({ error: m.stock ? `Solo quedan ${m.stock} unidades de ${m.short}.` : `${m.short} está agotado.`, slug, stock: m.stock }, 409);
-    items.push({ slug, name: m.short, qty: q, price: m.price, line: m.price * q });
+    items.push({ slug, name: m.short, qty: q, price: m.price, line: m.price * q, ...(m.digital ? { digital: true } : {}) });
   }
-  const { customer, errors } = validCustomer(body.customer || {});
+  const digitalOnly = items.every(i => i.digital);
+  const { customer, errors } = validCustomer(body.customer || {}, digitalOnly);
   if (Object.keys(errors).length) return json({ error: 'Revisa los datos marcados.', fields: errors }, 422);
-  const zone = customer.region === 'Metropolitana de Santiago' ? 'rm' : 'regiones';
+  const zone = digitalOnly ? 'digital' : customer.region === 'Metropolitana de Santiago' ? 'rm' : 'regiones';
   const subtotal = items.reduce((s, i) => s + i.line, 0);
-  const shipping = zone === 'rm' ? settings.ship_rm : settings.ship_regiones;
+  const shipping = zone === 'digital' ? 0 : zone === 'rm' ? settings.ship_rm : settings.ship_regiones;
   const total = subtotal + shipping;
   if (Number.isInteger(body.expected_total) && body.expected_total !== total) {
     return json({ error: 'Los precios cambiaron mientras comprabas. Revisa el total actualizado.', total }, 409);
@@ -393,9 +415,36 @@ async function orderStatus(req, env) {
   const u = new URL(req.url), code = u.searchParams.get('o') || '', key = u.searchParams.get('k') || '';
   const o = code ? await store(env).orderByCode(code) : null;
   if (!o || !key || !(await safeEqual(key, o.access_key))) return fail('Pedido no encontrado', 404);
+  const digital = o.items.filter(i => i.digital);
+  let downloads = [];
+  if (digital.length && PAID_OK.includes(o.status)) {
+    for (const it of digital) {
+      for (const f of await store(env).listFiles(it.slug)) {
+        downloads.push({ name: f.name, size: f.size, product: it.name, url: `/api/download?o=${encodeURIComponent(o.code)}&k=${o.access_key}&f=${f.id}` });
+      }
+    }
+  }
   return json({ code: o.code, status: o.status, provider: o.provider || 'flow', total: o.total, subtotal: o.subtotal, shipping: o.shipping, zone: o.zone,
-    items: o.items.map(i => ({ name: i.name, qty: i.qty, line: i.line })), created_at: o.created_at,
-    courier: o.courier, tracking: o.tracking, email: o.customer.email.replace(/^(.).*(@.*)$/, '$1***$2') });
+    items: o.items.map(i => ({ name: i.name, qty: i.qty, line: i.line, digital: !!i.digital })), created_at: o.created_at,
+    courier: o.courier, tracking: o.tracking, email: o.customer.email.replace(/^(.).*(@.*)$/, '$1***$2'),
+    has_digital: digital.length > 0, downloads });
+}
+
+async function download(req, env) {
+  const u = new URL(req.url), code = u.searchParams.get('o') || '', key = u.searchParams.get('k') || '', fid = Number(u.searchParams.get('f'));
+  const st = store(env);
+  const o = code ? await st.orderByCode(code) : null;
+  if (!o || !key || !(await safeEqual(key, o.access_key)) || !Number.isInteger(fid)) return fail('Descarga no encontrada', 404);
+  if (!PAID_OK.includes(o.status)) return fail('La descarga se habilita cuando el pago está confirmado.', 403);
+  const f = await st.getFile(fid);
+  if (!f || !o.items.some(i => i.digital && i.slug === f.product)) return fail('Descarga no encontrada', 404);
+  if (await st.limited('dl:' + o.code, 40, 86400)) return fail('Alcanzaste el límite de descargas de hoy para este pedido. Escríbenos si necesitas ayuda.', 429);
+  const ascii = f.name.replace(/[^\x20-\x7e]/g, '_').replace(/["\\]/g, '');
+  return new Response(f.data, { headers: {
+    'content-type': f.type || 'application/octet-stream',
+    'content-disposition': `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(f.name)}`,
+    'cache-control': 'private, no-store', 'x-robots-tag': 'noindex', 'x-content-type-options': 'nosniff',
+  } });
 }
 
 // ---------------------------------------------------------------- precios vigentes en las páginas
@@ -403,12 +452,12 @@ async function storePage(req, env, url) {
   const res = await env.ASSETS.fetch(req);
   if (!res.ok || !(res.headers.get('content-type') || '').includes('text/html')) return res;
   let html = await res.text();
-  const { overrides, settings } = await store(env).storefront();
+  const { overrides, settings, files } = await store(env).storefront();
   const m = url.pathname.match(/^\/producto\/([a-z0-9-]+?)(?:\.html)?\/?$/);
   const slugs = m ? [m[1]] : CATALOG.map(p => p.slug);
   for (const slug of slugs) {
     if (!BASE[slug]) continue;
-    const p = merged(slug, overrides);
+    const p = merged(slug, overrides, files);
     if (m) {
       if (p.price !== p.base_price) {
         const from = fmtCLP(p.base_price).slice(1), to = fmtCLP(p.price).slice(1);
@@ -472,8 +521,33 @@ async function admin(req, env, url) {
     try { return json({ order: await syncFromFlow(env, o.flow_token) }); } catch (e) { return fail('Flow no respondió: ' + e.message, 502); }
   }
   if (p === '/products' && req.method === 'GET') {
-    const { overrides } = await st.storefront();
-    return json({ products: CATALOG.map(b => ({ ...merged(b.slug, overrides), updated_at: overrides[b.slug]?.updated_at || null })) });
+    const { overrides, files } = await st.storefront();
+    return json({ products: CATALOG.map(b => ({ ...merged(b.slug, overrides, files), updated_at: overrides[b.slug]?.updated_at || null })) });
+  }
+  if (p === '/files' && req.method === 'GET') {
+    const prod = url.searchParams.get('product') || '';
+    if (!BASE[prod]?.digital) return fail('Producto digital no encontrado', 404);
+    return json({ files: await st.listFiles(prod) });
+  }
+  if (p === '/files' && req.method === 'POST') {
+    const prod = url.searchParams.get('product') || '';
+    if (!BASE[prod]?.digital) return fail('Producto digital no encontrado', 404);
+    const name = (url.searchParams.get('name') || '').replace(/[\\/:*?"<>|\x00-\x1f]/g, '').trim().slice(0, 120);
+    if (!name || !/\.[a-z0-9]{2,5}$/i.test(name)) return fail('El archivo necesita un nombre con extensión (por ejemplo, guia.pdf).');
+    const data = await req.arrayBuffer();
+    if (!data.byteLength) return fail('El archivo está vacío.');
+    if (data.byteLength > 20 * 1024 * 1024) return fail('El archivo supera 20 MB.');
+    const type = FILE_TYPES[name.split('.').pop().toLowerCase()] || 'application/octet-stream';
+    const sha = hex(await crypto.subtle.digest('SHA-256', data));
+    const saved = await st.saveFile(prod, name, type, data, sha);
+    frontCache = null;
+    return json({ file: saved });
+  }
+  m = p.match(/^\/files\/(\d+)\/delete$/);
+  if (m && req.method === 'POST') {
+    const ok = await st.deleteFile(Number(m[1]));
+    frontCache = null;
+    return ok ? json({ ok: true }) : fail('Archivo no encontrado', 404);
   }
   m = p.match(/^\/products\/([a-z0-9-]+)$/);
   if (m && req.method === 'POST') {
@@ -483,9 +557,10 @@ async function admin(req, env, url) {
     if (!Number.isInteger(price) || price < 350 || price > 10000000) return fail('El precio debe ser un número entero entre $350 y $10.000.000.');
     let stock = b.stock === '' || b.stock === null || b.stock === undefined ? null : Number(b.stock);
     if (stock !== null && (!Number.isInteger(stock) || stock < 0 || stock > 100000)) return fail('El stock debe ser un entero de 0 o más, o vacío para no controlarlo.');
-    await st.saveProduct(m[1], { price, stock, active: !!b.active });
-    const { overrides } = await st.storefront();
-    return json({ product: merged(m[1], overrides) });
+    await st.saveProduct(m[1], { price, stock: BASE[m[1]].digital ? null : stock, active: !!b.active });
+    const { overrides, files } = await st.storefront();
+    frontCache = null;
+    return json({ product: merged(m[1], overrides, files) });
   }
   if (p === '/settings' && req.method === 'GET') return json({ ...(await st.getSettings()), configured: { flow: !!(env.FLOW_API_KEY && env.FLOW_SECRET_KEY), mp: !!env.MP_ACCESS_TOKEN } });
   if (p === '/settings' && req.method === 'POST') {
@@ -499,11 +574,17 @@ async function admin(req, env, url) {
     for (const k of ['pay_flow', 'pay_mp', 'ads_productos', 'ads_blog']) if (b[k] !== undefined) patch[k] = b[k] ? 1 : 0;
     if (!Object.keys(patch).length) return fail('No hay cambios que guardar.');
     const saved = await st.saveSettings(patch);
-    settingsCache = { s: saved, t: Date.now() };
+    frontCache = null;
     return json(saved);
   }
   return fail('No encontrado', 404);
 }
+
+const FILE_TYPES = {
+  pdf: 'application/pdf', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  xls: 'application/vnd.ms-excel', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  zip: 'application/zip', csv: 'text/csv', txt: 'text/plain', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', mp4: 'video/mp4',
+};
 
 const ADMIN_HEADERS = {
   'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow',
@@ -526,6 +607,7 @@ export default {
       if (path === '/api/mp/notify') return await mpNotify(req, env);
       if (path === '/api/mp/return') return await mpReturn(req, env);
       if (path === '/api/order' && req.method === 'GET') return await orderStatus(req, env);
+      if (path === '/api/download' && req.method === 'GET') return await download(req, env);
       if (path.startsWith('/api/')) return fail('No encontrado', 404);
       if ((path.startsWith('/producto/') || /^\/productos(\.html)?\/?$/.test(path)) && req.method === 'GET') return await storePage(req, env, url);
       if ((path === '/blog' || path.startsWith('/blog/')) && req.method === 'GET') return await blogPage(req, env);

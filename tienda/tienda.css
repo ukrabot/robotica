@@ -105,5 +105,16 @@
 .ukr-order-meta{color:var(--t-quiet);font-size:.9rem;margin:0 0 16px}
 .ukr-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
 
+/* descargas digitales */
+.ukr-dl{margin-bottom:20px;border-color:rgba(63,122,75,.35);background:#f6fbf6}
+.ukr-dl ul{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:12px}
+.ukr-dl li{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.ukr-dl .ukr-btn{background:var(--t-ok)}
+.ukr-recent{margin-top:28px;text-align:left;border-top:1px solid var(--t-line);padding-top:18px}
+.ukr-recent h3{font:600 1rem Inter,system-ui,sans-serif;margin:0 0 8px}
+.ukr-recent ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ukr-recent a{color:var(--t-blue);font-weight:600}
+.ukr-buy.is-digital .ukr-add{padding:0 28px}
+
 @media (max-width:880px){.ukr-grid{grid-template-columns:1fr}.ukr-sum{position:static}}
 @media (max-width:560px){.ukr-page{padding:28px 16px 70px}.ukr-form{grid-template-columns:1fr}.ukr-box{padding:18px}.ukr-item{grid-template-columns:60px minmax(0,1fr)}.ukr-item img{width:60px;height:60px}.ukr-item-side{grid-column:2;flex-direction:row;align-items:center;justify-content:space-between}.ukr-item-warn{grid-column:1/-1}}
