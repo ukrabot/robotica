@@ -1,14 +1,17 @@
 // Worker de ukrabot.cl: sirve el sitio estático y agrega la tienda.
 //   /api/catalog            precios, stock y tarifas vigentes (público)
-//   /api/checkout           crea el pedido y la orden de pago en Flow
+//   /api/checkout           crea el pedido y la orden de pago (Flow o Mercado Pago)
 //   /api/flow/confirm       aviso servidor-a-servidor de Flow (urlConfirmation)
 //   /api/flow/return        vuelta del cliente desde Flow (urlReturn)
+//   /api/mp/notify          notificación (webhook) de Mercado Pago
+//   /api/mp/return          vuelta del cliente desde Mercado Pago (back_urls)
 //   /api/order              estado de un pedido (requiere su clave de acceso)
 //   /admin, /api/admin/*    panel de administración (contraseña)
 //   /producto/*, /productos se sirven con el precio y stock vigentes
 //
 // Secretos (Cloudflare > Worker > Settings > Variables and Secrets):
 //   FLOW_API_KEY, FLOW_SECRET_KEY, ADMIN_PASSWORD
+//   MP_ACCESS_TOKEN (Mercado Pago) y, opcional, MP_WEBHOOK_SECRET
 import { Store, FULFILL } from './store.js';
 import CATALOG from './catalog.json';
 import ADMIN_HTML from './admin.html';
@@ -79,6 +82,62 @@ async function syncFromFlow(env, token) {
   return store(env).applyFlowStatus(token, st);
 }
 
+// ---------------------------------------------------------------- Mercado Pago
+const MP_NAME = { flow: 'Flow', mp: 'Mercado Pago' };
+function mpConf(env) {
+  if (!env.MP_ACCESS_TOKEN) throw new Error('Falta MP_ACCESS_TOKEN en Cloudflare');
+  return { url: (env.MP_API_URL || 'https://api.mercadopago.com').replace(/\/$/, ''), token: env.MP_ACCESS_TOKEN.trim() };
+}
+async function mpCall(env, method, path, body, extraHeaders = {}) {
+  const c = mpConf(env);
+  const res = await fetch(c.url + path, {
+    method,
+    headers: { authorization: `Bearer ${c.token}`, ...(body ? { 'content-type': 'application/json' } : {}), ...extraHeaders },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const text = await res.text();
+  let data; try { data = JSON.parse(text); } catch { data = { message: text.slice(0, 200) }; }
+  if (!res.ok) { const e = new Error(`Mercado Pago ${path.split('?')[0]} ${res.status}: ${data.message || data.error || 'error'}`); e.status = res.status; throw e; }
+  return data;
+}
+/** Consulta un pago por id y lo aplica a su pedido (si es de esta tienda). */
+async function syncMpPayment(env, id) {
+  const pay = await mpCall(env, 'GET', `/v1/payments/${encodeURIComponent(id)}`);
+  if (!/^UKR-\d+$/.test(String(pay.external_reference || ''))) return { pay, order: null };
+  return { pay, order: await store(env).applyMpPayment(pay) };
+}
+/** Busca todos los pagos de un pedido y los aplica en orden cronológico. */
+async function syncMpOrder(env, code) {
+  const r = await mpCall(env, 'GET', `/v1/payments/search?external_reference=${encodeURIComponent(code)}&sort=date_created&criteria=asc&limit=50`);
+  let order = await store(env).orderByCode(code);
+  for (const pay of r.results || []) {
+    if (pay.external_reference === code) order = (await store(env).applyMpPayment(pay)) || order;
+  }
+  return order;
+}
+/** Valida la firma x-signature de una notificación (si se configuró la clave secreta). */
+async function mpSignatureOk(req, env, dataId) {
+  const secret = env.MP_WEBHOOK_SECRET, header = req.headers.get('x-signature');
+  if (!secret || !header) return true; // sin clave: igual se consulta el pago con el Access Token
+  const parts = Object.fromEntries(header.split(',').map(p => p.trim().split('=').map(x => x.trim())));
+  if (!parts.ts || !parts.v1) return false;
+  const id = /^[a-z0-9]+$/i.test(dataId) ? dataId.toLowerCase() : dataId;
+  let manifest = '';
+  if (id) manifest += `id:${id};`;
+  const rid = req.headers.get('x-request-id');
+  if (rid) manifest += `request-id:${rid};`;
+  manifest += `ts:${parts.ts};`;
+  return safeEqual(await hmacHex(secret, manifest), parts.v1);
+}
+
+/** Medios de pago activos: con credenciales cargadas y habilitados en el panel. */
+function payMethods(env, settings) {
+  const m = [];
+  if (env.FLOW_API_KEY && env.FLOW_SECRET_KEY && settings.pay_flow !== 0) m.push('flow');
+  if (env.MP_ACCESS_TOKEN && settings.pay_mp !== 0) m.push('mp');
+  return m;
+}
+
 // ---------------------------------------------------------------- sesión admin
 async function sessionKey(env) { return hmacHex(env.ADMIN_PASSWORD, 'ukrabot-admin-session-v1'); }
 async function makeSession(env) {
@@ -110,7 +169,7 @@ function validCustomer(c) {
   };
   const errors = {};
   if (out.nombre.length < 3 || out.nombre.length > 80) errors.nombre = 'Escribe tu nombre y apellido.';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(out.email) || out.email.length > 120) errors.email = 'Revisa el correo: ahí te llega el comprobante de Flow.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(out.email) || out.email.length > 120) errors.email = 'Revisa el correo: ahí te llega el comprobante del pago.';
   if (out.telefono.replace(/\D/g, '').length < 8 || out.telefono.length > 20) errors.telefono = 'Escribe un teléfono de al menos 8 dígitos.';
   if (!REGIONS.includes(out.region)) errors.region = 'Elige tu región.';
   if (out.comuna.length < 2 || out.comuna.length > 60) errors.comuna = 'Escribe tu comuna.';
@@ -122,6 +181,7 @@ function validCustomer(c) {
 // ---------------------------------------------------------------- handlers públicos
 async function catalog(env) {
   const { overrides, settings } = await store(env).storefront();
+  const methods = payMethods(env, settings);
   return json({
     products: CATALOG.map(p => {
       const m = merged(p.slug, overrides);
@@ -129,6 +189,7 @@ async function catalog(env) {
     }),
     shipping: { rm: settings.ship_rm, regiones: settings.ship_regiones },
     regions: REGIONS,
+    methods,
   });
 }
 
@@ -142,6 +203,10 @@ async function checkout(req, env) {
   const raw = Array.isArray(body.items) ? body.items : [];
   if (!raw.length || raw.length > 30) return fail('El carrito está vacío.');
   const { overrides, settings } = await st.storefront();
+  const methods = payMethods(env, settings);
+  if (!methods.length) return fail('Los pagos en línea no están disponibles en este momento. Escríbenos por WhatsApp para comprar.', 503);
+  const method = body.method === undefined && methods.length === 1 ? methods[0] : String(body.method || '');
+  if (!methods.includes(method)) return fail('Elige un medio de pago.');
   const items = [], qty = {};
   for (const it of raw) {
     const slug = String(it.slug || ''), q = Number(it.qty);
@@ -165,11 +230,12 @@ async function checkout(req, env) {
     return json({ error: 'Los precios cambiaron mientras comprabas. Revisa el total actualizado.', total }, 409);
   }
 
-  // solo cuentan para el límite los pedidos que de verdad se envían a Flow
+  // solo cuentan para el límite los pedidos que de verdad se envían al medio de pago
   if (await st.limited(bucket, 10, 600, true)) return fail('Demasiados pedidos seguidos. Espera unos minutos y vuelve a intentar.', 429);
-  const order = await st.createOrder({ items, subtotal, shipping, total, zone, customer });
+  const order = await st.createOrder({ items, subtotal, shipping, total, zone, customer, provider: method });
   const site = (env.SITE_URL || new URL(req.url).origin).replace(/\/$/, '');
   try {
+    if (method === 'mp') return json({ url: await mpPreference(env, site, order, { items, shipping, zone, customer }), code: order.code });
     const r = await flowCall(env, 'POST', '/payment/create', {
       commerceOrder: order.code,
       subject: `Pedido ${order.code} en ukrabot.cl`,
@@ -185,9 +251,80 @@ async function checkout(req, env) {
     return json({ url: `${r.url}?token=${r.token}`, code: order.code });
   } catch (e) {
     await st.failOrder(order.code, String(e.message || e));
-    console.error('checkout', order.code, e);
-    return fail('No pudimos iniciar el pago con Flow. Intenta de nuevo en unos minutos o escríbenos por WhatsApp.', 502);
+    console.error('checkout', method, order.code, e);
+    return fail(`No pudimos iniciar el pago con ${MP_NAME[method]}. Intenta de nuevo en unos minutos, prueba otro medio de pago o escríbenos por WhatsApp.`, 502);
   }
+}
+
+async function mpPreference(env, site, order, { items, shipping, zone, customer }) {
+  const back = `${site}/api/mp/return?o=${encodeURIComponent(order.code)}&k=${order.access_key}`;
+  const lines = items.map(i => ({ id: i.slug, title: i.name.slice(0, 120), quantity: i.qty, unit_price: i.price, currency_id: 'CLP' }));
+  if (shipping > 0) lines.push({ id: 'despacho', title: zone === 'rm' ? 'Despacho Región Metropolitana' : 'Despacho a regiones', quantity: 1, unit_price: shipping, currency_id: 'CLP' });
+  const iso = d => d.toISOString().replace('Z', '+00:00');
+  const pref = {
+    items: lines,
+    payer: { email: customer.email, name: customer.nombre },
+    external_reference: order.code,
+    notification_url: `${site}/api/mp/notify`,
+    back_urls: { success: back, pending: back, failure: back },
+    auto_return: 'approved',
+    statement_descriptor: 'UKRABOT',
+    metadata: { pedido: order.code },
+    expires: true,
+    expiration_date_from: iso(new Date(Date.now() - 60e3)),
+    expiration_date_to: iso(new Date(Date.now() + 3600e3)),
+  };
+  let r;
+  try {
+    r = await mpCall(env, 'POST', '/checkout/preferences', pref, { 'x-idempotency-key': order.code + '-' + order.access_key.slice(0, 8) });
+  } catch (e) {
+    if (e.status !== 400) throw e;
+    // si Mercado Pago no acepta el vencimiento, se reintenta sin él
+    delete pref.expires; delete pref.expiration_date_from; delete pref.expiration_date_to;
+    console.warn('mp preference retry sin vencimiento', e.message);
+    r = await mpCall(env, 'POST', '/checkout/preferences', pref, { 'x-idempotency-key': order.code + '-' + order.access_key.slice(0, 8) + '-2' });
+  }
+  await store(env).attachMp(order.code, r.id);
+  const url = mpConf(env).token.startsWith('TEST-') && r.sandbox_init_point ? r.sandbox_init_point : r.init_point;
+  if (!url) throw new Error('Mercado Pago no devolvió init_point');
+  return url;
+}
+
+async function mpNotify(req, env) {
+  const u = new URL(req.url);
+  let body = {};
+  if (req.method === 'POST') { try { body = await req.json(); } catch {} }
+  const type = String(body.type || u.searchParams.get('type') || u.searchParams.get('topic') || '');
+  const id = String(u.searchParams.get('data.id') || body?.data?.id || (u.searchParams.get('topic') === 'payment' ? u.searchParams.get('id') : '') || '');
+  if (type !== 'payment' || !/^\d{1,20}$/.test(id)) return new Response('ignorado', { status: 200 });
+  if (!(await mpSignatureOk(req, env, id))) { console.warn('mp notify: firma no válida', id); return new Response('firma no válida', { status: 401 }); }
+  try {
+    const { order } = await syncMpPayment(env, id);
+    if (!order) console.warn('mp notify: pago sin pedido de la tienda', id);
+  } catch (e) {
+    if (e.status === 404) return new Response('pago no encontrado', { status: 200 }); // p. ej. la prueba del panel de MP
+    console.error('mp notify', id, e);
+    return new Response('error', { status: 500 }); // Mercado Pago reintenta
+  }
+  return new Response('OK', { status: 200 });
+}
+
+async function mpReturn(req, env) {
+  const u = new URL(req.url), code = u.searchParams.get('o') || '', key = u.searchParams.get('k') || '';
+  const o = code ? await store(env).orderByCode(code) : null;
+  if (!o || !key || !(await safeEqual(key, o.access_key))) {
+    return new Response(null, { status: 303, headers: { location: '/pedido?error=1', 'cache-control': 'no-store' } });
+  }
+  const pid = u.searchParams.get('payment_id') || u.searchParams.get('collection_id') || '';
+  try {
+    if (/^\d{1,20}$/.test(pid)) {
+      const pay = await mpCall(env, 'GET', `/v1/payments/${pid}`);
+      if (pay.external_reference === o.code) await store(env).applyMpPayment(pay);
+    } else if (o.status === 'pendiente_pago') {
+      await syncMpOrder(env, o.code);
+    }
+  } catch (e) { console.error('mp return', o.code, e); }
+  return new Response(null, { status: 303, headers: { location: `/pedido?o=${encodeURIComponent(o.code)}&k=${o.access_key}`, 'cache-control': 'no-store' } });
 }
 
 async function flowToken(req) {
@@ -224,7 +361,7 @@ async function orderStatus(req, env) {
   const u = new URL(req.url), code = u.searchParams.get('o') || '', key = u.searchParams.get('k') || '';
   const o = code ? await store(env).orderByCode(code) : null;
   if (!o || !key || !(await safeEqual(key, o.access_key))) return fail('Pedido no encontrado', 404);
-  return json({ code: o.code, status: o.status, total: o.total, subtotal: o.subtotal, shipping: o.shipping, zone: o.zone,
+  return json({ code: o.code, status: o.status, provider: o.provider || 'flow', total: o.total, subtotal: o.subtotal, shipping: o.shipping, zone: o.zone,
     items: o.items.map(i => ({ name: i.name, qty: i.qty, line: i.line })), created_at: o.created_at,
     courier: o.courier, tracking: o.tracking, email: o.customer.email.replace(/^(.).*(@.*)$/, '$1***$2') });
 }
@@ -276,7 +413,8 @@ async function admin(req, env, url) {
     return json({ ok: true }, 200, { 'set-cookie': cookie(await makeSession(env), SESSION_HOURS * 3600) });
   }
   if (p === '/logout' && req.method === 'POST') return json({ ok: true }, 200, { 'set-cookie': cookie('', 0) });
-  if (p === '/me') return json({ admin: await isAdmin(req, env), ready: adminReady(env), flow: !!(env.FLOW_API_KEY && env.FLOW_SECRET_KEY), flow_url: env.FLOW_API_URL || 'https://www.flow.cl/api' });
+  if (p === '/me') return json({ admin: await isAdmin(req, env), ready: adminReady(env), flow: !!(env.FLOW_API_KEY && env.FLOW_SECRET_KEY), flow_url: env.FLOW_API_URL || 'https://www.flow.cl/api',
+    mp: !!env.MP_ACCESS_TOKEN, mp_test: !!env.MP_ACCESS_TOKEN && env.MP_ACCESS_TOKEN.trim().startsWith('TEST-'), mp_signed: !!env.MP_WEBHOOK_SECRET });
   if (!(await isAdmin(req, env))) return fail('Sesión expirada. Vuelve a entrar.', 401);
   if (req.method !== 'GET' && !sameOrigin(req)) return fail('Origen no permitido', 403);
 
@@ -293,7 +431,11 @@ async function admin(req, env, url) {
   m = p.match(/^\/orders\/(UKR-\d+)\/sync$/);
   if (m && req.method === 'POST') {
     const o = await st.orderByCode(m[1]);
-    if (!o || !o.flow_token) return fail('Este pedido no tiene orden en Flow.');
+    if (!o) return fail('Pedido no encontrado', 404);
+    if (o.provider === 'mp') {
+      try { return json({ order: await syncMpOrder(env, o.code) }); } catch (e) { return fail('Mercado Pago no respondió: ' + e.message, 502); }
+    }
+    if (!o.flow_token) return fail('Este pedido no tiene orden en Flow.');
     try { return json({ order: await syncFromFlow(env, o.flow_token) }); } catch (e) { return fail('Flow no respondió: ' + e.message, 502); }
   }
   if (p === '/products' && req.method === 'GET') {
@@ -312,12 +454,14 @@ async function admin(req, env, url) {
     const { overrides } = await st.storefront();
     return json({ product: merged(m[1], overrides) });
   }
-  if (p === '/settings' && req.method === 'GET') return json(await st.getSettings());
+  if (p === '/settings' && req.method === 'GET') return json({ ...(await st.getSettings()), configured: { flow: !!(env.FLOW_API_KEY && env.FLOW_SECRET_KEY), mp: !!env.MP_ACCESS_TOKEN } });
   if (p === '/settings' && req.method === 'POST') {
     let b; try { b = await req.json(); } catch { return fail('Solicitud no válida'); }
     const rm = Number(b.ship_rm), rg = Number(b.ship_regiones);
     if (![rm, rg].every(v => Number.isInteger(v) && v >= 0 && v <= 200000)) return fail('Las tarifas deben ser números enteros entre $0 y $200.000.');
-    return json(await st.saveSettings({ ship_rm: rm, ship_regiones: rg }));
+    const patch = { ship_rm: rm, ship_regiones: rg };
+    for (const k of ['pay_flow', 'pay_mp']) if (b[k] !== undefined) patch[k] = b[k] ? 1 : 0;
+    return json(await st.saveSettings(patch));
   }
   return fail('No encontrado', 404);
 }
@@ -340,6 +484,8 @@ export default {
       if (path === '/api/checkout' && req.method === 'POST') return await checkout(req, env);
       if (path === '/api/flow/confirm') return await flowConfirm(req, env);
       if (path === '/api/flow/return') return await flowReturn(req, env);
+      if (path === '/api/mp/notify') return await mpNotify(req, env);
+      if (path === '/api/mp/return') return await mpReturn(req, env);
       if (path === '/api/order' && req.method === 'GET') return await orderStatus(req, env);
       if (path.startsWith('/api/')) return fail('No encontrado', 404);
       if ((path.startsWith('/producto/') || /^\/productos(\.html)?\/?$/.test(path)) && req.method === 'GET') return await storePage(req, env, url);

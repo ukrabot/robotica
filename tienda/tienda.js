@@ -6,6 +6,11 @@
   var catalogPromise = null;
 
   // ------------------------------------------------------------ utilidades
+  var PAY_NAME = { flow: 'Flow', mp: 'Mercado Pago' };
+  var PAY_NOTE = {
+    flow: 'Webpay, tarjetas de débito y crédito, transferencia y otros medios.',
+    mp: 'Tarjetas, saldo de Mercado Pago y otros medios de esa plataforma.'
+  };
   function clp(n) { return '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
   function el(tag, attrs, html) {
     var e = document.createElement(tag);
@@ -113,7 +118,7 @@
       add.disabled = false;
       add.innerHTML = 'Agregar al carrito<span class="ukr-add-price"> · ' + clp(p.price) + '</span>';
       if (p.stock !== null && p.stock <= 5) { stock.textContent = p.stock === 1 ? 'Queda 1 unidad.' : 'Quedan ' + p.stock + ' unidades.'; stock.className = 'ukr-stock is-low'; }
-      else { stock.textContent = 'Pago seguro con Flow · envío a todo Chile.'; }
+      else { stock.textContent = (d.methods && d.methods.length ? 'Pago seguro con ' + d.methods.map(function (m) { return PAY_NAME[m]; }).join(' o ') + ' · ' : '') + 'Envío a todo Chile.'; }
       render();
     }).catch(function () { stock.textContent = 'No pudimos cargar la disponibilidad. Recarga la página o escríbenos por WhatsApp.'; });
   }
@@ -137,7 +142,13 @@
     function saveForm() {
       if (!form) return;
       var o = {}; ['nombre', 'email', 'telefono', 'region', 'comuna', 'direccion', 'notas'].forEach(function (k) { o[k] = form.elements[k].value; });
+      o.metodo = method();
       store(FORM_KEY, JSON.stringify(o));
+    }
+    function methods() { return data.methods || []; }
+    function method() {
+      var r = root.querySelector('input[name="ukr-metodo"]:checked');
+      return r ? r.value : (methods().length === 1 ? methods()[0] : '');
     }
     function lines() {
       var errs = [];
@@ -178,8 +189,10 @@
       root.querySelector('[data-sum="ship"]').textContent = t.ship === null ? 'Elige tu región' : (t.ship === 0 ? 'Gratis' : clp(t.ship));
       root.querySelector('[data-sum="total"]').textContent = t.total === null ? '—' : clp(t.total);
       var pay = root.querySelector('.ukr-pay');
-      pay.disabled = problems.length > 0;
-      pay.textContent = t.total === null ? 'Pagar con Flow' : 'Pagar ' + clp(t.total) + ' con Flow';
+      var m = method();
+      pay.disabled = problems.length > 0 || !methods().length;
+      pay.textContent = !methods().length ? 'Pago en línea no disponible' : 'Pagar ' + (t.total === null ? '' : clp(t.total) + ' ') + (m ? 'con ' + PAY_NAME[m] : '');
+      root.querySelector('[data-pay-note]').textContent = m ? 'Te llevaremos a ' + PAY_NAME[m] + ' para completar el pago. ' + PAY_NAME[m] + ' te envía el comprobante a tu correo.' : '';
     }
     function build() {
       var f = savedForm();
@@ -199,14 +212,16 @@
         '<aside class="ukr-box ukr-sum" aria-labelledby="ukr-sum-t"><h2 id="ukr-sum-t">Resumen</h2>' +
         '<dl><dt>Productos</dt><dd data-sum="sub"></dd><dt>Envío</dt><dd data-sum="ship"></dd><div class="ukr-total"><dt>Total</dt><dd data-sum="total"></dd></div></dl>' +
         '<p class="ukr-alert" role="alert" hidden></p>' +
+        payBlock(f.metodo) +
         '<label class="ukr-check"><input type="checkbox" id="f-acepta"> <span>Acepto las <a href="/terms#compras" target="_blank" rel="noopener">condiciones de compra</a>, incluido el derecho a retracto.</span></label>' +
-        '<button type="button" class="ukr-pay">Pagar con Flow</button>' +
-        '<p class="ukr-note">Te llevaremos a Flow para pagar con tarjeta de débito, crédito, transferencia u otros medios. Flow te envía el comprobante a tu correo.</p>' +
+        '<button type="button" class="ukr-pay">Pagar</button>' +
+        '<p class="ukr-note" data-pay-note></p>' +
         '<p class="ukr-note">Envío a la Región Metropolitana: ' + clp(data.shipping.rm) + '. Resto de Chile: ' + clp(data.shipping.regiones) + '.</p></aside></div>';
       form = root.querySelector('form'); alertEl = root.querySelector('.ukr-alert');
       ['nombre', 'email', 'telefono', 'comuna', 'direccion', 'notas'].forEach(function (k) { if (f[k]) form.elements[k].value = f[k]; });
       form.addEventListener('input', function (e) { saveForm(); clearErr(e.target.name); });
       form.elements.region.addEventListener('change', render);
+      root.querySelectorAll('input[name="ukr-metodo"]').forEach(function (r) { r.addEventListener('change', function () { saveForm(); showAlert(''); render(); }); });
       root.querySelector('.ukr-items').addEventListener('click', function (e) {
         var li = e.target.closest('.ukr-item'); if (!li) return;
         var slug = li.getAttribute('data-slug');
@@ -215,6 +230,15 @@
         if (d) Cart.set(slug, Math.max(1, Cart.qty(slug) + Number(d.getAttribute('data-d'))));
       });
       root.querySelector('.ukr-pay').addEventListener('click', pay);
+    }
+    function payBlock(saved) {
+      var ms = methods();
+      if (!ms.length) return '<p class="ukr-alert">El pago en línea no está disponible en este momento. Escríbenos por WhatsApp para comprar.</p>';
+      var pick = ms.indexOf(saved) >= 0 ? saved : (ms.length === 1 ? ms[0] : '');
+      return '<fieldset class="ukr-methods"><legend>Medio de pago</legend>' + ms.map(function (m) {
+        return '<label class="ukr-method"><input type="radio" name="ukr-metodo" value="' + m + '"' + (m === pick ? ' checked' : '') + '>' +
+          '<span><strong>' + PAY_NAME[m] + '</strong><small>' + PAY_NOTE[m] + '</small></span></label>';
+      }).join('') + '</fieldset>';
     }
     function field(name, label, input, wide) {
       return '<div class="ukr-field' + (wide ? ' is-wide' : '') + '" data-field="' + name + '"><label for="f-' + name + '">' + label + '</label>' + input + '<p class="ukr-err" hidden></p></div>';
@@ -234,23 +258,25 @@
       var v = {}; ['nombre', 'email', 'telefono', 'region', 'comuna', 'direccion', 'notas'].forEach(function (k) { v[k] = form.elements[k].value.trim(); });
       var errs = {};
       if (v.nombre.length < 3) errs.nombre = 'Escribe tu nombre y apellido.';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) errs.email = 'Revisa el correo: ahí te llega el comprobante de Flow.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) errs.email = 'Revisa el correo: ahí te llega el comprobante del pago.';
       if (v.telefono.replace(/\D/g, '').length < 8) errs.telefono = 'Escribe un teléfono de al menos 8 dígitos.';
       if (!v.region) errs.region = 'Elige tu región.';
       if (v.comuna.length < 2) errs.comuna = 'Escribe tu comuna.';
       if (v.direccion.length < 5) errs.direccion = 'Escribe calle, número y depto. si corresponde.';
       Object.keys(errs).forEach(function (k) { setErr(k, errs[k]); });
       if (Object.keys(errs).length) { var first = root.querySelector('.has-error input, .has-error select'); if (first) first.focus(); return; }
+      var m = method();
+      if (!m) { showAlert('Elige un medio de pago.'); var fs = root.querySelector('.ukr-methods input'); if (fs) fs.focus(); return; }
       if (!root.querySelector('#f-acepta').checked) { showAlert('Para continuar, acepta las condiciones de compra.'); return; }
       var items = Cart.items(), t = totals(lines());
-      var btn = root.querySelector('.ukr-pay'); btn.disabled = true; btn.textContent = 'Conectando con Flow…';
-      fetch('/api/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ items: items, customer: v, acepta: true, expected_total: t.total }) })
+      var btn = root.querySelector('.ukr-pay'); btn.disabled = true; btn.textContent = 'Conectando con ' + PAY_NAME[m] + '…';
+      fetch('/api/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ items: items, customer: v, acepta: true, expected_total: t.total, method: m }) })
         .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, status: r.status, d: d }; }); })
         .then(function (r) {
           if (r.ok && r.d.url) { location.href = r.d.url; return; }
           if (r.d.fields) Object.keys(r.d.fields).forEach(function (k) { setErr(k, r.d.fields[k]); });
           showAlert(r.d.error || 'No pudimos iniciar el pago. Intenta de nuevo.');
-          if (r.status === 409) { catalogPromise = null; return catalog().then(function (d) { data = d; render(); }); }
+          if (r.status === 409 || r.status === 400 || r.status === 503) { catalogPromise = null; return catalog().then(function (d) { data = d; form = null; render(); showAlert(r.d.error || ''); }); }
           render();
         })
         .catch(function () { showAlert('Sin conexión con el servidor. Revisa tu internet e intenta de nuevo.'); render(); });
@@ -263,19 +289,20 @@
   function mountOrder(root) {
     var q = new URLSearchParams(location.search), code = q.get('o'), key = q.get('k'), tries = 0;
     var STATES = {
-      pagado: ['is-ok', '✓', 'Pago recibido', 'Gracias por tu compra. Flow te envió el comprobante por correo y nosotros te contactaremos para coordinar el despacho.'],
+      pagado: ['is-ok', '✓', 'Pago recibido', 'Gracias por tu compra. {P} te envió el comprobante por correo y nosotros te contactaremos para coordinar el despacho.'],
       preparando: ['is-ok', '✓', 'Estamos preparando tu pedido', 'Tu pago está confirmado y el pedido se está preparando para el envío.'],
       enviado: ['is-ok', '✓', 'Tu pedido va en camino', 'Ya lo entregamos a la empresa de transporte.'],
       entregado: ['is-ok', '✓', 'Pedido entregado', 'Gracias por comprar en ukrabot.cl.'],
-      revisar: ['is-wait', '…', 'Estamos verificando tu pago', 'Recibimos el aviso de Flow y lo estamos revisando. Te contactaremos por correo.'],
-      pendiente_pago: ['is-wait', '…', 'Esperando la confirmación de Flow', 'Esto suele tardar unos segundos. Si pagaste por transferencia, puede demorar más: este enlace mostrará el estado actualizado.'],
-      rechazado: ['is-bad', '!', 'El pago no se completó', 'Flow rechazó el pago y no se hizo ningún cargo. Tu carrito sigue guardado para que intentes de nuevo.'],
+      revisar: ['is-wait', '…', 'Estamos verificando tu pago', 'Recibimos el aviso de {P} y lo estamos revisando. Te contactaremos por correo.'],
+      pendiente_pago: ['is-wait', '…', 'Esperando la confirmación de {P}', 'Esto suele tardar unos segundos. Si pagaste con un medio que se acredita más tarde, puede demorar más: este enlace mostrará el estado actualizado.'],
+      rechazado: ['is-bad', '!', 'El pago no se completó', '{P} rechazó el pago y no se hizo ningún cargo. Tu carrito sigue guardado para que intentes de nuevo.'],
       anulado: ['is-bad', '!', 'El pago fue anulado', 'No se hizo ningún cargo. Tu carrito sigue guardado para que intentes de nuevo.'],
-      error_flow: ['is-bad', '!', 'No pudimos conectar con Flow', 'No se hizo ningún cargo. Intenta de nuevo en unos minutos.'],
+      error_flow: ['is-bad', '!', 'No pudimos conectar con {P}', 'No se hizo ningún cargo. Intenta de nuevo en unos minutos.'],
       cancelado: ['is-bad', '!', 'Pedido cancelado', 'Si tienes dudas sobre la devolución, escríbenos.'],
     };
     function show(o) {
-      var s = STATES[o.status] || STATES.pendiente_pago, paid = ['pagado', 'preparando', 'enviado', 'entregado', 'revisar'].indexOf(o.status) >= 0;
+      var P = PAY_NAME[o.provider] || 'Flow';
+      var s = (STATES[o.status] || STATES.pendiente_pago).map(function (x) { return x.replace(/\{P\}/g, P); }), paid = ['pagado', 'preparando', 'enviado', 'entregado', 'revisar'].indexOf(o.status) >= 0;
       if (paid) Cart.clear();
       root.innerHTML = '<div class="ukr-status"><div class="ukr-status-icon ' + s[0] + '" aria-hidden="true">' + s[1] + '</div><div><h1>' + s[2] + '</h1><p>' + s[3] + '</p></div></div>' +
         '<section class="ukr-box"><h2>Pedido ' + esc(o.code) + '</h2><p class="ukr-order-meta">Comprobante enviado a ' + esc(o.email) + '</p><ul class="ukr-items">' +

@@ -6,6 +6,12 @@ import { DurableObject } from 'cloudflare:workers';
 const now = () => new Date().toISOString();
 
 export const PAY = { 1: 'pendiente_pago', 2: 'pagado', 3: 'rechazado', 4: 'anulado' };
+// Estados de un pago de Mercado Pago → estado del pedido
+export const MP_PAY = {
+  approved: 'pagado', pending: 'pendiente_pago', in_process: 'pendiente_pago', authorized: 'pendiente_pago',
+  rejected: 'rechazado', cancelled: 'anulado', refunded: 'devuelto', charged_back: 'devuelto', in_mediation: 'devuelto',
+};
+const UNPAID = ['pendiente_pago', 'rechazado', 'anulado', 'error_flow'];
 // Estados de preparación que el admin puede asignar a un pedido pagado
 export const FULFILL = ['pagado', 'preparando', 'enviado', 'entregado', 'cancelado'];
 
@@ -50,6 +56,13 @@ export class Store extends DurableObject {
       CREATE TABLE IF NOT EXISTS hits (bucket TEXT NOT NULL, ts INTEGER NOT NULL);
       CREATE INDEX IF NOT EXISTS idx_hits ON hits(bucket, ts);
     `);
+    // v2: Mercado Pago como segundo medio de pago
+    const cols = this.sql.exec('PRAGMA table_info(orders)').toArray().map(c => c.name);
+    if (!cols.includes('provider')) this.sql.exec("ALTER TABLE orders ADD COLUMN provider TEXT NOT NULL DEFAULT 'flow'");
+    if (!cols.includes('mp_pref')) this.sql.exec('ALTER TABLE orders ADD COLUMN mp_pref TEXT');
+    if (!cols.includes('mp_payment')) this.sql.exec('ALTER TABLE orders ADD COLUMN mp_payment TEXT');
+    if (!cols.includes('mp_status')) this.sql.exec('ALTER TABLE orders ADD COLUMN mp_status TEXT');
+    if (!cols.includes('mp_extra')) this.sql.exec("ALTER TABLE orders ADD COLUMN mp_extra TEXT NOT NULL DEFAULT ''");
   }
 
   // ---------------------------------------------------------------- límites
@@ -66,12 +79,13 @@ export class Store extends DurableObject {
 
   // ---------------------------------------------------------------- ajustes
   getSettings() {
-    const s = { ship_rm: 3990, ship_regiones: 5990 };
+    const s = { ship_rm: 3990, ship_regiones: 5990, pay_flow: 1, pay_mp: 1 };
     for (const r of this.sql.exec('SELECT key, value FROM settings').toArray()) s[r.key] = Number(r.value);
     return s;
   }
-  saveSettings({ ship_rm, ship_regiones }) {
-    for (const [k, v] of [['ship_rm', ship_rm], ['ship_regiones', ship_regiones]]) {
+  saveSettings(patch) {
+    for (const [k, v] of Object.entries(patch)) {
+      if (!['ship_rm', 'ship_regiones', 'pay_flow', 'pay_mp'].includes(k)) continue;
       this.sql.exec('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value', k, String(v));
     }
     return this.getSettings();
@@ -93,12 +107,12 @@ export class Store extends DurableObject {
   storefront() { return { overrides: this.overrides(), settings: this.getSettings() }; }
 
   // ---------------------------------------------------------------- pedidos
-  createOrder({ items, subtotal, shipping, total, zone, customer }) {
+  createOrder({ items, subtotal, shipping, total, zone, customer, provider = 'flow' }) {
     const key = crypto.randomUUID().replace(/-/g, '');
     const t = now();
-    const row = this.sql.exec(`INSERT INTO orders (code, access_key, created_at, updated_at, status, items_json, subtotal, shipping, total, zone, customer_json)
-      VALUES (NULL, ?, ?, ?, 'pendiente_pago', ?, ?, ?, ?, ?, ?) RETURNING id`,
-      key, t, t, JSON.stringify(items), subtotal, shipping, total, zone, JSON.stringify(customer)).one();
+    const row = this.sql.exec(`INSERT INTO orders (code, access_key, created_at, updated_at, status, items_json, subtotal, shipping, total, zone, customer_json, provider)
+      VALUES (NULL, ?, ?, ?, 'pendiente_pago', ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
+      key, t, t, JSON.stringify(items), subtotal, shipping, total, zone, JSON.stringify(customer), provider).one();
     const code = 'UKR-' + String(1000 + row.id);
     this.sql.exec('UPDATE orders SET code = ? WHERE id = ?', code, row.id);
     return { id: row.id, code, access_key: key };
@@ -106,11 +120,21 @@ export class Store extends DurableObject {
   attachFlow(code, token, flowOrder) {
     this.sql.exec('UPDATE orders SET flow_token = ?, flow_order = ?, updated_at = ? WHERE code = ?', token, flowOrder, now(), code);
   }
+  attachMp(code, prefId) {
+    this.sql.exec('UPDATE orders SET mp_pref = ?, updated_at = ? WHERE code = ?', prefId, now(), code);
+  }
   failOrder(code, reason) {
     this.sql.exec("UPDATE orders SET status = 'error_flow', review = ?, updated_at = ? WHERE code = ? AND status = 'pendiente_pago'", reason.slice(0, 300), now(), code);
   }
   orderByToken(token) { return this.decode(this.sql.exec('SELECT * FROM orders WHERE flow_token = ?', token).toArray()[0]); }
   orderByCode(code) { return this.decode(this.sql.exec('SELECT * FROM orders WHERE code = ?', code).toArray()[0]); }
+
+  /** Descuenta el stock de un pedido (una sola vez). */
+  _takeStock(o, t) {
+    for (const it of JSON.parse(o.items_json)) {
+      this.sql.exec('UPDATE products SET stock = MAX(stock - ?, 0), updated_at = ? WHERE slug = ? AND stock IS NOT NULL', it.qty, t, it.slug);
+    }
+  }
 
   /**
    * Aplica el estado informado por Flow (consultado con getStatus, nunca el POST).
@@ -127,20 +151,61 @@ export class Store extends DurableObject {
       }
       const payStatus = PAY[st.status] || 'pendiente_pago';
       let status = o.status;
-      if (status === 'pendiente_pago' || status === 'rechazado' || status === 'anulado' || status === 'error_flow') {
-        status = review ? 'revisar' : payStatus;
-      }
+      if (UNPAID.includes(status)) status = review ? 'revisar' : payStatus;
       let paidAt = o.paid_at;
       if (payStatus === 'pagado' && !paidAt) paidAt = t;
       let applied = o.stock_applied;
-      if (payStatus === 'pagado' && !applied && !review) {
-        for (const it of JSON.parse(o.items_json)) {
-          this.sql.exec('UPDATE products SET stock = MAX(stock - ?, 0), updated_at = ? WHERE slug = ? AND stock IS NOT NULL', it.qty, t, it.slug);
-        }
-        applied = 1;
-      }
+      if (payStatus === 'pagado' && !applied && !review) { this._takeStock(o, t); applied = 1; }
       this.sql.exec('UPDATE orders SET status = ?, flow_status = ?, flow_order = COALESCE(?, flow_order), paid_at = ?, stock_applied = ?, review = ?, updated_at = ? WHERE id = ?',
         status, Number(st.status), st.flowOrder ?? null, paidAt, applied, review, t, o.id);
+      return this.decode(this.sql.exec('SELECT * FROM orders WHERE id = ?', o.id).toArray()[0]);
+    });
+  }
+
+  /**
+   * Aplica un pago de Mercado Pago, consultado con /v1/payments/{id} usando el
+   * Access Token (nunca se confía en el contenido de la notificación).
+   * Un pedido puede recibir varios intentos de pago: uno rechazado no deshace
+   * uno aprobado, y un segundo pago aprobado o una devolución quedan "a revisar".
+   */
+  applyMpPayment(pay) {
+    return this.ctx.storage.transactionSync(() => {
+      const o = this.sql.exec("SELECT * FROM orders WHERE code = ? AND provider = 'mp'", String(pay.external_reference || '')).toArray()[0];
+      if (!o) return null;
+      const t = now(), pid = String(pay.id);
+      const payStatus = MP_PAY[pay.status] || 'pendiente_pago';
+      let review = o.review || '', status = o.status, paidAt = o.paid_at, applied = o.stock_applied, payment = o.mp_payment, mpStatus = o.mp_status;
+      const extra = o.mp_extra ? o.mp_extra.split(',') : [];
+      const mismatch = Number(pay.transaction_amount) !== o.total || pay.currency_id !== 'CLP';
+      const label = `pago ${pid} (${pay.status}${pay.status_detail ? ' · ' + pay.status_detail : ''})`;
+
+      if (!o.paid_at) {
+        // aún sin pagar: el último intento manda
+        payment = pid; mpStatus = pay.status;
+        if (payStatus === 'pagado' && mismatch) {
+          review = `Mercado Pago informó $${pay.transaction_amount} ${pay.currency_id}; se esperaba $${o.total} CLP (${label}). Revisar en Mercado Pago.`;
+          status = 'revisar'; paidAt = t;
+        } else if (payStatus === 'pagado') {
+          status = 'pagado'; paidAt = t;
+          if (!applied) { this._takeStock(o, t); applied = 1; }
+        } else if (UNPAID.includes(status)) {
+          status = payStatus === 'devuelto' ? 'anulado' : payStatus;
+        }
+      } else if (pid === o.mp_payment) {
+        // el pago aprobado cambió: devolución, contracargo o disputa
+        mpStatus = pay.status;
+        if (payStatus === 'devuelto' && o.mp_status !== pay.status) {
+          review = `El ${label} fue devuelto o disputado en Mercado Pago. Revisa antes de despachar.`;
+          status = 'revisar';
+        }
+      } else if (payStatus === 'pagado' && !extra.includes(pid)) {
+        // un segundo pago aprobado para el mismo pedido
+        extra.push(pid);
+        review = `Se recibió un segundo pago aprobado (${label}) para este pedido. Devuélvelo desde Mercado Pago.`;
+        status = 'revisar';
+      }
+      this.sql.exec('UPDATE orders SET status = ?, mp_payment = ?, mp_status = ?, mp_extra = ?, paid_at = ?, stock_applied = ?, review = ?, updated_at = ? WHERE id = ?',
+        status, payment, mpStatus, extra.join(','), paidAt, applied, review, t, o.id);
       return this.decode(this.sql.exec('SELECT * FROM orders WHERE id = ?', o.id).toArray()[0]);
     });
   }

@@ -72,6 +72,13 @@
 .ukr-sum dd{margin:0;text-align:right;font-weight:600}
 .ukr-sum .ukr-total dt,.ukr-sum .ukr-total dd{font-size:1.2rem;color:var(--t-ink);font-weight:700;padding-top:10px;border-top:1px solid var(--t-line)}
 .ukr-sum .ukr-total{display:contents}
+.ukr-methods{border:0;padding:0;margin:0 0 16px;display:grid;gap:8px}
+.ukr-methods legend{font-weight:600;font-size:.92rem;margin-bottom:8px;padding:0}
+.ukr-method{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid rgba(30,25,15,.18);border-radius:12px;cursor:pointer;background:#fff}
+.ukr-method:has(input:checked){border-color:var(--t-brass);box-shadow:0 0 0 1px var(--t-brass);background:#fdf9f0}
+.ukr-method input{width:18px;height:18px;margin-top:2px;accent-color:var(--t-brass);flex:none}
+.ukr-method span{display:flex;flex-direction:column;gap:2px}
+.ukr-method small{color:var(--t-muted);font-size:.82rem;line-height:1.4}
 .ukr-check{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--t-muted);margin:0 0 16px}
 .ukr-check input{width:20px;height:20px;margin-top:1px;accent-color:var(--t-brass);flex:none}
 .ukr-pay{width:100%;height:54px;border:0;border-radius:14px;background:var(--t-brass);color:#fff;font:700 1.05rem Inter,system-ui,sans-serif;cursor:pointer}

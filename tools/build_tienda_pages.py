@@ -13,8 +13,8 @@ header = re.search(r'<header class="site-header">.*?</header>', ab, re.S).group(
 footer = ab[ab.index('<footer'):]
 
 PAGES = {
-    'carrito.html': ('Carrito de compras | ukrabot.cl', 'Revisa tu carrito y paga con Flow.',
-                     '<main class="ukr-page" id="main"><h1>Carrito</h1><p class="ukr-lede">Revisa los productos, completa los datos de despacho y paga de forma segura con Flow.</p>'
+    'carrito.html': ('Carrito de compras | ukrabot.cl', 'Revisa tu carrito y paga con Flow o Mercado Pago.',
+                     '<main class="ukr-page" id="main"><h1>Carrito</h1><p class="ukr-lede">Revisa los productos, completa los datos de despacho y paga de forma segura con Flow o Mercado Pago.</p>'
                      '<div id="ukr-checkout"><p class="ukr-lede">Cargando tu carrito…</p></div></main>'),
     'pedido.html': ('Estado del pedido | ukrabot.cl', 'Estado de tu pedido en ukrabot.cl.',
                     '<main class="ukr-page" id="main" style="max-width:760px"><div id="ukr-order"><p class="ukr-lede">Consultando tu pedido…</p></div></main>'),
@@ -34,7 +34,7 @@ for fn, (title, desc, body) in PAGES.items():
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>{css}</style>
-<link rel="stylesheet" href="/tienda/tienda.css?v=1">
+<link rel="stylesheet" href="/tienda/tienda.css?v=2">
 {tracking}</head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -43,7 +43,7 @@ for fn, (title, desc, body) in PAGES.items():
 
 {body}
 
-<script src="/tienda/tienda.js?v=1" defer></script>
+<script src="/tienda/tienda.js?v=2" defer></script>
 {footer}'''
     open(fn, 'w', encoding='utf-8').write(page)
     print('ok', fn, len(page))

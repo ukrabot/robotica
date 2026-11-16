@@ -7,7 +7,8 @@
   // páginas de productos, para mostrar el precio y stock vigentes.
   //
   // Secretos que se configuran en Cloudflare (Settings > Variables and Secrets),
-  // nunca en este archivo: FLOW_API_KEY, FLOW_SECRET_KEY, ADMIN_PASSWORD.
+  // nunca en este archivo: FLOW_API_KEY, FLOW_SECRET_KEY, ADMIN_PASSWORD,
+  // MP_ACCESS_TOKEN y (opcional) MP_WEBHOOK_SECRET.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "robotica",
   "main": "worker/index.js",

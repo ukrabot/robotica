@@ -127,7 +127,7 @@ tr.click:hover td{background:#faf8f3}
     <nav class="tabs" role="tablist" aria-label="Secciones">
       <button class="tab" role="tab" data-tab="orders" aria-selected="true">Pedidos</button>
       <button class="tab" role="tab" data-tab="products" aria-selected="false">Productos</button>
-      <button class="tab" role="tab" data-tab="settings" aria-selected="false">Envío</button>
+      <button class="tab" role="tab" data-tab="settings" aria-selected="false">Envío y pagos</button>
     </nav>
     <button class="out" id="logout">Salir</button>
   </div></header>
@@ -136,7 +136,7 @@ tr.click:hover td{background:#faf8f3}
 
     <section id="tab-orders">
       <h1>Pedidos</h1>
-      <p class="sub">Los pedidos pagados aparecen aquí apenas Flow confirma el pago.</p>
+      <p class="sub">Los pedidos pagados aparecen aquí apenas Flow o Mercado Pago confirman el pago.</p>
       <div class="kpis" id="kpis"></div>
       <div class="tools">
         <label class="hidden" for="f-status">Estado</label>
@@ -163,7 +163,7 @@ tr.click:hover td{background:#faf8f3}
 
     <section id="tab-products" class="hidden">
       <h1>Productos</h1>
-      <p class="sub">El precio y el stock se actualizan al instante en la ficha, el catálogo y el carrito. Deja el stock vacío para no controlarlo. El stock baja solo cuando Flow confirma un pago.</p>
+      <p class="sub">El precio y el stock se actualizan al instante en la ficha, el catálogo y el carrito. Deja el stock vacío para no controlarlo. El stock baja solo cuando se confirma un pago.</p>
       <p class="msg hidden" id="prod-msg" role="status"></p>
       <div class="card table-wrap"><table>
         <thead><tr><th>Producto</th><th class="num">Precio base</th><th class="num">Precio venta</th><th class="num">Stock</th><th>En venta</th><th></th></tr></thead>
@@ -172,14 +172,19 @@ tr.click:hover td{background:#faf8f3}
     </section>
 
     <section id="tab-settings" class="hidden">
-      <h1>Envío</h1>
-      <p class="sub">Tarifa fija que se suma al total según la región que elige el cliente.</p>
+      <h1>Envío y pagos</h1>
+      <p class="sub">Tarifa fija que se suma al total según la región que elige el cliente, y los medios de pago que se ofrecen en el carrito.</p>
       <form class="card settings" id="ship-form">
         <p class="msg hidden" id="ship-msg" role="status"></p>
+        <h3 style="margin-top:0">Envío</h3>
         <div class="field"><label for="s-rm">Región Metropolitana (CLP)</label><input id="s-rm" type="number" min="0" max="200000" step="1" required></div>
         <div class="field"><label for="s-rg">Resto de Chile (CLP)</label><input id="s-rg" type="number" min="0" max="200000" step="1" required></div>
         <p class="dim">Usa 0 para envío gratis en esa zona.</p>
-        <button class="btn" type="submit">Guardar tarifas</button>
+        <h3>Medios de pago</h3>
+        <div class="field"><label class="switch"><input type="checkbox" id="s-flow"> Flow</label><span class="dim" id="s-flow-st"></span></div>
+        <div class="field"><label class="switch"><input type="checkbox" id="s-mp"> Mercado Pago</label><span class="dim" id="s-mp-st"></span></div>
+        <p class="dim">Desactivar un medio lo oculta del carrito sin borrar sus claves.</p>
+        <button class="btn" type="submit">Guardar</button>
       </form>
     </section>
   </main>
@@ -194,6 +199,8 @@ tr.click:hover td{background:#faf8f3}
 var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
 var LABEL={pendiente_pago:'Esperando pago',pagado:'Pagado · por preparar',preparando:'Preparando',enviado:'Enviado',entregado:'Entregado',cancelado:'Cancelado',rechazado:'Pago rechazado',anulado:'Pago anulado',error_flow:'Error al crear el pago',revisar:'Revisar'};
 var FULFILL=['pagado','preparando','enviado','entregado','cancelado'];
+var PROV={flow:'Flow',mp:'Mercado Pago'};
+var MPST={approved:'aprobado',pending:'pendiente',in_process:'en revisión',authorized:'autorizado',rejected:'rechazado',cancelled:'cancelado',refunded:'devuelto',charged_back:'contracargo',in_mediation:'en disputa'};
 var state={status:'activos',q:'',page:1,orders:[]};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function clp(n){return '$'+String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
@@ -220,7 +227,10 @@ $('#login-form').addEventListener('submit',function(e){
 $('#logout').addEventListener('click',function(){api('/api/admin/logout',{method:'POST'}).then(function(){showLogin('')})});
 api('/api/admin/me').then(function(d){
   if(!d.ready){showLogin('');msg($('#login-msg'),'El panel no está activo: falta configurar ADMIN_PASSWORD (12 caracteres o más) en Cloudflare.','err');return}
-  if(!d.flow){var w=$('#cfg-warn');w.textContent='Flow no está configurado: faltan FLOW_API_KEY y FLOW_SECRET_KEY en Cloudflare. Los clientes no podrán pagar hasta que los agregues.';w.classList.remove('hidden')}
+  var warn='';
+  if(!d.flow&&!d.mp)warn='No hay medios de pago configurados: faltan FLOW_API_KEY y FLOW_SECRET_KEY, o MP_ACCESS_TOKEN, en Cloudflare. Los clientes no podrán pagar hasta que los agregues.';
+  else if(d.mp_test)warn='Mercado Pago está usando credenciales de prueba (TEST-…): los pagos no son reales. Cambia MP_ACCESS_TOKEN por el de producción.';
+  if(warn){var w=$('#cfg-warn');w.textContent=warn;w.classList.remove('hidden')}
   if(d.admin)showApp();else showLogin('');
 }).catch(function(){showLogin('')});
 
@@ -249,7 +259,7 @@ function loadOrders(){
       var n=o.items.reduce(function(s,i){return s+i.qty},0);
       return '<tr class="click" tabindex="0" data-code="'+esc(o.code)+'"><td class="code">'+esc(o.code)+'</td><td class="dim">'+esc(date(o.created_at))+'</td>'+
       '<td>'+esc(o.customer.nombre)+'<div class="dim">'+n+(n===1?' producto':' productos')+'</div></td><td class="hide-sm">'+esc(o.customer.comuna)+'<div class="dim">'+esc(o.zone==='rm'?'RM':o.customer.region)+'</div></td>'+
-      '<td class="num">'+clp(o.total)+'</td><td>'+pill(o.status)+'</td></tr>'}).join('');
+      '<td class="num">'+clp(o.total)+'<div class="dim">'+esc(PROV[o.provider]||'Flow')+'</div></td><td>'+pill(o.status)+'</td></tr>'}).join('');
     var pages=Math.max(1,Math.ceil(d.total/d.per));
     $('#pager').innerHTML=pages>1?'<button class="btn ghost" data-p="-1"'+(d.page<=1?' disabled':'')+'>Anterior</button><span>Página '+d.page+' de '+pages+'</span><button class="btn ghost" data-p="1"'+(d.page>=pages?' disabled':'')+'>Siguiente</button>':'<span>'+d.total+(d.total===1?' pedido':' pedidos')+'</span>';
   }).catch(function(e){if(e.message!=='401')body.innerHTML='<tr><td colspan="6" class="empty">No se pudieron cargar los pedidos: '+esc(e.message)+'</td></tr>'});
@@ -269,12 +279,13 @@ function openOrder(code){
 }
 function renderOrder(o){
   var dr=$('#drawer'),c=o.customer,paid=!!o.paid_at;
+  var isMp=o.provider==='mp',prov=PROV[o.provider]||'Flow';
   var addr=c.nombre+'\n'+c.direccion+'\n'+c.comuna+', '+c.region+'\nTel: '+c.telefono;
   dr.innerHTML=
     '<div class="d-head"><div><h2 id="d-title">'+esc(o.code)+'</h2><div class="dim">Creado '+esc(date(o.created_at))+(o.paid_at?' · pagado '+esc(date(o.paid_at)):'')+'</div></div><button class="x" aria-label="Cerrar">×</button></div>'+
     '<p>'+pill(o.status)+'</p>'+
     (o.review?'<p class="msg err">'+esc(o.review)+'</p>':'')+
-    (o.status==='pendiente_pago'?'<p class="msg warn">Aún sin confirmación de Flow. Si el cliente dice que pagó, usa “Consultar estado en Flow”.</p>':'')+
+    (o.status==='pendiente_pago'?'<p class="msg warn">Aún sin confirmación de '+prov+'. Si el cliente dice que pagó, usa “Consultar estado en '+prov+'”.</p>':'')+
     '<h3>Productos</h3><div class="card sec"><table class="items">'+o.items.map(function(i){return '<tr><td>'+esc(i.name)+' <span class="dim">× '+i.qty+'</span></td><td class="num">'+clp(i.line)+'</td></tr>'}).join('')+
     '<tr><td class="dim">Envío ('+(o.zone==='rm'?'Región Metropolitana':'regiones')+')</td><td class="num">'+clp(o.shipping)+'</td></tr><tr><td><b>Total</b></td><td class="num"><b>'+clp(o.total)+'</b></td></tr></table></div>'+
     '<h3>Cliente y despacho</h3><div class="card sec"><dl class="kv"><dt>Nombre</dt><dd>'+esc(c.nombre)+'</dd><dt>Correo</dt><dd><a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a></dd><dt>Teléfono</dt><dd><a href="tel:'+esc(c.telefono)+'">'+esc(c.telefono)+'</a> · <a href="https://wa.me/'+esc(c.telefono.replace(/\D/g,''))+'" target="_blank" rel="noopener">WhatsApp</a></dd>'+
@@ -285,9 +296,10 @@ function renderOrder(o){
     '<div class="grid2"><div class="field"><label for="d-courier">Transporte</label><input id="d-courier" maxlength="60" placeholder="Starken, Chilexpress, Blue Express…" value="'+esc(o.courier)+'"></div>'+
     '<div class="field"><label for="d-tracking">N° de seguimiento</label><input id="d-tracking" maxlength="60" value="'+esc(o.tracking)+'"></div></div>'+
     '<div class="field"><label for="d-note">Nota interna</label><textarea id="d-note" rows="3" maxlength="1000">'+esc(o.admin_note)+'</textarea></div>'+
-    '<p class="dim">Cancelar no devuelve el dinero: la devolución se hace en tu cuenta de Flow. El stock tampoco se repone solo; ajústalo en Productos.</p>'+
-    '<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="submit">Guardar</button>'+(o.flow_token?'<button class="btn ghost" type="button" id="d-sync">Consultar estado en Flow</button>':'')+'</div></form>'+
-    '<h3>Flow</h3><div class="card sec"><dl class="kv"><dt>Orden Flow</dt><dd>'+esc(o.flow_order||'—')+'</dd><dt>Estado Flow</dt><dd>'+esc({1:'1 · pendiente',2:'2 · pagada',3:'3 · rechazada',4:'4 · anulada'}[o.flow_status]||'—')+'</dd><dt>Actualizado</dt><dd>'+esc(date(o.updated_at))+'</dd></dl></div>';
+    '<p class="dim">Cancelar no devuelve el dinero: la devolución se hace en tu cuenta de '+prov+'. El stock tampoco se repone solo; ajústalo en Productos.</p>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="submit">Guardar</button>'+(o.flow_token||isMp?'<button class="btn ghost" type="button" id="d-sync">Consultar estado en '+prov+'</button>':'')+'</div></form>'+
+    (isMp?'<h3>Mercado Pago</h3><div class="card sec"><dl class="kv"><dt>N° de pago</dt><dd>'+esc(o.mp_payment||'—')+'</dd><dt>Estado del pago</dt><dd>'+esc(o.mp_status?(MPST[o.mp_status]||o.mp_status):'—')+'</dd>'+(o.mp_extra?'<dt>Otros pagos aprobados</dt><dd>'+esc(o.mp_extra)+'</dd>':'')+'<dt>Actualizado</dt><dd>'+esc(date(o.updated_at))+'</dd></dl></div>'
+    :'<h3>Flow</h3><div class="card sec"><dl class="kv"><dt>Orden Flow</dt><dd>'+esc(o.flow_order||'—')+'</dd><dt>Estado Flow</dt><dd>'+esc({1:'1 · pendiente',2:'2 · pagada',3:'3 · rechazada',4:'4 · anulada'}[o.flow_status]||'—')+'</dd><dt>Actualizado</dt><dd>'+esc(date(o.updated_at))+'</dd></dl></div>');
   $('#drawer-bg').classList.remove('hidden');dr.classList.remove('hidden');dr.scrollTop=0;
   $('.x',dr).addEventListener('click',closeDrawer);$('.x',dr).focus();
   $('#d-copy').addEventListener('click',function(){navigator.clipboard.writeText(addr).then(function(){$('#d-copy').textContent='Copiado'},function(){prompt('Copia los datos:',addr)})});
@@ -298,7 +310,7 @@ function renderOrder(o){
     .catch(function(err){if(err.message!=='401')msg($('#d-msg'),err.message,'err')});
   });
   var sync=$('#d-sync');if(sync)sync.addEventListener('click',function(){sync.disabled=true;
-    api('/api/admin/orders/'+encodeURIComponent(o.code)+'/sync',{method:'POST'}).then(function(d){renderOrder(d.order);msg($('#d-msg'),'Estado actualizado desde Flow.','ok');loadOrders()})
+    api('/api/admin/orders/'+encodeURIComponent(o.code)+'/sync',{method:'POST'}).then(function(d){renderOrder(d.order);msg($('#d-msg'),'Estado actualizado desde '+prov+'.','ok');loadOrders()})
     .catch(function(err){sync.disabled=false;if(err.message!=='401')msg($('#d-msg'),err.message,'err')})});
 }
 
@@ -326,11 +338,13 @@ $('#prod-body').addEventListener('click',function(e){
 });
 
 // ---------------------------------------------------- envío
-function loadSettings(){api('/api/admin/settings').then(function(s){$('#s-rm').value=s.ship_rm;$('#s-rg').value=s.ship_regiones}).catch(function(){})}
+function loadSettings(){api('/api/admin/settings').then(function(s){$('#s-rm').value=s.ship_rm;$('#s-rg').value=s.ship_regiones;
+  [['flow','FLOW_API_KEY y FLOW_SECRET_KEY'],['mp','MP_ACCESS_TOKEN']].forEach(function(m){var on=s['pay_'+m[0]]!==0,ok=s.configured&&s.configured[m[0]];
+    $('#s-'+m[0]).checked=on;$('#s-'+m[0]+'-st').textContent=ok?(on?'Activo en el carrito':'Desactivado'):'Sin configurar: falta '+m[1]+' en Cloudflare'})}).catch(function(){})}
 $('#ship-form').addEventListener('submit',function(e){
   e.preventDefault();
-  api('/api/admin/settings',{method:'POST',body:{ship_rm:Number($('#s-rm').value),ship_regiones:Number($('#s-rg').value)}})
-  .then(function(){msg($('#ship-msg'),'Tarifas guardadas. Ya se aplican en el carrito.','ok')}).catch(function(err){if(err.message!=='401')msg($('#ship-msg'),err.message,'err')});
+  api('/api/admin/settings',{method:'POST',body:{ship_rm:Number($('#s-rm').value),ship_regiones:Number($('#s-rg').value),pay_flow:$('#s-flow').checked,pay_mp:$('#s-mp').checked}})
+  .then(function(){msg($('#ship-msg'),'Ajustes guardados. Ya se aplican en el carrito.','ok');loadSettings()}).catch(function(err){if(err.message!=='401')msg($('#ship-msg'),err.message,'err')});
 });
 })();
 </script>
