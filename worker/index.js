@@ -8,6 +8,7 @@
 //   /api/order              estado de un pedido (requiere su clave de acceso)
 //   /admin, /api/admin/*    panel de administración (contraseña)
 //   /producto/*, /productos se sirven con el precio y stock vigentes
+//   /blog/*                  artículos; se les quita AdSense si se desactiva en el panel
 //
 // Secretos (Cloudflare > Worker > Settings > Variables and Secrets):
 //   FLOW_API_KEY, FLOW_SECRET_KEY, ADMIN_PASSWORD
@@ -25,6 +26,37 @@ const REGIONS = ['Arica y Parinacota', 'Tarapacá', 'Antofagasta', 'Atacama', 'C
 const SESSION_HOURS = 12;
 
 const store = env => env.STORE.get(env.STORE.idFromName('tienda'));
+
+// Ajustes leídos en cada página del blog: se guardan 30 s en memoria para no
+// consultar el Durable Object en cada visita.
+let settingsCache = null;
+async function cachedSettings(env) {
+  if (settingsCache && Date.now() - settingsCache.t < 30e3) return settingsCache.s;
+  const s = await store(env).getSettings();
+  settingsCache = { s, t: Date.now() };
+  return s;
+}
+
+// ---------------------------------------------------------------- AdSense
+/** Quita el script de AdSense y los bloques de anuncios de una página HTML. */
+function stripAds(res) {
+  const drop = { element(e) { e.remove(); } };
+  const h = new Headers(res.headers); h.delete('content-length');
+  return new HTMLRewriter()
+    .on('script[src*="googlesyndication.com"]', drop)
+    .on('.ad-slot', drop)
+    .on('ins.adsbygoogle', drop)
+    .transform(new Response(res.body, { status: res.status, statusText: res.statusText, headers: h }));
+}
+const isHtml = res => (res.headers.get('content-type') || '').includes('text/html');
+
+async function blogPage(req, env) {
+  const res = await env.ASSETS.fetch(req);
+  if (!res.ok || !isHtml(res)) return res;
+  let on = true;
+  try { on = (await cachedSettings(env)).ads_blog !== 0; } catch (e) { console.error('ajustes blog', e); }
+  return on ? res : stripAds(res);
+}
 
 // ---------------------------------------------------------------- utilidades
 const json = (data, status = 200, extra = {}) => new Response(JSON.stringify(data), {
@@ -371,7 +403,7 @@ async function storePage(req, env, url) {
   const res = await env.ASSETS.fetch(req);
   if (!res.ok || !(res.headers.get('content-type') || '').includes('text/html')) return res;
   let html = await res.text();
-  const { overrides } = await store(env).storefront();
+  const { overrides, settings } = await store(env).storefront();
   const m = url.pathname.match(/^\/producto\/([a-z0-9-]+?)(?:\.html)?\/?$/);
   const slugs = m ? [m[1]] : CATALOG.map(p => p.slug);
   for (const slug of slugs) {
@@ -395,7 +427,8 @@ async function storePage(req, env, url) {
     }
   }
   const h = new Headers(res.headers); h.delete('content-length'); h.set('cache-control', 'public, max-age=0, must-revalidate');
-  return new Response(html, { status: res.status, headers: h });
+  const out = new Response(html, { status: res.status, headers: h });
+  return settings.ads_productos === 0 ? stripAds(out) : out;
 }
 
 // ---------------------------------------------------------------- admin
@@ -457,11 +490,17 @@ async function admin(req, env, url) {
   if (p === '/settings' && req.method === 'GET') return json({ ...(await st.getSettings()), configured: { flow: !!(env.FLOW_API_KEY && env.FLOW_SECRET_KEY), mp: !!env.MP_ACCESS_TOKEN } });
   if (p === '/settings' && req.method === 'POST') {
     let b; try { b = await req.json(); } catch { return fail('Solicitud no válida'); }
-    const rm = Number(b.ship_rm), rg = Number(b.ship_regiones);
-    if (![rm, rg].every(v => Number.isInteger(v) && v >= 0 && v <= 200000)) return fail('Las tarifas deben ser números enteros entre $0 y $200.000.');
-    const patch = { ship_rm: rm, ship_regiones: rg };
-    for (const k of ['pay_flow', 'pay_mp']) if (b[k] !== undefined) patch[k] = b[k] ? 1 : 0;
-    return json(await st.saveSettings(patch));
+    const patch = {};
+    if (b.ship_rm !== undefined || b.ship_regiones !== undefined) {
+      const rm = Number(b.ship_rm), rg = Number(b.ship_regiones);
+      if (![rm, rg].every(v => Number.isInteger(v) && v >= 0 && v <= 200000)) return fail('Las tarifas deben ser números enteros entre $0 y $200.000.');
+      patch.ship_rm = rm; patch.ship_regiones = rg;
+    }
+    for (const k of ['pay_flow', 'pay_mp', 'ads_productos', 'ads_blog']) if (b[k] !== undefined) patch[k] = b[k] ? 1 : 0;
+    if (!Object.keys(patch).length) return fail('No hay cambios que guardar.');
+    const saved = await st.saveSettings(patch);
+    settingsCache = { s: saved, t: Date.now() };
+    return json(saved);
   }
   return fail('No encontrado', 404);
 }
@@ -489,6 +528,7 @@ export default {
       if (path === '/api/order' && req.method === 'GET') return await orderStatus(req, env);
       if (path.startsWith('/api/')) return fail('No encontrado', 404);
       if ((path.startsWith('/producto/') || /^\/productos(\.html)?\/?$/.test(path)) && req.method === 'GET') return await storePage(req, env, url);
+      if ((path === '/blog' || path.startsWith('/blog/')) && req.method === 'GET') return await blogPage(req, env);
       return env.ASSETS.fetch(req);
     } catch (e) {
       console.error(path, e);

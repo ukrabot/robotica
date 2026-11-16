@@ -79,13 +79,13 @@ export class Store extends DurableObject {
 
   // ---------------------------------------------------------------- ajustes
   getSettings() {
-    const s = { ship_rm: 3990, ship_regiones: 5990, pay_flow: 1, pay_mp: 1 };
+    const s = { ship_rm: 3990, ship_regiones: 5990, pay_flow: 1, pay_mp: 1, ads_productos: 1, ads_blog: 1 };
     for (const r of this.sql.exec('SELECT key, value FROM settings').toArray()) s[r.key] = Number(r.value);
     return s;
   }
   saveSettings(patch) {
     for (const [k, v] of Object.entries(patch)) {
-      if (!['ship_rm', 'ship_regiones', 'pay_flow', 'pay_mp'].includes(k)) continue;
+      if (!['ship_rm', 'ship_regiones', 'pay_flow', 'pay_mp', 'ads_productos', 'ads_blog'].includes(k)) continue;
       this.sql.exec('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value', k, String(v));
     }
     return this.getSettings();

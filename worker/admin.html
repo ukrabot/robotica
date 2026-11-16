@@ -127,7 +127,7 @@ tr.click:hover td{background:#faf8f3}
     <nav class="tabs" role="tablist" aria-label="Secciones">
       <button class="tab" role="tab" data-tab="orders" aria-selected="true">Pedidos</button>
       <button class="tab" role="tab" data-tab="products" aria-selected="false">Productos</button>
-      <button class="tab" role="tab" data-tab="settings" aria-selected="false">Envío y pagos</button>
+      <button class="tab" role="tab" data-tab="settings" aria-selected="false">Ajustes</button>
     </nav>
     <button class="out" id="logout">Salir</button>
   </div></header>
@@ -172,8 +172,8 @@ tr.click:hover td{background:#faf8f3}
     </section>
 
     <section id="tab-settings" class="hidden">
-      <h1>Envío y pagos</h1>
-      <p class="sub">Tarifa fija que se suma al total según la región que elige el cliente, y los medios de pago que se ofrecen en el carrito.</p>
+      <h1>Ajustes</h1>
+      <p class="sub">Tarifas de envío, medios de pago del carrito y publicidad del sitio.</p>
       <form class="card settings" id="ship-form">
         <p class="msg hidden" id="ship-msg" role="status"></p>
         <h3 style="margin-top:0">Envío</h3>
@@ -185,6 +185,14 @@ tr.click:hover td{background:#faf8f3}
         <div class="field"><label class="switch"><input type="checkbox" id="s-mp"> Mercado Pago</label><span class="dim" id="s-mp-st"></span></div>
         <p class="dim">Desactivar un medio lo oculta del carrito sin borrar sus claves.</p>
         <button class="btn" type="submit">Guardar</button>
+      </form>
+      <form class="card settings" id="ads-form" style="margin-top:20px">
+        <p class="msg hidden" id="ads-msg" role="status"></p>
+        <h3 style="margin-top:0">Publicidad (AdSense)</h3>
+        <div class="field"><label class="switch"><input type="checkbox" id="a-prod"> Anuncios en productos</label><span class="dim">Fichas de producto y catálogo /productos</span></div>
+        <div class="field"><label class="switch"><input type="checkbox" id="a-blog"> Anuncios en tutoriales (blog)</label><span class="dim">Artículos del blog y su índice</span></div>
+        <p class="dim">Al desactivar, se quita el código de AdSense y los espacios de anuncios de esas páginas. El cambio se ve en menos de un minuto. La portada y las páginas informativas no cambian.</p>
+        <button class="btn" type="submit">Guardar publicidad</button>
       </form>
     </section>
   </main>
@@ -339,12 +347,19 @@ $('#prod-body').addEventListener('click',function(e){
 
 // ---------------------------------------------------- envío
 function loadSettings(){api('/api/admin/settings').then(function(s){$('#s-rm').value=s.ship_rm;$('#s-rg').value=s.ship_regiones;
+  $('#a-prod').checked=s.ads_productos!==0;$('#a-blog').checked=s.ads_blog!==0;
   [['flow','FLOW_API_KEY y FLOW_SECRET_KEY'],['mp','MP_ACCESS_TOKEN']].forEach(function(m){var on=s['pay_'+m[0]]!==0,ok=s.configured&&s.configured[m[0]];
     $('#s-'+m[0]).checked=on;$('#s-'+m[0]+'-st').textContent=ok?(on?'Activo en el carrito':'Desactivado'):'Sin configurar: falta '+m[1]+' en Cloudflare'})}).catch(function(){})}
 $('#ship-form').addEventListener('submit',function(e){
   e.preventDefault();
   api('/api/admin/settings',{method:'POST',body:{ship_rm:Number($('#s-rm').value),ship_regiones:Number($('#s-rg').value),pay_flow:$('#s-flow').checked,pay_mp:$('#s-mp').checked}})
   .then(function(){msg($('#ship-msg'),'Ajustes guardados. Ya se aplican en el carrito.','ok');loadSettings()}).catch(function(err){if(err.message!=='401')msg($('#ship-msg'),err.message,'err')});
+});
+$('#ads-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  api('/api/admin/settings',{method:'POST',body:{ads_productos:$('#a-prod').checked,ads_blog:$('#a-blog').checked}})
+  .then(function(s){msg($('#ads-msg'),'Publicidad guardada: productos '+(s.ads_productos?'con':'sin')+' anuncios, blog '+(s.ads_blog?'con':'sin')+' anuncios.','ok')})
+  .catch(function(err){if(err.message!=='401')msg($('#ads-msg'),err.message,'err')});
 });
 })();
 </script>

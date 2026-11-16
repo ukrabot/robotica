@@ -30,7 +30,8 @@
     "not_found_handling": "404-page",
 
     // Solo estas rutas pasan por el Worker; todo lo demás se sirve directo.
-    "run_worker_first": ["/api/*", "/admin", "/admin/*", "/producto/*", "/productos", "/productos.html"]
+    "run_worker_first": ["/api/*", "/admin", "/admin/*", "/producto/*", "/productos", "/productos.html",
+      "/blog", "/blog/*", "!/blog/*.jpg", "!/blog/*.svg", "!/blog/*.png", "!/blog/*.webp", "!/blog/thumbs/*"]
   },
 
   // Base de datos de la tienda: un Durable Object con SQLite (pedidos, precios, stock).
