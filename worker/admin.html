@@ -132,7 +132,8 @@ tr.files-row td{background:#fbf9f4;padding:14px 16px}
     <a class="brand" href="/" target="_blank" rel="noopener">ukrabot.cl <small>panel</small></a>
     <nav class="tabs" role="tablist" aria-label="Secciones">
       <button class="tab" role="tab" data-tab="orders" aria-selected="true">Pedidos</button>
-      <button class="tab" role="tab" data-tab="products" aria-selected="false">Productos</button>
+      <button class="tab" role="tab" data-tab="products" aria-selected="false">Productos físicos</button>
+      <button class="tab" role="tab" data-tab="digital" aria-selected="false">Productos digitales</button>
       <button class="tab" role="tab" data-tab="settings" aria-selected="false">Ajustes</button>
     </nav>
     <button class="out" id="logout">Salir</button>
@@ -168,12 +169,22 @@ tr.files-row td{background:#fbf9f4;padding:14px 16px}
     </section>
 
     <section id="tab-products" class="hidden">
-      <h1>Productos</h1>
+      <h1>Productos físicos</h1>
       <p class="sub">El precio y el stock se actualizan al instante en la ficha, el catálogo y el carrito. Deja el stock vacío para no controlarlo. El stock baja solo cuando se confirma un pago.</p>
       <p class="msg hidden" id="prod-msg" role="status"></p>
       <div class="card table-wrap"><table>
-        <thead><tr><th>Producto</th><th class="num">Precio base</th><th class="num">Precio venta</th><th class="num">Stock / archivos</th><th>En venta</th><th></th></tr></thead>
-        <tbody id="prod-body"></tbody>
+        <thead><tr><th>Producto</th><th class="num">Precio base</th><th class="num">Precio venta</th><th class="num">Stock</th><th>En venta</th><th></th></tr></thead>
+        <tbody id="prod-body" class="prod-table"></tbody>
+      </table></div>
+    </section>
+
+    <section id="tab-digital" class="hidden">
+      <h1>Productos digitales</h1>
+      <p class="sub">Productos de descarga: no tienen stock ni despacho. El cliente descarga los archivos apenas se confirma el pago. Un producto sin archivos no se puede comprar.</p>
+      <p class="msg hidden" id="dig-msg" role="status"></p>
+      <div class="card table-wrap"><table>
+        <thead><tr><th>Producto</th><th class="num">Precio base</th><th class="num">Precio venta</th><th class="num">Archivos</th><th>En venta</th><th></th></tr></thead>
+        <tbody id="dig-body" class="prod-table"></tbody>
       </table></div>
     </section>
 
@@ -252,8 +263,8 @@ api('/api/admin/me').then(function(d){
 // ---------------------------------------------------- pestañas
 $$('.tab').forEach(function(t){t.addEventListener('click',function(){
   $$('.tab').forEach(function(x){x.setAttribute('aria-selected',x===t?'true':'false')});
-  ['orders','products','settings'].forEach(function(n){$('#tab-'+n).classList.toggle('hidden',n!==t.dataset.tab)});
-  if(t.dataset.tab==='orders')loadOrders();if(t.dataset.tab==='products')loadProducts();if(t.dataset.tab==='settings')loadSettings();
+  ['orders','products','digital','settings'].forEach(function(n){$('#tab-'+n).classList.toggle('hidden',n!==t.dataset.tab)});
+  if(t.dataset.tab==='orders')loadOrders();if(t.dataset.tab==='products'||t.dataset.tab==='digital')loadProducts();if(t.dataset.tab==='settings')loadSettings();
 })});
 
 // ---------------------------------------------------- pedidos
@@ -336,9 +347,11 @@ function renderOrder(o){
 }
 
 // ---------------------------------------------------- productos
+function secMsg(el){return el.closest('section').querySelector('.msg')}
 function loadProducts(){
   api('/api/admin/products').then(function(d){
-    $('#prod-body').innerHTML=d.products.map(function(p){
+    var open=$$('.files-row').map(function(r){return r.dataset.for});
+    var rows=function(list){return list.map(function(p){
       var state=p.available?'Disponible':(!p.active?'Oculto':(p.digital&&!p.files?'Sin archivos: no se vende':'Agotado'));
       return '<tr data-slug="'+esc(p.slug)+'"'+(p.digital?' data-digital="1"':'')+'><td><div class="prod"><img src="'+esc(p.img)+'" alt=""><div><a href="'+esc(p.url)+'" target="_blank" rel="noopener">'+esc(p.short)+'</a>'+(p.digital?'<span class="tag-dig">Digital</span>':'')+
       '<div class="dim">'+state+'</div></div></div></td><td class="num dim">'+clp(p.base_price)+'</td>'+
@@ -346,12 +359,17 @@ function loadProducts(){
       (p.digital?'<td class="num"><button class="linkbtn" type="button" data-files="'+esc(p.slug)+'">Archivos ('+p.files+')</button></td>':
       '<td class="num"><input class="in" type="number" min="0" step="1" data-k="stock" value="'+(p.stock===null?'':p.stock)+'" placeholder="sin control" aria-label="Stock de '+esc(p.short)+'"></td>')+
       '<td><label class="switch"><input type="checkbox" data-k="active"'+(p.active?' checked':'')+'> En venta</label></td>'+
-      '<td><button class="row-btn" disabled>Guardar</button> <span class="ok-flash"></span></td></tr>'}).join('');
-  }).catch(function(e){if(e.message!=='401')msg($('#prod-msg'),e.message,'err')});
+      '<td><button class="row-btn" disabled>Guardar</button> <span class="ok-flash"></span></td></tr>'}).join('')};
+    $('#prod-body').innerHTML=rows(d.products.filter(function(p){return !p.digital}));
+    var dig=d.products.filter(function(p){return p.digital});
+    $('#dig-body').innerHTML=dig.length?rows(dig):'<tr><td colspan="6" class="empty">Aún no hay productos digitales.</td></tr>';
+    open.forEach(function(slug){var tr=$('tr[data-slug="'+slug+'"]');if(tr)toggleFiles(tr)});
+  }).catch(function(e){if(e.message!=='401'){msg($('#prod-msg'),e.message,'err');msg($('#dig-msg'),e.message,'err')}});
 }
-$('#prod-body').addEventListener('input',function(e){var tr=e.target.closest('tr');if(!tr||!$('.row-btn',tr))return;if(e.target.classList.contains('in'))e.target.classList.add('dirty');$('.row-btn',tr).disabled=false;$('.ok-flash',tr).textContent=''});
-$('#prod-body').addEventListener('change',function(e){var tr=e.target.closest('tr');if(tr&&e.target.type==='checkbox'&&$('.row-btn',tr))$('.row-btn',tr).disabled=false});
-$('#prod-body').addEventListener('click',function(e){
+$$('.prod-table').forEach(function(tb){
+tb.addEventListener('input',function(e){var tr=e.target.closest('tr');if(!tr||!$('.row-btn',tr))return;if(e.target.classList.contains('in'))e.target.classList.add('dirty');$('.row-btn',tr).disabled=false;$('.ok-flash',tr).textContent=''});
+tb.addEventListener('change',function(e){var tr=e.target.closest('tr');if(tr&&e.target.type==='checkbox'&&$('.row-btn',tr))$('.row-btn',tr).disabled=false});
+tb.addEventListener('click',function(e){
   var fb=e.target.closest('[data-files]');if(fb){toggleFiles(fb.closest('tr'));return}
   var del=e.target.closest('[data-del]');if(del){deleteFile(del);return}
   var b=e.target.closest('.row-btn');if(!b)return;var tr=b.closest('tr');
@@ -359,8 +377,9 @@ $('#prod-body').addEventListener('click',function(e){
   var body={price:Number($('[data-k=price]',tr).value),stock:!st||st.value===''?null:Number(st.value),active:$('[data-k=active]',tr).checked};
   b.disabled=true;
   api('/api/admin/products/'+encodeURIComponent(tr.dataset.slug),{method:'POST',body:body}).then(function(){
-    $$('.in',tr).forEach(function(i){i.classList.remove('dirty')});$('.ok-flash',tr).textContent='Guardado';msg($('#prod-msg'),'');
-  }).catch(function(err){b.disabled=false;if(err.message!=='401')msg($('#prod-msg'),err.message,'err')});
+    $$('.in',tr).forEach(function(i){i.classList.remove('dirty')});$('.ok-flash',tr).textContent='Guardado';msg(secMsg(tr),'');
+  }).catch(function(err){b.disabled=false;if(err.message!=='401')msg(secMsg(tr),err.message,'err')});
+});
 });
 
 // ---------------------------------------------------- archivos de productos digitales
@@ -385,17 +404,17 @@ function renderFiles(row){
 function uploadFiles(row,files){
   var m=$('.files-msg',row),i=0;
   (function next(){
-    if(i>=files.length){m.textContent=files.length===1?'Archivo subido':'Archivos subidos';renderFiles(row);return}
+    if(i>=files.length){m.textContent=files.length===1?'Archivo subido':'Archivos subidos';loadProducts();return}
     var f=files[i++];m.textContent='Subiendo '+f.name+'…';
     api('/api/admin/files?product='+encodeURIComponent(row.dataset.for)+'&name='+encodeURIComponent(f.name),{method:'POST',raw:f}).then(next)
-    .catch(function(e){if(e.message!=='401'){m.textContent='';msg($('#prod-msg'),f.name+': '+e.message,'err')}});
+    .catch(function(e){if(e.message!=='401'){m.textContent='';msg(secMsg(row),f.name+': '+e.message,'err')}});
   })();
 }
 function deleteFile(btn){
   var row=btn.closest('.files-row');
   if(!confirm('¿Eliminar este archivo? Los clientes ya no podrán descargarlo.'))return;
-  api('/api/admin/files/'+btn.dataset.del+'/delete',{method:'POST'}).then(function(){renderFiles(row)})
-  .catch(function(e){if(e.message!=='401')msg($('#prod-msg'),e.message,'err')});
+  api('/api/admin/files/'+btn.dataset.del+'/delete',{method:'POST'}).then(function(){loadProducts()})
+  .catch(function(e){if(e.message!=='401')msg(secMsg(row),e.message,'err')});
 }
 
 // ---------------------------------------------------- envío

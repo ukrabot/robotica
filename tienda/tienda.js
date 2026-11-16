@@ -149,7 +149,8 @@
     catalog().then(function (d) {
       prices.forEach(function (pr) {
         var p = d.bySlug[pr.getAttribute('data-price-slug')];
-        if (p && !p.available && !pr.querySelector('.ukr-out-badge')) pr.appendChild(el('span', { class: 'ukr-out-badge', text: 'Agotado' }));
+        // la etiqueta "Agotado" es solo para productos físicos del catálogo
+        if (p && !p.digital && !p.available && !pr.querySelector('.ukr-out-badge')) pr.appendChild(el('span', { class: 'ukr-out-badge', text: 'Agotado' }));
       });
     }).catch(function () {});
   }
