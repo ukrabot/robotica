@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel de la tienda | ukrabot.cl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f6f4ee;--card:#fff;--ink:#1e1b15;--muted:#57534a;--quiet:#8b8577;--line:rgba(30,25,15,.12);--brass:#a97b23;--brass-d:#8d6519;--blue:#2f6fb0;--green:#3f7a4b;--red:#b23b33;--mat:#284a3f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit}
+a{color:var(--blue)}
+.hidden{display:none!important}
+/* barra */
+.bar{background:var(--mat);color:#f3efe4}
+.bar-inner{max-width:1240px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.brand{font-family:'DM Serif Display',Georgia,serif;font-size:1.3rem;color:#fff;text-decoration:none;margin-right:auto}
+.brand small{font-family:Inter,sans-serif;font-size:.78rem;color:rgba(243,239,228,.7);margin-left:8px}
+.tabs{display:flex;gap:4px}
+.tab{background:none;border:0;color:rgba(243,239,228,.78);padding:9px 14px;border-radius:9px;cursor:pointer;font-weight:600}
+.tab[aria-selected=true]{background:rgba(255,255,255,.14);color:#fff}
+.tab:focus-visible,.btn:focus-visible,.row-btn:focus-visible{outline:2px solid #f0cf86;outline-offset:2px}
+.out{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;padding:7px 12px;border-radius:9px;cursor:pointer}
+main{max-width:1240px;margin:0 auto;padding:24px 20px 80px}
+h1{font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:1.9rem;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px}
+.btn{border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--brass);color:#fff}
+.btn:hover{background:var(--brass-d)}
+.btn:disabled{background:#cfc7b6;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{background:#f1ede3}
+.msg{padding:10px 14px;border-radius:10px;margin:0 0 14px;font-size:.92rem}
+.msg.err{background:#f6e3e1;color:#7d2620}
+.msg.ok{background:#e4efe4;color:#2c5a36}
+.msg.warn{background:#fbf0d9;color:#6d4f12}
+/* login */
+.login{max-width:380px;margin:12vh auto 0;padding:30px}
+.login h1{margin-bottom:6px}
+.field{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.field label{font-weight:600;font-size:.88rem}
+.field input,.field select,.field textarea{padding:10px 12px;border:1px solid rgba(30,25,15,.22);border-radius:10px;background:#fff;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus,.in:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(47,111,176,.15)}
+/* resumen */
+.kpis{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.kpi{padding:14px 18px;min-width:180px}
+.kpi b{display:block;font-size:1.35rem}
+.kpi span{color:var(--muted);font-size:.86rem}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.tools select,.tools input{padding:9px 12px;border:1px solid rgba(30,25,15,.22);border-radius:10px;background:#fff}
+.tools input{flex:1;min-width:200px;max-width:360px}
+/* tablas */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:.8rem;color:var(--muted);font-weight:600;background:#faf8f3;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tr.click{cursor:pointer}
+tr.click:hover td{background:#faf8f3}
+.num{text-align:right;white-space:nowrap}
+.code{font-weight:700;white-space:nowrap}
+.dim{color:var(--quiet);font-size:.84rem}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.s-pendiente_pago,.s-anulado,.s-error_flow{background:#ece9e2;color:#57534a}
+.s-rechazado{background:#f3e4e2;color:#8a3a33}
+.s-pagado{background:#fbeccb;color:#7a5410}
+.s-preparando{background:#e1ebf6;color:#1f4f82}
+.s-enviado{background:#dff0ec;color:#1d5c50}
+.s-entregado{background:#e1efe2;color:#2c5a36}
+.s-cancelado{background:#f3e4e2;color:#8a3a33}
+.s-revisar{background:var(--red);color:#fff}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+.pager{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:12px;color:var(--muted);font-size:.9rem}
+/* detalle */
+.drawer-bg{position:fixed;inset:0;background:rgba(20,18,12,.35);z-index:50}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100vw);background:var(--paper);z-index:60;overflow-y:auto;box-shadow:-20px 0 50px rgba(0,0,0,.2);padding:22px 22px 60px}
+.drawer h2{font-family:'DM Serif Display',Georgia,serif;font-weight:400;font-size:1.6rem;margin:0}
+.drawer h3{font-size:.86rem;color:var(--muted);margin:20px 0 8px;font-weight:600}
+.d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
+.x{background:none;border:0;font-size:1.6rem;line-height:1;cursor:pointer;color:var(--muted);padding:4px 8px}
+.sec{padding:16px}
+.kv{display:grid;grid-template-columns:120px minmax(0,1fr);gap:6px 12px;font-size:.92rem}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;word-break:break-word}
+.items td{padding:8px 0;border-bottom:1px solid var(--line)}
+.items tr:last-child td{border-bottom:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.copy{margin-top:10px}
+/* productos */
+.in{width:110px;padding:8px 10px;border:1px solid rgba(30,25,15,.22);border-radius:9px;background:#fff;text-align:right}
+.in.dirty{border-color:var(--brass);background:#fffaf0}
+.prod{display:flex;gap:12px;align-items:center;min-width:240px}
+.prod img{width:46px;height:46px;border-radius:8px;object-fit:cover;background:#f1ede3}
+.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.88rem}
+.switch input{width:18px;height:18px;accent-color:var(--green)}
+.row-btn{border:0;border-radius:9px;padding:8px 12px;background:var(--brass);color:#fff;font-weight:700;cursor:pointer}
+.row-btn:disabled{background:#e3ddd0;color:#9a9282;cursor:default}
+.ok-flash{color:var(--green);font-size:.82rem;font-weight:600}
+.settings{max-width:520px;padding:22px}
+@media (max-width:700px){
+ .bar-inner{gap:10px}.tabs{order:3;width:100%;overflow-x:auto}
+ .hide-sm{display:none}
+ th,td{padding:10px}
+ .kv{grid-template-columns:96px minmax(0,1fr)}
+ .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="login-view" class="hidden">
+  <form class="card login" id="login-form">
+    <h1>Panel de la tienda</h1>
+    <p class="sub">Ingresa la contraseña de administrador.</p>
+    <p class="msg err hidden" id="login-msg" role="alert"></p>
+    <div class="field"><label for="pw">Contraseña</label><input id="pw" type="password" autocomplete="current-password" required></div>
+    <button class="btn" type="submit" style="width:100%">Entrar</button>
+  </form>
+</div>
+
+<div id="app" class="hidden">
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/" target="_blank" rel="noopener">ukrabot.cl <small>panel</small></a>
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+      <button class="tab" role="tab" data-tab="orders" aria-selected="true">Pedidos</button>
+      <button class="tab" role="tab" data-tab="products" aria-selected="false">Productos</button>
+      <button class="tab" role="tab" data-tab="settings" aria-selected="false">Envío</button>
+    </nav>
+    <button class="out" id="logout">Salir</button>
+  </div></header>
+  <main>
+    <p class="msg warn hidden" id="cfg-warn"></p>
+
+    <section id="tab-orders">
+      <h1>Pedidos</h1>
+      <p class="sub">Los pedidos pagados aparecen aquí apenas Flow confirma el pago.</p>
+      <div class="kpis" id="kpis"></div>
+      <div class="tools">
+        <label class="hidden" for="f-status">Estado</label>
+        <select id="f-status" aria-label="Filtrar por estado">
+          <option value="activos">Por atender</option>
+          <option value="">Todos</option>
+          <option value="pagado">Pagado · por preparar</option>
+          <option value="preparando">Preparando</option>
+          <option value="enviado">Enviado</option>
+          <option value="entregado">Entregado</option>
+          <option value="revisar">Revisar</option>
+          <option value="cancelado">Cancelado</option>
+          <option value="sin_pagar">Sin pagar o rechazados</option>
+        </select>
+        <input id="f-q" type="search" placeholder="Buscar por n° de pedido, nombre, correo o comuna" aria-label="Buscar pedidos">
+        <button class="btn ghost" id="reload">Actualizar</button>
+      </div>
+      <div class="card table-wrap"><table>
+        <thead><tr><th>Pedido</th><th>Fecha</th><th>Cliente</th><th class="hide-sm">Destino</th><th class="num">Total</th><th>Estado</th></tr></thead>
+        <tbody id="orders-body"></tbody>
+      </table></div>
+      <div class="pager" id="pager"></div>
+    </section>
+
+    <section id="tab-products" class="hidden">
+      <h1>Productos</h1>
+      <p class="sub">El precio y el stock se actualizan al instante en la ficha, el catálogo y el carrito. Deja el stock vacío para no controlarlo. El stock baja solo cuando Flow confirma un pago.</p>
+      <p class="msg hidden" id="prod-msg" role="status"></p>
+      <div class="card table-wrap"><table>
+        <thead><tr><th>Producto</th><th class="num">Precio base</th><th class="num">Precio venta</th><th class="num">Stock</th><th>En venta</th><th></th></tr></thead>
+        <tbody id="prod-body"></tbody>
+      </table></div>
+    </section>
+
+    <section id="tab-settings" class="hidden">
+      <h1>Envío</h1>
+      <p class="sub">Tarifa fija que se suma al total según la región que elige el cliente.</p>
+      <form class="card settings" id="ship-form">
+        <p class="msg hidden" id="ship-msg" role="status"></p>
+        <div class="field"><label for="s-rm">Región Metropolitana (CLP)</label><input id="s-rm" type="number" min="0" max="200000" step="1" required></div>
+        <div class="field"><label for="s-rg">Resto de Chile (CLP)</label><input id="s-rg" type="number" min="0" max="200000" step="1" required></div>
+        <p class="dim">Usa 0 para envío gratis en esa zona.</p>
+        <button class="btn" type="submit">Guardar tarifas</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<div class="drawer-bg hidden" id="drawer-bg"></div>
+<aside class="drawer hidden" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title"></aside>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+var LABEL={pendiente_pago:'Esperando pago',pagado:'Pagado · por preparar',preparando:'Preparando',enviado:'Enviado',entregado:'Entregado',cancelado:'Cancelado',rechazado:'Pago rechazado',anulado:'Pago anulado',error_flow:'Error al crear el pago',revisar:'Revisar'};
+var FULFILL=['pagado','preparando','enviado','entregado','cancelado'];
+var state={status:'activos',q:'',page:1,orders:[]};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function clp(n){return '$'+String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
+function date(s){if(!s)return '';var d=new Date(s);return d.toLocaleDateString('es-CL',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})}
+function pill(s){return '<span class="pill s-'+esc(s)+'">'+esc(LABEL[s]||s)+'</span>'}
+function api(path,opts){
+  opts=opts||{};
+  var init={method:opts.method||'GET',headers:{accept:'application/json'},credentials:'same-origin'};
+  if(opts.body!==undefined){init.headers['content-type']='application/json';init.body=JSON.stringify(opts.body)}
+  return fetch(path,init).then(function(r){return r.json().catch(function(){return{}}).then(function(d){
+    if(r.status===401&&path!=='/api/admin/login'){showLogin('Tu sesión terminó. Vuelve a entrar.');throw new Error('401')}
+    if(!r.ok)throw new Error(d.error||('Error '+r.status));return d})});
+}
+function msg(el,text,kind){el.textContent=text;el.className='msg '+(kind||'ok');el.classList.toggle('hidden',!text)}
+
+// ---------------------------------------------------- sesión
+function showLogin(text){$('#app').classList.add('hidden');$('#login-view').classList.remove('hidden');closeDrawer();if(text)msg($('#login-msg'),text,'err');setTimeout(function(){$('#pw').focus()},50)}
+function showApp(){$('#login-view').classList.add('hidden');$('#app').classList.remove('hidden');loadOrders()}
+$('#login-form').addEventListener('submit',function(e){
+  e.preventDefault();var b=e.target.querySelector('button');b.disabled=true;
+  api('/api/admin/login',{method:'POST',body:{password:$('#pw').value}}).then(function(){$('#pw').value='';msg($('#login-msg'),'');showApp()})
+  .catch(function(err){msg($('#login-msg'),err.message,'err');$('#pw').select()}).then(function(){b.disabled=false});
+});
+$('#logout').addEventListener('click',function(){api('/api/admin/logout',{method:'POST'}).then(function(){showLogin('')})});
+api('/api/admin/me').then(function(d){
+  if(!d.ready){showLogin('');msg($('#login-msg'),'El panel no está activo: falta configurar ADMIN_PASSWORD (12 caracteres o más) en Cloudflare.','err');return}
+  if(!d.flow){var w=$('#cfg-warn');w.textContent='Flow no está configurado: faltan FLOW_API_KEY y FLOW_SECRET_KEY en Cloudflare. Los clientes no podrán pagar hasta que los agregues.';w.classList.remove('hidden')}
+  if(d.admin)showApp();else showLogin('');
+}).catch(function(){showLogin('')});
+
+// ---------------------------------------------------- pestañas
+$$('.tab').forEach(function(t){t.addEventListener('click',function(){
+  $$('.tab').forEach(function(x){x.setAttribute('aria-selected',x===t?'true':'false')});
+  ['orders','products','settings'].forEach(function(n){$('#tab-'+n).classList.toggle('hidden',n!==t.dataset.tab)});
+  if(t.dataset.tab==='orders')loadOrders();if(t.dataset.tab==='products')loadProducts();if(t.dataset.tab==='settings')loadSettings();
+})});
+
+// ---------------------------------------------------- pedidos
+var qTimer;
+$('#f-status').addEventListener('change',function(e){state.status=e.target.value;state.page=1;loadOrders()});
+$('#f-q').addEventListener('input',function(e){clearTimeout(qTimer);qTimer=setTimeout(function(){state.q=e.target.value.trim();state.page=1;loadOrders()},300)});
+$('#reload').addEventListener('click',loadOrders);
+function loadOrders(){
+  var body=$('#orders-body');
+  api('/api/admin/orders?status='+encodeURIComponent(state.status)+'&q='+encodeURIComponent(state.q)+'&page='+state.page).then(function(d){
+    state.orders=d.orders;
+    var c=d.counts||{},todo=(c.pagado||0)+(c.revisar||0);
+    $('#kpis').innerHTML='<div class="card kpi"><b>'+todo+'</b><span>Pagados por preparar'+(c.revisar?' ('+c.revisar+' por revisar)':'')+'</span></div>'+
+      '<div class="card kpi"><b>'+(c.preparando||0)+'</b><span>Preparando</span></div>'+
+      '<div class="card kpi"><b>'+clp(d.month.amount)+'</b><span>Ventas del mes ('+d.month.orders+' pedidos)</span></div>';
+    if(!d.orders.length){body.innerHTML='<tr><td colspan="6" class="empty">'+(state.status==='activos'&&!state.q?'No hay pedidos por atender. Los pedidos pagados aparecerán aquí.':'No hay pedidos con este filtro.')+'</td></tr>'}
+    else body.innerHTML=d.orders.map(function(o){
+      var n=o.items.reduce(function(s,i){return s+i.qty},0);
+      return '<tr class="click" tabindex="0" data-code="'+esc(o.code)+'"><td class="code">'+esc(o.code)+'</td><td class="dim">'+esc(date(o.created_at))+'</td>'+
+      '<td>'+esc(o.customer.nombre)+'<div class="dim">'+n+(n===1?' producto':' productos')+'</div></td><td class="hide-sm">'+esc(o.customer.comuna)+'<div class="dim">'+esc(o.zone==='rm'?'RM':o.customer.region)+'</div></td>'+
+      '<td class="num">'+clp(o.total)+'</td><td>'+pill(o.status)+'</td></tr>'}).join('');
+    var pages=Math.max(1,Math.ceil(d.total/d.per));
+    $('#pager').innerHTML=pages>1?'<button class="btn ghost" data-p="-1"'+(d.page<=1?' disabled':'')+'>Anterior</button><span>Página '+d.page+' de '+pages+'</span><button class="btn ghost" data-p="1"'+(d.page>=pages?' disabled':'')+'>Siguiente</button>':'<span>'+d.total+(d.total===1?' pedido':' pedidos')+'</span>';
+  }).catch(function(e){if(e.message!=='401')body.innerHTML='<tr><td colspan="6" class="empty">No se pudieron cargar los pedidos: '+esc(e.message)+'</td></tr>'});
+}
+$('#pager').addEventListener('click',function(e){var b=e.target.closest('[data-p]');if(b){state.page+=Number(b.dataset.p);loadOrders()}});
+$('#orders-body').addEventListener('click',function(e){var tr=e.target.closest('tr[data-code]');if(tr)openOrder(tr.dataset.code)});
+$('#orders-body').addEventListener('keydown',function(e){var tr=e.target.closest('tr[data-code]');if(tr&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openOrder(tr.dataset.code)}});
+
+// ---------------------------------------------------- detalle del pedido
+var lastFocus;
+function closeDrawer(){$('#drawer').classList.add('hidden');$('#drawer-bg').classList.add('hidden');if(lastFocus)lastFocus.focus()}
+$('#drawer-bg').addEventListener('click',closeDrawer);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#drawer').classList.contains('hidden'))closeDrawer()});
+function openOrder(code){
+  lastFocus=document.activeElement;
+  api('/api/admin/orders/'+encodeURIComponent(code)).then(function(d){renderOrder(d.order)}).catch(function(e){if(e.message!=='401')alert(e.message)});
+}
+function renderOrder(o){
+  var dr=$('#drawer'),c=o.customer,paid=!!o.paid_at;
+  var addr=c.nombre+'\n'+c.direccion+'\n'+c.comuna+', '+c.region+'\nTel: '+c.telefono;
+  dr.innerHTML=
+    '<div class="d-head"><div><h2 id="d-title">'+esc(o.code)+'</h2><div class="dim">Creado '+esc(date(o.created_at))+(o.paid_at?' · pagado '+esc(date(o.paid_at)):'')+'</div></div><button class="x" aria-label="Cerrar">×</button></div>'+
+    '<p>'+pill(o.status)+'</p>'+
+    (o.review?'<p class="msg err">'+esc(o.review)+'</p>':'')+
+    (o.status==='pendiente_pago'?'<p class="msg warn">Aún sin confirmación de Flow. Si el cliente dice que pagó, usa “Consultar estado en Flow”.</p>':'')+
+    '<h3>Productos</h3><div class="card sec"><table class="items">'+o.items.map(function(i){return '<tr><td>'+esc(i.name)+' <span class="dim">× '+i.qty+'</span></td><td class="num">'+clp(i.line)+'</td></tr>'}).join('')+
+    '<tr><td class="dim">Envío ('+(o.zone==='rm'?'Región Metropolitana':'regiones')+')</td><td class="num">'+clp(o.shipping)+'</td></tr><tr><td><b>Total</b></td><td class="num"><b>'+clp(o.total)+'</b></td></tr></table></div>'+
+    '<h3>Cliente y despacho</h3><div class="card sec"><dl class="kv"><dt>Nombre</dt><dd>'+esc(c.nombre)+'</dd><dt>Correo</dt><dd><a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a></dd><dt>Teléfono</dt><dd><a href="tel:'+esc(c.telefono)+'">'+esc(c.telefono)+'</a> · <a href="https://wa.me/'+esc(c.telefono.replace(/\D/g,''))+'" target="_blank" rel="noopener">WhatsApp</a></dd>'+
+    '<dt>Dirección</dt><dd>'+esc(c.direccion)+'</dd><dt>Comuna</dt><dd>'+esc(c.comuna)+'</dd><dt>Región</dt><dd>'+esc(c.region)+'</dd>'+(c.notas?'<dt>Notas</dt><dd>'+esc(c.notas)+'</dd>':'')+'</dl>'+
+    '<button class="btn ghost copy" type="button" id="d-copy">Copiar datos de despacho</button></div>'+
+    '<h3>Gestión</h3><form class="card sec" id="d-form"><p class="msg hidden" id="d-msg" role="status"></p>'+
+    (paid?'<div class="field"><label for="d-status">Estado del pedido</label><select id="d-status">'+FULFILL.map(function(s){return '<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+LABEL[s]+'</option>'}).join('')+'</select></div>':'<p class="dim">El estado de preparación se activa cuando el pedido está pagado.</p>')+
+    '<div class="grid2"><div class="field"><label for="d-courier">Transporte</label><input id="d-courier" maxlength="60" placeholder="Starken, Chilexpress, Blue Express…" value="'+esc(o.courier)+'"></div>'+
+    '<div class="field"><label for="d-tracking">N° de seguimiento</label><input id="d-tracking" maxlength="60" value="'+esc(o.tracking)+'"></div></div>'+
+    '<div class="field"><label for="d-note">Nota interna</label><textarea id="d-note" rows="3" maxlength="1000">'+esc(o.admin_note)+'</textarea></div>'+
+    '<p class="dim">Cancelar no devuelve el dinero: la devolución se hace en tu cuenta de Flow. El stock tampoco se repone solo; ajústalo en Productos.</p>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="submit">Guardar</button>'+(o.flow_token?'<button class="btn ghost" type="button" id="d-sync">Consultar estado en Flow</button>':'')+'</div></form>'+
+    '<h3>Flow</h3><div class="card sec"><dl class="kv"><dt>Orden Flow</dt><dd>'+esc(o.flow_order||'—')+'</dd><dt>Estado Flow</dt><dd>'+esc({1:'1 · pendiente',2:'2 · pagada',3:'3 · rechazada',4:'4 · anulada'}[o.flow_status]||'—')+'</dd><dt>Actualizado</dt><dd>'+esc(date(o.updated_at))+'</dd></dl></div>';
+  $('#drawer-bg').classList.remove('hidden');dr.classList.remove('hidden');dr.scrollTop=0;
+  $('.x',dr).addEventListener('click',closeDrawer);$('.x',dr).focus();
+  $('#d-copy').addEventListener('click',function(){navigator.clipboard.writeText(addr).then(function(){$('#d-copy').textContent='Copiado'},function(){prompt('Copia los datos:',addr)})});
+  $('#d-form').addEventListener('submit',function(e){
+    e.preventDefault();var body={courier:$('#d-courier').value,tracking:$('#d-tracking').value,admin_note:$('#d-note').value};
+    if($('#d-status'))body.status=$('#d-status').value;
+    api('/api/admin/orders/'+encodeURIComponent(o.code),{method:'POST',body:body}).then(function(d){renderOrder(d.order);msg($('#d-msg'),'Cambios guardados.','ok');loadOrders()})
+    .catch(function(err){if(err.message!=='401')msg($('#d-msg'),err.message,'err')});
+  });
+  var sync=$('#d-sync');if(sync)sync.addEventListener('click',function(){sync.disabled=true;
+    api('/api/admin/orders/'+encodeURIComponent(o.code)+'/sync',{method:'POST'}).then(function(d){renderOrder(d.order);msg($('#d-msg'),'Estado actualizado desde Flow.','ok');loadOrders()})
+    .catch(function(err){sync.disabled=false;if(err.message!=='401')msg($('#d-msg'),err.message,'err')})});
+}
+
+// ---------------------------------------------------- productos
+function loadProducts(){
+  api('/api/admin/products').then(function(d){
+    $('#prod-body').innerHTML=d.products.map(function(p){
+      return '<tr data-slug="'+esc(p.slug)+'"><td><div class="prod"><img src="'+esc(p.img)+'" alt=""><div><a href="'+esc(p.url)+'" target="_blank" rel="noopener">'+esc(p.short)+'</a>'+
+      '<div class="dim">'+(p.available?'Disponible':(p.active?'Agotado':'Oculto'))+'</div></div></div></td><td class="num dim">'+clp(p.base_price)+'</td>'+
+      '<td class="num"><input class="in" type="number" min="350" step="10" data-k="price" value="'+p.price+'" aria-label="Precio de '+esc(p.short)+'"></td>'+
+      '<td class="num"><input class="in" type="number" min="0" step="1" data-k="stock" value="'+(p.stock===null?'':p.stock)+'" placeholder="sin control" aria-label="Stock de '+esc(p.short)+'"></td>'+
+      '<td><label class="switch"><input type="checkbox" data-k="active"'+(p.active?' checked':'')+'> En venta</label></td>'+
+      '<td><button class="row-btn" disabled>Guardar</button> <span class="ok-flash"></span></td></tr>'}).join('');
+  }).catch(function(e){if(e.message!=='401')msg($('#prod-msg'),e.message,'err')});
+}
+$('#prod-body').addEventListener('input',function(e){var tr=e.target.closest('tr');if(!tr)return;if(e.target.classList.contains('in'))e.target.classList.add('dirty');$('.row-btn',tr).disabled=false;$('.ok-flash',tr).textContent=''});
+$('#prod-body').addEventListener('change',function(e){var tr=e.target.closest('tr');if(tr&&e.target.type==='checkbox')$('.row-btn',tr).disabled=false});
+$('#prod-body').addEventListener('click',function(e){
+  var b=e.target.closest('.row-btn');if(!b)return;var tr=b.closest('tr');
+  var body={price:Number($('[data-k=price]',tr).value),stock:$('[data-k=stock]',tr).value===''?null:Number($('[data-k=stock]',tr).value),active:$('[data-k=active]',tr).checked};
+  b.disabled=true;
+  api('/api/admin/products/'+encodeURIComponent(tr.dataset.slug),{method:'POST',body:body}).then(function(){
+    $$('.in',tr).forEach(function(i){i.classList.remove('dirty')});$('.ok-flash',tr).textContent='Guardado';msg($('#prod-msg'),'');
+  }).catch(function(err){b.disabled=false;if(err.message!=='401')msg($('#prod-msg'),err.message,'err')});
+});
+
+// ---------------------------------------------------- envío
+function loadSettings(){api('/api/admin/settings').then(function(s){$('#s-rm').value=s.ship_rm;$('#s-rg').value=s.ship_regiones}).catch(function(){})}
+$('#ship-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  api('/api/admin/settings',{method:'POST',body:{ship_rm:Number($('#s-rm').value),ship_regiones:Number($('#s-rg').value)}})
+  .then(function(){msg($('#ship-msg'),'Tarifas guardadas. Ya se aplican en el carrito.','ok')}).catch(function(err){if(err.message!=='401')msg($('#ship-msg'),err.message,'err')});
+});
+})();
+</script>
+</body>
+</html>

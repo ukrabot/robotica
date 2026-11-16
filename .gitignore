@@ -6,3 +6,9 @@ __pycache__/
 # Archivos de trabajo del agente (no forman parte del sitio publicado)
 /work/
 /image-search/
+
+# Secretos locales de desarrollo de la tienda (nunca subir)
+.dev.vars
+.dev.vars.*
+.wrangler/
+node_modules/

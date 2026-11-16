@@ -254,6 +254,7 @@ try{var c=document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);if(c&&c[1]==='g
 }
 @media (prefers-reduced-motion:reduce){.mnav-btn span{transition:none}}
 </style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=1">
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -278,6 +279,7 @@ try{var c=document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);if(c&&c[1]==='g
     <div class="price-panel" role="group" aria-label="Precio y cobertura de envío">
       <span class="price-label">Precio</span><strong>$79.990 <small>CLP</small></strong><span class="shipping">Envíos a todo Chile</span>
     </div>
+    <div class="ukr-buy" id="comprar-online" data-ukr-buy="kit-avanzado-arduino" aria-label="Comprar en línea"></div>
     <div class="action-row">
       <a class="btn btn-wa" href="https://wa.me/56993514970?text=Hola%2C%20quiero%20comprar%20el%20Kit%20Avanzado%20Arduino%20UNO%20a%20%2479.990.%20Mi%20comuna%20es%20____." target="_blank" rel="noopener">◈ Escribir por WhatsApp</a>
       <a class="btn btn-primary" href="tel:+56993514970">✆ Llamar ahora</a>
@@ -633,5 +635,6 @@ try{var c=document.cookie.match(/(?:^|;\s*)rel_consent=([^;]+)/);if(c&&c[1]==='g
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&n.classList.contains('is-open')){set(false);b.focus();}});
 })();
 </script>
+<script src="/tienda/tienda.js?v=1" defer></script>
 </body>
 </html>

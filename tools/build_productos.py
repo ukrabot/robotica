@@ -84,7 +84,7 @@ for key, label, slugs in GROUPS:
           <div class="product-card-cat">{html.escape(label)}</div>
           <h3>{html.escape(name)}</h3>
           <p>{html.escape(p['desc'])}</p>
-          <div class="product-price">{clp(p['price'])} <span>CLP</span></div>
+          <div class="product-price" data-price-slug="{s}">{clp(p['price'])} <span>CLP</span></div>
           <span class="product-cta">Ver producto →</span>
         </div>
       </a>''')
@@ -214,6 +214,7 @@ page = f'''<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>{css}{EXTRA_CSS}</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=1">
 {tracking}</head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -292,7 +293,7 @@ page = f'''<!DOCTYPE html>
   function norm(s){{return s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/g,' ');}}
   function label(){{var c=chips.filter(function(b){{return b.getAttribute('data-filter')===cat;}})[0];return c?c.firstChild.textContent.trim():'';}}
   function apply(push){{
-    var words=norm(q.value).split(/\s+/).filter(Boolean),n=0;
+    var words=norm(q.value).split(/\\s+/).filter(Boolean),n=0;
     cards.forEach(function(c){{
       var ok=(cat==='all'||c.getAttribute('data-cat')===cat)&&words.every(function(w){{return c.getAttribute('data-q').indexOf(' '+w)>-1;}});
       c.hidden=!ok; if(ok) n++;
@@ -316,6 +317,7 @@ page = f'''<!DOCTYPE html>
 }})();
 </script>
 
+<script src="/tienda/tienda.js?v=1" defer></script>
 {footer}'''
 open('productos.html', 'w', encoding='utf-8').write(page)
 print('productos.html', len(page), 'bytes;', len(allp), 'productos; rango', clp(lo), clp(hi))

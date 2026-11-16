@@ -26,3 +26,10 @@ wrangler.toml
 
 # Scripts de mantenimiento del sitio (no son contenido)
 /tools/
+
+# Código del servidor de la tienda (el Worker lo empaqueta; no se publica como archivo)
+/worker/
+package.json
+package-lock.json
+.dev.vars
+.dev.vars.*
