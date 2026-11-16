@@ -369,7 +369,7 @@ function toggleFiles(tr){
   var next=tr.nextElementSibling;
   if(next&&next.classList.contains('files-row')){next.remove();return}
   var row=document.createElement('tr');row.className='files-row';row.dataset.for=tr.dataset.slug;
-  row.innerHTML='<td colspan="6"><p class="dim" style="margin:0 0 8px">Archivos que el cliente descarga después de pagar. Máximo 20 MB por archivo. Se guardan en privado en Cloudflare: no son públicos.</p><ul class="files-list"><li class="dim">Cargando…</li></ul>'+
+  row.innerHTML='<td colspan="6"><p class="dim" style="margin:0 0 8px">Archivos que el cliente descarga después de pagar. Lo más simple es subir el pack como un solo .zip. Máximo 20 MB por archivo. Se guardan en privado en Cloudflare: no son públicos.</p><ul class="files-list"><li class="dim">Cargando…</li></ul>'+
     '<label class="btn ghost" style="display:inline-block;cursor:pointer">Subir archivos<input type="file" multiple hidden></label> <span class="ok-flash files-msg"></span></td>';
   tr.after(row);
   $('input[type=file]',row).addEventListener('change',function(e){uploadFiles(row,[].slice.call(e.target.files));e.target.value=''});
