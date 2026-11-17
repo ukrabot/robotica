@@ -198,5 +198,22 @@
    "Se entrega en un archivo .zip con instrucciones; se abre en Excel, LibreOffice y Google Sheets"
   ],
   "cover": "/blog/pack-cargador-en-casa.jpg"
+ },
+ {
+  "slug": "pack-feria-cientifica-robotica",
+  "name": "Pack Feria Científica de Robótica: planificador en Excel + guía en PDF + códigos Arduino",
+  "short": "Pack Feria Científica de Robótica (Excel + PDF + códigos)",
+  "price": 7990,
+  "img": "/blog/pack-feria-cientifica-robotica-thumb.jpg",
+  "url": "/blog/12-proyectos-de-robotica-para-la-feria-cientifica#pack",
+  "digital": true,
+  "desc": "Elige el proyecto que le conviene a tu equipo, planifica desde la fecha límite real, diseña un experimento con repeticiones y llega a la feria con informe, póster y respuestas para los jueces.",
+  "includes": [
+   "Planificador en Excel con 9 hojas: calendario hacia atrás, elegir proyecto, materiales de los 12 proyectos, dos hojas de experimento con promedio, desviación, gráfico y conclusión, bitácora, rúbrica de ensayo y checklist",
+   "Guía en PDF de 27 páginas: investigación o innovación (Explora y FCNJ), pregunta e hipótesis, diseño del experimento, 12 fichas de proyecto, informe, póster, presentación y preguntas de los jueces",
+   "3 códigos de Arduino comentados: siguelíneas proporcional, registro de distancia con ultrasonido y riego con registro de humedad, con datos listos para pegar en el Excel",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-feria-cientifica-robotica.jpg"
  }
 ]
