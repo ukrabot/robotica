@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos</title>
-<meta name="description" content="Guía técnica para instalar un cargador EV en casa en Chile: modos de carga, 16A vs 32A, diferencial tipo A, certificado TE6 ante la SEC y costos reales 2026.">
+<meta name="description" content="Guía técnica para instalar un cargador EV en casa en Chile: modos de carga, 16A vs 32A, protecciones del RIC N°15, declaración TE6 ante la SEC y costos 2026.">
 <meta name="keywords" content="cargador auto electrico casa chile, wallbox chile, instalar cargador ev, certificado te6 sec, cargador tipo 2 chile, diferencial tipo a cargador ev, costo instalar cargador electrico">
 <meta name="author" content="Alberto Gallardo">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -13,16 +13,16 @@
 
 <meta property="og:type" content="article">
 <meta property="og:title" content="Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos">
-<meta property="og:description" content="Modos de carga, 16A vs 32A, protecciones obligatorias y el certificado TE6: lo que realmente implica instalar un punto de carga en casa.">
-<meta property="og:image" content="https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg?v=2">
+<meta property="og:description" content="Modos de carga, 16A vs 32A, protecciones del RIC N°15 y la declaración TE6: lo que realmente implica instalar un punto de carga en casa.">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/wallbox-instalacion-ric15-hero.jpg">
 <meta property="og:url" content="https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="Blog de Ingeniería Robótica">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos">
-<meta name="twitter:description" content="Modos de carga, 16A vs 32A, protecciones obligatorias y el certificado TE6: lo que realmente implica instalar un punto de carga en casa.">
-<meta name="twitter:image" content="https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg?v=2">
+<meta name="twitter:description" content="Modos de carga, 16A vs 32A, protecciones del RIC N°15 y la declaración TE6: lo que realmente implica instalar un punto de carga en casa.">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/wallbox-instalacion-ric15-hero.jpg">
 
 <script type="application/ld+json">
 {
@@ -44,9 +44,9 @@
     "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
   },
   "datePublished":"2026-09-02",
-  "dateModified":"2026-09-02",
+  "dateModified":"2026-11-17",
   "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos"},
-  "image":"https://www.ukrabot.cl/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg?v=2",
+  "image":"https://www.ukrabot.cl/blog/wallbox-instalacion-ric15-hero.jpg",
   "proficiencyLevel":"Intermedio",
   "dependencies":"Vehículo eléctrico o híbrido enchufable, acceso al tablero eléctrico principal, conocimiento del tipo y capacidad del empalme (monofásico o trifásico, amperaje contratado), y un instalador eléctrico con credencial vigente ante la SEC para la ejecución",
   "wordCount":"2650",
@@ -71,11 +71,11 @@
   "@context":"https://schema.org",
   "@type":"FAQPage",
   "mainEntity":[
-    {"@type":"Question","name":"¿Puedo cargar mi auto eléctrico con un enchufe normal mientras decido si instalar un wallbox?","acceptedAnswer":{"@type":"Answer","text":"Sí, de forma ocasional y con precauciones. Usa el cable Modo 2 que viene con el vehículo, conéctalo a un tomacorriente en buen estado y con puesta a tierra verificada, evita alargadores y zapatillas, y revisa que el enchufe no se caliente durante la carga. Lo que no es recomendable es hacerlo como método diario permanente: la carga vehicular somete al circuito a corriente sostenida durante muchas horas, algo para lo que un circuito de tomacorrientes doméstico no fue diseñado, y en instalaciones antiguas es una causa real de calentamiento de conexiones."}},
+    {"@type": "Question", "name": "¿Puedo cargar mi auto eléctrico con un enchufe normal mientras decido si instalar un wallbox?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, de forma ocasional. El RIC N°15 permite en viviendas el Modo 2: el cable de viaje con caja de protección que viene con el auto, conectado a un enchufe tipo L o F y limitado a 10 A (unos 2,2 kW). Usa un tomacorriente en buen estado y con tierra verificada, sin alargadores ni zapatillas, y revisa que el enchufe no se caliente. No es recomendable como método diario: la carga somete al circuito a corriente sostenida durante muchas horas, y en instalaciones antiguas es una causa real de calentamiento de conexiones."}},
     {"@type":"Question","name":"¿Necesito aumentar la potencia de mi empalme para instalar un cargador?","acceptedAnswer":{"@type":"Answer","text":"No necesariamente, y es lo primero que debe evaluar el instalador en la visita técnica. Depende de la capacidad actual de tu empalme, del consumo habitual de la vivienda y de la corriente del cargador que elijas. Muchas instalaciones se resuelven sin tocar el empalme optando por un cargador de 16 A en lugar de 32 A, o usando un wallbox con balance dinámico de carga que reduce automáticamente la corriente cuando el resto de la casa está demandando mucho. El aumento de potencia ante la distribuidora es la última opción, no la primera."}},
-    {"@type":"Question","name":"¿Qué diferencia hay entre un diferencial tipo A y uno tipo B para carga vehicular?","acceptedAnswer":{"@type":"Answer","text":"La diferencia está en el tipo de corriente de fuga que cada uno es capaz de detectar. Un diferencial tipo AC convencional solo detecta fugas de corriente alterna senoidal, y los cargadores de vehículos eléctricos pueden generar fugas con componente continua que ese tipo no ve de forma confiable. El tipo A detecta además corrientes pulsantes con componente continua, y el tipo B cubre también fugas de corriente continua pura. Qué tipo corresponde depende de si el propio wallbox integra detección de fuga DC internamente, algo que debe indicar la ficha técnica del equipo y que el instalador debe verificar antes de dimensionar la protección."}},
-    {"@type":"Question","name":"¿Cuánto cuesta cargar un auto eléctrico en casa comparado con cargar en una electrolinera?","acceptedAnswer":{"@type":"Answer","text":"Cargar en casa es sensiblemente más económico en la mayoría de los casos, porque pagas la energía a tarifa residencial en vez del precio de un punto de carga público, que incorpora el costo de la infraestructura de carga rápida y el margen del operador. El cálculo para tu caso es directo: multiplica la capacidad de la batería de tu vehículo en kWh por el valor del kWh de tu boleta para estimar el costo de una carga completa desde vacío. Si además tienes generación solar y cargas durante el día, el costo marginal de esa energía puede acercarse a cero."}},
-    {"@type":"Question","name":"¿El cargador wallbox sirve si cambio de auto eléctrico más adelante?","acceptedAnswer":{"@type":"Answer","text":"En general sí, siempre que el nuevo vehículo use el mismo estándar de conector, que en Chile es mayoritariamente Tipo 2. El wallbox no está atado a una marca de vehículo: el protocolo de comunicación entre cargador y auto está estandarizado, por lo que un cargador Modo 3 con conector Tipo 2 funciona con cualquier vehículo compatible con ese estándar. Lo que sí puede cambiar es si el auto nuevo acepta más potencia de carga AC que el anterior, en cuyo caso podrías estar limitado por el cargador ya instalado, aunque eso solo afecta la velocidad de carga y no la compatibilidad."}}
+    {"@type": "Question", "name": "¿Qué diferencia hay entre un diferencial tipo A y uno tipo B para carga vehicular?", "acceptedAnswer": {"@type": "Answer", "text": "Un diferencial tipo AC solo detecta fugas de corriente alterna; el tipo A detecta además fugas pulsantes con componente continua, y el tipo B también fugas de corriente continua pura. Para Modo 3, el RIC N°15 exige un diferencial tipo B, o un tipo A de 30 mA más un dispositivo que corte ante fugas continuas sobre 6 mA. Muchos wallbox integran esa detección de 6 mA, y entonces basta el tipo A externo: el instalador debe verificarlo en la ficha técnica del equipo."}},
+    {"@type": "Question", "name": "¿Cuánto cuesta cargar un auto eléctrico en casa comparado con cargar en una electrolinera?", "acceptedAnswer": {"@type": "Answer", "text": "Cargar en casa es más económico en la mayoría de los casos, porque pagas la energía a tarifa residencial en vez del precio de un punto de carga público, que incluye la infraestructura y el margen del operador. Para estimar una carga completa, multiplica los kWh de la batería por el valor del kWh de tu boleta y suma alrededor de 10 % de pérdidas de carga. Si tienes paneles solares y cargas de día, el costo de esa energía puede acercarse a cero."}},
+    {"@type": "Question", "name": "¿El cargador wallbox sirve si cambio de auto eléctrico más adelante?", "acceptedAnswer": {"@type": "Answer", "text": "En general sí, si el nuevo vehículo usa el mismo conector. La mayoría de los autos vendidos en Chile usa Tipo 2, pero el RIC N°15 también admite Tipo 1 y GB/T AC, así que revisa el conector del auto nuevo. El protocolo entre cargador y auto está estandarizado, por lo que el wallbox no está atado a una marca. Si el auto nuevo acepta más potencia AC que el cargador, solo cargará más lento, no habrá incompatibilidad."}}
   ]
 }
 </script>
@@ -244,6 +244,22 @@ details p{padding-top:10px;margin-bottom:0}
     gtag('js', new Date());
     gtag('config', 'G-1ZVHF8X35Q');
   </script>
+<style>
+.pack{margin:52px 0;padding:28px;border:1px solid rgba(169,123,35,.35);border-radius:18px;background:#fff;box-shadow:0 18px 40px rgba(30,25,15,.06)}
+.pack-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:start}
+.pack-grid>img{width:100%;height:auto;border-radius:12px;display:block}
+.pack-tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.pack h2{margin:8px 0 12px}
+.pack ul{padding-left:20px;margin:0 0 18px}
+.pack li{margin-bottom:8px}
+.pack-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 2px}
+.pack-price strong{font-family:Georgia,serif;font-size:2rem;font-weight:400;color:var(--text)}
+.pack-price span{color:var(--muted);font-size:.9rem}
+.pack-fine{font-size:.8rem;color:var(--quiet);margin:14px 0 0;line-height:1.5}
+.pack-callout a{font-weight:600}
+@media (max-width:820px){.pack{padding:20px}.pack-grid{grid-template-columns:1fr;gap:20px}}
+</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=4">
 </head>
 <body>
 
@@ -266,11 +282,11 @@ details p{padding-top:10px;margin-bottom:0}
 </nav>
 
 <header class="hero">
-  <img src="instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg?v=2" alt="Ilustración de un cargador wallbox montado en la pared de un garaje conectado con su cable al puerto de carga de un auto eléctrico" fetchpriority="high">
+  <img src="wallbox-instalacion-ric15-hero.jpg" alt="Ilustración de un wallbox instalado en un garaje: circuito exclusivo desde el tablero, canalización, conector a 1–1,3 m del piso, cable sin tocar el suelo, puesta a tierra y auto conectado con Tipo 2" fetchpriority="high">
   <div class="hero-inner">
     <div class="eyebrow">Movilidad Eléctrica · Publicado el <time datetime="2026-09-02">2 de septiembre de 2026</time></div>
     <h1>Instalar un Cargador de Auto Eléctrico en Casa (Chile): Wallbox, Normativa y Costos</h1>
-    <p>Por qué un enchufe común no sirve para uso diario, cómo elegir entre 16 A y 32 A, qué protecciones exige la normativa chilena y qué implica realmente el certificado TE6 ante la SEC.</p>
+    <p>Por qué un enchufe común no sirve para uso diario, cómo elegir entre 16 A y 32 A, qué protecciones exige la normativa chilena y qué implica realmente el declaración TE6 ante la SEC.</p>
     <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 12 min de lectura</p>
   </div>
 </header>
@@ -279,7 +295,7 @@ details p{padding-top:10px;margin-bottom:0}
 <article>
 
 <div class="article-img">
-  <img src="instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos-hero.jpg?v=2" alt="Ilustración de un cargador wallbox montado en la pared de un garaje conectado con su cable al puerto de carga de un auto eléctrico" loading="lazy">
+  <img src="esquema-instalacion-cargador-ric15.jpg" alt="Esquema de la instalación de un cargador en casa según el RIC N°15: empalme, tablero, magnetotérmico bipolar exclusivo, diferencial 30 mA tipo B o tipo A con detección de 6 mA CC, cable canalizado, wallbox autorizado por la SEC y auto, con tierra de protección" width="1600" height="900" loading="lazy">
   <div class="caption">Un wallbox no es solo un enchufe más rápido: es un circuito dedicado con protecciones específicas y comunicación con el vehículo, que es lo que permite cargar de forma segura durante horas sin supervisión.</div>
 </div>
 
@@ -291,12 +307,30 @@ details p{padding-top:10px;margin-bottom:0}
     <li><a href="#16a-vs-32a">16 A vs 32 A: cuál necesitas realmente</a></li>
     <li><a href="#empalme">Verificar el empalme antes de comprar nada</a></li>
     <li><a href="#protecciones">Cableado y protecciones obligatorias</a></li>
-    <li><a href="#te6">El certificado TE6 y la SEC</a></li>
+    <li><a href="#te6">La declaración TE6 ante la SEC</a></li>
     <li><a href="#costos">Costos de mercado en Chile (2026)</a></li>
     <li><a href="#solar">Combinar la carga con paneles solares</a></li>
     <li><a href="#faq">Preguntas frecuentes</a></li>
   </ol>
 </div>
+
+<section id="pack" class="pack" aria-labelledby="pack-t">
+<div class="pack-grid">
+  <img src="pack-cargador-en-casa.jpg" alt="Portada del Pack Cargador en Casa: calculadora en Excel y guía práctica en PDF" width="1200" height="800" loading="lazy">
+  <div>
+    <span class="pack-tag">Pack digital · ukrabot.cl</span>
+    <h2 id="pack-t">Pack Cargador en Casa: decide y cotiza con números</h2>
+    <p>Todo lo de esta guía, aplicado a tu casa: una calculadora que usa tus datos y una guía práctica para hablar de igual a igual con el instalador.</p>
+    <ul>
+      <li><strong>Calculadora en Excel (7 hojas):</strong> qué potencia te basta según tu recorrido, si tu empalme la soporta, protección y sección de cable según el RIC N°15, comparador de hasta tres cotizaciones que detecta lo que falta, ahorro frente a electrolinera y bencina, y checklist.</li>
+      <li><strong>Guía práctica en PDF (13 páginas):</strong> enchufe o wallbox, cómo revisar el empalme, la tabla de requisitos del RIC N°15, cómo elegir el cargador, preguntas para el instalador, qué revisar el día de la instalación y la declaración TE6 paso a paso.</li>
+    </ul>
+    <div class="pack-price"><strong data-price-slug="pack-cargador-en-casa">$4.990</strong><span>Pago único · descarga inmediata en un archivo .zip</span></div>
+    <div class="ukr-buy" id="comprar-pack" data-ukr-buy="pack-cargador-en-casa" aria-label="Comprar el Pack Cargador en Casa"></div>
+    <p class="pack-fine">Al pagar descargas un archivo .zip con la calculadora (.xlsx), la guía (.pdf) y las instrucciones. La calculadora se abre en Excel, LibreOffice y Google Sheets. Licencia de uso personal. Por ser contenido digital de descarga inmediata, no tiene derecho a retracto; si un archivo llega dañado o no abre, te lo reponemos o devolvemos el dinero.</p>
+  </div>
+</div>
+</section>
 
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
@@ -312,39 +346,39 @@ details p{padding-top:10px;margin-bottom:0}
 
 <section id="por-que-wallbox">
 <h2>Por qué un enchufe común no basta</h2>
-<p>Técnicamente es posible cargar un vehículo eléctrico desde un tomacorriente doméstico usando el cable adaptador que suele venir con el auto. El problema no es que no funcione: es que carga a una potencia de apenas 2,3 a 3,7 kW, lo que se traduce en tiempos de <strong>20 a 30 horas</strong> para una carga completa en un vehículo de batería mediana, y somete al circuito a una corriente sostenida durante muchas horas seguidas.</p>
+<p>Técnicamente es posible cargar un vehículo eléctrico desde un tomacorriente doméstico usando el cable adaptador que suele venir con el auto. El problema no es que no funcione: es que el cable de viaje (Modo 2) en un enchufe doméstico está limitado a 10 A, unos 2,2 kW a 220 V, lo que se traduce en tiempos de <strong>20 a 30 horas</strong> para una carga completa en un vehículo de batería mediana, y somete al circuito a una corriente sostenida durante muchas horas seguidas.</p>
 <p>Esa segunda parte es la crítica. Un circuito de tomacorrientes doméstico está dimensionado para cargas intermitentes: un secador de pelo que funciona diez minutos, un hervidor que funciona tres. Una carga vehicular exige corriente cercana al límite del circuito de forma continua durante toda la noche, algo para lo que ese cableado, sus conexiones y su protección nunca fueron diseñados. En instalaciones antiguas o con empalmes de baja capacidad, es una receta conocida para calentamiento de conexiones y degradación del cableado.</p>
 <p>Un <strong>wallbox</strong> (o EVSE, <em>Electric Vehicle Supply Equipment</em>) resuelve esto con tres cosas que un enchufe no tiene: un circuito eléctrico dedicado dimensionado para carga continua, protecciones específicas para el tipo de corriente de fuga que genera un cargador, y comunicación con el vehículo mediante el protocolo de control piloto, que negocia la corriente máxima disponible antes de empezar a cargar y la ajusta durante la sesión.</p>
 </section>
 
 <section id="modos-de-carga">
 <h2>Modos de carga y conectores</h2>
-<p>La clasificación de cargadores que usa el Ministerio de Energía sigue el estándar internacional de modos:</p>
+<p>En Chile, la infraestructura de carga se rige por el <strong>Pliego Técnico Normativo RIC N°15</strong> de la SEC, que usa la clasificación internacional de modos de carga:</p>
 <div class="table-wrap">
 <table>
-<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Modos de carga según el estándar IEC 61851, con las potencias típicas de cada uno.</caption>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Modos de carga (IEC 61851) y lo que permite el RIC N°15. Potencias calculadas con la red chilena: 220 V monofásica y 380 V trifásica.</caption>
 <thead><tr><th>Modo</th><th>Descripción</th><th>Potencia típica</th><th>Uso</th></tr></thead>
 <tbody>
-<tr><td>Modo 1</td><td>Conexión directa sin protecciones dedicadas</td><td>≈ 2,3 kW</td><td>Desaconsejado; prohibido en varias normativas</td></tr>
-<tr><td>Modo 2</td><td>Cable con caja de protección incorporada a enchufe doméstico</td><td>2,3–3,7 kW</td><td>Cargas ocasionales, emergencia</td></tr>
-<tr><td>Modo 3</td><td>Wallbox con circuito dedicado y control piloto</td><td>7,4 kW (mono) / 22 kW (trifásico)</td><td>Estándar para carga domiciliaria diaria</td></tr>
+<tr><td>Modo 1</td><td>Conexión directa sin protecciones dedicadas</td><td>—</td><td>Prohibido por el RIC N°15 para autos</td></tr>
+<tr><td>Modo 2</td><td>Cable de viaje con caja de protección (IC-CPD) a un enchufe tipo L o F</td><td>≈ 2,2 kW (10 A)</td><td>Cargas ocasionales en casa; prohibido en servicio público</td></tr>
+<tr><td>Modo 3</td><td>Wallbox con circuito exclusivo y control piloto</td><td>3,5–7 kW (mono) / ≈ 21 kW (trifásico)</td><td>Estándar para carga domiciliaria diaria</td></tr>
 <tr><td>Modo 4</td><td>Carga rápida en corriente continua (DC)</td><td>50 kW en adelante</td><td>Electrolineras públicas; no aplica a vivienda</td></tr>
 </tbody>
 </table>
 </div>
-<p>Para uso domiciliario habitual, la respuesta es <strong>Modo 3</strong>. En cuanto al conector del lado del vehículo, el estándar dominante en Chile es el <strong>Tipo 2</strong> (también llamado Mennekes, el estándar europeo), que es el que traen la mayoría de los vehículos eléctricos comercializados en el país y el que ofrecen los wallbox disponibles localmente. Algunos vehículos de origen asiático más antiguos usan Tipo 1, en cuyo caso se requiere un cable o adaptador correspondiente.</p>
+<p>Para uso domiciliario habitual, la respuesta es <strong>Modo 3</strong>. En cuanto al conector del lado del vehículo, el estándar dominante en Chile es el <strong>Tipo 2</strong> (también llamado Mennekes, el estándar europeo), que es el que traen la mayoría de los vehículos eléctricos comercializados en el país y el que ofrecen los wallbox disponibles localmente. El RIC N°15 también admite en Modo 3 los conectores <strong>Tipo 1</strong> (algunos modelos más antiguos) y <strong>GB/T AC</strong>, el estándar chino, que el Ministerio de Transportes habilitó para homologar vehículos de ese origen. Antes de comprar el wallbox, revisa qué conector trae tu auto.</p>
 </section>
 
 <section id="16a-vs-32a">
 <h2>16 A vs 32 A: cuál necesitas realmente</h2>
 <p>Los wallbox residenciales monofásicos se ofrecen principalmente en dos configuraciones de corriente, y elegir la mayor no siempre es lo correcto:</p>
 <ul>
-<li><strong>16 A (≈ 3,7 kW monofásico):</strong> recarga aproximadamente 20 a 25 km de autonomía por hora conectado. Para alguien que recorre 40–60 km diarios, una noche de carga sobra con holgura. Exige menos del empalme y su instalación es más económica.</li>
-<li><strong>32 A (≈ 7,4 kW monofásico):</strong> aproximadamente el doble de velocidad, del orden de 40 a 50 km de autonomía por hora. Es la opción razonable si el recorrido diario es alto, si hay más de un vehículo eléctrico en la casa, o si la ventana de carga disponible es corta.</li>
+<li><strong>16 A (≈ 3,5 kW a 220 V):</strong> recarga aproximadamente 20 a 22 km de autonomía por hora conectado. Para alguien que recorre 40–60 km diarios, una noche de carga sobra con holgura. Exige menos del empalme y su instalación es más económica.</li>
+<li><strong>32 A (≈ 7 kW a 220 V):</strong> aproximadamente el doble de velocidad, del orden de 40 a 45 km de autonomía por hora. Los catálogos suelen decir "7,4 kW", que es el valor europeo a 230 V. Es la opción razonable si el recorrido diario es alto, si hay más de un vehículo eléctrico en la casa, o si la ventana de carga disponible es corta.</li>
 </ul>
 <p>El criterio práctico es simple: <strong>calcula tu kilometraje diario real</strong> y verifica si la carga cabe en las horas que el auto pasa estacionado en casa. Si recorres 50 km al día y el auto está enchufado 10 horas cada noche, un cargador de 16 A recupera esa autonomía sin ningún problema, y pagar por 32 A más el refuerzo eléctrico que puede exigir no aporta nada. La velocidad extra importa cuando la ventana de carga es estrecha, no cuando sobra tiempo.</p>
 <div class="note">
-<strong>Sobre la carga trifásica de 22 kW:</strong> requiere un empalme trifásico, poco común en viviendas residenciales chilenas, y además muchos vehículos tienen un cargador interno (OBC) limitado a 7,4 u 11 kW, por lo que instalar 22 kW no acelera la carga si el auto no puede aceptarla. Verifica siempre la potencia máxima de carga AC que acepta tu vehículo específico antes de dimensionar el wallbox.
+<strong>Sobre la carga trifásica de "22 kW":</strong> a 380 V y 32 A son unos 21 kW; requiere un empalme trifásico, poco común en viviendas residenciales chilenas, y además muchos vehículos tienen un cargador interno (OBC) limitado a 7 u 11 kW, por lo que instalar 22 kW no acelera la carga si el auto no puede aceptarla. Verifica siempre la potencia máxima de carga AC que acepta tu vehículo específico antes de dimensionar el wallbox.
 </div>
 </section>
 
@@ -362,11 +396,11 @@ details p{padding-top:10px;margin-bottom:0}
 <section id="empalme">
 <h2>Verificar el empalme antes de comprar nada</h2>
 <p>Este es el paso que más presupuestos hace variar y el que más gente omite. Antes de elegir un cargador, hay que responder: <strong>¿tiene tu empalme capacidad suficiente para sumar esta carga?</strong></p>
-<p>Un cargador de 32 A monofásico consume, por sí solo, una corriente comparable a la de varios electrodomésticos grandes funcionando en simultáneo, y lo hace durante horas. Si tu empalme está dimensionado justo para el consumo actual de la vivienda, agregar esa carga puede hacer saltar la protección general cada vez que coincida con el horno, la lavadora o una estufa eléctrica. Las salidas posibles son tres:</p>
+<p>Un cargador de 32 A monofásico consume, por sí solo, una corriente comparable a la de varios electrodomésticos grandes funcionando en simultáneo, y lo hace durante horas. Si tu empalme está dimensionado justo para el consumo actual de la vivienda, agregar esa carga puede hacer saltar la protección general cada vez que coincida con el horno, la lavadora o una estufa eléctrica. La propia SEC usa este ejemplo: una vivienda con 5 kW de potencia en su empalme no alcanza a sumar un cargador de 7 kW sin más. Las salidas posibles son tres:</p>
 <ul>
 <li><strong>Instalar un cargador de menor corriente</strong> (16 A en vez de 32 A), que muchas veces es suficiente y evita cualquier obra adicional.</li>
 <li><strong>Usar un wallbox con balance dinámico de carga.</strong> Estos modelos miden el consumo total de la vivienda en tiempo real y reducen automáticamente la corriente de carga cuando el resto de la casa está demandando mucho, evitando superar el límite del empalme. Es la solución más elegante cuando el empalme está ajustado.</li>
-<li><strong>Solicitar aumento de potencia a la distribuidora</strong> (Enel, CGE, Chilquinta, Saesa, Frontel según tu zona). Es un trámite con costo y plazo propios, y puede implicar cambio de empalme y de medidor.</li>
+<li><strong>Solicitar aumento de potencia a la distribuidora</strong> (Enel, CGE, Chilquinta, Saesa, Frontel según tu zona). Empieza con una solicitud de factibilidad técnica, que la distribuidora responde en unos 8 a 15 días hábiles si no hay observaciones; tiene costo propio y puede implicar cambio de empalme y de medidor.</li>
 </ul>
 </section>
 
@@ -375,20 +409,22 @@ details p{padding-top:10px;margin-bottom:0}
 <p>Una instalación de carga vehicular correcta en Chile involucra, como mínimo, estos elementos en el tablero y en el tendido:</p>
 <ul>
 <li><strong>Circuito dedicado exclusivo.</strong> El cargador no comparte circuito con ningún otro consumo de la casa; sale directo desde el tablero principal.</li>
-<li><strong>Cable de cobre de sección adecuada.</strong> La sección se calcula por la corriente del cargador y la distancia hasta el tablero: a mayor distancia, mayor sección necesaria para mantener la caída de tensión dentro de lo aceptable. Es exactamente el mismo criterio que explicamos en <a href="/blog/que-cable-y-conector-usar-segun-corriente">Qué Cable y Conector Usar Según la Corriente</a>, aplicado aquí a un caso de corriente continua sostenida.</li>
-<li><strong>Interruptor diferencial de alta sensibilidad (30 mA).</strong> Aquí hay un detalle técnico que distingue una instalación bien hecha: los cargadores EV pueden generar corrientes de fuga con componente continua, que un diferencial tipo AC convencional no detecta de forma confiable. Por eso se exige un <strong>diferencial tipo A</strong> como mínimo, y en algunos casos <strong>tipo B</strong>, según lo que declare el fabricante del wallbox. Muchos cargadores modernos integran detección de fuga DC internamente, lo que permite usar un tipo A externo; verificar esto en la ficha técnica del equipo es responsabilidad del instalador.</li>
-<li><strong>Interruptor termomagnético calibrado</strong> al amperaje del cargador (16 A o 32 A), que protege el cable ante sobrecarga sostenida y cortocircuito.</li>
-<li><strong>Puesta a tierra en condiciones.</strong> Un sistema de tierra deficiente invalida la protección diferencial; en viviendas antiguas es frecuente que esta sea la partida más costosa e inesperada del presupuesto.</li>
+<li><strong>Cable de cobre de sección adecuada.</strong> La sección se calcula por la corriente del cargador y la distancia hasta el tablero: a mayor distancia, mayor sección necesaria para mantener la caída de tensión dentro de lo aceptable. Es exactamente el mismo criterio que explicamos en <a href="/blog/que-cable-y-conector-usar-segun-corriente">Qué Cable y Conector Usar Según la Corriente</a>, aplicado aquí a una carga sostenida durante horas. El RIC N°15 pide como mínimo 2,5 mm² en el circuito y conductores canalizados en toda su extensión.</li>
+<li><strong>Interruptor diferencial de alta sensibilidad (30 mA).</strong> Aquí hay un detalle técnico que distingue una instalación bien hecha: los cargadores EV pueden generar corrientes de fuga con componente continua, que un diferencial tipo AC convencional no detecta de forma confiable. Por eso el RIC N°15 (punto 12.5.4) exige para Modo 3 un <strong>diferencial tipo B</strong>, o bien un <strong>tipo A de 30 mA</strong> más un dispositivo que corte ante fugas de corriente continua sobre <strong>6 mA</strong>. Muchos cargadores integran esa detección de 6 mA CC, y entonces basta el tipo A externo; verificarlo en la ficha técnica del equipo es responsabilidad del instalador, que además debe probar el diferencial con instrumento.</li>
+<li><strong>Interruptor magnetotérmico bipolar exclusivo</strong>, dimensionado según el RIC N°15 en 1,10 veces la corriente nominal del cargador y coordinado con el cable y la protección general.</li>
+<li><strong>Puesta a tierra en condiciones.</strong> Todas las partes metálicas de la instalación van a la tierra de protección, y una tierra existente debe medirse antes de usarla. Un sistema de tierra deficiente invalida la protección diferencial; en viviendas antiguas es frecuente que esta sea la partida más costosa e inesperada del presupuesto.</li>
+<li><strong>Ubicación del cargador.</strong> Conector a entre 1 y 1,3 m del piso, cable de 3 a 8 m que no toque el suelo, grado de protección IP44 o superior en viviendas e IK08, y un modelo de cargador autorizado por la SEC.</li>
 </ul>
 <div class="warning">
-<strong>Este no es un trabajo para hacer por cuenta propia.</strong> A diferencia de un proyecto de electrónica de bajo voltaje, aquí se trabaja con la instalación eléctrica domiciliaria en corriente alterna, con riesgo de electrocución e incendio, y con una exigencia legal de certificación. La normativa chilena requiere que la ejecute un instalador con credencial vigente ante la SEC, y hacerlo de otra forma además de peligroso puede invalidar el seguro de la vivienda y la garantía del cargador.
+<strong>Este no es un trabajo para hacer por cuenta propia.</strong> A diferencia de un proyecto de electrónica de bajo voltaje, aquí se trabaja con la instalación eléctrica domiciliaria en corriente alterna, con riesgo de electrocución e incendio, y con una exigencia legal de certificación. La normativa chilena requiere que la proyecte, ejecute y declare un instalador eléctrico autorizado por la SEC, con licencia vigente de la clase que corresponda a la potencia, y hacerlo de otra forma además de peligroso puede invalidar el seguro de la vivienda y la garantía del cargador.
 </div>
 </section>
 
 <section id="te6">
-<h2>El certificado TE6 y la SEC</h2>
-<p>Toda instalación eléctrica domiciliaria en Chile debe ser declarada ante la <strong>Superintendencia de Electricidad y Combustibles (SEC)</strong>. En el caso de un punto de carga vehicular, el instalador autorizado emite el formulario de declaración correspondiente —conocido comúnmente como <strong>TE6</strong>— que certifica que la instalación cumple con la normativa eléctrica vigente, incluyendo el reglamento específico de instalaciones de consumo.</p>
-<p>Este trámite no es un formalismo prescindible: es lo que respalda que la instalación fue ejecutada por alguien habilitado y bajo norma. Ante un siniestro eléctrico, la ausencia de esta declaración puede tener consecuencias directas en la cobertura del seguro del inmueble. Los rangos de mercado publicados por instaladores durante 2026 sitúan el costo de este trámite en el orden de los <strong>$150.000 a $250.000 CLP</strong>, habitualmente incluido dentro de la cotización de una instalación llave en mano.</p>
+<h2>La declaración TE6 ante la SEC</h2>
+<p>Toda instalación eléctrica domiciliaria en Chile debe ser declarada ante la <strong>Superintendencia de Electricidad y Combustibles (SEC)</strong>. En el caso de un punto de carga vehicular, el instalador autorizado registra la instalación en la plataforma e-Declarador de la SEC con la declaración <strong>TE6</strong>, específica para infraestructura de recarga, en la que acredita que la instalación cumple el RIC N°15. El orden es: factibilidad técnica ante la distribuidora (si hace falta más potencia), declaración TE6, eventual inspección de la SEC y conexión.</p>
+<p>Solo se pueden declarar cargadores <strong>autorizados por la SEC</strong>, y marca, modelo, tipo de diferencial, conector y potencia deben coincidir con lo instalado. La SEC informó en 2025 más de 15 procesos sancionatorios por instalaciones TE6 con datos falsos, conductores subdimensionados, diferenciales incorrectos o partes metálicas sin tierra, con multas que pueden superar las 100 UTM.</p>
+<p>Este trámite no es un formalismo prescindible: es lo que respalda que la instalación fue ejecutada por alguien habilitado y bajo norma. Ante un siniestro eléctrico, la ausencia de esta declaración puede tener consecuencias directas en la cobertura del seguro del inmueble. El proyecto y la declaración son parte del trabajo del instalador: en las cotizaciones suelen aparecer como una partida de <strong>$150.000 a $250.000</strong> o incluidos en el precio llave en mano.</p>
 </section>
 
 <section id="costos">
@@ -398,16 +434,18 @@ details p{padding-top:10px;margin-bottom:0}
 <caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Rangos de mercado publicados por instaladores chilenos durante 2026. Referenciales, no cotización.</caption>
 <thead><tr><th>Ítem</th><th>Rango aproximado (CLP)</th><th>Qué lo hace variar</th></tr></thead>
 <tbody>
-<tr><td>Cargador monofásico 7,4 kW</td><td>$400.000 – $750.000</td><td>Marca, conectividad, balance dinámico, grado IP</td></tr>
-<tr><td>Cargador trifásico 22 kW</td><td>$900.000 – $1.800.000</td><td>Potencia, uso comercial o de flota</td></tr>
+<tr><td>Cargador monofásico ≈ 7 kW (32 A)</td><td>$400.000 – $750.000</td><td>Marca, conectividad, balance dinámico, grado IP</td></tr>
+<tr><td>Cargador trifásico ≈ 21–22 kW</td><td>$900.000 – $1.800.000</td><td>Potencia, uso comercial o de flota</td></tr>
 <tr><td>Instalación domiciliaria estándar</td><td>$480.000 – $750.000</td><td>Distancia al tablero, obras civiles, refuerzo de tierra</td></tr>
-<tr><td>Certificación ante la SEC</td><td>$150.000 – $250.000</td><td>Complejidad de la instalación</td></tr>
+<tr><td>Proyecto y declaración TE6</td><td>$150.000 – $250.000</td><td>Suele venir incluido en el precio de la instalación</td></tr>
 <tr><td>Aumento de potencia del empalme</td><td>Variable, se cotiza aparte</td><td>Distribuidora, tipo de empalme, cambio de medidor</td></tr>
 </tbody>
 </table>
 </div>
-<p>En paquetes llave en mano que incluyen equipo, instalación y certificación, los valores publicados por instaladores en 2026 para casos estándar se mueven en el orden del millón a $1,3 millones de pesos. La regla al comparar cotizaciones es preguntar siempre <strong>si el cargador está incluido o solo la mano de obra</strong>, porque es la ambigüedad más frecuente entre presupuestos que a primera vista parecen muy distintos en precio.</p>
+<p>En paquetes llave en mano que incluyen equipo, instalación y certificación, los valores publicados por instaladores en 2026 para casos estándar se mueven en el orden del millón a $1,3 millones de pesos cuando el tablero está cerca y el empalme alcanza. Como referencia de un caso promedio, el estudio de costos de la Agencia de Sostenibilidad Energética (abril de 2025) estimó unos <strong>US$ 2.600</strong> para un cargador residencial de 7 kW, con variaciones de hasta 40 % según distancia y logística: presupuesta con holgura si tu instalación no es sencilla. La regla al comparar cotizaciones es preguntar siempre <strong>si el cargador está incluido o solo la mano de obra</strong>, porque es la ambigüedad más frecuente entre presupuestos que a primera vista parecen muy distintos en precio.</p>
 </section>
+
+<div class="note pack-callout"><strong>¿Vas a cotizar tu cargador?</strong> El <a href="#pack">Pack Cargador en Casa</a> (<span data-price-slug="pack-cargador-en-casa">$4.990</span>, descarga inmediata en .zip) trae una calculadora en Excel que te dice qué potencia te basta, si tu empalme la soporta y cuál cotización conviene de verdad, más una guía práctica en PDF con todo lo que exige el RIC N°15.</div>
 
 <section id="solar">
 <h2>Combinar la carga con paneles solares</h2>
@@ -419,15 +457,15 @@ details p{padding-top:10px;margin-bottom:0}
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
 <div class="faq">
-<details><summary>¿Puedo cargar mi auto eléctrico con un enchufe normal mientras decido si instalar un wallbox?</summary><p>Sí, de forma ocasional y con precauciones. Usa el cable Modo 2 que viene con el vehículo, conéctalo a un tomacorriente en buen estado y con puesta a tierra verificada, evita alargadores y zapatillas, y revisa que el enchufe no se caliente durante la carga. Lo que no es recomendable es hacerlo como método diario permanente: la carga vehicular somete al circuito a corriente sostenida durante muchas horas, algo para lo que un circuito de tomacorrientes doméstico no fue diseñado, y en instalaciones antiguas es una causa real de calentamiento de conexiones.</p></details>
+<details><summary>¿Puedo cargar mi auto eléctrico con un enchufe normal mientras decido si instalar un wallbox?</summary><p>Sí, de forma ocasional. El RIC N°15 permite en viviendas el Modo 2: el cable de viaje con caja de protección que viene con el auto, conectado a un enchufe tipo L o F y limitado a 10 A (unos 2,2 kW). Usa un tomacorriente en buen estado y con tierra verificada, sin alargadores ni zapatillas, y revisa que el enchufe no se caliente. No es recomendable como método diario: la carga somete al circuito a corriente sostenida durante muchas horas, y en instalaciones antiguas es una causa real de calentamiento de conexiones.</p></details>
 <details><summary>¿Necesito aumentar la potencia de mi empalme para instalar un cargador?</summary><p>No necesariamente, y es lo primero que debe evaluar el instalador en la visita técnica. Depende de la capacidad actual de tu empalme, del consumo habitual de la vivienda y de la corriente del cargador que elijas. Muchas instalaciones se resuelven sin tocar el empalme optando por un cargador de 16 A en lugar de 32 A, o usando un wallbox con balance dinámico de carga que reduce automáticamente la corriente cuando el resto de la casa está demandando mucho. El aumento de potencia ante la distribuidora es la última opción, no la primera.</p></details>
-<details><summary>¿Qué diferencia hay entre un diferencial tipo A y uno tipo B para carga vehicular?</summary><p>La diferencia está en el tipo de corriente de fuga que cada uno es capaz de detectar. Un diferencial tipo AC convencional solo detecta fugas de corriente alterna senoidal, y los cargadores de vehículos eléctricos pueden generar fugas con componente continua que ese tipo no ve de forma confiable. El tipo A detecta además corrientes pulsantes con componente continua, y el tipo B cubre también fugas de corriente continua pura. Qué tipo corresponde depende de si el propio wallbox integra detección de fuga DC internamente, algo que debe indicar la ficha técnica del equipo y que el instalador debe verificar antes de dimensionar la protección.</p></details>
-<details><summary>¿Cuánto cuesta cargar un auto eléctrico en casa comparado con cargar en una electrolinera?</summary><p>Cargar en casa es sensiblemente más económico en la mayoría de los casos, porque pagas la energía a tarifa residencial en vez del precio de un punto de carga público, que incorpora el costo de la infraestructura de carga rápida y el margen del operador. El cálculo para tu caso es directo: multiplica la capacidad de la batería de tu vehículo en kWh por el valor del kWh de tu boleta para estimar el costo de una carga completa desde vacío. Si además tienes generación solar y cargas durante el día, el costo marginal de esa energía puede acercarse a cero.</p></details>
-<details><summary>¿El cargador wallbox sirve si cambio de auto eléctrico más adelante?</summary><p>En general sí, siempre que el nuevo vehículo use el mismo estándar de conector, que en Chile es mayoritariamente Tipo 2. El wallbox no está atado a una marca de vehículo: el protocolo de comunicación entre cargador y auto está estandarizado, por lo que un cargador Modo 3 con conector Tipo 2 funciona con cualquier vehículo compatible con ese estándar. Lo que sí puede cambiar es si el auto nuevo acepta más potencia de carga AC que el anterior, en cuyo caso podrías estar limitado por el cargador ya instalado, aunque eso solo afecta la velocidad de carga y no la compatibilidad.</p></details>
+<details><summary>¿Qué diferencia hay entre un diferencial tipo A y uno tipo B para carga vehicular?</summary><p>Un diferencial tipo AC solo detecta fugas de corriente alterna; el tipo A detecta además fugas pulsantes con componente continua, y el tipo B también fugas de corriente continua pura. Para Modo 3, el RIC N°15 exige un diferencial tipo B, o un tipo A de 30 mA más un dispositivo que corte ante fugas continuas sobre 6 mA. Muchos wallbox integran esa detección de 6 mA, y entonces basta el tipo A externo: el instalador debe verificarlo en la ficha técnica del equipo.</p></details>
+<details><summary>¿Cuánto cuesta cargar un auto eléctrico en casa comparado con cargar en una electrolinera?</summary><p>Cargar en casa es más económico en la mayoría de los casos, porque pagas la energía a tarifa residencial en vez del precio de un punto de carga público, que incluye la infraestructura y el margen del operador. Para estimar una carga completa, multiplica los kWh de la batería por el valor del kWh de tu boleta y suma alrededor de 10 % de pérdidas de carga. Si tienes paneles solares y cargas de día, el costo de esa energía puede acercarse a cero.</p></details>
+<details><summary>¿El cargador wallbox sirve si cambio de auto eléctrico más adelante?</summary><p>En general sí, si el nuevo vehículo usa el mismo conector. La mayoría de los autos vendidos en Chile usa Tipo 2, pero el RIC N°15 también admite Tipo 1 y GB/T AC, así que revisa el conector del auto nuevo. El protocolo entre cargador y auto está estandarizado, por lo que el wallbox no está atado a una marca. Si el auto nuevo acepta más potencia AC que el cargador, solo cargará más lento, no habrá incompatibilidad.</p></details>
 </div>
 </section>
 
-<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+<p class="disclosure">Este artículo es contenido editorial independiente y no contiene enlaces de afiliado. Incluye la oferta de un pack digital de pago elaborado por ukrabot.cl, identificado como tal. El código, las conexiones y los precios son referenciales y deben verificarse con tu proveedor y tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
 
 <div class="cta">
   <h3>Sigue aprendiendo</h3>
@@ -447,8 +485,11 @@ details p{padding-top:10px;margin-bottom:0}
 <li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles (SEC)</a></li>
 <li><a href="https://energia.gob.cl/electromovilidad" target="_blank" rel="noopener noreferrer">Ministerio de Energía — Electromovilidad</a></li>
 <li><a href="https://webstore.iec.ch/publication/33644" target="_blank" rel="noopener noreferrer">IEC 61851 — Sistema de carga conductiva para vehículos eléctricos</a></li>
+<li><a href="https://www.sec.cl/sitio-web/wp-content/uploads/2024/03/RIC-N15-Version-2024.pdf" target="_blank" rel="noopener noreferrer">SEC — Pliego Técnico Normativo RIC N°15: infraestructura para la recarga de vehículos eléctricos (2024)</a></li>
+<li><a href="https://www.sec.cl/sitio-web/wp-content/uploads/2025/09/Instalaciones-de-Electromovilidad-aprendizajes-y-buenas-practica-TE6.pdf" target="_blank" rel="noopener noreferrer">SEC — Instalaciones de electromovilidad: aprendizajes y buenas prácticas TE6 (2025)</a></li>
+<li><a href="https://www.reporteminero.cl/noticia/noticias/2025/04/estudio-costos-cargadores-autos-electricos-chile-2025" target="_blank" rel="noopener noreferrer">Reporte Minero — Estudio de costos de infraestructura de recarga de la Agencia de Sostenibilidad Energética (2025)</a></li>
 </ul>
-<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 2 de septiembre de 2026.</p>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 17 de noviembre de 2026.</p>
 </section>
 </main>
 
@@ -567,5 +608,6 @@ details p{padding-top:10px;margin-bottom:0}
   });
 })();
 </script>
+<script src="/tienda/tienda.js?v=4" defer></script>
 </body>
 </html>

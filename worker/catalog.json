@@ -182,5 +182,21 @@
    "Se entrega en un archivo .zip con instrucciones; se abre en Excel, LibreOffice y Google Sheets"
   ],
   "cover": "/blog/pack-reparacion-baterias.jpg"
+ },
+ {
+  "slug": "pack-cargador-en-casa",
+  "name": "Pack Cargador en Casa: calculadora en Excel + guía práctica en PDF",
+  "short": "Pack Cargador en Casa (Excel + PDF)",
+  "price": 4990,
+  "img": "/blog/pack-cargador-en-casa-thumb.jpg",
+  "url": "/blog/instalar-cargador-de-auto-electrico-en-casa-chile-wallbox-normativa-y-costos#pack",
+  "digital": true,
+  "desc": "Elige la potencia correcta, revisa si tu empalme la soporta, entiende lo que exige el RIC N°15 de la SEC y compara cotizaciones en igualdad antes de instalar tu cargador.",
+  "includes": [
+   "Calculadora en Excel con 7 hojas: necesidad de carga, empalme, protección y cable, comparador de cotizaciones, ahorro y checklist",
+   "Guía práctica en PDF de 13 páginas: enchufe o wallbox, requisitos del RIC N°15, preguntas al instalador, día de la instalación y declaración TE6",
+   "Se entrega en un archivo .zip con instrucciones; se abre en Excel, LibreOffice y Google Sheets"
+  ],
+  "cover": "/blog/pack-cargador-en-casa.jpg"
  }
 ]
