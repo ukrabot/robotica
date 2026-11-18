@@ -231,5 +231,22 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-diagnostico-bms.jpg"
+ },
+ {
+  "slug": "pack-brazo-robotico-3d",
+  "name": "Pack Brazo Robótico 3D: calculadora en Excel + guía en PDF + códigos Arduino",
+  "short": "Pack Brazo Robótico 3D (Excel + PDF + códigos)",
+  "price": 7990,
+  "img": "/blog/pack-brazo-robotico-3d-thumb.jpg",
+  "url": "/blog/construye-tu-propio-brazo-robotico-impreso-en-3d-con-motores-paso-a-paso#pack",
+  "digital": true,
+  "desc": "Calcula el torque y la reducción de cada articulación antes de imprimir, ajusta el Vref de cada driver, controla el brazo con homing por finales de carrera y calibra los pasos por grado con mediciones reales.",
+  "includes": [
+   "Calculadora en Excel con 9 hojas: torque y reducción, pasos y velocidad, Vref de cada driver, fuente, impresión, presupuesto, calibración y checklist",
+   "Guía en PDF de 16 páginas: reducciones, diseño e impresión, motores, drivers y Vref, CNC Shield, ensamblaje, homing, calibración y solución de problemas",
+   "3 códigos de Arduino comentados: prueba de motor, calibración de pasos por grado y control de 3 ejes con homing y comandos por Monitor Serie",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-brazo-robotico-3d.jpg"
  }
 ]
