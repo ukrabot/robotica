@@ -96,5 +96,22 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-brazo-robotico-3d.jpg"
+ },
+ {
+  "slug": "pack-detector-de-metales",
+  "name": "Pack Detector de Metales: calculadora en Excel + guía en PDF + códigos Arduino",
+  "short": "Pack Detector de Metales (Excel + PDF + códigos)",
+  "price": 7990,
+  "img": "/blog/pack-detector-de-metales-thumb.jpg",
+  "url": "/blog/construye-tu-propio-detector-de-metales-casero-con-arduino#pack",
+  "digital": true,
+  "desc": "Diseña la bobina y el oscilador antes de bobinar, mide la frecuencia con el Timer1 del Arduino, fija el umbral con el ruido real de tu circuito y registra a qué distancia detecta cada objeto.",
+  "includes": [
+   "Calculadora en Excel con 7 hojas: bobina (inductancia, vueltas, alambre), oscilador y conteo, ruido y umbral, pruebas de detección, presupuesto y checklist",
+   "Guía en PDF de 17 páginas: cómo funciona, construir la bobina y el blindaje, oscilador, acondicionamiento, conteo con el Timer1, umbral, pruebas, montaje, problemas, pulso de inducción y la Ley 17.288",
+   "3 códigos de Arduino comentados: contador de frecuencia con autoprueba, detector con tono, LEDs y re-cero, y registro de pruebas por objeto",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-detector-de-metales.jpg"
  }
 ]

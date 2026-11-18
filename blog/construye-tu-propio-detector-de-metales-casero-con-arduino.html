@@ -13,7 +13,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Construye tu Propio Detector de Metales Casero con Arduino — Guía Técnica Completa">
 <meta property="og:description" content="Circuito BFO paso a paso, bobina de búsqueda, código Arduino para detección por cambio de frecuencia, upgrade a Pulso de Inducción, calibración y normativa chilena sobre hallazgos arqueológicos.">
-<meta property="og:image" content="https://www.ukrabot.cl/blog/arduino_metal_detector_hero.jpg">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/detector-metales-arduino-hero.jpg">
 <meta property="og:url" content="https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="Blog de Ingeniería Robótica">
@@ -21,14 +21,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Guía Técnica: Detector de Metales Casero con Arduino">
 <meta name="twitter:description" content="Circuito BFO, bobina de búsqueda, código de detección por frecuencia y upgrade a Pulso de Inducción con Arduino.">
-<meta name="twitter:image" content="https://www.ukrabot.cl/blog/arduino_metal_detector_hero.jpg">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/detector-metales-arduino-hero.jpg">
 
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
   "@type":"TechArticle",
   "headline":"Construye tu Propio Detector de Metales Casero con Arduino — Guía Técnica Completa",
-  "description":"Guía técnica para construir un detector de metales con Arduino: principio de oscilador de batido (BFO), diseño y bobinado de la bobina de búsqueda, código para detectar variaciones de frecuencia con pulseIn(), calibración, interferencias comunes, upgrade a Pulso de Inducción (PI) y marco legal de la detección de metales en Chile.",
+  "description":"Guía técnica para construir un detector de metales con Arduino: principio de oscilador de batido (BFO), diseño y bobinado de la bobina de búsqueda, código que cuenta los ciclos del oscilador con el Timer1 para detectar variaciones de frecuencia, calibración, interferencias comunes, upgrade a Pulso de Inducción (PI) y marco legal de la detección de metales en Chile.",
   "author":{
     "@type":"Person",
     "name":"Alberto Gallardo",
@@ -43,12 +43,12 @@
     "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
   },
   "datePublished":"2026-09-07",
-  "dateModified":"2026-09-07",
+  "dateModified":"2026-11-17",
   "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/construye-tu-propio-detector-de-metales-casero-con-arduino"},
-  "image":"https://www.ukrabot.cl/blog/arduino_metal_detector_hero.jpg",
+  "image":"https://www.ukrabot.cl/blog/detector-metales-arduino-hero.jpg",
   "proficiencyLevel":"Intermedio",
   "dependencies":"Arduino Uno o Nano, transistor 2N3904 o similar, bobina de búsqueda bobinada a mano, condensadores cerámicos y de poliéster, resistencias, buzzer piezoeléctrico, protoboard o placa perforada, multímetro, alambre esmaltado calibre 22-24 AWG",
-  "wordCount":"2500",
+  "wordCount":"3900",
   "inLanguage":"es-CL"
 }
 </script>
@@ -67,14 +67,49 @@
 
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"FAQPage",
-  "mainEntity":[
-    {"@type":"Question","name":"¿Qué tan sensible es un detector de metales casero hecho con Arduino?","acceptedAnswer":{"@type":"Answer","text":"Un circuito BFO básico bien construido puede detectar monedas u objetos metálicos pequeños a 5-10 cm de profundidad, y objetos grandes (como una tapa metálica) hasta 20-25 cm, dependiendo del diámetro de la bobina, la calidad del bobinado y el blindaje contra interferencias. Está lejos del rendimiento de un detector VLF comercial de gama media, pero es más que suficiente para aprender el principio físico y para búsquedas casuales en patio o playa."}},
-    {"@type":"Question","name":"¿Por qué mi detector suena todo el tiempo o detecta metal donde no hay nada?","acceptedAnswer":{"@type":"Answer","text":"Las causas más comunes son: deriva térmica del oscilador (el circuito necesita unos minutos para estabilizarse tras encenderlo), interferencia electromagnética de fuentes cercanas (routers WiFi, motores, cables de alta corriente), una bobina sin blindaje electrostático captando ruido ambiental, o un umbral de detección demasiado sensible en el código. Ajustar el umbral de disparo y dar tiempo de calentamiento al circuito resuelve la mayoría de los falsos positivos."}},
-    {"@type":"Question","name":"¿Es necesario usar Arduino, o podría hacer un detector de metales solo con un circuito analógico?","acceptedAnswer":{"@type":"Answer","text":"No es estrictamente necesario. El principio de oscilador de batido (BFO) funciona perfectamente con dos osciladores analógicos y un altavoz, sin ningún microcontrolador, tal como se construían los detectores caseros desde los años 60. Arduino aporta valor al reemplazar el segundo oscilador analógico por una medición digital de frecuencia, lo que reduce la deriva térmica de un segundo circuito, permite mostrar la frecuencia en una pantalla, registrar datos, y facilita experimentar con distintos umbrales de sensibilidad por software en vez de por hardware."}},
-    {"@type":"Question","name":"¿Necesito permiso para usar un detector de metales en Chile?","acceptedAnswer":{"@type":"Answer","text":"Usar un detector de metales por afición en tu propio terreno no requiere permiso. Sin embargo, la Ley 17.288 de Monumentos Nacionales prohíbe la prospección, remoción o extracción de objetos arqueológicos, paleontológicos o antropológicos sin autorización del Consejo de Monumentos Nacionales, y esto aplica sin importar si el hallazgo fue casual con un detector de metales. Además, muchas playas, parques nacionales y sitios patrimoniales tienen restricciones específicas de acceso y uso de detectores que debes verificar antes de salir a buscar."}},
-    {"@type":"Question","name":"¿Cuál es la diferencia entre un detector BFO y uno de Pulso de Inducción (PI)?","acceptedAnswer":{"@type":"Answer","text":"Un detector BFO detecta metal por el cambio de frecuencia que provoca un objeto metálico sobre un oscilador LC, es simple de construir pero sensible a la mineralización del suelo y a la deriva térmica. Un detector de Pulso de Inducción envía pulsos de corriente breves a la bobina y mide el tiempo de decaimiento del campo magnético inducido; es significativamente más inmune a suelos mineralizados y más profundo en su detección, pero exige un circuito y un código de temporización más exigentes, típicamente usando la función micros() de Arduino para medir intervalos de microsegundos."}}
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué tan sensible es un detector de metales casero hecho con Arduino?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con una bobina de 15–20 cm, un detector de este tipo bien construido suele detectar una moneda a pocos centímetros, rara vez a más de 10 cm, y objetos grandes, como una tapa metálica, a unos 15–20 cm; la profundidad real depende del bobinado, el blindaje y el suelo. Está lejos de un detector VLF comercial de gama media, pero es suficiente para aprender el principio físico y para búsquedas en un patio. En la playa húmeda, el agua salada desplaza la frecuencia y genera falsas alarmas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi detector suena todo el tiempo o detecta metal donde no hay nada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Las causas más comunes son: deriva térmica del oscilador (el circuito necesita unos minutos para estabilizarse tras encenderlo), interferencia electromagnética de fuentes cercanas (routers WiFi, motores, cables de alta corriente), una bobina sin blindaje electrostático captando ruido ambiental, o un umbral de detección demasiado sensible en el código. Ajustar el umbral de disparo y dar tiempo de calentamiento al circuito resuelve la mayoría de los falsos positivos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es necesario usar Arduino, o podría hacer un detector de metales solo con un circuito analógico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No es estrictamente necesario. El principio de oscilador de batido (BFO) funciona perfectamente con dos osciladores analógicos y un altavoz, sin ningún microcontrolador, tal como se construían los detectores caseros desde los años 60. Arduino aporta valor al reemplazar el segundo oscilador analógico por una medición digital de frecuencia (contando ciclos con su Timer1), lo que reduce la deriva térmica de un segundo circuito, permite mostrar la frecuencia en una pantalla, registrar datos, y facilita experimentar con distintos umbrales de sensibilidad por software en vez de por hardware."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito permiso para usar un detector de metales en Chile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usar un detector de metales por afición en tu propio terreno no requiere permiso. Sin embargo, la Ley 17.288 de Monumentos Nacionales prohíbe la prospección, remoción o extracción de objetos arqueológicos, paleontológicos o antropológicos sin autorización del Consejo de Monumentos Nacionales, y esto aplica sin importar si el hallazgo fue casual con un detector de metales. Además, muchas playas, parques nacionales y sitios patrimoniales tienen restricciones específicas de acceso y uso de detectores que debes verificar antes de salir a buscar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuál es la diferencia entre un detector BFO y uno de Pulso de Inducción (PI)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Un detector BFO detecta metal por el cambio de frecuencia que provoca un objeto metálico sobre un oscilador LC, es simple de construir pero sensible a la mineralización del suelo y a la deriva térmica. Un detector de Pulso de Inducción envía pulsos de corriente breves a la bobina y mide el tiempo de decaimiento del campo magnético inducido; es significativamente más inmune a suelos mineralizados y más profundo en su detección, pero exige un circuito con alto voltaje y una medición de tiempo más fina: en un Arduino Uno se usa la captura de entrada del Timer1, porque micros() solo tiene 4 µs de resolución."
+      }
+    }
   ]
 }
 </script>
@@ -242,6 +277,22 @@ details p{padding-top:10px;margin-bottom:0}
     gtag('js', new Date());
     gtag('config', 'G-1ZVHF8X35Q');
   </script>
+<style>
+.pack{margin:52px 0;padding:28px;border:1px solid rgba(169,123,35,.35);border-radius:18px;background:#fff;box-shadow:0 18px 40px rgba(30,25,15,.06)}
+.pack-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:start}
+.pack-grid>img{width:100%;height:auto;border-radius:12px;display:block}
+.pack-tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.pack h2{margin:8px 0 12px}
+.pack ul{padding-left:20px;margin:0 0 18px}
+.pack li{margin-bottom:8px}
+.pack-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 2px}
+.pack-price strong{font-family:Georgia,serif;font-size:2rem;font-weight:400;color:var(--text)}
+.pack-price span{color:var(--muted);font-size:.9rem}
+.pack-fine{font-size:.8rem;color:var(--quiet);margin:14px 0 0;line-height:1.5}
+.pack-callout a{font-weight:600}
+@media (max-width:820px){.pack{padding:20px}.pack-grid{grid-template-columns:1fr;gap:20px}}
+</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=4">
 </head>
 <body>
 
@@ -264,12 +315,12 @@ details p{padding-top:10px;margin-bottom:0}
 </nav>
 
 <header class="hero">
-  <img src="arduino_metal_detector_hero.jpg" alt="Detector de metales casero con bobina de búsqueda bobinada a mano conectada a una placa Arduino Uno sobre una mesa de trabajo" fetchpriority="high">
+  <img src="detector-metales-arduino-hero.jpg" alt="Ilustración de un detector de metales casero: bobina de búsqueda con blindaje de aluminio cortado, mango de PVC sin partes metálicas cerca de la bobina y caja con Arduino Nano y buzzer" fetchpriority="high">
   <div class="hero-inner">
-    <div class="eyebrow">Arduino y electrónica aplicada · Actualizado el <time datetime="2026-09-07">7 de septiembre de 2026</time></div>
+    <div class="eyebrow">Arduino y electrónica aplicada · Actualizado el <time datetime="2026-11-17">17 de noviembre de 2026</time></div>
     <h1>Construye tu Propio Detector de Metales Casero con Arduino</h1>
     <p>El principio del oscilador de batido (BFO), cómo bobinar tu propia bobina de búsqueda, código real para detectar el cambio de frecuencia con Arduino, calibración, interferencias comunes y el camino de upgrade hacia Pulso de Inducción.</p>
-    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 18 min de lectura</p>
   </div>
 </header>
 
@@ -277,8 +328,8 @@ details p{padding-top:10px;margin-bottom:0}
 <article>
 
 <div class="article-img">
-  <img src="arduino_metal_detector_coil.jpg" alt="Ilustración de una bobina de búsqueda casera de alambre esmaltado sobre un aro de PVC con blindaje de aluminio cortado, conectada a un oscilador con transistor 2N3904, un comparador LM393 y un Arduino Nano con buzzer" loading="lazy" width="1600" height="900">
-  <div class="caption">Casi todo el "secreto" de un detector de metales casero está en la bobina: su diámetro, número de vueltas y blindaje determinan la sensibilidad mucho más que la sofisticación del código.</div>
+  <img src="detector-metales-arduino-esquema-timer1.jpg" alt="Esquema del detector: bobina de búsqueda y oscilador LC, comparador LM393 con resistencia de pull-up, entrada D5 del Arduino contada por el Timer1 y buzzer pasivo, con la fórmula de la frecuencia" loading="lazy" width="1600" height="900">
+  <div class="caption">La cadena completa: la bobina fija la frecuencia del oscilador, el LM393 la convierte en una onda cuadrada de 0 a 5 V y el Timer1 del Arduino cuenta sus ciclos en el pin D5.</div>
 </div>
 
 <div class="toc" aria-label="Tabla de contenidos">
@@ -298,6 +349,25 @@ details p{padding-top:10px;margin-bottom:0}
     <li><a href="#faq">Preguntas frecuentes</a></li>
   </ol>
 </div>
+
+<section id="pack" class="pack" aria-labelledby="pack-t">
+<div class="pack-grid">
+  <img src="pack-detector-de-metales.jpg" alt="Portada del Pack Detector de Metales: calculadora en Excel, guía en PDF y códigos de Arduino" width="1200" height="800" loading="lazy">
+  <div>
+    <span class="pack-tag">Pack digital · ukrabot.cl</span>
+    <h2 id="pack-t">Pack Detector de Metales: de la bobina al umbral, con números</h2>
+    <p>Todo lo de esta guía, convertido en herramientas: calcula la bobina antes de bobinar, mide la frecuencia con el Timer1 y fija el umbral con el ruido real de tu circuito.</p>
+    <ul>
+      <li><strong>Calculadora en Excel (7 hojas):</strong> inductancia de la bobina y tabla de vueltas, frecuencia del oscilador y resolución del conteo, umbral calculado con tus mediciones de ruido, distancia máxima de detección por objeto, presupuesto y checklist.</li>
+      <li><strong>Guía en PDF (17 páginas):</strong> construir la bobina y su blindaje, dos opciones de oscilador, el comparador LM393, cómo cuenta el Timer1, montaje sin metal cerca, tabla de problemas, qué cambia en un pulso de inducción y lo que dice la Ley 17.288.</li>
+      <li><strong>3 códigos de Arduino comentados:</strong> contador de frecuencia con autoprueba, detector con tono que sube con el cambio, LEDs de ferroso y no ferroso y botón de re-cero, y registro de pruebas por objeto y distancia.</li>
+    </ul>
+    <div class="pack-price"><strong data-price-slug="pack-detector-de-metales">$7.990</strong><span>Pago único · descarga inmediata en un archivo .zip</span></div>
+    <div class="ukr-buy" id="comprar-pack" data-ukr-buy="pack-detector-de-metales" aria-label="Comprar el Pack Detector de Metales"></div>
+    <p class="pack-fine">Al pagar descargas un archivo .zip con la calculadora (.xlsx), la guía (.pdf), los códigos (.ino) y las instrucciones. La calculadora se abre en Excel, LibreOffice y Google Sheets. Licencia de uso personal. Por ser contenido digital de descarga inmediata, no tiene derecho a retracto; si un archivo llega dañado o no abre, te lo reponemos o devolvemos el dinero.</p>
+  </div>
+</div>
+</section>
 
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
@@ -321,7 +391,7 @@ details p{padding-top:10px;margin-bottom:0}
 <h2>Por qué usar Arduino en vez de un circuito 100% analógico</h2>
 <p>Un detector BFO tradicional no necesita ningún microcontrolador — de hecho, se construían décadas antes de que existiera Arduino. Entonces, ¿qué aporta realmente?</p>
 <ul>
-<li><strong>Elimina el segundo oscilador analógico.</strong> En vez de construir y calibrar dos circuitos LC que deben mantenerse perfectamente sincronizados, Arduino puede medir la frecuencia del único oscilador de búsqueda con la función <code>pulseIn()</code> y comparar esa lectura contra un valor de referencia guardado en el propio código, eliminando una fuente completa de deriva térmica y de trabajo de calibración manual.</li>
+<li><strong>Elimina el segundo oscilador analógico.</strong> En vez de construir y calibrar dos circuitos LC que deben mantenerse perfectamente sincronizados, Arduino puede contar los ciclos del único oscilador de búsqueda con su Timer1 y comparar esa lectura contra un valor de referencia guardado en el propio código, eliminando una fuente completa de deriva térmica y de trabajo de calibración manual.</li>
 <li><strong>Umbral de sensibilidad ajustable por software.</strong> Cambiar cuán sensible es el detector ya no implica reemplazar una resistencia o un potenciómetro: es una constante en el código que puedes ajustar en segundos y volver a cargar.</li>
 <li><strong>Salida más informativa que un simple tono.</strong> Puedes encender distintos LEDs según la magnitud del cambio de frecuencia (una aproximación simple a "discriminación" de tamaño de objeto), mostrar el valor en una pantalla OLED, o registrar los cambios de frecuencia en el tiempo por el puerto serie para depurar el comportamiento del circuito.</li>
 <li><strong>Camino de evolución claro.</strong> El mismo Arduino que cuenta frecuencia en la versión BFO puede, con otro firmware y algunos cambios de hardware, controlar un circuito de Pulso de Inducción mucho más capaz — ver la sección de upgrade más adelante.</li>
@@ -339,10 +409,12 @@ details p{padding-top:10px;margin-bottom:0}
 <tr><td>Arduino Uno o Nano</td><td>Original o compatible con ATmega328P</td><td>$6.000 – $15.000</td></tr>
 <tr><td>Transistor NPN</td><td>2N3904 o 2N2222</td><td>$200 – $500 c/u</td></tr>
 <tr><td>Alambre esmaltado</td><td>Calibre 22-24 AWG, rollo de 50-100 m</td><td>$3.000 – $7.000</td></tr>
-<tr><td>Condensadores cerámicos</td><td>Rango 100 pF a 10 nF, varios valores</td><td>$100 – $300 c/u</td></tr>
+<tr><td>Condensadores cerámicos NP0/C0G</td><td>100 pF a 10 nF, de baja deriva con la temperatura</td><td>$100 – $300 c/u</td></tr>
 <tr><td>Condensador de poliéster</td><td>0,01 – 0,1 µF</td><td>$150 – $400 c/u</td></tr>
 <tr><td>Resistencias varias</td><td>1 kΩ a 100 kΩ, pack surtido</td><td>$2.000 – $4.000 (pack)</td></tr>
-<tr><td>Buzzer piezoeléctrico activo</td><td>5V, con oscilador interno</td><td>$800 – $1.500</td></tr>
+<tr><td>Buzzer piezoeléctrico pasivo</td><td>Sin oscilador interno, para que <code>tone()</code> cambie el tono</td><td>$800 – $1.500</td></tr>
+<tr><td>Comparador LM393</td><td>Chip o módulo, con resistencia de pull-up de 10 kΩ</td><td>$500 – $1.500</td></tr>
+<tr><td>Cable apantallado</td><td>1 m, de la bobina al circuito (tipo micrófono)</td><td>$1.000 – $2.000</td></tr>
 <tr><td>Aro de PVC o soporte para bobina</td><td>Diámetro 15-20 cm</td><td>$1.000 – $3.000</td></tr>
 <tr><td>Papel aluminio + cinta aislante</td><td>Para blindaje electrostático de la bobina</td><td>Ya disponible / $1.000</td></tr>
 <tr><td>Tubo de PVC y mango</td><td>Para el vástago del detector</td><td>$3.000 – $8.000</td></tr>
@@ -359,18 +431,21 @@ details p{padding-top:10px;margin-bottom:0}
 <p>La bobina es, sin exagerar, el componente más determinante de todo el proyecto. Estas son las pautas de diseño más usadas en proyectos BFO caseros documentados:</p>
 <ul>
 <li><strong>Diámetro:</strong> entre 15 y 20 cm es un buen punto de partida — bobinas más grandes detectan más profundo pero pierden sensibilidad a objetos pequeños; bobinas más chicas hacen lo contrario.</li>
-<li><strong>Número de vueltas:</strong> típicamente entre 100 y 150 vueltas de alambre esmaltado calibre 22-24 AWG, ajustando el número exacto según el valor de inductancia objetivo (normalmente entre 1 y 3 mH para trabajar con osciladores en el rango de 100-300 kHz junto a condensadores de 100-500 pF).</li>
+<li><strong>Número de vueltas:</strong> para una inductancia de 1 a 3 mH en un aro de 15–20 cm bastan, aproximadamente, entre 50 y 90 vueltas de alambre esmaltado de 22–26 AWG; 100–150 vueltas dan entre 3 y 8 mH. Con 1 a 3 mH y una capacidad efectiva de 300 pF a 1 nF, el oscilador trabaja entre unos 90 y 300 kHz (f = 1 ÷ (2π √(L·C))). La inductancia depende mucho de lo apretado del bobinado, así que mídela o calcula la frecuencia real con el contador del Arduino.</li>
 <li><strong>Bobinado prolijo y compacto:</strong> las vueltas deben quedar apretadas y en el mismo sentido, sujetas con cinta o barniz para evitar que se muevan — una bobina "floja" cambia de inductancia con la vibración normal de caminar, generando falsos positivos.</li>
-<li><strong>Blindaje electrostático (shield):</strong> envolver la bobina terminada con una capa de papel aluminio sin que forme un lazo cerrado (dejar un corte sin soldar en el aluminio), conectada a tierra del circuito, reduce drásticamente el ruido captado del ambiente — es una mejora simple con impacto notable en la estabilidad.</li>
+<li><strong>Blindaje electrostático (shield):</strong> envolver la bobina terminada con una capa de papel aluminio sin que forme un lazo cerrado (dejar un corte de 1–2 cm sin unir), conectada a tierra del circuito, reduce el ruido captado del ambiente y el efecto de tu mano o del suelo húmedo. Si el aluminio formara un anillo cerrado, actuaría como una espira en cortocircuito y anularía parte del campo.</li>
+<li><strong>Cable apantallado</strong> entre la bobina y el circuito, bien sujeto al mango: un cable que se mueve cambia la capacidad y desplaza la frecuencia.</li>
 <li><strong>Verificación con multímetro:</strong> si tu multímetro mide inductancia, confirma que el valor obtenido esté dentro del rango esperado para tu diseño de oscilador antes de montar todo el circuito definitivo.</li>
 </ul>
 <div class="note"><strong>Consejo práctico:</strong> bobina primero, circuito después. Muchos proyectos fallan no por errores de programación sino por una bobina mal construida cuyo valor de inductancia no coincide con lo que el oscilador espera. Verifica la bobina de forma aislada antes de integrarla al resto del circuito.</div>
 </section>
 
+<div class="note pack-callout"><strong>¿Cuántas vueltas y qué condensadores?</strong> El <a href="#pack">Pack Detector de Metales</a> (<span data-price-slug="pack-detector-de-metales">$7.990</span>, descarga inmediata en .zip) trae una calculadora en Excel que te da la inductancia de tu bobina y la frecuencia del oscilador, fija el umbral con el ruido real de tu circuito, y una guía de 17 páginas con el código listo.</div>
+
 <section id="circuito">
 <h2>El circuito: oscilador, transistor y conexión a Arduino</h2>
-<p>El circuito de búsqueda es un oscilador <strong>Colpitts</strong> o <strong>Hartley</strong> simple construido alrededor de un transistor NPN de propósito general (2N3904 o equivalente), la bobina de búsqueda actuando como el elemento inductivo, y un par de condensadores formando el divisor capacitivo característico de esta topología. La salida oscilante del circuito —una señal cuadrada o cuasi-cuadrada tras un pequeño acondicionamiento— se conecta a un pin digital de Arduino configurado como entrada.</p>
-<p>El acondicionamiento de señal es un punto donde muchos principiantes se atascan: la salida directa de un oscilador LC transistorizado no siempre tiene los niveles de voltaje limpios que Arduino espera en un pin digital (0V y 5V bien definidos). Un pequeño transistor adicional en configuración de amplificador-limitador, o un simple comparador como el LM393, "cuadra" la señal antes de entregarla a Arduino, evitando lecturas erráticas de frecuencia.</p>
+<p>El circuito de búsqueda es un oscilador <strong>Colpitts</strong> o <strong>Hartley</strong> simple construido alrededor de un transistor NPN de propósito general (2N3904 o equivalente), la bobina de búsqueda actuando como el elemento inductivo, y un par de condensadores formando el divisor capacitivo característico de esta topología. La salida oscilante del circuito, después de acondicionarla como una onda cuadrada de 0 a 5 V, entra al pin <strong>D5</strong> del Arduino Uno o Nano: es la entrada del Timer1 (T1), que puede contar ciclos por hardware hasta varios megahertz.</p>
+<p>El acondicionamiento de señal es un punto donde muchos principiantes se atascan: la salida directa de un oscilador LC transistorizado no siempre tiene los niveles de voltaje limpios que Arduino espera en un pin digital (0V y 5V bien definidos). Un pequeño transistor adicional en configuración de amplificador-limitador, o un simple comparador como el LM393, "cuadra" la señal antes de entregarla a Arduino, evitando lecturas erráticas de frecuencia. La salida del LM393 es de colector abierto: necesita una resistencia de pull-up de 10 kΩ a 5 V para entregar niveles lógicos.</p>
 <pre><code>Esquema conceptual de bloques:
 
 [Bobina de búsqueda] --- [Oscilador Colpitts, transistor NPN]
@@ -379,10 +454,10 @@ details p{padding-top:10px;margin-bottom:0}
                       [Acondicionador / comparador LM393]
                                     |
                                     v
-                         [Pin digital Arduino, ej. D8]
+                         [Pin D5 del Arduino (entrada T1)]
                                     |
                                     v
-                [Arduino mide frecuencia con pulseIn() o similar]
+                [Timer1 cuenta ciclos en ventanas de 100 ms]
                                     |
                                     v
                     [Compara contra frecuencia base guardada]
@@ -398,67 +473,79 @@ details p{padding-top:10px;margin-bottom:0}
 <section id="codigo">
 <h2>Código Arduino para detectar el cambio de frecuencia</h2>
 <p>El siguiente código es una referencia ilustrativa del enfoque de programación, pensado para adaptarse a tu circuito específico — los valores exactos de tiempos y umbrales dependerán de la frecuencia real de tu oscilador, que debes medir primero con el monitor serie antes de fijar el umbral de disparo.</p>
-<pre><code>// Detector de metales BFO — lectura de frecuencia con pulseIn()
-// Pin de entrada: señal acondicionada del oscilador (onda cuadrada)
+<pre><code>// Detector de metales con Arduino Uno o Nano
+// Cuenta los ciclos del oscilador con el Timer1: la señal acondicionada
+// (onda cuadrada de 0 a 5 V) entra por el pin D5, la entrada T1.
+const int PIN_BUZZER = 9;      // buzzer PASIVO (tone() cambia el tono)
+const int PIN_LED = 13;
+const unsigned long VENTANA_US = 100000UL;  // 100 ms por medición: unos 10 Hz de resolución
+const float UMBRAL_HZ = 40;    // ajústalo según el ruido medido en reposo
+const float SUAVIZADO = 0.02;  // compensación lenta de la deriva térmica
 
-const int PIN_OSCILADOR = 8;
-const int PIN_BUZZER    = 9;
-const int PIN_LED       = 13;
+volatile unsigned long desbordes = 0;
+float frecuenciaBase = 0;
 
-unsigned long frecuenciaBase = 0;
-const int MUESTRAS_CALIBRACION = 50;
-const long UMBRAL_HZ = 40;       // Ajustar según pruebas reales
-const float FACTOR_SUAVIZADO = 0.02; // Compensación lenta de deriva térmica
+ISR(TIMER1_OVF_vect) { desbordes++; }
 
-unsigned long medirFrecuencia() {
-  unsigned long tAlto = pulseIn(PIN_OSCILADOR, HIGH, 30000);
-  unsigned long tBajo = pulseIn(PIN_OSCILADOR, LOW, 30000);
-  unsigned long periodo = tAlto + tBajo; // en microsegundos
-  if (periodo == 0) return 0;
-  return 1000000UL / periodo; // frecuencia en Hz
+void iniciarContador() {
+  TCCR1A = 0;
+  TCCR1B = 0;
+  TCNT1 = 0;
+  TIMSK1 = _BV(TOIE1);                           // interrupción al desbordar
+  TCCR1B = _BV(CS12) | _BV(CS11) | _BV(CS10);   // reloj externo en T1 (D5)
+}
+
+unsigned long leerCuenta() {
+  noInterrupts();
+  unsigned long d = desbordes;
+  unsigned int c = TCNT1;
+  if ((TIFR1 &amp; _BV(TOV1)) &amp;&amp; c &lt; 32768) d++;   // desborde aún no atendido
+  interrupts();
+  return (d &lt;&lt; 16) + c;
+}
+
+float medirFrecuencia() {
+  unsigned long c0 = leerCuenta();
+  unsigned long t0 = micros();
+  while (micros() - t0 &lt; VENTANA_US) {}
+  unsigned long c1 = leerCuenta();
+  unsigned long t1 = micros();
+  return (c1 - c0) * 1000000.0 / (t1 - t0);    // ciclos por segundo
 }
 
 void setup() {
-  pinMode(PIN_OSCILADOR, INPUT);
-  pinMode(PIN_BUZZER, OUTPUT);
+  pinMode(5, INPUT);
   pinMode(PIN_LED, OUTPUT);
-  Serial.begin(9600);
-
-  Serial.println("Calibrando linea base... aleja objetos metalicos.");
-  unsigned long suma = 0;
-  int muestrasValidas = 0;
-  for (int i = 0; i < MUESTRAS_CALIBRACION; i++) {
-    unsigned long f = medirFrecuencia();
-    if (f > 0) { suma += f; muestrasValidas++; }
-    delay(20);
-  }
-  frecuenciaBase = suma / max(muestrasValidas, 1);
+  Serial.begin(115200);
+  iniciarContador();
+  Serial.println("Calibrando... aleja todo objeto metalico de la bobina.");
+  float suma = 0;
+  for (int i = 0; i &lt; 20; i++) suma += medirFrecuencia();   // 2 segundos
+  frecuenciaBase = suma / 20;
   Serial.print("Frecuencia base (Hz): ");
-  Serial.println(frecuenciaBase);
+  Serial.println(frecuenciaBase, 1);
 }
 
 void loop() {
-  unsigned long f = medirFrecuencia();
-  if (f == 0) return; // lectura invalida, se descarta
+  float f = medirFrecuencia();
+  float diferencia = f - frecuenciaBase;
 
-  long diferencia = (long)f - (long)frecuenciaBase;
-
-  if (abs(diferencia) > UMBRAL_HZ) {
+  if (fabs(diferencia) &gt; UMBRAL_HZ) {
     digitalWrite(PIN_LED, HIGH);
-    tone(PIN_BUZZER, 1000, 100);
-    Serial.print("METAL DETECTADO | Diferencia Hz: ");
-    Serial.println(diferencia);
+    // El tono sube con el tamaño del cambio
+    tone(PIN_BUZZER, 400 + min(fabs(diferencia) * 5, 2000.0));
+    Serial.print(diferencia &lt; 0 ? "Ferroso? " : "No ferroso? ");
+    Serial.print("Diferencia Hz: ");
+    Serial.println(diferencia, 1);
   } else {
     digitalWrite(PIN_LED, LOW);
-    // Actualiza lentamente la base para compensar deriva termica,
-    // solo cuando NO hay deteccion activa
-    frecuenciaBase = frecuenciaBase * (1 - FACTOR_SUAVIZADO)
-                     + f * FACTOR_SUAVIZADO;
+    noTone(PIN_BUZZER);
+    // Solo sin detección: la base sigue lentamente la deriva térmica
+    frecuenciaBase += (f - frecuenciaBase) * SUAVIZADO;
   }
-
-  delay(10);
 }</code></pre>
-<p>Dos decisiones de diseño de este código merecen explicación. Primero, la <strong>calibración inicial</strong> promedia varias muestras al encender para establecer una línea base confiable, en vez de confiar en una sola lectura que podría ser ruido. Segundo, la <strong>actualización lenta de la línea base</strong> durante el funcionamiento normal (cuando no hay detección) es lo que compensa la deriva térmica del oscilador a lo largo de una sesión de uso — sin esto, el detector se desajustaría gradualmente y terminaría sonando sin motivo tras algunos minutos.</p>
+<p><strong>Por qué no <code>pulseIn()</code>:</strong> la documentación de Arduino indica que <code>pulseIn()</code> mide pulsos desde 10 microsegundos, y un oscilador de 100–300 kHz tiene semiperiodos de 1,7 a 5 µs. Además, entrega microsegundos enteros, así que no podría ver cambios de unas decenas de hertz. Contar ciclos durante una ventana fija sí: con 100 ms de ventana, cada ciclo contado equivale a 10 Hz, y el Timer1 cuenta por hardware sin perder ninguno. Usar el Timer1 deja sin PWM los pines 9 y 10, pero <code>tone()</code> funciona igual porque usa el Timer2.</p>
+<p>Otras dos decisiones de diseño de este código merecen explicación. Primero, la <strong>calibración inicial</strong> promedia varias muestras al encender para establecer una línea base confiable, en vez de confiar en una sola lectura que podría ser ruido. Segundo, la <strong>actualización lenta de la línea base</strong> durante el funcionamiento normal (cuando no hay detección) es lo que compensa la deriva térmica del oscilador a lo largo de una sesión de uso — sin esto, el detector se desajustaría gradualmente y terminaría sonando sin motivo tras algunos minutos.</p>
 </section>
 
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
@@ -477,7 +564,7 @@ void loop() {
 <ol>
 <li><strong>Deja calentar el circuito 3-5 minutos</strong> antes de calibrar — los componentes analógicos cambian levemente sus valores hasta alcanzar una temperatura de operación estable.</li>
 <li><strong>Aleja todo objeto metálico</strong> (incluyendo anillos, reloj, hebilla) al menos un metro de la bobina antes de ejecutar la rutina de calibración inicial del código.</li>
-<li><strong>Observa la frecuencia base por el puerto serie</strong> durante unos minutos sin mover la bobina, para verificar cuánto varía de forma natural — ese rango de variación natural debe quedar claramente por debajo de tu <code>UMBRAL_HZ</code>.</li>
+<li><strong>Observa la frecuencia base por el puerto serie</strong> durante unos minutos sin mover la bobina, para verificar cuánto varía de forma natural — ese rango de variación natural debe quedar claramente por debajo de tu <code>UMBRAL_HZ</code>; como regla, el umbral debe ser al menos 3 veces la desviación estándar de esas lecturas.</li>
 <li><strong>Ajusta el umbral gradualmente:</strong> empieza con un valor conservador (alto) para evitar falsos positivos, y ve reduciéndolo mientras pruebas con objetos metálicos reales a distintas distancias, hasta encontrar el punto donde detectas sin disparos falsos en reposo.</li>
 <li><strong>Prueba con distintos metales</strong> (moneda de cobre, tornillo de acero, lámina de aluminio) para entender cómo cada uno desplaza la frecuencia en direcciones distintas — es un buen ejercicio para entender el comportamiento real de las corrientes de Foucault.</li>
 </ol>
@@ -494,6 +581,7 @@ void loop() {
 <tr><td>Deja de detectar tras varios minutos de uso</td><td>Deriva térmica excesiva del oscilador</td><td>Verifica calidad de condensadores (usar cerámicos NP0/C0G de baja deriva)</td></tr>
 <tr><td>Interferencia cerca de routers WiFi o motores</td><td>Bobina sin blindaje captando ruido electromagnético ambiental</td><td>Agregar blindaje electrostático de papel aluminio a la bobina</td></tr>
 <tr><td>Lecturas de frecuencia erráticas en el monitor serie</td><td>Señal del oscilador no está bien acondicionada para nivel digital</td><td>Agregar etapa comparadora (LM393) antes del pin de Arduino</td></tr>
+<tr><td>La frecuencia medida es 0 o no cambia nunca</td><td>La señal no llega a D5 o el LM393 no tiene pull-up</td><td>Revisa la conexión a D5 y la resistencia de 10 kΩ a 5 V; mide la salida con el multímetro en frecuencia</td></tr>
 <tr><td>No detecta nada, ni con un objeto metálico grande encima</td><td>Bobina mal construida, valor de inductancia fuera de rango</td><td>Verificar inductancia con multímetro, rehacer bobinado si es necesario</td></tr>
 <tr><td>El vástago metálico del mango genera falsos positivos</td><td>Partes metálicas de la estructura demasiado cerca de la bobina</td><td>Usar PVC o madera para el vástago, mantener distancia de la bobina</td></tr>
 </tbody>
@@ -504,14 +592,14 @@ void loop() {
 <section id="upgrade">
 <h2>Upgrade: Pulso de Inducción (PI) con Arduino</h2>
 <p>Una vez dominado el BFO, el siguiente paso natural es un circuito de <strong>Pulso de Inducción</strong>, significativamente más inmune a la mineralización del suelo y más común en detectores profesionales orientados a playa o suelos con alto contenido de hierro. El principio es distinto: en vez de un oscilador continuo, Arduino genera pulsos breves de corriente (típicamente 100-300 microsegundos) hacia la bobina a través de un MOSFET de potencia, usando un pin digital.</p>
-<p>Al cortar abruptamente ese pulso, el colapso del campo magnético induce un voltaje transitorio en la misma bobina. Si hay un objeto metálico cercano, las corrientes de Foucault inducidas en él generan su propio campo magnético que se opone al colapso, <strong>prolongando ligeramente el tiempo de decaimiento</strong> de ese voltaje transitorio respecto al caso sin metal. Arduino mide ese intervalo usando la función <code>micros()</code> —que ofrece resolución de microsegundos, indispensable para este tipo de medición— comparando el tiempo de decaimiento contra una línea base establecida sin metal presente.</p>
+<p>Al cortar abruptamente ese pulso, el colapso del campo magnético induce un voltaje transitorio en la misma bobina. Si hay un objeto metálico cercano, las corrientes de Foucault inducidas en él generan su propio campo magnético que se opone al colapso, <strong>prolongando ligeramente el tiempo de decaimiento</strong> de ese voltaje transitorio respecto al caso sin metal. Arduino compara el tiempo de decaimiento contra una línea base establecida sin metal presente. Ojo: en un Arduino de 16 MHz, <code>micros()</code> tiene una resolución de 4 µs, demasiado gruesa para estas diferencias; los diseños PI con Arduino usan el comparador analógico y la captura de entrada del Timer1 (resolución de 62,5 ns) o un microcontrolador más rápido.</p>
 <div class="table-wrap">
 <table>
 <caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación editorial entre ambas arquitecturas para un proyecto de hobby con Arduino.</caption>
 <thead><tr><th>Criterio</th><th>BFO</th><th>Pulso de Inducción (PI)</th></tr></thead>
 <tbody>
-<tr><td>Complejidad de hardware</td><td>Baja — un transistor y pocos pasivos</td><td>Media-alta — MOSFET, diodo de descarga, comparador rápido</td></tr>
-<tr><td>Complejidad de código</td><td>Baja — pulseIn() y comparación simple</td><td>Alta — temporización de microsegundos crítica, uso de interrupciones</td></tr>
+<tr><td>Complejidad de hardware</td><td>Baja — un transistor y pocos pasivos</td><td>Media-alta — MOSFET de alto voltaje, resistencia de amortiguación, amplificador y comparador rápido</td></tr>
+<tr><td>Complejidad de código</td><td>Baja — contar ciclos con el Timer1 y comparar</td><td>Alta — temporización de microsegundos crítica, uso de interrupciones</td></tr>
 <tr><td>Inmunidad a suelo mineralizado</td><td>Baja</td><td>Alta — ventaja clásica del PI para playa y suelos con hierro</td></tr>
 <tr><td>Profundidad de detección típica (hobby)</td><td>Menor</td><td>Mayor, a igualdad de tamaño de bobina</td></tr>
 <tr><td>Discriminación de tipo de metal</td><td>Limitada, aproximada por dirección del desplazamiento</td><td>Muy limitada sin circuitería adicional avanzada</td></tr>
@@ -519,26 +607,28 @@ void loop() {
 </tbody>
 </table>
 </div>
-<div class="warning"><strong>Advertencia técnica sobre el PI:</strong> el colapso abrupto del campo magnético en la bobina puede generar picos de voltaje muy superiores a los 5V que tolera un pin de Arduino. Un circuito de Pulso de Inducción real requiere un diodo de protección (snubber) y, casi siempre, una etapa de acondicionamiento con amplificador operacional o comparador antes de que la señal llegue a cualquier pin del microcontrolador. Construir esta etapa sin la protección adecuada puede dañar permanentemente el Arduino.</div>
+<div class="warning"><strong>Advertencia técnica sobre el PI:</strong> el colapso abrupto del campo magnético en la bobina puede generar picos de voltaje muy superiores a los 5V que tolera un pin de Arduino. En un detector PI ese pico de cientos de volts es parte del funcionamiento: el MOSFET debe soportarlo (modelos de 400 V o más), una resistencia de amortiguación en paralelo con la bobina controla su descarga, y la señal pasa por diodos de recorte y un amplificador antes de llegar a cualquier pin del microcontrolador. Construir esta etapa sin la protección adecuada puede dañar permanentemente el Arduino.</div>
 </section>
 
 <section id="legal">
 <h2>Marco legal de la detección de metales en Chile</h2>
-<p>Antes de salir a probar tu detector fuera de tu propio patio, conviene conocer el marco legal chileno, que suele sorprender a quienes recién se inician en este hobby:</p>
+<p>Antes de salir a probar tu detector fuera de tu propio patio, conviene conocer lo que dice la Ley N° 17.288 de Monumentos Nacionales, que suele sorprender a quienes recién se inician en este hobby:</p>
 <ul>
-<li><strong>Ley N° 17.288 de Monumentos Nacionales</strong> establece que los objetos arqueológicos, paleontológicos y antropológicos hallados en territorio chileno, incluyendo el subsuelo marino, son patrimonio del Estado. Esto significa que aunque el hallazgo con tu detector casero sea completamente casual, remover, extraer o apropiarse de un objeto de valor arqueológico sin autorización constituye una infracción a la ley.</li>
-<li><strong>Consejo de Monumentos Nacionales (CMN)</strong> es el organismo que autoriza actividades de prospección arqueológica formal; el uso recreativo de un detector de metales en un contexto no arqueológico (como buscar monedas perdidas en una plaza pública o en tu propio terreno) generalmente no requiere ese permiso, pero la línea se vuelve legalmente delicada en zonas de valor patrimonial declarado, sitios históricos o playas con hallazgos documentados.</li>
-<li><strong>Restricciones locales.</strong> Muchos parques nacionales, playas y áreas protegidas administradas por CONAF u otras entidades tienen reglamentos propios que pueden prohibir explícitamente el uso de detectores de metales dentro de sus límites.</li>
-<li><strong>Propiedad privada.</strong> Nunca uses un detector de metales en terreno ajeno sin autorización explícita del propietario, independiente de cualquier consideración arqueológica.</li>
+<li><strong>Propiedad del Estado (artículo 21):</strong> por el solo ministerio de la ley, los lugares, ruinas, yacimientos y piezas antropo-arqueológicas que existen sobre o bajo la superficie del territorio nacional son monumentos arqueológicos de propiedad del Estado. Un hallazgo casual con tu detector no te los hace propios.</li>
+<li><strong>Excavaciones (artículo 22):</strong> nadie puede hacer excavaciones de carácter arqueológico, antropológico o paleontológico sin autorización del Consejo de Monumentos Nacionales. La ley lo sanciona con multa de 10 a 500 UTM y el decomiso de lo obtenido.</li>
+<li><strong>Obligación de denunciar (artículo 26):</strong> quien encuentre objetos de carácter histórico, antropológico, arqueológico o paleontológico debe denunciarlo de inmediato a la autoridad (la ley menciona al Gobernador Provincial; hoy esa función corresponde a la Delegación Presidencial Provincial). No hacerlo tiene multa de 5 a 200 UTM.</li>
+<li><strong>Apropiación (artículo 38 bis):</strong> apropiarse de un monumento nacional se sanciona como usurpación, hurto, robo o receptación, además de una multa de 50 a 200 UTM.</li>
+<li><strong>Restricciones locales.</strong> Muchos parques nacionales, playas y áreas protegidas administradas por CONAF u otras entidades tienen reglamentos propios que pueden prohibir el uso de detectores de metales.</li>
+<li><strong>Propiedad privada.</strong> Nunca uses un detector de metales en terreno ajeno sin autorización del propietario.</li>
 </ul>
-<div class="note"><strong>Recomendación práctica:</strong> para uso educativo y recreativo de bajo riesgo, limita las pruebas a tu propio patio o a espacios donde tengas autorización clara del propietario. Si en algún momento tu detector casero (o uno comercial, más adelante) encuentra algo que parezca de valor histórico o arqueológico, la conducta correcta y legalmente segura es no removerlo y reportarlo al Consejo de Monumentos Nacionales.</div>
+<div class="note"><strong>Recomendación práctica:</strong> para uso educativo y recreativo, limita las pruebas a tu propio patio o a espacios donde tengas autorización clara. Si tu detector encuentra algo que parezca de valor histórico o arqueológico, no lo remuevas: anota el lugar y repórtalo al Consejo de Monumentos Nacionales. Este resumen no es asesoría legal; la ley se ha modificado varias veces, así que revisa la versión vigente en bcn.cl.</div>
 </section>
 
 <section id="mejoras">
 <h2>Mejoras posibles y siguientes pasos</h2>
 <ul>
 <li><strong>Pantalla OLED I2C</strong> para mostrar la frecuencia en tiempo real y la diferencia respecto a la línea base, útil tanto para calibrar como para estimar de forma aproximada el tamaño del objeto detectado.</li>
-<li><strong>Migrar a ESP32</strong> para aprovechar su ADC más rápido y sus timers de hardware más precisos, especialmente relevante si avanzas hacia un diseño de Pulso de Inducción donde la resolución temporal es crítica.</li>
+<li><strong>Migrar a ESP32</strong> para usar su contador de pulsos por hardware (PCNT) y su reloj más rápido, especialmente útil si avanzas hacia un diseño de Pulso de Inducción, donde la resolución temporal es crítica.</li>
 <li><strong>Registro de datos por WiFi o SD</strong> (con ESP32) para analizar el comportamiento del oscilador en sesiones largas y afinar la compensación de deriva térmica con datos reales en vez de prueba y error.</li>
 <li><strong>Vibración en vez de sonido</strong> mediante un motor de vibración controlado por Arduino, útil para búsquedas subacuáticas donde el sonido del buzzer no es práctico.</li>
 <li><strong>Impresión 3D del mango y soporte de bobina</strong> para una construcción más robusta y ajustable que el PVC improvisado, si cuentas con acceso a una impresora 3D.</li>
@@ -564,20 +654,21 @@ void loop() {
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
 <div class="faq">
-<details><summary>¿Qué tan sensible es un detector de metales casero hecho con Arduino?</summary><p>Un circuito BFO básico bien construido puede detectar monedas u objetos metálicos pequeños a 5-10 cm de profundidad, y objetos grandes (como una tapa metálica) hasta 20-25 cm, dependiendo del diámetro de la bobina, la calidad del bobinado y el blindaje contra interferencias. Está lejos del rendimiento de un detector VLF comercial de gama media, pero es más que suficiente para aprender el principio físico y para búsquedas casuales en patio o playa.</p></details>
+<details><summary>¿Qué tan sensible es un detector de metales casero hecho con Arduino?</summary><p>Con una bobina de 15–20 cm, un detector de este tipo bien construido suele detectar una moneda a pocos centímetros, rara vez a más de 10 cm, y objetos grandes, como una tapa metálica, a unos 15–20 cm; la profundidad real depende del bobinado, el blindaje y el suelo. Está lejos de un detector VLF comercial de gama media, pero es suficiente para aprender el principio físico y para búsquedas en un patio. En la playa húmeda, el agua salada desplaza la frecuencia y genera falsas alarmas.</p></details>
 <details><summary>¿Por qué mi detector suena todo el tiempo o detecta metal donde no hay nada?</summary><p>Las causas más comunes son: deriva térmica del oscilador (el circuito necesita unos minutos para estabilizarse tras encenderlo), interferencia electromagnética de fuentes cercanas (routers WiFi, motores, cables de alta corriente), una bobina sin blindaje electrostático captando ruido ambiental, o un umbral de detección demasiado sensible en el código. Ajustar el umbral de disparo y dar tiempo de calentamiento al circuito resuelve la mayoría de los falsos positivos.</p></details>
-<details><summary>¿Es necesario usar Arduino, o podría hacer un detector de metales solo con un circuito analógico?</summary><p>No es estrictamente necesario. El principio de oscilador de batido (BFO) funciona perfectamente con dos osciladores analógicos y un altavoz, sin ningún microcontrolador, tal como se construían los detectores caseros desde los años 60. Arduino aporta valor al reemplazar el segundo oscilador analógico por una medición digital de frecuencia, lo que reduce la deriva térmica de un segundo circuito, permite mostrar la frecuencia en una pantalla, registrar datos, y facilita experimentar con distintos umbrales de sensibilidad por software en vez de por hardware.</p></details>
+<details><summary>¿Es necesario usar Arduino, o podría hacer un detector de metales solo con un circuito analógico?</summary><p>No es estrictamente necesario. El principio de oscilador de batido (BFO) funciona perfectamente con dos osciladores analógicos y un altavoz, sin ningún microcontrolador, tal como se construían los detectores caseros desde los años 60. Arduino aporta valor al reemplazar el segundo oscilador analógico por una medición digital de frecuencia (contando ciclos con su Timer1), lo que reduce la deriva térmica de un segundo circuito, permite mostrar la frecuencia en una pantalla, registrar datos, y facilita experimentar con distintos umbrales de sensibilidad por software en vez de por hardware.</p></details>
 <details><summary>¿Necesito permiso para usar un detector de metales en Chile?</summary><p>Usar un detector de metales por afición en tu propio terreno no requiere permiso. Sin embargo, la Ley 17.288 de Monumentos Nacionales prohíbe la prospección, remoción o extracción de objetos arqueológicos, paleontológicos o antropológicos sin autorización del Consejo de Monumentos Nacionales, y esto aplica sin importar si el hallazgo fue casual con un detector de metales. Además, muchas playas, parques nacionales y sitios patrimoniales tienen restricciones específicas de acceso y uso de detectores que debes verificar antes de salir a buscar.</p></details>
-<details><summary>¿Cuál es la diferencia entre un detector BFO y uno de Pulso de Inducción (PI)?</summary><p>Un detector BFO detecta metal por el cambio de frecuencia que provoca un objeto metálico sobre un oscilador LC, es simple de construir pero sensible a la mineralización del suelo y a la deriva térmica. Un detector de Pulso de Inducción envía pulsos de corriente breves a la bobina y mide el tiempo de decaimiento del campo magnético inducido; es significativamente más inmune a suelos mineralizados y más profundo en su detección, pero exige un circuito y un código de temporización más exigentes, típicamente usando la función micros() de Arduino para medir intervalos de microsegundos.</p></details>
+<details><summary>¿Cuál es la diferencia entre un detector BFO y uno de Pulso de Inducción (PI)?</summary><p>Un detector BFO detecta metal por el cambio de frecuencia que provoca un objeto metálico sobre un oscilador LC, es simple de construir pero sensible a la mineralización del suelo y a la deriva térmica. Un detector de Pulso de Inducción envía pulsos de corriente breves a la bobina y mide el tiempo de decaimiento del campo magnético inducido; es significativamente más inmune a suelos mineralizados y más profundo en su detección, pero exige un circuito con alto voltaje y una medición de tiempo más fina: en un Arduino Uno se usa la captura de entrada del Timer1, porque micros() solo tiene 4 µs de resolución.</p></details>
 </div>
 </section>
 
 
-<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y los valores de componentes son referenciales y deben adaptarse y probarse con tu propio hardware; verifica siempre la normativa vigente antes de usar un detector de metales fuera de tu propiedad. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+<p class="disclosure">Este artículo es contenido editorial independiente y no contiene enlaces de afiliado. Incluye la oferta de un pack digital de pago elaborado por ukrabot.cl, identificado como tal. El código y los valores de componentes son referenciales y deben adaptarse y probarse con tu propio hardware; verifica siempre la normativa vigente antes de usar un detector de metales fuera de tu propiedad. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
 
 <div class="cta">
   <h3>Sigue aprendiendo</h3>
   <p>Si te gustó experimentar con temporización precisa en Arduino, nuestra guía <a href="/blog/como-reparar-baterias-de-taladros-inalambricos-bms-y-celdas-guia-completa">Cómo reparar baterías de taladros inalámbricos: BMS y celdas</a> aplica un nivel similar de rigor técnico a otro tipo de electrónica práctica — diagnóstico con multímetro, soldadura y seguridad eléctrica.</p>
+  <p>Si lo vas a presentar en una feria científica, el detector es uno de los proyectos de la guía <a href="/blog/12-proyectos-de-robotica-para-la-feria-cientifica">12 proyectos de robótica para la feria científica</a>, con una pregunta de investigación lista para medir.</p>
   <p>También puedes revisar los <a href="/blog/">últimos tutoriales publicados</a> en el blog.</p>
 </div>
 
@@ -591,11 +682,13 @@ void loop() {
 <h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
 <p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan los conceptos generales de la guía. Los valores exactos de componentes y el comportamiento de cada circuito deben verificarse de forma experimental con tu propio montaje.</p>
 <ul>
-<li><a href="https://www.arduino.cc/reference/en/language/functions/advanced-io/pulsein/" target="_blank" rel="noopener noreferrer">Arduino Reference — Función pulseIn()</a></li>
-<li><a href="https://www.arduino.cc/reference/en/language/functions/time/micros/" target="_blank" rel="noopener noreferrer">Arduino Reference — Función micros()</a></li>
-<li><a href="https://www.monumentos.gob.cl" target="_blank" rel="noopener noreferrer">Consejo de Monumentos Nacionales de Chile — Normativa y Ley 17.288</a></li>
+<li><a href="https://docs.arduino.cc/language-reference/en/functions/advanced-io/pulseIn/" target="_blank" rel="noopener noreferrer">Arduino — pulseIn(): mide pulsos desde 10 µs</a></li>
+<li><a href="https://docs.arduino.cc/language-reference/en/functions/time/micros/" target="_blank" rel="noopener noreferrer">Arduino — micros(): resolución de 4 µs en placas de 16 MHz</a></li>
+<li><a href="https://pjrc.com/teensy/td_libs_FreqCount.html" target="_blank" rel="noopener noreferrer">PJRC — FreqCount: conteo de frecuencia con el Timer1 en el pin 5 del Arduino Uno</a></li>
+<li><a href="https://www.bcn.cl/leychile/navegar?idNorma=28892" target="_blank" rel="noopener noreferrer">Biblioteca del Congreso Nacional — Ley N° 17.288 de Monumentos Nacionales</a></li>
+<li><a href="https://www.monumentos.gob.cl" target="_blank" rel="noopener noreferrer">Consejo de Monumentos Nacionales de Chile</a></li>
 </ul>
-<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 7 de septiembre de 2026.</p>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 17 de noviembre de 2026.</p>
 </section>
 </main>
 
@@ -714,5 +807,6 @@ void loop() {
   });
 })();
 </script>
+<script src="/tienda/tienda.js?v=4" defer></script>
 </body>
 </html>
