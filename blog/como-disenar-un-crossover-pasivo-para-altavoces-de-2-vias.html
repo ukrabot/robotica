@@ -13,7 +13,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cómo Diseñar un Crossover Pasivo para Altavoces de 2 Vías">
 <meta property="og:description" content="Frecuencia de cruce, pendientes, fórmulas de bobinas y capacitores, y simulación: el crossover de 2 vías explicado al detalle.">
-<meta property="og:image" content="https://www.ukrabot.cl/blog/crossover_pasivo_hero.jpg">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/crossover-2-vias-hero.jpg">
 <meta property="og:url" content="https://www.ukrabot.cl/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="Blog de Ingeniería Robótica">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cómo Diseñar un Crossover Pasivo para Altavoces de 2 Vías">
 <meta name="twitter:description" content="Del cálculo a la caja: cómo diseñar un crossover pasivo de 2 vías con la alineación correcta.">
-<meta name="twitter:image" content="https://www.ukrabot.cl/blog/crossover_pasivo_hero.jpg">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/crossover-2-vias-hero.jpg">
 
 <script type="application/ld+json">
 {
@@ -43,12 +43,12 @@
     "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
   },
   "datePublished":"2026-08-15",
-  "dateModified":"2026-08-15",
+  "dateModified":"2026-11-17",
   "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias"},
-  "image":"https://www.ukrabot.cl/blog/crossover_pasivo_hero.jpg",
+  "image":"https://www.ukrabot.cl/blog/crossover-2-vias-hero.jpg",
   "proficiencyLevel":"Intermedio",
   "dependencies":"Woofer y tweeter con hoja de datos (impedancia y sensibilidad), bobinas de aire, capacitores de polipropileno, resistencias de potencia, soldador, placa de montaje",
-  "wordCount":"2900",
+  "wordCount":"2953",
   "inLanguage":"es-CL"
 }
 </script>
@@ -67,9 +67,50 @@
 
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"FAQPage",
-  "mainEntity":[{"@type":"Question","name":"¿Qué frecuencia de cruce debo usar para un woofer de 6,5 pulgadas?","acceptedAnswer":{"@type":"Answer","text":"Para un woofer de 6,5\" con tweeter de cúpula, el cruce típico va de 2 a 3 kHz. El límite práctico lo marca el comportamiento del woofer en sus agudos (cuando el cono empieza a 'partirse' en modos de rotación) y la capacidad del tweeter en graves (su frecuencia de resonancia, típicamente 800 Hz–1,5 kHz, y su desplazamiento máximo). Con 2,5 kHz estás cómodo en el 90 % de los casos; consulta la curva de respuesta de tus drivers: cruza donde el woofer aún está plano y el tweeter ya está en su zona lineal."}},{"@type":"Question","name":"¿Qué es mejor: crossover de 6 dB, 12 dB o 24 dB por octava?","acceptedAnswer":{"@type":"Answer","text":"No hay un 'mejor' absoluto: cada pendiente exige drivers que cooperen. Los de 6 dB/oct son los más transparentes en fase pero dejan pasar mucha energía fuera de banda: solo funcionan con drivers excepcionalmente suaves fuera de su rango. Los de 12 dB/oct (2º orden) equilibran componentes, fase y protección, y con alineación Linkwitz-Riley son la elección clásica del DIY. Los de 24 dB/oct (4º orden) protegen mejor al tweeter y son el estándar de los diseños serios, a costa de más componentes y más complejidad. Para empezar: 12 dB/oct LR2."}},{"@type":"Question","name":"¿Puedo usar condensadores electrolíticos en un crossover?","acceptedAnswer":{"@type":"Answer","text":"Se puede (los altavoces económicos los usan), pero no es recomendable: los electrolíticos bipolares tienen tolerancia amplia, se degradan con los años y distorsionan más que un capacitor de polipropileno. La diferencia es pequeña en un altavoz de 50 dólares, pero audible en uno bueno. Si el presupuesto aprieta, usa electrolíticos bipolares solo para la rama del woofer (donde la señal es grande y la distorsión menos audible) y polipropileno en la rama del tweeter, que es donde se nota la calidad del capacitor."}},{"@type":"Question","name":"¿Necesito un L-pad si mi woofer y mi tweeter tienen la misma sensibilidad?","acceptedAnswer":{"@type":"Answer","text":"Si ambos drivers declaran exactamente la misma sensibilidad (por ejemplo, 89 dB), técnicamente no. Pero dos matices: la sensibilidad declarada se mide en la banda del fabricante, y en la práctica el woofer y el tweeter pueden diferir 1–3 dB en la zona de cruce por la propia respuesta del driver montado en la caja. Lo correcto es medir la respuesta de cada vía en el altavoz real y decidir el L-pad con esos datos: a menudo hace falta atenuar 1–2 dB aunque las hojas de datos coincidan."}},{"@type":"Question","name":"¿Cuánto cuesta el crossover de un altavoz de 2 vías?","acceptedAnswer":{"@type":"Answer","text":"Con componentes de calidad media (bobinas de núcleo de aire, capacitores de polipropileno y resistencias de potencia), el crossover completo de un altavoz de 2 vías ronda los 15–35 USD en componentes. Los capacitores grandes (8–10 µF) y las bobinas de 0,5–1 mH bien calibradas son los ítems más caros. Si añades el tiempo de diseño, simulación y montaje, el costo real está en la hora de taller: por eso comprar un crossover genérico de 5 dólares 'para 8 ohm' suele sonar peor que diseñar el propio."}}]
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué frecuencia de cruce debo usar para un woofer de 6,5 pulgadas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para un woofer de 6,5\" con tweeter de cúpula, el cruce típico va de 2 a 3 kHz. El límite práctico lo marca el comportamiento del woofer en sus agudos (cuando el cono empieza a 'partirse' en modos de rotación) y la capacidad del tweeter en graves (su frecuencia de resonancia, típicamente entre 500 Hz y 1,5 kHz; con un filtro de 2º orden conviene cruzar al menos al doble de ella). Con 2,5 kHz estás cómodo en el 90 % de los casos; consulta la curva de respuesta de tus drivers: cruza donde el woofer aún está plano y el tweeter ya está en su zona lineal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es mejor: crossover de 6 dB, 12 dB o 24 dB por octava?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No hay un 'mejor' absoluto: cada pendiente exige drivers que cooperen. Los de 6 dB/oct son los más transparentes en fase pero dejan pasar mucha energía fuera de banda: solo funcionan con drivers excepcionalmente suaves fuera de su rango. Los de 12 dB/oct (2º orden) equilibran componentes, fase y protección, y con alineación Linkwitz-Riley (y el tweeter invertido) son la elección clásica del DIY. Los de 24 dB/oct (4º orden) protegen mejor al tweeter y son el estándar de los diseños serios, a costa de más componentes y más complejidad. Para empezar: 12 dB/oct LR2."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar condensadores electrolíticos en un crossover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Se puede (los altavoces económicos los usan), pero no es recomendable: los electrolíticos bipolares tienen tolerancia amplia, se degradan con los años y distorsionan más que un capacitor de polipropileno. La diferencia es pequeña en un altavoz de 50 dólares, pero audible en uno bueno. Si el presupuesto aprieta, usa electrolíticos bipolares solo para la rama del woofer (donde la señal es grande y la distorsión menos audible) y polipropileno en la rama del tweeter, que es donde se nota la calidad del capacitor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito un L-pad si mi woofer y mi tweeter tienen la misma sensibilidad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Si ambos drivers declaran exactamente la misma sensibilidad (por ejemplo, 89 dB), técnicamente no. Pero dos matices: la sensibilidad declarada se mide en la banda del fabricante, y en la práctica el woofer y el tweeter pueden diferir 1–3 dB en la zona de cruce por la propia respuesta del driver montado en la caja. Lo correcto es medir la respuesta de cada vía en el altavoz real y decidir el L-pad con esos datos: a menudo hace falta atenuar 1–2 dB aunque las hojas de datos coincidan."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto cuesta el crossover de un altavoz de 2 vías?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con componentes de calidad media (bobinas de núcleo de aire, capacitores de polipropileno y resistencias de potencia), el crossover completo de un altavoz de 2 vías ronda los 15–35 USD en componentes. Los capacitores grandes (8–10 µF) y las bobinas de 0,5–1 mH bien calibradas son los ítems más caros. Si añades el tiempo de diseño, simulación y montaje, el costo real está en la hora de taller: por eso comprar un crossover genérico de 5 dólares 'para 8 ohm' suele sonar peor que diseñar el propio."
+      }
+    }
+  ]
 }
 </script>
 
@@ -237,6 +278,22 @@ details p{padding-top:10px;margin-bottom:0}
     gtag('config', 'G-1ZVHF8X35Q');
   </script>
 
+<style>
+.pack{margin:52px 0;padding:28px;border:1px solid rgba(169,123,35,.35);border-radius:18px;background:#fff;box-shadow:0 18px 40px rgba(30,25,15,.06)}
+.pack-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:start}
+.pack-grid>img{width:100%;height:auto;border-radius:12px;display:block}
+.pack-tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.pack h2{margin:8px 0 12px}
+.pack ul{padding-left:20px;margin:0 0 18px}
+.pack li{margin-bottom:8px}
+.pack-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 2px}
+.pack-price strong{font-family:Georgia,serif;font-size:2rem;font-weight:400;color:var(--text)}
+.pack-price span{color:var(--muted);font-size:.9rem}
+.pack-fine{font-size:.8rem;color:var(--quiet);margin:14px 0 0;line-height:1.5}
+.pack-callout a{font-weight:600}
+@media (max-width:820px){.pack{padding:20px}.pack-grid{grid-template-columns:1fr;gap:20px}}
+</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=4">
 </head>
 <body>
 
@@ -259,12 +316,12 @@ details p{padding-top:10px;margin-bottom:0}
 </nav>
 
 <header class="hero">
-  <img src="crossover_pasivo_hero.jpg" alt="Componentes de un crossover pasivo: capacitores de polipropileno, bobinas de aire y resistencias junto a un esquema en papel" fetchpriority="high">
+  <img src="crossover-2-vias-hero.jpg" alt="Ilustración de un crossover pasivo de 2 vías montado en una placa: bobinas de núcleo de aire con ejes perpendiculares, condensadores de polipropileno y resistencias del L-pad, cableado al woofer y al tweeter" fetchpriority="high">
   <div class="hero-inner">
-    <div class="eyebrow">Audio y electrónica de sonido · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <div class="eyebrow">Audio y electrónica de sonido · Actualizado el <time datetime="2026-11-17">17 de noviembre de 2026</time></div>
     <h1>Cómo Diseñar un Crossover Pasivo para Altavoces de 2 Vías</h1>
     <p>La frecuencia de cruce, la pendiente y la alineación correctas: cálculo numérico completo, simulación y construcción del filtro de 2 vías.</p>
-    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 13 min de lectura</p>
   </div>
 </header>
 
@@ -272,8 +329,8 @@ details p{padding-top:10px;margin-bottom:0}
 <article>
 
 <div class="article-img">
-  <img src="crossover_2vias_esquema.svg" alt="Esquema de un crossover pasivo de 2 vías de segundo orden Linkwitz-Riley a 2 kHz para altavoces de 8 ohm con los valores de bobinas y capacitores" loading="lazy">
-  <div class="caption">El esquema del crossover de ejemplo: cada rama filtra una banda, y la alineación Linkwitz-Riley hace que las dos sumen planas en la zona de cruce.</div>
+  <img src="crossover-lr2-2500hz-esquema.jpg" alt="Esquema de un crossover pasivo Linkwitz-Riley de segundo orden a 2,5 kHz para 8 ohm: bobina de 1,0 mH en serie y condensador de 3,9 µF en paralelo al woofer; condensador de 3,9 µF en serie, bobina de 1,0 mH en paralelo, L-pad y tweeter con polaridad invertida" width="1600" height="900" loading="lazy">
+  <div class="caption">El crossover de ejemplo: Linkwitz-Riley de segundo orden a 2,5 kHz para drivers de 8 Ω. En LR2 el tweeter se conecta con la polaridad invertida para que las dos vías sumen planas.</div>
 </div>
 
 <div class="toc" aria-label="Tabla de contenidos">
@@ -293,6 +350,25 @@ details p{padding-top:10px;margin-bottom:0}
     <li><a href="#faq">Preguntas frecuentes</a></li>
   </ol>
 </div>
+
+<section id="pack" class="pack" aria-labelledby="pack-t">
+<div class="pack-grid">
+  <img src="pack-crossover-2-vias.jpg" alt="Portada del Pack Crossover 2 Vías: calculadora en Excel, guía en PDF y esquema del crossover de ejemplo" width="1200" height="800" loading="lazy">
+  <div>
+    <span class="pack-tag">Pack digital · ukrabot.cl</span>
+    <h2 id="pack-t">Pack Crossover 2 Vías: del cálculo a los componentes que vas a comprar</h2>
+    <p>Todo lo de esta guía, convertido en herramientas: calcula el filtro con los datos de tus drivers, elige valores comerciales sabiendo cuánto se mueve el cruce y revisa la suma antes de soldar.</p>
+    <ul>
+      <li><strong>Calculadora en Excel (9 hojas):</strong> filtro de 2º orden LR2, Butterworth o Bessel con valores comerciales sugeridos, gráfico de la suma con el tweeter invertido y sin invertir, L-pad a partir de las sensibilidades, red Zobel, pérdida y diseño de bobinas de aire, tolerancias, presupuesto y checklist.</li>
+      <li><strong>Guía en PDF (17 páginas):</strong> qué datos sacar de las hojas de datos, cálculo paso a paso, polaridad y suma, cómo acercarse a los valores teóricos, bobinas, condensadores y resistencias, medición con REW, simulación en VituixCAD o XSim, montaje y tabla de problemas.</li>
+      <li><strong>Esquema del ejemplo:</strong> el crossover LR2 a 2.500 Hz para 8 Ω, con L-pad y Zobel, en alta resolución.</li>
+    </ul>
+    <div class="pack-price"><strong data-price-slug="pack-crossover-2-vias">$7.990</strong><span>Pago único · descarga inmediata en un archivo .zip</span></div>
+    <div class="ukr-buy" id="comprar-pack" data-ukr-buy="pack-crossover-2-vias" aria-label="Comprar el Pack Crossover 2 Vías"></div>
+    <p class="pack-fine">Al pagar descargas un archivo .zip con la calculadora (.xlsx), la guía (.pdf), el esquema (.png) y las instrucciones. La calculadora se abre en Excel, LibreOffice y Google Sheets. Licencia de uso personal. Por ser contenido digital de descarga inmediata, no tiene derecho a retracto; si un archivo llega dañado o no abre, te lo reponemos o devolvemos el dinero.</p>
+  </div>
+</div>
+</section>
 
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
@@ -318,7 +394,7 @@ details p{padding-top:10px;margin-bottom:0}
 <section id="conceptos">
 <h2>Frecuencia de cruce, pendiente y orden</h2>
 <p>Tres parámetros definen el filtro:</p>
-<p><strong>1. Frecuencia de cruce (fc):</strong> el punto donde las dos ramas están a media potencia (−3 dB o −6 dB según la alineación). La elige el límite superior útil del woofer y el límite inferior del tweeter: un woofer de 6,5" con cono de aluminio suele cruzar a 2–3 kHz; uno de papel más blando, a 1,5–2,5 kHz; los full-range con whizzer a 5–7 kHz. Cruza <em>dentro</em> del rango donde ambos drivers están en su zona lineal.</p>
+<p><strong>1. Frecuencia de cruce (fc):</strong> el punto donde las dos ramas están a media potencia (−3 dB o −6 dB según la alineación). La elige el límite superior útil del woofer y el límite inferior del tweeter: un woofer de 6,5" suele cruzar entre 1,5 y 3 kHz. Si el cono es de aluminio u otro material rígido, revisa en su hoja de datos el pico de ruptura del cono (a menudo entre 4 y 8 kHz): el filtro debe atenuarlo bien, y a veces hace falta un filtro notch adicional. Por el lado del tweeter, cruza al menos al doble de su frecuencia de resonancia (fs) con un filtro de 2º orden. Cruza <em>dentro</em> del rango donde ambos drivers trabajan con comodidad.</p>
 <p><strong>2. Pendiente:</strong> la velocidad de atenuación, medida en dB por octava. Una pendiente de primer orden cae 6 dB/oct, una de segundo 12 dB/oct, tercero 18 dB/oct y cuarto 24 dB/oct.</p>
 <p><strong>3. Orden:</strong> el número de elementos reactivos (bobinas y capacitores) por rama. Más orden = pendiente más pronunciada = menos energía fuera de banda, pero más fase y más componentes.</p>
 <div class="table-wrap">
@@ -335,13 +411,13 @@ details p{padding-top:10px;margin-bottom:0}
 </section>
 <section id="alineaciones">
 <h2>Alineaciones: Butterworth, Linkwitz-Riley y Bessel</h2>
-<p>La <strong>alineación</strong> describe la respuesta del filtro en la zona de cruce, y define cuánto se suman las dos ramas:</p>
+<p>La <strong>alineación</strong> describe la forma del filtro cerca del cruce (técnicamente, su factor Q) y define cómo se suman las dos ramas. Un detalle clave de los filtros de segundo orden: en la frecuencia de cruce, la rama pasabajos y la pasaaltos están desfasadas 180°. Por eso, en segundo orden, el tweeter se conecta con la polaridad invertida.</p>
 <ul>
-<li><strong>Butterworth (BW):</strong> respuesta plana en cada rama individual, pero las ramas se suman en fase y el cruce presenta un pico de +3 dB si no se invierte la polaridad del tweeter. Se usa con inversión de polaridad en segundo orden.</li>
-<li><strong>Linkwitz-Riley (LR):</strong> cada rama cae a −6 dB en el cruce, y la suma es <strong>plana y en fase</strong> sin pico. Es la alineación más usada en 2º y 4º orden porque perdonas errores de fase del mundo real.</li>
-<li><strong>Bessel:</strong> retardo de grupo máximo plano (transitorios más fieles) a costa de una pendiente inicial más suave. Rara en pasivos de 2 vías, común en equipos profesionales.</li>
+<li><strong>Butterworth (BW2, Q = 0,707):</strong> cada rama cae −3 dB en el cruce. Con el tweeter invertido, la suma tiene un pico de unos +3 dB en el cruce (la potencia total queda plana). Con el tweeter en la misma polaridad, aparece un hueco.</li>
+<li><strong>Linkwitz-Riley (LR2, Q = 0,5):</strong> cada rama cae −6 dB en el cruce y, con el tweeter invertido, la suma es <strong>plana</strong>. Con la misma polaridad, la suma tiene un hueco profundo justo en el cruce. En cuarto orden (LR4) las ramas quedan en fase y los dos drivers van con la misma polaridad.</li>
+<li><strong>Bessel (Q ≈ 0,58):</strong> retardo de grupo lo más plano posible, con una caída más suave cerca del cruce. Poco común en pasivos de 2 vías.</li>
 </ul>
-<p>Regla práctica: <strong>elige Linkwitz-Riley de segundo orden (LR2) para tu primer diseño</strong>. Es la que este artículo calcula en detalle: solo dos componentes por rama, fase benigna y suma plana, la combinación más perdonadora del mundo DIY.</p>
+<p>Regla práctica: <strong>elige Linkwitz-Riley de segundo orden (LR2) para tu primer diseño</strong>. Es la que este artículo calcula en detalle: dos componentes por rama y suma plana con el tweeter invertido.</p>
 </section>
 <section id="componentes">
 <h2>Componentes: bobinas, capacitores y resistencias</h2>
@@ -350,29 +426,33 @@ details p{padding-top:10px;margin-bottom:0}
 <table>
 <thead><tr><th>Componente</th><th>Función</th><th>Qué comprar</th></tr></thead>
 <tbody>
-<tr><td>Bobina (inductor)</td><td>Deja pasar graves, bloquea agudos (pasabajos)</td><td>Núcleo de aire (sin saturación, sin distorsión); calibre de alambre ≥ 0,8 mm</td></tr>
+<tr><td>Bobina (inductor)</td><td>Deja pasar graves, bloquea agudos (pasabajos)</td><td>Núcleo de aire (sin saturación, sin distorsión). En la bobina en serie con el woofer, alambre grueso (1,0–1,3 mm, 18–16 AWG): su resistencia le resta volumen al woofer</td></tr>
 <tr><td>Capacitor</td><td>Deja pasar agudos, bloquea graves (pasaaltos)</td><td>Polipropileno (film) de buena tolerancia (±5 %); evita electrolíticos bipolares en la señal</td></tr>
 <tr><td>Resistencia</td><td>Atenuación (L-pad) y ajuste de impedancia</td><td>Resistencias de potencia ≥ 10 W para el L-pad</td></tr>
 </tbody>
 </table>
 </div>
-<p>Los valores comerciales no siempre coinciden con los calculados: se usan los valores estándar más cercanos (serie E12/E24) y, para capacitancias grandes, se combinan capacitores en paralelo (10 µF + 4,7 µF = 14,7 µF). La tolerancia del componente introduce error de frecuencia de cruce: un capacitor de ±10 % desplaza el cruce ~10 %, por eso se prefiere ±5 %.</p>
+<p>Los valores comerciales no siempre coinciden con los calculados: se usan los valores estándar más cercanos (serie E12/E24) y, para capacitancias grandes, se combinan capacitores en paralelo (10 µF + 4,7 µF = 14,7 µF). La tolerancia del componente introduce error de frecuencia de cruce: como la frecuencia depende de la raíz cuadrada de L·C, un capacitor ±10 % fuera de valor desplaza el cruce cerca de un 5 %, y se suma al error de la bobina. Por eso se prefieren componentes de ±5 % o mejor.</p>
 </section>
 <section id="paso-a-paso">
 <h2>Diseño paso a paso: segundo orden LR a 2,5 kHz</h2>
 <p>Vamos a diseñar el crossover del altavoz de 2 vías del proyecto de <a href="/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad">altavoz Bluetooth Hi-Fi</a>: woofer de 6,5" y tweeter de cúpula, ambos de <strong>8 Ω nominales</strong>, cruce a <strong>2.500 Hz</strong>.</p>
-<p><strong>Paso 1 — Elige la topología LR2.</strong> El filtro de segundo orden Linkwitz-Riley es dos filtros de primer orden en cascada por rama. Las fórmulas canónicas (con la impedancia nominal R y la frecuencia fc en Hz):</p>
-<pre><code>Para CADA rama de segundo orden LR:
+<p><strong>Paso 1 — Elige la topología LR2.</strong> Cada rama es un filtro de segundo orden con Q = 0,5. Ojo: no basta con poner en cascada dos filtros de primer orden calculados por separado, porque en un filtro pasivo las etapas se cargan entre sí. Las fórmulas, con la impedancia R del driver y la frecuencia fc en Hz:</p>
+<pre><code>Linkwitz-Riley de 2º orden (Q = 0,5):
 
   Rama pasabajos (woofer):
-    L_serie = R / (2 · π · fc)          // en henrios
-    C_paralelo = 1 / (2 · π · fc · R)   // en faradios
+    L_serie    = R / (π · fc)            // en henrios
+    C_paralelo = 1 / (4 · π · fc · R)    // en faradios
 
-  Rama pasaaltos (tweeter):
-    C_serie = 1 / (2 · π · fc · R)      // en faradios
-    L_paralelo = R / (2 · π · fc)       // en henrios</code></pre>
-<p><strong>Paso 2 — Calcula.</strong> Con R = 8 Ω y fc = 2.500 Hz (los valores completos en la siguiente sección): L ≈ 0,51 mH y C ≈ 7,96 µF por rama.</p>
-<p><strong>Paso 3 — Verifica la fase.</strong> En LR2 ambas ramas salen con la misma fase en la zona de cruce; conecta <strong>ambos drivers en la misma polaridad</strong> (o invierte ambos — la regla es que los dos se conecten igual entre sí en LR2, a diferencia del Butterworth de 2º orden que exige invertir el tweeter).</p>
+  Rama pasaaltos (tweeter, con polaridad invertida):
+    C_serie    = 1 / (4 · π · fc · R)    // en faradios
+    L_paralelo = R / (π · fc)            // en henrios
+
+Fórmula general para cualquier alineación de 2º orden:
+    L = R / (2π · fc · Q)      C = Q / (2π · fc · R)
+    LR2: Q = 0,5   ·   Butterworth: Q = 0,707   ·   Bessel: Q ≈ 0,58</code></pre>
+<p><strong>Paso 2 — Calcula.</strong> Con R = 8 Ω y fc = 2.500 Hz: L ≈ 1,02 mH y C ≈ 3,98 µF en cada rama (detalle en la siguiente sección).</p>
+<p><strong>Paso 3 — Polaridad.</strong> En LR2 la rama pasaaltos y la pasabajos salen desfasadas 180° en el cruce: conecta el <strong>tweeter con la polaridad invertida</strong> (su borne + al negativo de la salida del filtro). Si lo conectas igual que el woofer, aparece un hueco profundo en 2,5 kHz.</p>
 </section>
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
@@ -388,32 +468,41 @@ details p{padding-top:10px;margin-bottom:0}
 <section id="numerico">
 <h2>El cálculo numérico completo</h2>
 <pre><code>Datos:
-  R  = 8 Ω          (impedancia nominal de ambos drivers)
+  R  = 8 Ω          (impedancia de ambos drivers en la zona de cruce)
   fc = 2.500 Hz     (frecuencia de cruce)
 
 Rama pasabajos (woofer):
-  L1 = R / (2·π·fc) = 8 / (6,2832 · 2500) = 0,000509 H = 0,51 mH
-  C1 = 1 / (2·π·fc·R) = 1 / (6,2832 · 2500 · 8) = 0,00000796 F = 7,96 µF
+  L1 = R / (π·fc)     = 8 / (3,1416 · 2500)       = 0,001019 H = 1,02 mH
+  C1 = 1 / (4·π·fc·R) = 1 / (12,566 · 2500 · 8)   = 0,00000398 F = 3,98 µF
 
 Rama pasaaltos (tweeter):
-  C2 = C1 = 7,96 µF
-  L2 = L1 = 0,51 mH
+  C2 = 3,98 µF   (en serie)
+  L2 = 1,02 mH   (en paralelo)
 
-Valores comerciales más cercanos:
-  L1 = L2 = 0,5 mH (núcleo de aire)
-  C1 = C2 = 8,2 µF (o 4,7 + 3,3 µF en paralelo)</code></pre>
-<p>Con esos valores, la frecuencia real de cruce queda:</p>
-<pre><code>fc = R / (2·π·L) = 8 / (6,2832 · 0,0005) = 2.546 Hz   (con L = 0,5 mH)
-fc = 1 / (2·π·C·R) = 1 / (6,2832 · 0,0000082 · 8) = 2.426 Hz  (con C = 8,2 µF)</code></pre>
-<p>El par de valores comerciales cruza alrededor de 2,5 kHz, perfecto para el woofer de 6,5". Si el woofer tiene una impedancia real de 6 Ω en la zona de cruce (impedancias reales de los drivers no son planas), el cruce sube un poco: por eso el siguiente paso es simular y medir, no quedarse con la hoja de cálculo.</p>
-<div class="note"><strong>Nota:</strong> en un LR2 estricto, las ramas caen −6 dB en el cruce (no −3 dB). Si tu multímetro de banco te dice otra cosa, es porque el fabricante del driver o la impedancia real desplazaron la curva: la simulación con la impedancia medida lo aclara.</div>
+Valores comerciales:
+  L1 = L2 = 1,0 mH (núcleo de aire)
+  C1 = C2 = 3,9 µF (o 3,3 + 0,68 µF en paralelo = 3,98 µF)</code></pre>
+<p>Para comprobar los valores comerciales se revisan las dos cosas que definen el filtro: su frecuencia y su Q.</p>
+<pre><code>fc = 1 / (2·π·√(L·C)) = 1 / (6,2832 · √(0,001 · 0,0000039)) = 2.549 Hz
+Q  = R · √(C / L)      = 8 · √(0,0000039 / 0,001)             = 0,50</code></pre>
+<p>Con 1,0 mH y 3,9 µF el filtro cruza a unos 2,55 kHz con Q = 0,50: un LR2 correcto. Pero ese cálculo supone que el driver se comporta como una resistencia de 8 Ω, y no es así: la impedancia real sube con la frecuencia y cambia cerca de las resonancias. Por eso los siguientes pasos son corregir la impedancia y simular con datos medidos.</p>
+<div class="note"><strong>Error frecuente:</strong> calcular cada rama como "dos filtros de primer orden" (L = R ÷ 2πfc y C = 1 ÷ 2πfc·R) da 0,51 mH y 7,96 µF. Ese par sí cruza a 2,5 kHz, pero con Q = 1: cada rama tiene un pico cerca del cruce y la suma deja de ser plana.</div>
 </section>
+<div class="note pack-callout"><strong>¿Y con tus drivers?</strong> El <a href="#pack">Pack Crossover 2 Vías</a> (<span data-price-slug="pack-crossover-2-vias">$7.990</span>, descarga inmediata en .zip) trae una calculadora en Excel que da L, C, L-pad y Zobel con tus datos, sugiere valores comerciales y grafica la suma con y sin el tweeter invertido, más una guía de 17 páginas para medir, simular y montar.</div>
 <section id="drivers">
 <h2>Impedancia, sensibilidad y polaridad de los drivers</h2>
-<p>Tres realidades de los drivers que el cálculo ideal ignora:</p>
-<p><strong>1. La impedancia real no es constante.</strong> Un woofer puede tener un pico de resonancia a 60 Hz (30–50 Ω) y caer a 6–7 Ω en el cruce; un tweeter suele estar en 4–6 Ω a 2,5 kHz. Como el crossover filtra <em>voltaje</em> y los drivers consumen según su impedancia real, la frecuencia de cruce efectiva se desplaza. La solución profesional: medir la impedancia (con REW o un adaptador) y usar esos datos en la simulación, o cruzar con margen usando la impedancia promedio de la zona de cruce.</p>
-<p><strong>2. La sensibilidad define el balance.</strong> Si el tweeter tiene 92 dB/1W/1m y el woofer 88 dB, el tweeter dominará por 4 dB. Se corrige con un <strong>L-pad</strong>: dos resistencias (una en serie, una en paralelo con el tweeter) que atenúan sin cambiar la impedancia vista por el filtro. Para atenuar 4 dB en 8 Ω: R1 ≈ 1,8 Ω en serie y R2 ≈ 15 Ω en paralelo (los valores exactos salen de las fórmulas del L-pad, que se pueden calcular en cualquier calculadora de L-pad online o en la hoja de cálculo del simulador).</p>
-<p><strong>3. La polaridad es ley.</strong> En LR2 los dos drivers van en la misma fase eléctrica; conectar el tweeter invertido crea un hueco profundo en la zona de cruce. Antes de cerrar la caja, prueba de polaridad: reproduce una señal cerca del cruce y escucha el tono; si al invertir la polaridad del tweeter el sonido se vuelve más lleno, déjalo así (y revisa la alineación que elegiste).</p>
+<p>Cuatro realidades de los drivers que el cálculo ideal ignora:</p>
+<p><strong>1. La impedancia real no es constante.</strong> Un woofer tiene un pico en su resonancia (por ejemplo, 30–50 Ω cerca de 50–80 Hz) y, por la inductancia de su bobina móvil, su impedancia sube con la frecuencia justo en la zona de cruce. Un tweeter tiene su propio pico de resonancia (típicamente entre 500 Hz y 1,5 kHz). Como las fórmulas suponen una carga resistiva, el cruce efectivo se desplaza. La solución: medir la impedancia (con REW y un adaptador) y simular con esos datos.</p>
+<p><strong>2. Red Zobel para el woofer.</strong> Una resistencia y un condensador en serie, conectados en paralelo con el woofer, compensan la subida de impedancia por la inductancia de la bobina móvil: R ≈ 1,25 × Re y C = Le ÷ R². Por ejemplo, con Re = 5,6 Ω y Le = 0,5 mH: R ≈ 7 Ω y C ≈ 10 µF. Con la impedancia más plana, el filtro pasabajos se comporta como se calculó.</p>
+<p><strong>3. La sensibilidad define el balance.</strong> Si el tweeter tiene 92 dB/1W/1m y el woofer 88 dB, el tweeter dominará por 4 dB. Se corrige con un <strong>L-pad</strong> entre el filtro pasaaltos y el tweeter: una resistencia en serie y otra en paralelo con el tweeter, que atenúan sin cambiar la impedancia que ve el filtro.</p>
+<pre><code>Vr = 10^(A / 20)            (A = atenuación en dB)
+Rs = Z · (Vr − 1) / Vr      (en serie)
+Rp = Z / (Vr − 1)           (en paralelo con el tweeter)
+
+Para 4 dB en 8 Ω:  Vr = 1,585   Rs = 2,95 Ω   Rp = 13,7 Ω
+Con valores comerciales de 3 Ω y 15 Ω: atenúa 3,9 dB y el filtro ve 8,2 Ω</code></pre>
+<p>Recuerda también que la resistencia de la bobina en serie con el woofer le resta algo de nivel (con 0,5 Ω en un woofer de 8 Ω, cerca de 0,5 dB): súmalo a la atenuación del tweeter.</p>
+<p><strong>4. La polaridad es ley.</strong> En LR2 el tweeter va con la polaridad invertida; conectado igual que el woofer, deja un hueco profundo en la zona de cruce. Antes de cerrar la caja, verifica: con un barrido o ruido rosa cerca del cruce, la versión correcta suena más llena y, medida con micrófono, no muestra un hueco en el cruce.</p>
 </section>
 <section id="simulacion">
 <h2>Simulación y medición</h2>
@@ -432,8 +521,8 @@ fc = 1 / (2·π·C·R) = 1 / (6,2832 · 0,0000082 · 8) = 2.426 Hz  (con C = 8,2
 <ul>
 <li><strong>Placa base:</strong> monta los componentes sobre una placa de madera o plástico (los PCB de crossover comerciales también existen), fijados con silicona caliente o bridas, no sueltos dentro de la caja.</li>
 <li><strong>Separación de bobinas:</strong> las bobinas de aire generan campos magnéticos que interactúan; sepáralas al menos 2 diámetros entre sí y orienta sus ejes perpendiculares. Una bobina pegada al imán del woofer induce ruido.</li>
-<li><strong>Cableado:</strong> usa cable de sección adecuada (≥ 1 mm²) y conexiones firmes (crimp, terminal o soldadura con buen estaño); un contacto intermitente produce chasquidos y pérdida intermitente de una vía.</li>
-<li><strong>Protección:</strong> si el altavoz puede recibir potencia alta, los capacitores de la rama del tweeter trabajan a voltajes considerables: usa capacitores con tensión nominal ≥ 100 V y resistencias del L-pad de al menos 10 W (el tweeter solo recibe agudos, pero los transitorios pico son altos).</li>
+<li><strong>Cableado:</strong> usa cable de sección adecuada (≥ 1 mm², y 1,5 mm² para el woofer) y conexiones firmes (crimp, terminal o soldadura con buen estaño); un contacto intermitente produce chasquidos y pérdida intermitente de una vía.</li>
+<li><strong>Protección:</strong> si el altavoz puede recibir potencia alta, los capacitores de la rama del tweeter trabajan a voltajes considerables: usa capacitores de polipropileno de 100 V o más y resistencias del L-pad de 10 W (la resistencia en serie es la que más disipa) (el tweeter solo recibe agudos, pero los transitorios pico son altos).</li>
 <li><strong>Prueba antes de cerrar:</strong> con el altavoz completo, reproduce música a volumen moderado y barridos; verifica que ambas vías suenen y que no haya chasquidos al tocar los cables.</li>
 </ul>
 </section>
@@ -443,10 +532,10 @@ fc = 1 / (2·π·C·R) = 1 / (6,2832 · 0,0000082 · 8) = 2.426 Hz  (con C = 8,2
 <table>
 <thead><tr><th>Síntoma</th><th>Causa más probable</th><th>Solución</th></tr></thead>
 <tbody>
-<tr><td>Hueco profundo en la zona de cruce</td><td>Polaridad invertida en una rama (LR2)</td><td>Conecta ambos drivers en la misma polaridad</td></tr>
-<tr><td>Pico en el cruce (+6 dB o más)</td><td>Alineación Butterworth sin inversión, o cruce en un pico de impedancia</td><td>Cambia a LR2 o invierte el tweeter; revisa la impedancia real</td></tr>
+<tr><td>Hueco profundo en la zona de cruce</td><td>En LR2, tweeter conectado con la misma polaridad que el woofer</td><td>Invierte la polaridad del tweeter</td></tr>
+<tr><td>Pico en el cruce</td><td>Butterworth de 2º orden con el tweeter invertido (+3 dB), componentes calculados con Q = 1, o cruce sobre un pico de impedancia</td><td>Recalcula como LR2 (Q = 0,5), agrega la red Zobel y simula con la impedancia medida</td></tr>
 <tr><td>Suenan demasiado los agudos</td><td>Tweeter de mayor sensibilidad sin L-pad</td><td>Calcula e instala el L-pad de atenuación</td></tr>
-<tr><td>El tweeter se quema</td><td>Frecuencia de cruce demasiado baja o pendiente insuficiente</td><td>Sube fc dentro del rango del tweeter; usa 3er/4º orden</td></tr>
+<tr><td>El tweeter se quema</td><td>Frecuencia de cruce demasiado baja o pendiente insuficiente</td><td>Cruza al menos al doble de la resonancia del tweeter; considera 3er o 4º orden</td></tr>
 <tr><td>Chasquidos al mover el altavoz</td><td>Conexiones flojas o cable desnudo</td><td>Revisa cada terminal y refuerza las soldaduras</td></tr>
 <tr><td>El bajo suena "descajetado"</td><td>Rama pasabajos sin bobina de núcleo de aire bien dimensionada</td><td>Bobina con calibre suficiente y sin saturación a potencia alta</td></tr>
 </tbody>
@@ -473,8 +562,8 @@ fc = 1 / (2·π·C·R) = 1 / (6,2832 · 0,0000082 · 8) = 2.426 Hz  (con C = 8,2
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
 <div class="faq">
-<details><summary>¿Qué frecuencia de cruce debo usar para un woofer de 6,5 pulgadas?</summary><p>Para un woofer de 6,5" con tweeter de cúpula, el cruce típico va de 2 a 3 kHz. El límite práctico lo marca el comportamiento del woofer en sus agudos (cuando el cono empieza a 'partirse' en modos de rotación) y la capacidad del tweeter en graves (su frecuencia de resonancia, típicamente 800 Hz–1,5 kHz, y su desplazamiento máximo). Con 2,5 kHz estás cómodo en el 90 % de los casos; consulta la curva de respuesta de tus drivers: cruza donde el woofer aún está plano y el tweeter ya está en su zona lineal.</p></details>
-<details><summary>¿Qué es mejor: crossover de 6 dB, 12 dB o 24 dB por octava?</summary><p>No hay un 'mejor' absoluto: cada pendiente exige drivers que cooperen. Los de 6 dB/oct son los más transparentes en fase pero dejan pasar mucha energía fuera de banda: solo funcionan con drivers excepcionalmente suaves fuera de su rango. Los de 12 dB/oct (2º orden) equilibran componentes, fase y protección, y con alineación Linkwitz-Riley son la elección clásica del DIY. Los de 24 dB/oct (4º orden) protegen mejor al tweeter y son el estándar de los diseños serios, a costa de más componentes y más complejidad. Para empezar: 12 dB/oct LR2.</p></details>
+<details><summary>¿Qué frecuencia de cruce debo usar para un woofer de 6,5 pulgadas?</summary><p>Para un woofer de 6,5" con tweeter de cúpula, el cruce típico va de 2 a 3 kHz. El límite práctico lo marca el comportamiento del woofer en sus agudos (cuando el cono empieza a 'partirse' en modos de rotación) y la capacidad del tweeter en graves (su frecuencia de resonancia, típicamente entre 500 Hz y 1,5 kHz; con un filtro de 2º orden conviene cruzar al menos al doble de ella). Con 2,5 kHz estás cómodo en el 90 % de los casos; consulta la curva de respuesta de tus drivers: cruza donde el woofer aún está plano y el tweeter ya está en su zona lineal.</p></details>
+<details><summary>¿Qué es mejor: crossover de 6 dB, 12 dB o 24 dB por octava?</summary><p>No hay un 'mejor' absoluto: cada pendiente exige drivers que cooperen. Los de 6 dB/oct son los más transparentes en fase pero dejan pasar mucha energía fuera de banda: solo funcionan con drivers excepcionalmente suaves fuera de su rango. Los de 12 dB/oct (2º orden) equilibran componentes, fase y protección, y con alineación Linkwitz-Riley (y el tweeter invertido) son la elección clásica del DIY. Los de 24 dB/oct (4º orden) protegen mejor al tweeter y son el estándar de los diseños serios, a costa de más componentes y más complejidad. Para empezar: 12 dB/oct LR2.</p></details>
 <details><summary>¿Puedo usar condensadores electrolíticos en un crossover?</summary><p>Se puede (los altavoces económicos los usan), pero no es recomendable: los electrolíticos bipolares tienen tolerancia amplia, se degradan con los años y distorsionan más que un capacitor de polipropileno. La diferencia es pequeña en un altavoz de 50 dólares, pero audible en uno bueno. Si el presupuesto aprieta, usa electrolíticos bipolares solo para la rama del woofer (donde la señal es grande y la distorsión menos audible) y polipropileno en la rama del tweeter, que es donde se nota la calidad del capacitor.</p></details>
 <details><summary>¿Necesito un L-pad si mi woofer y mi tweeter tienen la misma sensibilidad?</summary><p>Si ambos drivers declaran exactamente la misma sensibilidad (por ejemplo, 89 dB), técnicamente no. Pero dos matices: la sensibilidad declarada se mide en la banda del fabricante, y en la práctica el woofer y el tweeter pueden diferir 1–3 dB en la zona de cruce por la propia respuesta del driver montado en la caja. Lo correcto es medir la respuesta de cada vía en el altavoz real y decidir el L-pad con esos datos: a menudo hace falta atenuar 1–2 dB aunque las hojas de datos coincidan.</p></details>
 <details><summary>¿Cuánto cuesta el crossover de un altavoz de 2 vías?</summary><p>Con componentes de calidad media (bobinas de núcleo de aire, capacitores de polipropileno y resistencias de potencia), el crossover completo de un altavoz de 2 vías ronda los 15–35 USD en componentes. Los capacitores grandes (8–10 µF) y las bobinas de 0,5–1 mH bien calibradas son los ítems más caros. Si añades el tiempo de diseño, simulación y montaje, el costo real está en la hora de taller: por eso comprar un crossover genérico de 5 dólares 'para 8 ohm' suele sonar peor que diseñar el propio.</p></details>
@@ -482,7 +571,7 @@ fc = 1 / (2·π·C·R) = 1 / (6,2832 · 0,0000082 · 8) = 2.426 Hz  (con C = 8,2
 </section>
 
 
-<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+<p class="disclosure">Este artículo es contenido editorial independiente y no contiene enlaces de afiliado. Incluye la oferta de un pack digital de pago elaborado por ukrabot.cl, identificado como tal. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
 
 <div class="cta">
   <h3>Sigue aprendiendo</h3>
@@ -501,12 +590,15 @@ fc = 1 / (2·π·C·R) = 1 / (6,2832 · 0,0000082 · 8) = 2.426 Hz  (con C = 8,2
 <ul>
 <li><a href="https://www.linkwitzlab.com/crossovers.htm" target="_blank" rel="noopener noreferrer">Siegfried Linkwitz — Filtros crossover y alineaciones</a></li>
 <li><a href="https://www.ti.com/lit/an/sloa119/sloa119.pdf" target="_blank" rel="noopener noreferrer">TI — Nota de aplicación sobre filtros activos y pasivos (conceptos de orden y pendiente)</a></li>
+<li><a href="https://sound-au.com/articles/crossover-tables.htm" target="_blank" rel="noopener noreferrer">Elliott Sound Products — Tablas y fórmulas de crossovers pasivos</a></li>
+<li><a href="https://sound-au.com/articles/l-pad-calc.htm" target="_blank" rel="noopener noreferrer">Elliott Sound Products — Cálculo de L-pad para atenuar el tweeter</a></li>
+<li><a href="https://www.audioholics.com/techtips/audioprinciples/loudspeakers/speakerfilterscrossovers.php" target="_blank" rel="noopener noreferrer">Audioholics — Filtros de altavoces: Butterworth y Linkwitz-Riley, suma y polaridad</a></li>
 <li><a href="https://kimmosaunisto.net/Software/XSim/XSim.html" target="_blank" rel="noopener noreferrer">XSim — Simulador de crossover gratuito</a></li>
 <li><a href="https://kimmosaunisto.net/Software/VituixCAD/VituixCAD.html" target="_blank" rel="noopener noreferrer">VituixCAD — Software de diseño y simulación de altavoces</a></li>
 <li><a href="https://www.roomeqwizard.com/" target="_blank" rel="noopener noreferrer">REW — Room EQ Wizard (medición de impedancia y respuesta)</a></li>
 <li><a href="https://www.audioxpress.com/" target="_blank" rel="noopener noreferrer">audioXpress — Publicaciones técnicas sobre diseño de altavoces</a></li>
 </ul>
-<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 17 de noviembre de 2026.</p>
 </section>
 </main>
 
@@ -625,6 +717,7 @@ fc = 1 / (2·π·C·R) = 1 / (6,2832 · 0,0000082 · 8) = 2.426 Hz  (con C = 8,2
   });
 })();
 </script>
+<script src="/tienda/tienda.js?v=4" defer></script>
 </body>
 </html>
 

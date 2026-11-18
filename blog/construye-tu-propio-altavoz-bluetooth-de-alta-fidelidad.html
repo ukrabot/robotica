@@ -43,7 +43,7 @@
     "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
   },
   "datePublished":"2026-08-15",
-  "dateModified":"2026-08-15",
+  "dateModified":"2026-11-17",
   "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/construye-tu-propio-altavoz-bluetooth-de-alta-fidelidad"},
   "image":"https://www.ukrabot.cl/blog/altavoz_bluetooth_hero.jpg",
   "proficiencyLevel":"Intermedio",
@@ -261,7 +261,7 @@ details p{padding-top:10px;margin-bottom:0}
 <header class="hero">
   <img src="altavoz_bluetooth_hero.jpg" alt="Altavoz Bluetooth casero en construcción sobre un banco de trabajo con woofer, tweeter y placa amplificadora" fetchpriority="high">
   <div class="hero-inner">
-    <div class="eyebrow">Audio y electrónica de sonido · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <div class="eyebrow">Audio y electrónica de sonido · Actualizado el <time datetime="2026-11-17">17 de noviembre de 2026</time></div>
     <h1>Construye tu Propio Altavoz Bluetooth de Alta Fidelidad</h1>
     <p>Diseño acústico de la caja con Thiele-Small, amplificador clase D, módulo Bluetooth con aptX, crossover de 2 vías y medición real del resultado.</p>
     <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
@@ -365,12 +365,11 @@ details p{padding-top:10px;margin-bottom:0}
 </section>
 <section id="crossover">
 <h2>El crossover de 2 vías</h2>
-<p>El crossover divide la señal: envía los graves al woofer y los agudos al tweeter, en la <strong>frecuencia de cruce</strong> (normalmente 2–3 kHz para woofer de 5–6,5 pulgadas con tweeter). Un diseño de segundo orden (12 dB/octava) con alineación Linkwitz-Riley es el estándar de facto para DIY: cancela los problemas de fase en la zona de cruce y produce una respuesta suma plana si ambos drivers están en fase.</p>
+<p>El crossover divide la señal: envía los graves al woofer y los agudos al tweeter, en la <strong>frecuencia de cruce</strong> (normalmente 2–3 kHz para woofer de 5–6,5 pulgadas con tweeter). Un diseño de segundo orden (12 dB/octava) con alineación Linkwitz-Riley es el estándar de facto para DIY: las dos ramas cruzan a −6 dB y la suma es plana con una condición: en segundo orden, el tweeter se conecta con la polaridad invertida, porque las ramas salen desfasadas 180° en el cruce.</p>
 <p>Para una frecuencia de cruce <em>f</em> y una impedancia nominal del driver <em>R</em>, los valores de segundo orden Linkwitz-Riley se calculan con:</p>
-<pre><code>L = R / (2 · π · f)        // bobina en serie con el woofer
-C = 1 / (2 · π · f · R)    // capacitor en serie con el tweeter
-// y las secciones paralelo de cada rama usan 2L y 2C</code></pre>
-<p>Con R = 8 Ω y f = 2500 Hz: L ≈ 0,51 mH, C ≈ 7,96 µF. El diseño completo, el esquema y el ejemplo numérico están en la <a href="/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias">guía de diseño de crossover pasivo</a>; los componentes se montan en una placa pequeña dentro de la caja, pegada a la pared trasera con la bobina alejada del imán del woofer para evitar interferencia.</p>
+<pre><code>L = R / (π · f)            // bobina en serie con el woofer y bobina en paralelo con el tweeter
+C = 1 / (4 · π · f · R)    // capacitor en paralelo con el woofer y capacitor en serie con el tweeter</code></pre>
+<p>Con R = 8 Ω y f = 2500 Hz: L ≈ 1,02 mH y C ≈ 3,98 µF (valores comerciales: 1,0 mH y 3,9 µF). El diseño completo, el esquema y el ejemplo numérico están en la <a href="/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias">guía de diseño de crossover pasivo</a>; los componentes se montan en una placa pequeña dentro de la caja, pegada a la pared trasera con la bobina alejada del imán del woofer para evitar interferencia.</p>
 </section>
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
@@ -442,7 +441,7 @@ C = 1 / (2 · π · f · R)    // capacitor en serie con el tweeter
 <tbody>
 <tr><td>Zumbido de 50/60 Hz constante</td><td>Lazo de tierra o cable de señal junto a la fuente</td><td>Tierras en estrella; separa cables; ferrita en alimentación</td></tr>
 <tr><td>Ruido "digital" al mover volumen</td><td>Volumen por software del módulo BT saturado</td><td>Sube el volumen del módulo al 80 % y controla con el amplificador</td></tr>
-<tr><td>Suena apagado, sin agudos</td><td>Tweeter fuera de fase o crossover mal conectado</td><td>Verifica polaridad y el esquema del crossover</td></tr>
+<tr><td>Suena apagado, con un hueco en los medios-agudos</td><td>Polaridad del tweeter equivocada (en un crossover LR2 debe ir invertido) o crossover mal conectado</td><td>Verifica la polaridad y el esquema del crossover</td></tr>
 <tr><td>El amplificador se corta solo</td><td>Protección térmica o fuente insuficiente</td><td>Fuente con más corriente; revisa ventilación</td></tr>
 <tr><td>Graves que "boquean" o distorsionan</td><td>Puerto mal sintonizado o caja con fugas</td><td>Sella fugas; ajusta largo del puerto; baja el volumen de prueba</td></tr>
 <tr><td>Se corta el Bluetooth a 2 metros</td><td>Antena del módulo obstruida por metal</td><td>Aleja el módulo de la chapa/fuente; orienta su antena al exterior</td></tr>

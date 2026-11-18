@@ -113,5 +113,22 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-detector-de-metales.jpg"
+ },
+ {
+  "slug": "pack-crossover-2-vias",
+  "name": "Pack Crossover 2 Vías: calculadora en Excel + guía en PDF + esquema",
+  "short": "Pack Crossover 2 Vías (Excel + PDF + esquema)",
+  "price": 7990,
+  "img": "/blog/pack-crossover-2-vias-thumb.jpg",
+  "url": "/blog/como-disenar-un-crossover-pasivo-para-altavoces-de-2-vias#pack",
+  "digital": true,
+  "desc": "Calcula un crossover pasivo de 2º orden con valores comerciales, revisa la respuesta de la suma con el tweeter invertido y dimensiona L-pad, red Zobel y bobinas antes de comprar componentes.",
+  "includes": [
+   "Calculadora en Excel con 9 hojas: filtro de 2º orden (LR2, Butterworth, Bessel) con valores comerciales, respuesta de la suma, L-pad, red Zobel, bobinas, tolerancias, presupuesto y checklist",
+   "Guía en PDF de 17 páginas: datos de los drivers, cálculo, polaridad y suma, valores comerciales, bobinas, L-pad, Zobel, medición con REW, simulación, montaje y problemas",
+   "Esquema del crossover de ejemplo (LR2 a 2.500 Hz para 8 Ω) en alta resolución",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-crossover-2-vias.jpg"
  }
 ]
