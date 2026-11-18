@@ -215,5 +215,21 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-feria-cientifica-robotica.jpg"
+ },
+ {
+  "slug": "pack-diagnostico-bms",
+  "name": "Pack Diagnóstico de BMS: planilla de diagnóstico en Excel + guía de reparación en PDF",
+  "short": "Pack Diagnóstico de BMS (Excel + PDF)",
+  "price": 7990,
+  "img": "/blog/pack-diagnostico-bms-thumb.jpg",
+  "url": "/blog/diagnostico-de-bms-reparar-o-reemplazar-la-placa-de-proteccion#pack",
+  "digital": true,
+  "desc": "Anota tus mediciones y descubre si falla una celda, la salida, una protección retenida o los MOSFETs; decide con números si reparar o cambiar la placa, y elige, conecta y configura el BMS correcto.",
+  "includes": [
+   "Planilla en Excel con 8 hojas: voltaje de cada celda desde el arnés de balance, salida y MOSFETs con carga de prueba, diagnóstico completo, reparar o reemplazar con costos y bloqueos de seguridad, elegir BMS, registro y checklist",
+   "Guía en PDF de 14 páginas: seguridad, herramientas, cómo reconocer una placa, diagnóstico paso a paso, probar y cambiar MOSFETs, desbloqueo, elegir, conectar y configurar un BMS nuevo, y cuándo descartar una celda",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-diagnostico-bms.jpg"
  }
 ]

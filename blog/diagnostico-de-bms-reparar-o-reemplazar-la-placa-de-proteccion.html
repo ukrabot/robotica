@@ -13,7 +13,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Diagnóstico de BMS: Reparar o Reemplazar la Placa de Protección">
 <meta property="og:description" content="Guía práctica de diagnóstico y reparación de BMS en baterías de litio: medición de celdas en el arnés JST, fallas en MOSFETs de potencia, bloqueo del chip AFE y balanceo.">
-<meta property="og:image" content="https://www.ukrabot.cl/blog/diagnostico_bms_esquema.svg">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/bms-diagnostico-banco-hero.jpg">
 <meta property="og:url" content="https://www.ukrabot.cl/blog/diagnostico-de-bms-reparar-o-reemplazar-la-placa-de-proteccion">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="Blog de Ingeniería Robótica">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Diagnóstico de BMS: Reparar o Reemplazar la Placa de Protección">
 <meta name="twitter:description" content="Guía práctica de diagnóstico y reparación de BMS en baterías de litio: medición de celdas en el arnés JST, fallas en MOSFETs de potencia, bloqueo del chip AFE y balanceo.">
-<meta name="twitter:image" content="https://www.ukrabot.cl/blog/diagnostico_bms_esquema.svg">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/bms-diagnostico-banco-hero.jpg">
 
 <script type="application/ld+json">
 {
@@ -49,15 +49,15 @@
     }
   },
   "datePublished": "2026-08-15",
-  "dateModified": "2026-08-15",
+  "dateModified": "2026-11-17",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://www.ukrabot.cl/blog/diagnostico-de-bms-reparar-o-reemplazar-la-placa-de-proteccion"
   },
-  "image": "https://www.ukrabot.cl/blog/diagnostico_bms_esquema.svg",
+  "image": "https://www.ukrabot.cl/blog/bms-diagnostico-banco-hero.jpg",
   "proficiencyLevel": "Avanzado",
   "dependencies": "Multímetro digital calibrado, fuente de laboratorio con límite de corriente, estación de soldadura con aire caliente SMD, osciloscopio (opcional)",
-  "wordCount": "3380",
+  "wordCount": "2500",
   "inLanguage": "es-CL"
 }
 </script>
@@ -96,26 +96,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "¿Por qué el BMS de mi patinete no entrega voltaje si todas las celdas están a 3.7V?",
+      "name": "¿Por qué mi scooter no anda si todas las celdas están bien?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Muchos patinetes comerciales (como Xiaomi o Ninebot) tienen BMS propietarios con comunicación serial (UART/One-Wire) conectada al controlador del motor. Si el BMS no recibe el comando de comunicación periódica del tablero principal, permanece en modo de reposo o bloqueo por seguridad con la salida desconectada."
+        "text": "En scooters de marca como Xiaomi o Ninebot, el BMS se comunica con el controlador por un cable de datos. Si esa comunicación falla, el scooter muestra un error (en el Ninebot Max G30, el error 21), puede limitar la potencia o no arrancar, aunque las celdas estén bien. Revisa el cable de datos y su conector antes de cambiar la batería o el BMS."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Puedo usar un BMS de 13S (48V) en una batería de 10S (36V)?",
+      "name": "¿Puedo usar un BMS de 13S (48 V) en una batería de 10S (36 V)?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Generalmente no, a menos que sea un Smart BMS programable donde puedas configurar en el software el número exacto de series activas. Los BMS convencionales analógicos detectan las series faltantes como celdas con 0V e inmediatamente bloquean la salida por protección de subtensión."
+        "text": "Solo si es un BMS programable (JBD, JK, Daly inteligente) en el que se pueda configurar el número de series. Los BMS convencionales interpretan las series que faltan como celdas en 0 V y bloquean la salida por subtensión."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Qué pasa si conecto el arnés de balance al revés en la placa BMS?",
+      "name": "¿Qué pasa si conecto el arnés de balance al revés o en otro orden?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Si el conector no tiene muesca polarizada y se enchufa invertido, los voltajes altos del pack ingresarán directamente en los canales bajos del convertidor ADC del chip AFE, quemando el circuito integrado en microsegundos de forma irreversible."
+        "text": "Si el conector entra invertido o un cable queda en el pin equivocado, el chip AFE recibe voltajes mucho mayores que los que admite en sus entradas y suele dañarse de forma permanente. Por eso el arnés se cablea y se mide antes de enchufarlo, y se enchufa al final."
       }
     },
     {
@@ -123,15 +123,15 @@
       "name": "¿Por qué se calienta la placa BMS al cargar la batería?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Es normal que la zona de las resistencias de balanceo se entibie (hasta 45-55 °C) durante la fase final de carga (a partir de 4.15 V por celda) mientras disipa el exceso de energía de las celdas más altas. Lo que no es normal es que los MOSFETs de potencia quemen al tacto durante la descarga; eso indica un BMS subdimensionado."
+        "text": "Es normal que la zona de las resistencias de balanceo se entibie al final de la carga (desde unos 4,15 V por celda en ion-litio), mientras descarga a las celdas más llenas. Lo que no es normal es que los MOSFETs de potencia se calienten mucho durante la descarga: indica un BMS subdimensionado para la corriente del equipo."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Cuál es la diferencia entre un BMS Daly y un BMS JBD?",
+      "name": "¿Cuál es la diferencia entre un BMS Daly y uno JBD?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Daly es famoso por sus encapsulados sellados a prueba de agua en aluminio rojo (muy resistentes mecánicamente, pero con balanceo pasivo muy lento de ~30 mA). JBD (Jiabaida / Overkill Solar) es el estándar de oro en software abierto con app Bluetooth muy estable y parámetros totalmente configurables por el usuario."
+        "text": "Daly es conocido por sus placas encapsuladas y resistentes, con un balanceo pasivo lento (del orden de 30 mA) en sus modelos estándar. JBD destaca por una app Bluetooth estable y parámetros configurables por el usuario; varias marcas venden placas JBD con su propio nombre. Ambas tienen versiones inteligentes; elige por corriente, química, series y balanceo, no por marca."
       }
     }
   ]
@@ -301,6 +301,22 @@ details p{padding-top:10px;margin-bottom:0}
     gtag('config', 'G-1ZVHF8X35Q');
   </script>
 
+<style>
+.pack{margin:52px 0;padding:28px;border:1px solid rgba(169,123,35,.35);border-radius:18px;background:#fff;box-shadow:0 18px 40px rgba(30,25,15,.06)}
+.pack-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:start}
+.pack-grid>img{width:100%;height:auto;border-radius:12px;display:block}
+.pack-tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.pack h2{margin:8px 0 12px}
+.pack ul{padding-left:20px;margin:0 0 18px}
+.pack li{margin-bottom:8px}
+.pack-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 2px}
+.pack-price strong{font-family:Georgia,serif;font-size:2rem;font-weight:400;color:var(--text)}
+.pack-price span{color:var(--muted);font-size:.9rem}
+.pack-fine{font-size:.8rem;color:var(--quiet);margin:14px 0 0;line-height:1.5}
+.pack-callout a{font-weight:600}
+@media (max-width:820px){.pack{padding:20px}.pack-grid{grid-template-columns:1fr;gap:20px}}
+</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=4">
 </head>
 <body>
 
@@ -323,12 +339,12 @@ details p{padding-top:10px;margin-bottom:0}
 </nav>
 
 <header class="hero">
-  <img src="diagnostico_bms_esquema.svg" alt="Diagnóstico de BMS: Reparar o Reemplazar la Placa de Protección" fetchpriority="high">
+  <img src="bms-diagnostico-banco-hero.jpg" alt="Ilustración de una placa BMS en el banco de trabajo: pack de cuatro celdas, arnés de balance, MOSFETs de potencia y un multímetro midiendo una celda" width="1600" height="900" fetchpriority="high">
   <div class="hero-inner">
-    <div class="eyebrow">Baterías y Reparación Electrónica · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <div class="eyebrow">Baterías y Reparación Electrónica · Actualizado el <time datetime="2026-11-17">17 de noviembre de 2026</time></div>
     <h1>Diagnóstico de BMS: Reparar o Reemplazar la Placa de Protección</h1>
-    <p>Anatomía interna de circuitos BMS (AFE, transistores MOSFET de potencia, red de balanceo y shunt), metodología sistemática de diagnóstico con multímetro y osciloscopio, y matriz de decisión técnica entre reparar o cambiar de placa.</p>
-    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 19 min de lectura</p>
+    <p>Cómo está hecha una placa BMS (AFE, red de balanceo, MOSFETs de potencia y shunt), un diagnóstico paso a paso con multímetro y una carga de prueba, cuándo conviene reparar y cuándo cambiar la placa, y cómo elegir y conectar un BMS nuevo.</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 11 min de lectura</p>
   </div>
 </header>
 
@@ -336,72 +352,86 @@ details p{padding-top:10px;margin-bottom:0}
 <article>
 
 <div class="article-img">
-  <img src="diagnostico_bms_esquema.svg" alt="Arquitectura de bloques funcionales de un BMS comercial: conector de balance, AFE/MCU, banco de MOSFETs de corte y shunt de corriente." loading="lazy">
-  <div class="caption">Arquitectura de bloques funcionales de un BMS comercial: conector de balance, AFE/MCU, banco de MOSFETs de corte y shunt de corriente.</div>
+  <img src="bms-puerto-comun-diagnostico.jpg" alt="Esquema de un BMS de puerto común con los MOSFETs de descarga y carga entre B− y P−, y diagrama de diagnóstico en cuatro preguntas" width="1600" height="900" loading="lazy">
+  <div class="caption">Cómo se conecta un BMS de puerto común y el orden del diagnóstico: primero las celdas, luego la salida con carga, el desbloqueo y, al final, los MOSFETs.</div>
 </div>
 
 <nav class="toc" aria-label="Índice del contenido">
   <h2>Contenido de la guía</h2>
   <ol>
     <li><a href="#anatomia-bms">Anatomía y bloques funcionales de una placa BMS</a></li>
-<li><a href="#sintomas-fallas-comunes">Síntomas típicos de falla y sus causas electrónicas</a></li>
-<li><a href="#procedimiento-diagnostico-paso-a-paso">Procedimiento sistemático de diagnóstico en banco de trabajo</a></li>
-<li><a href="#matriz-reparar-vs-reemplazar">Matriz de decisión: ¿Cuándo reparar y cuándo reemplazar?</a></li>
-<li><a href="#eleccion-smart-bms">Criterios para elegir un BMS nuevo de reemplazo</a></li>
-<li><a href="#faq">Preguntas frecuentes</a></li>
+    <li><a href="#sintomas-fallas-comunes">Síntomas típicos de falla y sus causas</a></li>
+    <li><a href="#procedimiento-diagnostico-paso-a-paso">Diagnóstico paso a paso en el banco de trabajo</a></li>
+    <li><a href="#matriz-reparar-vs-reemplazar">Matriz de decisión: ¿cuándo reparar y cuándo reemplazar?</a></li>
+    <li><a href="#eleccion-smart-bms">Cinco criterios para elegir un BMS de reemplazo</a></li>
+    <li><a href="#conectar-bms">Cómo conectar un BMS nuevo sin dañarlo</a></li>
+    <li><a href="#faq">Preguntas frecuentes</a></li>
   </ol>
 </nav>
+
+<section id="pack" class="pack" aria-labelledby="pack-t">
+<div class="pack-grid">
+  <img src="pack-diagnostico-bms.jpg" alt="Portada del Pack Diagnóstico de BMS: planilla de diagnóstico en Excel y guía de reparación en PDF" width="1200" height="800" loading="lazy">
+  <div>
+    <span class="pack-tag">Pack digital · ukrabot.cl</span>
+    <h2 id="pack-t">Pack Diagnóstico de BMS: encuentra la falla con tus mediciones</h2>
+    <p>Todo lo de esta guía, convertido en herramientas para el banco de trabajo: anotas lo que mide el multímetro y la planilla te dice qué falla y qué hacer.</p>
+    <ul>
+      <li><strong>Planilla en Excel (8 hojas):</strong> calcula el voltaje de cada celda desde las lecturas del arnés y marca las que están bajo el corte, en nivel crítico o desbalanceadas; interpreta la salida con carga y el voltaje de compuerta; entrega el diagnóstico completo; compara reparar con reemplazar y te da la especificación del BMS nuevo.</li>
+      <li><strong>Guía en PDF (14 páginas):</strong> seguridad, herramientas y carga de prueba, cómo reconocer una placa, diagnóstico paso a paso, cómo probar y cambiar MOSFETs, desbloqueo según el tipo de BMS, orden de conexión, parámetros para configurar un BMS inteligente, cuándo descartar una celda y una hoja de diagnóstico imprimible.</li>
+    </ul>
+    <div class="pack-price"><strong data-price-slug="pack-diagnostico-bms">$7.990</strong><span>Pago único · descarga inmediata en un archivo .zip</span></div>
+    <div class="ukr-buy" id="comprar-pack" data-ukr-buy="pack-diagnostico-bms" aria-label="Comprar el Pack Diagnóstico de BMS"></div>
+    <p class="pack-fine">Al pagar descargas un archivo .zip con la planilla (.xlsx), la guía (.pdf) y las instrucciones. La planilla se abre en Excel, LibreOffice y Google Sheets. Licencia de uso personal. Por ser contenido digital de descarga inmediata, no tiene derecho a retracto; si un archivo llega dañado o no abre, te lo reponemos o devolvemos el dinero.</p>
+  </div>
+</div>
+</section>
 
 <section id="anatomia-bms">
 <h2>Anatomía y bloques funcionales de una placa BMS</h2>
 
-<p>El <strong>Battery Management System (BMS)</strong> es el cerebro electrónico y el salvavidas de cualquier paquete de baterías de litio. Su misión no es solo monitorear el voltaje global, sino garantizar que ninguna celda individual opere fuera de su Área de Operación Segura (Safe Operating Area - SOA). Una placa BMS típica (desde modelos de 3S para taladros hasta 16S para motos eléctricas) se compone de cuatro bloques fundamentales:</p>
+<p>El <strong>BMS</strong> (<em>Battery Management System</em>, sistema de gestión de batería) es la placa que protege un pack de litio. Su misión no es solo vigilar el voltaje total, sino garantizar que ninguna celda trabaje fuera de su rango seguro de voltaje, corriente y temperatura. Una placa típica, desde las de 3S de un taladro hasta las de 16S o más de una moto eléctrica, tiene cuatro bloques:</p>
 <ol>
-  <li><strong>Analog Front End (AFE) y Microcontrolador:</strong> Circuitos integrados especializados (como la familia Texas Instruments BQ769x0, Intersil ISL94202 o chips ASIC asiáticos como SH367309) que integran multiplexores analógicos y convertidores ADC de 16 bits para medir la tensión de cada serie con precisión de milivoltios.</li>
-  <li><strong>Red de Balanceo Pasivo:</strong> Compuesta por una matriz de transistores SMD (NPN o MOSFETs pequeños) y resistencias de drenaje (de 47 Ω a 100 Ω) que disipan en forma de calor (35 mA a 80 mA) el exceso de carga de las celdas más llenas durante la fase final de carga.</li>
-  <li><strong>Banco de MOSFETs de Conmutación de Potencia:</strong> Un conjunto de transistores MOSFET N-Channel de muy baja resistencia en conducción ($R_{DS(on)} < 2	ext{ m}\Omega$) conectados espalda con espalda (Back-to-Back) en el polo negativo común ($P-$ / $B-$) o separados ($C-$) para cortar independientemente la carga o la descarga ante fallas.</li>
-  <li><strong>Sensor de Corriente (Shunt) y Protección Térmica:</strong> Una resistencia de manganina de bajo valor (0.5 a 2 mΩ) para medir la corriente instantánea e integrar el conteo de culombios, junto a uno o varios termistores NTC fijados entre las celdas.</li>
+  <li><strong>AFE y microcontrolador:</strong> el AFE (<em>Analog Front End</em>) es el chip que mide cada celda. Ejemplos son la familia BQ76920, BQ76930 y BQ76940 de Texas Instruments (el BQ76940 admite de 9 a 15 celdas y mide con un ADC de 14 bits), el ISL94202 de Renesas o el SH367309 de Sinowealth. En las placas simples, un chip de protección dedicado cumple la misma función sin microcontrolador.</li>
+  <li><strong>Red de balanceo pasivo:</strong> un transistor pequeño y una resistencia por celda. Durante el final de la carga, descarga en forma de calor a las celdas más llenas. Con resistencias de 47 a 100 Ω, la corriente queda entre unos 40 y 90 mA; muchos BMS comerciales balancean con apenas 30 a 60 mA.</li>
+  <li><strong>Banco de MOSFETs de potencia:</strong> transistores MOSFET de canal N, varios en paralelo, cada uno con una resistencia en conducción (R<sub>DS(on)</sub>) de pocos miliohmios. En un BMS de <em>puerto común</em> van espalda con espalda en el negativo, entre B− y P−: un grupo corta la descarga y otro la carga. En uno de <em>puerto separado</em>, la carga entra por un terminal propio (C−).</li>
+  <li><strong>Shunt y protección térmica:</strong> una resistencia de muy bajo valor (0,5 a 2 mΩ) por la que pasa toda la corriente; su caída de voltaje permite medir la corriente y detectar sobrecorriente y cortocircuito. Los BMS inteligentes además integran esa medición para estimar la carga restante. Uno o más termistores NTC, pegados a las celdas, cortan si la temperatura sale de rango.</li>
 </ol>
-
 </section>
-<section id="sintomas-fallas-comunes">
-<h2>Síntomas típicos de falla y sus causas electrónicas</h2>
 
-<p>Cuando una batería no entrega energía o no recibe carga, el 70% de las veces la falla está en el BMS y no en las celdas químicas. Los síntomas más comunes son:</p>
+<section id="sintomas-fallas-comunes">
+<h2>Síntomas típicos de falla y sus causas</h2>
+
+<p>Cuando una batería no entrega energía o no recibe carga, el BMS es el primer sospechoso, pero muy a menudo solo está haciendo su trabajo: cortó porque una celda está mal. Por eso el diagnóstico siempre empieza por las celdas. Los síntomas más comunes:</p>
 <div class="table-wrap">
 <table>
 <thead>
-<tr>
-<th>Síntoma Observado</th>
-<th>Causa Probable en el BMS</th>
-<th>Diagnóstico Rápido</th>
-</tr>
+<tr><th>Síntoma</th><th>Causa probable</th><th>Diagnóstico rápido</th></tr>
 </thead>
 <tbody>
 <tr>
-<td>Voltaje normal en $B-$ y $B+$, pero <strong>0.0 V en terminales de salida $P-$</strong></td>
-<td>BMS bloqueado por protección activa (Subtensión, desbalance o corto previo) o MOSFET de descarga abierto.</td>
-<td>Medir voltaje relativo en cada pin del conector de balance. Si una celda está &lt; 2.8V, el BMS hace su trabajo.</td>
+<td>Voltaje normal entre B− y B+, pero <strong>sin voltaje útil entre P− y P+</strong></td>
+<td>BMS en protección (subtensión, sobrecorriente o cortocircuito previo) o MOSFETs de descarga dañados.</td>
+<td>Mide cada celda en el conector de balance. Si alguna está bajo el corte por subtensión (2,5 a 3,0 V en Li-ion, según el BMS), el BMS está haciendo su trabajo.</td>
 </tr>
 <tr>
-<td>La batería carga pero <strong>se apaga inmediatamente al acelerar</strong></td>
-<td>Resistencia $R_{DS(on)}$ anormalmente alta en los MOSFETs o shunt dañado que dispara protección por sobrecorriente prematura.</td>
-<td>Medir la caída de voltaje $V_{DS}$ entre $B-$ y $P-$ bajo una carga moderada (debe ser &lt; 0.1 V).</td>
+<td>Carga, pero <strong>se apaga al acelerar</strong> o al exigirle fuerza</td>
+<td>Una celda con alta resistencia interna que cae bajo el corte con carga, o un BMS con límite de corriente menor que lo que pide el motor. Más raro: MOSFETs degradados.</td>
+<td>Mide las celdas <em>bajo carga</em>: la que cae mucho más que las otras es la culpable. Luego compara la corriente del controlador con la del BMS.</td>
 </tr>
 <tr>
-<td>Una celda específica <strong>aparece siempre drenada en 0V</strong></td>
-<td>Transistor SMD de la red de balanceo en cortocircuito permanente, descargando la celda continuamente a través de la resistencia bleeder.</td>
-<td>Inspeccionar con cámara térmica o tocar las resistencias de balanceo: la celda dañada tendrá su resistencia tibia incluso con el cargador desconectado.</td>
+<td>Una celda <strong>se descarga sola</strong>, aun guardada</td>
+<td>Transistor de balanceo de esa celda en cortocircuito, que la descarga sin parar; o una celda con autodescarga interna.</td>
+<td>Con el cargador desconectado, la resistencia de balanceo de esa celda está tibia. Si está fría, desconecta el arnés: si la celda sigue bajando, el problema es la celda.</td>
 </tr>
 <tr>
-<td>El cargador no reconoce la batería ni inicia ciclo</td>
-<td>Diodo de cuerpo del MOSFET de carga quemado o circuito de precarga dañado.</td>
-<td>Verificar continuidad inversa en el terminal de carga $C-$.</td>
+<td>El cargador <strong>no inicia la carga</strong></td>
+<td>BMS en protección con la salida cortada (algunos cargadores necesitan ver voltaje en los bornes para partir), celdas muy descargadas o protección por temperatura.</td>
+<td>Mide las celdas. Si todas están sobre el corte, prueba el desbloqueo del paso 3. Si alguna está bajo 2 V, no la cargues (ver advertencia más abajo).</td>
 </tr>
 </tbody>
 </table>
 </div>
-
 </section>
 
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
@@ -415,108 +445,129 @@ details p{padding-top:10px;margin-bottom:0}
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 <section id="procedimiento-diagnostico-paso-a-paso">
-<h2>Procedimiento sistemático de diagnóstico en banco de trabajo</h2>
+<h2>Diagnóstico paso a paso en el banco de trabajo</h2>
 
-<p>Para diagnosticar un BMS sin cometer errores ni causar cortocircuitos accidentales, sigue rigurosamente esta secuencia:</p>
+<p>Trabaja sobre una superficie no conductora, sin anillos ni pulseras, con las puntas del multímetro aisladas hasta la punta y la batería lejos de materiales inflamables. Sigue esta secuencia en orden:</p>
 
-<h3>Paso 1: Medición en el conector JST de balance</h3>
-<p>Desconecta el arnés de balance de la placa BMS. Coloca la punta negra del multímetro en el cable $B-$ (GND) y mide progresivamente cada pin hacia arriba:</p>
-<pre><code>Pin 0 (B-)  : 0.00 V (Referencia)
-Pin 1 (B1+) : 3.82 V  -> ΔV1 = 3.82 V
-Pin 2 (B2+) : 7.64 V  -> ΔV2 = 3.82 V
-Pin 3 (B3+) : 11.46 V -> ΔV3 = 3.82 V
-Pin 4 (B4+) : 13.90 V -> ΔV4 = 2.44 V  <-- ¡Falla! Celda 4 descargada por debajo de 2.70V
+<h3>Paso 1: Mide cada celda en el conector de balance</h3>
+<p>Desconecta el arnés de balance de la placa. Deja la punta negra del multímetro en el cable B− (el negativo del pack) y mide cada pin hacia arriba. El voltaje de cada celda es la diferencia entre un pin y el anterior:</p>
+<pre><code>Pin 0 (B-)  :  0,00 V  (referencia)
+Pin 1 (B1+) :  3,82 V  -> celda 1 = 3,82 V
+Pin 2 (B2+) :  7,64 V  -> celda 2 = 3,82 V
+Pin 3 (B3+) : 11,46 V  -> celda 3 = 3,82 V
+Pin 4 (B4+) : 13,90 V  -> celda 4 = 2,44 V  <-- bajo el corte por subtensión
 </code></pre>
-<div class="warning"><strong>Regla fundamental:</strong> Si el conector de balance presenta una celda por debajo del umbral de corte por subtensión (Under Voltage Protection - UVP, típicamente 2.50V a 2.80V), el BMS <strong>no está roto</strong>: está funcionando correctamente al cortar la salida para evitar que la celda dañada cause un incendio. En este caso, el problema está en las celdas, no en el BMS.</div>
+<div class="warning"><strong>Regla fundamental:</strong> si una celda está bajo el umbral de corte por subtensión (UVP, típicamente entre 2,5 y 3,0 V en celdas de ion-litio y alrededor de 2,5 V en LiFePO4), el BMS <strong>no está roto</strong>: cortó la salida para proteger a esa celda. El problema está en las celdas, no en la placa.</div>
+<div class="warning"><strong>Celdas bajo 2 V:</strong> una celda de ion-litio que estuvo muy descargada puede haber sufrido disolución del colector de cobre, que deja puntos de cortocircuito interno. Como regla práctica, una celda que pasó días bajo 2 V, o que llegó a 0 V, se reemplaza y no se intenta recuperar.</div>
 
-<h3>Paso 2: Medición del banco de MOSFETs de potencia</h3>
-<p>Si todas las celdas tienen voltajes balanceados y sanos (entre 3.6V y 4.1V) pero la salida $P-$ sigue cortada, reconecta el arnés y mide la tensión de compuerta a fuente ($V_{GS}$) de los transistores MOSFET:</p>
+<h3>Paso 2: Revisa la salida con una carga conectada</h3>
+<p>Si todas las celdas están sanas y parecidas entre sí (por ejemplo, entre 3,6 y 4,1 V y con menos de 50 mV de diferencia), reconecta el arnés respetando el orden de conexión y pon una <strong>carga de prueba</strong> entre P+ y P−: una ampolleta de 12 V para auto o una resistencia de potencia. Sin carga, el voltaje en P− queda flotando y la medición engaña.</p>
 <ul>
-  <li>Si $V_{GS} = 10	ext{ V a }12	ext{ V}$ pero el voltaje $V_{DS} = V_{pack}$: Los MOSFETs han sufrido rotura de canal y están dañados en circuito abierto.</li>
-  <li>Si $V_{GS} = 0	ext{ V}$: El circuito driver de compuerta o el microcontrolador AFE no está enviando la señal de encendido (chip bloqueado o en modo protección retenida).</li>
+  <li><strong>Voltaje entre B− y P− cercano a 0 V</strong> (con la carga de prueba, unos pocos milivolts; mídelo en la escala de 200 mV): los MOSFETs conducen y el BMS entrega energía. Si el equipo igual no funciona, la falla está en otra parte (conector, cable, controlador o comunicación).</li>
+  <li><strong>Voltaje entre B− y P− casi igual al del pack</strong>: el BMS tiene la salida cortada. Sigue con el paso 3.</li>
 </ul>
 
-<h3>Paso 3: Procedimiento de Reset / Desbloqueo</h3>
-<p>Muchos BMS comerciales (especialmente en scooters Xiaomi, Segway o packs de herramientas) quedan en estado de "Latch Protection" tras un evento de sobrecorriente. Para desbloquearlos:</p>
+<h3>Paso 3: Intenta el desbloqueo</h3>
+<p>Muchos BMS quedan con la protección retenida después de una sobrecorriente, un cortocircuito o una subtensión, aunque la causa ya haya desaparecido. Con todas las celdas sanas:</p>
 <ol>
-  <li>Conecta el cargador original durante 5 segundos (el pulso de voltaje en $P+/P-$ suele reactivar la bomba de carga interna del driver).</li>
-  <li>En BMS estándar sin comunicación: Realiza un puente momentáneo (1 segundo) con una resistencia de 100 Ω entre $B-$ y $P-$.</li>
+  <li>Conecta el cargador original unos segundos: en la mayoría de los BMS, ver voltaje de carga en P+ y P− libera la protección.</li>
+  <li>En BMS simples sin comunicación, con <strong>nada conectado</strong> a P+ y P−, puentea un segundo B− con P− a través de una resistencia de unos 100 Ω. Esto le indica al BMS que la carga se retiró.</li>
+  <li>Si el BMS tiene botón de encendido o app (Daly, JBD, JK), actívalo desde ahí.</li>
 </ol>
 
+<h3>Paso 4: Mide los MOSFETs de descarga</h3>
+<p>Si después del desbloqueo la salida sigue cortada, con la carga de prueba conectada mide el voltaje de compuerta (V<sub>GS</sub>, entre la compuerta y la fuente) de los MOSFETs de descarga:</p>
+<ul>
+  <li><strong>V<sub>GS</sub> de 10 a 12 V</strong> y aun así casi todo el voltaje del pack entre drenador y fuente: el chip ordena conducir, pero los MOSFETs no obedecen. Están dañados; desuelda uno y pruébalo fuera de la placa.</li>
+  <li><strong>V<sub>GS</sub> cercano a 0 V</strong>: el AFE no está ordenando encender. Puede seguir en protección por una causa que no viste (temperatura, un cable del arnés cortado, una celda que el chip mide mal) o el chip está dañado.</li>
+</ul>
+<p>Ojo: los MOSFETs de potencia suelen fallar en <strong>cortocircuito</strong>, no abiertos. Un MOSFET en corto no se nota en uso normal, pero deja al pack sin protección contra cortocircuitos. Por eso conviene revisarlos con el modo diodo del multímetro siempre que la placa haya sufrido un evento fuerte.</p>
 </section>
-<section id="matriz-reparar-vs-reemplazar">
-<h2>Matriz de decisión: ¿Cuándo reparar y cuándo reemplazar?</h2>
 
-<p>La decisión de reparar componentes a nivel de placa o reemplazar el BMS completo depende del costo, la seguridad y el tipo de daño detectado:</p>
+<div class="note pack-callout"><strong>¿Tienes una batería en el banco?</strong> El <a href="#pack">Pack Diagnóstico de BMS</a> (<span data-price-slug="pack-diagnostico-bms">$7.990</span>, descarga inmediata en .zip) trae una planilla en Excel donde anotas lo que mide el multímetro y te dice si falla una celda, la salida o los MOSFETs, más una guía de 14 páginas para repararla o cambiar la placa.</div>
+
+<section id="matriz-reparar-vs-reemplazar">
+<h2>Matriz de decisión: ¿cuándo reparar y cuándo reemplazar?</h2>
+
+<p>La decisión depende del daño, del costo y, sobre todo, de la seguridad. Una placa de protección mal reparada es peor que no tener protección, porque da una falsa sensación de seguridad.</p>
 <div class="table-wrap">
 <table>
 <thead>
-<tr>
-<th>Tipo de Daño Detectado</th>
-<th>Acción Técnica Recomendada</th>
-<th>Viabilidad / Justificación</th>
-</tr>
+<tr><th>Daño detectado</th><th>Acción recomendada</th><th>Por qué</th></tr>
 </thead>
 <tbody>
 <tr>
-<td>1 o 2 MOSFETs de potencia en corto (encapsulado TO-263 / DFN)</td>
-<td><strong>Reparar:</strong> Desoldar con aire caliente y sustituir por MOSFETs idénticos de bajo $R_{DS(on)}$.</td>
-<td><strong>Alta viabilidad:</strong> Costo de repuesto &lt; $3 USD. Económicamente muy rentable si la PCB no está carbonizada.</td>
+<td>MOSFETs de potencia dañados (encapsulado TO-263, TO-220 o DFN)</td>
+<td><strong>Reparar:</strong> cambia <em>todos</em> los MOSFETs del grupo afectado, por el mismo modelo o uno con igual o menor R<sub>DS(on)</sub> y el mismo voltaje.</td>
+<td>Los que siguen vivos sufrieron el mismo evento. Antes, averigua por qué se dañaron (sobrecorriente, corto, BMS subdimensionado), o volverá a pasar.</td>
 </tr>
 <tr>
-<td>Transistor SMD de balanceo quemado en corto</td>
-<td><strong>Reparar:</strong> Reemplazar el transistor SOT-23 y la resistencia de 47Ω asociada.</td>
-<td><strong>Viable:</strong> Soluciona el drenado parásito de la celda afectada por centavos.</td>
+<td>Transistor de balanceo en corto</td>
+<td><strong>Reparar:</strong> cambia el transistor (encapsulado SOT-23) y revisa su resistencia de balanceo.</td>
+<td>Repuestos de muy bajo costo; termina con la descarga de esa celda.</td>
 </tr>
 <tr>
-<td>PCB quemada con carbonización entre pistas multicapa</td>
-<td><strong>Reemplazar BMS completo inmediatamente.</strong></td>
-<td><strong>No reparar:</strong> El carbón es conductor y creará arcos eléctricos bajo alta corriente. Peligro crítico de incendio.</td>
+<td>Placa quemada o carbonizada entre pistas</td>
+<td><strong>Reemplazar el BMS.</strong></td>
+<td>El carbón conduce: puede generar fugas y arcos con alta corriente. Riesgo de incendio.</td>
 </tr>
 <tr>
-<td>Chip AFE / MCU quemado o sin firmware disponible</td>
-<td><strong>Reemplazar BMS completo.</strong></td>
-<td><strong>No rentable:</strong> El chip cuesta casi lo mismo que un BMS nuevo y requiere programación propietaria.</td>
+<td>Chip AFE o microcontrolador dañado</td>
+<td><strong>Reemplazar el BMS.</strong></td>
+<td>El chip cuesta casi lo mismo que una placa nueva y muchas veces necesita programación del fabricante.</td>
 </tr>
 <tr>
-<td>BMS básico analógico sin balanceo activo en pack costoso</td>
-<td><strong>Actualizar a Smart BMS con Bluetooth (JBD / Daly / JK).</strong></td>
-<td><strong>Muy recomendado:</strong> Permite monitorear voltajes de celdas por app móvil y configurar umbrales exactos de corriente y temperatura.</td>
+<td>BMS básico en un pack grande o costoso</td>
+<td><strong>Evaluar un BMS inteligente</strong> con Bluetooth (JBD, Daly, JK).</td>
+<td>Permite ver el voltaje de cada celda en el celular y ajustar los umbrales de corriente y temperatura.</td>
 </tr>
 </tbody>
 </table>
 </div>
-
 </section>
+
 <section id="eleccion-smart-bms">
-<h2>Criterios para elegir un BMS nuevo de reemplazo</h2>
+<h2>Cinco criterios para elegir un BMS de reemplazo</h2>
 
-<p>Al comprar un BMS de sustitución, asegúrate de verificar estos cinco parámetros indispensables:</p>
-<ul>
-  <li><strong>Puerto Común (Common Port) vs Puerto Separado:</strong> Prefiere siempre modelos de <em>puerto común</em> donde la carga y la descarga se realizan por los mismos terminales $P-$ y $P+$. Los de puerto separado no protegen adecuadamente en sistemas con frenado regenerativo.</li>
-  <li><strong>Corriente Continua y Corriente Pico:</strong> Elige un BMS cuya corriente continua nominal sea al menos un <strong>30% superior</strong> a la corriente máxima del controlador del motor (ej: controlador de 20 A requiere BMS de 30 A a 40 A continuos).</li>
-  <li><strong>Balanceo Activo vs Pasivo:</strong> En packs de más de 30 Ah, los balanceadores pasivos de 35 mA son insuficientes. Considera un Smart BMS con <strong>balanceo activo por transferencia inductiva/capacitiva (0.6 A a 2 A)</strong> como los fabricados por <em>JK (Hankzor) o Heltec</em>.</li>
-</ul>
-
+<p>Antes de comprar una placa nueva, revisa estos cinco puntos:</p>
+<ol>
+  <li><strong>Química y número de series:</strong> un BMS para ion-litio (corte por sobrecarga cerca de 4,25 V por celda) no sirve para LiFePO4 (cerca de 3,65 V), ni al revés. El número de series debe ser exactamente el de tu pack: los BMS no programables interpretan una serie faltante como una celda en 0 V y bloquean.</li>
+  <li><strong>Corriente continua y pico:</strong> la corriente continua del BMS debe ser entre 1,3 y 1,5 veces la corriente máxima del controlador (para un controlador de 20 A, un BMS de 26 a 30 A o más), y su corte por sobrecorriente debe quedar sobre los picos de partida del motor.</li>
+  <li><strong>Puerto común o separado:</strong> en un BMS de puerto común, la carga y la descarga pasan por los mismos terminales, y la corriente que vuelve al pack (por ejemplo, el frenado regenerativo de un scooter) queda vigilada por la protección contra sobrecarga. En muchos BMS de puerto separado, el puerto de descarga no corta por sobrecarga, así que no sirven si el equipo regenera. Para cargas sin regeneración, como un taladro, un puerto separado funciona bien.</li>
+  <li><strong>Balanceo:</strong> el balanceo pasivo de 30 a 60 mA basta para packs pequeños o con celdas parejas. En packs grandes (sobre unos 30 Ah) o con celdas usadas, conviene un BMS con <strong>balanceo activo</strong> (transfiere carga entre celdas; los hay de 0,6 a 2 A, por ejemplo de JK o Heltec) o un balanceador activo aparte.</li>
+  <li><strong>Temperatura, tamaño y comunicación:</strong> que traiga sensores NTC y puedan quedar pegados a las celdas, que quepa en la carcasa y, en equipos con controlador inteligente (scooters de marca), que sea compatible con su comunicación. Si no lo es, el equipo mostrará error aunque la batería funcione.</li>
+</ol>
 </section>
 
+<section id="conectar-bms">
+<h2>Cómo conectar un BMS nuevo sin dañarlo</h2>
+<p>La mayoría de las placas que llegan "muertas de fábrica" se dañaron al conectarlas en el orden equivocado. Los manuales de fabricantes como Daly indican una secuencia como esta:</p>
+<ol>
+  <li>Con el arnés <strong>todavía desenchufado</strong> de la placa, suelda o atornilla sus cables al pack: primero el negro a B−, y luego cada cable en orden, de B1 hasta la última serie.</li>
+  <li>Mide en el conector suelto, pin por pin, que cada salto sea de una celda (unos 3 a 4 V) y que el orden sea correcto.</li>
+  <li>Conecta el cable grueso B− de la placa al negativo del pack, y P− al negativo de la carga y el cargador. El positivo del pack va directo a la carga, sin pasar por la placa.</li>
+  <li><strong>Al final</strong>, enchufa el arnés de balance en la placa.</li>
+  <li>Activa el BMS (con el cargador o el botón) y prueba con una carga pequeña antes de usar el equipo.</li>
+</ol>
+<div class="warning"><strong>Para desmontar, al revés:</strong> el arnés de balance es lo primero que se desenchufa.</div>
+</section>
 
 <section class="faq" id="faq" aria-label="Preguntas frecuentes">
-<h2>Preguntas Frecuentes</h2>
+<h2>Preguntas frecuentes</h2>
 <div class="faq">
-<details><summary>¿Por qué el BMS de mi patinete no entrega voltaje si todas las celdas están a 3.7V?</summary><p>Muchos patinetes comerciales (como Xiaomi o Ninebot) tienen BMS propietarios con comunicación serial (UART/One-Wire) conectada al controlador del motor. Si el BMS no recibe el comando de comunicación periódica del tablero principal, permanece en modo de reposo o bloqueo por seguridad con la salida desconectada.</p></details>
-<details><summary>¿Puedo usar un BMS de 13S (48V) en una batería de 10S (36V)?</summary><p>Generalmente no, a menos que sea un Smart BMS programable donde puedas configurar en el software el número exacto de series activas. Los BMS convencionales analógicos detectan las series faltantes como celdas con 0V e inmediatamente bloquean la salida por protección de subtensión.</p></details>
-<details><summary>¿Qué pasa si conecto el arnés de balance al revés en la placa BMS?</summary><p>Si el conector no tiene muesca polarizada y se enchufa invertido, los voltajes altos del pack ingresarán directamente en los canales bajos del convertidor ADC del chip AFE, quemando el circuito integrado en microsegundos de forma irreversible.</p></details>
-<details><summary>¿Por qué se calienta la placa BMS al cargar la batería?</summary><p>Es normal que la zona de las resistencias de balanceo se entibie (hasta 45-55 °C) durante la fase final de carga (a partir de 4.15 V por celda) mientras disipa el exceso de energía de las celdas más altas. Lo que no es normal es que los MOSFETs de potencia quemen al tacto durante la descarga; eso indica un BMS subdimensionado.</p></details>
-<details><summary>¿Cuál es la diferencia entre un BMS Daly y un BMS JBD?</summary><p>Daly es famoso por sus encapsulados sellados a prueba de agua en aluminio rojo (muy resistentes mecánicamente, pero con balanceo pasivo muy lento de ~30 mA). JBD (Jiabaida / Overkill Solar) es el estándar de oro en software abierto con app Bluetooth muy estable y parámetros totalmente configurables por el usuario.</p></details>
+<details><summary>¿Por qué mi scooter no anda si todas las celdas están bien?</summary><p>En scooters de marca como Xiaomi o Ninebot, el BMS se comunica con el controlador por un cable de datos. Si esa comunicación falla, el scooter muestra un error (en el Ninebot Max G30, el error 21), puede limitar la potencia o no arrancar, aunque las celdas estén bien. Revisa el cable de datos y su conector antes de cambiar la batería o el BMS.</p></details>
+<details><summary>¿Puedo usar un BMS de 13S (48 V) en una batería de 10S (36 V)?</summary><p>Solo si es un BMS programable (JBD, JK, Daly inteligente) en el que se pueda configurar el número de series. Los BMS convencionales interpretan las series que faltan como celdas en 0 V y bloquean la salida por subtensión.</p></details>
+<details><summary>¿Qué pasa si conecto el arnés de balance al revés o en otro orden?</summary><p>Si el conector entra invertido o un cable queda en el pin equivocado, el chip AFE recibe voltajes mucho mayores que los que admite en sus entradas y suele dañarse de forma permanente. Por eso el arnés se cablea y se mide antes de enchufarlo, y se enchufa al final.</p></details>
+<details><summary>¿Por qué se calienta la placa BMS al cargar la batería?</summary><p>Es normal que la zona de las resistencias de balanceo se entibie al final de la carga (desde unos 4,15 V por celda en ion-litio), mientras descarga a las celdas más llenas. Lo que no es normal es que los MOSFETs de potencia se calienten mucho durante la descarga: indica un BMS subdimensionado para la corriente del equipo.</p></details>
+<details><summary>¿Cuál es la diferencia entre un BMS Daly y uno JBD?</summary><p>Daly es conocido por sus placas encapsuladas y resistentes, con un balanceo pasivo lento (del orden de 30 mA) en sus modelos estándar. JBD destaca por una app Bluetooth estable y parámetros configurables por el usuario; varias marcas venden placas JBD con su propio nombre. Ambas tienen versiones inteligentes; elige por corriente, química, series y balanceo, no por marca. Hay una comparación detallada en <a href="/blog/bms-battery-management-system-daly-vs-jbd-comparativa-tecnica-para-hobbistas">Daly vs. JBD: comparativa técnica</a>.</p></details>
 </div>
 </section>
 
-<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
+<p class="disclosure">Este artículo es contenido editorial independiente y no contiene enlaces de afiliado. Incluye la oferta de un pack digital de pago elaborado por ukrabot.cl, identificado como tal. El código, esquemas y parámetros de diseño son de carácter técnico y deben validarse con las hojas de datos de los fabricantes correspondientes. Si detectas un error técnico o tienes una sugerencia, puedes <a href="/contact">contactarnos directamente</a>.</p>
 
 <div class="cta">
   <h3>Continúa explorando tutoriales técnicos</h3>
-  <p>Aprende cómo reacondicionar un pack completo de scooter en nuestra guía paso a paso.</p>
+  <p>Aprende cómo reacondicionar un pack completo de scooter en nuestra <a href="/blog/reacondicionar-baterias-de-scooter-y-bicicleta-electrica">guía paso a paso</a>.</p>
 </div>
 
 <div class="footer-nav">
@@ -530,12 +581,13 @@ Pin 4 (B4+) : 13.90 V -> ΔV4 = 2.44 V  <-- ¡Falla! Celda 4 descargada por deba
 <h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
 <p style="font-size:.9rem;color:#57534a;">Hojas de datos oficiales, estándares internacionales de ingeniería y documentación técnica citada en este artículo.</p>
 <ul>
-<li><a href="https://www.ti.com/" target="_blank" rel="noopener noreferrer">Texas Instruments — BQ76940 9-Series to 15-Series Li-Ion and Phosphate Battery Monitor Datasheet</a></li>
-<li><a href="https://www.analog.com/" target="_blank" rel="noopener noreferrer">Analog Devices — LTC6811 Multi-cell Battery Stack Monitor Technical Documentation</a></li>
-<li><a href="https://jiabaida-bms.com/" target="_blank" rel="noopener noreferrer">JBD Smart BMS Protocol & Communication Specifications (Jiabaida Electronics)</a></li>
-<li><a href="https://webstore.iec.ch/publication/26276" target="_blank" rel="noopener noreferrer">IEC 62619 — Safety requirements for secondary lithium cells and batteries for industrial applications</a></li>
+<li><a href="https://www.ti.com/product/bq76940" target="_blank" rel="noopener noreferrer">Texas Instruments — BQ76940, monitor de baterías de 9 a 15 series (ficha y hoja de datos)</a></li>
+<li><a href="https://manuals.plus/asin/B097958NTY" target="_blank" rel="noopener noreferrer">Daly — Manual de BMS inteligente: orden de conexión del arnés y parámetros de protección</a></li>
+<li><a href="https://web.calce.umd.edu/articles/abstracts/2020/20_Copper_dissolution_in.html" target="_blank" rel="noopener noreferrer">CALCE, Universidad de Maryland — Disolución del cobre en celdas de ion-litio sobredescargadas (J. Electrochem. Soc., 2020)</a></li>
+<li><a href="https://www.joeybabcock.me/wiki/Ninebot_Max_Error_Code_21" target="_blank" rel="noopener noreferrer">Ninebot Max: error 21 y comunicación entre BMS y controlador</a></li>
+<li><a href="https://webstore.iec.ch/publication/26276" target="_blank" rel="noopener noreferrer">IEC 62619 — Requisitos de seguridad para celdas y baterías de litio en aplicaciones industriales</a></li>
 </ul>
-<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 15 de agosto de 2026.</p>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces y especificaciones revisadas: 17 de noviembre de 2026.</p>
 </section>
 </main>
 
@@ -653,5 +705,6 @@ Pin 4 (B4+) : 13.90 V -> ΔV4 = 2.44 V  <-- ¡Falla! Celda 4 descargada por deba
   });
 })();
 </script>
+<script src="/tienda/tienda.js?v=4" defer></script>
 </body>
 </html>
