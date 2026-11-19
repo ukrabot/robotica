@@ -282,5 +282,22 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-crossover-2-vias.jpg"
+ },
+ {
+  "slug": "pack-homologacion-ev",
+  "name": "Pack Homologación EV: planificador en Excel + guía en PDF + modelo de consulta",
+  "short": "Pack Homologación EV (Excel + PDF + modelo)",
+  "price": 7990,
+  "img": "/blog/pack-homologacion-ev-thumb.jpg",
+  "url": "/blog/homologacion-y-tramites-para-vehiculos-convertidos#pack",
+  "digital": true,
+  "desc": "Revisa si tu auto calificaría para una conversión legal, calcula el cambio de masa y de reparto por eje, prepara la seguridad eléctrica, compara talleres y arma el expediente mientras se publica el reglamento de la Ley 21.793.",
+  "includes": [
+   "Planificador en Excel con 8 hojas: elegibilidad, masa y reparto por eje, seguridad eléctrica, comparación de talleres, expediente, trámites y seguimiento normativo",
+   "Guía en PDF de 18 páginas: estado de la normativa, la Ley 21.793, el borrador de reglamento, elegibilidad, Par Modelo-Kit, talleres, seguridad eléctrica, certificados, Registro Civil, seguro y qué hacer si ya convertiste",
+   "Modelo de solicitud por Ley de Transparencia y diagrama de la ruta de trámites",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-homologacion-ev.jpg"
  }
 ]
