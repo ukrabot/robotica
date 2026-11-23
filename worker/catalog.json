@@ -299,5 +299,22 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-homologacion-ev.jpg"
+ },
+ {
+  "slug": "pack-hmi-delta-dop100",
+  "name": "Pack HMI Delta DOP-100: planificador en Excel + guía en PDF + diagrama de conexión",
+  "short": "Pack HMI Delta DOP-100 (Excel + PDF + diagrama)",
+  "price": 7990,
+  "img": "/blog/pack-hmi-delta-dop100-thumb.jpg",
+  "url": "/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos#pack",
+  "digital": true,
+  "desc": "Elige el modelo DOP-100 correcto, documenta el mapa de direcciones antes de dibujar pantallas, calcula el tiempo de refresco del enlace serie y pon en marcha la HMI con un proyecto completo de horno.",
+  "includes": [
+   "Planificador en Excel con 9 hojas: elección de modelo, mapa de direcciones con dirección Modbus de un DVP, comunicación y tiempo de refresco, escalado, alarmas, recetas, pantallas y puesta en marcha",
+   "Guía en PDF de 18 páginas: modelos, montaje, DOPSoft 4 y DIAScreen, RS-485, comunicación, direcciones, diseño de pantallas, macros, alarmas, recetas, usuarios, proyecto de horno y diagnóstico",
+   "Diagrama de conexión HMI–PLC en alta resolución",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-hmi-delta-dop100.jpg"
  }
 ]

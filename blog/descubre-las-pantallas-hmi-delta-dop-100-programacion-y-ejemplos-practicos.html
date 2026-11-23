@@ -13,7 +13,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos">
 <meta property="og:description" content="DOPSoft paso a paso: comunicación Modbus, pantallas, macros, alarmas y recetas en la HMI Delta DOP-100.">
-<meta property="og:image" content="https://www.ukrabot.cl/blog/delta_dop100_hmi_hero.jpg">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/hmi-delta-dop100-hero.jpg">
 <meta property="og:url" content="https://www.ukrabot.cl/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="Blog de Ingeniería Robótica">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos">
 <meta name="twitter:description" content="Programa una HMI Delta DOP-100 desde cero: DOPSoft, Modbus, macros, alarmas y recetas con ejemplos.">
-<meta name="twitter:image" content="https://www.ukrabot.cl/blog/delta_dop100_hmi_hero.jpg">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/hmi-delta-dop100-hero.jpg">
 
 <script type="application/ld+json">
 {
@@ -49,15 +49,15 @@
     }
   },
   "datePublished": "2026-08-15",
-  "dateModified": "2026-08-15",
+  "dateModified": "2026-11-23",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://www.ukrabot.cl/blog/descubre-las-pantallas-hmi-delta-dop-100-programacion-y-ejemplos-practicos"
   },
-  "image": "https://www.ukrabot.cl/blog/delta_dop100_hmi_hero.jpg",
+  "image": "https://www.ukrabot.cl/blog/hmi-delta-dop100-hero.jpg",
   "proficiencyLevel": "Intermedio",
   "dependencies": "HMI Delta serie DOP-100, DOPSoft 4.x, PLC con Modbus RTU o TCP, fuente de 24 V CC, cable de programación USB o Ethernet",
-  "wordCount": "3200",
+  "wordCount": "3312",
   "inLanguage": "es-CL"
 }
 </script>
@@ -99,7 +99,7 @@
       "name": "¿DOPSoft es gratuito y dónde se descarga?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sí, DOPSoft es gratuito y se descarga desde el centro de descargas del sitio oficial de Delta Electronics, sin licencia ni activación. Es importante elegir la versión correcta: DOPSoft 4.x para la serie DOP-100 y DOPSoft 2.x para la serie DOP-B anterior. Ambas funcionan en Windows y no son compatibles entre sí, aunque existe una utilidad de conversión de proyectos cuyos resultados requieren revisión manual."
+        "text": "Sí, DOPSoft es gratuito y se descarga desde el centro de descargas del sitio oficial de Delta Electronics, sin licencia ni activación. DOPSoft 4 programa la serie DOP-100 y abre proyectos de modelos DOP-B compatibles para convertirlos. DOPSoft 2.00, el de la serie DOP-B, ya no se actualiza ni se descarga desde el centro de descargas. Delta también ofrece DIAScreen para la serie DOP-100."
       }
     },
     {
@@ -115,7 +115,7 @@
       "name": "¿Qué diferencia hay entre la serie DOP-B y la DOP-100?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La DOP-100 es la generación posterior: procesadores más rápidos, pantallas de mayor resolución y mejor ángulo de visión, más memoria de proyecto, y soporte de Ethernet en más modelos de la gama. También cambia el software de programación, que pasa de DOPSoft 2 a DOPSoft 4 con una interfaz renovada. Los proyectos de DOP-B no se transfieren directamente y las cotas de recorte de panel son distintas, por lo que sustituir una unidad antigua suele exigir modificar el tablero."
+        "text": "La DOP-100 es la generación que reemplazó a la DOP-B: más modelos y combinaciones de puertos, Ethernet en más versiones, USB anfitrión en todos los modelos y un editor Lua además de las macros. También cambia el software, de DOPSoft 2.00 a DOPSoft 4, que convierte proyectos de modelos DOP-B compatibles. Las cotas de recorte no son necesariamente las mismas, así que reemplazar una unidad antigua puede exigir modificar el tablero."
       }
     },
     {
@@ -139,7 +139,7 @@
       "name": "¿Qué tarjeta SD conviene usar para el registro de datos?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Una tarjeta de grado industrial con memoria de tipo SLC o pSLC, de capacidad modesta, entre 4 y 16 gigabytes. Las tarjetas de consumo están optimizadas para escrituras esporádicas de archivos grandes y fallan prematuramente con el patrón de escritura continua de pequeños bloques que genera un registrador. Conviene además configurar la rotación diaria de archivos y descargar periódicamente los datos, en lugar de acumular meses de registro en la tarjeta."
+        "text": "Primero, confirma que tu modelo tenga ranura SD: en la serie DOP-100 solo algunos la traen (por ejemplo DOP-107EG y DOP-112MX). Una tarjeta de grado industrial con memoria de tipo SLC o pSLC, de capacidad modesta, entre 4 y 16 gigabytes. Las tarjetas de consumo están optimizadas para escrituras esporádicas de archivos grandes y fallan prematuramente con el patrón de escritura continua de pequeños bloques que genera un registrador. Conviene además configurar la rotación diaria de archivos y descargar periódicamente los datos, en lugar de acumular meses de registro en la tarjeta."
       }
     }
   ]
@@ -310,6 +310,22 @@ details p{padding-top:10px;margin-bottom:0}
     gtag('config', 'G-1ZVHF8X35Q');
   </script>
 
+<style>
+.pack{margin:52px 0;padding:28px;border:1px solid rgba(169,123,35,.35);border-radius:18px;background:#fff;box-shadow:0 18px 40px rgba(30,25,15,.06)}
+.pack-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:start}
+.pack-grid>img{width:100%;height:auto;border-radius:12px;display:block}
+.pack-tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.pack h2{margin:8px 0 12px}
+.pack ul{padding-left:20px;margin:0 0 18px}
+.pack li{margin-bottom:8px}
+.pack-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 2px}
+.pack-price strong{font-family:Georgia,serif;font-size:2rem;font-weight:400;color:var(--text)}
+.pack-price span{color:var(--muted);font-size:.9rem}
+.pack-fine{font-size:.8rem;color:var(--quiet);margin:14px 0 0;line-height:1.5}
+.pack-callout a{font-weight:600}
+@media (max-width:820px){.pack{padding:20px}.pack-grid{grid-template-columns:1fr;gap:20px}}
+</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=4">
 </head>
 <body>
 
@@ -332,12 +348,12 @@ details p{padding-top:10px;margin-bottom:0}
 </nav>
 
 <header class="hero">
-  <img src="delta_dop100_hmi_hero.jpg" alt="Pantalla HMI Delta DOP-100 montada en un tablero eléctrico industrial mostrando una pantalla de proceso con indicadores y botones táctiles" fetchpriority="high">
+  <img src="hmi-delta-dop100-hero.jpg" alt="Ilustración de una HMI de 7 pulgadas montada en la puerta de un tablero, con la pantalla de un horno: temperatura, consigna, barra de potencia y botones de marcha y paro" fetchpriority="high">
   <div class="hero-inner">
-    <div class="eyebrow">Automatización industrial · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <div class="eyebrow">Automatización industrial · Actualizado el <time datetime="2026-11-23">23 de noviembre de 2026</time></div>
     <h1>Pantallas HMI Delta DOP-100: Programación y Ejemplos Prácticos</h1>
     <p>Una HMI industrial por el precio de una tablet de gama media. La serie DOP-100 de Delta es la puerta de entrada más razonable a la interfaz de operador profesional.</p>
-    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 18 min de lectura</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 15 min de lectura</p>
   </div>
 </header>
 
@@ -345,8 +361,8 @@ details p{padding-top:10px;margin-bottom:0}
 <article>
 
 <div class="article-img">
-  <img src="delta_dop100_arquitectura.svg" alt="Diagrama de conexión de una HMI Delta DOP-100 con un PLC por RS-485 y Ethernet, alimentación de 24 V y PC de programación con DOPSoft" loading="lazy">
-  <div class="caption">Arquitectura típica: la HMI como maestro Modbus sobre el PLC, y el PC solo presente durante la programación.</div>
+  <img src="hmi-delta-dop100-conexion-plc.jpg" alt="Diagrama de conexión de una HMI Delta DOP-107EG con un PLC Delta DVP: RS-485 por COM2 con par trenzado, malla y resistencias de 120 ohm en ambos extremos, o Modbus TCP por Ethernet en el puerto 502; fuente de 24 V común y PC con DOPSoft por USB solo durante la programación" width="1600" height="900" loading="lazy">
+  <div class="caption">Arquitectura típica: la HMI lee y escribe registros del PLC por RS-485 o por Ethernet. La lógica de proceso y los enclavamientos quedan en el PLC; las paradas de emergencia, en un circuito de seguridad independiente.</div>
 </div>
 
 <div class="toc" aria-label="Tabla de contenidos">
@@ -354,7 +370,7 @@ details p{padding-top:10px;margin-bottom:0}
   <ol>
     <li><a href="#gama">La serie DOP-100: qué modelo elegir</a></li>
     <li><a href="#instalacion">Montaje, alimentación y primer arranque</a></li>
-    <li><a href="#dopsoft">DOPSoft: el entorno de programación</a></li>
+    <li><a href="#dopsoft">DOPSoft 4 y DIAScreen: el entorno de programación</a></li>
     <li><a href="#comunicacion">Comunicación con el PLC: Modbus paso a paso</a></li>
     <li><a href="#pantallas">Diseño de pantallas eficaces</a></li>
     <li><a href="#macros">Macros: lógica dentro de la HMI</a></li>
@@ -364,6 +380,25 @@ details p{padding-top:10px;margin-bottom:0}
     <li><a href="#faq">Preguntas frecuentes</a></li>
   </ol>
 </div>
+
+<section id="pack" class="pack" aria-labelledby="pack-t">
+<div class="pack-grid">
+  <img src="pack-hmi-delta-dop100.jpg" alt="Portada del Pack HMI Delta DOP-100: planificador en Excel, guía en PDF y diagrama de conexión HMI–PLC" width="1200" height="800" loading="lazy">
+  <div>
+    <span class="pack-tag">Pack digital · ukrabot.cl</span>
+    <h2 id="pack-t">Pack HMI Delta DOP-100: tu proyecto ordenado de principio a fin</h2>
+    <p>Todo lo de esta guía, convertido en herramientas: elige el modelo con datos del catálogo, documenta las direcciones antes de dibujar y pon en marcha la comunicación sin adivinar.</p>
+    <ul>
+      <li><strong>Planificador en Excel (9 hojas):</strong> selector de 18 modelos DOP-100 por tamaño, puertos, Ethernet, SD y recorte; mapa de direcciones con la dirección Modbus de un PLC DVP y aviso de duplicados; parámetros serie lado a lado y tiempo de refresco estimado; escalado; alarmas; recetas con límites; pantallas y lista de puesta en marcha.</li>
+      <li><strong>Guía en PDF (18 páginas):</strong> elección de modelo, montaje y alimentación, DOPSoft 4 y DIAScreen, cableado RS-485, configuración con PLC Delta y Modbus, diseño de pantallas, referencia rápida de macros, alarmas, recetas, usuarios y respaldo, el proyecto completo del horno y una tabla de diagnóstico.</li>
+      <li><strong>Diagrama de conexión</strong> HMI–PLC en alta resolución.</li>
+    </ul>
+    <div class="pack-price"><strong data-price-slug="pack-hmi-delta-dop100">$7.990</strong><span>Pago único · descarga inmediata en un archivo .zip</span></div>
+    <div class="ukr-buy" id="comprar-pack" data-ukr-buy="pack-hmi-delta-dop100" aria-label="Comprar el Pack HMI Delta DOP-100"></div>
+    <p class="pack-fine">Al pagar descargas un archivo .zip con el planificador (.xlsx), la guía (.pdf), el diagrama (.png) y las instrucciones. El planificador se abre en Excel, LibreOffice y Google Sheets. No incluye el software de Delta, que se descarga gratis desde su sitio. Licencia de uso personal. Por ser contenido digital de descarga inmediata, no tiene derecho a retracto; si un archivo llega dañado o no abre, te lo reponemos o devolvemos el dinero.</p>
+  </div>
+</div>
+</section>
 
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
@@ -378,42 +413,49 @@ details p{padding-top:10px;margin-bottom:0}
 
 <section id="gama">
 <h2>La serie DOP-100: qué modelo elegir</h2>
-<p>Delta Electronics reemplazó la veterana serie DOP-B por la <strong>DOP-100</strong>, con procesadores más rápidos, pantallas de mejor calidad y un entorno de programación renovado. La lógica de nomenclatura es sencilla una vez que se entiende.</p>
-<pre><code>DOP - 1 07 W V
-       │  │  │ └── Variante (V = estándar, otras según opciones)
-       │  │  └──── Formato: W = panorámico (widescreen)
-       │  └─────── Tamaño de pantalla en pulgadas
-       └────────── Serie 100</code></pre>
+<p>Delta Electronics reemplazó la veterana serie DOP-B por la <strong>DOP-100</strong>, con más modelos, más puertos y un entorno de programación renovado. El nombre de cada modelo dice qué trae:</p>
+<pre><code>DOP - 1 07 E G
+      │ │  │ └── Resolución: Q = 480×272 · V = 800×480 · G = 800×600
+      │ │  │                  S = 1024×600 · X = 1024×768
+      │ │  └──── Tipo: B = básico · D = básico con Ethernet
+      │ │               C = estándar · E = estándar con Ethernet
+      │ │               I = estándar con 3 COM y Ethernet
+      │ │               W = avanzado · M = avanzado multimedia
+      │ └─────── Tamaño: 03 = 4,3" · 07 = 7" · 10 = 10" · 12 = 12" · 15 = 15"
+      └───────── Serie 100</code></pre>
 <div class="table-wrap">
 <table>
-<thead><tr><th>Modelo</th><th>Tamaño</th><th>Resolución</th><th>Puertos serie</th><th>Ethernet</th><th>Uso típico</th></tr></thead>
+<thead><tr><th>Modelo</th><th>Tamaño</th><th>Resolución</th><th>Puertos serie</th><th>Ethernet</th><th>SD</th><th>Uso típico</th></tr></thead>
 <tbody>
-<tr><td>DOP-103BQ</td><td>4,3"</td><td>480 × 272</td><td>2 (COM1, COM2)</td><td>No</td><td>Máquina simple, pocos parámetros</td></tr>
-<tr><td>DOP-107BV</td><td>7"</td><td>800 × 480</td><td>3</td><td>No</td><td>El más vendido; buen equilibrio</td></tr>
-<tr><td>DOP-107EG</td><td>7"</td><td>800 × 480</td><td>3</td><td><strong>Sí</strong></td><td>Integración con SCADA o varios PLC</td></tr>
-<tr><td>DOP-110CS</td><td>10,1"</td><td>1024 × 600</td><td>3</td><td>Sí</td><td>Líneas con muchas pantallas de proceso</td></tr>
-<tr><td>DOP-112MX</td><td>12"</td><td>1280 × 800</td><td>3</td><td>Sí</td><td>Supervisión de planta</td></tr>
+<tr><td>DOP-103BQ</td><td>4,3"</td><td>480 × 272</td><td>2</td><td>No</td><td>No</td><td>Máquina simple, pocos parámetros</td></tr>
+<tr><td>DOP-107BV</td><td>7"</td><td>800 × 480</td><td>2</td><td>No</td><td>No</td><td>Una máquina con un PLC por RS-485</td></tr>
+<tr><td>DOP-107EV</td><td>7"</td><td>800 × 480</td><td>3</td><td><strong>Sí</strong></td><td>No</td><td>Igual que la BV, con Ethernet</td></tr>
+<tr><td>DOP-107EG</td><td>7"</td><td>800 × 600</td><td>3</td><td><strong>Sí</strong></td><td>Sí</td><td>Ethernet y registro de datos en SD</td></tr>
+<tr><td>DOP-110CS</td><td>10"</td><td>1024 × 600</td><td>3</td><td>No</td><td>No</td><td>Más información por pantalla, solo serie</td></tr>
+<tr><td>DOP-112MX</td><td>12"</td><td>1024 × 768</td><td>4</td><td>Sí (2 puertos)</td><td>Sí</td><td>Supervisión de una línea</td></tr>
 </tbody>
 </table>
 </div>
-<div class="note"><strong>Recomendación práctica.</strong> Si tu aplicación va a comunicarse con más de un dispositivo o pretendes leer datos desde un sistema superior, elige desde el principio un modelo con <strong>Ethernet</strong>. La diferencia de precio es modesta y evita quedarte encerrado en enlaces serie punto a punto. El DOP-107EG es el punto dulce de la gama para la mayoría de proyectos.</div>
+<p class="small" style="font-size:.85rem;color:var(--quiet)">Datos del catálogo DOP-100 de Delta (edición 2020). La serie tiene más modelos (C, D, I, W); revisa la ficha del tuyo.</p>
+<div class="note"><strong>Recomendación práctica.</strong> Si tu aplicación va a comunicarse con más de un dispositivo, o un sistema superior leerá datos de la máquina, elige desde el principio un modelo con <strong>Ethernet</strong> (letras D, E, I, W o M). Si además necesitas registrar datos en tarjeta, confirma que el modelo tenga ranura SD: no todos la traen.</div>
 <h3>Características comunes de la serie</h3>
 <ul>
-<li>Alimentación 24 V CC (rango típico 20,4 a 28,8 V), consumo del orden de 5 a 12 W según modelo.</li>
-<li>Pantalla táctil resistiva: funciona con guantes, algo importante en entorno industrial.</li>
-<li>Ranura para tarjeta SD y puerto USB anfitrión para registro de datos y transferencia de proyectos.</li>
-<li>Grado de protección IP65 en el frontal cuando se monta correctamente con su junta.</li>
-<li>Reloj de tiempo real con batería para sellado temporal de alarmas y registros.</li>
+<li>Alimentación 24 V CC con tolerancia de −15 % a +15 % (unos 20,4 a 27,6 V), desde una fuente aislada; consumo máximo entre 5,7 W (DOP-103BQ) y 16 W (DOP-112MX).</li>
+<li>Pantalla táctil resistiva de cuatro hilos: funciona con guantes, algo importante en entorno industrial.</li>
+<li>Un puerto USB esclavo para programar y uno USB anfitrión para memorias; ranura SD solo en algunos modelos.</li>
+<li>Frontal IP65 / NEMA 4 cuando se monta correctamente con su junta. Temperatura de operación de 0 a 50 °C.</li>
+<li>Calendario con batería de respaldo CR2032 para sellar en el tiempo alarmas y registros.</li>
 </ul>
 </section>
 <section id="instalacion">
 <h2>Montaje, alimentación y primer arranque</h2>
 <h3>Recorte de panel y montaje</h3>
-<p>Cada modelo tiene una cota de recorte específica que debe respetarse con tolerancia de décimas de milímetro. Un recorte generoso arruina el sellado IP65 del frontal.</p>
-<pre><code>Cotas orientativas de recorte (verificar siempre en el manual del modelo):
-  DOP-103BQ  →  119,0 × 93,0 mm
-  DOP-107BV  →  192,0 × 138,0 mm
-  DOP-110CS  →  259,0 × 179,0 mm
+<p>Cada modelo tiene una cota de recorte específica, y modelos del mismo tamaño pueden tener recortes distintos: el DOP-107EG no usa el mismo que el DOP-107BV. Respeta la medida y su tolerancia: un recorte generoso arruina el sellado IP65 del frontal.</p>
+<pre><code>Recorte de panel según el catálogo de Delta (verifica en la hoja de tu modelo):
+  DOP-103BQ  →  118,8 × 92,8 mm
+  DOP-107BV  →  196,0 × 142,9 mm
+  DOP-107EG  →  172,4 × 132,4 mm
+  DOP-110CS  →  261,3 × 189,3 mm
 
 Montaje:
   1. Colocar la junta de goma en el marco de la HMI
@@ -421,14 +463,14 @@ Montaje:
   3. Fijar con las grapas suministradas, apretando en cruz
   4. No sobreapretar: deforma el marco y rompe el sellado</code></pre>
 <h3>Alimentación</h3>
-<div class="warning">La HMI se alimenta con <strong>24 V CC, nunca con tensión de red</strong>. Verifica la polaridad antes de energizar: aunque los modelos recientes incorporan protección contra inversión, no todos la tienen y una inversión puede destruir la unidad. Usa una fuente de 24 V con margen: si la HMI consume 12 W, no la alimentes desde una fuente de 15 W ya cargada con otros elementos.</div>
+<div class="warning">La HMI se alimenta con <strong>24 V CC, nunca con tensión de red</strong>. Delta pide una fuente aislada (Clase 2 o SELV). Verifica la polaridad antes de energizar y usa una fuente con margen: si la HMI consume hasta 9 W, no la alimentes desde una fuente pequeña ya cargada con otros elementos.</div>
 <ul>
 <li>Conecta el borne de tierra funcional (FG) al chasis del tablero con cable corto y de sección adecuada. Sin esta conexión, el táctil puede comportarse de forma errática con variadores cerca.</li>
 <li>Alimenta la HMI desde la misma fuente de 24 V que el PLC cuando sea posible, para evitar bucles de masa en la comunicación serie.</li>
 <li>Si el tablero contiene variadores de frecuencia, separa físicamente el cableado de 24 V y de comunicación del cableado de potencia. Los criterios generales están en la guía de <a href="/blog/gestion-de-cables-para-brazos-roboticos">gestión de cables en tableros y brazos</a>.</li>
 </ul>
 <h3>Primer arranque y configuración del sistema</h3>
-<p>Al energizar por primera vez, la HMI arranca con un proyecto vacío. Para acceder al menú del sistema se mantiene pulsada una esquina de la pantalla durante el arranque, o se pulsa el área de configuración según el modelo. Desde ahí se ajustan:</p>
+<p>Al energizar por primera vez, la HMI no tiene proyecto cargado. Desde el menú del sistema (la forma de entrar depende del modelo y de la versión del firmware: revisa el manual) se ajustan:</p>
 <ul>
 <li>Idioma de la interfaz del sistema.</li>
 <li>Dirección IP si el modelo tiene Ethernet (fija, nunca DHCP en un entorno industrial).</li>
@@ -447,18 +489,19 @@ Montaje:
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 <section id="dopsoft">
-<h2>DOPSoft: el entorno de programación</h2>
-<p><strong>DOPSoft</strong> es el software gratuito de Delta para programar la serie DOP. Se descarga desde el portal de descargas del fabricante y funciona en Windows.</p>
-<div class="note"><strong>Atención con las versiones.</strong> DOPSoft 2.x corresponde a la serie DOP-B antigua y <strong>DOPSoft 4.x a la serie DOP-100</strong>. No son compatibles entre sí ni pueden abrir los proyectos del otro directamente, aunque existe una utilidad de conversión con resultados desiguales. Asegúrate de descargar la versión correcta para tu hardware antes de empezar a diseñar.</div>
+<h2>DOPSoft 4 y DIAScreen: el entorno de programación</h2>
+<p><strong>DOPSoft 4</strong> es el software gratuito de Delta para programar la serie DOP-100. Se descarga desde el centro de descargas del fabricante y funciona en Windows. Delta también ofrece <strong>DIAScreen</strong>, parte de su suite DIAStudio, que programa la serie DOP-100 y la serie TP: si partes de cero, revisa cuál recomienda Delta para tu modelo y versión de firmware.</p>
+<div class="note"><strong>Atención con las versiones.</strong> DOPSoft 2.00 programa la serie DOP-B antigua y <strong>DOPSoft 4 la serie DOP-100</strong>. DOPSoft 2.00 ya no se actualiza ni se descarga desde el centro de descargas de Delta. DOPSoft 4 abre proyectos de modelos DOP-B compatibles y los convierte a un modelo DOP-100; revisa después botones, puertos COM y seguridad con el manual de transición de Delta.</div>
 <h3>Estructura de un proyecto</h3>
 <pre><code>Proyecto DOPSoft
 ├── Configuración de HMI      → modelo, orientación, resolución
-├── Enlaces de comunicación   → Link 1, Link 2... (uno por dispositivo)
+├── Enlaces de comunicación   → uno por puerto o conexión (COM, Ethernet)
 ├── Pantallas (Screens)       → numeradas; la 1 es la de arranque
 │   ├── Elementos gráficos
 │   ├── Botones y entradas
 │   └── Macros de pantalla
-├── Macros globales           → inicial, de fondo, de reloj
+├── Macros globales           → inicial, de fondo, de reloj, submacros
+├── Programa (Lua)            → scripts Lua (DOPSoft 4.00.11 o posterior)
 ├── Alarmas                   → tabla de condiciones y mensajes
 ├── Recetas                   → grupos de parámetros
 └── Configuración de seguridad → niveles y contraseñas</code></pre>
@@ -489,17 +532,21 @@ Configuración de partida habitual con PLC Delta:
   115200, 8, Ninguna, 2, RTU  ← configuración de mayor rendimiento</code></pre>
 <div class="warning">El error de comunicación más frecuente no es de parámetros sino de <strong>cableado RS-485</strong>. El bus necesita: par trenzado con malla, conexión correcta de D+ y D− (invertirlos impide toda comunicación), resistencias terminadoras de 120 Ω en los dos extremos físicos del bus, y una referencia de masa común entre dispositivos. Sin terminación, el enlace puede funcionar en el banco y fallar de forma intermitente en la máquina.</div>
 <h3>Mapeo de direcciones</h3>
+<p>Con un PLC Delta DVP no necesitas traducir nada: eliges su controlador en el enlace y escribes las direcciones con su nombre (D100, M0, X0). La tabla de direcciones Modbus sirve cuando otro equipo, un SCADA o un cliente Modbus de prueba, habla con el DVP:</p>
 <div class="table-wrap">
 <table>
-<thead><tr><th>Tipo Modbus</th><th>Rango clásico</th><th>Equivalente en PLC Delta DVP</th><th>Acceso</th></tr></thead>
+<thead><tr><th>Dispositivo DVP</th><th>Tipo Modbus</th><th>Dirección Modbus (hex)</th><th>Acceso</th></tr></thead>
 <tbody>
-<tr><td>Coil (bobina)</td><td>0xxxx</td><td>M0 - M1535, Y0 - Y377</td><td>Lectura y escritura de bit</td></tr>
-<tr><td>Discrete input</td><td>1xxxx</td><td>X0 - X377</td><td>Solo lectura de bit</td></tr>
-<tr><td>Input register</td><td>3xxxx</td><td>Registros de solo lectura</td><td>Solo lectura de palabra</td></tr>
-<tr><td>Holding register</td><td>4xxxx</td><td>D0 - D11999</td><td>Lectura y escritura de palabra</td></tr>
+<tr><td>X0 – X377 (octal)</td><td>Entrada discreta</td><td>0400 – 04FF</td><td>Solo lectura de bit</td></tr>
+<tr><td>Y0 – Y377 (octal)</td><td>Coil</td><td>0500 – 05FF</td><td>Lectura y escritura de bit</td></tr>
+<tr><td>M0 – M1535</td><td>Coil</td><td>0800 – 0DFF</td><td>Lectura y escritura de bit</td></tr>
+<tr><td>M1536 – M4095</td><td>Coil</td><td>B000 – B9FF</td><td>Lectura y escritura de bit</td></tr>
+<tr><td>D0 – D4095</td><td>Holding register</td><td>1000 – 1FFF</td><td>Lectura y escritura de palabra</td></tr>
+<tr><td>D4096 en adelante</td><td>Holding register</td><td>desde 9000</td><td>Lectura y escritura de palabra</td></tr>
 </tbody>
 </table>
 </div>
+<p class="small" style="font-size:.85rem;color:var(--quiet)">Los rangos dependen de la CPU: confírmalos en el manual de tu DVP. Fíjate en los saltos: M1536 no sigue a M1535 en 0E00, sino en B000.</p>
 <pre><code>Ejemplo de mapa de una máquina sencilla:
 
   D100  →  Consigna de temperatura (× 10, en décimas de grado)
@@ -529,17 +576,18 @@ Configuración de partida habitual con PLC Delta:
 <li>Comprueba que el PLC tenga habilitada la comunicación en ese puerto: en muchos modelos hay que configurarla en registros especiales del programa.</li>
 </ol>
 </section>
+<div class="note pack-callout"><strong>¿Tu mapa de direcciones está listo?</strong> El <a href="#pack">Pack HMI Delta DOP-100</a> (<span data-price-slug="pack-hmi-delta-dop100">$7.990</span>, descarga inmediata en .zip) trae un planificador en Excel con el mapa del horno, la dirección Modbus de cada variable de un DVP, el tiempo de refresco del enlace y una guía de 18 páginas para cablear, configurar y poner en marcha.</div>
 <section id="pantallas">
 <h2>Diseño de pantallas eficaces</h2>
-<p>Una HMI mal diseñada es peor que no tener HMI: induce errores de operación. Estos criterios provienen de la práctica industrial y de las recomendaciones de la norma ISA-101.</p>
+<p>Una HMI mal diseñada es peor que no tener HMI: induce errores de operación. Estos criterios combinan la práctica industrial con las ideas de la norma ISA-101 sobre interfaces de alto rendimiento.</p>
 <div class="table-wrap">
 <table>
 <thead><tr><th>Principio</th><th>Aplicación concreta</th></tr></thead>
 <tbody>
 <tr><td>Fondo neutro</td><td>Gris claro, no negro ni blanco puro. El color debe reservarse para el significado</td></tr>
-<tr><td>El color comunica estado</td><td>Rojo solo para alarma, amarillo para advertencia, verde para condición normal</td></tr>
-<tr><td>Jerarquía de pantallas</td><td>Vista general → área → detalle. Nunca más de tres niveles de profundidad</td></tr>
-<tr><td>Tamaño de los botones</td><td>Mínimo 15 × 15 mm reales para uso con guantes</td></tr>
+<tr><td>El color comunica anormalidad</td><td>Rojo y amarillo reservados para alarmas y advertencias; los estados normales en tonos de gris, para que lo anormal destaque</td></tr>
+<tr><td>Jerarquía de pantallas</td><td>Vista general → área → detalle → diagnóstico. ISA-101 describe hasta cuatro niveles; en una máquina chica bastan dos o tres</td></tr>
+<tr><td>Tamaño de los botones</td><td>Del orden de 15 × 15 mm reales o más si se opera con guantes (recomendación práctica)</td></tr>
 <tr><td>Confirmación de acciones críticas</td><td>Diálogo de confirmación en cualquier acción que mueva la máquina</td></tr>
 <tr><td>Unidades siempre visibles</td><td>Junto a todo valor numérico, sin excepción</td></tr>
 <tr><td>Realimentación inmediata</td><td>Todo botón debe cambiar de aspecto al pulsarse</td></tr>
@@ -548,12 +596,12 @@ Configuración de partida habitual con PLC Delta:
 </div>
 <h3>Elementos más usados en DOPSoft</h3>
 <ul>
-<li><strong>Set Bit / Momentary / Toggle:</strong> botones que escriben un bit. El tipo <em>momentary</em> es el que debes usar para órdenes de marcha, porque se libera solo al soltar.</li>
+<li><strong>Botones Set, Reset, Maintained y Momentary:</strong> escriben un bit. Usa <em>Momentary</em> para órdenes de marcha y paro: el bit vuelve a 0 al soltar y el PLC enclava la orden.</li>
 <li><strong>Numeric Entry y Numeric Display:</strong> entrada y visualización de valores con escalado, límites y número de decimales configurables.</li>
 <li><strong>Multi-State Indicator:</strong> muestra un gráfico distinto según el valor de un registro. Ideal para estados de máquina.</li>
 <li><strong>Bar Graph y Meter:</strong> representación analógica de una variable. Mucho más legible de un vistazo que un número.</li>
 <li><strong>Trend Graph:</strong> gráfico de tendencia histórica, imprescindible en procesos térmicos o de presión.</li>
-<li><strong>Alarm Display:</strong> lista de alarmas activas e histórico con marca de tiempo.</li>
+<li><strong>Elementos de alarma:</strong> lista de alarmas activas, historial con marca de tiempo y frecuencia de alarmas.</li>
 </ul>
 <div class="note"><strong>Escalado de valores enteros.</strong> Los PLC trabajan con enteros. Para mostrar 23,5 °C se transmite el entero 235 y se configura en la HMI un decimal de visualización. Documenta este factor en el mapa de direcciones: es una fuente clásica de confusión cuando otra persona retoma el proyecto.</div>
 </section>
@@ -569,61 +617,56 @@ Configuración de partida habitual con PLC Delta:
 </div>
 <section id="macros">
 <h2>Macros: lógica dentro de la HMI</h2>
-<p>DOPSoft permite ejecutar pequeños programas llamados <strong>macros</strong>, en un lenguaje propio de sintaxis parecida a C simplificado. Hay varios tipos según cuándo se ejecutan:</p>
+<p>DOPSoft ejecuta pequeños programas llamados <strong>macros</strong>, con un lenguaje propio orientado a líneas: una instrucción por línea, bloques <code>IF … ELSEIF … ELSE … ENDIF</code> y comentarios que empiezan con <code>#</code>. Cada macro admite hasta 512 líneas. DOPSoft 4 suma además un editor de scripts <strong>Lua</strong> para lógica más elaborada.</p>
 <div class="table-wrap">
 <table>
 <thead><tr><th>Tipo de macro</th><th>Cuándo se ejecuta</th><th>Uso típico</th></tr></thead>
 <tbody>
-<tr><td>Initial macro</td><td>Una vez al arrancar la HMI</td><td>Inicializar variables internas</td></tr>
-<tr><td>Background macro</td><td>Cíclicamente, siempre</td><td>Cálculos permanentes, vigilancia</td></tr>
-<tr><td>Clock macro</td><td>Cada intervalo configurado</td><td>Tareas periódicas de baja frecuencia</td></tr>
-<tr><td>Screen open macro</td><td>Al entrar en una pantalla</td><td>Preparar datos de esa vista</td></tr>
-<tr><td>Screen close macro</td><td>Al salir de una pantalla</td><td>Guardar cambios pendientes</td></tr>
-<tr><td>On-element macro</td><td>Al pulsar un elemento</td><td>Lógica asociada a un botón</td></tr>
+<tr><td>Initial Macro</td><td>Una vez al arrancar la HMI</td><td>Inicializar variables internas</td></tr>
+<tr><td>Background Macro</td><td>Continuamente, unas líneas en cada ciclo</td><td>Vigilancia permanente de baja prioridad</td></tr>
+<tr><td>Clock Macro</td><td>Cada intervalo configurado</td><td>Tareas periódicas</td></tr>
+<tr><td>Screen Open / Close Macro</td><td>Al entrar o salir de una pantalla</td><td>Preparar o guardar datos de esa vista</td></tr>
+<tr><td>Screen Cycle Macro</td><td>Repetidamente mientras la pantalla está abierta</td><td>Cálculos de presentación de esa pantalla</td></tr>
+<tr><td>ON / OFF Macro</td><td>Cuando el bit de un botón pasa a 1 o a 0</td><td>Lógica asociada a un botón</td></tr>
+<tr><td>Before / After Execute Macro</td><td>Antes o después de la acción de un botón</td><td>Validar o completar la acción</td></tr>
+<tr><td>Submacro</td><td>Cuando otra macro la llama con CALL</td><td>Código que se repite</td></tr>
 </tbody>
 </table>
 </div>
-<pre><code>// Macro de fondo: cálculo de rendimiento y control de límites
-
-// Registros internos de la HMI: $0, $1, $2...
-// Registros del PLC vía enlace 1: se referencian por su dirección
-
-$10 = D102          // piezas producidas
-$11 = D103          // piezas rechazadas
-
-if ($10 > 0)
-then
-    // Rendimiento en tanto por mil para conservar un decimal
-    $12 = ($10 - $11) * 1000 / $10
-else
-    $12 = 0
-endif
-
-// Aviso si el rendimiento cae por debajo del 95,0 %
-if ($12 &lt; 950)
-then
-    $20 = 1         // bit interno que enciende un indicador
-else
-    $20 = 0
-endif</code></pre>
-<pre><code>// Macro de botón: consigna con validación de límites
-
-$30 = D100          // consigna actual
-
-if ($30 &gt; 850)      // máximo 85,0 grados
-then
-    $30 = 850
-    $31 = 1         // marca de valor recortado
-endif
-
-if ($30 &lt; 150)      // mínimo 15,0 grados
-then
-    $30 = 150
-    $31 = 1
-endif
-
-D100 = $30          // escribe la consigna validada en el PLC</code></pre>
-<div class="warning"><strong>No traslades la lógica de seguridad a la HMI.</strong> Las macros son cómodas para cálculos de presentación, validaciones de entrada y automatismos de interfaz. Los enclavamientos, las paradas de emergencia y cualquier condición que proteja a personas o a la máquina deben residir en el PLC —y las funciones de seguridad, en circuitos certificados independientes—. Una HMI puede bloquearse, perder la comunicación o ser desconectada sin que la máquina se entere.</div>
+<h3>Direcciones en las macros</h3>
+<ul>
+<li><code>$0</code>, <code>$1</code>…: memoria interna de la HMI, una palabra de 16 bits cada una. <code>$10.0</code> es el bit 0 de <code>$10</code>.</li>
+<li><code>{Link2}1@D100</code>: registro D100 del equipo con estación 1 en el enlace 2. No lo escribas a mano: elige la dirección con el asistente del editor y DOPSoft inserta el prefijo correcto.</li>
+</ul>
+<pre><code># Macro ON del botón "Enviar consigna"
+# $30 = consigna escrita por el operador, en décimas de grado
+IF $30 &gt; 850
+  $30 = 850
+  $31 = 1
+ELSEIF $30 &lt; 150
+  $30 = 150
+  $31 = 1
+ELSE
+  $31 = 0
+ENDIF
+# $31 = 1 enciende el aviso "valor recortado"
+{Link2}1@D100 = $30</code></pre>
+<pre><code># Screen Cycle Macro: desviación respecto de la consigna
+$40 = {Link2}1@D200
+$41 = {Link2}1@D100
+IF $40 &gt;= $41
+  $42 = $40 - $41
+ELSE
+  $42 = $41 - $40
+ENDIF
+# $43 = 1 si está dentro de ±2,0 °C
+IF $42 &lt;= 20
+  $43 = 1
+ELSE
+  $43 = 0
+ENDIF</code></pre>
+<div class="note"><strong>Antes de escribir una macro.</strong> Muchas validaciones ya vienen en los elementos: el Numeric Entry tiene límites mínimo y máximo propios. Las operaciones son de 16 bits: los cálculos que pueden desbordarse (contadores multiplicados, rendimientos) se hacen mejor en el PLC. Y cada lectura del PLC dentro de una macro es una consulta por el bus: una macro de fondo con muchas lecturas vuelve lenta la comunicación.</div>
+<div class="warning"><strong>No traslades la lógica de seguridad a la HMI.</strong> Las macros son cómodas para cálculos de presentación, validaciones de entrada y automatismos de interfaz. Los enclavamientos, las paradas de emergencia y cualquier condición que proteja a personas o a la máquina deben residir en el PLC, y las funciones de seguridad, en circuitos certificados independientes. Una HMI puede bloquearse, perder la comunicación o ser desconectada sin que la máquina se entere.</div>
 </section>
 <section id="alarmas">
 <h2>Alarmas, recetas y registro de datos</h2>
@@ -661,12 +704,12 @@ En DOPSoft:
   · Un botón "Cargar receta" escribe el bloque completo en el PLC
   · Los datos se guardan en la memoria no volátil de la HMI</code></pre>
 <h3>Registro de datos</h3>
-<p>La serie DOP-100 puede registrar valores periódicamente en tarjeta SD o memoria USB, en formato CSV legible desde cualquier hoja de cálculo. Configuración típica:</p>
+<p>La serie DOP-100 puede muestrear valores periódicamente y guardar el historial en su memoria, en una memoria USB o, en los modelos que la tienen, en una tarjeta SD, para revisarlo después en el PC. Configuración típica:</p>
 <ul>
 <li>Definir el bloque de registros a muestrear (por ejemplo D200 a D210).</li>
 <li>Fijar el intervalo de muestreo: cada segundo para procesos rápidos, cada minuto para térmicos.</li>
 <li>Elegir el destino y la política de rotación de archivos, normalmente uno por día.</li>
-<li>Verificar que la tarjeta SD sea de calidad industrial: las tarjetas de consumo fallan con escritura continua.</li>
+<li>Si el modelo tiene ranura SD, usar una tarjeta de calidad industrial: las tarjetas de consumo fallan con escritura continua.</li>
 </ul>
 <div class="note">Para variables que exigen trazabilidad regulatoria, el registro en la HMI es un complemento, no un sustituto de un historizador con base de datos. La HMI puede perder datos si se corta la alimentación en mitad de una escritura.</div>
 </section>
@@ -704,30 +747,15 @@ HMI → PLC (escritura)
 </tbody>
 </table>
 </div>
-<h3>Macro de la pantalla principal</h3>
-<pre><code>// Screen open macro de la pantalla 1
-// Prepara los textos e indicadores de estado
-
-$50 = D203                  // estado numérico del horno
-
-if ($50 == 0) then $51 = 0 endif    // gris: parado
-if ($50 == 1) then $51 = 1 endif    // naranja: calentando
-if ($50 == 2) then $51 = 2 endif    // verde: estable
-if ($50 == 3) then $51 = 3 endif    // azul: enfriando
-if ($50 == 4) then $51 = 4 endif    // rojo: fallo
-
-// Desviación respecto de la consigna, para el indicador de precisión
-$52 = D200 - D100
-if ($52 &lt; 0) then $52 = 0 - $52 endif   // valor absoluto
-
-if ($52 &lt;= 20) then $53 = 1 else $53 = 0 endif  // dentro de ±2,0 °C</code></pre>
+<h3>Macros de la pantalla principal</h3>
+<p>El estado del horno no necesita macro: un <strong>Multi-State Indicator</strong> leído desde D203 muestra un gráfico y un texto para cada valor (0 parado, 1 calentando, 2 estable, 3 enfriando, 4 fallo). La macro que sí conviene es la <strong>Screen Cycle Macro</strong> de la sección anterior, que calcula la desviación respecto de la consigna y enciende el indicador de precisión cuando está dentro de ±2,0 °C. El botón "Enviar consigna" usa la macro ON con los límites de 15,0 a 85,0 °C.</p>
 <h3>Niveles de seguridad</h3>
 <pre><code>Nivel 0  Operador       Ver pantallas, marcha y paro, reconocer alarmas
 Nivel 1  Supervisor     Cambiar consignas dentro de rango, cargar recetas
 Nivel 2  Mantenimiento  Editar recetas, ver diagnóstico, ajustar límites
 Nivel 3  Ingeniería     Acceso completo, configuración del sistema
 
-En DOPSoft se asigna un nivel mínimo a cada elemento y a cada pantalla.
+En DOPSoft se asigna un nivel de seguridad a cada elemento y a cada pantalla.
 Cambia las contraseñas por defecto antes de poner la máquina en servicio.</code></pre>
 <p>Si en tu instalación conviven autómatas antiguos con hardware moderno, la guía sobre <a href="/blog/maximiza-el-potencial-de-tus-plcs-antiguos-con-maquinas-virtuales">virtualizar estaciones de programación de PLC antiguos</a> resuelve el problema de mantener el software heredado accesible.</p>
 </section>
@@ -752,17 +780,17 @@ Cambia las contraseñas por defecto antes de poner la máquina en servicio.</cod
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
 <div class="faq">
-<details><summary>¿DOPSoft es gratuito y dónde se descarga?</summary><p>Sí, DOPSoft es gratuito y se descarga desde el centro de descargas del sitio oficial de Delta Electronics, sin licencia ni activación. Es importante elegir la versión correcta: DOPSoft 4.x para la serie DOP-100 y DOPSoft 2.x para la serie DOP-B anterior. Ambas funcionan en Windows y no son compatibles entre sí, aunque existe una utilidad de conversión de proyectos cuyos resultados requieren revisión manual.</p></details>
+<details><summary>¿DOPSoft es gratuito y dónde se descarga?</summary><p>Sí, DOPSoft es gratuito y se descarga desde el centro de descargas del sitio oficial de Delta Electronics, sin licencia ni activación. DOPSoft 4 programa la serie DOP-100 y abre proyectos de modelos DOP-B compatibles para convertirlos. DOPSoft 2.00, el de la serie DOP-B, ya no se actualiza ni se descarga desde el centro de descargas. Delta también ofrece DIAScreen para la serie DOP-100.</p></details>
 <details><summary>¿Puedo conectar una HMI Delta a un PLC de otra marca?</summary><p>Sí. DOPSoft incluye controladores para una amplia lista de fabricantes, entre ellos Siemens, Mitsubishi, Omron, Allen-Bradley y Schneider, además del protocolo Modbus genérico en sus variantes RTU, ASCII y TCP. Con Modbus estándar puedes comunicar prácticamente con cualquier dispositivo industrial. Lo que debes verificar es que los parámetros de comunicación coincidan exactamente y que conozcas el mapa de registros del dispositivo remoto.</p></details>
-<details><summary>¿Qué diferencia hay entre la serie DOP-B y la DOP-100?</summary><p>La DOP-100 es la generación posterior: procesadores más rápidos, pantallas de mayor resolución y mejor ángulo de visión, más memoria de proyecto, y soporte de Ethernet en más modelos de la gama. También cambia el software de programación, que pasa de DOPSoft 2 a DOPSoft 4 con una interfaz renovada. Los proyectos de DOP-B no se transfieren directamente y las cotas de recorte de panel son distintas, por lo que sustituir una unidad antigua suele exigir modificar el tablero.</p></details>
+<details><summary>¿Qué diferencia hay entre la serie DOP-B y la DOP-100?</summary><p>La DOP-100 es la generación que reemplazó a la DOP-B: más modelos y combinaciones de puertos, Ethernet en más versiones, USB anfitrión en todos los modelos y un editor Lua además de las macros. También cambia el software, de DOPSoft 2.00 a DOPSoft 4, que convierte proyectos de modelos DOP-B compatibles. Las cotas de recorte no son necesariamente las mismas, así que reemplazar una unidad antigua puede exigir modificar el tablero.</p></details>
 <details><summary>¿Por qué mi HMI no comunica con el PLC aunque los parámetros coinciden?</summary><p>Las causas más frecuentes, en orden de probabilidad, son: cables D+ y D− intercambiados en el bus RS-485, ausencia de resistencias terminadoras de 120 ohmios en los extremos del bus, falta de una referencia de masa común entre los equipos, dirección de esclavo del PLC distinta de la configurada en la HMI, y comunicación no habilitada en el propio programa del PLC, ya que en muchos modelos hay que activarla escribiendo en registros especiales. Aislar el problema con un cliente Modbus desde un PC ahorra mucho tiempo.</p></details>
 <details><summary>¿Puede la HMI sustituir al PLC en aplicaciones sencillas?</summary><p>No es recomendable, aunque técnicamente las macros permitan implementar cierta lógica. La HMI no tiene entradas y salidas digitales industriales, su tiempo de ciclo no es determinista, y una pérdida de comunicación o un bloqueo de la interfaz dejaría el proceso sin control. Además, ninguna función de seguridad puede residir en una HMI. Para aplicaciones muy simples existen alternativas más apropiadas, como los relés programables o los PLC compactos de gama baja.</p></details>
-<details><summary>¿Qué tarjeta SD conviene usar para el registro de datos?</summary><p>Una tarjeta de grado industrial con memoria de tipo SLC o pSLC, de capacidad modesta, entre 4 y 16 gigabytes. Las tarjetas de consumo están optimizadas para escrituras esporádicas de archivos grandes y fallan prematuramente con el patrón de escritura continua de pequeños bloques que genera un registrador. Conviene además configurar la rotación diaria de archivos y descargar periódicamente los datos, en lugar de acumular meses de registro en la tarjeta.</p></details>
+<details><summary>¿Qué tarjeta SD conviene usar para el registro de datos?</summary><p>Primero, confirma que tu modelo tenga ranura SD: en la serie DOP-100 solo algunos la traen (por ejemplo DOP-107EG y DOP-112MX). Una tarjeta de grado industrial con memoria de tipo SLC o pSLC, de capacidad modesta, entre 4 y 16 gigabytes. Las tarjetas de consumo están optimizadas para escrituras esporádicas de archivos grandes y fallan prematuramente con el patrón de escritura continua de pequeños bloques que genera un registrador. Conviene además configurar la rotación diaria de archivos y descargar periódicamente los datos, en lugar de acumular meses de registro en la tarjeta.</p></details>
 </div>
 </section>
 
 
-<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+<p class="disclosure">Este artículo es contenido editorial independiente y no contiene enlaces de afiliado. Incluye la oferta de un pack digital de pago elaborado por ukrabot.cl, identificado como tal. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
 
 <div class="cta">
   <h3>Sigue aprendiendo</h3>
@@ -781,11 +809,15 @@ Cambia las contraseñas por defecto antes de poner la máquina en servicio.</cod
 <ul>
 <li><a href="https://downloadcenter.deltaww.com/" target="_blank" rel="noopener noreferrer">Delta Electronics — Centro de descargas de software y manuales</a></li>
 <li><a href="https://www.deltaww.com/en-US/products/Human-Machine-Interfaces-HMI/ALL" target="_blank" rel="noopener noreferrer">Delta Electronics — Serie de HMI DOP-100</a></li>
+<li><a href="https://www.deltaww.com/IA/downloadcenter/catalogue/3.Control/DOP-100/DELTA_IA-HMI-DOP100_TC_20200109_Web.pdf" target="_blank" rel="noopener noreferrer">Delta Electronics — Catálogo de la serie DOP-100 (modelos, puertos, recortes y alimentación)</a></li>
+<li><a href="https://www.deltaww.com/en-US/service-support/faq/2281" target="_blank" rel="noopener noreferrer">Delta Electronics — FAQ: DOP-B reemplazada por DOP-100 y conversión de proyectos con DOPSoft 4</a></li>
+<li><a href="https://www.deltaww.com/en-us/FAQ/2135" target="_blank" rel="noopener noreferrer">Delta Electronics — FAQ: scripts Lua en DOPSoft 4 para la serie DOP-100</a></li>
+<li><a href="https://plcprogramming.io/guides/delta-plc-modbus-address" target="_blank" rel="noopener noreferrer">Mapa de direcciones Modbus de los PLC Delta DVP</a></li>
 <li><a href="https://www.modbus.org/specs.php" target="_blank" rel="noopener noreferrer">Modbus Organization — Especificación del protocolo Modbus</a></li>
 <li><a href="https://www.isa.org/standards-and-publications/isa-standards/isa-standards-committees/isa101" target="_blank" rel="noopener noreferrer">ISA — Norma ISA-101 sobre interfaces hombre-máquina</a></li>
 <li><a href="https://www.ti.com/lit/an/slla070d/slla070d.pdf" target="_blank" rel="noopener noreferrer">TIA/EIA-485 — Norma de la capa física RS-485</a></li>
 </ul>
-<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 23 de noviembre de 2026.</p>
 </section>
 </main>
 
@@ -904,6 +936,7 @@ Cambia las contraseñas por defecto antes de poner la máquina en servicio.</cod
   });
 })();
 </script>
+<script src="/tienda/tienda.js?v=4" defer></script>
 </body>
 </html>
 
