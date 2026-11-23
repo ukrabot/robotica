@@ -386,6 +386,57 @@
     if (!code || !key) notFound(); else load();
   }
 
+  // ------------------------------------------------------------ aviso del pack en artículos
+  // Tras un tiempo de lectura (solo cuenta con la pestaña visible) se ofrece el pack del artículo.
+  // Una vez por artículo cada 7 días; nunca si el pack ya está en el carrito o no se puede comprar.
+  var PROMO_KEY = 'ukr_promo_v1';
+  function mountPromo() {
+    var box = document.querySelector('#pack [data-ukr-buy]');
+    if (!box || !window.fetch) return;
+    var slug = box.getAttribute('data-ukr-buy');
+    var seen = {}; try { seen = JSON.parse(store(PROMO_KEY) || '{}') || {}; } catch (e) { seen = {}; }
+    if (seen[slug] && Date.now() - seen[slug] < 7 * 864e5) return;
+    var test = /[?&]ukr_promo=(\d+)/.exec(location.search);
+    catalog().then(function (d) {
+      var p = d.bySlug[slug];
+      if (!d.promo || !p || !p.available || Cart.qty(slug)) return;
+      var need = (test ? Number(test[1]) : d.promo.delay || 60) * 1000, read = 0, last = Date.now(), timer;
+      function packOnScreen() {
+        var r = document.getElementById('pack').getBoundingClientRect();
+        return r.top < innerHeight && r.bottom > 0;
+      }
+      function consentOpen() { var c = document.getElementById('rel-consent'); return !!c && !c.hidden && getComputedStyle(c).display !== 'none'; }
+      function tick() {
+        var now = Date.now();
+        if (document.visibilityState === 'visible') read += Math.min(now - last, 2000);
+        last = now;
+        if (read >= need && !consentOpen() && !packOnScreen() && !Cart.qty(slug)) { clearInterval(timer); show(p); }
+      }
+      timer = setInterval(tick, 1000);
+    }).catch(function () {});
+    function show(p) {
+      seen[slug] = Date.now(); store(PROMO_KEY, JSON.stringify(seen));
+      var parts = String(p.name).split(':'), name = parts[0], what = (parts[1] || '').trim();
+      what = what ? what.charAt(0).toUpperCase() + what.slice(1) + '.' : 'Herramientas para aplicar lo que estás leyendo.';
+      var w = el('aside', { class: 'ukr-promo', role: 'dialog', 'aria-modal': 'false', 'aria-labelledby': 'ukr-promo-t' },
+        '<button type="button" class="ukr-promo-x" aria-label="Cerrar">×</button>' +
+        '<img src="' + esc(p.img) + '" alt="" width="600" height="400">' +
+        '<div class="ukr-promo-b"><p class="ukr-promo-k">¿Te está sirviendo esta guía?</p>' +
+        '<p class="ukr-promo-t" id="ukr-promo-t">Compra nuestro pack digital</p>' +
+        '<p class="ukr-promo-n"><strong>' + esc(name) + '</strong><br>' + esc(what) + '</p>' +
+        '<button type="button" class="ukr-promo-buy">Comprar · ' + clp(p.price) + '</button>' +
+        '<a class="ukr-promo-more" href="#pack">Ver qué incluye</a></div>');
+      document.body.appendChild(w);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { w.classList.add('is-on'); }); });
+      function close() { w.classList.remove('is-on'); document.removeEventListener('keydown', esc1); setTimeout(function () { w.remove(); }, 250); }
+      function esc1(e) { if (e.key === 'Escape') close(); }
+      document.addEventListener('keydown', esc1);
+      w.querySelector('.ukr-promo-x').addEventListener('click', close);
+      w.querySelector('.ukr-promo-more').addEventListener('click', close);
+      w.querySelector('.ukr-promo-buy').addEventListener('click', function () { Cart.set(slug, 1); location.href = '/carrito'; });
+    }
+  }
+
   // ------------------------------------------------------------ arranque
   function start() {
     mountBadge();
@@ -393,6 +444,7 @@
     markCatalog();
     var c = document.getElementById('ukr-checkout'); if (c) mountCheckout(c);
     var o = document.getElementById('ukr-order'); if (o) mountOrder(o);
+    mountPromo();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

@@ -118,3 +118,20 @@
 
 @media (max-width:880px){.ukr-grid{grid-template-columns:1fr}.ukr-sum{position:static}}
 @media (max-width:560px){.ukr-page{padding:28px 16px 70px}.ukr-form{grid-template-columns:1fr}.ukr-box{padding:18px}.ukr-item{grid-template-columns:60px minmax(0,1fr)}.ukr-item img{width:60px;height:60px}.ukr-item-side{grid-column:2;flex-direction:row;align-items:center;justify-content:space-between}.ukr-item-warn{grid-column:1/-1}}
+
+/* aviso del pack en artículos */
+.ukr-promo{position:fixed;right:20px;bottom:20px;z-index:9000;width:340px;max-width:calc(100vw - 32px);background:var(--t-card);color:var(--t-ink);border:1px solid var(--t-line);border-radius:18px;box-shadow:0 24px 60px rgba(30,25,15,.28);overflow:hidden;font-family:Inter,system-ui,sans-serif;opacity:0;transform:translateY(24px);transition:opacity .25s,transform .25s}
+.ukr-promo.is-on{opacity:1;transform:none}
+.ukr-promo img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;background:#1e1b15}
+.ukr-promo-b{padding:16px 18px 18px}
+.ukr-promo-k{margin:0 0 4px;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t-brass)}
+.ukr-promo-t{margin:0 0 6px;font:600 1.22rem/1.25 Lora,Georgia,serif}
+.ukr-promo-n{margin:0 0 14px;font-size:.9rem;line-height:1.5;color:var(--t-muted)}
+.ukr-promo-buy{display:block;width:100%;border:0;border-radius:12px;padding:12px 16px;background:var(--t-brass);color:#fff;font:700 1rem Inter,system-ui,sans-serif;cursor:pointer}
+.ukr-promo-buy:hover{background:var(--t-brass-d)}
+.ukr-promo-more{display:block;margin-top:10px;text-align:center;font-size:.88rem;font-weight:600;color:var(--t-blue)}
+.ukr-promo-x{position:absolute;top:8px;right:8px;width:36px;height:36px;border:0;border-radius:50%;background:rgba(30,25,15,.72);color:#fff;font-size:1.4rem;line-height:1;cursor:pointer}
+.ukr-promo-x:hover{background:#1e1b15}
+.ukr-promo button:focus-visible,.ukr-promo a:focus-visible{outline:2px solid var(--t-blue);outline-offset:2px}
+@media (max-width:600px){.ukr-promo{left:12px;right:12px;bottom:12px;width:auto;max-width:none;display:grid;grid-template-columns:96px 1fr}.ukr-promo img{height:100%;aspect-ratio:auto;object-position:82% 50%}.ukr-promo-b{padding:12px 14px 14px}.ukr-promo-k{display:none}.ukr-promo-t{font-size:1.05rem;padding-right:28px}.ukr-promo-n{font-size:.82rem;margin-bottom:10px}.ukr-promo-buy{padding:10px 12px;font-size:.94rem}.ukr-promo-more{margin-top:6px}.ukr-promo-x{background:transparent;color:var(--t-ink)}}
+@media (prefers-reduced-motion:reduce){.ukr-promo{transition:none}}

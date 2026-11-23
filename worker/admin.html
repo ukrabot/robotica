@@ -107,6 +107,13 @@ tr.files-row td{background:#fbf9f4;padding:14px 16px}
 .row-btn:disabled{background:#e3ddd0;color:#9a9282;cursor:default}
 .ok-flash{color:var(--green);font-size:.82rem;font-weight:600}
 .settings{max-width:520px;padding:22px}
+.dig-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:0 0 20px}
+.dig-opts .settings{max-width:none;margin:0}
+.dig-opts h3{margin:0 0 4px}
+.inline{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.inline .field{margin:12px 0 0;flex:1;min-width:140px}
+.lock{display:block;font-size:.74rem;color:var(--quiet);margin-top:3px}
+.in:disabled{background:#f4f1ea;color:var(--quiet);border-color:transparent}
 @media (max-width:700px){
  .bar-inner{gap:10px}.tabs{order:3;width:100%;overflow-x:auto}
  .hide-sm{display:none}
@@ -182,6 +189,29 @@ tr.files-row td{background:#fbf9f4;padding:14px 16px}
       <h1>Productos digitales</h1>
       <p class="sub">Productos de descarga: no tienen stock ni despacho. El cliente descarga los archivos apenas se confirma el pago. Un producto sin archivos no se puede comprar.</p>
       <p class="msg hidden" id="dig-msg" role="status"></p>
+      <div class="dig-opts">
+        <form class="card settings" id="dprice-form">
+          <h3>Precio general</h3>
+          <p class="dim" style="margin:0">Un solo precio para todos los packs, incluidos los que agregues después. Se aplica al instante en los artículos, en /productos-digitales y en el carrito.</p>
+          <div class="field" style="margin-bottom:0"><label class="switch"><input type="checkbox" id="dp-on"> Usar el precio general</label></div>
+          <div class="inline">
+            <div class="field"><label for="dp-val">Precio de cada pack (CLP)</label><input id="dp-val" type="number" min="350" max="10000000" step="10" placeholder="7990"></div>
+            <button class="btn" type="submit">Guardar</button>
+          </div>
+          <p class="msg hidden" id="dp-msg" role="status" style="margin:12px 0 0"></p>
+          <p class="dim" style="margin:10px 0 0">Al desactivarlo, cada pack vuelve a su precio individual de la tabla.</p>
+        </form>
+        <form class="card settings" id="promo-form">
+          <h3>Aviso del pack en los artículos</h3>
+          <p class="dim" style="margin:0">Cuando alguien lleva un tiempo leyendo un artículo que tiene pack, aparece un aviso en una esquina para comprar ese pack. Se muestra una vez por artículo cada 7 días y nunca si el pack ya está en su carrito o no tiene archivos.</p>
+          <div class="field" style="margin-bottom:0"><label class="switch"><input type="checkbox" id="pp-on"> Mostrar el aviso</label></div>
+          <div class="inline">
+            <div class="field"><label for="pp-secs">Segundos de lectura antes del aviso</label><input id="pp-secs" type="number" min="10" max="600" step="5"></div>
+            <button class="btn" type="submit">Guardar</button>
+          </div>
+          <p class="msg hidden" id="pp-msg" role="status" style="margin:12px 0 0"></p>
+        </form>
+      </div>
       <div class="card table-wrap"><table>
         <thead><tr><th>Producto</th><th class="num">Precio base</th><th class="num">Precio venta</th><th class="num">Archivos</th><th>En venta</th><th></th></tr></thead>
         <tbody id="dig-body" class="prod-table"></tbody>
@@ -264,7 +294,7 @@ api('/api/admin/me').then(function(d){
 $$('.tab').forEach(function(t){t.addEventListener('click',function(){
   $$('.tab').forEach(function(x){x.setAttribute('aria-selected',x===t?'true':'false')});
   ['orders','products','digital','settings'].forEach(function(n){$('#tab-'+n).classList.toggle('hidden',n!==t.dataset.tab)});
-  if(t.dataset.tab==='orders')loadOrders();if(t.dataset.tab==='products'||t.dataset.tab==='digital')loadProducts();if(t.dataset.tab==='settings')loadSettings();
+  if(t.dataset.tab==='orders')loadOrders();if(t.dataset.tab==='products'||t.dataset.tab==='digital')loadProducts();if(t.dataset.tab==='digital')loadPromo();if(t.dataset.tab==='settings')loadSettings();
 })});
 
 // ---------------------------------------------------- pedidos
@@ -355,12 +385,14 @@ function loadProducts(){
       var state=p.available?'Disponible':(!p.active?'Oculto':(p.digital&&!p.files?'Sin archivos: no se vende':'Agotado'));
       return '<tr data-slug="'+esc(p.slug)+'"'+(p.digital?' data-digital="1"':'')+'><td><div class="prod"><img src="'+esc(p.img)+'" alt=""><div><a href="'+esc(p.url)+'" target="_blank" rel="noopener">'+esc(p.short)+'</a>'+(p.digital?'<span class="tag-dig">Digital</span>':'')+
       '<div class="dim">'+state+'</div></div></div></td><td class="num dim">'+clp(p.base_price)+'</td>'+
-      '<td class="num"><input class="in" type="number" min="350" step="10" data-k="price" value="'+p.price+'" aria-label="Precio de '+esc(p.short)+'"></td>'+
+      (p.general_price?'<td class="num"><input class="in" type="number" data-k="price" data-own="'+p.own_price+'" value="'+p.price+'" disabled aria-label="Precio de '+esc(p.short)+' (precio general)"><span class="lock">Precio general</span></td>':
+      '<td class="num"><input class="in" type="number" min="350" step="10" data-k="price" value="'+p.price+'" aria-label="Precio de '+esc(p.short)+'"></td>')+
       (p.digital?'<td class="num"><button class="linkbtn" type="button" data-files="'+esc(p.slug)+'">Archivos ('+p.files+')</button></td>':
       '<td class="num"><input class="in" type="number" min="0" step="1" data-k="stock" value="'+(p.stock===null?'':p.stock)+'" placeholder="sin control" aria-label="Stock de '+esc(p.short)+'"></td>')+
       '<td><label class="switch"><input type="checkbox" data-k="active"'+(p.active?' checked':'')+'> En venta</label></td>'+
       '<td><button class="row-btn" disabled>Guardar</button> <span class="ok-flash"></span></td></tr>'}).join('')};
     $('#prod-body').innerHTML=rows(d.products.filter(function(p){return !p.digital}));
+    $('#dp-on').checked=d.digital_price>0;if(d.digital_price>0||!$('#dp-val').value)$('#dp-val').value=d.digital_price>0?d.digital_price:7990;dpState();
     var dig=d.products.filter(function(p){return p.digital});
     $('#dig-body').innerHTML=dig.length?rows(dig):'<tr><td colspan="6" class="empty">Aún no hay productos digitales.</td></tr>';
     open.forEach(function(slug){var tr=$('tr[data-slug="'+slug+'"]');if(tr)toggleFiles(tr)});
@@ -374,7 +406,8 @@ tb.addEventListener('click',function(e){
   var del=e.target.closest('[data-del]');if(del){deleteFile(del);return}
   var b=e.target.closest('.row-btn');if(!b)return;var tr=b.closest('tr');
   var st=$('[data-k=stock]',tr);
-  var body={price:Number($('[data-k=price]',tr).value),stock:!st||st.value===''?null:Number(st.value),active:$('[data-k=active]',tr).checked};
+  var pi=$('[data-k=price]',tr);
+  var body={price:Number(pi.disabled?pi.dataset.own:pi.value),stock:!st||st.value===''?null:Number(st.value),active:$('[data-k=active]',tr).checked};
   b.disabled=true;
   api('/api/admin/products/'+encodeURIComponent(tr.dataset.slug),{method:'POST',body:body}).then(function(){
     $$('.in',tr).forEach(function(i){i.classList.remove('dirty')});$('.ok-flash',tr).textContent='Guardado';msg(secMsg(tr),'');
@@ -416,6 +449,25 @@ function deleteFile(btn){
   api('/api/admin/files/'+btn.dataset.del+'/delete',{method:'POST'}).then(function(){loadProducts()})
   .catch(function(e){if(e.message!=='401')msg(secMsg(row),e.message,'err')});
 }
+
+// ---------------------------------------------------- precio general y aviso del pack
+function dpState(){$('#dp-val').disabled=!$('#dp-on').checked}
+$('#dp-on').addEventListener('change',dpState);
+$('#dprice-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var on=$('#dp-on').checked,v=Number($('#dp-val').value);
+  if(on&&(!Number.isInteger(v)||v<350||v>10000000)){msg($('#dp-msg'),'Escribe un precio entero entre $350 y $10.000.000.','err');return}
+  api('/api/admin/settings',{method:'POST',body:{digital_price:on?v:0}})
+  .then(function(s){msg($('#dp-msg'),s.digital_price>0?'Listo: todos los packs cuestan '+clp(s.digital_price)+'.':'Precio general desactivado: cada pack usa su propio precio.','ok');loadProducts()})
+  .catch(function(err){if(err.message!=='401')msg($('#dp-msg'),err.message,'err')});
+});
+function loadPromo(){api('/api/admin/settings').then(function(s){$('#pp-on').checked=s.pack_popup!==0;$('#pp-secs').value=s.pack_popup_secs||60}).catch(function(){})}
+$('#promo-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  api('/api/admin/settings',{method:'POST',body:{pack_popup:$('#pp-on').checked,pack_popup_secs:Number($('#pp-secs').value)}})
+  .then(function(s){msg($('#pp-msg'),s.pack_popup?'Aviso activo: aparece a los '+s.pack_popup_secs+' segundos de lectura.':'Aviso desactivado.','ok')})
+  .catch(function(err){if(err.message!=='401')msg($('#pp-msg'),err.message,'err')});
+});
 
 // ---------------------------------------------------- envío
 function loadSettings(){api('/api/admin/settings').then(function(s){$('#s-rm').value=s.ship_rm;$('#s-rg').value=s.ship_regiones;

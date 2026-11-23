@@ -62,7 +62,7 @@ async function blogPage(req, env, adsKey = 'ads_blog') {
   out = new HTMLRewriter().on('[data-price-slug]', {
     element(e) {
       const slug = e.getAttribute('data-price-slug');
-      if (BASE[slug]) e.setInnerContent(fmtCLP(merged(slug, front.overrides, front.files).price));
+      if (BASE[slug]) e.setInnerContent(fmtCLP(merged(slug, front.overrides, front.files, front.settings).price));
     },
   }).transform(out);
   return !adsKey || front.settings[adsKey] !== 0 ? out : stripAds(out);
@@ -89,15 +89,18 @@ async function safeEqual(a, b) {
 }
 const clientIP = req => req.headers.get('cf-connecting-ip') || 'local';
 
-function merged(slug, overrides, files = {}) {
+function merged(slug, overrides, files = {}, settings = {}) {
   const b = BASE[slug], o = overrides[slug] || {};
-  const price = Number.isInteger(o.price) ? o.price : b.price;
   const digital = !!b.digital;
+  // precio general de los productos digitales (Ajustes del panel); 0 = cada uno con su precio
+  const general = digital && settings.digital_price > 0;
+  const price = general ? settings.digital_price : Number.isInteger(o.price) ? o.price : b.price;
   const stock = digital || o.stock === undefined ? null : o.stock;
   const active = o.active === undefined ? true : !!o.active;
   const nfiles = files[slug] || 0;
   // un producto digital solo se vende cuando tiene archivos cargados
-  return { ...b, base_price: b.price, price, stock, active, digital, files: nfiles,
+  return { ...b, base_price: b.price, price, ...(digital ? { own_price: Number.isInteger(o.price) ? o.price : b.price, general_price: general } : {}),
+    stock, active, digital, files: nfiles,
     available: active && (stock === null || stock > 0) && (!digital || nfiles > 0) };
 }
 
@@ -236,10 +239,11 @@ async function catalog(env) {
   const methods = payMethods(env, settings);
   return json({
     products: CATALOG.map(p => {
-      const m = merged(p.slug, overrides, files);
+      const m = merged(p.slug, overrides, files, settings);
       return { slug: m.slug, name: m.name, short: m.short, price: m.price, img: m.img, url: m.url, stock: m.stock, available: m.available, digital: m.digital };
     }),
     shipping: { rm: settings.ship_rm, regiones: settings.ship_regiones },
+    promo: settings.pack_popup === 0 ? null : { delay: settings.pack_popup_secs },
     regions: REGIONS,
     methods,
   });
@@ -267,7 +271,7 @@ async function checkout(req, env) {
     qty[slug] = (qty[slug] || 0) + q;
   }
   for (const [slug, q] of Object.entries(qty)) {
-    const m = merged(slug, overrides, files);
+    const m = merged(slug, overrides, files, settings);
     if (!m.active || (m.digital && !m.files)) return json({ error: `${m.short} ya no está disponible.`, slug }, 409);
     if (m.digital && q > 1) return json({ error: `${m.short} es una descarga: se compra una sola unidad.`, slug }, 409);
     if (m.stock !== null && q > m.stock) return json({ error: m.stock ? `Solo quedan ${m.stock} unidades de ${m.short}.` : `${m.short} está agotado.`, slug, stock: m.stock }, 409);
@@ -457,7 +461,7 @@ async function storePage(req, env, url) {
   const slugs = m ? [m[1]] : CATALOG.map(p => p.slug);
   for (const slug of slugs) {
     if (!BASE[slug]) continue;
-    const p = merged(slug, overrides, files);
+    const p = merged(slug, overrides, files, settings);
     if (m) {
       if (p.price !== p.base_price) {
         const from = fmtCLP(p.base_price).slice(1), to = fmtCLP(p.price).slice(1);
@@ -521,8 +525,8 @@ async function admin(req, env, url) {
     try { return json({ order: await syncFromFlow(env, o.flow_token) }); } catch (e) { return fail('Flow no respondió: ' + e.message, 502); }
   }
   if (p === '/products' && req.method === 'GET') {
-    const { overrides, files } = await st.storefront();
-    return json({ products: CATALOG.map(b => ({ ...merged(b.slug, overrides, files), updated_at: overrides[b.slug]?.updated_at || null })) });
+    const { overrides, files, settings } = await st.storefront();
+    return json({ digital_price: settings.digital_price, products: CATALOG.map(b => ({ ...merged(b.slug, overrides, files, settings), updated_at: overrides[b.slug]?.updated_at || null })) });
   }
   if (p === '/files' && req.method === 'GET') {
     const prod = url.searchParams.get('product') || '';
@@ -558,9 +562,9 @@ async function admin(req, env, url) {
     let stock = b.stock === '' || b.stock === null || b.stock === undefined ? null : Number(b.stock);
     if (stock !== null && (!Number.isInteger(stock) || stock < 0 || stock > 100000)) return fail('El stock debe ser un entero de 0 o más, o vacío para no controlarlo.');
     await st.saveProduct(m[1], { price, stock: BASE[m[1]].digital ? null : stock, active: !!b.active });
-    const { overrides, files } = await st.storefront();
+    const { overrides, files, settings } = await st.storefront();
     frontCache = null;
-    return json({ product: merged(m[1], overrides, files) });
+    return json({ product: merged(m[1], overrides, files, settings) });
   }
   if (p === '/settings' && req.method === 'GET') return json({ ...(await st.getSettings()), configured: { flow: !!(env.FLOW_API_KEY && env.FLOW_SECRET_KEY), mp: !!env.MP_ACCESS_TOKEN } });
   if (p === '/settings' && req.method === 'POST') {
@@ -571,7 +575,17 @@ async function admin(req, env, url) {
       if (![rm, rg].every(v => Number.isInteger(v) && v >= 0 && v <= 200000)) return fail('Las tarifas deben ser números enteros entre $0 y $200.000.');
       patch.ship_rm = rm; patch.ship_regiones = rg;
     }
-    for (const k of ['pay_flow', 'pay_mp', 'ads_productos', 'ads_blog']) if (b[k] !== undefined) patch[k] = b[k] ? 1 : 0;
+    for (const k of ['pay_flow', 'pay_mp', 'ads_productos', 'ads_blog', 'pack_popup']) if (b[k] !== undefined) patch[k] = b[k] ? 1 : 0;
+    if (b.digital_price !== undefined) {
+      const v = b.digital_price === null || b.digital_price === '' ? 0 : Number(b.digital_price);
+      if (!Number.isInteger(v) || (v !== 0 && (v < 350 || v > 10000000))) return fail('El precio general debe ser un número entero entre $350 y $10.000.000.');
+      patch.digital_price = v;
+    }
+    if (b.pack_popup_secs !== undefined) {
+      const v = Number(b.pack_popup_secs);
+      if (!Number.isInteger(v) || v < 10 || v > 600) return fail('El tiempo del aviso debe estar entre 10 y 600 segundos.');
+      patch.pack_popup_secs = v;
+    }
     if (!Object.keys(patch).length) return fail('No hay cambios que guardar.');
     const saved = await st.saveSettings(patch);
     frontCache = null;

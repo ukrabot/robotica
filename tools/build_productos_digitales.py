@@ -105,7 +105,7 @@ page = f'''<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>{css}{page_css}</style>
-<link rel="stylesheet" href="/tienda/tienda.css?v=4">
+<link rel="stylesheet" href="/tienda/tienda.css?v=5">
 {tracking}</head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -114,7 +114,7 @@ page = f'''<!DOCTYPE html>
 
 {body}
 
-<script src="/tienda/tienda.js?v=4" defer></script>
+<script src="/tienda/tienda.js?v=5" defer></script>
 {footer}'''
 open('productos-digitales.html', 'w', encoding='utf-8').write(page)
 print('ok productos-digitales.html', len(page))

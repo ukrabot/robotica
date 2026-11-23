@@ -5,8 +5,8 @@ import os, re, glob
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-CSS = '<link rel="stylesheet" href="/tienda/tienda.css?v=4">\n'
-JS = '<script src="/tienda/tienda.js?v=4" defer></script>\n'
+CSS = '<link rel="stylesheet" href="/tienda/tienda.css?v=5">\n'
+JS = '<script src="/tienda/tienda.js?v=5" defer></script>\n'
 
 
 def close_div(h, start):
