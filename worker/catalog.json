@@ -316,5 +316,22 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-hmi-delta-dop100.jpg"
+ },
+ {
+  "slug": "pack-bicicleta-electrica",
+  "name": "Pack Bicicleta Eléctrica: planificador en Excel + guía en PDF + diagrama de cableado",
+  "short": "Pack Bicicleta Eléctrica (Excel + PDF + diagrama)",
+  "price": 7990,
+  "img": "/blog/pack-bicicleta-electrica-thumb.jpg",
+  "url": "/blog/como-convertir-una-bicicleta-normal-en-electrica-paso-a-paso#pack",
+  "digital": true,
+  "desc": "Convierte tu bicicleta en eléctrica dentro de la ley chilena: comprueba que siga siendo ciclo, calcula autonomía, rueda y fusible, arma el presupuesto e instala el kit paso a paso.",
+  "includes": [
+   "Planificador en Excel con 9 hojas: legalidad, autonomía y costo por km, rueda y velocidad real de corte, corriente y fusible, presupuesto, convertir o comprar, instalación y mantenimiento",
+   "Guía en PDF de 18 páginas: la ley chilena, elección de kit, bicicleta y batería, instalación paso a paso, configuración de la pantalla, primera prueba, seguridad del litio y mantenimiento",
+   "Diagrama de cableado del kit en alta resolución",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-bicicleta-electrica.jpg"
  }
 ]

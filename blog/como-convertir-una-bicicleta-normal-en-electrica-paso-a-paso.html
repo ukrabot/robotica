@@ -13,7 +13,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cómo Convertir una Bicicleta Normal en Eléctrica Paso a Paso">
 <meta property="og:description" content="Kit hub o central, instalación rueda, controlador, pedal asistido y batería: la conversión eléctrica explicada paso a paso.">
-<meta property="og:image" content="https://www.ukrabot.cl/blog/bicicleta_electrica_hero.jpg">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/bicicleta-electrica-conversion-hero.jpg">
 <meta property="og:url" content="https://www.ukrabot.cl/blog/como-convertir-una-bicicleta-normal-en-electrica-paso-a-paso">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="Blog de Ingeniería Robótica">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cómo Convertir una Bicicleta Normal en Eléctrica Paso a Paso">
 <meta name="twitter:description" content="Convierte tu bicicleta en eléctrica: tipos de kit, instalación completa, normativa y seguridad en una guía.">
-<meta name="twitter:image" content="https://www.ukrabot.cl/blog/bicicleta_electrica_hero.jpg">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/bicicleta-electrica-conversion-hero.jpg">
 
 <script type="application/ld+json">
 {
@@ -43,12 +43,12 @@
     "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
   },
   "datePublished":"2026-08-15",
-  "dateModified":"2026-08-15",
+  "dateModified":"2026-11-23",
   "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/como-convertir-una-bicicleta-normal-en-electrica-paso-a-paso"},
-  "image":"https://www.ukrabot.cl/blog/bicicleta_electrica_hero.jpg",
+  "image":"https://www.ukrabot.cl/blog/bicicleta-electrica-conversion-hero.jpg",
   "proficiencyLevel":"Intermedio",
   "dependencies":"Kit de conversión completo (motor hub o central), batería Li-ion 36/48V, llaves y herramientas de bicicleta, torque arm, fusible y conectores del kit",
-  "wordCount":"3400",
+  "wordCount":"3753",
   "inLanguage":"es-CL"
 }
 </script>
@@ -67,9 +67,50 @@
 
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"FAQPage",
-  "mainEntity":[{"@type":"Question","name":"¿Qué kit es mejor para empezar: hub delantero, trasero o central?","acceptedAnswer":{"@type":"Answer","text":"Para la mayoría de las personas, un motor hub trasero de 250W es el punto de partida ideal: mejor tracción que el delantero, instalación mucho más simple que el central y precio contenido. El hub delantero conviene solo para ciudad muy plana y presupuesto mínimo. El motor central (Bafang BBS02, por ejemplo) es superior en pendientes y sensación de manejo, pero cuesta el doble, exige herramientas de pedalier y desgasta la transmisión más rápido."}},{"@type":"Question","name":"¿Cuánto cuesta convertir una bicicleta en eléctrica en Chile?","acceptedAnswer":{"@type":"Answer","text":"Un kit hub de 250W con batería de 36V se consigue por unos 350–500 USD en total (kit 150–250 USD + batería 200–300 USD según capacidad). Un kit completo de 500–750W con batería 48V ronda los 400–700 USD, y un motor central Bafang BBS02 con batería puede llegar a 800–1.100 USD. A eso se suman el torque arm, herramientas y, si aplica, mejoras de frenos. Comparado con una e-bike nueva de 800–1.500 USD, la conversión sigue siendo la opción económica, sobre todo si ya tienes la bicicleta."}},{"@type":"Question","name":"¿Necesito licencia, patente o permiso de circulación para una bicicleta eléctrica?","acceptedAnswer":{"@type":"Answer","text":"Si tu conversión cumple los límites de bicicleta asistida (motor de hasta 250W y asistencia que se corta a 25 km/h), en Chile se trata como bicicleta: no requiere patente, permiso de circulación ni licencia, y el casco es obligatorio. Si el motor supera esos límites, el vehículo se reclasifica como ciclomotor, con requisitos de licencia y permisos. La normativa se modifica periódicamente y la interpretación varía por comuna: verifica la regla vigente antes de comprar un kit más potente."}},{"@type":"Question","name":"¿Puedo usar una batería de 48V con un motor de 250W?","acceptedAnswer":{"@type":"Answer","text":"Técnicamente algunos controladores de 250W aceptan 36V y 48V, pero no es recomendable: el motor de 250W está diseñado para la corriente y voltaje de 36V, y alimentarlo a 48V aumenta la velocidad y la potencia real (por encima del límite legal y del diseño térmico del motor), acortando su vida. Si quieres más potencia, compra un motor de 500W+ con su controlador y batería 48V adecuados, asumiendo las implicancias legales que eso conlleva."}},{"@type":"Question","name":"¿Cuánto dura la batería y qué autonomía tendré?","acceptedAnswer":{"@type":"Answer","text":"La autonomía se estima con la capacidad en Wh (voltaje × Ah): una batería de 36V/10Ah son 360 Wh, que con un motor de 250W a asistencia media rinde unos 35–45 km planos; una de 48V/14Ah (672 Wh) alcanza los 60–80 km en las mismas condiciones. El consumo real depende de tu peso, pendientes, viento, nivel de asistencia y presión de neumáticos. La vida útil de la batería se mide en ciclos: las de celdas de calidad (Samsung, LG, Panasonic) duran 500–800 ciclos antes de caer al 80 % de capacidad, unos 3–5 años de uso diario."}}]
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué kit es mejor para empezar: hub delantero, trasero o central?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para la mayoría de las personas, un motor hub trasero de 250W es el punto de partida ideal: mejor tracción que el delantero, instalación mucho más simple que el central y precio contenido. El hub delantero conviene solo para ciudad muy plana y presupuesto mínimo. El motor central es superior en pendientes y sensación de manejo, pero cuesta el doble, exige herramientas de pedalier y desgasta la transmisión más rápido. Ojo: el popular Bafang BBS02 es de 500 a 750 W; para circular como ciclo en Chile necesitas una versión de 250 W nominales."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto cuesta convertir una bicicleta en eléctrica en Chile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Un kit hub de 250W con batería de 36V se consigue por unos 350–500 USD en total (kit 150–250 USD + batería 200–300 USD según capacidad). Un kit completo de 500–750W con batería 48V ronda los 400–700 USD, y un motor central con batería puede llegar a 800–1.100 USD. A eso se suman el torque arm, herramientas y, si aplica, mejoras de frenos. Comparado con una e-bike nueva de 800–1.500 USD, la conversión sigue siendo la opción económica, sobre todo si ya tienes la bicicleta."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito licencia, patente o permiso de circulación para una bicicleta eléctrica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, si tu conversión es un ciclo según el artículo 2 N° 9 de la Ley de Tránsito: motor de hasta 250 W de potencia nominal continua, con asistencia que se corta a 25 km/h o cuando dejas de pedalear. En ese caso se usa como una bicicleta: sin patente, permiso ni licencia, con casco en zona urbana, luces, reflectantes y timbre. Si supera esos límites, o tiene un acelerador que la mueve sin pedalear, pasa a ser un vehículo motorizado, con placa patente, permiso de circulación, SOAP y licencia, trámites que una bicicleta convertida no puede completar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar una batería de 48V con un motor de 250W?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Técnicamente algunos controladores de 250W aceptan 36V y 48V, pero no es recomendable: el motor de 250W está diseñado para la corriente y voltaje de 36V, y alimentarlo a 48V aumenta la velocidad y la potencia real (por encima del límite legal y del diseño térmico del motor), acortando su vida. Un motor de más potencia deja la bicicleta fuera de la definición de ciclo, con todo lo que eso implica para circular por la calle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto dura la batería y qué autonomía tendré?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La autonomía se estima con la capacidad en Wh (voltaje × Ah): una batería de 36V/10Ah son 360 Wh, que con un motor de 250W a asistencia media rinde unos 35–45 km planos; una de 48V/14Ah (672 Wh) alcanza los 60–80 km en las mismas condiciones. El consumo real depende de tu peso, pendientes, viento, nivel de asistencia y presión de neumáticos. La vida útil de la batería se mide en ciclos: las de celdas de calidad (Samsung, LG, Panasonic) duran 500–800 ciclos antes de caer al 80 % de capacidad, unos 3–5 años de uso diario."
+      }
+    }
+  ]
 }
 </script>
 
@@ -237,6 +278,22 @@ details p{padding-top:10px;margin-bottom:0}
     gtag('config', 'G-1ZVHF8X35Q');
   </script>
 
+<style>
+.pack{margin:52px 0;padding:28px;border:1px solid rgba(169,123,35,.35);border-radius:18px;background:#fff;box-shadow:0 18px 40px rgba(30,25,15,.06)}
+.pack-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:start}
+.pack-grid>img{width:100%;height:auto;border-radius:12px;display:block}
+.pack-tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.pack h2{margin:8px 0 12px}
+.pack ul{padding-left:20px;margin:0 0 18px}
+.pack li{margin-bottom:8px}
+.pack-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 2px}
+.pack-price strong{font-family:Georgia,serif;font-size:2rem;font-weight:400;color:var(--text)}
+.pack-price span{color:var(--muted);font-size:.9rem}
+.pack-fine{font-size:.8rem;color:var(--quiet);margin:14px 0 0;line-height:1.5}
+.pack-callout a{font-weight:600}
+@media (max-width:820px){.pack{padding:20px}.pack-grid{grid-template-columns:1fr;gap:20px}}
+</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=4">
 </head>
 <body>
 
@@ -259,12 +316,12 @@ details p{padding-top:10px;margin-bottom:0}
 </nav>
 
 <header class="hero">
-  <img src="bicicleta_electrica_hero.jpg" alt="Bicicleta de montaña en proceso de conversión eléctrica en un garaje con rueda de motor hub, batería y controlador sobre el suelo" fetchpriority="high">
+  <img src="bicicleta-electrica-conversion-hero.jpg" alt="Ilustración de una bicicleta convertida a eléctrica con motor en la rueda trasera, batería en el tubo diagonal, controlador, pantalla en el manillar y sensor de pedaleo" fetchpriority="high">
   <div class="hero-inner">
-    <div class="eyebrow">Movilidad eléctrica · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <div class="eyebrow">Movilidad eléctrica · Actualizado el <time datetime="2026-11-23">23 de noviembre de 2026</time></div>
     <h1>Cómo Convertir una Bicicleta Normal en Eléctrica Paso a Paso</h1>
     <p>Qué kit elegir, cómo instalar la rueda con motor, el controlador, el pedal asistido y la batería, y qué dice la normativa antes de salir a la calle.</p>
-    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 19 min de lectura</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
   </div>
 </header>
 
@@ -272,8 +329,8 @@ details p{padding-top:10px;margin-bottom:0}
 <article>
 
 <div class="article-img">
-  <img src="bicicleta_electrica_wiring.svg" alt="Diagrama del sistema eléctrico de una conversión de bicicleta a eléctrica: batería, controlador, motor hub, display, throttle y sensor de pedal asistido" loading="lazy">
-  <div class="caption">El controlador es el cerebro del sistema: conecta batería, motor y controles, y su cableado ordenado evita la mayoría de fallas.</div>
+  <img src="bicicleta-electrica-conversion-cableado.jpg" alt="Diagrama de cableado de un kit de conversión: batería con fusible e interruptor al controlador; tres fases y cinco cables de sensor Hall al motor; pantalla, sensor de pedaleo, manetas de freno con corte y acelerador opcional al controlador" width="1600" height="900" loading="lazy">
+  <div class="caption">El controlador conecta la batería, el motor y los mandos. Para que la bicicleta siga siendo un ciclo en Chile, el motor debe cortar a 25 km/h y cuando dejas de pedalear.</div>
 </div>
 
 <div class="toc" aria-label="Tabla de contenidos">
@@ -281,7 +338,7 @@ details p{padding-top:10px;margin-bottom:0}
   <ol>
     <li><a href="#vale-la-pena">¿Vale la pena convertir? Costos y alternativas</a></li>
     <li><a href="#tipos-de-kit">Tipos de kit: hub delantero, hub trasero o motor central</a></li>
-    <li><a href="#potencia">Potencia: 250W, 500W o 750W y la ley</a></li>
+    <li><a href="#potencia">Potencia: 250 W, 500 W o 750 W y la ley</a></li>
     <li><a href="#bicicleta-base">Elegir la bicicleta base</a></li>
     <li><a href="#componentes">Componentes del kit explicados</a></li>
     <li><a href="#rueda">Paso 1: instalar la rueda con motor</a></li>
@@ -289,13 +346,32 @@ details p{padding-top:10px;margin-bottom:0}
     <li><a href="#pas-throttle">Paso 3: pedal asistido y acelerador</a></li>
     <li><a href="#bateria">Paso 4: instalar y conectar la batería</a></li>
     <li><a href="#pruebas">Paso 5: revisión y primera prueba</a></li>
-    <li><a href="#normativa">Normativa y trámites</a></li>
+    <li><a href="#normativa">Normativa y equipamiento obligatorio</a></li>
     <li><a href="#seguridad">Seguridad: frenos, torque arms y litio</a></li>
     <li><a href="#mantenimiento">Mantenimiento de la bicicleta convertida</a></li>
     <li><a href="#conclusion">Conclusión</a></li>
     <li><a href="#faq">Preguntas frecuentes</a></li>
   </ol>
 </div>
+
+<section id="pack" class="pack" aria-labelledby="pack-t">
+<div class="pack-grid">
+  <img src="pack-bicicleta-electrica.jpg" alt="Portada del Pack Bicicleta Eléctrica: planificador en Excel, guía en PDF y diagrama de cableado del kit" width="1200" height="800" loading="lazy">
+  <div>
+    <span class="pack-tag">Pack digital · ukrabot.cl</span>
+    <h2 id="pack-t">Pack Bicicleta Eléctrica: tu conversión, legal y bien hecha</h2>
+    <p>Todo lo de esta guía, convertido en herramientas: confirma que tu conversión siga siendo un ciclo, elige batería y fusible con números y sigue la instalación con listas de verificación.</p>
+    <ul>
+      <li><strong>Planificador en Excel (9 hojas):</strong> verificador de legalidad y equipamiento, autonomía por nivel de asistencia y costo cada 100 km, diámetro real de la rueda y velocidad real de corte, corriente, fusible y BMS, presupuesto, comparación con una e-bike nueva, instalación y mantenimiento por kilómetros.</li>
+      <li><strong>Guía en PDF (18 páginas):</strong> lo que dice la ley chilena, cómo elegir kit, bicicleta y batería, herramientas, la instalación paso a paso con torque arm, la configuración de la pantalla, la primera prueba, la seguridad del litio y una tabla de fallas frecuentes.</li>
+      <li><strong>Diagrama de cableado</strong> del kit en alta resolución.</li>
+    </ul>
+    <div class="pack-price"><strong data-price-slug="pack-bicicleta-electrica">$7.990</strong><span>Pago único · descarga inmediata en un archivo .zip</span></div>
+    <div class="ukr-buy" id="comprar-pack" data-ukr-buy="pack-bicicleta-electrica" aria-label="Comprar el Pack Bicicleta Eléctrica"></div>
+    <p class="pack-fine">Al pagar descargas un archivo .zip con el planificador (.xlsx), la guía (.pdf), el diagrama (.png) y las instrucciones. El planificador se abre en Excel, LibreOffice y Google Sheets. Información general, no asesoría legal. Licencia de uso personal. Por ser contenido digital de descarga inmediata, no tiene derecho a retracto; si un archivo llega dañado o no abre, te lo reponemos o devolvemos el dinero.</p>
+  </div>
+</div>
+</section>
 
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
@@ -316,8 +392,8 @@ details p{padding-top:10px;margin-bottom:0}
 <thead><tr><th>Opción</th><th>Precio orientativo</th><th>Ventajas</th><th>Desventajas</th></tr></thead>
 <tbody>
 <tr><td>Kit hub 250W (sin batería)</td><td>120–200 USD</td><td>Instalación sencilla, conserva tu bicicleta</td><td>Necesitas batería aparte (100–250 USD más)</td></tr>
-<tr><td>Kit hub 500–750W completo</td><td>250–450 USD</td><td>Todo incluido, buena potencia</td><td>Peso extra en la rueda; revisa la ley</td></tr>
-<tr><td>Kit motor central Bafang BBS02</td><td>450–700 USD</td><td>Par natural en el pedalier, mejor reparto de peso</td><td>Instalación más compleja (eje de pedalier)</td></tr>
+<tr><td>Kit hub 500–750W completo</td><td>250–450 USD</td><td>Todo incluido, buena potencia</td><td>No es ciclo en Chile: solo para uso en recintos privados</td></tr>
+<tr><td>Kit motor central (por ejemplo Bafang BBS01B de 250 W)</td><td>450–700 USD</td><td>Par natural en el pedalier, mejor reparto de peso</td><td>Instalación más compleja (eje de pedalier); los de 500–750 W no son ciclo en Chile</td></tr>
 <tr><td>E-bike nueva de entrada</td><td>700–1.500 USD</td><td>Garantía, integración, sin trabajo de taller</td><td>No reutiliza tu bicicleta</td></tr>
 </tbody>
 </table>
@@ -332,20 +408,22 @@ details p{padding-top:10px;margin-bottom:0}
 <p><strong>Motor central (mid-drive).</strong> El motor va en el pedalier y empuja a través de la transmisión existente, aprovechando los cambios de la bicicleta. Sube pendientes con más eficiencia y deja las ruedas originales. Contras: es el doble de caro, el desgaste de cadena y cassette se acelera, y la instalación requiere extraer el eje de pedalier con herramientas especiales. Es la elección de los entusiastas del ciclismo y de terrenos con pendientes fuertes.</p>
 </section>
 <section id="potencia">
-<h2>Potencia: 250W, 500W o 750W y la ley</h2>
-<p>La potencia del motor define la velocidad, el consumo de batería y, sobre todo, el marco legal. En Chile, la Ley de Tránsito (Ley 18.290, modificada por la Ley 21.377) clasifica como <strong>bicicleta</strong> — sin patente ni permiso de circulación — a los ciclos con asistencia eléctrica de hasta <strong>250 W</strong> que dejan de asistir al superar <strong>25 km/h</strong>. Los vehículos que superan esos límites se consideran ciclomotores, con requisitos adicionales.</p>
+<h2>Potencia: 250 W, 500 W o 750 W y la ley</h2>
+<p>La potencia del motor define la velocidad, el consumo de batería y, sobre todo, el marco legal. En Chile, el artículo 2 N° 9 de la Ley de Tránsito considera <strong>ciclo</strong>, es decir, un vehículo no motorizado como una bicicleta común, al que tiene un motor auxiliar eléctrico de <strong>potencia nominal continua máxima de 0,25 kW (250 W)</strong>, cuya asistencia se reduce o se corta al llegar a <strong>25 km/h</strong>, o antes si el ciclista deja de pedalear. Si el vehículo supera cualquiera de esas condiciones, deja de ser ciclo y pasa a ser un vehículo motorizado.</p>
 <div class="table-wrap">
 <table>
-<thead><tr><th>Motor</th><th>Velocidad máxima típica</th><th>Uso recomendado</th><th>Marco legal (Chile)</th></tr></thead>
+<thead><tr><th>Kit</th><th>Corte de asistencia</th><th>Uso</th><th>Situación en Chile</th></tr></thead>
 <tbody>
-<tr><td>250W hub</td><td>25–32 km/h</td><td>Ciudad, uso diario</td><td>Bicicleta asistida (sin requisitos adicionales)</td></tr>
-<tr><td>500W hub</td><td>35–40 km/h</td><td>Cerros suaves, reparto</td><td>Zona gris; puede exigir trámites de ciclomotor</td></tr>
-<tr><td>750W hub/central</td><td>40–45 km/h</td><td>Pendientes fuertes, uso off-road</td><td>Probablemente ciclomotor; verifica la normativa local</td></tr>
+<tr><td>250 W nominal, solo con pedaleo</td><td>25 km/h</td><td>Ciudad, uso diario, cerros moderados</td><td>Ciclo: se usa como una bicicleta</td></tr>
+<tr><td>250 W con acelerador que funciona sin pedalear</td><td>—</td><td>—</td><td>Sale de la definición de ciclo</td></tr>
+<tr><td>500 W o más, o corte sobre 25 km/h</td><td>35–45 km/h típicos</td><td>Pendientes fuertes, uso fuera de calle</td><td>Vehículo motorizado: no es ciclo</td></tr>
 </tbody>
 </table>
 </div>
-<div class="warning"><strong>Advertencia:</strong> la normativa es materia sensible y cambia por país y municipio. Antes de comprar un kit de 500W+, consulta la normativa vigente de tu país y de tu comuna: circular fuera de norma puede significar multas y, en caso de accidente, consecuencias serias. Este artículo es información general, no asesoría legal.</div>
+<div class="warning"><strong>Un vehículo motorizado tiene otras reglas.</strong> Para circular necesita placa patente, permiso de circulación, SOAP y licencia de conductor, y el permiso exige revisión técnica u homologación, trámites que no existen para una bicicleta convertida. En la práctica, un kit de 500 W o más solo es para uso en recintos privados. Este artículo es información general, no asesoría legal: revisa la norma vigente antes de comprar.</div>
+<p>Ojo con la etiqueta: la ley habla de potencia <em>nominal continua</em>. Muchos kits vendidos como "250 W" entregan picos mayores, y algunos controladores permiten subir la corriente o el límite de velocidad desde la pantalla. Compra un kit cuya ficha declare 250 W nominales y deja el límite en 25 km/h.</p>
 </section>
+<div class="note pack-callout"><strong>¿Tu conversión sigue siendo un ciclo?</strong> El <a href="#pack">Pack Bicicleta Eléctrica</a> (<span data-price-slug="pack-bicicleta-electrica">$7.990</span>, descarga inmediata en .zip) trae un planificador en Excel que verifica potencia, corte de velocidad y equipamiento, calcula la velocidad real de corte según tu rueda, la autonomía y el fusible, y una guía de 18 páginas para instalar el kit paso a paso.</div>
 <section id="bicicleta-base">
 <h2>Elegir la bicicleta base</h2>
 <p>La bicicleta que conviertes es tan importante como el kit. Antes de comprar nada, revisa:</p>
@@ -364,9 +442,9 @@ details p{padding-top:10px;margin-bottom:0}
 <ul>
 <li><strong>Rueda con motor:</strong> motor hub cableado con 3 fases y 5 cables de sensor Hall, o motor central listo para pedalier.</li>
 <li><strong>Controlador:</strong> caja sellada con conectores; gestiona el motor, la batería y los controles. Los controladores más comunes usan protocolo KT o Lishui.</li>
-<li><strong>Pantalla/display:</strong> LCD o LED con controles de nivel de asistencia, luces y modo de paseo. El estándar de facto es el conector Julet de 5 pines.</li>
-<li><strong>Throttle (acelerador):</strong> giro de puño o palanca; entrega potencia sin pedalear. Su legalidad varía por país.</li>
-<li><strong>Sensor de pedal asistido (PAS):</strong> disco con imanes y sensor que detecta cuándo pedaleas y con qué fuerza (torque sensor en kits caros).</li>
+<li><strong>Pantalla/display:</strong> LCD o LED con controles de nivel de asistencia, luces y modo de paseo. Muchos kits usan conectores estancos tipo Julet; el número de pines depende del modelo.</li>
+<li><strong>Throttle (acelerador):</strong> giro de puño o palanca; entrega potencia sin pedalear. En Chile, un acelerador que mueve la bicicleta sin pedalear la saca de la definición de ciclo: no lo instales o configúralo para que solo actúe pedaleando.</li>
+<li><strong>Sensor de pedal asistido (PAS):</strong> disco con imanes y sensor que detecta si estás pedaleando y a qué ritmo. Los kits más caros usan un sensor de torque, que además mide con qué fuerza pedaleas y da una asistencia más natural.</li>
 <li><strong>Batería:</strong> pack Li-ion 36V o 48V con BMS, en soporte de cuadro o portaequipajes; con conector XT60/Anderson y llave de encendido.</li>
 <li><strong>Frenos con corte:</strong> manetas que interrumpen el motor al frenar (obligatorio por seguridad; algunos kits incluyen sensores de freno hidráulico aparte).</li>
 </ul>
@@ -377,10 +455,10 @@ details p{padding-top:10px;margin-bottom:0}
 <p>El orden de trabajo recomendado para un kit hub:</p>
 <ol>
 <li><strong>Levanta la bicicleta y retira la rueda original</strong> que reemplazarás. Guarda las tuercas y arandelas: las del kit pueden diferir.</li>
-<li><strong>Verifica el ancho de horquilla/vaina</strong> contra el ancho del eje del motor (100 mm delantero, 135–142 mm trasero). Si no entra, no fuerces: el cuadro se puede partir.</li>
+<li><strong>Verifica el ancho de horquilla/vaina</strong> contra el ancho del eje del motor: lo habitual es 100 mm adelante y 135 mm atrás con cierre rápido o tuerca. Las bicicletas con eje pasante (por ejemplo 142 o 148 mm) necesitan un motor hecho para ese eje. Si no entra, no fuerces la horquilla ni las vainas: se pueden dañar.</li>
 <li><strong>Coloca el torque arm</strong> (ver sección de seguridad) en el lado de salida de cables, ANTES de apretar la rueda.</li>
 <li><strong>Instala la rueda</strong> cuidando que el cable del motor salga por el lado correcto y que el disco de freno (si lleva) entre en su pinza.</li>
-<li><strong>Aprieta las tuercas</strong> en cruz y con torque adecuado (aprox. 25–35 N·m para ejes de 10 mm); una rueda de motor floja se gira y corta los cables del sensor Hall.</li>
+<li><strong>Aprieta las tuercas</strong> con el torque que indica el fabricante del motor (suele estar entre 30 y 40 N·m); una rueda de motor floja se gira y corta los cables.</li>
 <li><strong>Gira la rueda a mano</strong> y verifica que no roce con nada y que gire libre.</li>
 </ol>
 <div class="note"><strong>Nota para motor hub trasero:</strong> la rueda del kit trae piñón libre o cassette según la transmisión de tu bicicleta; el desviador debe quedar con su ajuste normal. Si la rueda nueva es más ancha que la original, revisa el juego del desviador antes de apretar.</div>
@@ -413,10 +491,11 @@ details p{padding-top:10px;margin-bottom:0}
 <ol>
 <li>Retira la biela izquierda (lado sin platos).</li>
 <li>Desliza el disco PAS (con 8–12 imanes) sobre el eje, alineado con el orificio de la rosca del eje si lo tiene.</li>
-<li>Monta el sensor sobre el tubo del pedalier (soporte atornillado o abrazadera), con la cara de detección a 2–4 mm de los imanes.</li>
+<li>Monta el sensor sobre el tubo del pedalier (soporte atornillado o abrazadera), con la cara de detección a pocos milímetros de los imanes, según el manual del kit.</li>
 <li>Vuelve a montar la biela. Gira el eje: el LED del sensor (si tiene) debe parpadear al pasar los imanes.</li>
 </ol>
-<p>El <strong>throttle</strong> reemplaza o complementa la empuñadura derecha (o va como palanca cerca del pulgar). Su cable llega al controlador; en la configuración estándar, con PAS en 0 el throttle da potencia a baja velocidad (modo paseo), y con PAS activo suma potencia al pedaleo. Si tu país restringe el throttle, el kit se puede configurar para que solo responda pedalando.</p>
+<p>El <strong>throttle</strong> reemplaza o complementa la empuñadura derecha (o va como palanca cerca del pulgar). En muchos controladores, con PAS en 0 el acelerador mueve la bicicleta sin pedalear. Eso no cabe en la definición chilena de ciclo, que exige que el motor se corte cuando dejas de pedalear: si quieres circular por la calle, no conectes el acelerador o configura el controlador para que solo actúe mientras pedaleas.</p>
+<p><strong>Configura la pantalla.</strong> Ingresa el diámetro exacto de la rueda (de él depende la velocidad que calcula el controlador) y fija el límite de velocidad en 25 km/h. Con un diámetro mal ingresado, el corte ocurre a otra velocidad real.</p>
 <div class="warning"><strong>Prueba de seguridad:</strong> antes de la primera salida, levanta la rueda trasera y verifica que el motor NO gire con la bicicleta apoyada en el pedal de arranque (arranque accidental) y que los frenos corten el motor al apretar las manetas. Esta prueba de 30 segundos evita el accidente más común en conversiones caseras.</div>
 </section>
 <section id="bateria">
@@ -425,9 +504,9 @@ details p{padding-top:10px;margin-bottom:0}
 <ul>
 <li><strong>Ubicación:</strong> el soporte en el tubo del cuadro es el estándar (centro de gravedad bajo y seguro). Los soportes de portaequipajes suman peso atrás y afectan el manejo. Evita mochilas con la batería suelta.</li>
 <li><strong>Fijación:</strong> los soportes de batería usan llave o correa; verifica que la batería no se mueva con baches (una batería que golpea el cuadro puede romper el soporte o dañar el BMS).</li>
-<li><strong>Fusible:</strong> instala un portafusibles en el cable B+ de la batería o usa el fusible que trae el kit (10–15 A para 250W, 20–30 A para 750W). Un fusible puede salvar la batería ante un cortocircuito.</li>
+<li><strong>Fusible:</strong> instala un portafusibles en el cable B+ de la batería o usa el que trae el kit. Elige un valor algo mayor que la corriente máxima del controlador (si el controlador es de 15 A, un fusible de 20 A), para que no salte en una subida pero sí ante un cortocircuito.</li>
 <li><strong>Conectores:</strong> XT60/XT90 o Anderson con buena conexión; los conectores sueltos se calientan y funden. La batería se conecta SIEMPRE de último, con el sistema apagado.</li>
-<li><strong>Carga:</strong> usa el cargador original; carga en superficie no inflamable, sin dejarla cargando toda la noche desatendida, y guarda la batería entre 30–80 % si no la usarás por semanas.</li>
+<li><strong>Carga:</strong> usa el cargador original; carga en superficie no inflamable, sin dejarla cargando toda la noche desatendida, y guarda la batería con 40 a 60 % de carga si no la usarás por semanas.</li>
 </ul>
 </section>
 <section id="pruebas">
@@ -443,17 +522,30 @@ details p{padding-top:10px;margin-bottom:0}
 <p>La primera salida real: 2–3 km en terreno plano, <strong>con casco</strong>, en PAS bajo, prestando atención a cómo se siente el manejo (más peso, dirección más pesada en kits delanteros) y a la temperatura del controlador al volver. Si todo va bien, aumenta progresivamente la asistencia y la distancia. Esta curva gradual detecta instalaciones defectuosas antes de que se conviertan en fallas en plena calle.</p>
 </section>
 <section id="normativa">
-<h2>Normativa y trámites</h2>
-<p>En Chile, la <strong>Ley 21.377</strong> (que modifica la Ley de Tránsito) reguló los ciclos eléctricos. En términos prácticos: una bicicleta con motor de hasta 250W y asistencia que se corta a 25 km/h se trata como bicicleta (casco obligatorio, circular por ciclovías y calzada, sin patente). Sobre esos límites, el vehículo se clasifica como ciclomotor o motocicleta según el caso, lo que implica licencia, permiso de circulación, seguros y revisión técnica.</p>
-<p>Además, verifica las reglas locales de tu comuna: algunas restringen los ciclos eléctricos en ciclovías o exigen elementos reflectantes. La <strong>SEC</strong> (Superintendencia de Electricidad y Combustibles) no certifica bicicletas eléctricas como vehículos de consumo masivo aún, así que la responsabilidad de la conversión (calidad del kit, batería con certificaciones CE/UN38.3) recae en ti como constructor.</p>
-<div class="note"><strong>Recomendación:</strong> conserva la factura del kit y de la batería, y las certificaciones del cargador y el BMS. Si vendes la bicicleta convertida, transparenta qué es y qué certificaciones tiene.</div>
+<h2>Normativa y equipamiento obligatorio</h2>
+<p>En Chile, la definición de ciclo con motor auxiliar está en el <strong>artículo 2 N° 9 de la Ley de Tránsito</strong>: hasta 0,25 kW de potencia nominal continua y asistencia que se corta a 25 km/h o cuando dejas de pedalear. Si tu conversión cumple, se trata como una bicicleta: no lleva patente, permiso de circulación ni licencia, y sigue las mismas reglas que cualquier ciclo.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Regla para ciclos</th><th>Qué exige</th></tr></thead>
+<tbody>
+<tr><td>Casco</td><td>Obligatorio en zonas urbanas (art. 80 de la Ley de Tránsito). El Decreto 102 de 2021 pide casco con carcasa, revestimiento absorbente y sistema de retención, que cumpla EN 1078, CPSC 16 CFR 1203 o equivalente</td></tr>
+<tr><td>Dónde circular</td><td>Por la ciclovía; si no hay, por la pista derecha de la calzada. La vereda solo en casos excepcionales y a velocidad de peatón (art. 222)</td></tr>
+<tr><td>Frenos</td><td>Al menos un sistema de frenos eficaz (en una e-bike, conviene que ambos lo sean)</td></tr>
+<tr><td>Luces</td><td>Delantera blanca o amarilla y trasera roja, desde media hora después de la puesta de sol hasta media hora antes de la salida, y cuando haya poca visibilidad</td></tr>
+<tr><td>Reflectantes</td><td>Blancos adelante, rojos atrás y laterales; además, prenda o elemento reflectante en el conductor de noche</td></tr>
+<tr><td>Timbre</td><td>Un timbre o aparato sonoro de intensidad moderada</td></tr>
+</tbody>
+</table>
+</div>
+<p>Muchos kits traen una salida para luces desde la batería: aprovéchala para cumplir con las luces sin depender de pilas.</p>
+<div class="note"><strong>Responsabilidad del constructor.</strong> Nadie certifica tu conversión: la calidad del kit, la batería y la instalación quedan a tu cargo. Compra baterías y cargadores con documentación (UN 38.3 para el transporte de la batería, por ejemplo) y conserva las facturas. Si vendes la bicicleta, informa por escrito que es una conversión, la potencia del motor y cómo está configurada.</div>
 </section>
 <section id="seguridad">
 <h2>Seguridad: frenos, torque arms y litio</h2>
 <p>Los tres riesgos reales de una conversión, en orden de gravedad:</p>
 <p><strong>1. Falla mecánica de la rueda con motor.</strong> El par de un motor hub puede girar el eje dentro de la vaina si no está bloqueado, cortando los cables del motor o del sensor Hall en plena marcha. El <strong>torque arm</strong> (una pieza de acero que ancla el eje al cuadro) es obligatorio en la práctica: los kits baratos no lo incluyen y muchos vendedores lo venden aparte. No circules sin él.</p>
-<p><strong>2. Freno insuficiente.</strong> A 30 km/h con 20 kg extra de motor y batería, la distancia de frenado crece. Si tu bicicleta tiene frenos de zapata, cámbialos por zapatas nuevas de calidad; considera frenos de disco si el cuadro lo permite.</p>
-<p><strong>3. Batería de litio.</strong> El incendio de baterías Li-ion viene casi siempre de celdas de mala calidad, BMS ausente o daño mecánico. Compra baterías de marcas conocidas con BMS y certificación (UN38.3 para transporte), nunca baterías "rearmadas" sin marca, y revisa mensualmente el estado del pack (hinchazón, calor anómalo, conectores).</p>
+<p><strong>2. Freno insuficiente.</strong> Con unos 5 a 8 kg extra de motor y batería y velocidades sostenidas de 25 km/h, la distancia de frenado crece. Si tu bicicleta tiene frenos de zapata, cámbialos por zapatas nuevas de calidad; considera frenos de disco si el cuadro lo permite.</p>
+<p><strong>3. Batería de litio.</strong> El incendio de baterías Li-ion viene casi siempre de celdas de mala calidad, BMS ausente o daño mecánico. Compra baterías de marcas conocidas con BMS y documentación (UN 38.3 para transporte), nunca baterías "rearmadas" sin marca, y revisa mensualmente el estado del pack (hinchazón, calor anómalo, conectores). Una batería que se cayó o recibió un golpe fuerte debe revisarse antes de volver a cargarla.</p>
 </section>
 <section id="mantenimiento">
 <h2>Mantenimiento de la bicicleta convertida</h2>
@@ -461,7 +553,7 @@ details p{padding-top:10px;margin-bottom:0}
 <ul>
 <li><strong>Mensual:</strong> torque de las ruedas y del soporte de batería, estado de conectores (limpieza con contact cleaner si hay corrosión), presión de neumáticos y revisión visual de frenos.</li>
 <li><strong>Cada 500–1.000 km:</strong> en kits hub, revisar radios (los de la rueda motor trabajan más), en kits centrales, cadena y cassette (se desgastan 2–3× más rápido).</li>
-<li><strong>Batería:</strong> ciclo profundo de calibración cada 2–3 meses (descargar al 20 % y cargar completa); guardar en lugar seco y fresco en invierno.</li>
+<li><strong>Batería:</strong> las de litio no necesitan descargas profundas de "calibración"; una carga completa de vez en cuando ayuda a que el BMS equilibre las celdas. Guárdala en un lugar seco y fresco, y no la cargues bajo 0 °C.</li>
 <li><strong>Limpieza:</strong> el controlador y los conectores odian el agua a presión: lava con esponja, no con hidrolavadora, y revisa las entradas de cable después de lluvias fuertes.</li>
 </ul>
 </section>
@@ -485,16 +577,16 @@ details p{padding-top:10px;margin-bottom:0}
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
 <div class="faq">
-<details><summary>¿Qué kit es mejor para empezar: hub delantero, trasero o central?</summary><p>Para la mayoría de las personas, un motor hub trasero de 250W es el punto de partida ideal: mejor tracción que el delantero, instalación mucho más simple que el central y precio contenido. El hub delantero conviene solo para ciudad muy plana y presupuesto mínimo. El motor central (Bafang BBS02, por ejemplo) es superior en pendientes y sensación de manejo, pero cuesta el doble, exige herramientas de pedalier y desgasta la transmisión más rápido.</p></details>
-<details><summary>¿Cuánto cuesta convertir una bicicleta en eléctrica en Chile?</summary><p>Un kit hub de 250W con batería de 36V se consigue por unos 350–500 USD en total (kit 150–250 USD + batería 200–300 USD según capacidad). Un kit completo de 500–750W con batería 48V ronda los 400–700 USD, y un motor central Bafang BBS02 con batería puede llegar a 800–1.100 USD. A eso se suman el torque arm, herramientas y, si aplica, mejoras de frenos. Comparado con una e-bike nueva de 800–1.500 USD, la conversión sigue siendo la opción económica, sobre todo si ya tienes la bicicleta.</p></details>
-<details><summary>¿Necesito licencia, patente o permiso de circulación para una bicicleta eléctrica?</summary><p>Si tu conversión cumple los límites de bicicleta asistida (motor de hasta 250W y asistencia que se corta a 25 km/h), en Chile se trata como bicicleta: no requiere patente, permiso de circulación ni licencia, y el casco es obligatorio. Si el motor supera esos límites, el vehículo se reclasifica como ciclomotor, con requisitos de licencia y permisos. La normativa se modifica periódicamente y la interpretación varía por comuna: verifica la regla vigente antes de comprar un kit más potente.</p></details>
-<details><summary>¿Puedo usar una batería de 48V con un motor de 250W?</summary><p>Técnicamente algunos controladores de 250W aceptan 36V y 48V, pero no es recomendable: el motor de 250W está diseñado para la corriente y voltaje de 36V, y alimentarlo a 48V aumenta la velocidad y la potencia real (por encima del límite legal y del diseño térmico del motor), acortando su vida. Si quieres más potencia, compra un motor de 500W+ con su controlador y batería 48V adecuados, asumiendo las implicancias legales que eso conlleva.</p></details>
+<details><summary>¿Qué kit es mejor para empezar: hub delantero, trasero o central?</summary><p>Para la mayoría de las personas, un motor hub trasero de 250W es el punto de partida ideal: mejor tracción que el delantero, instalación mucho más simple que el central y precio contenido. El hub delantero conviene solo para ciudad muy plana y presupuesto mínimo. El motor central es superior en pendientes y sensación de manejo, pero cuesta el doble, exige herramientas de pedalier y desgasta la transmisión más rápido. Ojo: el popular Bafang BBS02 es de 500 a 750 W; para circular como ciclo en Chile necesitas una versión de 250 W nominales.</p></details>
+<details><summary>¿Cuánto cuesta convertir una bicicleta en eléctrica en Chile?</summary><p>Un kit hub de 250W con batería de 36V se consigue por unos 350–500 USD en total (kit 150–250 USD + batería 200–300 USD según capacidad). Un kit completo de 500–750W con batería 48V ronda los 400–700 USD, y un motor central con batería puede llegar a 800–1.100 USD. A eso se suman el torque arm, herramientas y, si aplica, mejoras de frenos. Comparado con una e-bike nueva de 800–1.500 USD, la conversión sigue siendo la opción económica, sobre todo si ya tienes la bicicleta.</p></details>
+<details><summary>¿Necesito licencia, patente o permiso de circulación para una bicicleta eléctrica?</summary><p>No, si tu conversión es un ciclo según el artículo 2 N° 9 de la Ley de Tránsito: motor de hasta 250 W de potencia nominal continua, con asistencia que se corta a 25 km/h o cuando dejas de pedalear. En ese caso se usa como una bicicleta: sin patente, permiso ni licencia, con casco en zona urbana, luces, reflectantes y timbre. Si supera esos límites, o tiene un acelerador que la mueve sin pedalear, pasa a ser un vehículo motorizado, con placa patente, permiso de circulación, SOAP y licencia, trámites que una bicicleta convertida no puede completar.</p></details>
+<details><summary>¿Puedo usar una batería de 48V con un motor de 250W?</summary><p>Técnicamente algunos controladores de 250W aceptan 36V y 48V, pero no es recomendable: el motor de 250W está diseñado para la corriente y voltaje de 36V, y alimentarlo a 48V aumenta la velocidad y la potencia real (por encima del límite legal y del diseño térmico del motor), acortando su vida. Un motor de más potencia deja la bicicleta fuera de la definición de ciclo, con todo lo que eso implica para circular por la calle.</p></details>
 <details><summary>¿Cuánto dura la batería y qué autonomía tendré?</summary><p>La autonomía se estima con la capacidad en Wh (voltaje × Ah): una batería de 36V/10Ah son 360 Wh, que con un motor de 250W a asistencia media rinde unos 35–45 km planos; una de 48V/14Ah (672 Wh) alcanza los 60–80 km en las mismas condiciones. El consumo real depende de tu peso, pendientes, viento, nivel de asistencia y presión de neumáticos. La vida útil de la batería se mide en ciclos: las de celdas de calidad (Samsung, LG, Panasonic) duran 500–800 ciclos antes de caer al 80 % de capacidad, unos 3–5 años de uso diario.</p></details>
 </div>
 </section>
 
 
-<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+<p class="disclosure">Este artículo es contenido editorial independiente y no contiene enlaces de afiliado. Incluye la oferta de un pack digital de pago elaborado por ukrabot.cl, identificado como tal. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
 
 <div class="cta">
   <h3>Sigue aprendiendo</h3>
@@ -511,14 +603,17 @@ details p{padding-top:10px;margin-bottom:0}
 <h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
 <p style="font-size:.9rem;color:#57534a;">Referencias sobre kits de conversión, normativa chilena de ciclos eléctricos y seguridad de baterías de litio. Los precios son orientativos y varían con el mercado.</p>
 <ul>
-<li><a href="https://bcn.cl/leychile/navegar?idNorma=1113635" target="_blank" rel="noopener noreferrer">Ley 21.377 — Modificación de la Ley de Tránsito sobre ciclos eléctricos (Biblioteca del Congreso Nacional de Chile)</a></li>
-<li><a href="https://www.bafang-e.com/en/components/component/motor/BBS02.html" target="_blank" rel="noopener noreferrer">Bafang — Motor central BBS02 y documentación</a></li>
+<li><a href="https://www.bcn.cl/leychile/navegar?i=1007469" target="_blank" rel="noopener noreferrer">Ley de Tránsito, texto refundido (Biblioteca del Congreso Nacional de Chile)</a></li>
+<li><a href="https://iura.cl/dfl-1-mtt-2009/2" target="_blank" rel="noopener noreferrer">Ley de Tránsito, artículo 2 N° 9: definición de ciclo con motor auxiliar eléctrico</a></li>
+<li><a href="https://anterior.isl.gob.cl/wp-content/uploads/Decreto-102.pdf" target="_blank" rel="noopener noreferrer">Decreto 102 de 2021 del MTT: ciclovías, equipamiento de los ciclos y casco</a></li>
+<li><a href="https://obtienearchivo.bcn.cl/obtienearchivo?id=repositorio/10221/29504/2/BCN2020___regulacion_bicicletas_pdf.pdf" target="_blank" rel="noopener noreferrer">BCN — Regulación del tránsito de bicicletas y ciclistas (2020)</a></li>
+<li><a href="https://www.bafang-e.com/en/components/component/motor/BBS02.html" target="_blank" rel="noopener noreferrer">Bafang — Motores centrales y documentación</a></li>
 <li><a href="https://www.ebikes.ca/learn/torque-arm.html" target="_blank" rel="noopener noreferrer">Grin Technologies — Por qué se necesitan torque arms</a></li>
 <li><a href="https://batteryuniversity.com/article/bu-304a-safety-concerns-with-li-ion" target="_blank" rel="noopener noreferrer">Battery University — Seguridad de baterías Li-ion</a></li>
-<li><a href="https://www.un38.3.org/" target="_blank" rel="noopener noreferrer">Norma UN 38.3 — Transporte seguro de baterías de litio</a></li>
+<li><a href="https://unece.org/transport/dangerous-goods/un-manual-tests-and-criteria" target="_blank" rel="noopener noreferrer">UNECE — Manual de pruebas y criterios (sección 38.3, baterías de litio)</a></li>
 <li><a href="https://www.sec.cl/" target="_blank" rel="noopener noreferrer">Superintendencia de Electricidad y Combustibles (SEC) de Chile</a></li>
 </ul>
-<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 23 de noviembre de 2026.</p>
 </section>
 </main>
 
@@ -637,6 +732,7 @@ details p{padding-top:10px;margin-bottom:0}
   });
 })();
 </script>
+<script src="/tienda/tienda.js?v=4" defer></script>
 </body>
 </html>
 
