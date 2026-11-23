@@ -13,7 +13,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Construye tu Consola Retro Portátil con Raspberry Pi Zero 2 W — Guía Técnica Completa">
 <meta property="og:description" content="Materiales, gestión de batería LiPo, pantallas SPI/DPI, controles GPIO, RetroPie vs Batocera, overclock seguro y manejo térmico para tu consola retro portátil DIY.">
-<meta property="og:image" content="https://www.ukrabot.cl/blog/consola_retro_pi_zero2w_hero.jpg">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/consola-retro-pi-zero-2w-hero.jpg">
 <meta property="og:url" content="https://www.ukrabot.cl/blog/construye-tu-consola-retro-portatil-con-raspberry-pi-zero-2-w">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="Blog de Ingeniería Robótica">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Consola Retro Portátil con Raspberry Pi Zero 2 W">
 <meta name="twitter:description" content="Guía técnica completa: materiales, batería LiPo, pantalla, controles GPIO, software de emulación, overclock y gestión térmica.">
-<meta name="twitter:image" content="https://www.ukrabot.cl/blog/consola_retro_pi_zero2w_hero.jpg">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/consola-retro-pi-zero-2w-hero.jpg">
 
 <script type="application/ld+json">
 {
@@ -43,12 +43,12 @@
     "logo":{"@type":"ImageObject","url":"https://www.ukrabot.cl/logo.png"}
   },
   "datePublished":"2026-10-23",
-  "dateModified":"2026-10-23",
+  "dateModified":"2026-11-23",
   "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.ukrabot.cl/blog/construye-tu-consola-retro-portatil-con-raspberry-pi-zero-2-w"},
-  "image":"https://www.ukrabot.cl/blog/consola_retro_pi_zero2w_hero.jpg",
+  "image":"https://www.ukrabot.cl/blog/consola-retro-pi-zero-2w-hero.jpg",
   "proficiencyLevel":"Intermedio",
-  "dependencies":"Raspberry Pi Zero 2 W, tarjeta microSD clase 10 A1/A2 de 32-64GB, pantalla IPS SPI o DPI de 3.5-5 pulgadas, UPS HAT o módulo cargador TP4056 con protección, batería LiPo 1S de 1000-2000mAh, botones tipo arcade o membrana, joystick analógico opcional (PSP/GameCube), amplificador de audio PAM8403 o similar, parlante de 8 ohms, carcasa impresa en 3D o comercial, cables jumper y protoboard/PCB perforada",
-  "wordCount":"3500",
+  "dependencies":"Raspberry Pi Zero 2 W, tarjeta microSD A1/A2 de 32-64 GB, pantalla HDMI, SPI o DPI de 2,8 a 5 pulgadas, UPS HAT o cargador con protección y elevador de 5 V y 2 A, batería LiPo 1S de 2000-4000 mAh con protección, 12 botones, amplificador I2S MAX98357A y parlante, carcasa impresa en 3D",
+  "wordCount":"4783",
   "inLanguage":"es-CL"
 }
 </script>
@@ -67,15 +67,57 @@
 
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"FAQPage",
-  "mainEntity":[
-    {"@type":"Question","name":"¿Qué consolas puede emular realmente la Raspberry Pi Zero 2 W?","acceptedAnswer":{"@type":"Answer","text":"La Raspberry Pi Zero 2 W, gracias a su SoC de cuatro núcleos Cortex-A53 a 1GHz, emula de forma estable y a pantalla completa la práctica totalidad de consolas de 8 y 16 bits (NES, SNES, Sega Genesis/Mega Drive, Game Boy, Game Boy Advance) y con buen desempeño la mayoría de los sistemas de la primera etapa de los 32 bits como PlayStation 1 y Nintendo 64 en juegos poco exigentes, aunque este último sistema presenta ralentizaciones notorias en títulos con mucha geometría 3D. Sistemas posteriores como PlayStation 2, GameCube o Dreamcast están completamente fuera de su alcance, ya que requieren una potencia de cómputo y una GPU muchísimo más capaces que las que ofrece este SoC de gama de entrada."}},
-    {"@type":"Question","name":"¿Es seguro usar una batería LiPo sin circuito de protección en este proyecto?","acceptedAnswer":{"@type":"Answer","text":"No, nunca se debe conectar una celda LiPo directamente a un circuito sin un módulo de protección contra sobrecarga, sobredescarga y cortocircuito, ya sea integrado en el propio módulo de la batería o en el UPS HAT/cargador utilizado. Las celdas de litio-polímero sin protección pueden inflarse, generar fugas de electrolito o incluso incendiarse si se descargan por debajo de su voltaje mínimo seguro (aproximadamente 3.0V por celda) o se sobrecargan por encima de 4.2V. Es indispensable usar módulos con circuitos de protección certificados (como el TP4056 con protección integrada, o un UPS HAT de fabricantes reconocidos) y nunca dejar la batería cargando sin supervisión durante las primeras pruebas del proyecto."}},
-    {"@type":"Question","name":"¿RetroPie o Batocera para este proyecto?","acceptedAnswer":{"@type":"Answer","text":"Ambas distribuciones están construidas sobre la misma base de emuladores (RetroArch/libretro) y ofrecen resultados de emulación prácticamente idénticos, por lo que la elección suele reducirse a preferencias de configuración. RetroPie, con más años de desarrollo comunitario, ofrece mayor cantidad de tutoriales y scripts de terceros específicos para proyectos portátiles con GPIO, lo que lo hace ligeramente más recomendable para principiantes en hardware casero. Batocera, en cambio, prioriza una experiencia lista para usar desde el primer arranque con menos necesidad de configuración manual, y su interfaz de administración vía navegador web resulta más cómoda para quienes prefieren evitar la línea de comandos."}},
-    {"@type":"Question","name":"¿Cuánto dura la batería de una consola retro portátil casera?","acceptedAnswer":{"@type":"Answer","text":"Depende fuertemente de la capacidad de la batería, el brillo de la pantalla y el sistema emulado, pero como referencia orientativa, una celda LiPo de 2000mAh combinada con una pantalla IPS de 3.5-5 pulgadas a brillo medio suele entregar entre 3 y 5 horas de uso continuo emulando consolas de 8-16 bits, y algo menos —entre 2 y 3.5 horas— al emular sistemas más exigentes como PlayStation 1 o Nintendo 64, debido a la mayor carga sostenida sobre el procesador. El uso de un buen UPS HAT con gestión eficiente de energía y la reducción del brillo de pantalla son las dos variables que más impactan en la autonomía real del dispositivo."}},
-    {"@type":"Question","name":"¿Necesito saber soldar para construir esta consola?","acceptedAnswer":{"@type":"Answer","text":"Sí, en la gran mayoría de las variantes de este proyecto se requiere al menos soldadura básica: los botones físicos deben conectarse mediante cables soldados a los pines GPIO o a una placa perforada intermedia, y la batería LiPo generalmente necesita soldarse a los terminales del UPS HAT o módulo cargador si no viene con el conector JST ya instalado. Existen alternativas de menor dificultad, como usar un HAT de controles ya ensamblado con conectores tipo Dupont en vez de soldar cada botón individualmente, pero eliminar por completo la necesidad de soldadura suele implicar sacrificar personalización en la disposición física de los controles."}},
-    {"@type":"Question","name":"¿Por qué usar Raspberry Pi Zero 2 W y no una Raspberry Pi 4 o 5 para este proyecto?</span>","acceptedAnswer":{"@type":"Answer","text":"La Raspberry Pi Zero 2 W ofrece la mejor relación entre tamaño físico, consumo energético y potencia suficiente para emulación retro clásica, tres factores críticos en un dispositivo portátil alimentado por batería donde cada gramo y cada miliamperio importan. Una Raspberry Pi 4 o 5 ofrece muchísima más potencia —necesaria para emular sistemas más avanzados como PlayStation 2 o GameCube— pero a costa de un consumo energético considerablemente mayor, mayor generación de calor que exige disipación más agresiva, y un tamaño físico que complica el diseño de una carcasa verdaderamente portátil y cómoda de sostener con ambas manos."}}
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué consolas puede emular realmente la Raspberry Pi Zero 2 W?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La Raspberry Pi Zero 2 W, gracias a su SoC de cuatro núcleos Cortex-A53 a 1GHz, emula de forma estable y a pantalla completa la práctica totalidad de consolas de 8 y 16 bits (NES, SNES, Sega Genesis/Mega Drive, Game Boy, Game Boy Advance) y con buen desempeño la mayoría de los juegos de PlayStation 1. Nintendo 64 funciona mal en la mayoría de los títulos y solo algunos livianos son jugables con ajustes. Dreamcast, Saturn, PlayStation 2 y GameCube quedan fuera de su alcance: requieren una potencia de cómputo y una GPU muy superiores a las de este SoC."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Es seguro usar una batería LiPo sin circuito de protección en este proyecto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, nunca se debe conectar una celda LiPo directamente a un circuito sin un módulo de protección contra sobrecarga, sobredescarga y cortocircuito, ya sea integrado en el propio módulo de la batería o en el UPS HAT/cargador utilizado. Las celdas de litio-polímero sin protección pueden inflarse, generar fugas de electrolito o incluso incendiarse si se descargan por debajo de su voltaje mínimo seguro (aproximadamente 3.0V por celda) o se sobrecargan por encima de 4.2V. Es indispensable usar módulos con circuitos de protección (como el TP4056 con protección integrada o un UPS HAT de un fabricante reconocido) y nunca dejar la batería cargando sin supervisión durante las primeras pruebas del proyecto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿RetroPie o Batocera para este proyecto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ambas usan en gran parte los mismos núcleos de emulación (RetroArch/libretro) y logran resultados muy parecidos, así que la elección se reduce a cómo prefieres configurar. RetroPie tiene más tutoriales para consolas portátiles caseras y su imagen 4.8, basada en un sistema de 32 bits, es compatible con el driver rápido de pantallas SPI fbcp-ili9341; a cambio, se actualiza poco. Batocera funciona lista para usar desde el primer arranque, se actualiza seguido, publica imagen para la Pi Zero 2 W y permite copiar juegos por una carpeta compartida en la red. Los botones por gpio-key funcionan en ambas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto dura la batería de una consola retro portátil casera?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende fuertemente de la capacidad de la batería, el brillo de la pantalla y el sistema emulado, pero como referencia: una LiPo de 2000 mAh guarda unos 7,4 Wh y, tras las pérdidas del elevador (85 a 90 %), entrega cerca de 6,5 Wh. Una consola con pantalla de 3,5\" a brillo medio consume de 2,5 a 3,5 W en juegos de 8 y 16 bits, lo que da unas 2 horas; con PlayStation 1, algo menos. Para 4 horas o más, usa una celda de 3000 a 4000 mAh. El uso de un buen UPS HAT con gestión eficiente de energía y la reducción del brillo de pantalla son las dos variables que más impactan en la autonomía real del dispositivo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito saber soldar para construir esta consola?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, en la gran mayoría de las variantes de este proyecto se requiere al menos soldadura básica: los botones físicos deben conectarse mediante cables soldados a los pines GPIO o a una placa perforada intermedia, y la batería LiPo generalmente necesita soldarse a los terminales del UPS HAT o módulo cargador si no viene con el conector JST ya instalado. Existen alternativas de menor dificultad, como usar un HAT de controles ya ensamblado con conectores tipo Dupont en vez de soldar cada botón individualmente, pero eliminar por completo la necesidad de soldadura suele implicar sacrificar personalización en la disposición física de los controles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué usar Raspberry Pi Zero 2 W y no una Raspberry Pi 4 o 5 para este proyecto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La Raspberry Pi Zero 2 W ofrece la mejor relación entre tamaño físico, consumo energético y potencia suficiente para emulación retro clásica, tres factores críticos en un dispositivo portátil alimentado por batería donde cada gramo y cada miliamperio importan. Una Raspberry Pi 4 o 5 ofrece muchísima más potencia —útil para Nintendo 64, Dreamcast o PSP; PlayStation 2 y GameCube siguen siendo limitados incluso en una Pi 5— pero a costa de un consumo energético considerablemente mayor, mayor generación de calor que exige disipación más agresiva, y un tamaño físico que complica el diseño de una carcasa verdaderamente portátil y cómoda de sostener con ambas manos."
+      }
+    }
   ]
 }
 </script>
@@ -243,6 +285,22 @@ details p{padding-top:10px;margin-bottom:0}
     gtag('js', new Date());
     gtag('config', 'G-1ZVHF8X35Q');
   </script>
+<style>
+.pack{margin:52px 0;padding:28px;border:1px solid rgba(169,123,35,.35);border-radius:18px;background:#fff;box-shadow:0 18px 40px rgba(30,25,15,.06)}
+.pack-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:start}
+.pack-grid>img{width:100%;height:auto;border-radius:12px;display:block}
+.pack-tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.pack h2{margin:8px 0 12px}
+.pack ul{padding-left:20px;margin:0 0 18px}
+.pack li{margin-bottom:8px}
+.pack-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 2px}
+.pack-price strong{font-family:Georgia,serif;font-size:2rem;font-weight:400;color:var(--text)}
+.pack-price span{color:var(--muted);font-size:.9rem}
+.pack-fine{font-size:.8rem;color:var(--quiet);margin:14px 0 0;line-height:1.5}
+.pack-callout a{font-weight:600}
+@media (max-width:820px){.pack{padding:20px}.pack-grid{grid-template-columns:1fr;gap:20px}}
+</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=5">
 </head>
 <body>
 
@@ -265,12 +323,12 @@ details p{padding-top:10px;margin-bottom:0}
 </nav>
 
 <header class="hero">
-  <img src="consola_retro_pi_zero2w_hero.jpg" alt="Consola retro portátil casera con Raspberry Pi Zero 2 W, pantalla IPS, botones tipo arcade y carcasa impresa en 3D, mostrando un juego de 16 bits en pantalla" fetchpriority="high">
+  <img src="consola-retro-pi-zero-2w-hero.jpg" alt="Ilustración de una consola retro portátil casera con pantalla, cruceta y cuatro botones, junto a una Raspberry Pi Zero 2 W y una batería LiPo" fetchpriority="high">
   <div class="hero-inner">
-    <div class="eyebrow">Raspberry Pi y emulación · Actualizado el <time datetime="2026-10-23">23 de octubre de 2026</time></div>
+    <div class="eyebrow">Raspberry Pi y emulación · Actualizado el <time datetime="2026-11-23">23 de noviembre de 2026</time></div>
     <h1>Construye tu Consola Retro Portátil con Raspberry Pi Zero 2 W</h1>
     <p>Materiales, gestión segura de batería LiPo, elección de pantalla, cableado de controles por GPIO, comparativa de software de emulación, overclock responsable y manejo térmico: la guía técnica completa para tu propia consola portátil casera.</p>
-    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 18 min de lectura</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 22 min de lectura</p>
   </div>
 </header>
 
@@ -278,8 +336,8 @@ details p{padding-top:10px;margin-bottom:0}
 <article>
 
 <div class="article-img">
-  <img src="pi_zero2w_ups_hat_bateria_lipo.jpg" alt="Esquema de una Raspberry Pi Zero 2 W apilada sobre un UPS HAT, con batería LiPo 1S con PCB de protección conectada por JST y carga por USB-C" loading="lazy" width="1600" height="900">
-  <div class="caption">El componente que determina si tu consola es realmente "portátil" no es la Raspberry Pi: es el circuito de gestión de batería que la mantiene funcionando de forma segura lejos de un enchufe.</div>
+  <img src="consola-retro-pi-zero-2w-cableado.jpg" alt="Diagrama de cableado de la consola: batería LiPo con protección y elevador a 5 V, 12 botones en GPIO 4, 5, 6, 12, 13, 15, 16, 17, 22, 23, 26 y 27, pantalla SPI en GPIO 8 a 11, 24 y 25, y amplificador I2S MAX98357A en GPIO 18, 19 y 21" loading="lazy" width="1600" height="900">
+  <div class="caption">Cableado de referencia de esta guía: la batería con protección y el elevador a 5 V, los 12 botones, la pantalla SPI y el amplificador I2S, sin pines compartidos. El componente que decide si la consola es de verdad portátil es el circuito de batería.</div>
 </div>
 
 <div class="toc" aria-label="Tabla de contenidos">
@@ -303,6 +361,25 @@ details p{padding-top:10px;margin-bottom:0}
   </ol>
 </div>
 
+<section id="pack" class="pack" aria-labelledby="pack-t">
+<div class="pack-grid">
+  <img src="pack-consola-retro-pi-zero-2w.jpg" alt="Portada del Pack Consola Retro Pi Zero 2 W: planificador en Excel, guía en PDF y mapa de pines" width="1200" height="800" loading="lazy">
+  <div>
+    <span class="pack-tag">Pack digital · ukrabot.cl</span>
+    <h2 id="pack-t">Pack Consola Retro Pi Zero 2 W: tu consola, sin choques de pines ni sustos con la batería</h2>
+    <p>Todo lo de esta guía, convertido en herramientas: asigna los pines sin conflictos, copia la configuración lista y calcula cuánto dura la batería antes de comprar.</p>
+    <ul>
+      <li><strong>Planificador en Excel (7 hojas):</strong> pines GPIO que avisan si un botón choca con la pantalla, el audio o el I2C, líneas listas para el config.txt (botones, audio y overclock), autonomía con el elevador que necesitas, presupuesto, compatibilidad de consolas y lista de pruebas antes de cerrar la carcasa.</li>
+      <li><strong>Guía en PDF (18 páginas):</strong> qué puede emular la placa, materiales, sistema y microSD, alimentación y seguridad del litio, autonomía, mapa de pines, botones con gpio-key, pantalla, audio I2S, armado paso a paso, temperatura y solución de problemas.</li>
+      <li><strong>Diagrama de cableado</strong> del header de 40 pines en alta resolución.</li>
+    </ul>
+    <div class="pack-price"><strong data-price-slug="pack-consola-retro-pi-zero-2w">$7.990</strong><span>Pago único · descarga inmediata en un archivo .zip</span></div>
+    <div class="ukr-buy" id="comprar-pack" data-ukr-buy="pack-consola-retro-pi-zero-2w" aria-label="Comprar el Pack Consola Retro Pi Zero 2 W"></div>
+    <p class="pack-fine">Al pagar descargas un archivo .zip con el planificador (.xlsx), la guía (.pdf), el diagrama (.png) y las instrucciones. El planificador se abre en Excel, LibreOffice y Google Sheets. No incluye componentes ni juegos (ROMs). Licencia de uso personal. Por ser contenido digital de descarga inmediata, no tiene derecho a retracto; si un archivo llega dañado o no abre, te lo reponemos o devolvemos el dinero.</p>
+  </div>
+</div>
+</section>
+
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
   <ins class="adsbygoogle"
@@ -316,11 +393,11 @@ details p{padding-top:10px;margin-bottom:0}
 
 <section id="por-que-pi-zero2w">
 <h2>Por qué la Raspberry Pi Zero 2 W para este proyecto</h2>
-<p>Desde su lanzamiento, la Raspberry Pi Zero 2 W ocupa un lugar muy particular dentro del ecosistema de placas de cómputo de placa única: mantiene el factor de forma diminuto de la Zero original (65 x 30 mm) pero reemplaza su modesto SoC de un núcleo por un <strong>Broadcom BCM2710A1 de cuatro núcleos ARM Cortex-A53 a 1GHz</strong>, esencialmente el mismo procesador que equipaba a la Raspberry Pi 3. Este salto de rendimiento, sin sacrificar el tamaño ni disparar el consumo energético, la convirtió casi de inmediato en la placa de referencia de la comunidad de emulación retro portátil, un nicho que durante años había tenido que conformarse con las limitaciones de la Zero original o pagar el sobrecosto de tamaño de una Raspberry Pi 3 completa.</p>
+<p>Desde su lanzamiento, la Raspberry Pi Zero 2 W ocupa un lugar muy particular dentro del ecosistema de placas de cómputo de placa única: mantiene el factor de forma diminuto de la Zero original (65 x 30 mm) pero reemplaza su modesto SoC de un núcleo por un <strong>Broadcom BCM2710A1 de cuatro núcleos ARM Cortex-A53 a 1GHz</strong>, el mismo chip de la Raspberry Pi 3 (allí a 1,2 GHz), integrado junto a la RAM en el módulo RP3A0. Este salto de rendimiento, sin sacrificar el tamaño ni disparar el consumo energético, la convirtió casi de inmediato en la placa de referencia de la comunidad de emulación retro portátil, un nicho que durante años había tenido que conformarse con las limitaciones de la Zero original o pagar el sobrecosto de tamaño de una Raspberry Pi 3 completa.</p>
 <p>Para un proyecto de consola portátil alimentada por batería, tres factores hacen que la Zero 2 W sea la elección más razonable frente a otras placas de la familia Raspberry Pi:</p>
 <ul>
 <li><strong>Tamaño físico:</strong> permite diseñar carcasas realmente compactas y ergonómicas, del tamaño de una consola portátil comercial, algo imposible con una Raspberry Pi 4 o 5 de tamaño estándar.</li>
-<li><strong>Consumo energético moderado:</strong> su consumo típico bajo carga (aproximadamente 700mA-1.2A a 5V dependiendo de la carga y accesorios conectados) es considerablemente menor al de una Raspberry Pi 4, lo que se traduce directamente en más horas de autonomía con la misma capacidad de batería.</li>
+<li><strong>Consumo energético moderado:</strong> la placa sola consume unos 120 mA en reposo y alrededor de 600 mA con sus cuatro núcleos al máximo, a 5 V y sin contar pantalla ni audio, bastante menos que una Raspberry Pi 4, lo que se traduce directamente en más horas de autonomía con la misma capacidad de batería.</li>
 <li><strong>Potencia suficiente para el objetivo real del proyecto:</strong> emular consolas de 8, 16 y la primera etapa de los 32 bits no exige más que lo que este SoC entrega, por lo que pagar por más potencia (y cargar con más consumo y calor) no aporta beneficio real para este caso de uso específico.</li>
 </ul>
 </section>
@@ -332,20 +409,20 @@ details p{padding-top:10px;margin-bottom:0}
 <caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Especificaciones oficiales de la Raspberry Pi Zero 2 W relevantes para dimensionar un proyecto de emulación portátil.</caption>
 <thead><tr><th>Característica</th><th>Especificación</th></tr></thead>
 <tbody>
-<tr><td>SoC</td><td>Broadcom BCM2710A1</td></tr>
+<tr><td>SoC</td><td>Broadcom BCM2710A1, dentro del módulo RP3A0 junto a la RAM</td></tr>
 <tr><td>CPU</td><td>4x ARM Cortex-A53 a 1GHz (64 bits)</td></tr>
 <tr><td>RAM</td><td>512 MB LPDDR2</td></tr>
 <tr><td>Conectividad</td><td>Wi-Fi 2.4GHz 802.11 b/g/n, Bluetooth 4.2/BLE</td></tr>
-<tr><td>Video</td><td>Mini HDMI, interfaz DSI/DPI vía pines expuestos</td></tr>
+<tr><td>Video</td><td>Mini HDMI; DPI por los GPIO; video compuesto por puntos de soldadura. No tiene conector DSI para pantalla (el conector plano es CSI-2, de cámara)</td></tr>
 <tr><td>USB</td><td>1x micro USB OTG (datos), 1x micro USB (solo alimentación)</td></tr>
-<tr><td>GPIO</td><td>40 pines (sin soldar de fábrica en la mayoría de las versiones)</td></tr>
-<tr><td>Consumo típico</td><td>~350-500mA en reposo, ~700mA-1.2A bajo carga de emulación</td></tr>
+<tr><td>GPIO</td><td>40 pines sin soldar (la versión Zero 2 WH los trae soldados)</td></tr>
+<tr><td>Consumo de la placa</td><td>~120 mA en reposo (0,6 W) y ~600 mA con los 4 núcleos al máximo; sin pantalla ni audio. Fuente recomendada: 5 V y 2,5 A</td></tr>
 <tr><td>Almacenamiento</td><td>MicroSD (no incluida)</td></tr>
 <tr><td>Precio de referencia</td><td>$18.000 – $28.000 CLP según distribuidor y disponibilidad</td></tr>
 </tbody>
 </table>
 </div>
-<div class="warning"><strong>Sobre el Wi-Fi 2.4GHz:</strong> la Zero 2 W antecede a la generación de placas con Wi-Fi de doble banda, por lo que en entornos con mucha congestión de redes 2.4GHz la transferencia de ROMs vía red puede ser más lenta de lo esperado. Para este proyecto no es una limitación crítica, ya que la transferencia inicial de juegos suele hacerse retirando la tarjeta microSD directamente.</div>
+<div class="warning"><strong>Sobre el Wi-Fi 2.4GHz:</strong> la Zero 2 W solo tiene Wi-Fi de 2,4 GHz (las Raspberry Pi 3B+, 4 y 5 ya traen doble banda), por lo que en entornos con mucha congestión de redes 2.4GHz la transferencia de ROMs vía red puede ser más lenta de lo esperado. Para este proyecto no es una limitación crítica, ya que la transferencia inicial de juegos suele hacerse retirando la tarjeta microSD directamente.</div>
 </section>
 
 <section id="compatibilidad">
@@ -359,9 +436,9 @@ details p{padding-top:10px;margin-bottom:0}
 <tr><td>NES, Master System, Game Boy / Color</td><td>Excelente, 100% de velocidad</td><td>Sin ningún problema de rendimiento</td></tr>
 <tr><td>SNES, Sega Genesis/Mega Drive, Game Boy Advance</td><td>Excelente, 100% de velocidad</td><td>Referencia histórica de "sweet spot" de esta placa</td></tr>
 <tr><td>PlayStation 1</td><td>Muy bueno en la mayoría de los juegos</td><td>Algunos títulos exigentes pueden mostrar ralentización puntual</td></tr>
-<tr><td>Nintendo 64</td><td>Variable, de aceptable a deficiente</td><td>Juegos con mucha geometría 3D sufren caídas de cuadros notorias</td></tr>
+<tr><td>Nintendo 64</td><td>Deficiente en la mayoría de los juegos</td><td>Solo algunos títulos livianos son jugables, con ajustes; no lo tomes como objetivo</td></tr>
 <tr><td>Sega Saturn, Dreamcast</td><td>Deficiente a inviable</td><td>No recomendado como objetivo principal del proyecto</td></tr>
-<tr><td>PlayStation 2, GameCube, Wii</td><td>Inviable</td><td>Requiere hardware muchísimo más potente (mínimo Raspberry Pi 4/5)</td></tr>
+<tr><td>PlayStation 2, GameCube, Wii</td><td>Inviable</td><td>Incluso en una Raspberry Pi 5 el resultado es limitado y depende mucho del juego</td></tr>
 <tr><td>Arcade (MAME, distintos drivers)</td><td>Variable según el juego</td><td>Títulos de arcade clásicos (años 80-mediados 90) funcionan bien</td></tr>
 </tbody>
 </table>
@@ -378,16 +455,16 @@ details p{padding-top:10px;margin-bottom:0}
 <tbody>
 <tr><td>Raspberry Pi Zero 2 W</td><td>Versión con o sin header GPIO presoldado</td><td>$18.000 – $28.000</td></tr>
 <tr><td>Tarjeta microSD</td><td>Clase 10, A1/A2, 32-64GB, marca reconocida</td><td>$6.000 – $12.000</td></tr>
-<tr><td>Pantalla IPS</td><td>3.5" – 5", interfaz SPI o DPI, 480x320 o superior</td><td>$15.000 – $35.000</td></tr>
-<tr><td>UPS HAT o módulo cargador con protección</td><td>Compatible con formato Zero, salida 5V regulada</td><td>$12.000 – $25.000</td></tr>
-<tr><td>Batería LiPo 1S con conector JST</td><td>1000-2000mAh, con PCB de protección integrado</td><td>$6.000 – $14.000</td></tr>
+<tr><td>Pantalla IPS</td><td>2,8" – 5", interfaz HDMI, SPI o DPI (ver sección de pantallas)</td><td>$15.000 – $35.000</td></tr>
+<tr><td>UPS HAT o módulo cargador con protección</td><td>Formato Zero, salida de 5 V con al menos 2 A y carga mientras se usa</td><td>$12.000 – $25.000</td></tr>
+<tr><td>Batería LiPo 1S con conector JST</td><td>2000-4000 mAh, con PCB de protección integrado</td><td>$6.000 – $16.000</td></tr>
 <tr><td>Botones tipo arcade o membrana + D-pad</td><td>Set de 8-12 botones más cruceta direccional</td><td>$4.000 – $10.000</td></tr>
 <tr><td>Joystick analógico (opcional)</td><td>Módulo tipo PSP o GameCube con salida analógica</td><td>$5.000 – $12.000</td></tr>
-<tr><td>Amplificador de audio</td><td>PAM8403 u equivalente, 2x3W</td><td>$1.500 – $3.500</td></tr>
+<tr><td>Amplificador de audio</td><td>MAX98357A (I2S, recomendado) o PAM8403 con filtro RC</td><td>$1.500 – $6.000</td></tr>
 <tr><td>Parlante</td><td>8 ohms, 1-2W, tamaño compacto</td><td>$1.500 – $3.000</td></tr>
 <tr><td>Carcasa</td><td>Impresa en 3D (diseño de la comunidad) o kit comercial</td><td>$3.000 – $20.000</td></tr>
 <tr><td>Cables, protoboard/PCB perforada, interruptores</td><td>Consumibles varios</td><td>$3.000 – $8.000</td></tr>
-<tr><td><strong>Total aproximado del proyecto</strong></td><td>&nbsp;</td><td><strong>$75.000 – $170.000</strong></td></tr>
+<tr><td><strong>Total aproximado del proyecto</strong></td><td>&nbsp;</td><td><strong>$75.000 – $175.000</strong></td></tr>
 </tbody>
 </table>
 </div>
@@ -396,30 +473,31 @@ details p{padding-top:10px;margin-bottom:0}
 
 <section id="software">
 <h2>Software de emulación: RetroPie vs Batocera vs Recalbox</h2>
-<p>Las tres distribuciones más usadas para este tipo de proyecto comparten el mismo motor de emulación subyacente (<strong>RetroArch</strong>, basado en la arquitectura de núcleos <em>libretro</em>), por lo que la calidad de emulación en sí misma es equivalente entre ellas. Las diferencias reales están en la experiencia de configuración, el mantenimiento comunitario y las herramientas de administración.</p>
+<p>Las tres distribuciones más usadas para este tipo de proyecto usan en gran parte los mismos núcleos de emulación (<strong>RetroArch</strong> con núcleos <em>libretro</em>, más algunos emuladores independientes), por lo que la calidad de emulación es muy parecida entre ellas. Las diferencias reales están en la experiencia de configuración, el mantenimiento comunitario y las herramientas de administración.</p>
 <div class="table-wrap">
 <table>
 <caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparativa de las principales distribuciones de emulación para Raspberry Pi.</caption>
 <thead><tr><th>Distribución</th><th>Curva de aprendizaje</th><th>Administración</th><th>Ideal para</th></tr></thead>
 <tbody>
-<tr><td>RetroPie</td><td>Media, requiere algo de línea de comandos</td><td>Menús en pantalla + acceso SSH/scripts</td><td>Proyectos con hardware GPIO personalizado, mayor cantidad de tutoriales disponibles</td></tr>
-<tr><td>Batocera</td><td>Baja, funciona "de fábrica" con mínima configuración</td><td>Interfaz web completa desde el navegador</td><td>Usuarios que priorizan simplicidad y actualizaciones frecuentes</td></tr>
-<tr><td>Recalbox</td><td>Baja-media</td><td>Interfaz web + configuración por archivos</td><td>Alternativa con enfoque similar a Batocera, comunidad más reducida</td></tr>
+<tr><td>RetroPie</td><td>Media, requiere algo de línea de comandos</td><td>Menú RetroPie-Setup y acceso por SSH</td><td>Hardware GPIO a medida y la mayor cantidad de tutoriales. Su imagen 4.8 (base Raspberry Pi OS Buster, 32 bits) incluye la Zero 2 W</td></tr>
+<tr><td>Batocera</td><td>Baja, funciona "de fábrica" con mínima configuración</td><td>Menús en pantalla y carpeta compartida por la red para copiar juegos</td><td>Simplicidad y actualizaciones frecuentes; publica imagen para la Pi Zero 2 W</td></tr>
+<tr><td>Recalbox</td><td>Baja</td><td>Menús en pantalla, Web Manager en el navegador y archivos de configuración</td><td>Enfoque similar a Batocera; soporta la Zero 2 y carcasas como la GPi Case 2W</td></tr>
 </tbody>
 </table>
 </div>
-<p>Para este proyecto específico, con controles físicos personalizados conectados por GPIO, <strong>RetroPie</strong> suele ser la opción más documentada por la comunidad de "handhelds" caseros, con scripts ya probados como <code>Adafruit-Retrogame</code> o <code>mk_arcade_joystick_rpi</code> para mapear botones GPIO a eventos de teclado o joystick reconocibles por EmulationStation.</p>
+<p>Para este proyecto específico, con controles físicos personalizados conectados por GPIO, <strong>RetroPie</strong> sigue siendo la opción más documentada por la comunidad de "handhelds" caseros. Para los botones ya no hace falta instalar scripts ni módulos externos: el overlay oficial <code>gpio-key</code> del firmware de Raspberry Pi convierte cada botón en una tecla, y funciona igual en RetroPie, Batocera y Recalbox (ver la sección de controles).</p>
 </section>
 
 <section id="preparar-sd">
 <h2>Preparar la tarjeta microSD y la imagen del sistema</h2>
 <ol>
-<li>Descarga <strong>Raspberry Pi Imager</strong> desde el sitio oficial de Raspberry Pi, o la imagen específica de RetroPie/Batocera para arquitectura ARM (Raspberry Pi Zero 2 W usa la misma imagen que la Raspberry Pi 3, por compartir familia de SoC).</li>
+<li>Descarga <strong>Raspberry Pi Imager</strong> desde el sitio oficial de Raspberry Pi, o la imagen de tu sistema: RetroPie publica una imagen para "RPI 2/3/Zero 2 W", y Batocera y Recalbox tienen imágenes que incluyen la Zero 2 W.</li>
 <li>Selecciona la imagen correspondiente y flashea la tarjeta microSD (recomendado mínimo 32GB si planeas instalar muchos juegos).</li>
-<li>Antes de expulsar la tarjeta, crea un archivo vacío llamado <code>ssh</code> en la partición <code>boot</code> para habilitar el acceso remoto por SSH desde el primer arranque.</li>
-<li>Configura la red Wi-Fi editando el archivo <code>wpa_supplicant.conf</code> (en RetroPie) o el archivo de configuración equivalente de tu distribución, para poder transferir ROMs por red sin necesidad de retirar la tarjeta repetidamente.</li>
+<li>Antes de expulsar la tarjeta, en RetroPie crea un archivo vacío llamado <code>ssh</code> en la partición <code>boot</code> para habilitar el acceso remoto por SSH desde el primer arranque (también se activa después desde <code>raspi-config</code>).</li>
+<li>Configura el Wi-Fi para copiar juegos por la red sin sacar la tarjeta: en RetroPie, con el menú WiFi de RetroPie o copiando un <code>wpa_supplicant.conf</code> a la partición <code>boot</code>; en Batocera y Recalbox, desde su menú. Raspberry Pi OS Bookworm y posteriores ya no leen ese archivo: ahí el Wi-Fi se configura en la personalización de Raspberry Pi Imager.</li>
 </ol>
-<pre><code># Ejemplo de contenido para wpa_supplicant.conf (RetroPie / Raspberry Pi OS Lite)
+<pre><code># wpa_supplicant.conf en la partición boot (RetroPie 4.8, basado en Buster)
+# No funciona en Raspberry Pi OS Bookworm ni posteriores
 
 country=CL
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
@@ -439,7 +517,7 @@ network={
 <p>Un <strong>UPS HAT</strong> (Uninterruptible Power Supply Hat) resuelve tres funciones simultáneamente:</p>
 <ul>
 <li><strong>Elevación de voltaje (boost converter):</strong> convierte el voltaje variable de la LiPo (3.0V-4.2V) a 5V estables mediante un regulador conmutado, entregando la alimentación que la Raspberry Pi necesita sin interrupciones.</li>
-<li><strong>Gestión de carga:</strong> permite cargar la batería mediante USB mientras el sistema permanece encendido (función "UPS" propiamente dicha), útil para practicar mientras la consola está conectada a un cargador.</li>
+<li><strong>Gestión de carga:</strong> permite cargar la batería mediante USB mientras el sistema permanece encendido (función "UPS" propiamente dicha), para seguir jugando mientras carga. Esto requiere que el módulo reparta la energía entre el sistema y la celda (<em>load sharing</em>).</li>
 <li><strong>Protección de la celda:</strong> corta la alimentación automáticamente si el voltaje de la batería cae por debajo del umbral seguro, evitando la sobredescarga que degrada permanentemente una celda de litio.</li>
 </ul>
 <div class="table-wrap">
@@ -447,12 +525,13 @@ network={
 <caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación de enfoques para alimentar el proyecto con batería.</caption>
 <thead><tr><th>Enfoque</th><th>Complejidad</th><th>Seguridad</th><th>Recomendación</th></tr></thead>
 <tbody>
-<tr><td>UPS HAT dedicado (formato Zero)</td><td>Baja, plug-and-play</td><td>Alta, con protecciones integradas certificadas</td><td>Recomendado para la mayoría de los usuarios</td></tr>
-<tr><td>Módulo TP4056 + boost converter separados</td><td>Media, requiere cableado propio</td><td>Alta si se usa TP4056 con protección (versión con IC adicional)</td><td>Opción económica para quien ya sabe soldar</td></tr>
+<tr><td>UPS HAT dedicado (formato Zero)</td><td>Baja, plug-and-play</td><td>Alta, con protecciones integradas</td><td>Recomendado para la mayoría de los usuarios</td></tr>
+<tr><td>Módulo TP4056 + boost converter separados</td><td>Media, requiere cableado propio</td><td>Alta si se usa el TP4056 con protección (DW01A + FS8205A). No reparte la carga: jugar mientras carga puede impedir que termine bien la carga</td><td>Opción económica para quien ya sabe soldar</td></tr>
 <tr><td>Batería LiPo sin ningún circuito de protección</td><td>—</td><td>Inaceptable</td><td>Nunca usar bajo ninguna circunstancia</td></tr>
 </tbody>
 </table>
 </div>
+<p><strong>Dimensiona el elevador a 5 V.</strong> Raspberry Pi recomienda una fuente de 5 V y 2,5 A para la Zero 2 W. Con pantalla y audio, la consola puede pedir picos de 1,2 a 1,5 A, así que usa un módulo que entregue al menos 2 A. Si la Pi detecta bajo voltaje, baja su frecuencia: compruébalo con <code>vcgencmd get_throttled</code> (el resultado <code>throttled=0x0</code> indica que no hubo bajo voltaje ni limitación por temperatura).</p>
 <div class="warning"><strong>Riesgo real de incendio:</strong> las celdas de litio-polímero dañadas, perforadas, sobrecargadas o cortocircuitadas pueden entrar en un proceso llamado fuga térmica (thermal runaway), que genera calor de forma autosostenida hasta provocar fuego. Nunca perfores, dobles ni expongas una celda LiPo a temperaturas elevadas, siempre usa cargadores con corriente limitada apropiada a la capacidad de la celda, y supervisa personalmente las primeras cargas completas de cualquier batería nueva antes de confiarle una carga desatendida.</div>
 </section>
 
@@ -474,57 +553,68 @@ network={
 <caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Comparación de interfaces de pantalla disponibles para este proyecto.</caption>
 <thead><tr><th>Interfaz</th><th>Velocidad de refresco</th><th>Uso de GPIO</th><th>Ventaja principal</th><th>Desventaja principal</th></tr></thead>
 <tbody>
-<tr><td>SPI</td><td>Limitada (usualmente 30-60fps según panel/driver)</td><td>Alta (comparte bus con otros periféricos)</td><td>Gran variedad de tamaños y precios económicos</td><td>Puede introducir latencia visual perceptible en algunos paneles</td></tr>
-<tr><td>DPI (paralelo)</td><td>Alta, comparable a HDMI</td><td>Muy alta (usa la mayoría de los GPIO disponibles)</td><td>Mejor fluidez visual sin latencia de conversión</td><td>Deja pocos GPIO libres para botones, requiere expansor I2C</td></tr>
+<tr><td>SPI</td><td>Hasta unos 60 fps en 320×240 (ILI9341) con el driver fbcp-ili9341; menos en 480×320</td><td>Pocos: el bus SPI y 2 pines de control</td><td>Barata, compacta y fácil de cablear</td><td>El driver rápido fbcp-ili9341 solo funciona en sistemas de 32 bits con el stack de video antiguo (DispmanX), como RetroPie 4.8</td></tr>
+<tr><td>DPI (paralelo)</td><td>Alta, comparable a HDMI</td><td>Muy alta (hasta 28 GPIO en modo de 24 bits)</td><td>Fluidez sin latencia de conversión</td><td>Deja pocos GPIO libres: los botones van por un expansor I2C o una placa USB</td></tr>
 <tr><td>HDMI mini</td><td>Alta, nativa</td><td>Ninguno (libera todos los GPIO)</td><td>Máxima compatibilidad y calidad, GPIO 100% libres para controles</td><td>Requiere pantalla con conversor HDMI a panel, más consumo energético</td></tr>
 </tbody>
 </table>
 </div>
-<div class="note"><strong>Recomendación práctica:</strong> si tu prioridad es maximizar los pines GPIO disponibles para botones y joystick analógico, una pantalla con interfaz HDMI mini (usando un driver board dedicado) combinada con un expansor de GPIO por I2C (como el PCF8574 o el propio microcontrolador secundario) es la ruta más limpia. Si prefieres simplicidad de cableado directo sin expansores adicionales, una pantalla SPI de calidad probada por la comunidad (como los paneles Waveshare de 3.5") sigue siendo la opción más documentada para principiantes.</div>
+<div class="note"><strong>Recomendación práctica:</strong> para empezar, una pantalla HDMI de 3,5 a 5" es la ruta más simple: no usa ningún GPIO, funciona con cualquier sistema y deja todos los pines libres para los botones (a cambio de algo más de consumo y del espacio del adaptador mini HDMI). Para una consola más compacta, una pantalla SPI ILI9341 de 2,8 a 3,2" (320×240) con fbcp-ili9341 sobre RetroPie 4.8 logra unos 60 fps. Los paneles SPI de 3,5" (480×320, como los Waveshare) funcionan, pero con bastantes menos cuadros por segundo, porque el bus SPI no alcanza a mover tantos píxeles.</div>
 </section>
 
+<div class="note pack-callout"><strong>¿Tus botones chocan con la pantalla o el audio?</strong> El <a href="#pack">Pack Consola Retro Pi Zero 2 W</a> (<span data-price-slug="pack-consola-retro-pi-zero-2w">$7.990</span>, descarga inmediata en .zip) trae un planificador en Excel que revisa los pines, genera el config.txt y calcula la autonomía, y una guía de 18 páginas para armar la consola paso a paso.</div>
 <section id="controles">
 <h2>Cableado de controles físicos por GPIO</h2>
 <p>La forma más simple y confiable de conectar botones físicos es aprovechar las resistencias pull-up internas del GPIO de la Raspberry Pi, conectando cada botón entre un pin GPIO y GND: al presionar, el pin lee <code>LOW</code>; en reposo, la resistencia interna mantiene el pin en <code>HIGH</code>.</p>
 <div class="table-wrap">
 <table>
-<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Ejemplo de asignación de pines GPIO para un layout típico de consola portátil (numeración BCM). Ajustable según tu diseño y los pines ya ocupados por la pantalla elegida.</caption>
-<thead><tr><th>Función</th><th>Pin GPIO (BCM)</th></tr></thead>
+<caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Asignación de 12 botones (numeración BCM) que no choca con una pantalla SPI (GPIO 8 a 11, 24 y 25), el audio I2S (GPIO 18 a 21) ni el I2C de un UPS HAT (GPIO 2 y 3). Los GPIO 14 y 15 son la UART: quedan libres mientras no actives la consola serial.</caption>
+<thead><tr><th>Función</th><th>GPIO (BCM)</th><th>Pin físico</th><th>Tecla que genera</th></tr></thead>
 <tbody>
-<tr><td>D-pad Arriba</td><td>GPIO 4</td></tr>
-<tr><td>D-pad Abajo</td><td>GPIO 17</td></tr>
-<tr><td>D-pad Izquierda</td><td>GPIO 27</td></tr>
-<tr><td>D-pad Derecha</td><td>GPIO 22</td></tr>
-<tr><td>Botón A</td><td>GPIO 5</td></tr>
-<tr><td>Botón B</td><td>GPIO 6</td></tr>
-<tr><td>Botón X</td><td>GPIO 13</td></tr>
-<tr><td>Botón Y</td><td>GPIO 19</td></tr>
-<tr><td>Start</td><td>GPIO 26</td></tr>
-<tr><td>Select</td><td>GPIO 21</td></tr>
+<tr><td>D-pad Arriba</td><td>GPIO 4</td><td>7</td><td>Flecha arriba (103)</td></tr>
+<tr><td>D-pad Abajo</td><td>GPIO 17</td><td>11</td><td>Flecha abajo (108)</td></tr>
+<tr><td>D-pad Izquierda</td><td>GPIO 27</td><td>13</td><td>Flecha izquierda (105)</td></tr>
+<tr><td>D-pad Derecha</td><td>GPIO 22</td><td>15</td><td>Flecha derecha (106)</td></tr>
+<tr><td>Botón A</td><td>GPIO 5</td><td>29</td><td>X (45)</td></tr>
+<tr><td>Botón B</td><td>GPIO 6</td><td>31</td><td>Z (44)</td></tr>
+<tr><td>Botón X</td><td>GPIO 13</td><td>33</td><td>S (31)</td></tr>
+<tr><td>Botón Y</td><td>GPIO 12</td><td>32</td><td>A (30)</td></tr>
+<tr><td>L</td><td>GPIO 23</td><td>16</td><td>Q (16)</td></tr>
+<tr><td>R</td><td>GPIO 15</td><td>10</td><td>W (17)</td></tr>
+<tr><td>Start</td><td>GPIO 26</td><td>37</td><td>Enter (28)</td></tr>
+<tr><td>Select</td><td>GPIO 16</td><td>36</td><td>Shift derecho (54)</td></tr>
 </tbody>
 </table>
 </div>
-<pre><code># Ejemplo de configuracion para mk_arcade_joystick_rpi (RetroPie)
-# Se agrega como parametro del modulo en /etc/modprobe.d/gpio.conf
-
-options gpio_decoder map=1
-options mk_arcade_joystick_rpi map=1 \
-  gpio_up=4 gpio_down=17 gpio_left=27 gpio_right=22 \
-  gpio_b1=5 gpio_b2=6 gpio_b3=13 gpio_b4=19 \
-  gpio_b5=26 gpio_b6=21</code></pre>
-<p>Para un <strong>joystick analógico</strong> (reutilizando módulos de PSP o GameCube), se requiere un ADC externo como el <strong>MCP3008</strong>, ya que los pines GPIO de la Raspberry Pi son puramente digitales y no pueden leer directamente un voltaje analógico variable. El MCP3008 se comunica por SPI y convierte hasta 8 canales analógicos en valores digitales que el software de emulación puede interpretar como movimiento de stick analógico.</p>
+<p>El overlay oficial <code>gpio-key</code> convierte cada botón en una tecla, activa el pull-up interno y no necesita instalar nada: se agrega una línea por botón al <code>config.txt</code>. Después, en EmulationStation, configura la entrada como si fuera un teclado.</p>
+<pre><code># /boot/config.txt (RetroPie) o /boot/firmware/config.txt (Raspberry Pi OS Bookworm)
+# Una línea por botón: GPIO (BCM) y código de tecla de Linux
+dtoverlay=gpio-key,gpio=4,keycode=103,label=UP
+dtoverlay=gpio-key,gpio=17,keycode=108,label=DOWN
+dtoverlay=gpio-key,gpio=27,keycode=105,label=LEFT
+dtoverlay=gpio-key,gpio=22,keycode=106,label=RIGHT
+dtoverlay=gpio-key,gpio=5,keycode=45,label=A
+dtoverlay=gpio-key,gpio=6,keycode=44,label=B
+dtoverlay=gpio-key,gpio=13,keycode=31,label=X
+dtoverlay=gpio-key,gpio=12,keycode=30,label=Y
+dtoverlay=gpio-key,gpio=23,keycode=16,label=L
+dtoverlay=gpio-key,gpio=15,keycode=17,label=R
+dtoverlay=gpio-key,gpio=26,keycode=28,label=START
+dtoverlay=gpio-key,gpio=16,keycode=54,label=SELECT</code></pre>
+<p>Para un <strong>joystick analógico</strong> (reutilizando módulos de PSP o GameCube), se requiere un ADC externo como el <strong>MCP3008</strong>, ya que los pines GPIO de la Raspberry Pi son puramente digitales y no pueden leer directamente un voltaje analógico variable. El MCP3008 se comunica por SPI (usaría el GPIO 7, CE1) y convierte hasta 8 canales; si la pantalla ya ocupa el SPI, un ADS1115 por I2C comparte el bus con el UPS HAT sin usar pines extra. En ambos casos necesitas un pequeño programa que traduzca las lecturas a un joystick virtual, porque los emuladores no leen el ADC directamente.</p>
 </section>
 
 <section id="audio">
 <h2>Audio: amplificador I2S y parlante</h2>
-<p>La salida de audio integrada de la Raspberry Pi Zero 2 W mediante PWM (mezclada con la señal de video en el mini HDMI) tiene calidad limitada y no ofrece salida de audio análoga dedicada como las Raspberry Pi de tamaño completo. La solución más usada en proyectos portátiles es un pequeño <strong>amplificador clase D I2S</strong> como el <strong>MAX98357A</strong>, o alternativamente un módulo <strong>PAM8403</strong> alimentado desde una salida PWM configurada por software, conectado a un parlante compacto de 8 ohms.</p>
-<pre><code># Habilitar salida de audio I2S en /boot/config.txt (para MAX98357A)
-
+<p>La Raspberry Pi Zero 2 W no tiene salida de audio analógica: de fábrica, el único audio es el digital del mini HDMI. La solución más usada en consolas portátiles es un pequeño <strong>amplificador clase D I2S</strong> como el <strong>MAX98357A</strong> (BCLK al GPIO 18, LRC al GPIO 19 y DIN al GPIO 21), conectado a un parlante de 4 a 8 ohms. La alternativa barata es sacar audio PWM por dos GPIO con el overlay <code>audremap</code>, pasarlo por un filtro RC y amplificarlo con un <strong>PAM8403</strong>; suena peor y usa los mismos GPIO 18 y 19, así que elige uno de los dos caminos.</p>
+<pre><code># config.txt: amplificador I2S MAX98357A
 dtparam=i2s=on
-dtoverlay=max98357a
+dtoverlay=max98357a,no-sdmode
+# Sin "no-sdmode", el overlay toma el GPIO 4 para el pin SD_MODE,
+# y en esta guía ese GPIO es el botón Arriba
 
-# Alternativa con salida PWM estandar (menor calidad, mas simple de cablear)
-dtparam=audio=on</code></pre>
+# Alternativa PWM (necesita filtro RC y un amplificador como el PAM8403)
+# dtoverlay=audremap,pins_18_19</code></pre>
 <p>Para un uso portátil realista, se recomienda además incluir un pequeño interruptor o potenciómetro físico de volumen, y considerar el uso de auriculares como alternativa al parlante integrado para prolongar la autonomía de la batería, ya que el amplificador y el parlante consumen energía adicional no despreciable en sesiones largas.</p>
 </section>
 
@@ -542,16 +632,12 @@ dtparam=audio=on</code></pre>
 <section id="overclock-termico">
 <h2>Overclock seguro y manejo térmico</h2>
 <p>La Raspberry Pi Zero 2 W admite un margen moderado de overclock por software mediante el archivo <code>config.txt</code>, lo que puede mejorar la estabilidad de cuadros en sistemas más exigentes como PlayStation 1, aunque a costa de mayor consumo energético y generación de calor, dos factores especialmente sensibles en un dispositivo portátil compacto y alimentado por batería.</p>
-<pre><code># Ejemplo de overclock moderado en /boot/config.txt
-# Valores conservadores, recomendados como punto de partida seguro
-
-over_voltage=2
+<pre><code># config.txt: overclock moderado (de 1000 a 1200 MHz)
 arm_freq=1200
-gpu_freq=500
-
-# Nota: valores mas agresivos requieren disipacion adicional
-# y pueden reducir la vida util del componente a largo plazo</code></pre>
-<div class="warning"><strong>Overclock y espacio reducido:</strong> a diferencia de un proyecto de escritorio con buena ventilación, la carcasa compacta de una consola portátil retiene el calor con mucha más facilidad. Se recomienda encarecidamente agregar un disipador pasivo de perfil bajo pegado directamente al SoC, verificar la temperatura con el comando <code>vcgencmd measure_temp</code> tras sesiones prolongadas de uso, y evitar overclocks agresivos si la temperatura supera de forma sostenida los 75-80°C, umbral a partir del cual el propio sistema puede activar throttling automático o, en casos extremos, comprometer la vida útil del chip.</div>
+over_voltage=2
+# Si se cuelga o se reinicia, sube over_voltage a 4 o vuelve a los valores de fábrica
+# Cada placa tolera un overclock distinto: prueba una sesión larga antes de cerrar la carcasa</code></pre>
+<div class="warning"><strong>Overclock y espacio reducido:</strong> a diferencia de un proyecto de escritorio con buena ventilación, la carcasa compacta de una consola portátil retiene el calor con mucha más facilidad. Se recomienda encarecidamente agregar un disipador pasivo de perfil bajo pegado directamente al SoC, verificar la temperatura con el comando <code>vcgencmd measure_temp</code> tras sesiones prolongadas de uso, y evitar overclocks agresivos si la temperatura supera de forma sostenida los 75 °C: al acercarse a 80-85 °C el firmware baja la frecuencia automáticamente (throttling); <code>vcgencmd get_throttled</code> te dice si ocurrió o, en casos extremos, comprometer la vida útil del chip.</div>
 </section>
 
 <section id="troubleshooting">
@@ -561,11 +647,12 @@ gpu_freq=500
 <caption style="caption-side:bottom;text-align:left;font-size:.75rem;color:#8b8577;padding-top:8px;">Errores frecuentes en proyectos de consola retro portátil y su causa más probable.</caption>
 <thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
 <tbody>
-<tr><td>El sistema se reinicia solo al presionar varios botones simultáneamente</td><td>Caída de voltaje por consumo pico insuficientemente regulado</td><td>Verificar la capacidad de corriente del UPS HAT/regulador, agregar capacitor de desacople</td></tr>
+<tr><td>El sistema se reinicia solo al presionar varios botones simultáneamente</td><td>Caída de voltaje por consumo pico insuficientemente regulado</td><td>Usar un elevador de al menos 2 A, revisar <code>vcgencmd get_throttled</code> y agregar un condensador de desacople cerca de la entrada de 5 V</td></tr>
 <tr><td>La pantalla SPI muestra imagen distorsionada o con líneas</td><td>Driver/overlay incorrecto para el panel específico, cable flex mal asentado</td><td>Confirmar el overlay exacto recomendado por el fabricante del panel</td></tr>
 <tr><td>Los botones no responden o responden de forma errática</td><td>Falta configurar pull-up interno, mala soldadura, GPIO ya usado por otra función</td><td>Revisar la configuración de pull-up en el software y continuidad del cableado</td></tr>
 <tr><td>La batería se agota mucho más rápido de lo esperado</td><td>Brillo de pantalla excesivo, Wi-Fi/Bluetooth activos sin uso, overclock agresivo</td><td>Reducir brillo, deshabilitar radios innecesarias, revertir a valores de reloj estándar</td></tr>
 <tr><td>El sistema no arranca tras conectar el UPS HAT</td><td>Polaridad invertida en la batería, HAT mal asentado en el header GPIO</td><td>Verificar polaridad del conector JST y el asentamiento físico del HAT</td></tr>
+<tr><td>Tras agregar el MAX98357A, el botón Arriba deja de funcionar</td><td>El overlay <code>max98357a</code> toma el GPIO 4 para el pin SD_MODE</td><td>Usar <code>dtoverlay=max98357a,no-sdmode</code></td></tr>
 <tr><td>Audio con ruido de fondo o zumbido</td><td>Interferencia entre líneas de audio y señales digitales cercanas (SPI/PWM)</td><td>Separar físicamente el cableado de audio de las líneas digitales de alta frecuencia</td></tr>
 </tbody>
 </table>
@@ -576,10 +663,10 @@ gpu_freq=500
 <h2>Mejoras posibles y siguientes pasos</h2>
 <ul>
 <li><strong>Indicador de batería en pantalla:</strong> leer el voltaje reportado por el UPS HAT (muchos exponen esta información vía I2C) y mostrarlo como icono en EmulationStation.</li>
-<li><strong>Botón de apagado seguro por software:</strong> configurar un script que detecte una pulsación larga en un GPIO dedicado y ejecute un apagado ordenado del sistema operativo antes de cortar la alimentación física, evitando corrupción de la tarjeta SD.</li>
+<li><strong>Botón de apagado seguro:</strong> el overlay oficial <code>gpio-shutdown</code> apaga el sistema en orden al presionar un botón, antes de cortar la batería, y evita corromper la tarjeta SD. Por defecto usa el GPIO 3, que además enciende la Pi apagada; si tu UPS HAT usa I2C (GPIO 2 y 3), asígnalo a otro pin con <code>gpio_pin=</code>.</li>
 <li><strong>Vibración háptica:</strong> agregar un pequeño motor de vibración controlado por un transistor y un pin GPIO adicional, replicando el feedback táctil de consolas comerciales.</li>
 <li><strong>Carga inalámbrica:</strong> integrar un receptor Qi compatible con el voltaje de entrada del UPS HAT para eliminar el puerto de carga físico expuesto.</li>
-<li><strong>Migración a Compute Module:</strong> para quienes buscan aún más rendimiento en el mismo factor de forma reducido, explorar un diseño basado en Compute Module 4 Lite con una placa portadora personalizada, un proyecto considerablemente más avanzado en diseño de PCB.</li>
+<li><strong>Migración a Compute Module:</strong> para quienes buscan aún más rendimiento en el mismo factor de forma reducido, explorar un diseño basado en un Compute Module 4 o 5 con una placa portadora personalizada, un proyecto considerablemente más avanzado en diseño de PCB.</li>
 </ul>
 </section>
 
@@ -602,16 +689,16 @@ gpu_freq=500
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
 <div class="faq">
-<details><summary>¿Qué consolas puede emular realmente la Raspberry Pi Zero 2 W?</summary><p>La Raspberry Pi Zero 2 W, gracias a su SoC de cuatro núcleos Cortex-A53 a 1GHz, emula de forma estable y a pantalla completa la práctica totalidad de consolas de 8 y 16 bits (NES, SNES, Sega Genesis/Mega Drive, Game Boy, Game Boy Advance) y con buen desempeño la mayoría de los sistemas de la primera etapa de los 32 bits como PlayStation 1 y Nintendo 64 en juegos poco exigentes, aunque este último sistema presenta ralentizaciones notorias en títulos con mucha geometría 3D. Sistemas posteriores como PlayStation 2, GameCube o Dreamcast están completamente fuera de su alcance, ya que requieren una potencia de cómputo y una GPU muchísimo más capaces que las que ofrece este SoC de gama de entrada.</p></details>
-<details><summary>¿Es seguro usar una batería LiPo sin circuito de protección en este proyecto?</summary><p>No, nunca se debe conectar una celda LiPo directamente a un circuito sin un módulo de protección contra sobrecarga, sobredescarga y cortocircuito, ya sea integrado en el propio módulo de la batería o en el UPS HAT/cargador utilizado. Las celdas de litio-polímero sin protección pueden inflarse, generar fugas de electrolito o incluso incendiarse si se descargan por debajo de su voltaje mínimo seguro (aproximadamente 3.0V por celda) o se sobrecargan por encima de 4.2V. Es indispensable usar módulos con circuitos de protección certificados (como el TP4056 con protección integrada, o un UPS HAT de fabricantes reconocidos) y nunca dejar la batería cargando sin supervisión durante las primeras pruebas del proyecto.</p></details>
-<details><summary>¿RetroPie o Batocera para este proyecto?</summary><p>Ambas distribuciones están construidas sobre la misma base de emuladores (RetroArch/libretro) y ofrecen resultados de emulación prácticamente idénticos, por lo que la elección suele reducirse a preferencias de configuración. RetroPie, con más años de desarrollo comunitario, ofrece mayor cantidad de tutoriales y scripts de terceros específicos para proyectos portátiles con GPIO, lo que lo hace ligeramente más recomendable para principiantes en hardware casero. Batocera, en cambio, prioriza una experiencia lista para usar desde el primer arranque con menos necesidad de configuración manual, y su interfaz de administración vía navegador web resulta más cómoda para quienes prefieren evitar la línea de comandos.</p></details>
-<details><summary>¿Cuánto dura la batería de una consola retro portátil casera?</summary><p>Depende fuertemente de la capacidad de la batería, el brillo de la pantalla y el sistema emulado, pero como referencia orientativa, una celda LiPo de 2000mAh combinada con una pantalla IPS de 3.5-5 pulgadas a brillo medio suele entregar entre 3 y 5 horas de uso continuo emulando consolas de 8-16 bits, y algo menos —entre 2 y 3.5 horas— al emular sistemas más exigentes como PlayStation 1 o Nintendo 64, debido a la mayor carga sostenida sobre el procesador. El uso de un buen UPS HAT con gestión eficiente de energía y la reducción del brillo de pantalla son las dos variables que más impactan en la autonomía real del dispositivo.</p></details>
+<details><summary>¿Qué consolas puede emular realmente la Raspberry Pi Zero 2 W?</summary><p>La Raspberry Pi Zero 2 W, gracias a su SoC de cuatro núcleos Cortex-A53 a 1GHz, emula de forma estable y a pantalla completa la práctica totalidad de consolas de 8 y 16 bits (NES, SNES, Sega Genesis/Mega Drive, Game Boy, Game Boy Advance) y con buen desempeño la mayoría de los juegos de PlayStation 1. Nintendo 64 funciona mal en la mayoría de los títulos y solo algunos livianos son jugables con ajustes. Dreamcast, Saturn, PlayStation 2 y GameCube quedan fuera de su alcance: requieren una potencia de cómputo y una GPU muy superiores a las de este SoC.</p></details>
+<details><summary>¿Es seguro usar una batería LiPo sin circuito de protección en este proyecto?</summary><p>No, nunca se debe conectar una celda LiPo directamente a un circuito sin un módulo de protección contra sobrecarga, sobredescarga y cortocircuito, ya sea integrado en el propio módulo de la batería o en el UPS HAT/cargador utilizado. Las celdas de litio-polímero sin protección pueden inflarse, generar fugas de electrolito o incluso incendiarse si se descargan por debajo de su voltaje mínimo seguro (aproximadamente 3.0V por celda) o se sobrecargan por encima de 4.2V. Es indispensable usar módulos con circuitos de protección (como el TP4056 con protección integrada o un UPS HAT de un fabricante reconocido) y nunca dejar la batería cargando sin supervisión durante las primeras pruebas del proyecto.</p></details>
+<details><summary>¿RetroPie o Batocera para este proyecto?</summary><p>Ambas usan en gran parte los mismos núcleos de emulación (RetroArch/libretro) y logran resultados muy parecidos, así que la elección se reduce a cómo prefieres configurar. RetroPie tiene más tutoriales para consolas portátiles caseras y su imagen 4.8, basada en un sistema de 32 bits, es compatible con el driver rápido de pantallas SPI fbcp-ili9341; a cambio, se actualiza poco. Batocera funciona lista para usar desde el primer arranque, se actualiza seguido, publica imagen para la Pi Zero 2 W y permite copiar juegos por una carpeta compartida en la red. Los botones por <code>gpio-key</code> funcionan en ambas.</p></details>
+<details><summary>¿Cuánto dura la batería de una consola retro portátil casera?</summary><p>Depende fuertemente de la capacidad de la batería, el brillo de la pantalla y el sistema emulado, pero como referencia: una LiPo de 2000 mAh guarda unos 7,4 Wh y, tras las pérdidas del elevador (85 a 90 %), entrega cerca de 6,5 Wh. Una consola con pantalla de 3,5" a brillo medio consume de 2,5 a 3,5 W en juegos de 8 y 16 bits, lo que da unas 2 horas; con PlayStation 1, algo menos. Para 4 horas o más, usa una celda de 3000 a 4000 mAh. El uso de un buen UPS HAT con gestión eficiente de energía y la reducción del brillo de pantalla son las dos variables que más impactan en la autonomía real del dispositivo.</p></details>
 <details><summary>¿Necesito saber soldar para construir esta consola?</summary><p>Sí, en la gran mayoría de las variantes de este proyecto se requiere al menos soldadura básica: los botones físicos deben conectarse mediante cables soldados a los pines GPIO o a una placa perforada intermedia, y la batería LiPo generalmente necesita soldarse a los terminales del UPS HAT o módulo cargador si no viene con el conector JST ya instalado. Existen alternativas de menor dificultad, como usar un HAT de controles ya ensamblado con conectores tipo Dupont en vez de soldar cada botón individualmente, pero eliminar por completo la necesidad de soldadura suele implicar sacrificar personalización en la disposición física de los controles.</p></details>
-<details><summary>¿Por qué usar Raspberry Pi Zero 2 W y no una Raspberry Pi 4 o 5 para este proyecto?</summary><p>La Raspberry Pi Zero 2 W ofrece la mejor relación entre tamaño físico, consumo energético y potencia suficiente para emulación retro clásica, tres factores críticos en un dispositivo portátil alimentado por batería donde cada gramo y cada miliamperio importan. Una Raspberry Pi 4 o 5 ofrece muchísima más potencia —necesaria para emular sistemas más avanzados como PlayStation 2 o GameCube— pero a costa de un consumo energético considerablemente mayor, mayor generación de calor que exige disipación más agresiva, y un tamaño físico que complica el diseño de una carcasa verdaderamente portátil y cómoda de sostener con ambas manos.</p></details>
+<details><summary>¿Por qué usar Raspberry Pi Zero 2 W y no una Raspberry Pi 4 o 5 para este proyecto?</summary><p>La Raspberry Pi Zero 2 W ofrece la mejor relación entre tamaño físico, consumo energético y potencia suficiente para emulación retro clásica, tres factores críticos en un dispositivo portátil alimentado por batería donde cada gramo y cada miliamperio importan. Una Raspberry Pi 4 o 5 ofrece muchísima más potencia —útil para Nintendo 64, Dreamcast o PSP; PlayStation 2 y GameCube siguen siendo limitados incluso en una Pi 5— pero a costa de un consumo energético considerablemente mayor, mayor generación de calor que exige disipación más agresiva, y un tamaño físico que complica el diseño de una carcasa verdaderamente portátil y cómoda de sostener con ambas manos.</p></details>
 </div>
 </section>
 
-<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Los precios en pesos chilenos son referenciales, varían según vendedor, tipo de cambio y disponibilidad, y deben confirmarse al momento de la compra. La manipulación de baterías de litio-polímero conlleva riesgos reales de incendio si no se manejan con las protecciones y precauciones adecuadas; procede siempre bajo tu propia responsabilidad y supervisión. La obtención de archivos de juego (ROMs) debe realizarse respetando la legislación de propiedad intelectual de tu país. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+<p class="disclosure">Este artículo es contenido editorial independiente y no contiene enlaces de afiliado. Incluye la oferta de un pack digital de pago elaborado por ukrabot.cl, identificado como tal. Los precios en pesos chilenos son referenciales, varían según vendedor, tipo de cambio y disponibilidad, y deben confirmarse al momento de la compra. La manipulación de baterías de litio-polímero conlleva riesgos reales de incendio si no se manejan con las protecciones y precauciones adecuadas; procede siempre bajo tu propia responsabilidad y supervisión. La obtención de archivos de juego (ROMs) debe realizarse respetando la legislación de propiedad intelectual de tu país. Si detectas un error técnico en esta guía, por favor <a href="/contact">avísanos</a>.</p>
 
 <div class="cta">
   <h3>Sigue aprendiendo</h3>
@@ -629,12 +716,16 @@ gpu_freq=500
 <h2 style="margin-top:0;font-family:Georgia,serif;font-weight:400;font-size:1.4rem;color:#1e1b15;">Fuentes primarias y lecturas recomendadas</h2>
 <p style="font-size:.9rem;color:#57534a;">Estas referencias sustentan las especificaciones técnicas y conceptos generales de la guía. Se recomienda consultar siempre la documentación más reciente antes de dimensionar componentes eléctricos o de batería.</p>
 <ul>
-<li><a href="https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/specifications/" target="_blank" rel="noopener noreferrer">Raspberry Pi — Especificaciones oficiales de la Raspberry Pi Zero 2 W</a></li>
+<li><a href="https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/" target="_blank" rel="noopener noreferrer">Raspberry Pi — Especificaciones oficiales de la Raspberry Pi Zero 2 W</a></li>
 <li><a href="https://retropie.org.uk/docs/" target="_blank" rel="noopener noreferrer">RetroPie — Documentación oficial del proyecto</a></li>
-<li><a href="https://www.batocera.org/" target="_blank" rel="noopener noreferrer">Batocera — Sitio oficial del proyecto</a></li>
-<li><a href="https://www.mouser.com/pdfdocs/microchip_tp4056.pdf" target="_blank" rel="noopener noreferrer">Documentación técnica de referencia del controlador de carga TP4056</a></li>
+<li><a href="https://batocera.org/" target="_blank" rel="noopener noreferrer">Batocera — Sitio oficial del proyecto</a></li>
+<li><a href="https://raw.githubusercontent.com/raspberrypi/firmware/master/boot/overlays/README" target="_blank" rel="noopener noreferrer">Raspberry Pi — Documentación de los overlays del firmware (gpio-key, gpio-shutdown, max98357a, audremap)</a></li>
+<li><a href="https://www.cnx-software.com/2021/12/09/raspberry-pi-zero-2-w-power-consumption/" target="_blank" rel="noopener noreferrer">CNX Software — Mediciones de consumo de la Raspberry Pi Zero 2 W</a></li>
+<li><a href="https://batocera.org/download" target="_blank" rel="noopener noreferrer">Batocera — Descargas por placa (incluye Pi Zero 2 W)</a></li>
+<li><a href="https://wiki-next.recalbox.com/en/hardware-compatibility/raspberry-pi" target="_blank" rel="noopener noreferrer">Recalbox — Compatibilidad con placas Raspberry Pi</a></li>
+<li><a href="https://github.com/juj/fbcp-ili9341" target="_blank" rel="noopener noreferrer">fbcp-ili9341 — Driver rápido para pantallas SPI y sus limitaciones</a></li>
 </ul>
-<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 23 de octubre de 2026.</p>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 23 de noviembre de 2026.</p>
 </section>
 </main>
 
@@ -753,5 +844,6 @@ gpu_freq=500
   });
 })();
 </script>
+<script src="/tienda/tienda.js?v=5" defer></script>
 </body>
 </html>

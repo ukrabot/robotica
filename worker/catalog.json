@@ -350,5 +350,22 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-programadores-eeprom-bios.jpg"
+ },
+ {
+  "slug": "pack-consola-retro-pi-zero-2w",
+  "name": "Pack Consola Retro Pi Zero 2 W: planificador en Excel + guía en PDF + diagrama de cableado",
+  "short": "Pack Consola Retro Pi Zero 2 W (Excel + PDF + diagrama)",
+  "price": 7990,
+  "img": "/blog/pack-consola-retro-pi-zero-2w-thumb.jpg",
+  "url": "/blog/construye-tu-consola-retro-portatil-con-raspberry-pi-zero-2-w#pack",
+  "digital": true,
+  "desc": "Arma tu consola retro portátil con Raspberry Pi Zero 2 W sin choques de pines ni sustos con la batería: configuración lista para copiar, autonomía calculada y guía de armado paso a paso.",
+  "includes": [
+   "Planificador en Excel con 7 hojas: pines GPIO sin choques, líneas para el config.txt, autonomía y elevador, presupuesto, compatibilidad de consolas y lista de pruebas",
+   "Guía en PDF de 18 páginas: materiales, sistema y microSD, alimentación y seguridad del litio, autonomía, mapa de pines, botones con gpio-key, pantalla, audio I2S, armado, temperatura y problemas",
+   "Diagrama de cableado del header de 40 pines en alta resolución",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-consola-retro-pi-zero-2w.jpg"
  }
 ]
