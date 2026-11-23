@@ -333,5 +333,22 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-bicicleta-electrica.jpg"
+ },
+ {
+  "slug": "pack-programadores-eeprom-bios",
+  "name": "Pack Programadores EEPROM y BIOS: planificador en Excel + guía en PDF + pinout SOIC8",
+  "short": "Pack Programadores EEPROM y BIOS (Excel + PDF + pinout)",
+  "price": 7990,
+  "img": "/blog/pack-programadores-eeprom-bios-thumb.jpg",
+  "url": "/blog/los-mejores-programadores-universales-de-eeprom-y-bios#pack",
+  "digital": true,
+  "desc": "Recupera una BIOS o una EEPROM sin quemar el chip: identifica el chip y su voltaje, elige el programador correcto, haz un respaldo verificado y escribe sin perder la MAC ni el número de serie.",
+  "includes": [
+   "Planificador en Excel con 7 hojas: identificador de chip (familia, voltaje y tamaño del archivo), comparador de programadores, validador de respaldo con SHA-256, procedimiento, registro de trabajos y presupuesto",
+   "Guía en PDF de 18 páginas: tipos de memoria, voltajes por familia, el CH341A sin riesgos, TL866II Plus, T48 y RT809H, clip o desoldar, flashrom, respaldo verificado, preparar el archivo, casos frecuentes y solución de problemas",
+   "Pinout de la flash SPI 25xx en SOIC8 en alta resolución",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-programadores-eeprom-bios.jpg"
  }
 ]
