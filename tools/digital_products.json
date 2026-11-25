@@ -215,5 +215,22 @@
    "Se entrega en un archivo .zip con instrucciones"
   ],
   "cover": "/blog/pack-consola-retro-pi-zero-2w.jpg"
+ },
+ {
+  "slug": "pack-analizador-wifi-esp32",
+  "name": "Pack Analizador WiFi ESP32: 5 sketches + planificador en Excel + guía en PDF",
+  "short": "Pack Analizador WiFi ESP32 (sketches + Excel + PDF)",
+  "price": 7990,
+  "img": "/blog/pack-analizador-wifi-esp32-thumb.jpg",
+  "url": "/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos#pack",
+  "digital": true,
+  "desc": "Diagnostica tu Wi-Fi de 2,4 GHz con un ESP32: elige el mejor canal con datos, mide el tráfico real, encuentra las zonas débiles de tu casa y arma un analizador portátil con pantalla.",
+  "includes": [
+   "5 sketches para ESP32: escáner para Excel, mapa de canales, medidor de cobertura, ocupación por canal y analizador portátil con OLED",
+   "Planificador en Excel con 7 hojas: elegir canal, ocupación real, cobertura por habitación, autonomía y regulador, materiales y uso responsable",
+   "Guía en PDF de 18 páginas: Arduino IDE, canales de 2,4 GHz, RSSI, ajustes del router, cableado del portátil, problemas y ley en Chile",
+   "Se entrega en un archivo .zip con dos diagramas e instrucciones"
+  ],
+  "cover": "/blog/pack-analizador-wifi-esp32.jpg"
  }
 ]

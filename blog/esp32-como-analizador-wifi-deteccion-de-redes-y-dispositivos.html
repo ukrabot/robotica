@@ -13,7 +13,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="ESP32 como Analizador WiFi: Detección de Redes y Dispositivos">
 <meta property="og:description" content="Escaneo de redes, RSSI, mapa de canales y modo promiscuo: el ESP32 como herramienta de diagnóstico WiFi.">
-<meta property="og:image" content="https://www.ukrabot.cl/blog/esp32_wifi_analyzer_hero.svg">
+<meta property="og:image" content="https://www.ukrabot.cl/blog/esp32-analizador-wifi-hero.jpg">
 <meta property="og:url" content="https://www.ukrabot.cl/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos">
 <meta property="og:locale" content="es_CL">
 <meta property="og:site_name" content="Blog de Ingeniería Robótica">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ESP32 como Analizador WiFi: Detección de Redes y Dispositivos">
 <meta name="twitter:description" content="Convierte un ESP32 en analizador WiFi: escaneo, RSSI, canales saturados y captura de tramas de gestión.">
-<meta name="twitter:image" content="https://www.ukrabot.cl/blog/esp32_wifi_analyzer_hero.svg">
+<meta name="twitter:image" content="https://www.ukrabot.cl/blog/esp32-analizador-wifi-hero.jpg">
 
 <script type="application/ld+json">
 {
@@ -49,15 +49,15 @@
     }
   },
   "datePublished": "2026-08-15",
-  "dateModified": "2026-08-15",
+  "dateModified": "2026-11-25",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://www.ukrabot.cl/blog/esp32-como-analizador-wifi-deteccion-de-redes-y-dispositivos"
   },
-  "image": "https://www.ukrabot.cl/blog/esp32_wifi_analyzer_hero.svg",
+  "image": "https://www.ukrabot.cl/blog/esp32-analizador-wifi-hero.jpg",
   "proficiencyLevel": "Intermedio",
   "dependencies": "ESP32 (cualquier variante con radio de 2,4 GHz), Arduino IDE o ESP-IDF, cable USB y conocimientos básicos de C++",
-  "wordCount": "3100",
+  "wordCount": "3529",
   "inLanguage": "es-CL"
 }
 </script>
@@ -99,7 +99,7 @@
       "name": "¿El ESP32 puede analizar redes WiFi de 5 GHz?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Ni el ESP32 original ni las variantes S2, S3, C3 o C6 disponen de radio para la banda de 5 GHz: todas operan exclusivamente en 2,4 GHz. El ESP32-C5 es el primer chip de la familia que incorpora doble banda, pero su disponibilidad y su soporte de software todavía son limitados. Para analizar 5 GHz o 6 GHz necesitas un adaptador USB con chipset compatible con modo monitor conectado a un portátil, o una herramienta comercial. El ESP32 sigue siendo perfectamente válido para diagnosticar la banda de 2,4 GHz, que es donde se concentran los dispositivos domóticos y donde más congestión suele haber."
+        "text": "Casi nunca. El ESP32 original y las variantes S2, S3, C3 y C6 no tienen radio para la banda de 5 GHz: operan solo en 2,4 GHz. La excepción es el ESP32-C5, en producción desde 2025: es el primer chip de la familia con doble banda (2,4 y 5 GHz, Wi-Fi 6), y el núcleo de Arduino ya permite escanear cada banda por separado. Para analizar 5 GHz o 6 GHz necesitas un adaptador USB con chipset compatible con modo monitor conectado a un portátil, o una herramienta comercial. El ESP32 sigue siendo perfectamente válido para diagnosticar la banda de 2,4 GHz, que es donde se concentran los dispositivos domóticos y donde más congestión suele haber."
       }
     },
     {
@@ -123,7 +123,7 @@
       "name": "¿Cuál es el mejor canal para configurar mi router en 2,4 GHz?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Siempre uno de los tres canales que no se solapan: 1, 6 u 11. Ejecuta el mapa de ocupación durante varios minutos en distintos momentos del día y quédate con el que acumule menos carga ponderada entre esos tres. Aunque el análisis señale que el canal 3 o el 8 están más despejados, elegirlos es contraproducente: interfieren parcialmente con dos grupos de vecinos que reaccionarán aumentando su potencia. Repite la medición cada pocos meses, porque el panorama radioeléctrico de un edificio cambia cada vez que alguien instala un router nuevo."
+        "text": "Siempre uno de los tres canales que no se solapan: 1, 6 u 11. Ejecuta el mapa de ocupación durante varios minutos en distintos momentos del día y quédate con el que acumule menos carga ponderada entre esos tres. Aunque el análisis señale que el canal 3 o el 8 están más despejados, elegirlos es contraproducente: en un canal solapado los equipos no se escuchan entre sí para turnarse y se estorban como ruido, con más colisiones para ti y para dos grupos de vecinos. Repite la medición cada pocos meses, porque el panorama radioeléctrico de un edificio cambia cada vez que alguien instala un router nuevo."
       }
     },
     {
@@ -131,7 +131,7 @@
       "name": "¿Es legal usar un ESP32 en modo promiscuo?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Escuchar las emisiones públicas de radio, que es lo que hacen los beacons y los probes, no suele ser ilegal en sí mismo. El problema aparece con lo que ocurre después: almacenar direcciones MAC asociables a personas constituye tratamiento de datos personales y queda sujeto a la normativa correspondiente, y cualquier intento de descifrar tráfico ajeno o de interferir con emisiones propias es directamente delictivo. En Chile aplican la Ley 21.459 de delitos informáticos y la Ley 19.628 sobre protección de datos. Limítate a tu propia red o trabaja con autorización escrita del titular."
+        "text": "Escuchar las emisiones públicas de radio, que es lo que hacen los beacons y los probes, no suele ser ilegal en sí mismo. El problema aparece con lo que ocurre después: almacenar direcciones MAC asociables a personas constituye tratamiento de datos personales y queda sujeto a la normativa correspondiente, y cualquier intento de descifrar tráfico ajeno o de interferir con emisiones propias es directamente delictivo. En Chile aplican la Ley 21.459 de delitos informáticos y la Ley 19.628 sobre protección de datos, reformada por la Ley 21.719. Limítate a tu propia red o trabaja con autorización escrita del titular."
       }
     },
     {
@@ -139,7 +139,7 @@
       "name": "¿Qué diferencia hay entre escaneo activo y pasivo?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "El escaneo activo emite tramas de sondeo dirigidas y espera respuesta de los puntos de acceso, lo que lo hace rápido, en torno a cien milisegundos por canal, pero revela tu presencia a cualquiera que esté escuchando. El escaneo pasivo se limita a esperar los beacons que los puntos de acceso emiten espontáneamente cada cien milisegundos aproximadamente, por lo que necesita más tiempo por canal, entre doscientos y trescientos milisegundos, pero no genera tráfico y detecta redes configuradas para ignorar sondeos dirigidos. Para diagnóstico prolongado el pasivo es preferible; para una comprobación rápida basta el activo."
+        "text": "El escaneo activo emite tramas de sondeo dirigidas y espera respuesta de los puntos de acceso, lo que lo hace rápido (en el núcleo de Arduino, entre 100 y 300 milisegundos por canal), pero revela tu presencia a cualquiera que esté escuchando. El escaneo pasivo se limita a esperar los beacons que los puntos de acceso emiten espontáneamente cada cien milisegundos aproximadamente, por lo que necesita al menos ese intervalo en cada canal, y en la práctica 300 milisegundos o más, pero no genera tráfico y detecta redes configuradas para ignorar sondeos dirigidos. Para diagnóstico prolongado el pasivo es preferible; para una comprobación rápida basta el activo."
       }
     }
   ]
@@ -310,6 +310,22 @@ details p{padding-top:10px;margin-bottom:0}
     gtag('config', 'G-1ZVHF8X35Q');
   </script>
 
+<style>
+.pack{margin:52px 0;padding:28px;border:1px solid rgba(169,123,35,.35);border-radius:18px;background:#fff;box-shadow:0 18px 40px rgba(30,25,15,.06)}
+.pack-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:30px;align-items:start}
+.pack-grid>img{width:100%;height:auto;border-radius:12px;display:block}
+.pack-tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.pack h2{margin:8px 0 12px}
+.pack ul{padding-left:20px;margin:0 0 18px}
+.pack li{margin-bottom:8px}
+.pack-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:6px 0 2px}
+.pack-price strong{font-family:Georgia,serif;font-size:2rem;font-weight:400;color:var(--text)}
+.pack-price span{color:var(--muted);font-size:.9rem}
+.pack-fine{font-size:.8rem;color:var(--quiet);margin:14px 0 0;line-height:1.5}
+.pack-callout a{font-weight:600}
+@media (max-width:820px){.pack{padding:20px}.pack-grid{grid-template-columns:1fr;gap:20px}}
+</style>
+<link rel="stylesheet" href="/tienda/tienda.css?v=5">
 </head>
 <body>
 
@@ -332,12 +348,12 @@ details p{padding-top:10px;margin-bottom:0}
 </nav>
 
 <header class="hero">
-  <img src="esp32_wifi_analyzer_hero.svg" alt="Ilustración de una placa ESP32 rodeada de ondas de radio y un gráfico de barras con la ocupación de los canales de la banda de 2,4 gigahercios" fetchpriority="high">
+  <img src="esp32-analizador-wifi-hero.jpg" alt="Ilustración de una placa ESP32 con pantalla OLED que muestra la ocupación de los canales 1 a 13 de la banda de 2,4 GHz, con los canales 1, 6 y 11 destacados" fetchpriority="high">
   <div class="hero-inner">
-    <div class="eyebrow">ESP32 y microcontroladores · Actualizado el <time datetime="2026-08-15">15 de agosto de 2026</time></div>
+    <div class="eyebrow">ESP32 y microcontroladores · Actualizado el <time datetime="2026-11-25">25 de noviembre de 2026</time></div>
     <h1>ESP32 como Analizador WiFi: Detección de Redes y Dispositivos</h1>
     <p>Con quince líneas de código el ESP32 enumera todas las redes a su alcance. Con el modo promiscuo activado se convierte en algo bastante más interesante: un sniffer de tramas de gestión que revela qué dispositivos hay alrededor.</p>
-    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 17 min de lectura</p>
+    <p class="byline">Por <a href="/about">Alberto Gallardo</a>, Analista Programador Computacional · 16 min de lectura</p>
   </div>
 </header>
 
@@ -345,8 +361,8 @@ details p{padding-top:10px;margin-bottom:0}
 <article>
 
 <div class="article-img">
-  <img src="esp32_wifi_analyzer_esquema.svg" alt="Diagrama de los tres modos de operación del ESP32 para análisis WiFi: escaneo estándar, modo promiscuo con captura de tramas y salida por pantalla OLED" loading="lazy">
-  <div class="caption">Tres niveles de análisis: escaneo de redes, medición de ocupación por canal y captura de tramas en modo promiscuo.</div>
+  <img src="canales-wifi-2-4ghz-solapamiento.jpg" alt="Diagrama de los canales 1 a 13 de la banda de 2,4 GHz con su ancho de 22 MHz: los canales 1, 6 y 11 no se solapan; los canales 12 y 13 están permitidos en Chile" loading="lazy" width="1600" height="900">
+  <div class="caption">Los 13 canales de 2,4 GHz que se usan en Chile: cada uno ocupa unos 22 MHz y solo el 1, el 6 y el 11 no se solapan entre sí.</div>
 </div>
 
 <div class="toc" aria-label="Tabla de contenidos">
@@ -365,6 +381,25 @@ details p{padding-top:10px;margin-bottom:0}
   </ol>
 </div>
 
+<section id="pack" class="pack" aria-labelledby="pack-t">
+<div class="pack-grid">
+  <img src="pack-analizador-wifi-esp32.jpg" alt="Portada del Pack Analizador WiFi ESP32: planificador en Excel, guía en PDF y cinco sketches para ESP32" width="1200" height="800" loading="lazy">
+  <div>
+    <span class="pack-tag">Pack digital · ukrabot.cl</span>
+    <h2 id="pack-t">Pack Analizador WiFi ESP32: elige el canal y encuentra las zonas débiles con datos</h2>
+    <p>Todo lo de esta guía, convertido en herramientas listas para cargar: el ESP32 mide, el Excel decide qué canal usar y dónde le falta señal a tu casa.</p>
+    <ul>
+      <li><strong>5 sketches para ESP32</strong> (compilados con el núcleo 3.3.13): escáner en formato para Excel, mapa de canales ponderado, medidor de cobertura de tu red, ocupación real por canal (sin guardar direcciones MAC) y analizador portátil con pantalla OLED y batería.</li>
+      <li><strong>Planificador en Excel (7 hojas):</strong> elegir canal sin contar tu propia red, ocupación real, mapa de cobertura por habitación, autonomía y revisión del regulador, materiales y uso responsable.</li>
+      <li><strong>Guía en PDF (18 páginas):</strong> preparar Arduino IDE, canales de 2,4 GHz en Chile, RSSI, ajustes del router, cableado del analizador portátil, batería, solución de problemas y la ley en Chile.</li>
+    </ul>
+    <div class="pack-price"><strong data-price-slug="pack-analizador-wifi-esp32">$7.990</strong><span>Pago único · descarga inmediata en un archivo .zip</span></div>
+    <div class="ukr-buy" id="comprar-pack" data-ukr-buy="pack-analizador-wifi-esp32" aria-label="Comprar el Pack Analizador WiFi ESP32"></div>
+    <p class="pack-fine">Al pagar descargas un archivo .zip con el planificador (.xlsx), la guía (.pdf), los sketches (.ino), dos diagramas (.png) y las instrucciones. Para diagnosticar tu propia red: no incluye herramientas para descifrar tráfico ni interferir redes. No incluye componentes. Licencia de uso personal. Por ser contenido digital de descarga inmediata, no tiene derecho a retracto; si un archivo llega dañado o no abre, te lo reponemos o devolvemos el dinero.</p>
+  </div>
+</div>
+</section>
+
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
   <ins class="adsbygoogle"
@@ -378,7 +413,7 @@ details p{padding-top:10px;margin-bottom:0}
 
 <section id="fundamentos">
 <h2>Qué puede y qué no puede ver un ESP32</h2>
-<p>Antes de escribir una línea de código conviene tener claro el alcance real de la herramienta, porque circula bastante mitología al respecto. El ESP32 lleva una radio 802.11 b/g/n de 2,4 GHz con acceso a la capa física, y eso le permite hacer cosas que una tarjeta de red convencional no expone. Pero también tiene límites duros.</p>
+<p>Antes de escribir una línea de código conviene tener claro el alcance real de la herramienta, porque circula bastante mitología al respecto. El ESP32 lleva una radio 802.11 b/g/n de 2,4 GHz que, en modo promiscuo, entrega al programa las tramas 802.11 tal como llegan, algo que una tarjeta de red convencional no suele exponer. Pero también tiene límites duros.</p>
 <div class="table-wrap">
 <table>
 <thead><tr><th>Capacidad</th><th>¿Puede el ESP32?</th><th>Detalle</th></tr></thead>
@@ -386,23 +421,23 @@ details p{padding-top:10px;margin-bottom:0}
 <tr><td>Listar redes visibles (SSID, canal, RSSI, cifrado)</td><td>Sí</td><td>Función <code>WiFi.scanNetworks()</code>, sin configuración especial</td></tr>
 <tr><td>Detectar redes ocultas</td><td>Parcialmente</td><td>Aparecen con SSID vacío; el nombre se revela si un cliente se asocia</td></tr>
 <tr><td>Medir ocupación por canal</td><td>Sí</td><td>Contando tramas en modo promiscuo canal por canal</td></tr>
-<tr><td>Capturar tramas de gestión y control</td><td>Sí</td><td>Modo promiscuo con filtro configurable</td></tr>
+<tr><td>Capturar tramas de gestión y control</td><td>Sí</td><td>Modo promiscuo; las de control hay que activarlas en el filtro, porque por defecto solo llegan las de gestión y datos</td></tr>
 <tr><td>Ver direcciones MAC de clientes asociados</td><td>Sí</td><td>En las cabeceras de las tramas de datos, no en su contenido</td></tr>
 <tr><td>Leer el contenido de tramas cifradas</td><td>No</td><td>WPA2/WPA3 cifra la carga útil; el ESP32 entrega bytes ininteligibles</td></tr>
-<tr><td>Operar en la banda de 5 GHz</td><td>No</td><td>Ni el ESP32 clásico ni el S3 ni el C3 tienen radio de 5 GHz</td></tr>
-<tr><td>Capturar tramas 802.11ac o ax</td><td>No</td><td>La radio es b/g/n; las tramas de estándares posteriores no se decodifican</td></tr>
+<tr><td>Operar en la banda de 5 GHz</td><td>Casi nunca</td><td>El ESP32 clásico, el S2, el S3, el C3 y el C6 solo tienen 2,4 GHz. El ESP32-C5, en producción desde 2025, es el primero de doble banda</td></tr>
+<tr><td>Decodificar tramas 802.11ax (Wi-Fi 6)</td><td>Según el chip</td><td>El ESP32 clásico, el S3 y el C3 son b/g/n; el C6 y el C5 son Wi-Fi 6. Ninguno decodifica 802.11ac, que solo existe en 5 GHz</td></tr>
 </tbody>
 </table>
 </div>
 <div class="warning">La limitación de los 5 GHz es la más importante en la práctica. En 2026, buena parte del tráfico doméstico y casi todo el tráfico exigente vive en 5 GHz o en 6 GHz. Un ESP32 solo ve la mitad del panorama, y esa mitad es la más congestionada. Úsalo para diagnosticar problemas en 2,4 GHz, que es donde viven los dispositivos IoT, no para auditar una red moderna completa.</div>
 <h3>La banda de 2,4 GHz y sus catorce canales</h3>
-<p>La banda va de 2.400 a 2.483,5 MHz y está dividida en catorce canales separados 5 MHz entre sí. El problema es que cada canal ocupa unos 22 MHz de ancho, así que <strong>los canales adyacentes se solapan</strong>. Solo tres combinaciones no interfieren entre sí: <strong>1, 6 y 11</strong>. Cualquier red configurada en el canal 3 está contaminando simultáneamente el 1 y el 6.</p>
+<p>La banda va de 2.400 a 2.483,5 MHz y está dividida en catorce canales separados 5 MHz entre sí (el 14 queda 12 MHz más arriba). El problema es que cada canal ocupa unos 22 MHz de ancho (20 MHz en 802.11g/n), así que <strong>los canales adyacentes se solapan</strong>. Solo tres combinaciones no interfieren entre sí: <strong>1, 6 y 11</strong>. Cualquier red configurada en el canal 3 está contaminando simultáneamente el 1 y el 6.</p>
 <ul>
-<li><strong>Canales 1 al 11:</strong> permitidos en toda América, incluido Chile.</li>
-<li><strong>Canales 12 y 13:</strong> permitidos en Europa y buena parte de Asia con restricciones de potencia.</li>
+<li><strong>Canales 1 al 11:</strong> permitidos prácticamente en todo el mundo.</li>
+<li><strong>Canales 12 y 13:</strong> permitidos en Chile (que habilita de 2.402 a 2.482 MHz), Europa y gran parte del mundo; en Estados Unidos su uso está restringido a baja potencia y en la práctica no se usan.</li>
 <li><strong>Canal 14:</strong> solo Japón y únicamente para 802.11b.</li>
 </ul>
-<p>El ESP32 respeta la región configurada en el firmware. Si escaneas en Chile y no ves nada en los canales 12 y 13, no es un fallo del código: es el <em>country code</em> haciendo su trabajo.</p>
+<p>Por defecto, el ESP32 escanea los canales 1 al 13 (según Espressif, del 1 al 11 en modo activo y el 12 y el 13 en modo pasivo, para no emitir donde podrían estar prohibidos). En Chile verás las redes de los canales 12 y 13 si las hay; si no aparecen, simplemente no hay redes en ellos.</p>
 </section>
 <section id="escaneo">
 <h2>Escaneo básico de redes</h2>
@@ -454,7 +489,7 @@ const char* cifrado(wifi_auth_mode_t t) {
     default:                        return "DESCONOCIDO";
   }
 }</code></pre>
-<div class="note"><strong>Detalle que importa:</strong> <code>WiFi.scanDelete()</code> libera el búfer del resultado. Sin esa llamada, un sketch que escanea en bucle acaba agotando la memoria dinámica tras unas horas. Es una de las causas más frecuentes de reinicios inexplicables en analizadores caseros.</div>
+<div class="note"><strong>Detalle que importa:</strong> <code>WiFi.scanDelete()</code> libera la memoria del resultado en cuanto terminas de usarlo. <code>scanNetworks()</code> también borra el resultado anterior antes de cada escaneo, así que olvidarla no provoca una fuga que crezca con el tiempo, pero sí deja esa memoria ocupada mientras el programa hace otras cosas, como dibujar la pantalla o atender un servidor web.</div>
 <h3>Escaneo asíncrono</h3>
 <p>El escaneo bloqueante detiene el resto del programa entre uno y tres segundos. Si tu analizador tiene pantalla o atiende un servidor web, eso se nota. La versión asíncrona resuelve el problema:</p>
 <pre><code>WiFi.scanNetworks(true);          // true = asíncrono, devuelve inmediatamente
@@ -472,7 +507,7 @@ if (n == WIFI_SCAN_RUNNING) {
 <p>Por defecto el ESP32 hace <strong>escaneo activo</strong>: emite tramas <em>probe request</em> y espera respuestas. Es rápido pero delata tu presencia, porque cualquier otro analizador en la zona verá tus <em>probes</em>. El <strong>escaneo pasivo</strong> se limita a escuchar los <em>beacons</em> que los puntos de acceso emiten cada 100 milisegundos aproximadamente:</p>
 <pre><code>// Escaneo pasivo: async, show_hidden, passive, tiempo por canal (ms)
 WiFi.scanNetworks(true, true, true, 300);</code></pre>
-<p>Con 300 ms por canal y once canales, un barrido pasivo completo tarda algo más de tres segundos. Es más lento, pero detecta redes que no responden a <em>probes</em> dirigidos y no genera tráfico.</p>
+<p>Con 300 ms por canal y 13 canales, un barrido pasivo completo tarda unos cuatro segundos. Es más lento, pero detecta redes que no responden a <em>probes</em> dirigidos y no genera tráfico.</p>
 </section>
 <div class="ad-slot" style="margin:34px 0;min-height:280px;text-align:center;">
   <!-- ANUNCIO UKRABOT -->
@@ -561,16 +596,18 @@ WiFi.scanNetworks(true, true, true, 300);</code></pre>
     Serial.printf("Ch %2d [%5.2f] ", c, carga[c]);
     int barras = (int)(carga[c] * 4);
     for (int b = 0; b &lt; barras &amp;&amp; b &lt; 40; b++) Serial.print('#');
-    if (c == 1 || c == 6 || c == 11) Serial.print("  <- no solapado");
+    if (c == 1 || c == 6 || c == 11) Serial.print("  &lt;- no solapado");
     Serial.println();
-    if (carga[c] &lt; minimo) { minimo = carga[c]; mejor = c; }
+    // recomendar solo entre los canales que no se solapan
+    if ((c == 1 || c == 6 || c == 11) &amp;&amp; carga[c] &lt; minimo) { minimo = carga[c]; mejor = c; }
   }
-  Serial.printf("\nCanal recomendado: %d\n", mejor);
+  Serial.printf("\nCanal recomendado (1, 6 u 11): %d\n", mejor);
 }</code></pre>
-<div class="warning">Si el canal con menos carga resulta ser el 3, el 8 o cualquier otro solapado, <strong>ignóralo y quédate con el mejor entre 1, 6 y 11</strong>. Colocar tu red en un canal intermedio te da menos interferencia inicial pero contamina a dos grupos de vecinos, que subirán su potencia y acabarán empeorando tu situación. Es un caso de libro de óptimo local perjudicial.</div>
+<div class="warning">Si el canal con menos carga resulta ser el 3, el 8 o cualquier otro solapado, <strong>ignóralo y quédate con el mejor entre 1, 6 y 11</strong>. En el mismo canal, los equipos se escuchan entre sí y se turnan para transmitir (CSMA/CA). En un canal que se solapa a medias no logran decodificarse y se estorban como ruido: más colisiones y reintentos, para ti y para dos grupos de vecinos a la vez.</div>
 <h3>Medir tráfico real, no solo presencia</h3>
 <p>Una red con excelente señal pero sin tráfico casi no molesta. Una red débil que transfiere vídeo permanentemente ocupa el medio y te bloquea. Para medir ocupación real hay que contar tramas por canal en modo promiscuo, que es lo que veremos a continuación.</p>
 </section>
+<div class="note pack-callout"><strong>¿Qué canal le conviene a tu router?</strong> El <a href="#pack">Pack Analizador WiFi ESP32</a> (<span data-price-slug="pack-analizador-wifi-esp32">$7.990</span>, descarga inmediata en .zip) trae cinco sketches listos, un planificador en Excel que elige el canal y arma el mapa de cobertura de tu casa, y una guía de 18 páginas.</div>
 <section id="promiscuo">
 <h2>Modo promiscuo: capturar tramas</h2>
 <p>El modo promiscuo indica a la radio que entregue al software todas las tramas que detecte, no solo las dirigidas a nuestra dirección MAC. En el ESP32 se activa desde la API de ESP-IDF, accesible también desde el entorno de Arduino.</p>
@@ -594,9 +631,9 @@ void IRAM_ATTR sniffer(void *buf, wifi_promiscuous_pkt_type_t tipo) {
   const hdr80211_t *h = (hdr80211_t *)pkt-&gt;payload;
 
   switch (tipo) {
-    case WIFI_PKT_MGMT: contMgmt++; break;
-    case WIFI_PKT_DATA: contData++; break;
-    case WIFI_PKT_CTRL: contCtrl++; break;
+    case WIFI_PKT_MGMT: contMgmt = contMgmt + 1; break;
+    case WIFI_PKT_DATA: contData = contData + 1; break;
+    case WIFI_PKT_CTRL: contCtrl = contCtrl + 1; break;
     default: break;
   }
 
@@ -612,8 +649,13 @@ void IRAM_ATTR sniffer(void *buf, wifi_promiscuous_pkt_type_t tipo) {
 void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
-  esp_wifi_set_promiscuous(true);
+  // por defecto solo llegan gestión y datos: las de control se activan aparte
+  wifi_promiscuous_filter_t filtro = {
+    .filter_mask = WIFI_PROMIS_FILTER_MASK_MGMT | WIFI_PROMIS_FILTER_MASK_DATA | WIFI_PROMIS_FILTER_MASK_CTRL
+  };
+  esp_wifi_set_promiscuous_filter(&amp;filtro);
   esp_wifi_set_promiscuous_rx_cb(&amp;sniffer);
+  esp_wifi_set_promiscuous(true);
   esp_wifi_set_channel(6, WIFI_SECOND_CHAN_NONE);
 }
 
@@ -624,7 +666,7 @@ void loop() {
   delay(400);
   if (++ch &gt; 13) {
     Serial.printf("Mgmt:%lu Data:%lu Ctrl:%lu\n", contMgmt, contData, contCtrl);
-    contMgmt = contData = contCtrl = 0;
+    contMgmt = 0; contData = 0; contCtrl = 0;
     ch = 1;
   }
 }</code></pre>
@@ -689,7 +731,7 @@ void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
   }
 }</code></pre>
 <h3>La aleatorización de MAC lo cambió todo</h3>
-<p>Desde iOS 8 y Android 6, y de forma agresiva desde iOS 14 y Android 10, los teléfonos <strong>generan direcciones MAC aleatorias</strong> para las tramas de sondeo cuando no están asociados. Android 10 introdujo además MAC aleatoria por red, y las versiones recientes la rotan periódicamente incluso estando conectado.</p>
+<p>Desde iOS 8 y Android 6, y de forma agresiva desde iOS 14 y Android 10, los teléfonos <strong>generan direcciones MAC aleatorias</strong> para las tramas de sondeo cuando no están asociados. Android 10 introdujo además MAC aleatoria por red, y algunas versiones recientes de iOS y Android ofrecen direcciones que cambian periódicamente incluso en redes conocidas.</p>
 <div class="table-wrap">
 <table>
 <thead><tr><th>Situación</th><th>MAC observada</th><th>¿Sirve para contar?</th></tr></thead>
@@ -697,7 +739,7 @@ void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
 <tr><td>Teléfono moderno buscando redes</td><td>Aleatoria, cambia cada pocos minutos</td><td>No: sobrestima enormemente el recuento</td></tr>
 <tr><td>Teléfono asociado a una red</td><td>MAC por red, estable mientras dure la sesión</td><td>Sí, dentro de esa red</td></tr>
 <tr><td>Dispositivo IoT (ESP32, cámara, enchufe)</td><td>MAC real del fabricante</td><td>Sí, con total fiabilidad</td></tr>
-<tr><td>Portátil con Windows 11 por defecto</td><td>Aleatoria en sondeo, real al asociarse</td><td>Parcialmente</td></tr>
+<tr><td>Portátil con Windows</td><td>Depende de la opción "Direcciones de hardware aleatorias"</td><td>Parcialmente</td></tr>
 </tbody>
 </table>
 </div>
@@ -705,7 +747,7 @@ void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
 <pre><code>bool esAleatoria(const uint8_t *mac) {
   return (mac[0] &amp; 0x02) != 0;
 }</code></pre>
-<div class="note">Para inventario de dispositivos IoT propios el método sigue siendo excelente: un ESP32, una cámara o un enchufe inteligente usan su MAC real y su prefijo OUI identifica al fabricante. Para contar personas, en cambio, la aleatorización ha hecho que los recuentos ingenuos exageren por factores de tres a diez.</div>
+<div class="note">Para inventario de dispositivos IoT propios el método sigue siendo excelente: un ESP32, una cámara o un enchufe inteligente usan su MAC real y su prefijo OUI identifica al fabricante. Para contar personas, en cambio, la aleatorización hace que un recuento ingenuo pueda multiplicar varias veces el número real de teléfonos.</div>
 </section>
 <section id="portatil">
 <h2>Analizador portátil con pantalla</h2>
@@ -715,14 +757,19 @@ void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
 <table>
 <thead><tr><th>Componente</th><th>Recomendación</th><th>Nota</th></tr></thead>
 <tbody>
-<tr><td>Placa</td><td>ESP32-WROOM-32 o ESP32-S3</td><td>El S3 tiene más RAM para búferes de captura</td></tr>
+<tr><td>Placa</td><td>ESP32-WROOM-32 o ESP32-S3 (doble núcleo)</td><td>Las versiones con PSRAM (WROVER o S3 N8R8) dan más memoria para búferes de captura</td></tr>
 <tr><td>Pantalla</td><td>OLED SSD1306 de 128×64 por I²C</td><td>Consumo bajo; suficiente para gráficos de barras</td></tr>
 <tr><td>Alternativa</td><td>TFT ST7789 de 240×240 por SPI</td><td>Color y más resolución; consume bastante más</td></tr>
-<tr><td>Batería</td><td>Celda LiPo de 1.000 a 2.000 mAh</td><td>Autonomía de tres a seis horas escaneando</td></tr>
+<tr><td>Batería</td><td>Celda LiPo de 1.000 a 2.000 mAh con protección</td><td>Unas 5 a 12 horas según capacidad y modo (ver abajo)</td></tr>
 <tr><td>Carga</td><td>Módulo TP4056 con protección</td><td>Salida siempre por los terminales OUT</td></tr>
+<tr><td>Regulador</td><td>LDO de 3,3 V y baja caída, de 500 mA o más (por ejemplo AP2112K o ME6211)</td><td>El AMS1117 de muchas placas DevKit necesita unos 4,3 V a la entrada: con una LiPo de 3,7 V deja al ESP32 por debajo de 3,3 V. Alternativa: una placa con cargador LiPo integrado</td></tr>
 <tr><td>Entrada</td><td>Dos pulsadores</td><td>Cambio de modo y congelar pantalla</td></tr>
 </tbody>
 </table>
+</div>
+<div class="article-img">
+  <img src="analizador-wifi-esp32-cableado.jpg" alt="Diagrama de cableado del analizador portátil: LiPo con protección, módulo TP4056, interruptor, regulador de 3,3 V de baja caída, ESP32 DevKit, pantalla OLED por I2C en GPIO 21 y 22, pulsadores en GPIO 32 y 33 y divisor de voltaje de la batería al GPIO 35" loading="lazy" width="1600" height="900">
+  <div class="caption">Cableado de referencia del analizador portátil: la batería entra por un regulador de baja caída al pin 3V3, no por el pin 5V de la placa.</div>
 </div>
 <h3>Reparto entre los dos núcleos</h3>
 <p>El ESP32 tiene dos núcleos y esta aplicación se beneficia claramente de usarlos: la captura no puede pararse mientras se refresca la pantalla.</p>
@@ -735,10 +782,10 @@ void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
 <p>La comunicación entre ambas tareas debe hacerse con una cola de FreeRTOS o con un mutex protegiendo la estructura compartida. Acceder al mismo array desde dos núcleos sin sincronización produce corrupción de datos difícil de depurar.</p>
 <h3>Consumo y autonomía</h3>
 <ul>
-<li><strong>Escaneando de forma continua:</strong> 120 a 160 mA. Con 2.000 mAh, unas doce horas teóricas y siete u ocho reales.</li>
-<li><strong>Modo promiscuo permanente:</strong> 130 a 180 mA. La radio está siempre recibiendo.</li>
-<li><strong>Con OLED encendido:</strong> añade 15 a 25 mA según el número de píxeles activos.</li>
-<li><strong>Sueño ligero entre barridos:</strong> baja la media a 40 o 50 mA si escaneas cada 30 segundos.</li>
+<li><strong>Escaneando de forma continua:</strong> unos 110 a 150 mA medidos en la batería con una placa de desarrollo (la radio del ESP32 consume cerca de 100 mA recibiendo, con picos de unos 240 mA al transmitir). Con 2.000 mAh, unas 9 a 12 horas reales.</li>
+<li><strong>Modo promiscuo permanente:</strong> unos 110 a 140 mA. La radio está siempre recibiendo, pero no transmite.</li>
+<li><strong>Con OLED encendido:</strong> añade unos 10 a 25 mA según el número de píxeles activos.</li>
+<li><strong>Sueño ligero entre barridos:</strong> si escaneas cada 30 segundos, la media baja a unos 20 a 40 mA, según lo que consuman la pantalla y los componentes de la placa.</li>
 </ul>
 </section>
 <section id="legal">
@@ -758,7 +805,7 @@ void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
 </tbody>
 </table>
 </div>
-<div class="warning">En Chile, la Ley 21.459 de delitos informáticos sanciona la interceptación indebida de comunicaciones y el acceso ilícito a sistemas de información. La Ley 19.628 regula el tratamiento de datos personales, categoría en la que una dirección MAC vinculable a una persona puede encajar. En la Unión Europea el RGPD considera explícitamente la MAC como identificador. La subsecretaría de telecomunicaciones regula además el uso del espectro: emitir señales que degraden el servicio ajeno tiene consecuencias administrativas propias.</div>
+<div class="warning">En Chile, la Ley 21.459 de delitos informáticos sanciona la interceptación indebida de comunicaciones y el acceso ilícito a sistemas de información. La Ley 19.628 regula el tratamiento de datos personales, categoría en la que una dirección MAC vinculable a una persona puede encajar. La Ley 21.719, que la reforma y crea la Agencia de Protección de Datos Personales, debía regir desde el 1 de diciembre de 2026; el 17 de noviembre de 2026 el Congreso despachó un proyecto que posterga su entrada en vigencia al 15 de octubre de 2027, pendiente de publicación al revisar este artículo. En la Unión Europea, las autoridades de protección de datos consideran la MAC un dato personal cuando permite identificar a una persona. La subsecretaría de telecomunicaciones regula además el uso del espectro: emitir señales que degraden el servicio ajeno tiene consecuencias administrativas propias.</div>
 <p>Regla simple y suficiente para el 99 % de los casos: <strong>analiza tu propia red y tu propio espectro</strong>. Si necesitas auditar una red ajena, hazlo con autorización escrita del titular y con un alcance definido por adelantado. Es exactamente lo que hace cualquier profesional de seguridad ofensiva, y el motivo por el que el contrato precede al escaneo.</p>
 </section>
 <section id="conclusion">
@@ -782,17 +829,17 @@ void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
 <section id="faq">
 <h2>Preguntas frecuentes</h2>
 <div class="faq">
-<details><summary>¿El ESP32 puede analizar redes WiFi de 5 GHz?</summary><p>No. Ni el ESP32 original ni las variantes S2, S3, C3 o C6 disponen de radio para la banda de 5 GHz: todas operan exclusivamente en 2,4 GHz. El ESP32-C5 es el primer chip de la familia que incorpora doble banda, pero su disponibilidad y su soporte de software todavía son limitados. Para analizar 5 GHz o 6 GHz necesitas un adaptador USB con chipset compatible con modo monitor conectado a un portátil, o una herramienta comercial. El ESP32 sigue siendo perfectamente válido para diagnosticar la banda de 2,4 GHz, que es donde se concentran los dispositivos domóticos y donde más congestión suele haber.</p></details>
+<details><summary>¿El ESP32 puede analizar redes WiFi de 5 GHz?</summary><p>Casi nunca. El ESP32 original y las variantes S2, S3, C3 y C6 no tienen radio para la banda de 5 GHz: operan solo en 2,4 GHz. La excepción es el ESP32-C5, en producción desde 2025: es el primer chip de la familia con doble banda (2,4 y 5 GHz, Wi-Fi 6), y el núcleo de Arduino ya permite escanear cada banda por separado. Para analizar 5 GHz o 6 GHz necesitas un adaptador USB con chipset compatible con modo monitor conectado a un portátil, o una herramienta comercial. El ESP32 sigue siendo perfectamente válido para diagnosticar la banda de 2,4 GHz, que es donde se concentran los dispositivos domóticos y donde más congestión suele haber.</p></details>
 <details><summary>¿Puedo leer las contraseñas o el contenido de las redes cercanas?</summary><p>No. El modo promiscuo entrega las tramas tal como viajan por el aire, y en una red WPA2 o WPA3 la carga útil está cifrada con una clave derivada de la contraseña que el ESP32 no posee. Solo las cabeceras y las tramas de gestión son legibles, lo que permite ver direcciones MAC, nombres de red y tipos de trama, pero nunca el contenido. Capturar el intercambio de autenticación para intentar romper la clave por fuerza bruta es técnicamente posible con otras herramientas, pero constituye un delito de acceso no autorizado si la red no es tuya.</p></details>
 <details><summary>¿Por qué mi analizador detecta muchos más dispositivos de los que hay?</summary><p>Casi con certeza por la aleatorización de direcciones MAC. Los teléfonos modernos generan una dirección distinta cada vez que buscan redes, de modo que un único teléfono puede aparecer como diez dispositivos diferentes a lo largo de media hora. Puedes filtrar comprobando el bit localmente administrado, el segundo bit menos significativo del primer byte de la dirección: si está a uno, la MAC es aleatoria y no representa un dispositivo único. Aun aplicando ese filtro, el recuento de personas mediante WiFi ha dejado de ser fiable con las políticas de privacidad actuales.</p></details>
-<details><summary>¿Cuál es el mejor canal para configurar mi router en 2,4 GHz?</summary><p>Siempre uno de los tres canales que no se solapan: 1, 6 u 11. Ejecuta el mapa de ocupación durante varios minutos en distintos momentos del día y quédate con el que acumule menos carga ponderada entre esos tres. Aunque el análisis señale que el canal 3 o el 8 están más despejados, elegirlos es contraproducente: interfieren parcialmente con dos grupos de vecinos que reaccionarán aumentando su potencia. Repite la medición cada pocos meses, porque el panorama radioeléctrico de un edificio cambia cada vez que alguien instala un router nuevo.</p></details>
-<details><summary>¿Es legal usar un ESP32 en modo promiscuo?</summary><p>Escuchar las emisiones públicas de radio, que es lo que hacen los beacons y los probes, no suele ser ilegal en sí mismo. El problema aparece con lo que ocurre después: almacenar direcciones MAC asociables a personas constituye tratamiento de datos personales y queda sujeto a la normativa correspondiente, y cualquier intento de descifrar tráfico ajeno o de interferir con emisiones propias es directamente delictivo. En Chile aplican la Ley 21.459 de delitos informáticos y la Ley 19.628 sobre protección de datos. Limítate a tu propia red o trabaja con autorización escrita del titular.</p></details>
-<details><summary>¿Qué diferencia hay entre escaneo activo y pasivo?</summary><p>El escaneo activo emite tramas de sondeo dirigidas y espera respuesta de los puntos de acceso, lo que lo hace rápido, en torno a cien milisegundos por canal, pero revela tu presencia a cualquiera que esté escuchando. El escaneo pasivo se limita a esperar los beacons que los puntos de acceso emiten espontáneamente cada cien milisegundos aproximadamente, por lo que necesita más tiempo por canal, entre doscientos y trescientos milisegundos, pero no genera tráfico y detecta redes configuradas para ignorar sondeos dirigidos. Para diagnóstico prolongado el pasivo es preferible; para una comprobación rápida basta el activo.</p></details>
+<details><summary>¿Cuál es el mejor canal para configurar mi router en 2,4 GHz?</summary><p>Siempre uno de los tres canales que no se solapan: 1, 6 u 11. Ejecuta el mapa de ocupación durante varios minutos en distintos momentos del día y quédate con el que acumule menos carga ponderada entre esos tres. Aunque el análisis señale que el canal 3 o el 8 están más despejados, elegirlos es contraproducente: en un canal solapado los equipos no se escuchan entre sí para turnarse y se estorban como ruido, con más colisiones para ti y para dos grupos de vecinos. Repite la medición cada pocos meses, porque el panorama radioeléctrico de un edificio cambia cada vez que alguien instala un router nuevo.</p></details>
+<details><summary>¿Es legal usar un ESP32 en modo promiscuo?</summary><p>Escuchar las emisiones públicas de radio, que es lo que hacen los beacons y los probes, no suele ser ilegal en sí mismo. El problema aparece con lo que ocurre después: almacenar direcciones MAC asociables a personas constituye tratamiento de datos personales y queda sujeto a la normativa correspondiente, y cualquier intento de descifrar tráfico ajeno o de interferir con emisiones propias es directamente delictivo. En Chile aplican la Ley 21.459 de delitos informáticos y la Ley 19.628 sobre protección de datos, reformada por la Ley 21.719. Limítate a tu propia red o trabaja con autorización escrita del titular.</p></details>
+<details><summary>¿Qué diferencia hay entre escaneo activo y pasivo?</summary><p>El escaneo activo emite tramas de sondeo dirigidas y espera respuesta de los puntos de acceso, lo que lo hace rápido (en el núcleo de Arduino, entre 100 y 300 milisegundos por canal), pero revela tu presencia a cualquiera que esté escuchando. El escaneo pasivo se limita a esperar los beacons que los puntos de acceso emiten espontáneamente cada cien milisegundos aproximadamente, por lo que necesita al menos ese intervalo en cada canal, y en la práctica 300 milisegundos o más, pero no genera tráfico y detecta redes configuradas para ignorar sondeos dirigidos. Para diagnóstico prolongado el pasivo es preferible; para una comprobación rápida basta el activo.</p></details>
 </div>
 </section>
 
 
-<p class="disclosure">Este artículo es contenido editorial independiente: no contiene ubicaciones patrocinadas ni enlaces de afiliado. Si en futuras actualizaciones se agregan enlaces a proveedores de componentes, serán identificados explícitamente. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
+<p class="disclosure">Este artículo es contenido editorial independiente y no contiene enlaces de afiliado. Incluye la oferta de un pack digital de pago elaborado por ukrabot.cl, identificado como tal. El código y las conexiones son referenciales y deben adaptarse y probarse con tu propio hardware. Si detectas un error en esta guía, por favor <a href="/contact">avísanos</a>.</p>
 
 <div class="cta">
   <h3>Sigue aprendiendo</h3>
@@ -815,9 +862,16 @@ void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
 <li><a href="https://docs.espressif.com/projects/arduino-esp32/en/latest/api/wifi.html" target="_blank" rel="noopener noreferrer">Espressif — Arduino core para ESP32, biblioteca WiFi</a></li>
 <li><a href="https://www.bcn.cl/leychile/navegar?idNorma=1177743" target="_blank" rel="noopener noreferrer">Biblioteca del Congreso Nacional de Chile — Ley 21.459 sobre delitos informáticos</a></li>
 <li><a href="https://www.bcn.cl/leychile/navegar?idNorma=141599" target="_blank" rel="noopener noreferrer">Biblioteca del Congreso Nacional de Chile — Ley 19.628 sobre protección de la vida privada</a></li>
+<li><a href="https://www.bcn.cl/balance-legislativo/detalle/ficha_LEY_21719_2024-12-13" target="_blank" rel="noopener noreferrer">Biblioteca del Congreso Nacional de Chile — Ley 21.719 de protección de datos personales</a></li>
+<li><a href="https://www.thenextsecurity.cl/insights/congreso-despacha-postergacion-ley-21719-octubre-2027/" target="_blank" rel="noopener noreferrer">The Next Security — El Congreso despacha la postergación de la Ley 21.719 al 15 de octubre de 2027</a></li>
+<li><a href="https://docs.espressif.com/projects/esp-faq/en/latest/software-framework/wifi.html" target="_blank" rel="noopener noreferrer">Espressif — Preguntas frecuentes de Wi-Fi (canales 1 a 13 y tiempos de escaneo)</a></li>
+<li><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/wifi-driver/wifi-modes.html" target="_blank" rel="noopener noreferrer">Espressif — Modo sniffer: tipos de trama y filtro por defecto</a></li>
+<li><a href="https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/src/WiFiScan.cpp" target="_blank" rel="noopener noreferrer">Espressif — Código de WiFiScan del núcleo de Arduino (scanNetworks y scanDelete)</a></li>
+<li><a href="https://www.espressif.com/en/news/ESP32-C5_Mass_Production" target="_blank" rel="noopener noreferrer">Espressif — El ESP32-C5 de doble banda entra en producción</a></li>
+<li><a href="https://lists.infradead.org/pipermail/wireless-regdb/2024-June/001533.html" target="_blank" rel="noopener noreferrer">wireless-regdb — Reglas de radio para Chile (2.402 a 2.482 MHz en 2,4 GHz)</a></li>
 <li><a href="https://www.subtel.gob.cl/" target="_blank" rel="noopener noreferrer">Subsecretaría de Telecomunicaciones de Chile — Normativa de espectro</a></li>
 </ul>
-<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 15 de agosto de 2026.</p>
+<p style="font-size:.75rem;color:#8b8577;margin-bottom:0;">Enlaces revisados: 25 de noviembre de 2026.</p>
 </section>
 </main>
 
@@ -936,6 +990,7 @@ void purgar(uint32_t ventanaMs) {        // olvida los no vistos recientemente
   });
 })();
 </script>
+<script src="/tienda/tienda.js?v=5" defer></script>
 </body>
 </html>
 
