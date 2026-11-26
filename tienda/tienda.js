@@ -6,11 +6,17 @@
   var catalogPromise = null;
 
   // ------------------------------------------------------------ utilidades
-  var PAY_NAME = { flow: 'Flow', mp: 'Mercado Pago' };
+  var PAY_NAME = { flow: 'Flow', mp: 'Mercado Pago', paypal: 'PayPal' };
   var PAY_NOTE = {
     flow: 'Webpay, tarjetas de débito y crédito, transferencia y otros medios.',
-    mp: 'Tarjetas, saldo de Mercado Pago y otros medios de esa plataforma.'
+    mp: 'Tarjetas, saldo de Mercado Pago y otros medios de esa plataforma.',
+    paypal: 'Saldo o tarjetas guardadas en tu cuenta PayPal. Se cobra en dólares (US$).'
   };
+  // PayPal no acepta pesos: el servidor convierte con el mismo cálculo (el monto final lo decide el servidor)
+  function usd(clpTotal, fx) {
+    if (!fx || !(fx.rate > 0) || clpTotal === null) return null;
+    return (Math.ceil(Math.round(clpTotal * (1 + (fx.markup || 0) / 100) / fx.rate * 1e6) / 1e4) / 100).toFixed(2);
+  }
   function clp(n) { return '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
   function el(tag, attrs, html) {
     var e = document.createElement(tag);
@@ -227,8 +233,11 @@
       var pay = root.querySelector('.ukr-pay');
       var m = method();
       pay.disabled = problems.length > 0 || !methods().length;
-      pay.textContent = !methods().length ? 'Pago en línea no disponible' : 'Pagar ' + (t.total === null ? '' : clp(t.total) + ' ') + (m ? 'con ' + PAY_NAME[m] : '');
-      root.querySelector('[data-pay-note]').textContent = m ? 'Te llevaremos a ' + PAY_NAME[m] + ' para completar el pago. ' + PAY_NAME[m] + ' te envía el comprobante a tu correo.' : '';
+      var u = m === 'paypal' ? usd(t.total, data.fx) : null;
+      pay.textContent = !methods().length ? 'Pago en línea no disponible' : 'Pagar ' + (u ? 'US$ ' + u.replace('.', ',') + ' ' : t.total === null ? '' : clp(t.total) + ' ') + (m ? 'con ' + PAY_NAME[m] : '');
+      root.querySelector('[data-pay-note]').textContent = !m ? '' : m === 'paypal'
+        ? 'PayPal no acepta pesos chilenos: ' + (u ? 'tu total de ' + clp(t.total) + ' se cobra como US$ ' + u.replace('.', ',') + ' (dólar a ' + clp(Math.round(data.fx.rate)) + (data.fx.markup ? ', con un recargo de ' + String(data.fx.markup).replace('.', ',') + ' %' : '') + '). Tu banco puede aplicar su propio cambio o comisión. ' : 'el total se cobra en dólares. ') + 'Te llevaremos a PayPal para completar el pago.'
+        : 'Te llevaremos a ' + PAY_NAME[m] + ' para completar el pago. ' + PAY_NAME[m] + ' te envía el comprobante a tu correo.';
     }
     function build() {
       var f = savedForm(), dig = mode.indexOf('digital') === 0, hasDig = mode.indexOf('+d') > 0;
@@ -357,7 +366,8 @@
       root.innerHTML = '<div class="ukr-status"><div class="ukr-status-icon ' + s[0] + '" aria-hidden="true">' + s[1] + '</div><div><h1>' + s[2] + '</h1><p>' + s[3] + '</p></div></div>' + dlBox +
         '<section class="ukr-box"><h2>Pedido ' + esc(o.code) + '</h2><p class="ukr-order-meta">Comprobante enviado a ' + esc(o.email) + '</p><ul class="ukr-items">' +
         o.items.map(function (i) { return '<li class="ukr-item" style="grid-template-columns:minmax(0,1fr) auto"><div><span class="ukr-item-name">' + esc(i.name) + '</span><div class="ukr-item-meta">Cantidad: ' + i.qty + '</div></div><span class="ukr-line">' + clp(i.line) + '</span></li>'; }).join('') +
-        '</ul><div class="ukr-sum" style="position:static;margin-top:14px"><dl><dt>Productos</dt><dd>' + clp(o.subtotal) + '</dd><dt>Envío (' + (o.zone === 'digital' ? 'no aplica' : o.zone === 'rm' ? 'Región Metropolitana' : 'regiones') + ')</dt><dd>' + clp(o.shipping) + '</dd><div class="ukr-total"><dt>Total</dt><dd>' + clp(o.total) + '</dd></div></dl></div>' +
+        '</ul><div class="ukr-sum" style="position:static;margin-top:14px"><dl><dt>Productos</dt><dd>' + clp(o.subtotal) + '</dd><dt>Envío (' + (o.zone === 'digital' ? 'no aplica' : o.zone === 'rm' ? 'Región Metropolitana' : 'regiones') + ')</dt><dd>' + clp(o.shipping) + '</dd><div class="ukr-total"><dt>Total</dt><dd>' + clp(o.total) + '</dd></div>' +
+        (o.usd_total ? '<dt>Cobrado en PayPal</dt><dd>US$ ' + esc(String(o.usd_total).replace('.', ',')) + '</dd>' : '') + '</dl></div>' +
         (o.tracking ? '<p class="ukr-note">Seguimiento: <strong>' + esc((o.courier ? o.courier + ' · ' : '') + o.tracking) + '</strong></p>' : '') +
         '</section><div class="ukr-actions">' + (paid ? '<a class="ukr-btn" href="/productos">Seguir comprando</a>' : '<a class="ukr-btn" href="/carrito">Volver al carrito</a>') +
         '<a class="ukr-btn is-ghost" href="https://wa.me/56993514970?text=' + encodeURIComponent('Hola, tengo una consulta sobre mi pedido ' + o.code) + '">Escribir por WhatsApp</a></div>';

@@ -5,6 +5,9 @@
 //   /api/flow/return        vuelta del cliente desde Flow (urlReturn)
 //   /api/mp/notify          notificación (webhook) de Mercado Pago
 //   /api/mp/return          vuelta del cliente desde Mercado Pago (back_urls)
+//   /api/paypal/return      vuelta del cliente desde PayPal: se captura el pago
+//   /api/paypal/cancel      el cliente canceló en PayPal (sin cargo)
+//   /api/paypal/webhook     eventos de PayPal (firma verificada con la API de PayPal)
 //   /api/order              estado de un pedido (requiere su clave de acceso)
 //   /api/download           descarga de un archivo digital de un pedido pagado
 //   /admin, /api/admin/*    panel de administración (contraseña)
@@ -14,6 +17,8 @@
 // Secretos (Cloudflare > Worker > Settings > Variables and Secrets):
 //   FLOW_API_KEY, FLOW_SECRET_KEY, ADMIN_PASSWORD
 //   MP_ACCESS_TOKEN (Mercado Pago) y, opcional, MP_WEBHOOK_SECRET
+//   PAYPAL_CLIENT_ID y PAYPAL_CLIENT_SECRET (PayPal) y, opcional, PAYPAL_WEBHOOK_ID.
+//   PAYPAL_API_URL solo para pruebas: https://api-m.sandbox.paypal.com
 import { Store, FULFILL } from './store.js';
 import CATALOG from './catalog.json';
 import ADMIN_HTML from './admin.html';
@@ -132,7 +137,7 @@ async function syncFromFlow(env, token) {
 }
 
 // ---------------------------------------------------------------- Mercado Pago
-const MP_NAME = { flow: 'Flow', mp: 'Mercado Pago' };
+const MP_NAME = { flow: 'Flow', mp: 'Mercado Pago', paypal: 'PayPal' };
 function mpConf(env) {
   if (!env.MP_ACCESS_TOKEN) throw new Error('Falta MP_ACCESS_TOKEN en Cloudflare');
   return { url: (env.MP_API_URL || 'https://api.mercadopago.com').replace(/\/$/, ''), token: env.MP_ACCESS_TOKEN.trim() };
@@ -179,11 +184,151 @@ async function mpSignatureOk(req, env, dataId) {
   return safeEqual(await hmacHex(secret, manifest), parts.v1);
 }
 
+// ---------------------------------------------------------------- PayPal
+// PayPal no acepta pesos chilenos: se cobra en dólares (USD) con el tipo de
+// cambio y el recargo definidos en el panel. El pedido guarda el monto en USD
+// y el tipo de cambio usado; solo una captura COMPLETED por ese monto lo paga.
+const PP_LIVE = 'https://api-m.paypal.com';
+function ppConf(env) {
+  if (!env.PAYPAL_CLIENT_ID || !env.PAYPAL_CLIENT_SECRET) throw new Error('Faltan PAYPAL_CLIENT_ID o PAYPAL_CLIENT_SECRET en Cloudflare');
+  return { url: (env.PAYPAL_API_URL || PP_LIVE).replace(/\/$/, ''), id: env.PAYPAL_CLIENT_ID.trim(), secret: env.PAYPAL_CLIENT_SECRET.trim() };
+}
+const ppSandbox = env => /sandbox/i.test(env.PAYPAL_API_URL || '');
+let ppTok = null;
+async function ppToken(env) {
+  const c = ppConf(env);
+  if (ppTok && ppTok.key === c.url + c.id && ppTok.exp > Date.now() + 60e3) return ppTok.token;
+  const res = await fetch(c.url + '/v1/oauth2/token', {
+    method: 'POST',
+    headers: { authorization: 'Basic ' + btoa(c.id + ':' + c.secret), 'content-type': 'application/x-www-form-urlencoded' },
+    body: 'grant_type=client_credentials',
+  });
+  let d = {}; try { d = await res.json(); } catch {}
+  if (!res.ok || !d.access_token) throw new Error(`PayPal token ${res.status}: ${d.error_description || d.error || 'credenciales no válidas'}`);
+  ppTok = { key: c.url + c.id, token: d.access_token, exp: Date.now() + (Number(d.expires_in) || 300) * 1000 };
+  return ppTok.token;
+}
+async function ppCall(env, method, path, body, { requestId, raw } = {}) {
+  const c = ppConf(env);
+  const headers = { authorization: 'Bearer ' + (await ppToken(env)), prefer: 'return=representation' };
+  if (body !== undefined || raw !== undefined) headers['content-type'] = 'application/json';
+  if (requestId) headers['paypal-request-id'] = requestId;
+  const res = await fetch(c.url + path, { method, headers, body: raw !== undefined ? raw : body === undefined ? undefined : JSON.stringify(body) });
+  const text = await res.text();
+  let data; try { data = JSON.parse(text); } catch { data = { message: text.slice(0, 200) }; }
+  if (!res.ok) {
+    const issue = (data.details && data.details[0] && data.details[0].issue) || data.name || '';
+    const e = new Error(`PayPal ${path.split('?')[0]} ${res.status}: ${issue || data.message || 'error'}`);
+    e.status = res.status; e.issue = issue; e.data = data;
+    throw e;
+  }
+  return data;
+}
+/** Monto en dólares (2 decimales, hacia arriba) para un total en pesos. */
+function usdAmount(clp, settings) {
+  const rate = Number(settings.pp_rate), mk = Number(settings.pp_markup) || 0;
+  return (Math.ceil(Math.round(clp * (1 + mk / 100) / rate * 1e6) / 1e4) / 100).toFixed(2);
+}
+async function ppCreate(env, site, order, total, settings) {
+  const usd = usdAmount(total, settings);
+  const q = `o=${encodeURIComponent(order.code)}&k=${order.access_key}`;
+  const r = await ppCall(env, 'POST', '/v2/checkout/orders', {
+    intent: 'CAPTURE',
+    purchase_units: [{
+      reference_id: order.code,
+      custom_id: order.code,
+      invoice_id: `${order.code}-${order.access_key.slice(0, 6)}`,
+      description: `Pedido ${order.code} en ukrabot.cl (${fmtCLP(total)} CLP)`,
+      amount: { currency_code: 'USD', value: usd },
+    }],
+    payment_source: { paypal: { experience_context: {
+      brand_name: 'ukrabot.cl', shipping_preference: 'NO_SHIPPING', user_action: 'PAY_NOW',
+      return_url: `${site}/api/paypal/return?${q}`, cancel_url: `${site}/api/paypal/cancel?${q}`,
+    } } },
+  }, { requestId: `crear-${order.code}-${order.access_key.slice(0, 8)}` });
+  const link = (r.links || []).find(l => l.rel === 'payer-action' || l.rel === 'approve');
+  if (!r.id || !link) throw new Error('PayPal no devolvió el enlace de pago');
+  await store(env).attachPaypal(order.code, r.id, usd, Number(settings.pp_rate));
+  return link.href;
+}
+/** Captura una orden aprobada. Si ya estaba capturada, la consulta. */
+async function ppCapture(env, o) {
+  try {
+    const r = await ppCall(env, 'POST', `/v2/checkout/orders/${encodeURIComponent(o.pp_order)}/capture`, {}, { requestId: `capturar-${o.code}-${crypto.randomUUID().slice(0, 8)}` });
+    return { order: await store(env).applyPaypal(r) };
+  } catch (e) {
+    if (e.issue === 'ORDER_ALREADY_CAPTURED') return { order: await store(env).applyPaypal(await ppCall(env, 'GET', `/v2/checkout/orders/${encodeURIComponent(o.pp_order)}`)) };
+    if (e.issue === 'INSTRUMENT_DECLINED') {
+      // PayPal recomienda devolver al cliente para que elija otro medio dentro de PayPal
+      const d = await ppCall(env, 'GET', `/v2/checkout/orders/${encodeURIComponent(o.pp_order)}`);
+      const link = (d.links || []).find(l => l.rel === 'payer-action' || l.rel === 'approve');
+      if (link) return { retry: link.href };
+    }
+    throw e;
+  }
+}
+/** Consulta la orden en PayPal; si el cliente ya aprobó y falta capturar, captura. */
+async function syncPaypal(env, o) {
+  const d = await ppCall(env, 'GET', `/v2/checkout/orders/${encodeURIComponent(o.pp_order)}`);
+  if (d.status === 'APPROVED' && o.status === 'pendiente_pago') return (await ppCapture(env, o)).order || o;
+  return store(env).applyPaypal(d);
+}
+async function ppOrderFromQuery(req, env) {
+  const u = new URL(req.url), code = u.searchParams.get('o') || '', key = u.searchParams.get('k') || '';
+  const o = code ? await store(env).orderByCode(code) : null;
+  if (!o || o.provider !== 'paypal' || !key || !(await safeEqual(key, o.access_key))) return { u, o: null };
+  return { u, o };
+}
+const see = to => new Response(null, { status: 303, headers: { location: to, 'cache-control': 'no-store' } });
+const orderUrl = o => `/pedido?o=${encodeURIComponent(o.code)}&k=${o.access_key}`;
+
+async function ppReturn(req, env) {
+  const { u, o } = await ppOrderFromQuery(req, env);
+  if (!o) return see('/pedido?error=1');
+  const token = u.searchParams.get('token') || '';
+  if (o.pp_order && token === o.pp_order && o.status === 'pendiente_pago') {
+    try {
+      const r = await ppCapture(env, o);
+      if (r.retry) return see(r.retry);
+    } catch (e) { console.error('paypal return', o.code, e.message); }
+  }
+  return see(orderUrl(o));
+}
+async function ppCancel(req, env) {
+  const { o } = await ppOrderFromQuery(req, env);
+  if (!o) return see('/pedido?error=1');
+  let cur = o;
+  try { if (o.pp_order) cur = (await syncPaypal(env, o)) || o; } catch (e) { console.error('paypal cancel', o.code, e.message); }
+  if (cur.status === 'pendiente_pago') await store(env).cancelPaypal(o.code);
+  return see(orderUrl(o));
+}
+async function ppWebhook(req, env) {
+  if (req.method !== 'POST') return new Response('ok');
+  const raw = await req.text();
+  let ev; try { ev = JSON.parse(raw); } catch { return new Response('json', { status: 400 }); }
+  if (!env.PAYPAL_WEBHOOK_ID) return new Response('webhook sin configurar', { status: 200 });
+  const h = n => JSON.stringify(req.headers.get(n) || '');
+  try {
+    const body = `{"auth_algo":${h('paypal-auth-algo')},"cert_url":${h('paypal-cert-url')},"transmission_id":${h('paypal-transmission-id')},` +
+      `"transmission_sig":${h('paypal-transmission-sig')},"transmission_time":${h('paypal-transmission-time')},"webhook_id":${JSON.stringify(env.PAYPAL_WEBHOOK_ID.trim())},"webhook_event":${raw}}`;
+    const v = await ppCall(env, 'POST', '/v1/notifications/verify-webhook-signature', undefined, { raw: body });
+    if (v.verification_status !== 'SUCCESS') { console.warn('paypal webhook: firma no válida', ev.id); return new Response('firma no válida', { status: 401 }); }
+  } catch (e) { console.error('paypal webhook verify', e.message); return new Response('error', { status: 500 }); }
+  const r = ev.resource || {};
+  const ppId = ev.event_type === 'CHECKOUT.ORDER.APPROVED' ? r.id : r.supplementary_data && r.supplementary_data.related_ids && r.supplementary_data.related_ids.order_id;
+  if (!ppId) return new Response('ignorado', { status: 200 });
+  const o = await store(env).orderByPaypal(String(ppId));
+  if (!o) return new Response('sin pedido', { status: 200 });
+  try { await syncPaypal(env, o); } catch (e) { console.error('paypal webhook', o.code, e.message); return new Response('error', { status: 500 }); }
+  return new Response('OK', { status: 200 });
+}
+
 /** Medios de pago activos: con credenciales cargadas y habilitados en el panel. */
 function payMethods(env, settings) {
   const m = [];
   if (env.FLOW_API_KEY && env.FLOW_SECRET_KEY && settings.pay_flow !== 0) m.push('flow');
   if (env.MP_ACCESS_TOKEN && settings.pay_mp !== 0) m.push('mp');
+  if (env.PAYPAL_CLIENT_ID && env.PAYPAL_CLIENT_SECRET && settings.pay_pp !== 0 && settings.pp_rate > 0) m.push('paypal');
   return m;
 }
 
@@ -243,6 +388,7 @@ async function catalog(env) {
       return { slug: m.slug, name: m.name, short: m.short, price: m.price, img: m.img, url: m.url, stock: m.stock, available: m.available, digital: m.digital };
     }),
     shipping: { rm: settings.ship_rm, regiones: settings.ship_regiones },
+    fx: methods.includes('paypal') ? { rate: settings.pp_rate, markup: settings.pp_markup } : null,
     promo: settings.pack_popup === 0 ? null : { delay: settings.pack_popup_secs },
     regions: REGIONS,
     methods,
@@ -294,6 +440,7 @@ async function checkout(req, env) {
   const site = (env.SITE_URL || new URL(req.url).origin).replace(/\/$/, '');
   try {
     if (method === 'mp') return json({ url: await mpPreference(env, site, order, { items, shipping, zone, customer }), code: order.code });
+    if (method === 'paypal') return json({ url: await ppCreate(env, site, order, total, settings), code: order.code });
     const r = await flowCall(env, 'POST', '/payment/create', {
       commerceOrder: order.code,
       subject: `Pedido ${order.code} en ukrabot.cl`,
@@ -428,7 +575,7 @@ async function orderStatus(req, env) {
       }
     }
   }
-  return json({ code: o.code, status: o.status, provider: o.provider || 'flow', total: o.total, subtotal: o.subtotal, shipping: o.shipping, zone: o.zone,
+  return json({ code: o.code, status: o.status, provider: o.provider || 'flow', ...(o.provider === 'paypal' ? { usd_total: o.usd_total } : {}), total: o.total, subtotal: o.subtotal, shipping: o.shipping, zone: o.zone,
     items: o.items.map(i => ({ name: i.name, qty: i.qty, line: i.line, digital: !!i.digital })), created_at: o.created_at,
     courier: o.courier, tracking: o.tracking, email: o.customer.email.replace(/^(.).*(@.*)$/, '$1***$2'),
     has_digital: digital.length > 0, downloads });
@@ -500,7 +647,8 @@ async function admin(req, env, url) {
   }
   if (p === '/logout' && req.method === 'POST') return json({ ok: true }, 200, { 'set-cookie': cookie('', 0) });
   if (p === '/me') return json({ admin: await isAdmin(req, env), ready: adminReady(env), flow: !!(env.FLOW_API_KEY && env.FLOW_SECRET_KEY), flow_url: env.FLOW_API_URL || 'https://www.flow.cl/api',
-    mp: !!env.MP_ACCESS_TOKEN, mp_test: !!env.MP_ACCESS_TOKEN && env.MP_ACCESS_TOKEN.trim().startsWith('TEST-'), mp_signed: !!env.MP_WEBHOOK_SECRET });
+    mp: !!env.MP_ACCESS_TOKEN, mp_test: !!env.MP_ACCESS_TOKEN && env.MP_ACCESS_TOKEN.trim().startsWith('TEST-'), mp_signed: !!env.MP_WEBHOOK_SECRET,
+    pp: !!(env.PAYPAL_CLIENT_ID && env.PAYPAL_CLIENT_SECRET), pp_sandbox: ppSandbox(env), pp_webhook: !!env.PAYPAL_WEBHOOK_ID });
   if (!(await isAdmin(req, env))) return fail('Sesión expirada. Vuelve a entrar.', 401);
   if (req.method !== 'GET' && !sameOrigin(req)) return fail('Origen no permitido', 403);
 
@@ -520,6 +668,10 @@ async function admin(req, env, url) {
     if (!o) return fail('Pedido no encontrado', 404);
     if (o.provider === 'mp') {
       try { return json({ order: await syncMpOrder(env, o.code) }); } catch (e) { return fail('Mercado Pago no respondió: ' + e.message, 502); }
+    }
+    if (o.provider === 'paypal') {
+      if (!o.pp_order) return fail('Este pedido no tiene orden en PayPal.');
+      try { return json({ order: (await syncPaypal(env, o)) || o }); } catch (e) { return fail('PayPal no respondió: ' + e.message, 502); }
     }
     if (!o.flow_token) return fail('Este pedido no tiene orden en Flow.');
     try { return json({ order: await syncFromFlow(env, o.flow_token) }); } catch (e) { return fail('Flow no respondió: ' + e.message, 502); }
@@ -566,7 +718,17 @@ async function admin(req, env, url) {
     frontCache = null;
     return json({ product: merged(m[1], overrides, files, settings) });
   }
-  if (p === '/settings' && req.method === 'GET') return json({ ...(await st.getSettings()), configured: { flow: !!(env.FLOW_API_KEY && env.FLOW_SECRET_KEY), mp: !!env.MP_ACCESS_TOKEN } });
+  if (p === '/settings' && req.method === 'GET') return json({ ...(await st.getSettings()), configured: { flow: !!(env.FLOW_API_KEY && env.FLOW_SECRET_KEY), mp: !!env.MP_ACCESS_TOKEN, paypal: !!(env.PAYPAL_CLIENT_ID && env.PAYPAL_CLIENT_SECRET) }, pp_sandbox: ppSandbox(env) });
+  if (p === '/fx' && req.method === 'GET') {
+    // dólar observado publicado por el Banco Central (vía mindicador.cl)
+    try {
+      const r = await fetch(env.FX_API_URL || 'https://mindicador.cl/api/dolar', { headers: { accept: 'application/json' } });
+      const d = await r.json();
+      const s0 = d && d.serie && d.serie[0];
+      if (!r.ok || !s0 || !(Number(s0.valor) > 0)) throw new Error('respuesta sin valor');
+      return json({ valor: Number(s0.valor), fecha: s0.fecha });
+    } catch (e) { return fail('No pudimos consultar el dólar observado (' + e.message + '). Escribe el valor a mano.', 502); }
+  }
   if (p === '/settings' && req.method === 'POST') {
     let b; try { b = await req.json(); } catch { return fail('Solicitud no válida'); }
     const patch = {};
@@ -575,7 +737,17 @@ async function admin(req, env, url) {
       if (![rm, rg].every(v => Number.isInteger(v) && v >= 0 && v <= 200000)) return fail('Las tarifas deben ser números enteros entre $0 y $200.000.');
       patch.ship_rm = rm; patch.ship_regiones = rg;
     }
-    for (const k of ['pay_flow', 'pay_mp', 'ads_productos', 'ads_blog', 'pack_popup']) if (b[k] !== undefined) patch[k] = b[k] ? 1 : 0;
+    for (const k of ['pay_flow', 'pay_mp', 'pay_pp', 'ads_productos', 'ads_blog', 'pack_popup']) if (b[k] !== undefined) patch[k] = b[k] ? 1 : 0;
+    if (b.pp_rate !== undefined) {
+      const v = Math.round(Number(b.pp_rate) * 100) / 100;
+      if (!(v >= 100 && v <= 10000)) return fail('El tipo de cambio debe estar entre $100 y $10.000 por dólar.');
+      patch.pp_rate = v; patch.pp_rate_at = Date.now();
+    }
+    if (b.pp_markup !== undefined) {
+      const v = Math.round(Number(b.pp_markup) * 10) / 10;
+      if (!(v >= 0 && v <= 30)) return fail('El recargo de PayPal debe estar entre 0 % y 30 %.');
+      patch.pp_markup = v;
+    }
     if (b.digital_price !== undefined) {
       const v = b.digital_price === null || b.digital_price === '' ? 0 : Number(b.digital_price);
       if (!Number.isInteger(v) || (v !== 0 && (v < 350 || v > 10000000))) return fail('El precio general debe ser un número entero entre $350 y $10.000.000.');
@@ -620,6 +792,9 @@ export default {
       if (path === '/api/flow/return') return await flowReturn(req, env);
       if (path === '/api/mp/notify') return await mpNotify(req, env);
       if (path === '/api/mp/return') return await mpReturn(req, env);
+      if (path === '/api/paypal/return') return await ppReturn(req, env);
+      if (path === '/api/paypal/cancel') return await ppCancel(req, env);
+      if (path === '/api/paypal/webhook') return await ppWebhook(req, env);
       if (path === '/api/order' && req.method === 'GET') return await orderStatus(req, env);
       if (path === '/api/download' && req.method === 'GET') return await download(req, env);
       if (path.startsWith('/api/')) return fail('No encontrado', 404);

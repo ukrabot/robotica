@@ -77,6 +77,13 @@ export class Store extends DurableObject {
     if (!cols.includes('mp_payment')) this.sql.exec('ALTER TABLE orders ADD COLUMN mp_payment TEXT');
     if (!cols.includes('mp_status')) this.sql.exec('ALTER TABLE orders ADD COLUMN mp_status TEXT');
     if (!cols.includes('mp_extra')) this.sql.exec("ALTER TABLE orders ADD COLUMN mp_extra TEXT NOT NULL DEFAULT ''");
+    // v3: PayPal (cobra en dólares: se guarda el monto en USD y el tipo de cambio usado)
+    if (!cols.includes('pp_order')) this.sql.exec('ALTER TABLE orders ADD COLUMN pp_order TEXT');
+    if (!cols.includes('pp_capture')) this.sql.exec('ALTER TABLE orders ADD COLUMN pp_capture TEXT');
+    if (!cols.includes('pp_status')) this.sql.exec('ALTER TABLE orders ADD COLUMN pp_status TEXT');
+    if (!cols.includes('usd_total')) this.sql.exec('ALTER TABLE orders ADD COLUMN usd_total TEXT');
+    if (!cols.includes('fx_rate')) this.sql.exec('ALTER TABLE orders ADD COLUMN fx_rate REAL');
+    this.sql.exec('CREATE INDEX IF NOT EXISTS idx_orders_pp ON orders(pp_order)');
   }
 
   // ---------------------------------------------------------------- límites
@@ -93,13 +100,13 @@ export class Store extends DurableObject {
 
   // ---------------------------------------------------------------- ajustes
   getSettings() {
-    const s = { ship_rm: 3990, ship_regiones: 5990, pay_flow: 1, pay_mp: 1, ads_productos: 1, ads_blog: 1, digital_price: 0, pack_popup: 1, pack_popup_secs: 60 };
+    const s = { ship_rm: 3990, ship_regiones: 5990, pay_flow: 1, pay_mp: 1, pay_pp: 1, pp_rate: 0, pp_markup: 0, pp_rate_at: 0, ads_productos: 1, ads_blog: 1, digital_price: 0, pack_popup: 1, pack_popup_secs: 60 };
     for (const r of this.sql.exec('SELECT key, value FROM settings').toArray()) s[r.key] = Number(r.value);
     return s;
   }
   saveSettings(patch) {
     for (const [k, v] of Object.entries(patch)) {
-      if (!['ship_rm', 'ship_regiones', 'pay_flow', 'pay_mp', 'ads_productos', 'ads_blog', 'digital_price', 'pack_popup', 'pack_popup_secs'].includes(k)) continue;
+      if (!['ship_rm', 'ship_regiones', 'pay_flow', 'pay_mp', 'pay_pp', 'pp_rate', 'pp_markup', 'pp_rate_at', 'ads_productos', 'ads_blog', 'digital_price', 'pack_popup', 'pack_popup_secs'].includes(k)) continue;
       this.sql.exec('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value', k, String(v));
     }
     return this.getSettings();
@@ -171,6 +178,14 @@ export class Store extends DurableObject {
   attachFlow(code, token, flowOrder) {
     this.sql.exec('UPDATE orders SET flow_token = ?, flow_order = ?, updated_at = ? WHERE code = ?', token, flowOrder, now(), code);
   }
+  attachPaypal(code, ppOrder, usd, rate) {
+    this.sql.exec('UPDATE orders SET pp_order = ?, usd_total = ?, fx_rate = ?, updated_at = ? WHERE code = ?', ppOrder, usd, rate, now(), code);
+  }
+  /** El cliente volvió de PayPal sin pagar: no hubo cargo. */
+  cancelPaypal(code) {
+    this.sql.exec("UPDATE orders SET status = 'anulado', pp_status = 'CANCELADO', updated_at = ? WHERE code = ? AND provider = 'paypal' AND status = 'pendiente_pago'", now(), code);
+    return this.orderByCode(code);
+  }
   attachMp(code, prefId) {
     this.sql.exec('UPDATE orders SET mp_pref = ?, updated_at = ? WHERE code = ?', prefId, now(), code);
   }
@@ -179,6 +194,7 @@ export class Store extends DurableObject {
   }
   orderByToken(token) { return this.decode(this.sql.exec('SELECT * FROM orders WHERE flow_token = ?', token).toArray()[0]); }
   orderByCode(code) { return this.decode(this.sql.exec('SELECT * FROM orders WHERE code = ?', code).toArray()[0]); }
+  orderByPaypal(id) { return this.decode(this.sql.exec("SELECT * FROM orders WHERE pp_order = ? AND provider = 'paypal'", id).toArray()[0]); }
 
   /** Descuenta el stock de un pedido (una sola vez). */
   _takeStock(o, t) {
@@ -257,6 +273,47 @@ export class Store extends DurableObject {
       }
       this.sql.exec('UPDATE orders SET status = ?, mp_payment = ?, mp_status = ?, mp_extra = ?, paid_at = ?, stock_applied = ?, review = ?, updated_at = ? WHERE id = ?',
         status, payment, mpStatus, extra.join(','), paidAt, applied, review, t, o.id);
+      return this.decode(this.sql.exec('SELECT * FROM orders WHERE id = ?', o.id).toArray()[0]);
+    });
+  }
+
+  /**
+   * Aplica una orden de PayPal consultada con GET /v2/checkout/orders/{id}
+   * (o la respuesta de la captura). Solo una captura COMPLETED en USD, por el
+   * monto exacto y con nuestro código de pedido, marca el pedido como pagado.
+   */
+  applyPaypal(ppo) {
+    return this.ctx.storage.transactionSync(() => {
+      const o = this.sql.exec("SELECT * FROM orders WHERE pp_order = ? AND provider = 'paypal'", String(ppo.id || '')).toArray()[0];
+      if (!o) return null;
+      const t = now();
+      const unit = (ppo.purchase_units || [])[0] || {};
+      const caps = (unit.payments && unit.payments.captures) || [];
+      const cap = caps.find(c => c.status === 'COMPLETED') || caps[caps.length - 1] || null;
+      let review = o.review || '', status = o.status, paidAt = o.paid_at, applied = o.stock_applied;
+      const capStatus = cap ? cap.status : ppo.status;
+      if (cap) {
+        const ref = cap.custom_id || unit.custom_id || unit.reference_id;
+        const mismatch = cap.amount?.currency_code !== 'USD' || cap.amount?.value !== o.usd_total || (ref && ref !== o.code);
+        if (cap.status === 'COMPLETED' && !o.paid_at) {
+          if (mismatch) {
+            review = `PayPal informó US$ ${cap.amount?.value} ${cap.amount?.currency_code} (ref. ${ref}); se esperaba US$ ${o.usd_total} para ${o.code}. Revisar en PayPal.`;
+            status = 'revisar'; paidAt = t;
+          } else {
+            status = paidStatus(o); paidAt = t;
+            if (!applied) { this._takeStock(o, t); applied = 1; }
+          }
+        } else if (['REFUNDED', 'PARTIALLY_REFUNDED', 'REVERSED'].includes(cap.status) && o.paid_at && o.pp_status !== cap.status) {
+          review = `La captura ${cap.id} quedó ${cap.status} en PayPal (devolución o contracargo). Revisa antes de despachar.`;
+          status = 'revisar';
+        } else if (['DECLINED', 'FAILED'].includes(cap.status) && UNPAID.includes(status)) {
+          status = 'rechazado';
+        }
+      } else if (ppo.status === 'VOIDED' && UNPAID.includes(status)) {
+        status = 'anulado';
+      }
+      this.sql.exec('UPDATE orders SET status = ?, pp_capture = COALESCE(?, pp_capture), pp_status = ?, paid_at = ?, stock_applied = ?, review = ?, updated_at = ? WHERE id = ?',
+        status, cap ? cap.id : null, capStatus || null, paidAt, applied, review, t, o.id);
       return this.decode(this.sql.exec('SELECT * FROM orders WHERE id = ?', o.id).toArray()[0]);
     });
   }

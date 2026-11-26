@@ -230,8 +230,22 @@ tr.files-row td{background:#fbf9f4;padding:14px 16px}
         <h3>Medios de pago</h3>
         <div class="field"><label class="switch"><input type="checkbox" id="s-flow"> Flow</label><span class="dim" id="s-flow-st"></span></div>
         <div class="field"><label class="switch"><input type="checkbox" id="s-mp"> Mercado Pago</label><span class="dim" id="s-mp-st"></span></div>
-        <p class="dim">Desactivar un medio lo oculta del carrito sin borrar sus claves.</p>
+        <p class="dim">Desactivar un medio lo oculta del carrito sin borrar sus claves. PayPal se configura más abajo.</p>
         <button class="btn" type="submit">Guardar</button>
+      </form>
+      <form class="card settings" id="pp-form" style="margin-top:20px">
+        <p class="msg hidden" id="pp-msg" role="status"></p>
+        <h3 style="margin-top:0">PayPal (cobro en dólares)</h3>
+        <p class="dim" style="margin-top:0">PayPal no acepta pesos chilenos: el total del carrito se convierte a dólares con este tipo de cambio. El carrito muestra el monto en US$ antes de pagar.</p>
+        <div class="field"><label class="switch"><input type="checkbox" id="s-pp"> PayPal en el carrito</label><span class="dim" id="s-pp-st"></span></div>
+        <div class="grid2">
+          <div class="field"><label for="pp-rate">Pesos por dólar</label><input id="pp-rate" type="number" min="100" max="10000" step="0.01" placeholder="950"></div>
+          <div class="field"><label for="pp-mk">Recargo (%)</label><input id="pp-mk" type="number" min="0" max="30" step="0.1" placeholder="0"></div>
+        </div>
+        <p style="margin:0 0 6px"><button class="btn ghost" type="button" id="pp-fx">Usar el dólar observado de hoy</button></p>
+        <p class="dim" id="pp-ex"></p>
+        <p class="dim">El recargo es opcional y sirve para cubrir la comisión de PayPal y la diferencia de cambio. Revisa el tipo de cambio con frecuencia: el carrito usa el último que guardes.</p>
+        <button class="btn" type="submit">Guardar PayPal</button>
       </form>
       <form class="card settings" id="ads-form" style="margin-top:20px">
         <p class="msg hidden" id="ads-msg" role="status"></p>
@@ -254,7 +268,8 @@ tr.files-row td{background:#fbf9f4;padding:14px 16px}
 var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
 var LABEL={pendiente_pago:'Esperando pago',pagado:'Pagado · por preparar',preparando:'Preparando',enviado:'Enviado',entregado:'Entregado',cancelado:'Cancelado',rechazado:'Pago rechazado',anulado:'Pago anulado',error_flow:'Error al crear el pago',revisar:'Revisar'};
 var FULFILL=['pagado','preparando','enviado','entregado','cancelado'];
-var PROV={flow:'Flow',mp:'Mercado Pago'};
+var PROV={flow:'Flow',mp:'Mercado Pago',paypal:'PayPal'};
+var PPST={COMPLETED:'completada',PENDING:'pendiente',DECLINED:'rechazada',FAILED:'fallida',REFUNDED:'devuelta',PARTIALLY_REFUNDED:'devuelta en parte',REVERSED:'revertida (contracargo)',CREATED:'creada, sin aprobar',APPROVED:'aprobada, sin capturar',PAYER_ACTION_REQUIRED:'esperando al cliente',CANCELADO:'cancelada por el cliente',VOIDED:'anulada'};
 var MPST={approved:'aprobado',pending:'pendiente',in_process:'en revisión',authorized:'autorizado',rejected:'rechazado',cancelled:'cancelado',refunded:'devuelto',charged_back:'contracargo',in_mediation:'en disputa'};
 var state={status:'activos',q:'',page:1,orders:[]};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -284,8 +299,9 @@ $('#logout').addEventListener('click',function(){api('/api/admin/logout',{method
 api('/api/admin/me').then(function(d){
   if(!d.ready){showLogin('');msg($('#login-msg'),'El panel no está activo: falta configurar ADMIN_PASSWORD (12 caracteres o más) en Cloudflare.','err');return}
   var warn='';
-  if(!d.flow&&!d.mp)warn='No hay medios de pago configurados: faltan FLOW_API_KEY y FLOW_SECRET_KEY, o MP_ACCESS_TOKEN, en Cloudflare. Los clientes no podrán pagar hasta que los agregues.';
+  if(!d.flow&&!d.mp&&!d.pp)warn='No hay medios de pago configurados: faltan FLOW_API_KEY y FLOW_SECRET_KEY, MP_ACCESS_TOKEN o PAYPAL_CLIENT_ID y PAYPAL_CLIENT_SECRET en Cloudflare. Los clientes no podrán pagar hasta que los agregues.';
   else if(d.mp_test)warn='Mercado Pago está usando credenciales de prueba (TEST-…): los pagos no son reales. Cambia MP_ACCESS_TOKEN por el de producción.';
+  else if(d.pp_sandbox)warn='PayPal está en modo de pruebas (sandbox): los pagos no son reales. Borra PAYPAL_API_URL en Cloudflare y usa las credenciales Live.';
   if(warn){var w=$('#cfg-warn');w.textContent=warn;w.classList.remove('hidden')}
   if(d.admin)showApp();else showLogin('');
 }).catch(function(){showLogin('')});
@@ -335,7 +351,7 @@ function openOrder(code){
 }
 function renderOrder(o){
   var dr=$('#drawer'),c=o.customer,paid=!!o.paid_at;
-  var isMp=o.provider==='mp',prov=PROV[o.provider]||'Flow';
+  var isMp=o.provider==='mp',isPp=o.provider==='paypal',prov=PROV[o.provider]||'Flow';
   var dig=o.zone==='digital',hasDig=o.items.some(function(i){return i.digital});
   var addr=c.nombre+'\n'+c.direccion+'\n'+c.comuna+', '+c.region+'\nTel: '+c.telefono;
   var dlink=location.origin+'/pedido?o='+encodeURIComponent(o.code)+'&k='+o.access_key;
@@ -358,8 +374,9 @@ function renderOrder(o){
     '<div class="field"><label for="d-tracking">N° de seguimiento</label><input id="d-tracking" maxlength="60" value="'+esc(o.tracking)+'"></div></div>'+
     '<div class="field"><label for="d-note">Nota interna</label><textarea id="d-note" rows="3" maxlength="1000">'+esc(o.admin_note)+'</textarea></div>'+
     '<p class="dim">Cancelar no devuelve el dinero: la devolución se hace en tu cuenta de '+prov+'. El stock tampoco se repone solo; ajústalo en Productos.</p>'+
-    '<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="submit">Guardar</button>'+(o.flow_token||isMp?'<button class="btn ghost" type="button" id="d-sync">Consultar estado en '+prov+'</button>':'')+'</div></form>'+
-    (isMp?'<h3>Mercado Pago</h3><div class="card sec"><dl class="kv"><dt>N° de pago</dt><dd>'+esc(o.mp_payment||'—')+'</dd><dt>Estado del pago</dt><dd>'+esc(o.mp_status?(MPST[o.mp_status]||o.mp_status):'—')+'</dd>'+(o.mp_extra?'<dt>Otros pagos aprobados</dt><dd>'+esc(o.mp_extra)+'</dd>':'')+'<dt>Actualizado</dt><dd>'+esc(date(o.updated_at))+'</dd></dl></div>'
+    '<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="submit">Guardar</button>'+(o.flow_token||isMp||(isPp&&o.pp_order)?'<button class="btn ghost" type="button" id="d-sync">Consultar estado en '+prov+'</button>':'')+'</div></form>'+
+    (isPp?'<h3>PayPal</h3><div class="card sec"><dl class="kv"><dt>Orden PayPal</dt><dd>'+esc(o.pp_order||'—')+'</dd><dt>Captura</dt><dd>'+esc(o.pp_capture||'—')+'</dd><dt>Estado</dt><dd>'+esc(o.pp_status?(PPST[o.pp_status]||o.pp_status):'—')+'</dd><dt>Monto cobrado</dt><dd>'+(o.usd_total?'US$ '+esc(o.usd_total)+' (dólar a $'+esc(o.fx_rate)+')':'—')+'</dd><dt>Actualizado</dt><dd>'+esc(date(o.updated_at))+'</dd></dl></div>'
+    :isMp?'<h3>Mercado Pago</h3><div class="card sec"><dl class="kv"><dt>N° de pago</dt><dd>'+esc(o.mp_payment||'—')+'</dd><dt>Estado del pago</dt><dd>'+esc(o.mp_status?(MPST[o.mp_status]||o.mp_status):'—')+'</dd>'+(o.mp_extra?'<dt>Otros pagos aprobados</dt><dd>'+esc(o.mp_extra)+'</dd>':'')+'<dt>Actualizado</dt><dd>'+esc(date(o.updated_at))+'</dd></dl></div>'
     :'<h3>Flow</h3><div class="card sec"><dl class="kv"><dt>Orden Flow</dt><dd>'+esc(o.flow_order||'—')+'</dd><dt>Estado Flow</dt><dd>'+esc({1:'1 · pendiente',2:'2 · pagada',3:'3 · rechazada',4:'4 · anulada'}[o.flow_status]||'—')+'</dd><dt>Actualizado</dt><dd>'+esc(date(o.updated_at))+'</dd></dl></div>');
   $('#drawer-bg').classList.remove('hidden');dr.classList.remove('hidden');dr.scrollTop=0;
   $('.x',dr).addEventListener('click',closeDrawer);$('.x',dr).focus();
@@ -473,7 +490,24 @@ $('#promo-form').addEventListener('submit',function(e){
 function loadSettings(){api('/api/admin/settings').then(function(s){$('#s-rm').value=s.ship_rm;$('#s-rg').value=s.ship_regiones;
   $('#a-prod').checked=s.ads_productos!==0;$('#a-blog').checked=s.ads_blog!==0;
   [['flow','FLOW_API_KEY y FLOW_SECRET_KEY'],['mp','MP_ACCESS_TOKEN']].forEach(function(m){var on=s['pay_'+m[0]]!==0,ok=s.configured&&s.configured[m[0]];
-    $('#s-'+m[0]).checked=on;$('#s-'+m[0]+'-st').textContent=ok?(on?'Activo en el carrito':'Desactivado'):'Sin configurar: falta '+m[1]+' en Cloudflare'})}).catch(function(){})}
+    $('#s-'+m[0]).checked=on;$('#s-'+m[0]+'-st').textContent=ok?(on?'Activo en el carrito':'Desactivado'):'Sin configurar: falta '+m[1]+' en Cloudflare'});
+  var ppOk=s.configured&&s.configured.paypal,ppOn=s.pay_pp!==0;
+  $('#s-pp').checked=ppOn;$('#pp-rate').value=s.pp_rate>0?s.pp_rate:'';$('#pp-mk').value=s.pp_markup||0;
+  $('#s-pp-st').textContent=!ppOk?'Sin configurar: falta PAYPAL_CLIENT_ID y PAYPAL_CLIENT_SECRET en Cloudflare':!(s.pp_rate>0)?'Falta el tipo de cambio: PayPal no aparece en el carrito hasta que lo guardes':ppOn?'Activo en el carrito'+(s.pp_sandbox?' (modo de pruebas)':'')+(s.pp_rate_at?' · cambio guardado el '+new Date(s.pp_rate_at).toLocaleDateString('es-CL'):''):'Desactivado';
+  ppExample()}).catch(function(){})}
+function ppExample(){var r=Number($('#pp-rate').value),mk=Number($('#pp-mk').value)||0;
+  $('#pp-ex').textContent=r>=100?'Ejemplo: un pedido de $7.990 se cobra como US$ '+(Math.ceil(Math.round(7990*(1+mk/100)/r*1e6)/1e4)/100).toFixed(2).replace('.',',')+'.':''}
+$('#pp-rate').addEventListener('input',ppExample);$('#pp-mk').addEventListener('input',ppExample);
+$('#pp-fx').addEventListener('click',function(){var b=this;b.disabled=true;
+  api('/api/admin/fx').then(function(d){$('#pp-rate').value=d.valor;ppExample();msg($('#pp-msg'),'Dólar observado del '+new Date(d.fecha).toLocaleDateString('es-CL')+': $'+String(d.valor).replace('.',',')+'. Revisa y guarda.','ok')})
+  .catch(function(err){if(err.message!=='401')msg($('#pp-msg'),err.message,'err')}).then(function(){b.disabled=false})});
+$('#pp-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var body={pay_pp:$('#s-pp').checked,pp_markup:Number($('#pp-mk').value)||0};
+  if($('#pp-rate').value!=='')body.pp_rate=Number($('#pp-rate').value);
+  api('/api/admin/settings',{method:'POST',body:body})
+  .then(function(){msg($('#pp-msg'),'PayPal guardado. El carrito ya usa este tipo de cambio.','ok');loadSettings()}).catch(function(err){if(err.message!=='401')msg($('#pp-msg'),err.message,'err')});
+});
 $('#ship-form').addEventListener('submit',function(e){
   e.preventDefault();
   api('/api/admin/settings',{method:'POST',body:{ship_rm:Number($('#s-rm').value),ship_regiones:Number($('#s-rg').value),pay_flow:$('#s-flow').checked,pay_mp:$('#s-mp').checked}})
