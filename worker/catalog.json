@@ -384,5 +384,22 @@
    "Se entrega en un archivo .zip con dos diagramas e instrucciones"
   ],
   "cover": "/blog/pack-analizador-wifi-esp32.jpg"
+ },
+ {
+  "slug": "pack-armado-baterias-18650-21700",
+  "name": "Pack Armado de Baterías 18650 y 21700: planificador en Excel + guía en PDF + diagramas",
+  "short": "Pack Armado de Baterías 18650/21700 (Excel + PDF + diagramas)",
+  "price": 7990,
+  "img": "/blog/pack-armado-baterias-18650-21700-thumb.jpg",
+  "url": "/blog/como-armar-pack-baterias-18650-21700-paso-a-paso#pack",
+  "digital": true,
+  "desc": "Arma tu pack de litio con números y no a ojo: define serie y paralelo, empareja las celdas, comprueba que el níquel sea puro, dimensiona tiras, BMS y fusible y haz una puesta en marcha segura.",
+  "includes": [
+   "Planificador en Excel con 8 hojas: diseño S/P, tiras de níquel, emparejar hasta 60 celdas en grupos parejos, BMS y protecciones, puesta en marcha, presupuesto y seguridad",
+   "Guía de taller en PDF de 18 páginas: elegir la celda, pruebas del níquel sin ácidos, ajustar la soldadora de puntos, orden de armado, cableado del BMS y problemas",
+   "Diagrama de cableado del BMS (4S3P) y diagrama de la prueba de 4 hilos para el níquel",
+   "Se entrega en un archivo .zip con instrucciones"
+  ],
+  "cover": "/blog/pack-armado-baterias-18650-21700.jpg"
  }
 ]
